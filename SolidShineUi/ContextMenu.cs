@@ -1,0 +1,244 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+
+namespace SolidShineUi
+{
+    public class ContextMenu : System.Windows.Controls.ContextMenu
+    {
+
+        // this class inherits all the logic from the WPF standard ContextMenu control
+        // the only differences is the addition of various brush properties and Color Scheme integration
+        // as well as a custom theme defined in Generic.xaml
+
+        static ContextMenu()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ContextMenu), new FrameworkPropertyMetadata(typeof(ContextMenu)));
+        }
+
+        #region ColorScheme
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
+        public static DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(ContextMenu),
+            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+
+        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+#if NETCOREAPP
+            ColorScheme cs = (e.NewValue as ColorScheme)!;
+#else
+            ColorScheme cs = e.NewValue as ColorScheme;
+#endif
+            if (d is ContextMenu s)
+            {
+                s.ColorSchemeChanged?.Invoke(d, e);
+                s.ApplyColorScheme(cs);
+            }
+        }
+
+        public ColorScheme ColorScheme
+        {
+            get => (ColorScheme)GetValue(ColorSchemeProperty);
+            set => SetValue(ColorSchemeProperty, value);
+        }
+
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            Background = cs.MainColor.ToBrush();
+            MenuBackground = cs.LightBackgroundColor.ToBrush();
+            DisabledBrush = cs.DarkDisabledColor.ToBrush();
+            BorderBrush = cs.BorderColor.ToBrush();
+            HighlightBrush = cs.ThirdHighlightColor.ToBrush();
+            HighlightSubitemBrush = cs.ThirdHighlightColor.ToBrush();
+            CheckedBrush = cs.SecondaryColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+
+            if (cs.IsHighContrast)
+            {
+                DisabledBrush = cs.LightDisabledColor.ToBrush();
+                CheckedBrush = cs.HighlightColor.ToBrush();
+            }
+        }
+
+        public void ApplyColorScheme(HighContrastOption hco)
+        {
+            ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
+
+            ApplyColorScheme(cs);
+        }
+        #endregion
+
+        /// <summary>
+        /// Get or set the brush used for the background of the menu's drop-down area. This is different from the Background brush, which is not used in a ContextMenu.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush MenuBackground
+        {
+            get
+            {
+                return (Brush)GetValue(MenuBackgroundProperty);
+            }
+            set
+            {
+                SetValue(MenuBackgroundProperty, value);
+            }
+        }
+
+        [Category("Brushes")]
+        public Brush DisabledBrush
+        {
+            get
+            {
+                return (Brush)GetValue(DisabledBrushProperty);
+            }
+            set
+            {
+                SetValue(DisabledBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the border of the menu's drop-down area.
+        /// </summary>
+        [Category("Brushes")]
+        public new Brush BorderBrush
+        {
+            get
+            {
+                return (Brush)GetValue(BorderBrushProperty);
+            }
+            set
+            {
+                SetValue(BorderBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the top-level menu items in the menu bar. This is not used in a ContextMenu; instead look at the HighlightSubitemBrush property.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightBrush
+        {
+            get
+            {
+                return (Brush)GetValue(HighlightBrushProperty);
+            }
+            set
+            {
+                SetValue(HighlightBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the brush used for menu items that aren't top-level on the menu bar, when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightSubitemBrush
+        {
+            get
+            {
+                return (Brush)GetValue(HighlightSubitemBrushProperty);
+            }
+            set
+            {
+                SetValue(HighlightSubitemBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the brush to use for the check highlight for checked menu items.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush CheckedBrush
+        {
+            get
+            {
+                return (Brush)GetValue(CheckedBrushProperty);
+            }
+            set
+            {
+                SetValue(CheckedBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set if the context menu has rounded corners.
+        /// </summary>
+        public bool RoundedCorners
+        {
+            get
+            {
+                return (bool)GetValue(RoundedCornersProperty);
+            }
+            set
+            {
+                SetValue(RoundedCornersProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set if a vertical scroll bar is visible for the context menu.
+        /// If the context menu is longer than the screen, the scroll bar can be used.
+        /// </summary>
+        public System.Windows.Controls.ScrollBarVisibility VerticalScrollBarVisibility
+        {
+            get
+            {
+                return (System.Windows.Controls.ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty);
+            }
+            set
+            {
+                SetValue(VerticalScrollBarVisibilityProperty, value);
+            }
+        }
+
+        public static DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
+            "MenuBackground", typeof(Brush), typeof(ContextMenu),
+            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
+
+        public static DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
+            "DisabledBrush", typeof(Brush), typeof(ContextMenu),
+            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+
+        public static new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+            "BorderBrush", typeof(Brush), typeof(ContextMenu),
+            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+
+        public static DependencyProperty HighlightSubitemBrushProperty = DependencyProperty.Register(
+            "HighlightSubitemBrush", typeof(Brush), typeof(ContextMenu),
+            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+
+        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+            "HighlightBrush", typeof(Brush), typeof(ContextMenu),
+            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+
+        public static DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
+            "CheckedBrush", typeof(Brush), typeof(ContextMenu),
+            new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
+
+        public static DependencyProperty RoundedCornersProperty = DependencyProperty.Register(
+            "RoundedCorners", typeof(bool), typeof(ContextMenu),
+            new PropertyMetadata(false));
+
+        public static DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
+            "VerticalScrollBarVisibility", typeof(System.Windows.Controls.ScrollBarVisibility), typeof(ContextMenu),
+            new PropertyMetadata(System.Windows.Controls.ScrollBarVisibility.Auto));
+    }
+}

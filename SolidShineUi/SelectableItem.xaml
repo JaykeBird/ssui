@@ -1,0 +1,23 @@
+﻿<local:SelectableUserControl x:Name="selectableUserControl" x:Class="SolidShineUi.SelectableItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SolidShineUi"
+             mc:Ignorable="d" Height="24" d:DesignWidth="120">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0" x:Name="colIndent" />
+            <ColumnDefinition Width="0" x:Name="colCheck" />
+            <ColumnDefinition Width="0" x:Name="colImage" />
+            <ColumnDefinition Width="100*" x:Name="colText" />
+            <ColumnDefinition Width="Auto" x:Name="colRightText" />
+        </Grid.ColumnDefinitions>
+        <Image x:Name="image" Grid.Column="2" Margin="4"/>
+        <local:CheckBox Grid.Column="1" Margin="2,0" x:Name="chkSel" />
+        <local:ClickSelectTextBox x:Name="txtText" Grid.Column="3" HorizontalAlignment="Stretch" Margin="1,0,0,0" VerticalAlignment="Center" Text="Item Text" Visibility="Collapsed" KeyDown="txtText_KeyDown" SelectOnFocus="True" />
+        <local:LinkTextBlock x:Name="lblText" Grid.Column="3" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="Itemg Text" UnderlineOnHighlight="False" Click="lblText_Click"
+                             TextBrush="{Binding Foreground, ElementName=selectableUserControl}" HighlightBrush="{Binding Foreground, ElementName=selectableUserControl}" Foreground="{Binding Foreground, ElementName=selectableUserControl}" />
+        <TextBlock x:Name="lblRightText" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center" />
+    </Grid>
+</local:SelectableUserControl>

@@ -1,0 +1,1021 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:flat="clr-namespace:SolidShineUi"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
+
+    <flat:ColorToBrushConverter x:Key="ColorConverter" />
+    <BooleanToVisibilityConverter x:Key="VisConverter" />
+    <flat:BindableChildConverter x:Key="BindableChildConverter" />
+    <flat:RectConverter x:Key="RectConverter" />
+
+    <ControlTemplate x:Key="MainWindowControlTemplate" TargetType="{x:Type flat:FlatWindow}">
+        <Border BorderBrush="Green">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WindowState, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="Maximized">
+                            <!--<Setter Property="BorderThickness" Value="{Binding Source={x:Static shell:SystemParameters2.Current}, Path=WindowResizeBorderThickness}"/>-->
+                            <Setter Property="BorderThickness" Value="7"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <AdornerDecorator>
+                <Border Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"
+                    BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                    BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}">
+                    <Grid Tag="WindowGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <!--<RowDefinition Height="1" />-->
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                            <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding TopLeftElement, RelativeSource={RelativeSource TemplatedParent}}"
+                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopLeftElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <TextBlock Grid.Row="0" Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="Padding" Value="8,0,0,0" />
+                                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                                        <Setter Property="Visibility" Value="Visible" />
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground" Value="{Binding Path=CaptionTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                <Setter Property="Foreground" Value="{Binding Path=InactiveTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ShowTitle, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- Captions Buttons to control the window borderless-->
+                        <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" >
+                            <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}" 
+                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
+                                SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                HighlightBrush="{Binding HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True"  FontSize="16" MarginButton="0">
+                                <flat:ChromeButtons.Style>
+                                    <Style TargetType="flat:ChromeButtons">
+                                        <Setter Property="Foreground" Value="{Binding Path=CaptionButtonsBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                <Setter Property="Foreground" Value="{Binding Path=InactiveTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </flat:ChromeButtons.Style>
+                            </flat:ChromeButtons>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1" Background="{Binding Path=ContentBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" >
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Grid>
+                    </Grid>
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                    <Setter Property="Background" Value="{Binding Path=InactiveBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
+            </AdornerDecorator>
+        </Border>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type flat:FlatWindow}">
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <!-- Make sure this matches the settings in the ResizeCaptionHeight method. -->
+                <WindowChrome
+                        ResizeBorderThickness="4"
+                        CaptionHeight="29"
+                        CornerRadius="0"
+                        GlassFrameThickness="0,0,0,1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template" Value="{StaticResource MainWindowControlTemplate}"/>
+    </Style>
+
+    <Style TargetType="{x:Type flat:Menu}" >
+        <!--x:Key="StandardMenu"-->
+
+        <Style.Resources>
+            <!--<Style TargetType="Separator">
+                <Setter Property="Height" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Separator">
+                            <Border BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:Menu}}}" BorderThickness="1" Margin="25,0,0,0"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>-->
+            <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
+                <Setter Property="Height" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Separator">
+                            <Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="25,0,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
+                                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                <Setter Property="SnapsToDevicePixels" Value="False" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                            <!--Border 1-->
+                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" 
+                                    BorderThickness="1" SnapsToDevicePixels="False">
+                                <Grid x:Name="Grid">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto" 
+                                                          SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                        <ColumnDefinition x:Name="Col3" Width="14"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border x:Name="Check" Grid.Column="0" Height="18" Width="18" HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center" Visibility="Collapsed" Margin="1" BorderThickness="0" >
+                                        <Grid>
+                                            <Path x:Name="CheckMark" Height="10" Width="10" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" SnapsToDevicePixels="False" StrokeThickness="0"
+                                                    Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z"
+                                                    Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
+                                            <!--
+                                            M 2,4 C 2,4 3,5 5,13 C 5,13 5,3 12,0
+                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0 
+                                            M 1,2 C 1,2 1.5,2.5 2.5,6.5 C 2.5,6.5 2.5,1.5 6,0
+                                            -->
+                                            <ContentPresenter x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                          ContentSource="Icon"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}" 
+                                                      x:Name="HeaderHost" RecognizesAccessKey="True" 
+                                                      ContentSource="Header" VerticalAlignment="Center"/>
+                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost" 
+                                                      ContentSource="InputGestureText" VerticalAlignment="Center"/>
+                                    <Grid Grid.Column="3" Margin="4,0,6,0" x:Name="ArrowPanel" VerticalAlignment="Center">
+                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                              Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
+                                    </Grid>
+                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                           Placement="Right" HorizontalOffset="-1" x:Name="SubMenuPopup" Focusable="false"
+                                           PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
+                                           AllowsTransparency="True">
+                                        <Grid Margin="0,0,5,5">
+                                            <!--Border 2-->
+                                            <Border x:Name="SubMenuBorder" 
+                                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"
+                                                    BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" 
+                                                    SnapsToDevicePixels="True">
+                                                <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
+                                                    <StackPanel IsItemsHost="True" 
+                                                                KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                                </Grid>
+                                                <Border.Effect>
+                                                    <DropShadowEffect ShadowDepth="2" Color="Black"/>
+                                                </Border.Effect>
+                                            </Border>
+                                            <!--Border 3-->
+                                            <Border Margin="1,-5,1,0" x:Name="TransitionBorder" Width="0" Height="7" 
+                                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                                    Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" SnapsToDevicePixels="False"
+                                                    BorderThickness="1,0" BorderBrush="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                        </Grid>
+                                    </Popup>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Role" Value="TopLevelHeader">
+                                    <!-- menu-bar menus -->
+                                    <Setter Property="Padding" Value="6,0,6,2"/>
+                                    <Setter TargetName="SubMenuPopup" Property="Placement" Value="Bottom"/>
+                                    <!--<Setter TargetName="SubMenuPopup" Property="PlacementRectangle">
+                                        <Setter.Value>
+                                            <MultiBinding Converter="{StaticResource RectConverter}" >
+                                                <Binding ElementName="Grid" Path="ActualWidth" />
+                                                <Binding ElementName="Grid" Path="ActualHeight" />
+                                                <Binding Source="{x:Static flat:RectConverter.ZERO}" />
+                                                <Binding Source="{x:Static flat:RectConverter.ZERO}" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>-->
+                                    <!-- note about placement alignment: https://www.top-password.com/blog/fix-windows-10-opens-right-click-context-menu-to-left-side/ -->
+                                    <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
+                                    <Setter TargetName="Col3" Property="Width" Value="Auto"/>
+                                    <Setter TargetName="Check" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1,1,1,1"/>
+                                    <Setter TargetName="SubMenu" Property="Margin" Value="2,3,2,2"/>
+                                    <Setter TargetName="TransitionBorder" Property="Width" Value="{Binding ActualWidth, ElementName=Grid}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter Property="UseLayoutRounding" Value="True" />
+                                </Trigger>
+                                <Trigger Property="Role" Value="TopLevelItem">
+                                    <!-- ??? -->
+                                    <Setter Property="Padding" Value="6,0,6,2"/>
+                                    <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
+                                    <Setter TargetName="Col3" Property="Width" Value="Auto"/>
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </Trigger>
+                                <Trigger Property="Role" Value="SubmenuHeader">
+                                    <!-- menu item with subitems -->
+                                    <Setter Property="DockPanel.Dock" Value="Top"/>
+                                    <Setter Property="Padding" Value="8,3,0,3"/>
+                                    <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="Icon" Property="UseLayoutRounding" Value="True" />
+                                    <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
+                                    <Setter TargetName="Border" Property="MinHeight" Value="22"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </Trigger>
+                                <Trigger Property="Role" Value="SubmenuItem">
+                                    <!-- menu item -->
+                                    <Setter Property="DockPanel.Dock" Value="Top"/>
+                                    <Setter Property="Padding" Value="8,3,0,3"/>
+                                    <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="Icon" Property="UseLayoutRounding" Value="True" />
+                                    <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
+                                    <Setter TargetName="Border" Property="MinHeight" Value="22"/>
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="TopLevelHeader"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="TopLevelItem"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="SubmenuHeader"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="SubmenuItem"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSubmenuOpen" Value="true"/>
+                                        <Condition Property="Role" Value="TopLevelHeader"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
+                                </MultiTrigger>
+                                <!--<Trigger Property="IsSubmenuOpen" Value="true">
+                                    <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:Menu}}}"/>
+                                </Trigger>-->
+                                <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+                                    <Setter TargetName="SubMenuPopup" Property="PopupAnimation" Value="None"/>
+                                </Trigger>
+                                <Trigger Property="Icon" Value="{x:Null}">
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="{Binding DisabledBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsChecked" Value="true" />
+                                        <Condition Property="Role" Value="SubmenuItem" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Check" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsChecked" Value="true" />
+                                        <Condition Property="Role" Value="SubmenuItem" />
+                                        <Condition Property="Icon" Value="{x:Null}" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                                </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        <!--<Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+        <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:Menu}">
+                    <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}">
+                        <!--<Rectangle Stroke="{TemplateBinding BorderBrush}"/>-->
+                        <ItemsPresenter Margin="2,0,0,0"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style TargetType="{x:Type flat:ContextMenu}" >
+        <!--x:Key="StandardMenu"-->
+
+        <Style.Resources>
+            <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
+                <Setter Property="Height" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Separator">
+                            <Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="25,0,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
+                                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:ContextMenu}}}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                            <!--Border 1-->
+                            <!-- individual menu item (top-level menu) -->
+                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" 
+                                    BorderThickness="1" SnapsToDevicePixels="False">
+                                <Grid x:Name="Grid">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto" 
+                                                          SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                        <ColumnDefinition x:Name="Col3" Width="14"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border x:Name="Check" Grid.Column="0" Height="18" Width="18" HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center" Visibility="Collapsed" Margin="1" BorderThickness="0" >
+                                        <Grid>
+                                            <Path x:Name="CheckMark" Height="10" Width="10" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" SnapsToDevicePixels="False" StrokeThickness="0"
+                                                    Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z "
+                                                    Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
+                                            <!--
+                                            M 2,4 C 2,4 3,5 5,13 C 5,13 5,3 12,0
+                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0 
+                                            M 1,2 C 1,2 1.5,2.5 2.5,6.5 C 2.5,6.5 2.5,1.5 6,0
+                                            -->
+                                            <ContentPresenter x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                          ContentSource="Icon"/>
+                                        </Grid>
+                                    </Border>
+                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}" 
+                                                      x:Name="HeaderHost" RecognizesAccessKey="True" 
+                                                      ContentSource="Header" VerticalAlignment="Center"/>
+                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost" 
+                                                      ContentSource="InputGestureText" VerticalAlignment="Center"/>
+                                    <Grid Grid.Column="3" Margin="4,0,6,0" x:Name="ArrowPanel" VerticalAlignment="Center">
+                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                              Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
+                                    </Grid>
+                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                           Placement="Right" HorizontalOffset="-1" x:Name="SubMenuPopup" Focusable="false"
+                                           PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
+                                           AllowsTransparency="True">
+                                        <Grid Margin="0,0,5,5">
+                                            <!--Border 2-->
+                                            <Border x:Name="SubMenuBorder" 
+                                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
+                                                    BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" 
+                                                    SnapsToDevicePixels="True">
+                                                <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
+                                                    <StackPanel IsItemsHost="True" 
+                                                                KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                                </Grid>
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="4" ShadowDepth="2" Color="Black"/>
+                                                </Border.Effect>
+                                            </Border>
+                                            <!--Border 3-->
+                                            <!--
+                                            <Border Margin="1,0,0,0" x:Name="TransitionBorder" Width="0" Height="2" 
+                                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                                    Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" SnapsToDevicePixels="False"
+                                                    BorderThickness="1" BorderBrush="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>-->
+                                        </Grid>
+                                    </Popup>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Role" Value="TopLevelHeader">
+                                    <Setter Property="Padding" Value="6,0,6,2"/>
+                                    <Setter TargetName="SubMenuPopup" Property="Placement" Value="Bottom"/>
+                                    <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
+                                    <Setter TargetName="Col3" Property="Width" Value="Auto"/>
+                                    <Setter TargetName="Check" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1,1,1,1"/>
+                                    <Setter TargetName="SubMenu" Property="Margin" Value="2,3,2,2"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter Property="UseLayoutRounding" Value="True" />
+                                </Trigger>
+                                <Trigger Property="Role" Value="TopLevelItem">
+                                    <Setter Property="Padding" Value="6,0,6,2"/>
+                                    <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
+                                    <Setter TargetName="Col3" Property="Width" Value="Auto"/>
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </Trigger>
+                                <Trigger Property="Role" Value="SubmenuHeader">
+                                    <Setter Property="DockPanel.Dock" Value="Top"/>
+                                    <Setter Property="Padding" Value="8,3,0,3"/>
+                                    <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="Icon" Property="UseLayoutRounding" Value="True" />
+                                    <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
+                                    <Setter TargetName="Border" Property="MinHeight" Value="22"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </Trigger>
+                                <Trigger Property="Role" Value="SubmenuItem">
+                                    <Setter Property="DockPanel.Dock" Value="Top"/>
+                                    <Setter Property="Padding" Value="8,3,0,3"/>
+                                    <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="Icon" Property="UseLayoutRounding" Value="True" />
+                                    <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
+                                    <Setter TargetName="Border" Property="MinHeight" Value="22"/>
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="TopLevelHeader"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="TopLevelItem"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="SubmenuHeader"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsHighlighted" Value="true"/>
+                                        <Condition Property="Role" Value="SubmenuItem"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSubmenuOpen" Value="true"/>
+                                        <Condition Property="Role" Value="TopLevelHeader"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
+                                </MultiTrigger>
+                                <!--<Trigger Property="IsSubmenuOpen" Value="true">
+                                    <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}"/>
+                                </Trigger>-->
+                                <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+                                    <Setter TargetName="SubMenuPopup" Property="PopupAnimation" Value="None"/>
+                                </Trigger>
+                                <Trigger Property="Icon" Value="{x:Null}">
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="{Binding DisabledBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsChecked" Value="true" />
+                                        <Condition Property="Role" Value="SubmenuItem" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Check" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsChecked" Value="true" />
+                                        <Condition Property="Role" Value="SubmenuItem" />
+                                        <Condition Property="Icon" Value="{x:Null}" />
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                                </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+        <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+        <!--<Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:ContextMenu}}}"/>
+        <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:ContextMenu}}}"/>-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:ContextMenu}">
+                    <Border Uid="Border_93">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Tag" Value="{DynamicResource {x:Static SystemParameters.DropShadowKey}}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Padding" Value="0,0,5,5"/>
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect BlurRadius="4" Opacity="0.8" ShadowDepth="1"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <!--<Border Name="DropShadowBorder" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}" 
+                            BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}" BorderThickness="7" OpacityMask="{x:Null}" >
+                        </Border>-->
+                        <Border Name="Border" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" 
+                            BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" 
+                                BorderThickness="1" Padding="1" OpacityMask="{x:Null}" >
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
+                                <ScrollViewer.Style>
+                                    <Style TargetType="{x:Type ScrollViewer}">
+                                        <Setter Property="VerticalScrollBarVisibility" Value="{Binding Path=VerticalScrollBarVisibility, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
+                                    </Style>
+                                </ScrollViewer.Style>
+                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                            </ScrollViewer>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="RoundedCorners" Value="true">
+                            <Setter TargetName="Border" Property="Padding" Value="0,3,0,3"/>
+                            <Setter TargetName="Border" Property="CornerRadius" Value="4"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style TargetType="{x:Type flat:FlatButton}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:FlatButton}">
+                    <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                <!--<Style.Triggers>
+                                    --><!--<DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}" Value="False" >
+
+                                    </DataTrigger>-->
+                                    <!--<DataTrigger Binding="{Binding IsSelected, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}" Value="True" >
+                                        <Setter Property="Background" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                        <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                        <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                    </DataTrigger>--><!--
+                                </Style.Triggers>-->
+                            </Style>
+                        </Border.Style>
+                        <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDefault, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}" Value="True">
+                                            <Setter Property="BorderThickness" Value="1" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}">
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="{x:Type ContentPresenter}" >
+                                            <Setter Property="Opacity" Value="1.0" />
+                                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                            <!--<Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}" Value="False" >
+                                                    <Setter Property="Opacity" Value="0.6"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>-->
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                </ContentPresenter>
+                                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
+                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="TransparentBack" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                                <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="TransparentBack" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" TargetName="btn_Border" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>
+                        <!--<Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>-->
+                        <Trigger Property="IsMouseDown" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>
+                        <!--<Trigger Property="IsFocused" Value="True" >
+                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                        </Trigger>-->
+                        <Trigger Property="IsKeyboardFocused" Value="True" >
+                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                            <!--<Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />-->
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--<Style.Triggers>
+            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}" Value="False" >
+                <Setter Property="Focusable" Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsSelected, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}">
+
+            </DataTrigger>
+        </Style.Triggers>-->
+    </Style>
+
+    <Style TargetType="{x:Type flat:MenuButton}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:MenuButton}">
+                    <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                <Style.Triggers>
+                                    <!--<DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
+                                        <Setter Property="Background" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                        <Setter Property="BorderBrush" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                    </DataTrigger>-->
+                                    <DataTrigger Binding="{Binding IsSelected, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True" >
+                                        <Setter Property="Background" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                        <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                        <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDefault, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True">
+                                            <Setter Property="BorderThickness" Value="1" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" >
+                                    <StackPanel.Style>
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
+                                        <ContentPresenter.Style>
+                                            <Style TargetType="{x:Type ContentPresenter}" >
+                                                <Setter Property="Opacity" Value="1.0" />
+                                                <!--<Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
+                                                <Setter Property="Opacity" Value="0.6"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>-->
+                                            </Style>
+                                        </ContentPresenter.Style>
+                                    </ContentPresenter>
+                                    <Path Data="M0,0 L8,0 4,4 z" Fill="Black" Stroke="Black" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  Height="5" Width="8" Margin="5,0,3,0" Stretch="Fill">
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                                <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ShowMenuArrow, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True" >
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                    </Path>
+                                </StackPanel>
+                                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
+                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="TransparentBack" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                                <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="TransparentBack" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseDown" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>
+                        <!--<Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>-->
+                        <Trigger Property="IsKeyboardFocused" Value="True" >
+                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                            <!--<Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />-->
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--<Style.Triggers>
+            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}" Value="False" >
+                <Setter Property="Focusable" Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsSelected, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatButton}}}">
+
+            </DataTrigger>
+        </Style.Triggers>-->
+    </Style>
+
+    <Style TargetType="{x:Type flat:CheckBox}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="flat:CheckBox" >
+                    <Grid Background="#01000000">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="3" x:Name="colLeftSpace"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="brdrChk" BorderBrush="Black" Background="White" BorderThickness="1" HorizontalAlignment="Left" Height="20" Margin="0,0" VerticalAlignment="Center" Width="20">
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{x:Static flat:CheckBox.CheckBoxClickCommand}" />
+                            </Border.InputBindings>
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="{Binding Path=CheckBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                    <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                    <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                    <!--<Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
+                                        </DataTrigger>
+                                        --><!--<DataTrigger Binding="{Binding IsSelected, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" >
+                                            <Setter Property="Background" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                        </DataTrigger>-->
+                                        <!--<MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True" />
+                                            </MultiTrigger.Conditions>
+                                        </MultiTrigger>--><!--
+                                    </Style.Triggers>-->
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
+                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <Rectangle x:Name="markInd" Fill="Black" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
+                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                        <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="2">
+                            <ContentPresenter.Style>
+                                <Style TargetType="{x:Type ContentPresenter}" >
+                                    <Setter Property="Opacity" Value="1.0" />
+                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                    <!--<Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
+                                            <Setter Property="Opacity" Value="0.6"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>-->
+                                </Style>
+                            </ContentPresenter.Style>
+                        </ContentPresenter>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                        </MultiDataTrigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Focusable" Value="False" />
+                            <Setter Property="Opacity" TargetName="cc" Value="0.6" />
+                            <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BackgroundDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--<Style.Triggers>
+            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
+                
+            </DataTrigger>
+        </Style.Triggers>-->
+    </Style>
+
+</ResourceDictionary>

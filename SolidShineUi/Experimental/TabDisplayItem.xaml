@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="SolidShineUi.Experimental.TabDisplayItem" x:Name="control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SolidShineUi"
+             mc:Ignorable="d" 
+             d:DesignHeight="28" d:DesignWidth="120" MinWidth="120" 
+             MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave"
+             StylusDown="UserControl_StylusDown" StylusUp="UserControl_StylusUp" TouchDown="UserControl_TouchDown" TouchUp="UserControl_TouchUp"
+             GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
+             KeyDown="UserControl_KeyDown" KeyUp="UserControl_KeyUp" GotKeyboardFocus="UserControl_GotKeyboardFocus" LostKeyboardFocus="UserControl_LostKeyboardFocus" >
+
+    <Border BorderThickness="1,1,1,0" BorderBrush="Black" x:Name="border" >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="18" x:Name="colClose" />
+            </Grid.ColumnDefinitions>
+            <Image x:Name="imgIcon" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,6,3,6" Height="16" Width="16"/>
+            <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,6" Text="TextBlock" Grid.Column="1" />
+            <local:FlatButton x:Name="btnClose" Grid.Column="2" Margin="0,2" Height="Auto" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" >
+                <Image Source="/UiCore;component/Images/SmallExitColor.png" Height="16" Width="16" HorizontalAlignment="Center" Stretch="None" />
+            </local:FlatButton>
+
+
+        </Grid>
+    </Border>
+</UserControl>

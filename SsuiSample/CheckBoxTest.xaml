@@ -1,0 +1,29 @@
+﻿<UserControl x:Name="control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SsuiSample"
+             xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi" x:Class="SsuiSample.CheckBoxTest"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="CheckBox Test" FontSize="16" VerticalAlignment="Top"/>
+        <flat:CheckBox x:Name="chkSingle" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Content="Check box" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" Text="Check box" VerticalAlignment="Top"/>
+        <flat:CheckBox x:Name="chkDisabled" HorizontalAlignment="Left" Margin="275,80,0,0" VerticalAlignment="Top" IsEnabled="False" Content="Check box" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <TextBlock HorizontalAlignment="Left" Margin="275,60,0,0" Text="Disabled check box" VerticalAlignment="Top"/>
+        <flat:CheckBox x:Name="chkMultiple" HorizontalAlignment="Left" Margin="20,150,0,0" VerticalAlignment="Top" Content="Check box" TriStateClick="True" ColorScheme="{Binding ColorScheme, ElementName=control}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,130,0,0" Text="Tri-state check box" VerticalAlignment="Top" />
+        <flat:CheckBox x:Name="chkDisabled2" HorizontalAlignment="Left" Margin="275,150,0,0" VerticalAlignment="Top" IsEnabled="False" Content="Check box" CheckState="Checked" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <TextBlock HorizontalAlignment="Left" Margin="275,130,0,0" Text="Disabled checked check box" VerticalAlignment="Top"/>
+        <flat:CheckBox x:Name="chkContent" HorizontalAlignment="Left" Margin="20,220,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" >
+            <flat:FlatButton Width="120" Content="Button" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        </flat:CheckBox>
+        <TextBlock HorizontalAlignment="Left" Margin="20,200,0,0" Text="Check box with a button inside" VerticalAlignment="Top" />
+        <flat:CheckBox x:Name="chkLimited" HorizontalAlignment="Left" Margin="20,290,0,0" VerticalAlignment="Top" Content="Clicking on this text will do nothing" OnlyAllowCheckBoxClick="True" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,270,0,0" Text="Check box, only clicking on box will activate" VerticalAlignment="Top" />
+
+    </Grid>
+</UserControl>

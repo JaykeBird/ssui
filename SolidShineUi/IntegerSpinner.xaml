@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="SolidShineUi.IntegerSpinner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SolidShineUi"
+             mc:Ignorable="d" x:Name="baseSpinner"
+             Height="24" d:DesignWidth="80" Loaded="baseSpinner_Loaded" IsEnabledChanged="BaseSpinner_IsEnabledChanged" >
+    <!--<UserControl.Resources>
+        <ControlTemplate x:Key="styleUpDown" TargetType="Button">
+            <Border x:Name="br" BorderThickness="0" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:IntegerSpinner}}}" 
+                            Background="{Binding ButtonBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:IntegerSpinner}}}" CornerRadius="0">
+                <ContentPresenter x:Name="cp" TextElement.Foreground="{TemplateBinding Foreground}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="br" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:IntegerSpinner}}}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter TargetName="br" Property="Background" Value="{Binding DisabledBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:IntegerSpinner}}}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="Button">
+            <Setter Property="Template" Value="{StaticResource styleUpDown}" />
+        </Style>
+    </UserControl.Resources>-->
+    <!--<Border x:Name="brdr" BorderBrush="Gray" BorderThickness="1" CornerRadius="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Padding="0" Margin="0" >-->
+    <Border x:Name="brdr">
+        <Border.OpacityMask>
+            <VisualBrush>
+                <VisualBrush.Visual>
+                    <Border x:Name="brdrVisualEffect" Background="Black" SnapsToDevicePixels="True"
+                                CornerRadius="0"
+                                Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=Border}}"
+                                Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=Border}}" />
+                </VisualBrush.Visual>
+            </VisualBrush>
+        </Border.OpacityMask>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0" x:Name="colError" />
+                <ColumnDefinition Width="20" x:Name="colArrows" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txtValue" x:FieldModifier="private" FontSize="12" VerticalContentAlignment="Center" Padding="3,1" Grid.Column="0" Grid.RowSpan="2" Text="0" 
+                             LostFocus="txtValue_LostFocus" KeyDown="txtValue_KeyDown" KeyUp="txtValue_KeyUp" TextChanged="txtValue_TextChanged" BorderThickness="0" />
+            <Border x:Name="divider" Grid.Column="2" BorderThickness="1,0,0,0" BorderBrush="LightGray" Margin="0,1,1,1" >
+                <Grid x:Name="grdButtons">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border x:Name="btnUp" x:FieldModifier="private" Grid.Column="2" Grid.Row="0" Height="auto" BorderThickness="0" 
+                                Focusable="True" KeyboardNavigation.IsTabStop="True"
+                                MouseEnter="btnUp_MouseEnter" MouseLeave="btnUp_MouseLeave" MouseDown="btnUp_MouseDown" MouseUp="btnUp_MouseUp"
+                                TouchDown="btnUp_TouchDown" TouchUp="btnUp_TouchUp" StylusDown="btnUp_StylusDown" StylusUp="btnUp_StylusUp" >
+                        <Path x:Name="pathUp" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Black" Data="M4,0 L0,4 L8,4 z"/>
+                    </Border>
+                    <Border x:Name="btnDown" x:FieldModifier="private" Grid.Column="2" Grid.Row="1" Height="auto" BorderThickness="0" 
+                                Focusable="True" KeyboardNavigation.IsTabStop="True"
+                                MouseEnter="btnDown_MouseEnter" MouseLeave="btnDown_MouseLeave" MouseDown="btnDown_MouseDown" MouseUp="btnDown_MouseUp"
+                                TouchDown="btnDown_TouchDown" TouchUp="btnDown_TouchUp" StylusDown="btnDown_StylusDown" StylusUp="btnDown_StylusUp" >
+                        <Path x:Name="pathDown" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Black" Data="M0,0 L8,0 L4,4 z"/>
+                    </Border>
+                    <TextBlock Visibility="Collapsed" />
+                </Grid>
+            </Border>
+            <Border x:Name="visBorder" BorderBrush="Gray" IsHitTestVisible="False" BorderThickness="1" CornerRadius="0" Grid.RowSpan="2" 
+                    Grid.ColumnSpan="3" Padding="0" Margin="0" />
+        </Grid>
+    </Border>
+</UserControl>
+

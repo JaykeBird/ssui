@@ -1,0 +1,130 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <ProjectGuid>{E45CD1DB-F48D-4B29-B832-52D5B634B145}</ProjectGuid>
+    <TargetFrameworks>net471;net48;netcoreapp3.1</TargetFrameworks>
+    <UseWpf>true</UseWpf>
+    <RootNamespace>SolidShineUi</RootNamespace>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyTitle>Ssui</AssemblyTitle>
+    <Company>Jayke R. Huempfner</Company>
+    <Product>SolidShineUi</Product>
+    <Description>A collection of UI controls with consistent and customizable theming.</Description>
+    <Copyright>Copyright 2018-2020 Jayke R. Huempfner, other contributors</Copyright>
+    <Version>1.7.0</Version>
+    <AssemblyVersion>1.7.0.0</AssemblyVersion>
+    <FileVersion>1.7.0.0</FileVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <Authors>Jayke R. Huempfner, other contributors</Authors>
+    <PackageIconUrl>https://raw.githubusercontent.com/Manuel-S/FlatWindow/master/screenshot.png</PackageIconUrl>
+    <PackageId>SolidShineUi</PackageId>
+    <PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
+    <PackageTags>Flat UI WPF XAML Controls</PackageTags>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DebugType>full</DebugType>
+    <!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>full</DebugType>
+    <!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>embedded</DebugType>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DebugType>embedded</DebugType>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebugType>embedded</DebugType>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
+    <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
+  </PropertyGroup>-->
+  <ItemGroup>
+    <Compile Remove="Backup\**" />
+    <Compile Remove="Docs\**" />
+    <Compile Remove="TestBackup\**" />
+    <EmbeddedResource Remove="Backup\**" />
+    <EmbeddedResource Remove="Docs\**" />
+    <EmbeddedResource Remove="TestBackup\**" />
+    <Page Remove="Backup\**" />
+    <Page Remove="Docs\**" />
+    <Page Remove="TestBackup\**" />
+    <None Remove="Backup\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Images\**" />
+    <None Remove="DialogImages\**" />
+    <None Remove="Docs\**" />
+    <None Remove="TestBackup\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ChromeButtons.xaml.cs">
+      <DependentUpon>ChromeButtons.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ColorListItem.xaml.cs">
+      <DependentUpon>ColorListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Dialogs\ColorPickerDialog.xaml.cs">
+      <DependentUpon>ColorPickerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="FileSelect.xaml.cs">
+      <DependentUpon>FileSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="IntegerSpinner.xaml.cs">
+      <DependentUpon>IntegerSpinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Dialogs\MessageDialog.xaml.cs">
+      <DependentUpon>MessageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SelectableItem.xaml.cs">
+      <DependentUpon>SelectableItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SelectPanel.xaml.cs">
+      <DependentUpon>SelectPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Dialogs\StringInputDialog.xaml.cs">
+      <DependentUpon>StringInputDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Experimental\TabControl.xaml.cs">
+      <DependentUpon>TabControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Experimental\TabDisplayItem.xaml.cs">
+      <DependentUpon>TabDisplayItem.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\Microsoft.Windows.Shell.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\**" />
+    <Resource Include="DialogImages\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="integrate.md" />
+  </ItemGroup>
+</Project>

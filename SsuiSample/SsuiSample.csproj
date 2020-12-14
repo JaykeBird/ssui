@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>..\Icons\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Images\ImageColor.png" />
+    <None Remove="Resources\Images\SmileyColor.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SolidShineUi\SolidShineUi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\ImageColor.png" />
+    <Resource Include="Resources\Images\SmileyColor.png" />
+  </ItemGroup>
+
+</Project>

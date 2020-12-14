@@ -1,0 +1,105 @@
+﻿<flat:FlatWindow x:Class="SsuiSample.MainWindow" x:Name="mainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SsuiSample"
+        xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+        mc:Ignorable="d"
+        Title="Solid Shine UI Test/Sample" Height="450" MinHeight="375" Width="800" MinWidth="600" FontSize="12" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <flat:Menu Grid.ColumnSpan="2" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" >
+            <MenuItem Header="_Application">
+                <MenuItem Header="_Change Colors..." x:Name="mnuColors" Click="mnuColors_Click" />
+                <MenuItem Header="_Exit" x:Name="mnuExit" Click="mnuExit_Click" />
+            </MenuItem>
+            <MenuItem Header="_Test Menu">
+                <MenuItem Header="Item _1" />
+                <MenuItem Header="Item _2">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Images/SmileyColor.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Submenu">
+                    <MenuItem Header="Subitem _1" />
+                    <MenuItem Header="Subitem _2" />
+                    <MenuItem Header="Subitem _3" />
+                    <Separator />
+                    <MenuItem Header="Subitem _4" >
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Images/SmileyColor.png" />
+                        </MenuItem.Icon>
+                        
+                        <MenuItem Header="Subsubitem _1" />
+                        <MenuItem Header="Subsubitem _2" />
+                        <MenuItem Header="Subsubitem _3" />
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="S_ubmenu 2">
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <StackPanel>
+                                <TextBlock Text="Item 1" FontWeight="Bold" />
+                                <TextBlock Text="Description 1" />
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <StackPanel>
+                                <TextBlock Text="Item 2" FontWeight="Bold" />
+                                <TextBlock Text="Description 2" />
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <StackPanel>
+                                <TextBlock Text="Item 3" FontWeight="Bold" />
+                                <TextBlock Text="Description 3" />
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Checkable Item" IsCheckable="True" />
+                <MenuItem Header="_Checkable Item 2" IsCheckable="True">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Images/ImageColor.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="Website" x:Name="mnuWebsite" Click="mnuWebsite_Click" />
+                <MenuItem Header="Github" x:Name="mnuGitHub" Click="mnuGitHub_Click" />
+                <Separator />
+                <MenuItem Header="About..." x:Name="mnuAbout" Click="mnuAbout_Click" />
+            </MenuItem>
+        </flat:Menu>
+
+        <flat:SelectPanel x:Name="stkTabs" Grid.Row="1" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" MultiSelect="False" PanelBorderThickness="0,0,1,0" />
+        <TextBlock x:Name="lblStart" Grid.Column="1" Grid.Row="1" Margin="20,20,0,0">
+            <Run Text="Select a test from the left to get started!" /><LineBreak />
+            <LineBreak />
+            <Run Text="You can also change the UI's color from the Application menu in the top-left." />
+        </TextBlock>
+        <Grid x:Name="grdTests" Grid.Column="1" Grid.Row="1">
+            <local:FlatWindowTest x:Name="flatWindowTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:DialogsTest x:Name="dialogsTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:ButtonsTest x:Name="buttonsTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:CheckBoxTest x:Name="checkBoxTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:SelectPanelTest x:Name="selectPanelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:FileSelectTest x:Name="fileSelectTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:SpinnersTest x:Name="spinnersTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+        </Grid>
+    </Grid>
+</flat:FlatWindow>

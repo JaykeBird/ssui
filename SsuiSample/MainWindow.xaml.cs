@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+using SolidShineUi;
+
+namespace SsuiSample
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : FlatWindow
+    {
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
+            SetupSidebar();
+        }
+
+        private void mnuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void mnuColors_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, ColorScheme.MainColor);
+            cpd.ShowDialog();
+
+            if (cpd.DialogResult)
+            {
+                ColorScheme = new ColorScheme(cpd.SelectedColor);
+            }
+        }
+
+        void SetupSidebar()
+        {
+            foreach (UserControl item in grdTests.Children)
+            {
+                SelectableItem si = new SelectableItem(item.GetType().Name.Replace("Test", ""));
+                si.Tag = item.Name;
+                si.Padding = new Thickness(3);
+                si.Height = 28;
+                si.Click += si_Click;
+                stkTabs.AddItem(si);
+            }
+        }
+
+        private void si_Click(object sender, EventArgs e)
+        {
+            string name = (sender as SelectableItem).Tag as string;
+
+            foreach (UserControl item in grdTests.Children)
+            {
+                item.Visibility = item.Name == name ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            lblStart.Visibility = Visibility.Collapsed;
+        }
+
+        #region Help menu
+        private void mnuWebsite_Click(object sender, RoutedEventArgs e)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo("https://jaykebird.com/software/ssui");
+            psi.UseShellExecute = true;
+            Process.Start(psi);
+        }
+
+        private void mnuGitHub_Click(object sender, RoutedEventArgs e)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo("https://github.com/JaykeBird/Ssui");
+            psi.UseShellExecute = true;
+            Process.Start(psi);
+        }
+
+        private void mnuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            About a = new About();
+            a.Owner = this;
+            a.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            a.ColorScheme = ColorScheme;
+            a.ShowDialog();
+        }
+        #endregion
+    }
+}

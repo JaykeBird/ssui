@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "UiCoreNet": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
