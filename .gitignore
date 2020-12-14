@@ -338,3 +338,10 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# Jayke's additions:
+# Windows shortcut
+*.lnk
+# Release folders
+Release-win-x64/
+Release-win-x86/
