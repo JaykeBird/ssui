@@ -261,11 +261,11 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="filename">The file to load.</param>
         /// <exception cref="FormatException">Thrown if the file doesn't match the expected format.</exception>
-        public static List<Color> LoadPhotoshopPalette(string fileName)
+        public static List<Color> LoadPhotoshopPalette(string filename)
         {
             List<Color> colorPalette;
 
-            using (Stream stream = File.OpenRead(fileName))
+            using (Stream stream = File.OpenRead(filename))
             {
                 FileVersion version;
 
@@ -511,9 +511,9 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="filename">The file to load.</param>
         /// <exception cref="ArgumentException">Thrown if the file cannot be opened.</exception>
-        public static List<Color> LoadPaintNetPalette(string fileName)
+        public static List<Color> LoadPaintNetPalette(string filename)
         {
-            using (Stream stream = File.OpenRead(fileName))
+            using (Stream stream = File.OpenRead(filename))
             {
                 if (stream == null)
                 {
@@ -557,9 +557,9 @@ namespace SolidShineUi
         /// <param name="filename">The file to load.</param>
         /// <exception cref="FormatException">Thrown if the file doesn't match the GIMP file format (the first lime must say "gimp palette").</exception>
         /// <exception cref="ArgumentException">Thrown if the file cannot be opened.</exception>
-        public static List<Color> LoadGimpPalette(string fileName)
+        public static List<Color> LoadGimpPalette(string filename)
         {
-            using (Stream stream = File.OpenRead(fileName))
+            using (Stream stream = File.OpenRead(filename))
             {
 
                 if (stream == null)
@@ -712,11 +712,11 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">Thrown if the file cannot be opened.</exception>
         /// <exception cref="ArgumentNullException">Thrown if a null value is passed in or if the file cannot be opened.</exception>
         /// <exception cref="UriFormatException">Thrown if the file string does not appear to be a path or URL.</exception>
-        public static List<Color> LoadBitmapImagePalette(string file)
+        public static List<Color> LoadBitmapImagePalette(string filename)
         {
             BitmapImage img = new BitmapImage();
             img.BeginInit();
-            img.UriSource = new Uri(file, UriKind.Absolute);
+            img.UriSource = new Uri(filename, UriKind.Absolute);
             img.EndInit();
             BitmapPalette bpal = new BitmapPalette(img, 256); // only grabs first 256 colors
 
