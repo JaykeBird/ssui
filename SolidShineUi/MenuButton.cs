@@ -67,7 +67,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement rectangle for the MenuButton's menu. This sets the area relative to the button that the menu is positioned.
         /// </summary>
-        public Rect MenuPlacementRectangle { get; set; } = new Rect(0, 0, 0, 0);
+        public Rect MenuPlacementRectangle { get; set; } = Rect.Empty;
 
         /// <summary>
         /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
