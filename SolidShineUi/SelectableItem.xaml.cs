@@ -42,9 +42,13 @@ namespace SolidShineUi
         /// Create a SelectableItem to use with a SelectPanel, with certain properties preset.
         /// </summary>
         /// <param name="text">The text to display in the item.</param>
-        /// <param name="image">The image to display in the item. (If the image is wider than 16 pixels, you may need to update the <c>ImageWidth</c> property.)</param>
+        /// <param name="image">The image to display in the item. (If the image is wider than 16 pixels, you may need to update the <c>ImageWidth</c> property.) Set to <c>null</c> to not show an image.</param>
         /// <param name="indent">The left indent to apply to the item's content. The indent can be used to make an improvised tree view.</param>
+#if NETCOREAPP
+        public SelectableItem(string text, ImageSource? image, double indent = 0)
+#else
         public SelectableItem(string text, ImageSource image, double indent = 0)
+#endif
         {
             InitializeComponent();
             Text = text;
@@ -170,7 +174,11 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the source for the image to show on the left side of the item. If set, the item automatically displays the image (unless <c>AutoShowImageOnSourceSet</c> is set to false).
         /// </summary>
+#if NETCOREAPP
+        public ImageSource? ImageSource
+#else
         public ImageSource ImageSource
+#endif
         {
             get
             {
