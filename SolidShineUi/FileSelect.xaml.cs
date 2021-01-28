@@ -441,6 +441,18 @@ namespace SolidShineUi
             }
         }
 
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
+            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
+
+        /// <summary>
+        /// Raised when the user clicks on the button, via a mouse click, touch, a stylus, or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler SelectionChanged
+        {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
+
         /// <summary>
         /// Get or set the file filter to use when selecting files. Use semicolons (;) to separate multiple extensions/filters (i.e. <c>"*.docx;*.xlsx;*.pptx"</c>).
         /// </summary>
@@ -768,6 +780,9 @@ namespace SolidShineUi
             }
 
             _acceptedFiles = files;
+
+            RoutedEventArgs e = new RoutedEventArgs(SelectionChangedEvent);
+            RaiseEvent(e);
         }
         #endregion
 

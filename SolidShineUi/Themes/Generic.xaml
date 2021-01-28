@@ -623,7 +623,8 @@
 
     <Style TargetType="{x:Type flat:FlatButton}">
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="Height" Value="24" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Height" Value="Auto" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
@@ -754,7 +755,8 @@
 
     <Style TargetType="{x:Type flat:MenuButton}">
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="Height" Value="24" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Height" Value="Auto" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>

@@ -26,7 +26,7 @@
                 <flat:FlatButton HorizontalAlignment="Left" Height="25" Margin="0,75,0,0" VerticalAlignment="Top" Width="99" Content="Move Up ▲" x:Name="btnSelUp" Click="btnSelUp_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:FlatButton HorizontalAlignment="Right" Height="25" Margin="0,75,0,0" VerticalAlignment="Top" Width="99" Content="Move Down ▼" x:Name="btnSelDown" Click="btnSelDown_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:FlatButton HorizontalAlignment="Left" Height="25" Margin="0,120,0,0" VerticalAlignment="Top" Width="202" Content="Remove Selected Items" x:Name="btnSelRemove" Click="btnSelRemove_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                <flat:FlatButton HorizontalAlignment="Left" Height="25" Margin="0,150,0,0" VerticalAlignment="Top" Width="202" Content="Remove All Items" x:Name="btnSelRemoveAll" Click="btnSelRemoveAll_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
+                <flat:FlatButton HorizontalAlignment="Center" Height="32" Margin="0,150,0,0" VerticalAlignment="Top" Width="202" Content="Remove All Items" x:Name="btnSelRemoveAll" Click="btnSelRemoveAll_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <TextBlock HorizontalAlignment="Left" Margin="0,190,0,0" Text="Count:" VerticalAlignment="Top"/>
                 <TextBlock x:Name="lblTotalItems" HorizontalAlignment="Left" Margin="0,210,0,0" Text="-" VerticalAlignment="Top"/>
                 <TextBlock x:Name="lblSelItems" HorizontalAlignment="Left" Margin="0,230,0,0" Text="-" VerticalAlignment="Top"/>
@@ -36,7 +36,7 @@
                 <flat:FlatButton HorizontalAlignment="Left" Margin="0,270,0,0" VerticalAlignment="Top" Width="99" Content="Select All" x:Name="btnSelAll" Click="btnSelAll_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:FlatButton HorizontalAlignment="Right" Margin="0,270,0,0" VerticalAlignment="Top" Width="99" Content="Deselect All" x:Name="btnSelNone" Click="btnSelNone_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <Grid Height="10" Margin="0,300,0,0" VerticalAlignment="Top">
-                    
+
                 </Grid>
             </Grid>
 

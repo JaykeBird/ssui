@@ -22,7 +22,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition x:Name="colBrowse" Width="70"/>
             </Grid.ColumnDefinitions>
-            <local:FlatButton x:Name="btnBrowse" Margin="2,2" Height="Auto" Grid.Column="1" Content="Browse..." Click="btnBrowse_Click" />
+            <local:FlatButton x:Name="btnBrowse" Margin="2,2" Height="Auto" MinHeight="16" Grid.Column="1" Content="Browse..." Click="btnBrowse_Click" />
             <Grid Background="#01000000" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="24"/>
