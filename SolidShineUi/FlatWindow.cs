@@ -25,7 +25,7 @@ namespace SolidShineUi
 
         // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindow),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -91,7 +91,7 @@ namespace SolidShineUi
 
         int captionHeight = 29;
 
-        public static DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
             "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
             new PropertyMetadata(CaptionType.Full));
 
@@ -139,7 +139,7 @@ namespace SolidShineUi
             WindowChrome.SetWindowChrome(this, wc);
         }
 
-        public static DependencyProperty TopRightElementProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
             "TopRightElement", typeof(UIElement), typeof(FlatWindow),
             new PropertyMetadata(null));
 
@@ -158,7 +158,7 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
             "TopLeftElement", typeof(UIElement), typeof(FlatWindow),
             new PropertyMetadata(null));
 
@@ -177,7 +177,7 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty ShowTitleProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
             "ShowTitle", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
 
@@ -193,7 +193,7 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
             "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
 
@@ -216,7 +216,7 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty ExcludeTopRightElementFromChromeProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ExcludeTopRightElementFromChromeProperty = DependencyProperty.Register(
             "ExcludeTopRightElementFromChrome", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
 
@@ -370,11 +370,11 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
             "SelectionBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
@@ -382,11 +382,11 @@ namespace SolidShineUi
             "Background", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
-        public static DependencyProperty CaptionButtonsBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CaptionButtonsBrushProperty = DependencyProperty.Register(
             "CaptionButtonsBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
-        public static DependencyProperty CaptionTextBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CaptionTextBrushProperty = DependencyProperty.Register(
             "CaptionTextBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
@@ -394,15 +394,15 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
-        public static DependencyProperty InactiveTextBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty InactiveTextBrushProperty = DependencyProperty.Register(
             "InactiveTextBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
-        public static DependencyProperty InactiveBackgroundProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty InactiveBackgroundProperty = DependencyProperty.Register(
             "InactiveBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
-        public static DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
             "ContentBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 

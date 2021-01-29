@@ -110,7 +110,7 @@ namespace SolidShineUi
             chkBox.ApplyColorScheme(ColorScheme);
         }
 
-        public new static DependencyProperty ColorSchemeProperty
+        public new static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(MessageDialog),
                 new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 

@@ -20,7 +20,7 @@ namespace SolidShineUi
 
         #region EnumProperty
 
-        public readonly static DependencyProperty EnumProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty EnumProperty = DependencyProperty.Register(
             "Enum", typeof(Type), typeof(EnumComboBox),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalEnumChanged)));
 

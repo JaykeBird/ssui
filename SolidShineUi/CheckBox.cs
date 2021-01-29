@@ -147,11 +147,11 @@ namespace SolidShineUi
         }
         #endregion
 
-        public static DependencyProperty IsCheckedProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
             "IsChecked", typeof(bool), typeof(CheckBox),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsCheckedChanged)));
 
-        public static DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
             "IsIndeterminate", typeof(bool), typeof(CheckBox),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsIndeterminateChanged)));
 
@@ -347,7 +347,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(CheckBox),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -510,35 +510,35 @@ namespace SolidShineUi
         //    set => SetValue(BorderSelectedBrushProperty, value);
         //}
 
-        public static DependencyProperty CheckBackgroundProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CheckBackgroundProperty = DependencyProperty.Register(
             "CheckBackground", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
-        public static DependencyProperty CheckForegroundProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CheckForegroundProperty = DependencyProperty.Register(
             "CheckForeground", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
-        //public static DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+        //public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
         //    "ClickBrush", typeof(Brush), typeof(CheckBox),
         //    new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
-        //public static DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
+        //public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
         //    "SelectedBrush", typeof(Brush), typeof(CheckBox),
         //    new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
-        //public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        //public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
         //    "HighlightBrush", typeof(Brush), typeof(CheckBox),
         //    new PropertyMetadata(Colors.LightGray.ToBrush()));
 
-        public static DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static DependencyProperty CheckDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CheckDisabledBrushProperty = DependencyProperty.Register(
             "CheckDisabledBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
@@ -546,26 +546,26 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-        public static DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
             "BorderHighlightBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-        public static DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
             "BorderSelectedBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
         #endregion
 
         #region Border
 
-        public new static DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
+        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(CheckBox),
             new PropertyMetadata(new Thickness(1)));
 
-        public static DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(CheckBox),
             new PropertyMetadata(new Thickness(1)));
 
-        public static DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(CheckBox),
             new PropertyMetadata(new CornerRadius(0)));
 

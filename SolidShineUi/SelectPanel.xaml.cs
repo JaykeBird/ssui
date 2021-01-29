@@ -672,27 +672,27 @@ namespace SolidShineUi
             set => SetValue(BorderBrushProperty, value);
         }
 
-        public new static DependencyProperty BackgroundProperty = DependencyProperty.Register(
+        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
-        public static DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.LightSalmon.ToBrush()));
 
-        public static DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.MistyRose.ToBrush()));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.Salmon.ToBrush()));
 
-        public static DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
@@ -717,7 +717,7 @@ namespace SolidShineUi
 
         #region Color Scheme
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanel),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -882,7 +882,7 @@ namespace SolidShineUi
 
         #region ScrollViewer
 
-        public static DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
             "AllowParentScrolling", typeof(bool), typeof(SelectPanel),
             new PropertyMetadata(true));
 

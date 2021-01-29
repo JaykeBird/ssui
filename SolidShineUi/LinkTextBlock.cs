@@ -25,23 +25,23 @@ namespace SolidShineUi
             remove { RemoveHandler(ClickEvent, value); }
         }
 
-        public static DependencyProperty TextBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TextBrushProperty = DependencyProperty.Register(
             "TextBrush", typeof(Brush), typeof(LinkTextBlock),
             new PropertyMetadata(Color.FromRgb(0, 102, 204).ToBrush(), new PropertyChangedCallback(OnInternalBrushChanged)));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(LinkTextBlock),
             new PropertyMetadata(Color.FromRgb(51, 153, 255).ToBrush(), new PropertyChangedCallback(OnInternalBrushChanged)));
 
-        public static DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(LinkTextBlock),
             new PropertyMetadata(Color.FromRgb(120, 120, 120).ToBrush(), new PropertyChangedCallback(OnInternalBrushChanged)));
 
-        public static DependencyProperty AutoSetLinkFromTextProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty AutoSetLinkFromTextProperty = DependencyProperty.Register(
             "AutoSetLinkFromText", typeof(bool), typeof(LinkTextBlock),
             new PropertyMetadata(false));
 
-        public static DependencyProperty UnderlineOnHighlightProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty UnderlineOnHighlightProperty = DependencyProperty.Register(
             "UnderlineOnHighlight", typeof(bool), typeof(LinkTextBlock),
             new PropertyMetadata(true));
 

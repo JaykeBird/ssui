@@ -74,7 +74,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FileSelect),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -168,11 +168,11 @@ namespace SolidShineUi
             set => SetValue(BorderBrushProperty, value);
         }
 
-        public static DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
@@ -203,7 +203,7 @@ namespace SolidShineUi
             set => SetValue(CornerRadiusProperty, value);
         }
 
-        public static DependencyProperty ControlBorderThicknessProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ControlBorderThicknessProperty = DependencyProperty.Register(
             "ControlBorderThickness", typeof(Thickness), typeof(FileSelect),
             new PropertyMetadata(new Thickness(1), new PropertyChangedCallback(OnBorderThicknessChanged)));
 
@@ -218,7 +218,7 @@ namespace SolidShineUi
             remove { RemoveHandler(BorderThicknessChangedEvent, value); }
         }
 
-        public static DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnCornerRadiusChanged)));
 

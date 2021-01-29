@@ -242,15 +242,15 @@ namespace SolidShineUi.Experimental
             }
         }
 
-        private static DependencyProperty ItemsProperty
+        private static readonly DependencyProperty ItemsProperty
             = DependencyProperty.Register("Items", typeof(ObservableCollection<TabItem>), typeof(TabControl),
             new FrameworkPropertyMetadata(new ObservableCollection<TabItem>()));
 
-        //private static DependencyPropertyKey ItemsPropertyKey
+        //private static readonly DependencyPropertyKey ItemsPropertyKey
         //    = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<TabItem>), typeof(TabControl),
         //    new FrameworkPropertyMetadata(new ObservableCollection<TabItem>()));
 
-        //public static DependencyProperty ItemsProperty
+        //public static readonly DependencyProperty ItemsProperty
         //    = ItemsPropertyKey.DependencyProperty;
 
         public ObservableCollection<TabItem> Items
@@ -271,7 +271,7 @@ namespace SolidShineUi.Experimental
 
         // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabControl),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 

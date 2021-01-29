@@ -129,7 +129,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(IntegerSpinner),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -221,11 +221,11 @@ namespace SolidShineUi
 
         #region Brushes
 
-        public static DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
             "ButtonBackground", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
-        public static DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
@@ -233,15 +233,15 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
-        public static DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
@@ -323,7 +323,7 @@ namespace SolidShineUi
 
         protected event DependencyPropertyChangedEventHandler InternalValueChanged;
 
-        public readonly static DependencyProperty ValueProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(0, new PropertyChangedCallback(OnValueChanged)));
 
@@ -349,7 +349,7 @@ namespace SolidShineUi
 
         #region StepProperty
 
-        public readonly static DependencyProperty StepProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(1));
 
@@ -363,7 +363,7 @@ namespace SolidShineUi
 
         #region MinValueProperty
 
-        public readonly static DependencyProperty MinValueProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(int.MinValue));
 
@@ -381,7 +381,7 @@ namespace SolidShineUi
 
         #region MaxValueProperty
 
-        public readonly static DependencyProperty MaxValueProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(int.MaxValue));
 
@@ -400,7 +400,7 @@ namespace SolidShineUi
 
         #region RepeatDelayProperty
 
-        public readonly static DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
             "RepeatDelay", typeof(double), typeof(IntegerSpinner),
             new PropertyMetadata(300d, new PropertyChangedCallback(OnInternalRepeatDelayChanged)));
 
@@ -443,7 +443,7 @@ namespace SolidShineUi
 
         #region CornerRadiusProperty
 
-        public readonly static DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(IntegerSpinner),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
 
@@ -485,7 +485,7 @@ namespace SolidShineUi
 
         #region AcceptExpressionsProperty
 
-        public readonly static DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
             "AcceptExpressions", typeof(bool), typeof(IntegerSpinner),
             new PropertyMetadata(true));
 
@@ -505,7 +505,7 @@ namespace SolidShineUi
 
         #region ShowArrowsProperty
 
-        public readonly static DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
             "ShowArrows", typeof(bool), typeof(IntegerSpinner),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowArrowsChanged)));
 

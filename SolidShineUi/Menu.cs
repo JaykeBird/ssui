@@ -30,7 +30,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(Menu),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -179,11 +179,11 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
             "MenuBackground", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
-        public static DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
@@ -191,15 +191,15 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static DependencyProperty HighlightSubitemBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightSubitemBrushProperty = DependencyProperty.Register(
             "HighlightSubitemBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
             "CheckedBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 

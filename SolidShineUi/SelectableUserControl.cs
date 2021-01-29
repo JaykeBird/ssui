@@ -124,19 +124,19 @@ namespace SolidShineUi
             set => SetValue(HighlightBrushProperty, value);
         }
 
-        public new static DependencyProperty BackgroundProperty = DependencyProperty.Register(
+        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(transparent.ToBrush()));
 
-        public static DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
-        public static DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 

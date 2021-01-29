@@ -144,27 +144,27 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-        public new static DependencyProperty BackgroundProperty = DependencyProperty.Register(
+        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.White.ToBrush()));
 
-        public static DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
-        public static DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
-        public static DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
-        public static DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
@@ -172,11 +172,11 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        public static DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
             "BorderHighlightBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        public static DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
             "BorderSelectedBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
 
@@ -192,7 +192,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatButton),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -230,7 +230,7 @@ namespace SolidShineUi
 
         bool runApply = true;
 
-        public readonly static DependencyProperty TransparentBackProperty 
+        public static readonly DependencyProperty TransparentBackProperty 
             = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton), 
             new PropertyMetadata(false, new PropertyChangedCallback(OnTransparentBackChanged)));
 
@@ -255,7 +255,7 @@ namespace SolidShineUi
             }
         }
 
-        public readonly static DependencyProperty UseAccentColorsProperty
+        public static readonly DependencyProperty UseAccentColorsProperty
             = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnUseAccentColorsChanged)));
 
@@ -516,15 +516,15 @@ namespace SolidShineUi
 
         #region Border
 
-        public new static DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
+        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(1)));
 
-        public static DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(2)));
 
-        public static DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
             new PropertyMetadata(new CornerRadius(0)));
 
@@ -604,7 +604,7 @@ namespace SolidShineUi
 
         //bool sel = false;
 
-        public static DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
 
@@ -654,7 +654,7 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
             "SelectOnClick", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false));
 
@@ -794,7 +794,7 @@ namespace SolidShineUi
         // OnDefault code adapted from .NET Core WPF repository
         // https://github.com/dotnet/wpf/blob/master/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Button.cs
 
-        public static DependencyProperty IsDefaultProperty
+        public static readonly DependencyProperty IsDefaultProperty
             = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsDefaultChanged)));
 

@@ -99,7 +99,7 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property for the Margin between the buttons.
         /// </summary>
-        public static DependencyProperty MarginButtonProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty MarginButtonProperty = DependencyProperty.Register(
              "MarginButton", typeof(Thickness), typeof(ChromeButtons));
 
         /// <summary>
@@ -168,15 +168,15 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property for the Margin between the buttons.
         /// </summary>
-        public static DependencyProperty TypeProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
             "DisplayType", typeof(CaptionType), typeof(ChromeButtons),
             new PropertyMetadata(CaptionType.Full));
 
-        public static DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
             "SelectionBrush", typeof(Brush), typeof(ChromeButtons),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(ChromeButtons),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 

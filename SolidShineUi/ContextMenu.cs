@@ -29,7 +29,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(ContextMenu),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
@@ -209,11 +209,11 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
             "MenuBackground", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
-        public static DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
@@ -221,23 +221,23 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static DependencyProperty HighlightSubitemBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightSubitemBrushProperty = DependencyProperty.Register(
             "HighlightSubitemBrush", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
             "CheckedBrush", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
-        public static DependencyProperty RoundedCornersProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty RoundedCornersProperty = DependencyProperty.Register(
             "RoundedCorners", typeof(bool), typeof(ContextMenu),
             new PropertyMetadata(false));
 
-        public static DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
             "VerticalScrollBarVisibility", typeof(System.Windows.Controls.ScrollBarVisibility), typeof(ContextMenu),
             new PropertyMetadata(System.Windows.Controls.ScrollBarVisibility.Auto));
     }

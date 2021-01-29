@@ -59,7 +59,7 @@ namespace SolidShineUi.Experimental
 
         // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 

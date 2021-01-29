@@ -167,7 +167,7 @@ namespace SolidShineUi
             {
                 IEnumerable<string> values = GetAutoCompleteItemsSource(tb);
                 //No reason to search if we don't have any values.
-                if (values == null || values.Count() == 0) { return; }
+                if (values == null || !values.Any()) { return; } // values.Count() == 0
 
                 //No reason to search if there's nothing there.
                 if (string.IsNullOrEmpty(tb.Text)) { return; }

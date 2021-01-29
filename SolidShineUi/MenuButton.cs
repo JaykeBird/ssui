@@ -85,7 +85,7 @@ namespace SolidShineUi
             }
         }
 
-        public static DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
             "ShowMenuArrow", typeof(bool), typeof(MenuButton),
             new PropertyMetadata(true));
 
