@@ -207,7 +207,7 @@ namespace SolidShineUi
                     )
                     where value.Substring(0, textLength).Equals(matchingString, comparer)
                     select value.Substring(textLength, value.Length - textLength)/*Only select the last part of the suggestion*/
-                ).FirstOrDefault();
+                ).FirstOrDefault() ?? string.Empty;
 
                 //Nothing.  Leave 'em alone
                 if (string.IsNullOrEmpty(match)) { return; }

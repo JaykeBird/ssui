@@ -39,13 +39,17 @@ namespace SolidShineUi.Experimental
             }
         }
 
+#if NETCOREAPP
+        private void Items_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#else
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#endif
         {
             switch (e.Action)
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
 #if NETCOREAPP
-                    foreach (TabItem? item in e.NewItems)
+                    foreach (TabItem? item in e.NewItems ?? new List<TabItem>())
 #else
                     foreach (TabItem item in e.NewItems)
 #endif
@@ -65,9 +69,12 @@ namespace SolidShineUi.Experimental
                     foreach (TabDisplayItem item in stkTabs.Children)
 #endif
                     {
-                        if (item != null && e.OldItems.Contains(item.TabItem))
+                        if (e.OldItems != null)
                         {
-                            itemsToRemove.Add(item);
+                            if (item != null && e.OldItems.Contains(item.TabItem))
+                            {
+                                itemsToRemove.Add(item);
+                            }
                         }
                     }
 
@@ -78,7 +85,7 @@ namespace SolidShineUi.Experimental
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
 #if NETCOREAPP
-                    foreach (TabItem? item in e.NewItems)
+                    foreach (TabItem? item in e.NewItems ?? new List<TabItem>())
 #else
                     foreach (TabItem item in e.NewItems)
 #endif
@@ -97,9 +104,12 @@ namespace SolidShineUi.Experimental
                     foreach (TabDisplayItem item in stkTabs.Children)
 #endif
                     {
-                        if (item != null && e.OldItems.Contains(item.TabItem))
+                        if (e.OldItems != null)
                         {
-                            itemsToRemove2.Add(item);
+                            if (item != null && e.OldItems.Contains(item.TabItem))
+                            {
+                                itemsToRemove2.Add(item);
+                            }
                         }
                     }
 
@@ -257,7 +267,7 @@ namespace SolidShineUi.Experimental
         }
 
 
-        #region Color Scheme
+#region Color Scheme
 
         // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
@@ -315,6 +325,6 @@ namespace SolidShineUi.Experimental
 
             ApplyColorScheme(cs);
         }
-        #endregion
+#endregion
     }
 }
