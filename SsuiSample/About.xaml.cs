@@ -21,6 +21,8 @@ namespace SsuiSample
         public About()
         {
             InitializeComponent();
+
+            lblNetVersion.Text = "Running on .NET version " + Environment.Version;
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

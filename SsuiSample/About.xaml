@@ -6,16 +6,17 @@
         xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
         xmlns:local="clr-namespace:SsuiSample"
         mc:Ignorable="d"
-        Title="About" Height="320" Width="500" FontSize="12" ResizeMode="NoResize" CaptionDisplayType="Close" >
+        Title="About" Height="350" Width="500" FontSize="12" ResizeMode="NoResize" CaptionDisplayType="Close" >
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,22,0,0" FontSize="16" Text="SolidShineUI Sample/Test App" VerticalAlignment="Top"/>
         <TextBlock Margin="20,50,20,0" Text="This program is meant to display the functionality and features of the SolidShineUI library. This can be used for testing or just to get an idea of how the controls work." TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock Margin="20,100,0,0" Text="For SolidShineUI Version 1.7" VerticalAlignment="Top"/>
-        <TextBlock Margin="20,120,0,0" Text="Developed by Jayke R. Huempfner (JaykeBird)" VerticalAlignment="Top"/>
-        <TextBlock Margin="20,140,20,0" Text="SolidShineUI also contains work by many other developers. See the website below for the full credits:" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <flat:LinkTextBlock Margin="20,175,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="https://jaykebird.com/software/ssui" AutoSetLinkFromText="True" />
-        <TextBlock Margin="20,200,0,0" Text="Licensed under MIT License" VerticalAlignment="Top"/>
-        <flat:LinkTextBlock Margin="20,220,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="https://github.com/JaykeBird/ssui" AutoSetLinkFromText="True" />
-        <flat:FlatButton x:Name="btnClose" Content="Close" MinWidth="80" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnClose_Click" />
+        <TextBlock Margin="20,120,0,0" x:Name="lblNetVersion" Text="Running on .NET version X.X" VerticalAlignment="Top"/>
+        <TextBlock Margin="20,145,0,0" Text="Developed by Jayke R. Huempfner (JaykeBird)" VerticalAlignment="Top"/>
+        <TextBlock Margin="20,165,20,0" Text="SolidShineUI also contains work by many other developers. See the website below for the full credits:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <flat:LinkTextBlock Margin="20,200,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="https://jaykebird.com/software/ssui" AutoSetLinkFromText="True" />
+        <TextBlock Margin="20,225,0,0" Text="Licensed under MIT License" VerticalAlignment="Top"/>
+        <flat:LinkTextBlock Margin="20,245,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="https://github.com/JaykeBird/ssui" AutoSetLinkFromText="True" />
+        <flat:FlatButton x:Name="btnClose" Content="Close" MinWidth="80" HorizontalAlignment="Center" Margin="0,275,0,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnClose_Click" />
     </Grid>
 </flat:FlatWindow>
