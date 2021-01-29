@@ -10,14 +10,14 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="File Select Test" FontSize="16" VerticalAlignment="Top"/>
         <flat:FileSelect x:Name="fsSingle" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
         <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" Text="Select a single file" VerticalAlignment="Top"/>
-        <flat:FileSelect x:Name="fsMultiple" HorizontalAlignment="Left" Margin="20,150,0,0" VerticalAlignment="Top" AllowMultipleFiles="True" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,130,0,0" Text="Select multiple files" VerticalAlignment="Top" />
-        <flat:FileSelect x:Name="fsLimited" HorizontalAlignment="Left" Margin="20,220,0,0" VerticalAlignment="Top" FileFilter="*.png;*.jpg;*.gif;*.bmp" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-        <TextBlock HorizontalAlignment="Left" Margin="20,200,0,0" Text="Select only image files" VerticalAlignment="Top" />
-        <flat:FileSelect x:Name="fsLimited2" HorizontalAlignment="Left" Margin="20,290,0,0" VerticalAlignment="Top" FileFilter="a*" ShowIcon="False" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" />
-        <TextBlock HorizontalAlignment="Left" Margin="20,270,0,0" Text="Select a file that starts with 'A'; no file icon shown" VerticalAlignment="Top" />
-        <flat:FileSelect x:Name="fsDisabled" HorizontalAlignment="Left" Margin="20,363,0,0" VerticalAlignment="Top" FileFilter="a*" IsEnabled="False" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" />
-        <TextBlock HorizontalAlignment="Left" Margin="20,343,0,0" Text="Disabled FileSelect" VerticalAlignment="Top" />
+        <flat:FileSelect x:Name="fsMultiple" HorizontalAlignment="Left" Margin="20,145,0,0" VerticalAlignment="Top" AllowMultipleFiles="True" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,125,0,0" Text="Select multiple files" VerticalAlignment="Top" />
+        <flat:FileSelect x:Name="fsLimited" HorizontalAlignment="Left" Margin="20,210,0,0" VerticalAlignment="Top" FileFilter="*.png;*.jpg;*.gif;*.bmp" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,190,0,0" Text="Select only image files" VerticalAlignment="Top" />
+        <flat:FileSelect x:Name="fsLimited2" HorizontalAlignment="Left" Margin="20,275,0,0" VerticalAlignment="Top" FileFilter="a*" ShowIcon="False" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,255,0,0" Text="Select a file that starts with 'A'; no file icon shown" VerticalAlignment="Top" />
+        <flat:FileSelect x:Name="fsDisabled" HorizontalAlignment="Left" Margin="20,343,0,0" VerticalAlignment="Top" FileFilter="a*" IsEnabled="False" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,323,0,0" Text="Disabled FileSelect" VerticalAlignment="Top" />
 
     </Grid>
 </UserControl>
