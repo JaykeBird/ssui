@@ -20,11 +20,23 @@ namespace SolidShineUi
     /// <summary>
     /// Interaction logic for FileSelect.xaml
     /// </summary>
+    [DefaultEvent("SelectionChanged")]
     public partial class FileSelect : UserControl
     {
         public FileSelect()
         {
             InitializeComponent();
+
+            if (_showIcon)
+            {
+                imgIcon.Visibility = Visibility.Visible;
+                colImage.Width = new GridLength(24);
+            }
+            else
+            {
+                imgIcon.Visibility = Visibility.Collapsed;
+                colImage.Width = new GridLength(4);
+            }
 
             AllowDrop = true;
 
@@ -119,6 +131,17 @@ namespace SolidShineUi
 
             BorderBrush = cs.BorderColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
+
+            if (IsEnabled)
+            {
+                brdrBase.BorderBrush = BorderBrush;
+                brdrBase.Background = Background;
+            }
+            else
+            {
+                brdrBase.BorderBrush = BorderDisabledBrush;
+                brdrBase.Background = BackgroundDisabledBrush;
+            }
         }
         #endregion
 
@@ -147,7 +170,7 @@ namespace SolidShineUi
 
         public static DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(FileSelect),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         public static DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(FileSelect),
@@ -394,6 +417,35 @@ namespace SolidShineUi
         }
         #endregion
 
+        bool _showIcon = true;
+
+        public bool ShowIcon
+        {
+            get
+            {
+                return _showIcon;
+                //return imgIcon.Visibility == Visibility.Visible;
+            }
+            set
+            {
+                _showIcon = value;
+
+                if (imgIcon != null && colImage != null)
+                {
+                    if (value)
+                    {
+                        imgIcon.Visibility = Visibility.Visible;
+                        colImage.Width = new GridLength(24);
+                    }
+                    else
+                    {
+                        imgIcon.Visibility = Visibility.Collapsed;
+                        colImage.Width = new GridLength(4);
+                    }
+                }
+            }
+        }
+
         private List<string> _acceptedFiles = new List<string>();
 
         /// <summary>
@@ -420,7 +472,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the selected file. If multiple files are selected, returns the first file.
+        /// Get or set the selected file. If multiple files are selected, returns the first file. If no files are selected, returns an empty string.
         /// </summary>
         public string SelectedFile
         {
@@ -445,7 +497,7 @@ namespace SolidShineUi
             "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
 
         /// <summary>
-        /// Raised when the user clicks on the button, via a mouse click, touch, a stylus, or via the keyboard.
+        /// Raised when the list of selected files is changed.
         /// </summary>
         public event RoutedEventHandler SelectionChanged
         {
@@ -790,6 +842,7 @@ namespace SolidShineUi
         /// Return a 16x16 stacked files image.
         /// </summary>
         /// <param name="color">The color to use for the image. Use black or white for high-contrast themes.</param>
+        /// <exception cref="ArgumentException">Thrown if the image could not found and loaded. Suggests the library may be corrupted.</exception>
         /// <returns></returns>
 #if NETCOREAPP
         private static BitmapImage? GetStackImage(MessageDialogImageColor color)

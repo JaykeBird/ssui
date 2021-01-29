@@ -25,7 +25,7 @@
             <local:FlatButton x:Name="btnBrowse" Margin="2,2" Height="Auto" MinHeight="16" Grid.Column="1" Content="Browse..." Click="btnBrowse_Click" />
             <Grid Background="#01000000" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="24" x:Name="colImage" />
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Image x:Name="imgIcon" Margin="4,0" VerticalAlignment="Center" Height="16" />
