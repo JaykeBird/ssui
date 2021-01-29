@@ -542,7 +542,7 @@ namespace SolidShineUi
             "CheckDisabledBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
-        public static new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 

@@ -168,7 +168,7 @@ namespace SolidShineUi
             "BorderDisabledBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
-        public static new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
@@ -631,7 +631,7 @@ namespace SolidShineUi
             }
             set
             {
-                bool sel = value;
+                //bool sel = value;
                 SetValue(IsSelectedProperty, value);
 
                 //if (Template != null)

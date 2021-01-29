@@ -32,9 +32,11 @@ namespace SolidShineUi.Experimental
             {
                 if (item != null)
                 {
+#pragma warning disable IDE0017 // Simplify object initialization
                     Binding csb = new Binding("ColorScheme");
                     csb.Source = this;
                     item.SetBinding(TabDisplayItem.ColorSchemeProperty, csb);
+#pragma warning restore IDE0017 // Simplify object initialization
                 }
             }
         }
@@ -136,10 +138,12 @@ namespace SolidShineUi.Experimental
 
         void AddTab(TabItem ti)
         {
+#pragma warning disable IDE0017 // Simplify object initialization
             TabDisplayItem tdi = new TabDisplayItem(ti);
 
             // set color scheme binding
             Binding csb = new Binding("ColorScheme");
+
             csb.Source = this;
             tdi.SetBinding(TabDisplayItem.ColorSchemeProperty, csb);
 
@@ -148,6 +152,7 @@ namespace SolidShineUi.Experimental
             tdi.Click += Tdi_Click;
             // tdi.ApplyColorScheme(cs);
             stkTabs.Children.Add(tdi);
+#pragma warning restore IDE0017 // Simplify object initialization
         }
 
 #if NETCOREAPP

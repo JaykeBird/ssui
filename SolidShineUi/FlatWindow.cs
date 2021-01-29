@@ -130,11 +130,13 @@ namespace SolidShineUi
         void ResizeCaptionHeight(int height)
         {
             // note to self: if updating this method, make sure this matches the WindowChrome settings in the Generic.xaml file.
-            WindowChrome wc = new WindowChrome();
-            wc.CaptionHeight = height;
-            wc.CornerRadius = new CornerRadius(0);
-            wc.ResizeBorderThickness = new Thickness(4);
-            wc.GlassFrameThickness = new Thickness(0, 0, 0, 1);
+            WindowChrome wc = new WindowChrome
+            {
+                CaptionHeight = height,
+                CornerRadius = new CornerRadius(0),
+                ResizeBorderThickness = new Thickness(4),
+                GlassFrameThickness = new Thickness(0, 0, 0, 1)
+            };
 
             WindowChrome.SetWindowChrome(this, wc);
         }
@@ -239,7 +241,7 @@ namespace SolidShineUi
             }
         }
 
-        public static new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
+        public static readonly new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(1)));
 
@@ -378,7 +380,7 @@ namespace SolidShineUi
             "HighlightBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        public static new DependencyProperty BackgroundProperty = DependencyProperty.Register(
+        public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
@@ -390,7 +392,7 @@ namespace SolidShineUi
             "CaptionTextBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
-        public static new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 

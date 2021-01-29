@@ -184,7 +184,7 @@ namespace SolidShineUi
                     if (startIndex == -1) { return; }
 
                     startIndex += indicator.Length;
-                    matchingString = tb.Text.Substring(startIndex, (tb.Text.Length - startIndex));
+                    matchingString = tb.Text.Substring(startIndex, tb.Text.Length - startIndex);
                 }
 
                 //If we don't have anything after the trigger string, return.

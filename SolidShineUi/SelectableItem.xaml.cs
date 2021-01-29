@@ -134,7 +134,7 @@ namespace SolidShineUi
             }
             set
             {
-                if (value == double.NaN)
+                if (double.IsNaN(value))
                 {
                     ShowImage = false;
                     imgWidth = 16;
@@ -195,7 +195,7 @@ namespace SolidShineUi
                     ShowImage = value != null;
                 }
 
-                if (image.ActualWidth != double.NaN && image.ActualWidth != 0d)
+                if (!double.IsNaN(image.ActualWidth) && image.ActualWidth != 0d)
                 {
                     ImageWidth = image.ActualWidth;
                 }

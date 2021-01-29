@@ -217,7 +217,7 @@ namespace SolidShineUi
             "DisabledBrush", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 

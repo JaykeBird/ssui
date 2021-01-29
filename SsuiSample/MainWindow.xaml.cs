@@ -45,10 +45,12 @@ namespace SsuiSample
         {
             foreach (UserControl item in grdTests.Children)
             {
-                SelectableItem si = new SelectableItem(item.GetType().Name.Replace("Test", ""));
-                si.Tag = item.Name;
-                si.Padding = new Thickness(3);
-                si.Height = 28;
+                SelectableItem si = new SelectableItem(item.GetType().Name.Replace("Test", ""))
+                {
+                    Tag = item.Name,
+                    Padding = new Thickness(3),
+                    Height = 28
+                };
                 si.Click += si_Click;
                 stkTabs.AddItem(si);
             }
@@ -67,9 +69,11 @@ namespace SsuiSample
         }
 
         #region Help menu
+#pragma warning disable IDE0017 // Simplify object initialization
         private void mnuWebsite_Click(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo psi = new ProcessStartInfo("https://jaykebird.com/software/ssui");
+
             psi.UseShellExecute = true;
             Process.Start(psi);
         }
@@ -89,6 +93,8 @@ namespace SsuiSample
             a.ColorScheme = ColorScheme;
             a.ShowDialog();
         }
+#pragma warning restore IDE0017 // Simplify object initialization
         #endregion
+
     }
 }

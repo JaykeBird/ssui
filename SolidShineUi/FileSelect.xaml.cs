@@ -176,7 +176,7 @@ namespace SolidShineUi
             "BorderDisabledBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
-        public static new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
@@ -707,7 +707,7 @@ namespace SolidShineUi
         void InternalSelectFiles(IEnumerable<string> files)
         {
             // check how many files have been selected
-            if (files.Count() == 0)
+            if (!files.Any()) //(files.Count() == 0)
             {
                 // no files were selected? okay lol
                 AcceptFiles(new List<string>());
@@ -761,7 +761,7 @@ namespace SolidShineUi
             }
         }
 
-        private bool FileMatchesFilter(string file, string[] filters)
+        private static bool FileMatchesFilter(string file, string[] filters)
         {
             // we only need to match at least one filter regex
             // so the moment one is matched, jump out of the foreach (in case there's a lot of filters)
@@ -885,6 +885,7 @@ namespace SolidShineUi
                 ContextMenu cm = new ContextMenu();
                 cm.ApplyColorScheme(ColorScheme);
 
+#pragma warning disable IDE0017 // Simplify object initialization
                 MenuItem mi1 = new MenuItem();
                 mi1.Header = "Browse...";
                 mi1.Click += btnBrowse_Click;
@@ -916,6 +917,7 @@ namespace SolidShineUi
                 cm.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
                 cm.HorizontalOffset = 2;
                 cm.VerticalOffset = 2;
+#pragma warning restore IDE0017 // Simplify object initialization
 
                 cm.IsOpen = true;
             }

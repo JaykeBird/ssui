@@ -5,6 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0057:Use range operator", Justification = "Not supported on .NET Framework")]
-
-//[assembly: SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Dependency Properties are set this way")]
+[assembly: SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Doesn't matter in application")]
