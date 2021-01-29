@@ -8,20 +8,24 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyTitle>Ssui</AssemblyTitle>
-    <Company>Jayke R. Huempfner</Company>
+    <Company></Company>
     <Product>SolidShineUi</Product>
     <Description>A collection of UI controls with consistent and customizable theming.</Description>
-    <Copyright>Copyright 2018-2020 Jayke R. Huempfner, other contributors</Copyright>
+    <Copyright>Copyright 2018-2021 Jayke R. Huempfner, other contributors</Copyright>
     <Version>1.7.0</Version>
     <AssemblyVersion>1.7.0.0</AssemblyVersion>
     <FileVersion>1.7.0.0</FileVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>Jayke R. Huempfner, other contributors</Authors>
-    <PackageIconUrl>https://raw.githubusercontent.com/Manuel-S/FlatWindow/master/screenshot.png</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <PackageId>SolidShineUi</PackageId>
     <PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
-    <PackageTags>Flat UI WPF XAML Controls</PackageTags>
+    <PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown FileSelect ColorPicker</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageIcon>Icon48.png</PackageIcon>
+    <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -66,6 +70,14 @@
     <EmbeddedResource Remove="Backup\**" />
     <EmbeddedResource Remove="Docs\**" />
     <EmbeddedResource Remove="TestBackup\**" />
+    <None Include="..\Icons\Icon48.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <Page Remove="Backup\**" />
     <Page Remove="Docs\**" />
     <Page Remove="TestBackup\**" />
@@ -112,9 +124,9 @@
       <DependentUpon>TabDisplayItem.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <Content Include="lib\Microsoft.Windows.Shell.dll" />
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
   </ItemGroup>
