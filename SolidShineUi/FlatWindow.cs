@@ -409,34 +409,5 @@ namespace SolidShineUi
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         #endregion
-
-        #region Added Methods (using NativeWindowMethods)
-
-        /// <summary>
-        /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). Note that you'll want to update the CaptionDisplayType to remove the physical button.
-        /// </summary>
-        public void DisableMaximizeAction()
-        {
-            NativeMethods.HideMaximizeButton(this);
-        }
-
-        /// <summary>
-        /// Calls the native Windows method to disable the Minimize action (via the right-click menu and the like). Note that you'll want to update the CaptionDisplayType to remove the physical button.
-        /// </summary>
-        public void DisableMinimizeAction()
-        {
-            NativeMethods.HideMinimizeButton(this);
-        }
-
-        /// <summary>
-        /// Calls the native Windows method to disable the Minimize and Maximize actions (via the right-click menu and the like). Note that you'll want to update the CaptionDisplayType to remove the physical buttons.
-        /// </summary>
-        public void DisableMinimizeAndMaximizeActions()
-        {
-            NativeMethods.HideMinimizeAndMaximizeButtons(this);
-        }
-
-        #endregion
-
     }
 }

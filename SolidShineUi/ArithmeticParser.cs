@@ -176,6 +176,7 @@ namespace SolidShineUi
             }
             return openPar == closePar;
         }
+
         static double PerformOperations(ref List<string> OperationList)
         {
             while (OperationList.Count > 1)
