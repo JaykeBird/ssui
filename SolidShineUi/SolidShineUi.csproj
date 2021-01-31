@@ -23,10 +23,11 @@
     <PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
     <PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown FileSelect ColorPicker</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageLicenseFile></PackageLicenseFile>
     <PackageIcon>Icon48.png</PackageIcon>
     <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -71,7 +72,7 @@
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
   </PropertyGroup>-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Backup\**" />
@@ -81,10 +82,6 @@
     <EmbeddedResource Remove="Docs\**" />
     <EmbeddedResource Remove="TestBackup\**" />
     <None Include="..\Icons\Icon48.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\LICENSE.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
