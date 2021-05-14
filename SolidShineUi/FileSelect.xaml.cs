@@ -182,7 +182,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Border Thickness
+        #region Border Thickness / Corner Radius
         [Category("Appearance")]
         public Thickness ControlBorderThickness
         {

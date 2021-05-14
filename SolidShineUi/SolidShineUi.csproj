@@ -21,7 +21,7 @@
     <PackageIconUrl></PackageIconUrl>
     <PackageId>SolidShineUi</PackageId>
     <PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
-    <PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown FileSelect ColorPicker</PackageTags>
+    <PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown FileSelect ColorPicker SSUI</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile></PackageLicenseFile>
     <PackageIcon>Icon48.png</PackageIcon>
