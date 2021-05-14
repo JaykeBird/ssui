@@ -9,6 +9,73 @@ The entire library is available under the MIT License.
 
 View more details about this library at [my website, jaykebird.com](https://jaykebird.com/software/ssui).
 
+## Use it now
+
+The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries [directly from here](https://github.com/JaykeBird/ssui/releases/latest).
+
+### Getting set up
+
+In your XAML or C# files, you'll want to start by adding a reference to SolidShineUi. Then, you can start referencing the controls below!
+
+```XML
+    xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+```
+
+```csharp
+using SolidShineUi;
+```
+
+It's also recommended that you set up a ColorScheme for your app, that all the windows and controls can access. Each window and control class below includes a ColorScheme property, which can also be bound.
+
+For example, the way I recommend doing so is starting with placing a static ColorScheme class in your App.xaml.cs file:
+
+```csharp
+    public static ColorScheme ColorScheme { get; set; } = new ColorScheme(Colors.Green);
+```
+
+Then, if you use a FlatWindow (rather than the standard WPF Window), you can set it up with the color scheme as below:
+
+```XAML
+<flat:FlatWindow x:Class="MyApp.MyWindow" x:Name="window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+        mc:Ignorable="d"
+        Title="My Window" >
+   <!-- Whatever your UI is... For example: -->
+   <flat:IntegerSpinner ColorScheme="{Binding ColorScheme, ElementName=window}" MinValue="0" />
+   <!-- for all SolidShineUi controls, you can bind the ColorScheme to the FlatWindow's ColorScheme property if you're using a FlatWindow -->
+</flat:FlatWindow>
+```
+
+```csharp
+using System;
+using System.Windows;
+using SolidShineUi;
+
+namespace MyApp
+{
+
+    public partial class MyWindow : FlatWindow
+    {
+    
+        public MyWindow()
+        {
+            InitializeComponent();
+            
+            ColorScheme = App.ColorScheme; // <--- this sets up the color scheme for the window
+        }
+        
+        // the rest of your code-behind as normal   
+    }
+}
+```
+
+From here, you should be on your way!
+
+You can use the included SsuiSample app as an example to get started with.
+
 ## Included
 
 ### Windows
@@ -50,7 +117,7 @@ View more details about this library at [my website, jaykebird.com](https://jayk
 
 ## Coming Soon
 
-More controls (including **TabControl** and **Toolbar**) are coming soon! View the [roadmap](Docs\Roadmap.md) for more details.
+More controls (including **TabControl** and **Toolbar**) are coming soon! View the [roadmap](Docs/ROADMAP.md) for more details.
 
 ## Building/Testing
 
