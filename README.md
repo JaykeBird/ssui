@@ -17,7 +17,7 @@ The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/
 
 In your XAML or C# files, you'll want to start by adding a reference to SolidShineUi. Then, you can start referencing the controls below!
 
-```XML
+```XAML
     xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
 ```
 

@@ -7,11 +7,15 @@ Unlike other roadmaps that I've made (or others that you may have seen online), 
 
 This file will be edited as I make adjustments and changes. Nothing here is set in stone.
 
-## Very soon
+## Done
 
 - Release version 1.7
 - NuGet support
 - .NET 5.0 support
+
+## Very soon
+
+- Release version 1.7.1 with minor changes
 
 ## 2021 (sooner)
 
@@ -35,4 +39,3 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 - Drop support for .NET Framework
 - Port to MAUI/WinUI?
 - Ribbon control?
-  - Based upon design/functionality of Autodesk programs' Ribbon
