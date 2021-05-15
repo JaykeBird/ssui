@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Dialogs Test" FontSize="16" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Tab Control Test" FontSize="16" VerticalAlignment="Top"/>
         <Grid Margin="10,60,10,0">
             <Grid.RowDefinitions>
                 <RowDefinition/>
