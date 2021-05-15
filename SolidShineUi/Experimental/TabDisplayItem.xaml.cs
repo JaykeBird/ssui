@@ -32,6 +32,27 @@ namespace SolidShineUi.Experimental
         {
             InitializeComponent();
             TabItem = new TabItem();
+            TabItem tab = TabItem;
+
+            if (tab.Icon != null)
+            {
+                imgIcon.Source = tab.Icon;
+            }
+            lblTitle.Text = tab.Header;
+            if (tab.IsSelected)
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 0);
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 1);
+            }
+
+            btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
+            colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
+
+            tab.TabPropertiesChanged += tab_TabPropertiesChanged;
+            tab.IsSelectedChanged += tab_IsSelectedChanged;
         }
 
         public TabDisplayItem(TabItem tab)
@@ -44,11 +65,48 @@ namespace SolidShineUi.Experimental
                 imgIcon.Source = tab.Icon;
             }
             lblTitle.Text = tab.Header;
+            if (tab.IsSelected)
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 0);
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 1);
+            }
+
             btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
+
+            tab.TabPropertiesChanged += tab_TabPropertiesChanged;
+            tab.IsSelectedChanged += tab_IsSelectedChanged;
         }
 
-        public TabItem TabItem { get; set; }
+        private void tab_IsSelectedChanged(object sender, EventArgs e)
+        {
+            if (TabItem.IsSelected)
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 0);
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 1);
+            }
+        }
+
+        private void tab_TabPropertiesChanged(object sender, EventArgs e)
+        {
+            TabItem tab = TabItem;
+            if (tab.Icon != null)
+            {
+                imgIcon.Source = tab.Icon;
+            }
+            lblTitle.Text = tab.Header;
+            btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
+            colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
+            tab.TabPropertiesChanged += tab_TabPropertiesChanged;
+        }
+
+        public TabItem TabItem { get; private set; }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -276,5 +334,24 @@ namespace SolidShineUi.Experimental
         }
 
         #endregion
+
+        private void border_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (border.IsKeyboardFocused)
+            {
+                if (border.IsKeyboardFocusWithin)
+                {
+                    brdr_Focus.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    brdr_Focus.Visibility = Visibility.Visible;
+                }
+            }
+            else
+            {
+                brdr_Focus.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }

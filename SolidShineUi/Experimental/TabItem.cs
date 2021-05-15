@@ -17,16 +17,44 @@ namespace SolidShineUi.Experimental
 
         public bool CanClose { get; set; } = true;
 
+        private bool sel = false;
+
+        public bool CanSelect { get; set; } = true;
+
+        public bool IsSelected
+        {
+            get
+            {
+                return sel;
+            }
+        }
+
+        public void Select()
+        {
+            sel = true;
+            IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal void Unselect()
+        {
+            sel = false;
+            IsSelectedChanged?.Invoke(this, EventArgs.Empty);
+        }
+
 #if NETCOREAPP
         public ImageSource? Icon { get; set; } = null;
 
         public UIElement? Content { get; set; }
+
+        public event EventHandler? TabPropertiesChanged;
+        public event EventHandler? IsSelectedChanged;
 #else
         public ImageSource Icon { get; set; } = null;
 
         public UIElement Content { get; set; }
-#endif
 
-        // TODO: add Changed events for these properties
+        public event EventHandler TabPropertiesChanged;
+        public event EventHandler IsSelectedChanged;
+#endif
     }
 }

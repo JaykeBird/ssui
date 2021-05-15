@@ -36,6 +36,7 @@ namespace SolidShineUi.Experimental
                     Binding csb = new Binding("ColorScheme");
                     csb.Source = this;
                     item.SetBinding(TabDisplayItem.ColorSchemeProperty, csb);
+                    item.GetBindingExpression(TabDisplayItem.ColorSchemeProperty).UpdateTarget();
 #pragma warning restore IDE0017 // Simplify object initialization
                 }
             }
@@ -77,6 +78,11 @@ namespace SolidShineUi.Experimental
                             {
                                 itemsToRemove.Add(item);
                             }
+
+                            if (e.OldItems.Contains(CurrentTab))
+                            {
+                                CurrentTab = null;
+                            }
                         }
                     }
 
@@ -112,6 +118,11 @@ namespace SolidShineUi.Experimental
                             {
                                 itemsToRemove2.Add(item);
                             }
+
+                            if (e.OldItems.Contains(CurrentTab))
+                            {
+                                CurrentTab = null;
+                            }
                         }
                     }
 
@@ -130,9 +141,35 @@ namespace SolidShineUi.Experimental
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     stkTabs.Children.Clear();
+                    CurrentTab = null;
                     break;
                 default:
                     break;
+            }
+
+            CheckScrolling();
+
+            if (CurrentTab == null)
+            {
+                if (Items.Count > 0)
+                {
+                    try
+                    {
+                        TabItem ti = Items.First((tii) => tii.CanSelect);
+                        LoadTab(ti);
+                        TabChanged?.Invoke(this, e);
+                        ti.Select();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // none of the current tabs can be selected
+                        brdrContent.Child = null;
+                    }
+                }
+                else
+                {
+                    brdrContent.Child = null;
+                }
             }
         }
 
@@ -147,7 +184,7 @@ namespace SolidShineUi.Experimental
             csb.Source = this;
             tdi.SetBinding(TabDisplayItem.ColorSchemeProperty, csb);
 
-            tdi.ColorScheme = ColorScheme;
+            //tdi.ColorScheme = ColorScheme;
             tdi.RequestClose += Tdi_RequestClose;
             tdi.Click += Tdi_Click;
             // tdi.ApplyColorScheme(cs);
@@ -167,11 +204,21 @@ namespace SolidShineUi.Experimental
             if (sender is TabDisplayItem tdi)
             {
                 TabItem ti = tdi.TabItem;
-                LoadTab(ti);
-                TabChanged?.Invoke(this, e);
+                if (ti.CanSelect)
+                {
+                    LoadTab(ti);
+                    TabChanged?.Invoke(this, e);
+                    ti.Select();
+                }
             }
 
-            // TODO: set all other TabDisplayItems to be "not selected"
+            foreach (TabItem ti in Items)
+            {
+                if (ti != CurrentTab)
+                {
+                    ti.Unselect();
+                }
+            }
         }
 
         private void Tdi_RequestClose(object? sender, EventArgs e)
@@ -201,8 +248,20 @@ namespace SolidShineUi.Experimental
             if (sender is TabDisplayItem tdi)
             {
                 TabItem ti = tdi.TabItem;
-                LoadTab(ti);
-                TabChanged?.Invoke(this, e);
+                if (ti.CanSelect)
+                {
+                    LoadTab(ti);
+                    TabChanged?.Invoke(this, e);
+                    ti.Select();
+                }
+            }
+
+            foreach (TabItem ti in Items)
+            {
+                if (ti != CurrentTab)
+                {
+                    ti.Unselect();
+                }
             }
         }
 
@@ -232,6 +291,9 @@ namespace SolidShineUi.Experimental
             set
             {
                 brdrContent.BorderBrush = value;
+                brdrTabTop.BorderBrush = value;
+                brdrScrollLeft.BorderBrush = value;
+                brdrScrollRight.BorderBrush = value;
             }
         }
 
@@ -243,7 +305,10 @@ namespace SolidShineUi.Experimental
             }
             set
             {
-                brdrContent.BorderThickness = value;
+                brdrContent.BorderThickness = new Thickness(value.Left, 0, value.Right, value.Bottom);
+                brdrTabTop.BorderThickness = new Thickness(0, value.Top, 0, 0);
+                brdrScrollLeft.BorderThickness = new Thickness(0, value.Top, 0, 0);
+                brdrScrollRight.BorderThickness = new Thickness(0, value.Top, 0, 0);
             }
         }
 
@@ -271,8 +336,72 @@ namespace SolidShineUi.Experimental
             TabLoaded?.Invoke(this, EventArgs.Empty);
         }
 
+        #region Scrolling
 
-#region Color Scheme
+        void CheckScrolling()
+        {
+            if (scrTabs.ViewportWidth == 0)
+            {
+                return;
+            }
+
+            if (stkTabs.ActualWidth > scrTabs.ViewportWidth)
+            {
+                colScrollLeft.Width = new GridLength(20);
+                colScrollRight.Width = new GridLength(20);
+
+                btnScrollLeft.IsEnabled = true;
+                btnScrollRight.IsEnabled = true;
+            }
+            else
+            {
+                colScrollLeft.Width = new GridLength(0);
+                colScrollRight.Width = new GridLength(0);
+
+                btnScrollLeft.IsEnabled = false;
+                btnScrollRight.IsEnabled = false;
+            }
+        }
+
+        private void btnScrollLeft_Click(object sender, RoutedEventArgs e)
+        {
+            double offset = scrTabs.HorizontalOffset;
+
+            if (offset > 0)
+            {
+                scrTabs.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
+            }
+        }
+
+        private void btnScrollRight_Click(object sender, RoutedEventArgs e)
+        {
+            double offset = scrTabs.HorizontalOffset;
+
+            if (offset < scrTabs.ScrollableWidth)
+            {
+                scrTabs.ScrollToHorizontalOffset(Math.Min(offset + 20, scrTabs.ScrollableWidth));
+            }
+        }
+
+        private void control_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+            {
+                CheckScrolling();
+            }
+        }
+
+        private void scrTabs_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.ViewportWidthChange > 0)
+            {
+                CheckScrolling();
+            }
+        }
+
+        #endregion
+
+        #region Color Scheme
 
         // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
@@ -330,6 +459,6 @@ namespace SolidShineUi.Experimental
 
             ApplyColorScheme(cs);
         }
-#endregion
+        #endregion
     }
 }

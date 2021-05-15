@@ -5,7 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi"
              mc:Ignorable="d" 
+             SizeChanged="control_SizeChanged"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:ColorToBrushConverter x:Key="ctb" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="24" x:Name="rowTabsTop" />
@@ -20,9 +24,33 @@
 
         <Grid Grid.Row="0" Margin="0,0,0,-1" x:Name="barTabsTop" Grid.Column="1">
             <Grid x:Name="grdTabs">
-                <ScrollViewer x:Name="scrTabs" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-                    <StackPanel x:Name="stkTabs" Orientation="Horizontal" />
-                </ScrollViewer>
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" x:Name="colScrollLeft" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="20" x:Name="colScrollRight" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="brdrScrollLeft" Grid.Column="0" BorderThickness="0,1,0,0" VerticalAlignment="Bottom" BorderBrush="Black" />
+                    <local:FlatButton x:Name="btnScrollLeft" Grid.Column="0" Padding="1" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" TransparentBack="True" IsEnabled="False" Click="btnScrollLeft_Click" >
+                        <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ElementName=control, Path=ColorScheme.ForegroundColor, Converter={StaticResource ctb}}" />
+                    </local:FlatButton>
+                    <ScrollViewer x:Name="scrTabs" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="1" ScrollChanged="scrTabs_ScrollChanged" >
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel x:Name="stkTabs" Orientation="Horizontal" SizeChanged="control_SizeChanged" />
+                            <Border x:Name="brdrTabTop" Grid.Column="1" BorderThickness="0,1,0,0" VerticalAlignment="Bottom" BorderBrush="Black" />
+                        </Grid>
+                    </ScrollViewer>
+                    <Border x:Name="brdrScrollRight" Grid.Column="2" BorderThickness="0,1,0,0" VerticalAlignment="Bottom" BorderBrush="Black" />
+                    <local:FlatButton x:Name="btnScrollRight" Grid.Column="2" Padding="1" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" TransparentBack="True" IsEnabled="False" Click="btnScrollRight_Click" >
+                        <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ElementName=control, Path=ColorScheme.ForegroundColor, Converter={StaticResource ctb}}" />
+                    </local:FlatButton>
+                </Grid>
+
                 <!--<ScrollViewer x:Name="scrTabs" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
                     <ItemsControl x:Name="tabHolder" ItemsSource="{Binding Items, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TabControl}}}">
                         <ItemsControl.ItemsPanel>
@@ -42,7 +70,7 @@
         <Grid Grid.Column="0" Grid.Row="1" Margin="0,0,-1,0" x:Name="barTabsRight" />
 
         <Grid Grid.Row="1" Grid.Column="1" x:Name="grdHolder">
-            <Border x:Name="brdrContent" BorderThickness="1" BorderBrush="Black" />
+            <Border x:Name="brdrContent" BorderThickness="1,0,1,1" BorderBrush="Black" />
         </Grid>
 
     </Grid>
