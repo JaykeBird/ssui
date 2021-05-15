@@ -64,7 +64,7 @@ namespace SsuiSample
             if (sid.DialogResult)
             {
                 TabItem ti = new TabItem();
-                ti.Header = sid.Value;
+                ti.Title = sid.Value;
                 ti.Content = new TextBlock { Text = sid.Value, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
                 tabControl.Items.Add(ti);
             }
@@ -86,10 +86,25 @@ namespace SsuiSample
             if (sid.DialogResult)
             {
                 TabItem ti = new TabItem();
-                ti.Header = sid.Value;
+                ti.Title = sid.Value;
                 ti.CanClose = false;
                 ti.Content = new TextBlock { Text = sid.Value, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
                 tabControl.Items.Add(ti);
+            }
+        }
+
+        private void btnRename_Click(object sender, RoutedEventArgs e)
+        {
+            TabItem ti = tabControl.CurrentTab;
+
+            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Text", "Set the title of this tab:", ti.Title);
+
+            sid.Owner = Window.GetWindow(this);
+            sid.ShowDialog();
+
+            if (sid.DialogResult)
+            {
+                ti.Title = sid.Value;
             }
         }
     }

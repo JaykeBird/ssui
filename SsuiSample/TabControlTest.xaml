@@ -17,18 +17,19 @@
             </Grid.RowDefinitions>
             <Border Background="#77FFFFFF" BorderThickness="1" BorderBrush="Black" Grid.ColumnSpan="3" Margin="20,10,20,20">
                 <fexp:TabControl x:Name="tabControl" Margin="10" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >
-                    <fexp:TabItem Header="Tab 1">
+                    <fexp:TabItem Title="Tab 1">
                         <TextBlock Text="This is Tab 1" />
                     </fexp:TabItem>
-                    <fexp:TabItem Header="Tab 2">
+                    <fexp:TabItem Title="Tab 2">
                         <TextBlock Text="This is Tab 2" />
                     </fexp:TabItem>
                 </fexp:TabControl>
             </Border>
             <StackPanel Margin="20,0" Height="Auto" VerticalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
                 <flat:FlatButton x:Name="btnAdd" Margin="3" Click="btnAdd_Click" MinWidth="80" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add Tab...</flat:FlatButton>
-                <flat:FlatButton x:Name="btnAddNoClose" Margin="3" Click="btnAddNoClose_Click" MinWidth="120" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add No Close Tab...</flat:FlatButton>
-                <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="100" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
+                <flat:FlatButton x:Name="btnAddNoClose" Margin="3" Click="btnAddNoClose_Click" MinWidth="125" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add No Close Tab...</flat:FlatButton>
+                <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
+                <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="130" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Current Tab</flat:FlatButton>
             </StackPanel>
         </Grid>
 

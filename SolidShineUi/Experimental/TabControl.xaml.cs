@@ -193,7 +193,8 @@ namespace SolidShineUi.Experimental
         }
 
 #if NETCOREAPP
-        public TabItem? CurrentTab { get; internal set; } = null;
+        public TabItem? CurrentTab { get; protected set; } = null;
+        public TabItem? SelectedTab { get => CurrentTab; }
 
         public EventHandler? TabChanged;
         public EventHandler? TabLoaded;
@@ -237,7 +238,8 @@ namespace SolidShineUi.Experimental
             }
         }
 #else
-        public TabItem CurrentTab { get; internal set; } = null;
+        public TabItem CurrentTab { get; protected set; } = null;
+        public TabItem SelectedTab { get => CurrentTab; }
 
         public EventHandler TabChanged;
         public EventHandler TabLoaded;

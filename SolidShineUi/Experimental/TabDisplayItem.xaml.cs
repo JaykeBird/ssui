@@ -34,11 +34,11 @@ namespace SolidShineUi.Experimental
             TabItem = new TabItem();
             TabItem tab = TabItem;
 
-            if (tab.Icon != null)
-            {
-                imgIcon.Source = tab.Icon;
-            }
-            lblTitle.Text = tab.Header;
+            //if (tab.Icon != null)
+            //{
+            //    imgIcon.Source = tab.Icon;
+            //}
+            //lblTitle.Text = tab.Title;
             if (tab.IsSelected)
             {
                 border.BorderThickness = new Thickness(1, 1, 1, 0);
@@ -48,11 +48,10 @@ namespace SolidShineUi.Experimental
                 border.BorderThickness = new Thickness(1, 1, 1, 1);
             }
 
-            btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
-            colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
+            //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
+            //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
 
-            tab.TabPropertiesChanged += tab_TabPropertiesChanged;
-            tab.IsSelectedChanged += tab_IsSelectedChanged;
+            //tab.IsSelectedChanged += tab_IsSelectedChanged;
         }
 
         public TabDisplayItem(TabItem tab)
@@ -60,11 +59,11 @@ namespace SolidShineUi.Experimental
             InitializeComponent();
 
             TabItem = tab;
-            if (tab.Icon != null)
-            {
-                imgIcon.Source = tab.Icon;
-            }
-            lblTitle.Text = tab.Header;
+            //if (tab.Icon != null)
+            //{
+            //    imgIcon.Source = tab.Icon;
+            //}
+            //lblTitle.Text = tab.Title;
             if (tab.IsSelected)
             {
                 border.BorderThickness = new Thickness(1, 1, 1, 0);
@@ -74,14 +73,17 @@ namespace SolidShineUi.Experimental
                 border.BorderThickness = new Thickness(1, 1, 1, 1);
             }
 
-            btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
-            colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
+            //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
+            //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
 
-            tab.TabPropertiesChanged += tab_TabPropertiesChanged;
             tab.IsSelectedChanged += tab_IsSelectedChanged;
         }
 
+#if NETCOREAPP
+        private void tab_IsSelectedChanged(object? sender, EventArgs e)
+#else
         private void tab_IsSelectedChanged(object sender, EventArgs e)
+#endif
         {
             if (TabItem.IsSelected)
             {
@@ -93,20 +95,19 @@ namespace SolidShineUi.Experimental
             }
         }
 
-        private void tab_TabPropertiesChanged(object sender, EventArgs e)
-        {
-            TabItem tab = TabItem;
-            if (tab.Icon != null)
-            {
-                imgIcon.Source = tab.Icon;
-            }
-            lblTitle.Text = tab.Header;
-            btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
-            colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
-            tab.TabPropertiesChanged += tab_TabPropertiesChanged;
-        }
+        #region TabItem
 
-        public TabItem TabItem { get; private set; }
+        private static readonly DependencyPropertyKey TabItemPropertyKey = DependencyProperty.RegisterReadOnly("TabItem", typeof(TabItem), typeof(TabDisplayItem),
+            new PropertyMetadata(null));
+
+        public static readonly DependencyProperty TabItemProperty = TabItemPropertyKey.DependencyProperty;
+
+        public TabItem TabItem
+        {
+            get { return (TabItem)GetValue(TabItemProperty); }
+            protected set { SetValue(TabItemPropertyKey, value); }
+        }
+        #endregion
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -114,8 +115,6 @@ namespace SolidShineUi.Experimental
         }
 
         #region Color Scheme
-
-        // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
@@ -163,6 +162,17 @@ namespace SolidShineUi.Experimental
                 BorderBrush = cs.BorderColor.ToBrush();
                 HighlightBrush = cs.SecondHighlightColor.ToBrush();
                 BorderHighlightBrush = cs.HighlightColor.ToBrush();
+            }
+
+            if (highlighting)
+            {
+                border.Background = HighlightBrush;
+                border.BorderBrush = BorderHighlightBrush;
+            }
+            else
+            {
+                border.Background = Background;
+                border.BorderBrush = BorderBrush;
             }
         }
 
@@ -279,12 +289,15 @@ namespace SolidShineUi.Experimental
         #endregion
 
         #region Focus Events
+        bool highlighting = false;
+
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
         {
             if (IsEnabled)
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
+                highlighting = true;
             }
         }
 
@@ -294,6 +307,7 @@ namespace SolidShineUi.Experimental
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
+                highlighting = true;
             }
         }
 
@@ -303,6 +317,7 @@ namespace SolidShineUi.Experimental
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
+                highlighting = true;
             }
         }
 
@@ -310,6 +325,7 @@ namespace SolidShineUi.Experimental
         {
             border.Background = Background;
             border.BorderBrush = BorderBrush;
+            highlighting = false;
 
             initiatingClick = false;
         }
@@ -318,6 +334,7 @@ namespace SolidShineUi.Experimental
         {
             border.Background = Background;
             border.BorderBrush = BorderBrush;
+            highlighting = false;
 
             initiatingClick = false;
         }
@@ -328,6 +345,7 @@ namespace SolidShineUi.Experimental
             {
                 border.Background = Background;
                 border.BorderBrush = BorderBrush;
+                highlighting = false;
             }
 
             initiatingClick = false;
@@ -339,14 +357,7 @@ namespace SolidShineUi.Experimental
         {
             if (border.IsKeyboardFocused)
             {
-                if (border.IsKeyboardFocusWithin)
-                {
-                    brdr_Focus.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    brdr_Focus.Visibility = Visibility.Visible;
-                }
+                brdr_Focus.Visibility = Visibility.Visible;
             }
             else
             {
