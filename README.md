@@ -131,6 +131,10 @@ I recommend using Visual Studio 2019 (16.8) for this library. When opened up, yo
 
 Included is the SsuiSample program, which is useful for demonstrating the library and its functions. I also use this to test the library and its controls. Feel free to use SsuiSample as a basis for your implementations.
 
+### Notes
+
+If you recieve this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start button, or you can access it via Build > Configuration Manager... and set the active configuration there).
+
 ## Credits/Usage
 
 This library is released under the [MIT License](License.md).
