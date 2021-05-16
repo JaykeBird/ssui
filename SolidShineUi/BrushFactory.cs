@@ -48,7 +48,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="image">The image to use.</param>
         /// <returns>An ImageBrush containing this image.</returns>
-        public static ImageBrush CreateFromImage(DrawingImage image)
+        public static ImageBrush CreateFromImage(ImageSource image)
         {
             return new ImageBrush(image);
         }
