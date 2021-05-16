@@ -81,11 +81,16 @@ namespace SsuiSample
             FontSelectDialog fsd = new FontSelectDialog();
             fsd.ColorScheme = ColorScheme;
 
+            // load in from control
             fsd.SelectedFontFamily = txtSampleText.FontFamily;
             fsd.SelectedFontSize = txtSampleText.FontSize;
             fsd.SelectedFontStyle = txtSampleText.FontStyle;
             fsd.SelectedFontWeight = txtSampleText.FontWeight;
             fsd.SelectedTextDecorations = txtSampleText.TextDecorations;
+
+            // this also works to load in from control
+            // uncomment this and comment out the section above if you want to try it; the experience should be identical
+            // fsd.LoadFromControl(txtSampleText);
 
             // by default, these are all set to true, but I'll list them here so you can play with them if desired
             fsd.ShowDecorations = true;
@@ -103,6 +108,10 @@ namespace SsuiSample
                 txtSampleText.FontStyle = fsd.SelectedFontStyle;
                 txtSampleText.FontWeight = fsd.SelectedFontWeight;
                 txtSampleText.TextDecorations = fsd.SelectedTextDecorations;
+
+                // this also works to set the control
+                // uncomment this and comment out the section above if you want to try it; the experience should be identical
+                // fsd.SetToControl(txtSampleText);
             }
         }
 
