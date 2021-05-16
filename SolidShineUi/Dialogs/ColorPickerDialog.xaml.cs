@@ -107,6 +107,34 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Tab Visibility
+
+        public bool ShowSwatchesTab
+        {
+            get => tabSwatches.Visibility == Visibility.Visible;
+            set => tabSwatches.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public bool ShowSlidersTab
+        {
+            get => tabSliders.Visibility == Visibility.Visible;
+            set => tabSliders.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public bool ShowImageTab
+        {
+            get => tabImage.Visibility == Visibility.Visible;
+            set => tabImage.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public bool ShowPaletteFileTab
+        {
+            get => tabPalette.Visibility == Visibility.Visible;
+            set => tabPalette.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        #endregion
+
         #region Swatches
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {

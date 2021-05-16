@@ -110,7 +110,11 @@ namespace SsuiSample
         {
             ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, (txtSampleText.Foreground as SolidColorBrush).Color);
 
-            // as of this release, the ColorPickerDialog doesn't have much to change or modify. that'll change in future versions
+            // by default, these are all set to true, but I'll list them here so you can play with them if desired
+            cpd.ShowImageTab = true;
+            cpd.ShowPaletteFileTab = true;
+            cpd.ShowSlidersTab = true;
+            cpd.ShowSwatchesTab = true;
 
             cpd.Owner = Window.GetWindow(this);
             cpd.ShowDialog();

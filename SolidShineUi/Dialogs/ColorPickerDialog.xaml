@@ -73,7 +73,7 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <TabControl x:Name="tabControl" Margin="10">
-            <TabItem Background="#FFE8E8E8">
+            <TabItem x:Name="tabSwatches" Background="#FFE8E8E8">
                 <TabItem.Header>
                     <TextBlock Text="Swatches" Padding="3,0" />
                 </TabItem.Header>
@@ -248,7 +248,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Background="#FFE8E8E8">
+            <TabItem x:Name="tabSliders" Background="#FFE8E8E8">
                 <TabItem.Header>
                     <TextBlock Text="Sliders" Padding="3,0" />
                 </TabItem.Header>
@@ -294,7 +294,7 @@
                     <TextBlock x:Name="lblQ" Grid.Column="1" HorizontalAlignment="Left" Margin="125,267,0,0" TextWrapping="Wrap" Text="s" FontFamily="Webdings" FontSize="16" VerticalAlignment="Top" Visibility="Collapsed" />
                 </Grid>
             </TabItem>
-            <TabItem Background="#FFE8E8E8">
+            <TabItem x:Name="tabImage" Background="#FFE8E8E8">
                 <TabItem.Header>
                     <TextBlock Text="From Image" Padding="3,0" />
                 </TabItem.Header>
@@ -306,7 +306,7 @@
                     <TextBlock x:Name="lblImageExplain" HorizontalAlignment="Right" Margin="0,0,10,15" TextWrapping="Wrap" Text="Click on the image to select the color." VerticalAlignment="Bottom" />
                 </Grid>
             </TabItem>
-            <TabItem Background="#FFE8E8E8">
+            <TabItem x:Name="tabPalette" Background="#FFE8E8E8">
                 <TabItem.Header>
                     <TextBlock Text="Palette File" Padding="3,0" />
                 </TabItem.Header>
