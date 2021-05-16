@@ -16,11 +16,6 @@
             <RowDefinition Height="1*" x:Name="rowContent"/>
             <RowDefinition Height="0" x:Name="rowTabsBot" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0" x:Name="colTabsLeft"/>
-            <ColumnDefinition Width="1*" x:Name="colContent" />
-            <ColumnDefinition Width="0" x:Name="colTabsRight" />
-        </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="0" Margin="0,0,0,-1" x:Name="barTabsTop" Grid.Column="1">
             <Grid x:Name="grdTabs">
@@ -65,11 +60,7 @@
 
         <Grid Grid.Row="3" Margin="0,-1,0,0" x:Name="barTabsBottom" Grid.Column="1" />
 
-        <Grid Grid.Column="0" Grid.Row="1" Margin="-1,0,0,0" x:Name="barTabsLeft" />
-
-        <Grid Grid.Column="0" Grid.Row="1" Margin="0,0,-1,0" x:Name="barTabsRight" />
-
-        <Grid Grid.Row="1" Grid.Column="1" x:Name="grdHolder">
+        <Grid Grid.Row="1" x:Name="grdHolder">
             <Border x:Name="brdrContent" BorderThickness="1,0,1,1" BorderBrush="Black" />
         </Grid>
 
