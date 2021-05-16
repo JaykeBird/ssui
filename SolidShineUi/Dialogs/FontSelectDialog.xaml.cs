@@ -541,5 +541,14 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the preview text displayed at the bottom of the dialog, to allow the user to see how their font selections look.
+        /// </summary>
+        public string PreviewText
+        {
+            get => txtPreview.Text;
+            set => txtPreview.Text = value;
+        }
+
     }
 }
