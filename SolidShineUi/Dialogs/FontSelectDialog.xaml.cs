@@ -200,6 +200,70 @@ namespace SolidShineUi
 
         #endregion
 
+        #region LoadFrom/SetTo
+        /// <summary>
+        /// Load in the selected values of this dialog from a control.
+        /// </summary>
+        /// <param name="element">The control to load from.</param>
+        /// <remarks>If the control is a TextBox, it will also load in the TextDecorations; otherwise, no text decorations are loaded.</remarks>
+        public void LoadFromControl(Control element)
+        {
+            SelectedFontFamily = element.FontFamily;
+            SelectedFontSize = element.FontSize;
+            SelectedFontStyle = element.FontStyle;
+            SelectedFontWeight = element.FontWeight;
+
+            if (element is TextBox t)
+            {
+                SelectedTextDecorations = t.TextDecorations;
+            }
+        }
+
+        /// <summary>
+        /// Load in the selected values of this dialog from a TextBlock control.
+        /// </summary>
+        /// <param name="element">The TextBlock to load from.</param>
+        public void LoadFromControl(TextBlock element)
+        {
+            SelectedFontFamily = element.FontFamily;
+            SelectedFontSize = element.FontSize;
+            SelectedFontStyle = element.FontStyle;
+            SelectedFontWeight = element.FontWeight;
+            SelectedTextDecorations = element.TextDecorations;
+        }
+
+        /// <summary>
+        /// Set a control's font properties to match the selected values of the dialog.
+        /// </summary>
+        /// <param name="element">The control to set.</param>
+        /// <remarks>If the control is a TextBox, it will also set the TextDecorations property.</remarks>
+        public void SetToControl(Control element)
+        {
+            element.FontFamily = SelectedFontFamily;
+            element.FontSize = SelectedFontSize;
+            element.FontStyle = SelectedFontStyle;
+            element.FontWeight = SelectedFontWeight;
+
+            if (element is TextBox t)
+            {
+                t.TextDecorations = SelectedTextDecorations;
+            }
+        }
+
+        /// <summary>
+        /// Set a TextBlock's font properties to match the selected values of the dialog.
+        /// </summary>
+        /// <param name="element">The TextBlock to set.</param>
+        public void SetToControl(TextBlock element)
+        {
+            element.FontFamily = SelectedFontFamily;
+            element.FontSize = SelectedFontSize;
+            element.FontStyle = SelectedFontStyle;
+            element.FontWeight = SelectedFontWeight;
+            element.TextDecorations = SelectedTextDecorations;
+        }
+        #endregion
+
         #region Visibility Properties
 
         BooleanToVisibilityConverter btv = new BooleanToVisibilityConverter();
