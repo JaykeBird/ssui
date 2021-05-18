@@ -295,7 +295,7 @@ namespace SolidShineUi
                 }
                 else
                 {
-                    if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && MultiSelect)
+                    if (System.Windows.Input.Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && MultiSelect)
                     {
                         // simply add to selection
                         SelectionCount++;

@@ -811,7 +811,7 @@ namespace SolidShineUi
                 if ((bool)e.NewValue)
                 {
                     AccessKeyManager.Register("\x000D", b);
-                    b.UpdateIsDefaulted(Keyboard.FocusedElement);
+                    b.UpdateIsDefaulted(System.Windows.Input.Keyboard.FocusedElement);
                 }
                 else
                 {
@@ -843,7 +843,7 @@ namespace SolidShineUi
 
         private void OnFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
         {
-            UpdateIsDefaulted(Keyboard.FocusedElement);
+            UpdateIsDefaulted(System.Windows.Input.Keyboard.FocusedElement);
         }
 
 #if NETCOREAPP
