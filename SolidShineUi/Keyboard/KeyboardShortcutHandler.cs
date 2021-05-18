@@ -9,7 +9,7 @@ using System.Windows.Threading;
 
 using KeyBoard = System.Windows.Input.Keyboard;
 
-namespace SolidShineUi.Keyboard
+namespace SolidShineUi.KeyboardShortcuts
 {
     public class KeyboardShortcutHandler
     {
@@ -45,7 +45,15 @@ namespace SolidShineUi.Keyboard
             var list = KeyboardShortcutsIo.LoadFromFile(file, methodList);
             foreach (KeyboardShortcut item in list)
             {
-                KeyRegistry.RegisterKeyShortcut(item);
+                try
+                {
+                    KeyRegistry.RegisterKeyShortcut(item);
+                }
+                catch (ArgumentException)
+                {
+                    // thrown if there's already a shortcut registered with this particular keyboard combination and key
+                    // skip the particular shortcut
+                }
             }
         }
 

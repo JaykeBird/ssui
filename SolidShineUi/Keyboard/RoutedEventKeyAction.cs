@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SolidShineUi.Keyboard
+namespace SolidShineUi.KeyboardShortcuts
 {
     public class RoutedEventKeyAction : IKeyAction
     {

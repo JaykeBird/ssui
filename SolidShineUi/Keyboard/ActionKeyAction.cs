@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SolidShineUi.Keyboard
+namespace SolidShineUi.KeyboardShortcuts
 {
     public class ActionKeyAction : IKeyAction
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using static SolidShineUi.Keyboard.KeyboardShortcut;
+using static SolidShineUi.KeyboardShortcuts.KeyboardShortcut;
 using System.Windows.Controls;
 
-namespace SolidShineUi.Keyboard
+namespace SolidShineUi.KeyboardShortcuts
 {
     public class KeyboardShortcutEventArgs
     {
@@ -43,6 +43,11 @@ namespace SolidShineUi.Keyboard
 
         public void RegisterKeyShortcut(KeyboardShortcut kc)
         {
+            if (Ksr_All.Any(ks => ks.KeyString == kc.KeyString))
+            {
+                throw new ArgumentException("Cannot add this shortcut as an existing shortcut already uses this keyboard combination and key. Unregister the existing shortcut first before registering this one.", nameof(kc));
+            }
+
             Ksr_All.Add(kc);
 
             switch (kc.Combination)
@@ -91,10 +96,119 @@ namespace SolidShineUi.Keyboard
             RegisterKeyShortcut(kc);
         }
 
-        public bool UnregisterKeyShortcut(KeyboardCombination combination, Key key)
+        public bool UnregisterKeyShortcut(KeyboardShortcut ks)
         {
             bool success = true;
 
+            if (Ksr_All.Contains(ks))
+            {
+                if (ks != null)
+                {
+                    Ksr_All.Remove(ks);
+                }
+                else
+                {
+                    return false;
+                }
+
+                Key key = ks.Key;
+
+                switch (ks.Combination)
+                {
+                    case KeyboardCombination.None:
+                        try
+                        {
+                            return Ksr_None.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                    case KeyboardCombination.Ctrl:
+                        try
+                        {
+                            return Ksr_Ctrl.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                    case KeyboardCombination.Alt:
+                        try
+                        {
+                            return Ksr_Alt.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                    case KeyboardCombination.Shift:
+                        try
+                        {
+                            return Ksr_Shift.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                    case KeyboardCombination.AltShift:
+                        try
+                        {
+                            return Ksr_AltShift.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                    case KeyboardCombination.CtrlAlt:
+                        try
+                        {
+                            return Ksr_CtrlAlt.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                    case KeyboardCombination.CtrlShift:
+                        try
+                        {
+                            return Ksr_CtrlShift.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                    case KeyboardCombination.CtrlAltShift:
+                        try
+                        {
+                            return Ksr_CtrlAltShift.Remove(key);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            success = false;
+                        }
+                        break;
+                }
+
+                ShortcutUnregistered?.Invoke(this, new KeyboardShortcutEventArgs(ks));
+
+                return success;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool UnregisterKeyShortcut(KeyboardCombination combination, Key key)
+        {
 #if NETCOREAPP
             KeyboardShortcut? ks = (from KeyboardShortcut kc in Ksr_All
                                    where kc.Key == key
@@ -109,100 +223,12 @@ namespace SolidShineUi.Keyboard
 
             if (ks != null)
             {
-                Ksr_All.Remove(ks);
+                return UnregisterKeyShortcut(ks);
             }
             else
             {
                 return false;
             }
-
-            switch (combination)
-            {
-                case KeyboardCombination.None:
-                    try
-                    {
-                        return Ksr_None.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-                case KeyboardCombination.Ctrl:
-                    try
-                    {
-                        return Ksr_Ctrl.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-                case KeyboardCombination.Alt:
-                    try
-                    {
-                        return Ksr_Alt.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-                case KeyboardCombination.Shift:
-                    try
-                    {
-                        return Ksr_Shift.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-                case KeyboardCombination.AltShift:
-                    try
-                    {
-                        return Ksr_AltShift.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-                case KeyboardCombination.CtrlAlt:
-                    try
-                    {
-                        return Ksr_CtrlAlt.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-                case KeyboardCombination.CtrlShift:
-                    try
-                    {
-                        return Ksr_CtrlShift.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-                case KeyboardCombination.CtrlAltShift:
-                    try
-                    {
-                        return Ksr_CtrlAltShift.Remove(key);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        success = false;
-                    }
-                    break;
-            }
-
-            ShortcutUnregistered?.Invoke(this, new KeyboardShortcutEventArgs(ks));
-
-            return success;
         }
 
         ///// <summary>
@@ -231,10 +257,63 @@ namespace SolidShineUi.Keyboard
         /// Get the IKeyAction associated with a certain keyboard shortcut.
         /// </summary>
         /// <param name="key">The key for this shortcut.</param>
+        /// <param name="combination">The combination of modifier keys to have pressed for this shortcut.</param>
+        /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
+#if NETCOREAPP
+        public (IKeyAction?, string) GetActionForKey(KeyboardCombination combination, Key key)
+#else
+        public (IKeyAction, string) GetActionForKey(KeyboardCombination combination, Key key)
+#endif
+        {
+            bool shift = false;
+            bool alt = false;
+            bool ctrl = false;
+
+            switch (combination)
+            {
+                case KeyboardCombination.None:
+                    break;
+                case KeyboardCombination.Ctrl:
+                    ctrl = true;
+                    break;
+                case KeyboardCombination.Alt:
+                    alt = true;
+                    break;
+                case KeyboardCombination.Shift:
+                    shift = true;
+                    break;
+                case KeyboardCombination.AltShift:
+                    alt = true;
+                    shift = true;
+                    break;
+                case KeyboardCombination.CtrlAlt:
+                    ctrl = true;
+                    alt = true;
+                    break;
+                case KeyboardCombination.CtrlShift:
+                    ctrl = true;
+                    shift = true;
+                    break;
+                case KeyboardCombination.CtrlAltShift:
+                    ctrl = true;
+                    shift = true;
+                    alt = true;
+                    break;
+                default:
+                    break;
+            }
+
+            return GetActionForKey(key, shift, alt, ctrl);
+        }
+
+        /// <summary>
+        /// Get the IKeyAction associated with a certain keyboard shortcut.
+        /// </summary>
+        /// <param name="key">The key for this shortcut.</param>
         /// <param name="shift">Set if the Shift key is part of this shortcut.</param>
         /// <param name="alt">Set if the Alt key is part of this shortcut.</param>
         /// <param name="ctrl">Set if the Ctrl key is part of this shortcut.</param>
-        /// <returns></returns>
+        /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
 #if NETCOREAPP
         public (IKeyAction?, string) GetActionForKey(Key key, bool shift, bool alt, bool ctrl)
 #else

@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 
-namespace SolidShineUi.Keyboard
+namespace SolidShineUi.KeyboardShortcuts
 {
     public enum KeyboardCombination
     {
