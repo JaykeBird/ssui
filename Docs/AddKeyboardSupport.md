@@ -144,10 +144,10 @@ In the XML file:
 ``` XML
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts>
-  <ks comb="Ctrl" keyid="S" methodid="Save" />
-  <ks comb="None" keyid="F10" methodid="Save" />
-  <ks comb="CtrlAlt" keyid="H" methodid="Hello" />
-  <ks comb="Shift" keyid="PageDown" methodid="myMenuItem" />
+  <ks comb="Ctrl" keyid="S" action="Save" />
+  <ks comb="None" keyid="F10" action="Save" />
+  <ks comb="CtrlAlt" keyid="H" action="Hello" />
+  <ks comb="Shift" keyid="PageDown" action="myMenuItem" />
 </shortcuts>
 ```
 
@@ -249,3 +249,5 @@ Note that no UI is provided in SolidShineUi 1.8 to allow the user to customize k
 `KeyActionList.Add`, `KeyActionList.AddRange`, `KeyActionList.Insert`, and `KeyActionList.InsertRange` will all check if an action with an ID exists before allowing a new action in with that ID. If multiple actions with the same ID do end up in the KeyActionList, the first one of those (by index) will be the one that's activated and accessed. You can use `KeyActionList.ContainsId(string id)` to check if a particular ID is already on the list.
 
 If you attempt to register a shortcut with the same `KeyboardCombination` and `Key` as a shortcut already registered/assigned, an ArgumentException will be thrown. If loading from a file, the attempted shortcut to register is skipped. As shown above, you can use `KeyRegistry.GetActionForKey` to determine if there's already an assigned shortcut with that given `KeyboardCombination` and `Key`.
+
+For the XML file, the element names do not matter, but the sub-elements must each have a "comb" attribute, "keyid" attribute, and an "action" attribute (see the XML file listed in step 3 of the walkthrough above for an example). The "keyid" attribute can either be the name of the Key (from the System.Windows.Input.Key enum) or the integer value of that Key (again, from the System.Windows.Input.Key enum). For human readability, the key's name is preferred over the enum integer value.

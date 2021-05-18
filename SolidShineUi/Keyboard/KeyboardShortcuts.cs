@@ -78,12 +78,16 @@ namespace SolidShineUi.KeyboardShortcuts
 #if NETCOREAPP
                     string? c = xr.GetAttribute("comb");
                     string? k = xr.GetAttribute("keyid");
-                    string? m = xr.GetAttribute("methodid");
+                    string? m = xr.GetAttribute("action");
 #else
                     string c = xr.GetAttribute("comb");
                     string k = xr.GetAttribute("keyid");
-                    string m = xr.GetAttribute("methodid");
+                    string m = xr.GetAttribute("action");
 #endif
+                    if (string.IsNullOrEmpty(m))
+                    {
+                        m = xr.GetAttribute("methodid");
+                    }
 
                     if (string.IsNullOrEmpty(c) || string.IsNullOrEmpty(k) || string.IsNullOrEmpty(m))
                     {
@@ -192,7 +196,7 @@ namespace SolidShineUi.KeyboardShortcuts
                 await w.WriteStartElementAsync("", "ks", "");
                 await w.WriteAttributeStringAsync("", "comb", "", item.Combination.ToString("f"));
                 await w.WriteAttributeStringAsync("", "keyid", "", item.Key.ToString("d"));
-                await w.WriteAttributeStringAsync("", "methodid", "", item.MethodId);
+                await w.WriteAttributeStringAsync("", "action", "", item.MethodId);
                 await w.WriteEndElementAsync();
             }
 
