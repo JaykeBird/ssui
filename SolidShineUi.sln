@@ -12,6 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsuiSample", "SsuiSample\Ss
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{69561AEC-53B8-4459-9EE7-EA22411500C5}"
 	ProjectSection(SolutionItems) = preProject
+		Docs\AddKeyboardSupport.md = Docs\AddKeyboardSupport.md
 		README.md = README.md
 		Docs\ROADMAP.md = Docs\ROADMAP.md
 	EndProjectSection
