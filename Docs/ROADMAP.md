@@ -15,27 +15,26 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 
 ## Very soon
 
-- Release version 1.7.1 with minor changes
+- Release version 1.8
+- Keyboard shortcut classes
+- Improvements to FontSelectDialog
+- TabControl improvements (hopefully out of Experimental for the 1.8 release)
 
 ## 2021 (sooner)
 
-- TabControl control (already in Experimental)
-- Keyboard shortcut helper classes (already in use in some programs)
 - Rewrite SelectPanel to not base from UserControl
 - Rebase IntegerSpinner/DoubleSpinner under RangeBase class (breaking change)
-- Improvements to FontSelectDialog
 - Finish online documentation
 
 ## 2021 (later)
 
-- Port to AvaloniaUI (once 0.10 comes out, will begin testing)
-- Toolbar controls
+- Port to AvaloniaUI (0.10 is out, haven't done any testing or porting yet though)
 - PropertyGrid control
 - Touch/pen support for ImageColorPicker
   - (Keyboard support may be hard)
 
 ## 2022
 
-- Drop support for .NET Framework
-- Port to MAUI/WinUI?
+- Port to MAUI?
+- Toolbar controls
 - Ribbon control?
