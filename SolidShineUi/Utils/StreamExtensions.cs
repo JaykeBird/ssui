@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SolidShineUi
+namespace SolidShineUi.Utils
 {
     /// <summary>
     /// Extension methods for Streams. Used in color palette file handling. In the future, I may remove this file.
     /// </summary>
-    internal static class StreamExtensions
+    public static class StreamExtensions
     {
         #region Static Methods
 

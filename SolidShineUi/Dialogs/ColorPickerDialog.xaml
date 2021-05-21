@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ssut="clr-namespace:SolidShineUi.Utils"
     x:Class="SolidShineUi.ColorPickerDialog"
         mc:Ignorable="d"
         Title="Pick a Color" Height="500" Width="412"
@@ -300,7 +301,7 @@
                 </TabItem.Header>
                 <Grid>
                     <Border Margin="10,10,10,45" BorderBrush="Black" Background="DarkGray" BorderThickness="1">
-                        <UiCore:ImageColorPicker x:Name="imgPicker" SelectedColorChanged="imgPicker_SelectedColorChanged" />
+                        <ssut:ImageColorPicker x:Name="imgPicker" SelectedColorChanged="imgPicker_SelectedColorChanged" />
                     </Border>
                     <UiCore:FlatButton x:Name="btnOpenImage" Content="Load Image..." HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="24" Click="btnOpenImage_Click" />
                     <TextBlock x:Name="lblImageExplain" HorizontalAlignment="Right" Margin="0,0,10,15" TextWrapping="Wrap" Text="Click on the image to select the color." VerticalAlignment="Bottom" />

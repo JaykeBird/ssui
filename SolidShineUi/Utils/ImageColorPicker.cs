@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using static SolidShineUi.NativeMethods;
 
-namespace SolidShineUi
+namespace SolidShineUi.Utils
 {
     /// <summary>
     /// Image element with the ability to pick out a pixel color value.
@@ -18,17 +18,21 @@ namespace SolidShineUi
         public ImageColorPicker()
         {
             MouseDown += ImageColorPicker_MouseDown;
-
             MouseUp += ImageColorPicker_MouseUp;
             MouseMove += ImageColorPicker_MouseMove;
             MouseLeave += ImageColorPicker_MouseLeave;
+
+            StylusDown += imageColorPicker_StylusDown;
+            StylusUp += imageColorPicker_StylusUp;
+            StylusMove += imageColorPicker_StylusMove;
+            StylusLeave += imageColorPicker_StylusLeave;
         }
 
-//#if NETCOREAPP
-//        public event EventHandler? SelectedColorChanged;
-//#else
-//        public event EventHandler SelectedColorChanged;
-//#endif
+        //#if NETCOREAPP
+        //        public event EventHandler? SelectedColorChanged;
+        //#else
+        //        public event EventHandler SelectedColorChanged;
+        //#endif
 
         public static readonly RoutedEvent SelectedColorChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectedColorChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ImageColorPicker));
@@ -99,6 +103,56 @@ namespace SolidShineUi
         }
 
         private void ImageColorPicker_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ReleaseDC(IntPtr.Zero, dc);
+            dc = IntPtr.Zero;
+            dc_present = false;
+        }
+
+        private void imageColorPicker_StylusDown(object sender, System.Windows.Input.StylusDownEventArgs e)
+        {
+            if (Source != null)
+            {
+                Point s = e.GetPosition(this);
+                Point p = PointToScreen(s);
+
+                if (!dc_present)
+                {
+                    dc = GetDC(IntPtr.Zero);
+                    dc_present = true;
+                }
+
+                SelectedColor = GetPixelPointColor(p);
+                SelectedPosition = s;
+
+                RoutedEventArgs re = new RoutedEventArgs(SelectedColorChangedEvent);
+                RaiseEvent(re);
+            }
+        }
+
+        private void imageColorPicker_StylusMove(object sender, System.Windows.Input.StylusEventArgs e)
+        {
+            if (dc_present)
+            {
+                Point s = e.GetPosition(this);
+                Point p = PointToScreen(s);
+
+                SelectedColor = GetPixelPointColor(p);
+                SelectedPosition = s;
+
+                RoutedEventArgs re = new RoutedEventArgs(SelectedColorChangedEvent);
+                RaiseEvent(re);
+            }
+        }
+
+        private void imageColorPicker_StylusLeave(object sender, System.Windows.Input.StylusEventArgs e)
+        {
+            ReleaseDC(IntPtr.Zero, dc);
+            dc = IntPtr.Zero;
+            dc_present = false;
+        }
+
+        private void imageColorPicker_StylusUp(object sender, System.Windows.Input.StylusEventArgs e)
         {
             ReleaseDC(IntPtr.Zero, dc);
             dc = IntPtr.Zero;
