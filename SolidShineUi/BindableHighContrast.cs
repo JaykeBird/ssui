@@ -16,7 +16,7 @@ namespace SolidShineUi
     /// For the control or style in question that you want to monitor changes to high contrast in, set the property 
     /// <c>flat:BindableHighContrast.HighContrast = "{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}"</c> in the control or style.
     /// Then you can use the trigger as such: <c>&lt;Trigger Property="flat:BindableHighContrast.HighContrast" Value="True"&gt; ... &lt;/Trigger&gt;</c>.
-    /// Visit https://stackoverflow.com/questions/18708794/how-can-i-fall-back-to-a-high-contrast-color-in-wpf for more information and source.
+    /// Visit <a href="https://stackoverflow.com/questions/18708794/how-can-i-fall-back-to-a-high-contrast-color-in-wpf">this StackOverflow question</a> for more information and source.
     /// This class is identical to the "SystemParameterProperties" class in the accepted answer.
     /// </remarks>
     public static class BindableHighContrast
