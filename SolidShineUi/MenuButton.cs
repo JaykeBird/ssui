@@ -36,11 +36,25 @@ namespace SolidShineUi
             if (Menu != null) Menu.ApplyColorScheme(cs);
         }
 
+
+        #region ShowTabListMenu
+
+        public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(MenuButton),
+            new PropertyMetadata(null));
+
+
+        #endregion
+
 #if NETCOREAPP
         /// <summary>
         /// Get or set the menu that appears when the button is clicked.
         /// </summary>
-        public ContextMenu? Menu { get; set; } = null;
+        [Category("Common")]
+        public ContextMenu? Menu
+        {
+            get { return (ContextMenu)GetValue(MenuProperty); }
+            set { SetValue(MenuProperty, value); }
+        }
 
         /// <summary>
         /// This event is raised when this MenuButtons's menu is closed.
@@ -51,7 +65,11 @@ namespace SolidShineUi
         /// Get or set the menu that appears when the button is clicked.
         /// </summary>
         [Category("Common")]
-        public ContextMenu Menu { get; set; } = null;
+        public ContextMenu Menu
+        {
+            get { return (ContextMenu)GetValue(MenuProperty); }
+            set { SetValue(MenuProperty, value); }
+        }
 
         /// <summary>
         /// This event is raised when this MenuButtons's menu is closed.
