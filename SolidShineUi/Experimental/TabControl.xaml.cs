@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using TabItem = SolidShineUi.TabItem;
 
 namespace SolidShineUi.Experimental
 {
@@ -404,8 +405,6 @@ namespace SolidShineUi.Experimental
         #endregion
 
         #region Color Scheme
-
-        // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabControl),

@@ -6,13 +6,15 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace SolidShineUi.Experimental
+namespace SolidShineUi
 {
     [ContentProperty("Content")]
     public class TabItem : DependencyObject
     {
         public TabItem()
         {
+            Self = this;
+
             InternalTitleChanged += tabItem_InternalTitleChanged;
             InternalIsDirtyChanged += tabItem_InternalIsDirtyChanged;
             InternalCanCloseChanged += tabItem_InternalCanCloseChanged;
@@ -118,7 +120,7 @@ namespace SolidShineUi.Experimental
         }
         #endregion
 
-        private bool sel = false;
+        //internal TabItem Self { get => this; }
 
         #region CanSelect
 
@@ -152,25 +154,50 @@ namespace SolidShineUi.Experimental
         }
         #endregion
 
+        #region IsSelected
+
+        private static readonly DependencyPropertyKey IsSelectedPropertyKey = DependencyProperty.RegisterReadOnly("IsSelected", typeof(bool), typeof(TabItem),
+            new PropertyMetadata(false));
+
+        public static readonly DependencyProperty IsSelectedProperty = IsSelectedPropertyKey.DependencyProperty;
+
+
+        [Obsolete("Control selection via the TabControl instead.")]
         public bool IsSelected
         {
-            get
-            {
-                return sel;
-            }
+            get { return (bool)GetValue(IsSelectedProperty); }
+            protected set { SetValue(IsSelectedPropertyKey, value); }
         }
 
+        #endregion
+
+        [Obsolete("Control selection via the TabControl instead.")]
         public void Select()
         {
-            sel = true;
+            IsSelected = true;
             IsSelectedChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        internal void Unselect()
+        [Obsolete("Control selection via the TabControl instead.")]
+        internal protected void Unselect()
         {
-            sel = false;
+            IsSelected = false;
             IsSelectedChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        #region TabItem
+
+        private static readonly DependencyProperty SelfProperty = DependencyProperty.Register("Self", typeof(TabItem), typeof(TabItem),
+            new PropertyMetadata(null));
+
+        //public static readonly DependencyProperty TabItemProperty = TabItemPropertyKey.DependencyProperty;
+
+        public TabItem Self
+        {
+            get { return (TabItem)GetValue(SelfProperty); }
+            set { SetValue(SelfProperty, value); }
+        }
+        #endregion
 
         #region Icon
 

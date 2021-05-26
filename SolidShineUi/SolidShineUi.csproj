@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <ProjectGuid>{E45CD1DB-F48D-4B29-B832-52D5B634B145}</ProjectGuid>
-    <TargetFrameworks>net471;net48;netcoreapp3.1;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows</TargetFrameworks>
     <UseWpf>true</UseWpf>
     <RootNamespace>SolidShineUi</RootNamespace>
     <Platforms>AnyCPU;x86;x64</Platforms>
@@ -10,24 +10,30 @@
     <AssemblyTitle>Ssui</AssemblyTitle>
     <Company></Company>
     <Product>SolidShineUi</Product>
-    <Description>A collection of UI controls with consistent and customizable theming.</Description>
+    <Description>A collection of UI controls and helper classes with consistent and customizable theming.</Description>
     <Copyright>Copyright 2018-2021 Jayke R. Huempfner, other contributors</Copyright>
-    <Version>1.7.0</Version>
-    <AssemblyVersion>1.7.0.0</AssemblyVersion>
-    <FileVersion>1.7.0.0</FileVersion>
+    <Version>1.8.0</Version>
+    <AssemblyVersion>1.8.0.0</AssemblyVersion>
+    <FileVersion>1.8.0.0</FileVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>Jayke R. Huempfner, other contributors</Authors>
     <PackageIconUrl></PackageIconUrl>
     <PackageId>SolidShineUi</PackageId>
     <PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
-    <PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown FileSelect ColorPicker SSUI</PackageTags>
+    <PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown IntegerSpinner FileSelect ColorPicker SSUI Keyboard</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile></PackageLicenseFile>
     <PackageIcon>Icon48.png</PackageIcon>
     <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Version 1.8
+- Added keyboard shortcut handling system, via SolidShineUi.KeyboardShortcuts namespace. See website for easy setup document!
+- TabControl is now ready to go! Moved out of Experimental namespace.
+- Additional appearance properties for ColorPickerDialog and FontSelectDialog.
+
+See website for more details!</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -130,6 +136,9 @@
     <Compile Update="Experimental\TabDisplayItem.xaml.cs">
       <DependentUpon>TabDisplayItem.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Utils\TabDisplayItem.xaml.cs">
+      <DependentUpon>TabDisplayItem.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <!--<ItemGroup>
     <Content Include="lib\Microsoft.Windows.Shell.dll" />
@@ -148,5 +157,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="integrate.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Utils\TabDisplayItem.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 </Project>

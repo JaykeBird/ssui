@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using SolidShineUi.Experimental;
-using TabItem = SolidShineUi.Experimental.TabItem;
+using TabItem = SolidShineUi.TabItem;
 
 namespace SsuiSample
 {
@@ -97,6 +97,11 @@ namespace SsuiSample
         {
             TabItem ti = tabControl.CurrentTab;
 
+            if (ti == null)
+            {
+                return;
+            }
+
             StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Text", "Set the title of this tab:", ti.Title);
 
             sid.Owner = Window.GetWindow(this);
@@ -106,6 +111,11 @@ namespace SsuiSample
             {
                 ti.Title = sid.Value;
             }
+        }
+
+        private void chkBottom_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            tabControl.ShowTabsOnBottom = chkBottom.IsChecked;
         }
     }
 }

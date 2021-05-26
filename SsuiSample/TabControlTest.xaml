@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SsuiSample"
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
-             xmlns:fexp="clr-namespace:SolidShineUi.Experimental;assembly=SolidShineUi"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -14,16 +13,30 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="55"/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Border Background="#77FFFFFF" BorderThickness="1" BorderBrush="Black" Grid.ColumnSpan="3" Margin="20,10,20,20">
-                <fexp:TabControl x:Name="tabControl" Margin="10" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >
+                <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >
+                    <flat:TabControl.Items>
+                        <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png">
+                            <TextBlock Text="Tab 1" />
+                        </flat:TabItem>
+                        <flat:TabItem Title="Tab 2">
+                            <TextBlock Text="Tab 2" />
+                        </flat:TabItem>
+                    </flat:TabControl.Items>
+                </flat:TabControl>
+                <!--<fexp:TabControl x:Name="tabControl" Margin="10" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >
                     <fexp:TabItem Title="Tab 1">
                         <TextBlock Text="This is Tab 1" />
                     </fexp:TabItem>
                     <fexp:TabItem Title="Tab 2">
                         <TextBlock Text="This is Tab 2" />
                     </fexp:TabItem>
-                </fexp:TabControl>
+                    <fexp:TabItem Title="Test">
+
+                    </fexp:TabItem>
+                </fexp:TabControl>-->
             </Border>
             <StackPanel Margin="20,0" Height="Auto" VerticalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
                 <flat:FlatButton x:Name="btnAdd" Margin="3" Click="btnAdd_Click" MinWidth="80" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add Tab...</flat:FlatButton>
@@ -31,6 +44,7 @@
                 <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
                 <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="130" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Current Tab</flat:FlatButton>
             </StackPanel>
+            <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged" Grid.Row="2" />
         </Grid>
 
     </Grid>

@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using TabItem = SolidShineUi.TabItem;
 
-namespace SolidShineUi.Experimental
+namespace SolidShineUi.Utils
 {
     /// <summary>
     /// Interaction logic for TabDisplayItem.xaml
@@ -32,15 +32,14 @@ namespace SolidShineUi.Experimental
         public TabDisplayItem()
         {
             InitializeComponent();
-            TabItem = new TabItem();
-            TabItem tab = TabItem;
+            //TabItem = new TabItem();
 
             //if (tab.Icon != null)
             //{
             //    imgIcon.Source = tab.Icon;
             //}
             //lblTitle.Text = tab.Title;
-            if (tab.IsSelected)
+            if (IsSelected)
             {
                 border.BorderThickness = new Thickness(1, 1, 1, 0);
             }
@@ -53,19 +52,22 @@ namespace SolidShineUi.Experimental
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
 
             //tab.IsSelectedChanged += tab_IsSelectedChanged;
+
+            InternalParentChanged += tdi_InternalParentChanged;
+            InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
         }
 
         public TabDisplayItem(TabItem tab)
         {
             InitializeComponent();
-
             TabItem = tab;
+
             //if (tab.Icon != null)
             //{
             //    imgIcon.Source = tab.Icon;
             //}
             //lblTitle.Text = tab.Title;
-            if (tab.IsSelected)
+            if (IsSelected)
             {
                 border.BorderThickness = new Thickness(1, 1, 1, 0);
             }
@@ -77,7 +79,10 @@ namespace SolidShineUi.Experimental
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
 
-            tab.IsSelectedChanged += tab_IsSelectedChanged;
+            //tab.IsSelectedChanged += tab_IsSelectedChanged;
+
+            InternalParentChanged += tdi_InternalParentChanged;
+            InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
         }
 
 #if NETCOREAPP
@@ -86,7 +91,7 @@ namespace SolidShineUi.Experimental
         private void tab_IsSelectedChanged(object sender, EventArgs e)
 #endif
         {
-            if (TabItem.IsSelected)
+            if (IsSelected)
             {
                 border.BorderThickness = new Thickness(1, 1, 1, 0);
             }
@@ -96,9 +101,106 @@ namespace SolidShineUi.Experimental
             }
         }
 
+
+        #region Icon
+
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabDisplayItem),
+            new PropertyMetadata(null));
+
+        public ImageSource Icon
+        {
+            get { return (ImageSource)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
+
+        #endregion
+
+        #region CanSelect
+
+        public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register("CanSelect", typeof(bool), typeof(TabDisplayItem),
+            new PropertyMetadata(true));
+
+        public bool CanSelect
+        {
+            get { return (bool)GetValue(CanSelectProperty); }
+            set { SetValue(CanSelectProperty, value); }
+        }
+        #endregion
+
+        #region Title
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabDisplayItem),
+            new PropertyMetadata("New Tab"));
+
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+        #endregion
+
+        #region IsDirty
+
+        public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(TabDisplayItem),
+            new PropertyMetadata(false));
+
+        public bool IsDirty
+        {
+            get { return (bool)GetValue(IsDirtyProperty); }
+            set { SetValue(IsDirtyProperty, value); }
+        }
+        #endregion
+
+        #region CanClose
+
+        public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register("CanClose", typeof(bool), typeof(TabDisplayItem),
+            new PropertyMetadata(true));
+
+        public bool CanClose
+        {
+            get { return (bool)GetValue(CanCloseProperty); }
+            set { SetValue(CanCloseProperty, value); }
+        }
+        #endregion
+
+        #region IsSelected
+
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(TabDisplayItem),
+            new PropertyMetadata(false, OnIsSelectedChanged));
+
+        public bool IsSelected
+        {
+            get { return (bool)GetValue(IsSelectedProperty); }
+            internal protected set { SetValue(IsSelectedProperty, value); }
+        }
+
+        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem i)
+            {
+                i.InternalIsSelectedChanged?.Invoke(i, e);
+            }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalIsSelectedChanged;
+
+        private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (IsSelected)
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 0);
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 1);
+            }
+        }
+
+        #endregion
+
         #region TabItem
 
-        private static readonly DependencyProperty TabItemProperty = DependencyProperty.Register("TabItem", typeof(TabItem), typeof(TabDisplayItem),
+        public static readonly DependencyProperty TabItemProperty = DependencyProperty.Register("TabItem", typeof(TabItem), typeof(TabDisplayItem),
             new PropertyMetadata(null));
 
         //public static readonly DependencyProperty TabItemProperty = TabItemPropertyKey.DependencyProperty;
@@ -114,6 +216,36 @@ namespace SolidShineUi.Experimental
         {
             RequestClose?.Invoke(this, e);
         }
+
+        #region ParentTabControl
+
+        public static readonly DependencyProperty ParentTabControlProperty = DependencyProperty.Register("ParentTabControl", typeof(TabControl), typeof(TabDisplayItem),
+            new PropertyMetadata(null, OnInternalParentChanged));
+
+        public TabControl ParentTabControl
+        {
+            get { return (TabControl)GetValue(ParentTabControlProperty); }
+            set { SetValue(ParentTabControlProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalParentChanged;
+
+        private static void OnInternalParentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem s)
+            {
+                s.InternalParentChanged?.Invoke(s, e);
+            }
+        }
+        private void tdi_InternalParentChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (ParentTabControl != null)
+            {
+                ParentTabControl.SetupTabDisplay(this);
+            }
+        }
+
+        #endregion
 
         #region Color Scheme
 
@@ -363,6 +495,14 @@ namespace SolidShineUi.Experimental
             else
             {
                 brdr_Focus.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (ParentTabControl != null)
+            {
+
             }
         }
     }

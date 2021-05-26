@@ -58,7 +58,7 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="3" Margin="0,-1,0,0" x:Name="barTabsBottom" Grid.Column="1" />
+        <Grid Grid.Row="2" Margin="0,-1,0,0" x:Name="barTabsBottom" Grid.Column="1" />
 
         <Grid Grid.Row="1" x:Name="grdHolder">
             <Border x:Name="brdrContent" BorderThickness="1,0,1,1" BorderBrush="Black" />
