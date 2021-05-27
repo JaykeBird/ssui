@@ -32,6 +32,11 @@ namespace SolidShineUi
             InternalShowTabListMenuChanged += tabControl_InternalShowTabListMenuChanged;
 
             CommandBindings.Add(new CommandBinding(TabListMenuItemClick, OnTabListMenuItemClick));
+
+            if (Items.Count > 0)
+            {
+                Items.Select(Items[0]);
+            }
         }
 
         bool itemsLoaded = false;
@@ -200,7 +205,6 @@ namespace SolidShineUi
         public TabItem? SelectedTab { get => CurrentTab; }
 
         public event TabItemChangeEventHandler? TabChanged;
-        public event TabItemChangeEventHandler? TabLoaded;
         public event TabItemChangeEventHandler? TabClosed;
         public event EventHandler? TabsCleared;
 #else
@@ -208,7 +212,6 @@ namespace SolidShineUi
         public TabItem SelectedTab { get => CurrentTab; }
 
         public event TabItemChangeEventHandler TabChanged;
-        public event TabItemChangeEventHandler TabLoaded;
         public event TabItemChangeEventHandler TabClosed;
         public event EventHandler TabsCleared;
 #endif

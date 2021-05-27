@@ -55,6 +55,7 @@ namespace SolidShineUi.Utils
 
             InternalParentChanged += tdi_InternalParentChanged;
             InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
+            InternalShowTabsOnBottomChanged += tdi_InternalShowTabsOnBottomChanged;
         }
 
         public TabDisplayItem(TabItem tab)
@@ -102,18 +103,18 @@ namespace SolidShineUi.Utils
         }
 
 
-        #region Icon
+        //#region Icon
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabDisplayItem),
-            new PropertyMetadata(null));
+        //public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabDisplayItem),
+        //    new PropertyMetadata(null));
 
-        public ImageSource Icon
-        {
-            get { return (ImageSource)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
-        }
+        //public ImageSource Icon
+        //{
+        //    get { return (ImageSource)GetValue(IconProperty); }
+        //    set { SetValue(IconProperty, value); }
+        //}
 
-        #endregion
+        //#endregion
 
         #region CanSelect
 
@@ -127,17 +128,17 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        #region Title
+        //#region Title
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabDisplayItem),
-            new PropertyMetadata("New Tab"));
+        //public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabDisplayItem),
+        //    new PropertyMetadata("New Tab"));
 
-        public string Title
-        {
-            get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
-        }
-        #endregion
+        //public string Title
+        //{
+        //    get { return (string)GetValue(TitleProperty); }
+        //    set { SetValue(TitleProperty, value); }
+        //}
+        //#endregion
 
         #region IsDirty
 
@@ -151,17 +152,17 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        #region CanClose
+        //#region CanClose
 
-        public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register("CanClose", typeof(bool), typeof(TabDisplayItem),
-            new PropertyMetadata(true));
+        //public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register("CanClose", typeof(bool), typeof(TabDisplayItem),
+        //    new PropertyMetadata(true));
 
-        public bool CanClose
-        {
-            get { return (bool)GetValue(CanCloseProperty); }
-            set { SetValue(CanCloseProperty, value); }
-        }
-        #endregion
+        //public bool CanClose
+        //{
+        //    get { return (bool)GetValue(CanCloseProperty); }
+        //    set { SetValue(CanCloseProperty, value); }
+        //}
+        //#endregion
 
         #region IsSelected
 
@@ -212,12 +213,42 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
+        #region ShowTabsOnBottom
+
+        public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabDisplayItem),
+            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
+
+        public bool ShowTabsOnBottom
+        {
+            get { return (bool)GetValue(ShowTabsOnBottomProperty); }
+            set { SetValue(ShowTabsOnBottomProperty, value); }
+        }
+
+#if NETCOREAPP
+        protected event DependencyPropertyChangedEventHandler? InternalShowTabsOnBottomChanged;
+#else
+        protected event DependencyPropertyChangedEventHandler InternalShowTabsOnBottomChanged;
+#endif
+
+        private static void OnInternalShowTabsOnBottomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem s)
+            {
+                s.InternalShowTabsOnBottomChanged?.Invoke(s, e);
+            }
+        }
+        private void tdi_InternalShowTabsOnBottomChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            // TODO: change border when this changes
+        }
+#endregion
+
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             RequestClose?.Invoke(this, e);
         }
 
-        #region ParentTabControl
+#region ParentTabControl
 
         public static readonly DependencyProperty ParentTabControlProperty = DependencyProperty.Register("ParentTabControl", typeof(TabControl), typeof(TabDisplayItem),
             new PropertyMetadata(null, OnInternalParentChanged));
@@ -245,9 +276,9 @@ namespace SolidShineUi.Utils
             }
         }
 
-        #endregion
+#endregion
 
-        #region Color Scheme
+#region Color Scheme
 
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
@@ -315,11 +346,11 @@ namespace SolidShineUi.Utils
 
             ApplyColorScheme(cs);
         }
-        #endregion
+#endregion
 
-        #region Click Handling
+#region Click Handling
 
-        #region Variables/Properties
+#region Variables/Properties
         bool initiatingClick = false;
 
         //bool sel = false;
@@ -347,7 +378,7 @@ namespace SolidShineUi.Utils
         //    }
         //}
 
-        #endregion
+#endregion
 
         void PerformClick(bool rightClick = false)
         {
@@ -419,9 +450,9 @@ namespace SolidShineUi.Utils
                 RightClick?.Invoke(this, EventArgs.Empty);
             }
         }
-        #endregion
+#endregion
 
-        #region Focus Events
+#region Focus Events
         bool highlighting = false;
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
@@ -484,7 +515,7 @@ namespace SolidShineUi.Utils
             initiatingClick = false;
         }
 
-        #endregion
+#endregion
 
         private void border_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

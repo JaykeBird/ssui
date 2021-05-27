@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi"
              mc:Ignorable="d" 
-             d:DesignHeight="28" d:DesignWidth="120" MinWidth="120" Loaded="control_Loaded"
+             d:DesignHeight="24" d:DesignWidth="120" MinWidth="120" Loaded="control_Loaded"
              MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave"
              StylusDown="UserControl_StylusDown" StylusUp="UserControl_StylusUp" TouchDown="UserControl_TouchDown" TouchUp="UserControl_TouchUp"
              GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
@@ -14,26 +14,29 @@
         <BooleanToVisibilityConverter x:Key="btv" />
         <local:ColorToBrushConverter x:Key="ctb" />
     </UserControl.Resources>
-    <Border BorderThickness="1,1,1,0" BorderBrush="Black" x:Name="border" Focusable="{Binding ElementName=control, Path=TabItem.CanSelect}" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged" >
-        <!--<Border.Triggers>
+    <Grid>
+        <Border BorderThickness="1,1,1,0" BorderBrush="Black" x:Name="border" Focusable="{Binding ElementName=control, Path=TabItem.CanSelect}" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged" />
+        <Border BorderThickness="1">
+            <!--<Border.Triggers>
             <Trigger Property="IsKeyboardFocused" Value="True" >
                 <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
             </Trigger>
         </Border.Triggers>-->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="24"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto" x:Name="colClose" />
-            </Grid.ColumnDefinitions>
-            <Image x:Name="imgIcon" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Height="16" Width="16" Source="{Binding ElementName=control, Path=TabItem.Icon}" UseLayoutRounding="True" />
-            <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title}" Grid.Column="1" />
-            <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Top" Height="Auto" MinHeight="22" Padding="0" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto" x:Name="colClose" />
+                </Grid.ColumnDefinitions>
+                <Image x:Name="imgIcon" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" Height="16" Width="16" Source="{Binding ElementName=control, Path=TabItem.Icon}" UseLayoutRounding="True" />
+                <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title}" Grid.Column="1" />
+                <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Center" Height="20" MinHeight="20" Padding="0" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
                               Visibility="{Binding ElementName=control, Path=TabItem.CanClose, Converter={StaticResource btv}}" >
-                <Image Source="/SolidShineUi;component/Images/SmallExitColor.png" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Stretch="None" MaxHeight="16" UseLayoutRounding="False" />
-            </local:FlatButton>
+                    <Image Source="/SolidShineUi;component/Images/SmallExitColor.png" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Stretch="None" MaxHeight="16" UseLayoutRounding="False" />
+                </local:FlatButton>
 
-            <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
-        </Grid>
-    </Border>
+                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>
