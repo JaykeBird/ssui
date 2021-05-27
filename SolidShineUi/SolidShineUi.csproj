@@ -87,6 +87,7 @@ See website for more details!</PackageReleaseNotes>
     <EmbeddedResource Remove="Backup\**" />
     <EmbeddedResource Remove="Docs\**" />
     <EmbeddedResource Remove="TestBackup\**" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="..\Icons\Icon48.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
