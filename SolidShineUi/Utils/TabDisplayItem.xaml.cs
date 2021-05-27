@@ -29,6 +29,8 @@ namespace SolidShineUi.Utils
         public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
         public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
 
+        private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+
         public TabDisplayItem()
         {
             InitializeComponent();
@@ -41,7 +43,7 @@ namespace SolidShineUi.Utils
             //lblTitle.Text = tab.Title;
             if (IsSelected)
             {
-                border.BorderThickness = new Thickness(1, 1, 1, 0);
+                border.BorderThickness = TabBorderThickSelected;
             }
             else
             {
@@ -70,7 +72,7 @@ namespace SolidShineUi.Utils
             //lblTitle.Text = tab.Title;
             if (IsSelected)
             {
-                border.BorderThickness = new Thickness(1, 1, 1, 0);
+                border.BorderThickness = TabBorderThickSelected;
             }
             else
             {
@@ -94,7 +96,7 @@ namespace SolidShineUi.Utils
         {
             if (IsSelected)
             {
-                border.BorderThickness = new Thickness(1, 1, 1, 0);
+                border.BorderThickness = TabBorderThickSelected;
             }
             else
             {
@@ -189,7 +191,7 @@ namespace SolidShineUi.Utils
         {
             if (IsSelected)
             {
-                border.BorderThickness = new Thickness(1, 1, 1, 0);
+                border.BorderThickness = TabBorderThickSelected;
             }
             else
             {
@@ -239,7 +241,23 @@ namespace SolidShineUi.Utils
         }
         private void tdi_InternalShowTabsOnBottomChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            // TODO: change border when this changes
+            if (ShowTabsOnBottom)
+            {
+                TabBorderThickSelected = new Thickness(1, 0, 1, 1);
+            }
+            else
+            {
+                TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+            }
+
+            if (IsSelected)
+            {
+                border.BorderThickness = TabBorderThickSelected;
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(1, 1, 1, 1);
+            }
         }
 #endregion
 

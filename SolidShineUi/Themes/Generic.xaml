@@ -1046,9 +1046,31 @@
                                 </Style>
                             </Grid.Style>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20" x:Name="colScrollLeft" />
+                                <ColumnDefinition x:Name="colScrollLeft">
+                                    <ColumnDefinition.Style>
+                                        <Style TargetType="ColumnDefinition">
+                                            <Setter Property="Width" Value="0" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" Value="True">
+                                                    <Setter Property="Width" Value="20" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ColumnDefinition.Style>
+                                </ColumnDefinition>
                                 <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="20" x:Name="colScrollRight" />
+                                <ColumnDefinition x:Name="colScrollRight" >
+                                    <ColumnDefinition.Style>
+                                        <Style TargetType="ColumnDefinition">
+                                            <Setter Property="Width" Value="0" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" Value="True">
+                                                    <Setter Property="Width" Value="20" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ColumnDefinition.Style>
+                                </ColumnDefinition>
                                 <ColumnDefinition Width="Auto" x:Name="colMenu" />
                             </Grid.ColumnDefinitions>
                             <Border x:Name="brdrScrollLeft" Grid.Column="0" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
@@ -1065,7 +1087,8 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="0" Padding="1" TransparentBack="True" IsEnabled="False"
+                            <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="0" Padding="1" TransparentBack="True"
+                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}">
                                 <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>
@@ -1120,7 +1143,8 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <flat:FlatButton x:Name="btnScrollRight" Grid.Column="2" Padding="1" TransparentBack="True" IsEnabled="False"
+                            <flat:FlatButton x:Name="btnScrollRight" Grid.Column="2" Padding="1" TransparentBack="True" 
+                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" >
                                 <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>

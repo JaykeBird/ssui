@@ -8,7 +8,6 @@ using SolidShineUi.Utils;
 using System.Windows;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using TabItem = SolidShineUi.TabItem;
 using System.Windows.Input;
 
 namespace SolidShineUi
@@ -23,6 +22,8 @@ namespace SolidShineUi
 
         public TabControl()
         {
+            SizeChanged += control_SizeChanged;
+
             Items = new SelectableCollection<TabItem>();
             Items.CanSelectMultiple = false;
             Items.CollectionChanged += Items_CollectionChanged;
@@ -61,6 +62,8 @@ namespace SolidShineUi
 
                 if (ic != null && sv != null && ch != null)
                 {
+                    sv.ScrollChanged += sv_ScrollChanged;
+                    ic.SizeChanged += control_SizeChanged;
                     itemsLoaded = true;
                 }
             }
@@ -148,6 +151,7 @@ namespace SolidShineUi
 #endif
 
             LoadTemplateItems();
+            CheckScrolling();
         }
 
         private void items_SelectionChanged(object sender, SelectionChangedEventArgs<TabItem> e)
@@ -228,7 +232,7 @@ namespace SolidShineUi
         public event EventHandler TabsCleared;
 #endif
 
-#region ShowTabsOnBottom
+        #region ShowTabsOnBottom
 
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
@@ -258,9 +262,9 @@ namespace SolidShineUi
         {
             ShowTabsOnBottomChanged?.Invoke(this, e);
         }
-#endregion
+        #endregion
 
-#region ShowTabListMenu
+        #region ShowTabListMenu
 
         public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
@@ -337,12 +341,14 @@ namespace SolidShineUi
                 return;
             }
         }
-#endregion
+        #endregion
 
         internal protected void SetupTabDisplay(TabDisplayItem tdi)
         {
             tdi.RequestClose += tdi_RequestClose;
             tdi.Click += tdi_Click;
+
+            CheckScrolling();
         }
 
 #if NETCOREAPP
@@ -373,7 +379,85 @@ namespace SolidShineUi
                     Items.Remove(tdi.TabItem);
                 }
             }
+
+            CheckScrolling();
         }
+
+        #region Scrolling
+
+        #region ScrollButtons
+
+        private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("ScrollButtonsVisible", typeof(bool), typeof(TabControl),
+            new PropertyMetadata(false));
+
+        public static readonly DependencyProperty ScrollButtonsVisibleProperty = ScrollButtonsVisiblePropertyKey.DependencyProperty;
+
+        public bool ScrollButtonsVisible
+        {
+            get { return (bool)GetValue(ScrollButtonsVisibleProperty); }
+            private set { SetValue(ScrollButtonsVisiblePropertyKey, value); }
+        }
+        #endregion
+
+        void CheckScrolling()
+        {
+            if (sv == null || ic == null) return;
+
+            if (sv.ViewportWidth == 0)
+            {
+                return;
+            }
+
+            if (ic.ActualWidth > sv.ViewportWidth)
+            {
+                ScrollButtonsVisible = true;
+            }
+            else
+            {
+                ScrollButtonsVisible = false;
+            }
+        }
+
+        private void btnScrollLeft_Click(object sender, RoutedEventArgs e)
+        {
+            if (sv == null) return;
+
+            double offset = sv.HorizontalOffset;
+
+            if (offset > 0)
+            {
+                sv.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
+            }
+        }
+
+        private void btnScrollRight_Click(object sender, RoutedEventArgs e)
+        {
+            double offset = sv.HorizontalOffset;
+
+            if (offset < sv.ScrollableWidth)
+            {
+                sv.ScrollToHorizontalOffset(Math.Min(offset + 20, sv.ScrollableWidth));
+            }
+        }
+
+        private void control_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // note that this both handles the TabControl changes and the internal ItemControl changes
+            if (e.WidthChanged)
+            {
+                CheckScrolling();
+            }
+        }
+
+        private void sv_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.ViewportWidthChange > 0)
+            {
+                CheckScrolling();
+            }
+        }
+
+        #endregion
     }
 
     public class TabItemChangeEventArgs
