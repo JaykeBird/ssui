@@ -74,20 +74,26 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Add:
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (TabItem? ti in e.OldItems)
+                    if (e.OldItems != null)
                     {
-                        if (ti != null)
+                        foreach (TabItem? ti in e.OldItems)
                         {
-                            TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            if (ti != null)
+                            {
+                                TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            }
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (TabItem? ti in e.OldItems)
+                    if (e.OldItems != null)
                     {
-                        if (ti != null)
+                        foreach (TabItem? ti in e.OldItems)
                         {
-                            TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            if (ti != null)
+                            {
+                                TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            }
                         }
                     }
                     break;
@@ -108,20 +114,26 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Add:
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (TabItem ti in e.OldItems)
+                    if (e.OldItems != null)
                     {
-                        if (ti != null)
+                        foreach (TabItem ti in e.OldItems)
                         {
-                            TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            if (ti != null)
+                            {
+                                TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            }
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (TabItem ti in e.OldItems)
+                    if (e.OldItems != null)
                     {
-                        if (ti != null)
+                        foreach (TabItem ti in e.OldItems)
                         {
-                            TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            if (ti != null)
+                            {
+                                TabClosed?.Invoke(this, new TabItemChangeEventArgs(ti));
+                            }
                         }
                     }
                     break;

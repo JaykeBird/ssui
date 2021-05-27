@@ -208,8 +208,6 @@ namespace SolidShineUi
             double max = Math.Max(r, Math.Max(g, b));
             double min = Math.Min(r, Math.Min(g, b));
             double delta = max - min;
-
-#pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
             if (delta == 0)
             {
                 hue = 0;
@@ -233,7 +231,6 @@ namespace SolidShineUi
             {
                 hue = 60 * (((r - g) / delta) + 4);
             }
-#pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
 
             if (hue < 0)
             {

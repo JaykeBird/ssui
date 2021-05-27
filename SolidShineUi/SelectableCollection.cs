@@ -38,7 +38,11 @@ namespace SolidShineUi
             CollectionChanged += this_CollectionChanged;
         }
 
+#if NETCOREAPP
+        private void this_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#else
         private void this_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#endif
         {
             switch (e.Action)
             {
@@ -46,14 +50,17 @@ namespace SolidShineUi
                     return;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     List<T> removedItems = new List<T>();
-                    foreach (T item in e.OldItems)
+                    if (e.OldItems != null)
                     {
-                        if (item != null)
+                        foreach (T item in e.OldItems)
                         {
-                            if (selectedItems.Contains(item))
+                            if (item != null)
                             {
-                                selectedItems.Remove(item);
-                                removedItems.Add(item);
+                                if (selectedItems.Contains(item))
+                                {
+                                    selectedItems.Remove(item);
+                                    removedItems.Add(item);
+                                }
                             }
                         }
                     }
@@ -61,14 +68,17 @@ namespace SolidShineUi
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     List<T> removedItemsR = new List<T>();
-                    foreach (T item in e.OldItems)
+                    if (e.OldItems != null)
                     {
-                        if (item != null)
+                        foreach (T item in e.OldItems)
                         {
-                            if (selectedItems.Contains(item))
+                            if (item != null)
                             {
-                                selectedItems.Remove(item);
-                                removedItemsR.Add(item);
+                                if (selectedItems.Contains(item))
+                                {
+                                    selectedItems.Remove(item);
+                                    removedItemsR.Add(item);
+                                }
                             }
                         }
                     }

@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using SolidShineUi.Experimental;
 using TabItem = SolidShineUi.TabItem;
 
 namespace SsuiSample
