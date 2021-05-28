@@ -13,7 +13,7 @@ namespace SolidShineUi
     {
         public TabItem()
         {
-            Self = this;
+            //Self = this;
 
             InternalTitleChanged += tabItem_InternalTitleChanged;
             InternalIsDirtyChanged += tabItem_InternalIsDirtyChanged;
@@ -187,19 +187,19 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region TabItem
+        //#region TabItem
 
-        private static readonly DependencyProperty SelfProperty = DependencyProperty.Register("Self", typeof(TabItem), typeof(TabItem),
-            new PropertyMetadata(null));
+        //private static readonly DependencyProperty SelfProperty = DependencyProperty.Register("Self", typeof(TabItem), typeof(TabItem),
+        //    new PropertyMetadata(null));
 
-        //public static readonly DependencyProperty TabItemProperty = TabItemPropertyKey.DependencyProperty;
+        ////public static readonly DependencyProperty TabItemProperty = TabItemPropertyKey.DependencyProperty;
 
-        public TabItem Self
-        {
-            get { return (TabItem)GetValue(SelfProperty); }
-            set { SetValue(SelfProperty, value); }
-        }
-        #endregion
+        //public TabItem Self
+        //{
+        //    get { return (TabItem)GetValue(SelfProperty); }
+        //    set { SetValue(SelfProperty, value); }
+        //}
+        //#endregion
 
         #region Icon
 
@@ -323,10 +323,5 @@ namespace SolidShineUi
             }
         }
 
-#if NETCOREAPP
-        public event EventHandler? IsSelectedChanged;
-#else
-        public event EventHandler IsSelectedChanged;
-#endif
     }
 }
