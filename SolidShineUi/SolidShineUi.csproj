@@ -107,7 +107,7 @@ See website for more details!</PackageReleaseNotes>
     <Compile Update="ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ColorListItem.xaml.cs">
+    <Compile Update="Utils\ColorListItem.xaml.cs">
       <DependentUpon>ColorListItem.xaml</DependentUpon>
     </Compile>
     <Compile Update="Dialogs\ColorPickerDialog.xaml.cs">

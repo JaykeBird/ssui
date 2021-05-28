@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace SolidShineUi
+namespace SolidShineUi.Utils
 {
 
     public enum ColorListItemDisplay
