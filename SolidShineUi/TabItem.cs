@@ -22,6 +22,7 @@ namespace SolidShineUi
             InternalIconChanged += tabItem_InternalIconChanged;
             InternalContentChanged += tabItem_InternalContentChanged;
             InternalVisibilityChanged += tabItem_InternalVisibilityChanged;
+            InternalShowIconChanged += tabItem_InternalShowIconChanged;
         }
 
         #region Title
@@ -117,6 +118,38 @@ namespace SolidShineUi
         private void tabItem_InternalCanCloseChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             CanCloseChanged?.Invoke(this, e);
+        }
+        #endregion
+        
+        #region ShowIcon
+
+        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(TabItem),
+            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowIconChanged)));
+
+        public bool ShowIcon
+        {
+            get { return (bool)GetValue(ShowIconProperty); }
+            set { SetValue(ShowIconProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalShowIconChanged;
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ShowIconChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ShowIconChanged;
+#endif
+
+        private static void OnInternalShowIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabItem s)
+            {
+                s.InternalShowIconChanged?.Invoke(s, e);
+            }
+        }
+        private void tabItem_InternalShowIconChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ShowIconChanged?.Invoke(this, e);
         }
         #endregion
 
