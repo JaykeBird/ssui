@@ -26,17 +26,6 @@
                         </flat:TabItem>
                     </flat:TabControl.Items>
                 </flat:TabControl>
-                <!--<fexp:TabControl x:Name="tabControl" Margin="10" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >
-                    <fexp:TabItem Title="Tab 1">
-                        <TextBlock Text="This is Tab 1" />
-                    </fexp:TabItem>
-                    <fexp:TabItem Title="Tab 2">
-                        <TextBlock Text="This is Tab 2" />
-                    </fexp:TabItem>
-                    <fexp:TabItem Title="Test">
-
-                    </fexp:TabItem>
-                </fexp:TabControl>-->
             </Border>
             <StackPanel Margin="20,0" Height="Auto" VerticalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
                 <flat:FlatButton x:Name="btnAdd" Margin="3" Click="btnAdd_Click" MinWidth="80" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add Tab...</flat:FlatButton>

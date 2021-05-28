@@ -22,6 +22,7 @@ namespace SolidShineUi
 
         public TabControl()
         {
+            Loaded += TabControl_Loaded;
             SizeChanged += control_SizeChanged;
 
             Items = new SelectableCollection<TabItem>();
@@ -33,8 +34,14 @@ namespace SolidShineUi
             InternalShowTabListMenuChanged += tabControl_InternalShowTabListMenuChanged;
 
             CommandBindings.Add(new CommandBinding(TabListMenuItemClick, OnTabListMenuItemClick));
+            CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
+        }
 
-            if (Items.Count > 0)
+        public bool SelectFirstTabOnLoad { get; set; } = true;
+
+        private void TabControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Items.Count > 0 && SelectFirstTabOnLoad)
             {
                 Items.Select(Items[0]);
             }
@@ -399,6 +406,8 @@ namespace SolidShineUi
         }
         #endregion
 
+        public static readonly RoutedCommand TabBarScrollCommand = new RoutedCommand("TabBarScrollCommand", typeof(TabControl));
+
         void CheckScrolling()
         {
             if (sv == null || ic == null) return;
@@ -418,25 +427,31 @@ namespace SolidShineUi
             }
         }
 
-        private void btnScrollLeft_Click(object sender, RoutedEventArgs e)
+        private void OnScrollCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (sv == null) return;
 
             double offset = sv.HorizontalOffset;
 
-            if (offset > 0)
+            if (e.Parameter is TabScrollCommandAction a)
             {
-                sv.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
-            }
-        }
-
-        private void btnScrollRight_Click(object sender, RoutedEventArgs e)
-        {
-            double offset = sv.HorizontalOffset;
-
-            if (offset < sv.ScrollableWidth)
-            {
-                sv.ScrollToHorizontalOffset(Math.Min(offset + 20, sv.ScrollableWidth));
+                switch (a)
+                {
+                    case TabScrollCommandAction.Left:
+                        sv.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
+                        break;
+                    case TabScrollCommandAction.Right:
+                        sv.ScrollToHorizontalOffset(Math.Min(offset + 20, sv.ScrollableWidth));
+                        break;
+                    case TabScrollCommandAction.Home:
+                        sv.ScrollToHorizontalOffset(0);
+                        break;
+                    case TabScrollCommandAction.End:
+                        sv.ScrollToHorizontalOffset(sv.ScrollableWidth);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -469,4 +484,5 @@ namespace SolidShineUi
 
         public TabItem TabItem { get; private set; }
     }
+
 }

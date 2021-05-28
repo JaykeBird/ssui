@@ -1088,6 +1088,7 @@
                                 </Border.Style>
                             </Border>
                             <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="0" Padding="1" TransparentBack="True"
+                                             Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
                                              IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}">
                                 <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
@@ -1143,7 +1144,8 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <flat:FlatButton x:Name="btnScrollRight" Grid.Column="2" Padding="1" TransparentBack="True" 
+                            <flat:FlatButton x:Name="btnScrollRight" Grid.Column="2" Padding="1" TransparentBack="True"
+                                             Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
                                              IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" >
                                 <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
@@ -1173,7 +1175,6 @@
                                                     </Setter.Value>
                                                 </Setter>
                                                 <!-- style below taken from Menu style -->
-                                                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                 <Setter Property="SnapsToDevicePixels" Value="False" />
                                                 <Setter Property="Template">
                                                     <Setter.Value>
@@ -1347,7 +1348,7 @@
                                                                     <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
                                                                 </Trigger>
                                                                 <Trigger Property="IsEnabled" Value="False">
-                                                                    <Setter Property="Foreground" Value="{Binding Path=ColorScheme.DarkDisabledColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter Property="Opacity" TargetName="HeaderHost" Value="0.6"/>
                                                                 </Trigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
