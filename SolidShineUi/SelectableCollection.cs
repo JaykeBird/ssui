@@ -38,6 +38,70 @@ namespace SolidShineUi
             CollectionChanged += this_CollectionChanged;
         }
 
+        public delegate void ItemRemovingEventHandler(object sender, ItemRemovingEventArgs<T> e);
+
+#if NETCOREAPP
+        public event ItemRemovingEventHandler? ItemRemoving;
+#else
+        public event ItemRemovingEventHandler ItemRemoving;
+#endif
+
+        /// <summary>
+        /// Removes the first occurrence of a specific object in the collection.
+        /// </summary>
+        /// <param name="item">The item to remove.</param>
+        /// <returns><c>true</c> if the item is removed, otherwise <c>false</c>. It may be <c>false</c> if the item isn't actually in the collection or if the removal was cancelled via the ItemRemoving event.</returns>
+        public new bool Remove(T item)
+        {
+            ItemRemovingEventArgs<T> te = new ItemRemovingEventArgs<T>(item);
+
+            ItemRemoving?.Invoke(this, te);
+
+            if (te.Cancel) return false;
+
+            return base.Remove(item);
+        }
+
+        /// <summary>
+        /// Remove the item at the specified index of this collection.
+        /// </summary>
+        /// <param name="index">The index of the item to remove.</param>
+        /// <returns><c>true</c> if the item is removed, otherwise <c>false</c>. It will be <c>false</c> if the removal was cancelled via the ItemRemoving event.</returns>
+        public new bool RemoveAt(int index)
+        {
+            T t = this[index];
+
+            ItemRemovingEventArgs<T> te = new ItemRemovingEventArgs<T>(t);
+
+            ItemRemoving?.Invoke(this, te);
+
+            if (te.Cancel) return false;
+
+            base.RemoveAt(index);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Remove the item at the specified index of this collection.
+        /// </summary>
+        /// <param name="index">The index of the item to remove.</param>
+        /// <returns><c>true</c> if the item is removed, otherwise <c>false</c>. It will be <c>false</c> if the removal was cancelled via the ItemRemoving event.</returns>
+        public new bool RemoveItem(int index)
+        {
+            T t = this[index];
+
+            ItemRemovingEventArgs<T> te = new ItemRemovingEventArgs<T>(t);
+
+            ItemRemoving?.Invoke(this, te);
+
+            if (te.Cancel) return false;
+
+            base.RemoveItem(index);
+
+            return true;
+        }
+
 #if NETCOREAPP
         private void this_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 #else
@@ -238,6 +302,19 @@ namespace SolidShineUi
         public event SelectionChangedEventHandler SelectionChanged;
 #endif
     }
+
+    public class ItemRemovingEventArgs<T>
+    {
+        public ItemRemovingEventArgs(T item)
+        {
+            Item = item;
+        }
+
+        public T Item { get; private set; }
+
+        public bool Cancel { get; set; }
+    }
+
 
     public class SelectionChangedEventArgs<T>
     {

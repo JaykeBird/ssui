@@ -21,7 +21,7 @@
                         <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png">
                             <TextBlock Text="Tab 1" />
                         </flat:TabItem>
-                        <flat:TabItem Title="Tab 2">
+                        <flat:TabItem Title="Tab 2" ShowIcon="False" >
                             <TextBlock Text="Tab 2" />
                         </flat:TabItem>
                     </flat:TabControl.Items>
@@ -33,7 +33,11 @@
                 <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
                 <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="130" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Current Tab</flat:FlatButton>
             </StackPanel>
-            <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged" Grid.Row="2" />
+            <StackPanel Grid.Row="2" Margin="20,0" Orientation="Horizontal" VerticalAlignment="Center" >
+                <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged" />
+                <TextBlock Margin="10,0,5,0" Text="Action on selected tab close:" />
+                <flat:EnumComboBox Enum="{x:Type flat:SelectedTabCloseAction}" x:Name="cbbSelectTabClose" SelectedIndex="0" SelectionChanged="cbbSelectTabClose_SelectionChanged" />
+            </StackPanel>
         </Grid>
 
     </Grid>

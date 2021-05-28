@@ -187,37 +187,6 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region IsSelected
-
-        private static readonly DependencyPropertyKey IsSelectedPropertyKey = DependencyProperty.RegisterReadOnly("IsSelected", typeof(bool), typeof(TabItem),
-            new PropertyMetadata(false));
-
-        public static readonly DependencyProperty IsSelectedProperty = IsSelectedPropertyKey.DependencyProperty;
-
-
-        [Obsolete("Control selection via the TabControl instead.")]
-        public bool IsSelected
-        {
-            get { return (bool)GetValue(IsSelectedProperty); }
-            protected set { SetValue(IsSelectedPropertyKey, value); }
-        }
-
-        #endregion
-
-        [Obsolete("Control selection via the TabControl instead.")]
-        public void Select()
-        {
-            IsSelected = true;
-            IsSelectedChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        [Obsolete("Control selection via the TabControl instead.")]
-        internal protected void Unselect()
-        {
-            IsSelected = false;
-            IsSelectedChanged?.Invoke(this, EventArgs.Empty);
-        }
-
         #region TabItem
 
         private static readonly DependencyProperty SelfProperty = DependencyProperty.Register("Self", typeof(TabItem), typeof(TabItem),
@@ -327,6 +296,16 @@ namespace SolidShineUi
             VisibilityChanged?.Invoke(this, e);
         }
         #endregion
+
+        /// <summary>
+        /// Close the current tab, if it is currently in a TabControl.
+        /// </summary>
+        public void Close()
+        {
+            InternalTabClosing?.Invoke(this, EventArgs.Empty);
+        }
+
+        internal protected event EventHandler InternalTabClosing;
 
         public bool IsVisible
         {

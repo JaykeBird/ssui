@@ -29,6 +29,7 @@ namespace SolidShineUi
             Items.CanSelectMultiple = false;
             Items.CollectionChanged += Items_CollectionChanged;
             Items.SelectionChanged += items_SelectionChanged;
+            Items.ItemRemoving += Items_ItemRemoving;
 
             InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
             InternalShowTabListMenuChanged += tabControl_InternalShowTabListMenuChanged;
@@ -203,7 +204,88 @@ namespace SolidShineUi
                 }
                 TabChanged?.Invoke(this, new TabItemChangeEventArgs(newItem));
             }
+            else
+            {
+                if (Items.SelectedItems.Count == 0)
+                {
+                    if (ch != null)
+                    {
+                        ch.Child = null;
+                    }
 
+                    if (Items.Count > 0)
+                    {
+                        switch (SelectedTabClosedAction)
+                        {
+                            case SelectedTabCloseAction.SelectNothing:
+                                // nothing to do
+                                break;
+                            case SelectedTabCloseAction.SelectFirstTab:
+                                Items.Select(Items[0]);
+                                break;
+                            case SelectedTabCloseAction.SelectLastTab:
+                                Items.Select(Items[Items.Count - 1]);
+                                break;
+                            case SelectedTabCloseAction.SelectTabToLeft:
+                                if (closedTabIndex == -1)
+                                {
+                                    // most likely closed via Items.Remove command
+                                    Items.Select(Items[0]);
+                                }
+                                else if (closedTabIndex == 0)
+                                {
+                                    // left most tab closed
+                                    Items.Select(Items[0]);
+                                }
+                                else
+                                {
+                                    Items.Select(Items[closedTabIndex - 1]);
+                                }
+                                break;
+                            case SelectedTabCloseAction.SelectTabToRight:
+                                if (closedTabIndex == -1)
+                                {
+                                    // most likely closed via Items.Remove command
+                                    Items.Select(Items[Items.Count - 1]);
+                                }
+                                else
+                                {
+                                    Items.Select(Items[closedTabIndex]);
+                                }
+                                break;
+                            default:
+                                // treat as if SelectNothing
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<TabItem> e)
+        {
+            if (e.Item != null)
+            {
+                TabItemClosingEventArgs ee = new TabItemClosingEventArgs(e.Item);
+                TabClosing?.Invoke(this, ee);
+
+                if (ee.Cancel)
+                {
+                    // don't remove or close anything, just exit
+                    closedTabIndex = -1;
+                    e.Cancel = true;
+                    return;
+                }
+
+                if (Items.SelectedItems.Contains(e.Item) && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
+                {
+                    closedTabIndex = Items.IndexOf(e.Item);
+                }
+                else
+                {
+                    closedTabIndex = -1;
+                }
+            }
         }
 
         //private static readonly DependencyProperty ItemsProperty
@@ -222,12 +304,14 @@ namespace SolidShineUi
         }
 
         public delegate void TabItemChangeEventHandler(object sender, TabItemChangeEventArgs e);
+        public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
 #if NETCOREAPP
         public TabItem? CurrentTab { get => Items.SelectedItems.FirstOrDefault(); }
         public TabItem? SelectedTab { get => CurrentTab; }
 
         public event TabItemChangeEventHandler? TabChanged;
+        public event TabItemClosingEventHandler? TabClosing;
         public event TabItemChangeEventHandler? TabClosed;
         public event EventHandler? TabsCleared;
 #else
@@ -235,6 +319,7 @@ namespace SolidShineUi
         public TabItem SelectedTab { get => CurrentTab; }
 
         public event TabItemChangeEventHandler TabChanged;
+        public event TabItemClosingEventHandler TabClosing;
         public event TabItemChangeEventHandler TabClosed;
         public event EventHandler TabsCleared;
 #endif
@@ -300,6 +385,19 @@ namespace SolidShineUi
         private void tabControl_InternalShowTabListMenuChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ShowTabListMenuChanged?.Invoke(this, e);
+        }
+        #endregion
+
+
+        #region SelectedTabClosedAction
+
+        public static readonly DependencyProperty SelectedTabClosedActionProperty = DependencyProperty.Register("SelectedTabClosedAction", typeof(SelectedTabCloseAction), typeof(TabControl),
+            new PropertyMetadata(SelectedTabCloseAction.SelectTabToLeft));
+
+        public SelectedTabCloseAction SelectedTabClosedAction
+        {
+            get { return (SelectedTabCloseAction)GetValue(SelectedTabClosedActionProperty); }
+            set { SetValue(SelectedTabClosedActionProperty, value); }
         }
         #endregion
 
@@ -373,6 +471,8 @@ namespace SolidShineUi
             }
         }
 
+        int closedTabIndex = -1;
+
 #if NETCOREAPP
         private void tdi_RequestClose(object? sender, EventArgs e)
 #else
@@ -383,11 +483,27 @@ namespace SolidShineUi
             {
                 if (tdi.TabItem != null)
                 {
+                    TabItemClosingEventArgs ee = new TabItemClosingEventArgs(tdi.TabItem);
+                    TabClosing?.Invoke(this, ee);
+
+                    if (ee.Cancel)
+                    {
+                        // don't remove or close anything, just exit
+                        closedTabIndex = -1;
+                        return;
+                    }
+
+                    if (tdi.IsSelected && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
+                    {
+                        closedTabIndex = Items.IndexOf(tdi.TabItem);
+                    }
+                    else
+                    {
+                        closedTabIndex = -1;
+                    }
                     Items.Remove(tdi.TabItem);
                 }
             }
-
-            CheckScrolling();
         }
 
         #region Scrolling
@@ -475,6 +591,18 @@ namespace SolidShineUi
         #endregion
     }
 
+    public class TabItemClosingEventArgs
+    {
+        public TabItemClosingEventArgs(TabItem t)
+        {
+            TabItem = t;
+        }
+
+        public TabItem TabItem { get; private set; }
+
+        public bool Cancel { get; set; } = false;
+    }
+
     public class TabItemChangeEventArgs
     {
         public TabItemChangeEventArgs(TabItem t)
@@ -485,4 +613,12 @@ namespace SolidShineUi
         public TabItem TabItem { get; private set; }
     }
 
+    public enum SelectedTabCloseAction
+    {
+        SelectNothing = 0,
+        SelectFirstTab = 1,
+        SelectLastTab = 2,
+        SelectTabToLeft = 3,
+        SelectTabToRight = 4,
+    }
 }

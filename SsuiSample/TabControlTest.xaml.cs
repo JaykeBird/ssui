@@ -116,5 +116,10 @@ namespace SsuiSample
         {
             tabControl.ShowTabsOnBottom = chkBottom.IsChecked;
         }
+
+        private void cbbSelectTabClose_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            tabControl.SelectedTabClosedAction = cbbSelectTabClose.SelectedEnumValueAsEnum<SelectedTabCloseAction>();
+        }
     }
 }
