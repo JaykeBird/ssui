@@ -305,7 +305,11 @@ namespace SolidShineUi
             InternalTabClosing?.Invoke(this, EventArgs.Empty);
         }
 
+#if NETCOREAPP
+        internal protected event EventHandler? InternalTabClosing;
+#else
         internal protected event EventHandler InternalTabClosing;
+#endif
 
         public bool IsVisible
         {

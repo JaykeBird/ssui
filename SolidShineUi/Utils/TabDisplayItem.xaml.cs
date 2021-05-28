@@ -205,7 +205,7 @@ namespace SolidShineUi.Utils
         #region TabItem
 
         public static readonly DependencyProperty TabItemProperty = DependencyProperty.Register("TabItem", typeof(TabItem), typeof(TabDisplayItem),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, new PropertyChangedCallback(OnInternalTabItemChanged)));
 
         public TabItem TabItem
         {
