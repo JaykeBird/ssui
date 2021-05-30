@@ -5,6 +5,7 @@ using System.Xaml;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.ComponentModel;
 
 namespace SolidShineUi
 {
@@ -30,6 +31,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabItem),
             new PropertyMetadata("New Tab", new PropertyChangedCallback(OnInternalTitleChanged)));
 
+        ///<summary>
+        /// Get or set the title of this tab.
+        ///</summary>
+        [Category("Common")]
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
@@ -62,6 +67,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(TabItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsDirtyChanged)));
 
+        ///<summary>
+        /// Get or set if the tab is dirty. In this current release, this does not make a visual change on the tab.
+        ///</summary>
+        [Category("Common")]
         public bool IsDirty
         {
             get { return (bool)GetValue(IsDirtyProperty); }
@@ -94,6 +103,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register("CanClose", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalCanCloseChanged)));
 
+        ///<summary>
+        /// Get or set if this tab can be closed via the UI (i.e. the close button).
+        ///</summary>
+        [Category("Common")]
         public bool CanClose
         {
             get { return (bool)GetValue(CanCloseProperty); }
@@ -126,6 +139,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowIconChanged)));
 
+        ///<summary>
+        /// Get or set if an icon is shown for this tab. The icon section of the tab will be visible if this is true, even if there is no icon set.
+        ///</summary>
+        [Category("Common")]
         public bool ShowIcon
         {
             get { return (bool)GetValue(ShowIconProperty); }
@@ -160,6 +177,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register("CanSelect", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalCanSelectChanged)));
 
+        ///<summary>
+        /// Get or set whether this tab can be selected via UI.
+        ///</summary>
+        [Category("Common")]
         public bool CanSelect
         {
             get { return (bool)GetValue(CanSelectProperty); }
@@ -206,6 +227,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalIconChanged)));
 
+        ///<summary>
+        /// Get or set the icon to display with this tab.
+        ///</summary>
+        [Category("Common")]
         public ImageSource Icon
         {
             get { return (ImageSource)GetValue(IconProperty); }
@@ -238,6 +263,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(UIElement), typeof(TabItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalContentChanged)));
 
+        ///<summary>
+        /// Get or set the content to display when this tab is selected.
+        ///</summary>
+        [Category("Common")]
         public UIElement Content
         {
             get { return (UIElement)GetValue(ContentProperty); }
@@ -270,6 +299,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(TabItem),
             new PropertyMetadata(System.Windows.Visibility.Visible, new PropertyChangedCallback(OnInternalVisibilityChanged)));
 
+        ///<summary>
+        /// Get or set if this tab is visually displayed in the UI.
+        ///</summary>
+        [Category("Appearance")]
         public Visibility Visibility
         {
             get { return (Visibility)GetValue(VisibilityProperty); }
@@ -311,6 +344,10 @@ namespace SolidShineUi
         internal protected event EventHandler InternalTabClosing;
 #endif
 
+        ///<summary>
+        /// Get or set if this tab is visible in the UI.
+        ///</summary>
+        [Category("Appearance")]
         public bool IsVisible
         {
             get

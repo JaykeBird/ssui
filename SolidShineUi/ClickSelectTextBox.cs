@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -30,6 +31,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set whether all text will be selected when the text box receives focus.
         /// </summary>
+        [Category("Common")]
         public bool SelectOnFocus { get; set; } = true;
 
         /// <summary>

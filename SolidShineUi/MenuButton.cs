@@ -90,6 +90,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
         /// </summary>
+        [Category("Common")]
         public bool StaysOpen
         {
             get
@@ -110,6 +111,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
         /// </summary>
+        [Category("Common")]
         public bool ShowMenuArrow
         {
             get => (bool)GetValue(ShowMenuArrowProperty);

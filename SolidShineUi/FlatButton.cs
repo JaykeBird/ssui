@@ -222,6 +222,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the color scheme to use with the button.
         /// </summary>
+        [Category("Appearance")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -661,6 +662,7 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
         /// </summary>
+        [Category("Common")]
         public bool SelectOnClick
         {
             get => (bool)GetValue(SelectOnClickProperty);

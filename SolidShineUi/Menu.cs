@@ -48,6 +48,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Appearance")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);

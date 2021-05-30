@@ -47,6 +47,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Appearance")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -181,6 +182,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if the context menu has rounded corners.
         /// </summary>
+        [Category("Appearance")]
         public bool RoundedCorners
         {
             get
@@ -197,6 +199,7 @@ namespace SolidShineUi
         /// Get or set if a vertical scroll bar is visible for the context menu.
         /// If the context menu is longer than the screen, the scroll bar can be used.
         /// </summary>
+        [Category("Appearance")]
         public System.Windows.Controls.ScrollBarVisibility VerticalScrollBarVisibility
         {
             get

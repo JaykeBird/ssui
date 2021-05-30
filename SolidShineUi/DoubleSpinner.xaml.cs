@@ -159,6 +159,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Common")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -257,6 +258,7 @@ namespace SolidShineUi
             "BorderDisabledBrush", typeof(Brush), typeof(DoubleSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
+        [Category("Brushes")]
         public Brush ButtonBackground
         {
             get
@@ -269,6 +271,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Brushes")]
         public Brush DisabledBrush
         {
             get
@@ -281,6 +284,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Brushes")]
         public new Brush BorderBrush
         {
             get
@@ -293,6 +297,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Brushes")]
         public Brush HighlightBrush
         {
             get
@@ -305,6 +310,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Brushes")]
         public Brush ClickBrush
         {
             get
@@ -317,6 +323,7 @@ namespace SolidShineUi
             }
         }
 
+        [Category("Brushes")]
         public Brush BorderDisabledBrush
         {
             get
@@ -339,6 +346,10 @@ namespace SolidShineUi
             "Value", typeof(double), typeof(DoubleSpinner),
             new PropertyMetadata(0d, new PropertyChangedCallback(OnValueChanged)));
 
+        ///<summary>
+        /// Get or set the value of the spinner.
+        ///</summary>
+        [Category("Common")]
         public double Value
         {
             get => (double)GetValue(ValueProperty);
@@ -410,6 +421,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(0.1d));
 
+        ///<summary>
+        /// Get or set how much to change the value by when you press the up or down button.
+        ///</summary>
+        [Category("Common")]
         public double Step
         {
             get => (double)GetValue(StepProperty);
@@ -423,6 +438,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty DecimalsProperty = DependencyProperty.Register(
             "Decimals", typeof(int), typeof(DoubleSpinner), new PropertyMetadata(2));
 
+        ///<summary>
+        /// Get or set how many decimal places to display. Values entered with a more precise decimal point will be rounded.
+        ///</summary>
+        [Category("Common")]
         public int Decimals
         {
             get => (int)GetValue(DecimalsProperty);
@@ -436,6 +455,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(double.MinValue));
 
+        ///<summary>
+        /// Get or set the minimum value allowed for this spinner (inclusive).
+        ///</summary>
+        [Category("Common")]
         public double MinValue
         {
             get { return (double)GetValue(MinValueProperty); }
@@ -453,6 +476,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(double.MaxValue));
 
+        ///<summary>
+        /// Get or set the maximum value allowed for this spinner (inclusive).
+        ///</summary>
+        [Category("Common")]
         public double MaxValue
         {
             get { return (double)GetValue(MaxValueProperty); }
@@ -500,6 +527,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.
         /// </summary>
+        [Category("Common")]
         public double RepeatDelay
         {
             get => (double)GetValue(RepeatDelayProperty);
@@ -542,6 +570,7 @@ namespace SolidShineUi
             RaiseEvent(re);
         }
 
+        [Category("Appearance")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -562,6 +591,7 @@ namespace SolidShineUi
         /// <remarks>
         /// See the <see cref="ArithmeticParser"/> class for more info about how expressions are parsed.
         /// </remarks>
+        [Category("Common")]
         public bool AcceptExpressions
         {
             get => (bool)GetValue(AcceptExpressionsProperty);
@@ -603,8 +633,9 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.
+        /// Get or set whether the up and down arrow buttons are shown.
         /// </summary>
+        [Category("Common")]
         public bool ShowArrows
         {
             get => (bool)GetValue(ShowArrowsProperty);
