@@ -100,6 +100,7 @@ You can use the included SsuiSample app as an example to get started with.
 - **Menu** - a menu bar and menu with a flat, colored style
 - **MenuButton** - a flat-styled button that opens a menu when you click on it
 - **SelectPanel** - a powerful panel to easily manage a list and select items from it
+- **TabControl** - a flat-styled tab control, where each tab has a title, icon, and close button
 
 ### Other Classes
 
@@ -114,10 +115,11 @@ You can use the included SsuiSample app as an example to get started with.
 - **ImageColorPicker** - select colors from an image, used in the ColorPickerDialog
 - **SelectableItem** - a type of SelectableUserControl; a basic but powerful control to use to display items in SelectPanel
 - **SelectableUserControl** - the base class from which you can create your own controls to use with a SelectPanel
+- **TabItem** - a tab to use with the TabControl
 
 ## Coming Soon
 
-More controls (including **TabControl** and **Toolbar**) are coming soon! View the [roadmap](Docs/ROADMAP.md) for more details.
+More controls (including **PropertyList** and **Toolbar**) are coming soon! View the [roadmap](Docs/ROADMAP.md) for more details.
 
 ## Building/Testing
 

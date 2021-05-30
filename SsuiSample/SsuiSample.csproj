@@ -21,17 +21,4 @@
     <Resource Include="Resources\Images\SmileyColor.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="TabControlTest.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="TabControlTest.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
 </Project>
