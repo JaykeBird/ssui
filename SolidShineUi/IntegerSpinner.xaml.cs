@@ -780,21 +780,28 @@ namespace SolidShineUi
 
         private void AdvanceTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            Dispatcher.Invoke(() =>
+            try
             {
-                if (advanceStepUp)
+                Dispatcher.Invoke(() =>
                 {
-                    if (Value < MaxValue) Value += Step;
-                    else Value = MaxValue;
-                }
-                else
-                {
-                    if (Value > MinValue) Value -= Step;
-                    else Value = MinValue;
-                }
+                    if (advanceStepUp)
+                    {
+                        if (Value < MaxValue) Value += Step;
+                        else Value = MaxValue;
+                    }
+                    else
+                    {
+                        if (Value > MinValue) Value -= Step;
+                        else Value = MinValue;
+                    }
 
-                UpdateUI();
-            }, System.Windows.Threading.DispatcherPriority.Input);
+                    UpdateUI();
+                }, System.Windows.Threading.DispatcherPriority.Input);
+            }
+            catch (TaskCanceledException)
+            {
+                advanceTimer.Stop();
+            }
         }
 
         private void btnUp_MouseEnter(object sender, MouseEventArgs e)
@@ -805,6 +812,7 @@ namespace SolidShineUi
         private void btnUp_MouseLeave(object sender, MouseEventArgs e)
         {
             btnUp.Background = ButtonBackground;
+            if (advanceStepUp) advanceTimer.Stop();
             UpdateUI();
         }
 
@@ -816,6 +824,7 @@ namespace SolidShineUi
         private void btnDown_MouseLeave(object sender, MouseEventArgs e)
         {
             btnDown.Background = ButtonBackground;
+            if (!advanceStepUp) advanceTimer.Stop();
             UpdateUI();
         }
 
