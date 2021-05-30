@@ -16,7 +16,7 @@
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Border Background="#77FFFFFF" BorderThickness="1" BorderBrush="Black" Margin="20,10,20,20">
-                <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >
+                <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" >
                     <flat:TabControl.Items>
                         <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png">
                             <TextBlock Text="Tab 1" />
@@ -33,11 +33,17 @@
                 <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
                 <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="130" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Current Tab</flat:FlatButton>
             </StackPanel>
-            <StackPanel Grid.Row="2" Margin="20,0" Orientation="Horizontal" VerticalAlignment="Center" >
-                <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged" />
-                <TextBlock Margin="10,0,5,0" Text="Action on selected tab close:" />
-                <flat:EnumComboBox Enum="{x:Type flat:SelectedTabCloseAction}" x:Name="cbbSelectTabClose" SelectedIndex="0" SelectionChanged="cbbSelectTabClose_SelectionChanged" />
-            </StackPanel>
+            <ScrollViewer Grid.Row="2" Margin="20,0" VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
+                <StackPanel Orientation="Horizontal" >
+                    <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged"
+                                   ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" />
+                    <TextBlock Margin="10,0,5,0" Text="Action on selected tab close:" VerticalAlignment="Center" />
+                    <flat:EnumComboBox Enum="{x:Type flat:SelectedTabCloseAction}" x:Name="cbbSelectTabClose" SelectedIndex="0" SelectionChanged="cbbSelectTabClose_SelectionChanged" />
+                    <TextBlock Margin="10,0,5,0" Text="Minimum tab width:" VerticalAlignment="Center" />
+                    <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" />
+                </StackPanel>
+            </ScrollViewer>
+
         </Grid>
 
     </Grid>

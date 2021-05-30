@@ -9,6 +9,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
+using System.ComponentModel;
 
 namespace SolidShineUi
 {
@@ -33,6 +34,7 @@ namespace SolidShineUi
 
             InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
             InternalShowTabListMenuChanged += tabControl_InternalShowTabListMenuChanged;
+            InternalTabMinWidthChanged += tabControl_InternalTabMinWidthChanged;
 
             CommandBindings.Add(new CommandBinding(TabListMenuItemClick, OnTabListMenuItemClick));
             CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
@@ -297,6 +299,7 @@ namespace SolidShineUi
 
         //public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
+        [Category("Common")]
         public SelectableCollection<TabItem> Items
         {
             get { return (SelectableCollection<TabItem>)GetValue(ItemsProperty); }
@@ -307,6 +310,7 @@ namespace SolidShineUi
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
 #if NETCOREAPP
+        [Category("Common")]
         public TabItem? CurrentTab { get => Items.SelectedItems.FirstOrDefault(); }
         public TabItem? SelectedTab { get => CurrentTab; }
 
@@ -315,6 +319,7 @@ namespace SolidShineUi
         public event TabItemChangeEventHandler? TabClosed;
         public event EventHandler? TabsCleared;
 #else
+        [Category("Common")]
         public TabItem CurrentTab { get; protected set; } = null;
         public TabItem SelectedTab { get => CurrentTab; }
 
@@ -329,6 +334,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
 
+        [Category("Common")]
         public bool ShowTabsOnBottom
         {
             get { return (bool)GetValue(ShowTabsOnBottomProperty); }
@@ -361,6 +367,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
 
+        [Category("Common")]
         public bool ShowTabListMenu
         {
             get { return (bool)GetValue(ShowTabListMenuProperty); }
@@ -388,6 +395,54 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region TabMinWidth
+
+        public static readonly DependencyProperty TabMinWidthProperty = DependencyProperty.Register("TabMinWidth", typeof(double), typeof(TabControl),
+            new PropertyMetadata(120.0d, new PropertyChangedCallback(OnInternalTabMinWidthChanged)));
+
+        [Category("Layout")]
+        public double TabMinWidth
+        {
+            get { return (double)GetValue(TabMinWidthProperty); }
+            set { SetValue(TabMinWidthProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalTabMinWidthChanged;
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? TabMinWidthChanged;
+#else
+        public event DependencyPropertyChangedEventHandler TabMinWidthChanged;
+#endif
+
+        private static void OnInternalTabMinWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl s)
+            {
+                s.InternalTabMinWidthChanged?.Invoke(s, e);
+            }
+        }
+        private void tabControl_InternalTabMinWidthChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            TabMinWidthChanged?.Invoke(this, e);
+
+            if (ic != null)
+            {
+                for (int i = 0; i < ic.Items.Count; i++)
+                {
+                    // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
+                    // from https://stackoverflow.com/a/1876534/2987285
+                    ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+                    c.ApplyTemplate();
+
+                    if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+                    {
+                        tb.MinWidth = (double)e.NewValue;
+                    }
+                }
+            }
+        }
+        #endregion
 
         #region SelectedTabClosedAction
 
@@ -432,6 +487,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the color scheme to apply to the window.
         /// </summary>
+        [Category("Appearance")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -452,6 +508,7 @@ namespace SolidShineUi
         {
             tdi.RequestClose += tdi_RequestClose;
             tdi.Click += tdi_Click;
+            tdi.MinWidth = TabMinWidth;
 
             CheckScrolling();
         }
