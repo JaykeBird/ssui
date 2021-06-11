@@ -12,13 +12,17 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 - Release version 1.7
   - NuGet support
   - .NET 5.0 support
-
-## Very soon
-
 - Release version 1.8
   - Keyboard shortcut classes
   - Improvements to FontSelectDialog
   - TabControl is now ready!
+
+## Very soon
+
+- Release version 1.8.1
+  - Bug fixes
+  - Additional features for TabControl and TabItem
+  - Additional XML comments for code
 
 ## 2021 (later)
 
