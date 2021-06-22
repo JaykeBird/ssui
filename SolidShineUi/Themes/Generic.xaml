@@ -65,7 +65,7 @@
                         <!-- Captions Buttons to control the window borderless-->
                         <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" >
                             <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
-                                    Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}" 
+                                    Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}"
                                     WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
                             <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
                                 SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
@@ -158,11 +158,11 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type MenuItem}">
                             <!--Border 1-->
-                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" 
+                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent"
                                     BorderThickness="1" SnapsToDevicePixels="False">
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto" 
+                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
                                                           SharedSizeGroup="MenuItemIconColumnGroup"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
@@ -176,7 +176,7 @@
                                                     Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
                                             <!--
                                             M 2,4 C 2,4 3,5 5,13 C 5,13 5,3 12,0
-                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0 
+                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0
                                             M 1,2 C 1,2 1.5,2.5 2.5,6.5 C 2.5,6.5 2.5,1.5 6,0
                                             -->
                                             <ContentPresenter x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -184,27 +184,27 @@
                                         </Grid>
                                     </Border>
 
-                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}" 
-                                                      x:Name="HeaderHost" RecognizesAccessKey="True" 
+                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}"
+                                                      x:Name="HeaderHost" RecognizesAccessKey="True"
                                                       ContentSource="Header" VerticalAlignment="Center"/>
-                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost" 
+                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost"
                                                       ContentSource="InputGestureText" VerticalAlignment="Center"/>
                                     <Grid Grid.Column="3" Margin="4,0,6,0" x:Name="ArrowPanel" VerticalAlignment="Center">
-                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center"
                                               Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
                                     </Grid>
-                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                            Placement="Right" HorizontalOffset="-1" x:Name="SubMenuPopup" Focusable="false"
                                            PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                                            AllowsTransparency="True">
                                         <Grid Margin="0,0,5,5">
                                             <!--Border 2-->
-                                            <Border x:Name="SubMenuBorder" 
+                                            <Border x:Name="SubMenuBorder"
                                                     BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"
-                                                    BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" 
+                                                    BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"
                                                     SnapsToDevicePixels="True">
                                                 <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
-                                                    <StackPanel IsItemsHost="True" 
+                                                    <StackPanel IsItemsHost="True"
                                                                 KeyboardNavigation.DirectionalNavigation="Cycle"/>
                                                 </Grid>
                                                 <Border.Effect>
@@ -212,8 +212,8 @@
                                                 </Border.Effect>
                                             </Border>
                                             <!--Border 3-->
-                                            <Border Margin="1,-5,1,0" x:Name="TransitionBorder" Width="0" Height="7" 
-                                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                            <Border Margin="1,-5,1,0" x:Name="TransitionBorder" Width="0" Height="7"
+                                                    VerticalAlignment="Top" HorizontalAlignment="Left"
                                                     Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" SnapsToDevicePixels="False"
                                                     BorderThickness="1,0" BorderBrush="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                         </Grid>
@@ -396,11 +396,11 @@
                         <ControlTemplate TargetType="{x:Type MenuItem}">
                             <!--Border 1-->
                             <!-- individual menu item (top-level menu) -->
-                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" 
+                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent"
                                     BorderThickness="1" SnapsToDevicePixels="False">
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto" 
+                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
                                                           SharedSizeGroup="MenuItemIconColumnGroup"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
@@ -414,34 +414,34 @@
                                                     Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
                                             <!--
                                             M 2,4 C 2,4 3,5 5,13 C 5,13 5,3 12,0
-                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0 
+                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0
                                             M 1,2 C 1,2 1.5,2.5 2.5,6.5 C 2.5,6.5 2.5,1.5 6,0
                                             -->
                                             <ContentPresenter x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center"
                                                           ContentSource="Icon"/>
                                         </Grid>
                                     </Border>
-                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}" 
-                                                      x:Name="HeaderHost" RecognizesAccessKey="True" 
+                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}"
+                                                      x:Name="HeaderHost" RecognizesAccessKey="True"
                                                       ContentSource="Header" VerticalAlignment="Center"/>
-                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost" 
+                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost"
                                                       ContentSource="InputGestureText" VerticalAlignment="Center"/>
                                     <Grid Grid.Column="3" Margin="4,0,6,0" x:Name="ArrowPanel" VerticalAlignment="Center">
-                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center"
                                               Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
                                     </Grid>
-                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                            Placement="Right" HorizontalOffset="-1" x:Name="SubMenuPopup" Focusable="false"
                                            PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                                            AllowsTransparency="True">
                                         <Grid Margin="0,0,5,5">
                                             <!--Border 2-->
-                                            <Border x:Name="SubMenuBorder" 
+                                            <Border x:Name="SubMenuBorder"
                                                     BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
-                                                    BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" 
+                                                    BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
                                                     SnapsToDevicePixels="True">
                                                 <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
-                                                    <StackPanel IsItemsHost="True" 
+                                                    <StackPanel IsItemsHost="True"
                                                                 KeyboardNavigation.DirectionalNavigation="Cycle"/>
                                                 </Grid>
                                                 <Border.Effect>
@@ -450,8 +450,8 @@
                                             </Border>
                                             <!--Border 3-->
                                             <!--
-                                            <Border Margin="1,0,0,0" x:Name="TransitionBorder" Width="0" Height="2" 
-                                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                            <Border Margin="1,0,0,0" x:Name="TransitionBorder" Width="0" Height="2"
+                                                    VerticalAlignment="Top" HorizontalAlignment="Left"
                                                     Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" SnapsToDevicePixels="False"
                                                     BorderThickness="1" BorderBrush="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>-->
                                         </Grid>
@@ -595,11 +595,11 @@
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <!--<Border Name="DropShadowBorder" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}" 
+                        <!--<Border Name="DropShadowBorder" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}"
                             BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}" BorderThickness="7" OpacityMask="{x:Null}" >
                         </Border>-->
-                        <Border Name="Border" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" 
-                            BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" 
+                        <Border Name="Border" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
+                            BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
                                 BorderThickness="1" Padding="1" OpacityMask="{x:Null}" >
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
                                 <ScrollViewer.Style>
@@ -1017,7 +1017,7 @@
         </Setter>
         <!--<Style.Triggers>
             <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
-                
+
             </DataTrigger>
         </Style.Triggers>-->
     </Style>
@@ -1150,8 +1150,8 @@
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" >
                                 <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>
-                            <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="3" Padding="0" MinWidth="24" TransparentBack="True" ToolTip="Tab List"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"  
+                            <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="3" Padding="0" MinWidth="20" Width="20" TransparentBack="True" ToolTip="Tab List" ShowMenuArrow="False"
+                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              Visibility="{Binding ShowTabListMenu, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource VisConverter}}">
                                 <flat:MenuButton.Menu>
                                     <flat:ContextMenu ItemsSource="{TemplateBinding Items}">
@@ -1167,7 +1167,7 @@
                                         </flat:ContextMenu.ItemTemplate>
                                         <flat:ContextMenu.ItemContainerStyle>
                                             <Style TargetType="MenuItem">
-                                                <Setter Property="CommandParameter" Value="{Binding Self}" />
+                                                <Setter Property="CommandParameter" Value="{Binding .}" />
                                                 <Setter Property="Command" Value="{x:Static flat:TabControl.TabListMenuItemClick}" />
                                                 <Setter Property="Icon">
                                                     <Setter.Value>
@@ -1180,11 +1180,11 @@
                                                     <Setter.Value>
                                                         <ControlTemplate TargetType="{x:Type MenuItem}">
                                                             <!--Border 1-->
-                                                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" 
+                                                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent"
                                     BorderThickness="1" SnapsToDevicePixels="False">
                                                                 <Grid x:Name="Grid">
                                                                     <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto" 
+                                                                        <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
                                                           SharedSizeGroup="MenuItemIconColumnGroup"/>
                                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
                                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
@@ -1198,7 +1198,7 @@
                                                     Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}" />
                                                                             <!--
                                             M 2,4 C 2,4 3,5 5,13 C 5,13 5,3 12,0
-                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0 
+                                            M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0
                                             M 1,2 C 1,2 1.5,2.5 2.5,6.5 C 2.5,6.5 2.5,1.5 6,0
                                             -->
                                                                             <ContentPresenter x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -1206,27 +1206,27 @@
                                                                         </Grid>
                                                                     </Border>
 
-                                                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}" 
-                                                      x:Name="HeaderHost" RecognizesAccessKey="True" 
+                                                                    <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}"
+                                                      x:Name="HeaderHost" RecognizesAccessKey="True"
                                                       ContentSource="Header" VerticalAlignment="Center"/>
-                                                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost" 
+                                                                    <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost"
                                                       ContentSource="InputGestureText" VerticalAlignment="Center"/>
                                                                     <Grid Grid.Column="3" Margin="4,0,6,0" x:Name="ArrowPanel" VerticalAlignment="Center">
-                                                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                                        <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center"
                                               Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
                                                                     </Grid>
-                                                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                                    <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                            Placement="Right" HorizontalOffset="-1" x:Name="SubMenuPopup" Focusable="false"
                                            PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                                            AllowsTransparency="True">
                                                                         <Grid Margin="0,0,5,5">
                                                                             <!--Border 2-->
-                                                                            <Border x:Name="SubMenuBorder" 
+                                                                            <Border x:Name="SubMenuBorder"
                                                     BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"
-                                                    BorderThickness="1" Background="{Binding Path=ColorScheme.LightBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" 
+                                                    BorderThickness="1" Background="{Binding Path=ColorScheme.LightBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"
                                                     SnapsToDevicePixels="True">
                                                                                 <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
-                                                                                    <StackPanel IsItemsHost="True" 
+                                                                                    <StackPanel IsItemsHost="True"
                                                                 KeyboardNavigation.DirectionalNavigation="Cycle"/>
                                                                                 </Grid>
                                                                                 <Border.Effect>
@@ -1234,8 +1234,8 @@
                                                                                 </Border.Effect>
                                                                             </Border>
                                                                             <!--Border 3-->
-                                                                            <Border Margin="1,-5,1,0" x:Name="TransitionBorder" Width="0" Height="7" 
-                                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                                                            <Border Margin="1,-5,1,0" x:Name="TransitionBorder" Width="0" Height="7"
+                                                    VerticalAlignment="Top" HorizontalAlignment="Left"
                                                     Background="{Binding Path=ColorScheme.LightBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" SnapsToDevicePixels="False"
                                                     BorderThickness="1,0" BorderBrush="{Binding Path=ColorScheme.LightBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
                                                                         </Grid>
@@ -1373,6 +1373,7 @@
                                         </flat:ContextMenu.ItemContainerStyle>
                                     </flat:ContextMenu>
                                 </flat:MenuButton.Menu>
+                                <Path Data="M0,0 L8,0 4,4 z" Fill="Black" Stroke="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Height="5" Width="8" Margin="0" Stretch="Fill" />
                             </flat:MenuButton>
                         </Grid>
 

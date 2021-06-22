@@ -508,9 +508,34 @@ namespace SolidShineUi
         {
             tdi.RequestClose += tdi_RequestClose;
             tdi.Click += tdi_Click;
+            tdi.RightClick += tdi_RightClick;
+            tdi.TabItemDrop += tdi_TabItemDrop;
             tdi.MinWidth = TabMinWidth;
 
             CheckScrolling();
+        }
+
+#if NETCOREAPP
+        private void tdi_RightClick(object? sender, EventArgs e)
+#else
+        private void tdi_RightClick(object sender, EventArgs e)
+#endif
+        {
+            if (sender is TabDisplayItem tdi)
+            {
+                if (tdi.TabItem.TabContextMenu != null)
+                {
+                    ContextMenu cm = tdi.TabItem.TabContextMenu;
+                    cm.ColorScheme = ColorScheme;
+                    cm.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+                    cm.IsOpen = true;
+                }
+            }
+        }
+
+        private void tdi_TabItemDrop(object sender, TabItemChangeEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
 #if NETCOREAPP
@@ -563,9 +588,9 @@ namespace SolidShineUi
             }
         }
 
-        #region Scrolling
+#region Scrolling
 
-        #region ScrollButtons
+#region ScrollButtons
 
         private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("ScrollButtonsVisible", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false));
@@ -577,7 +602,7 @@ namespace SolidShineUi
             get { return (bool)GetValue(ScrollButtonsVisibleProperty); }
             private set { SetValue(ScrollButtonsVisiblePropertyKey, value); }
         }
-        #endregion
+#endregion
 
         public static readonly RoutedCommand TabBarScrollCommand = new RoutedCommand("TabBarScrollCommand", typeof(TabControl));
 
@@ -645,7 +670,7 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+#endregion
     }
 
     public class TabItemClosingEventArgs

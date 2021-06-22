@@ -19,11 +19,15 @@ namespace SolidShineUi.Utils
         public event EventHandler? RequestClose;
         public event EventHandler? RightClick;
         public event EventHandler? Click;
+        public event TabItemDropEventHandler? TabItemDrop;
 #else
         public event EventHandler RequestClose;
         public event EventHandler RightClick;
         public event EventHandler Click;
+        public event TabItemDropEventHandler TabItemDrop;
 #endif
+
+        public delegate void TabItemDropEventHandler(object sender, TabItemChangeEventArgs e);
 
         public Brush HighlightBrush { get; set; } = new SolidColorBrush(Colors.LightGray);
         public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
@@ -585,5 +589,68 @@ namespace SolidShineUi.Utils
 
             }
         }
+
+        #region Drag and Drop
+        private void control_DragEnter(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void control_Drop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void control_DragLeave(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void brdrDragLeft_DragEnter(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void brdrDragLeft_DragLeave(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void brdrDragRght_DragEnter(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void brdrDragRght_DragLeave(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void brdrDragLeft_Drop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void brdrDragRght_Drop(object sender, DragEventArgs e)
+        {
+
+        }
+        #endregion
+    }
+
+    public class TabItemDropEventArgs
+    {
+        public TabItemDropEventArgs(TabItem sourceTabItem, TabItem droppedTabItem, bool before)
+        {
+            SourceTabItem = sourceTabItem;
+            DroppedTabItem = droppedTabItem;
+            Before = before;
+        }
+
+        public TabItem SourceTabItem { get; private set; }
+
+        public TabItem DroppedTabItem { get; private set; }
+
+        public bool Before { get; private set; }
     }
 }

@@ -1,4 +1,7 @@
 ﻿[*.cs]
 
 # RXRA001: Property can be expanded
-dotnet_diagnostic.RXRA001.severity = silent
+dotnet_diagnostic.RXRA001.severity = none
+
+# RXRA004: Property can be expanded
+dotnet_diagnostic.RXRA004.severity = silent

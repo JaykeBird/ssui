@@ -133,7 +133,7 @@ namespace SolidShineUi
             CanCloseChanged?.Invoke(this, e);
         }
         #endregion
-        
+
         #region ShowIcon
 
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(TabItem),
@@ -170,8 +170,6 @@ namespace SolidShineUi
         }
         #endregion
 
-        //internal TabItem Self { get => this; }
-
         #region CanSelect
 
         public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register("CanSelect", typeof(bool), typeof(TabItem),
@@ -207,20 +205,6 @@ namespace SolidShineUi
             CanSelectChanged?.Invoke(this, e);
         }
         #endregion
-
-        //#region TabItem
-
-        //private static readonly DependencyProperty SelfProperty = DependencyProperty.Register("Self", typeof(TabItem), typeof(TabItem),
-        //    new PropertyMetadata(null));
-
-        ////public static readonly DependencyProperty TabItemProperty = TabItemPropertyKey.DependencyProperty;
-
-        //public TabItem Self
-        //{
-        //    get { return (TabItem)GetValue(SelfProperty); }
-        //    set { SetValue(SelfProperty, value); }
-        //}
-        //#endregion
 
         #region Icon
 
@@ -328,6 +312,45 @@ namespace SolidShineUi
         {
             VisibilityChanged?.Invoke(this, e);
         }
+        #endregion
+
+        #region TabContextMenu
+
+        public static readonly DependencyProperty TabContextMenuProperty = DependencyProperty.Register("TabContextMenu", typeof(ContextMenu), typeof(TabItem),
+            new PropertyMetadata(null));
+
+#if NETCOREAPP
+        /// <summary>
+        /// Get or set the menu that appears when you right-click on the tab in the TabControl.
+        /// </summary>
+        [Category("Common")]
+        public ContextMenu? TabContextMenu
+        {
+            get { return (ContextMenu)GetValue(TabContextMenuProperty); }
+            set { SetValue(TabContextMenuProperty, value); }
+        }
+
+        ///// <summary>
+        ///// This event is raised when this MenuButtons's menu is closed.
+        ///// </summary>
+        //public EventHandler? TabContextMenuClosed;
+#else
+        /// <summary>
+        /// Get or set the menu that appears when you right-click on the tab in the TabControl.
+        /// </summary>
+        [Category("Common")]
+        public ContextMenu TabContextMenu
+        {
+            get { return (ContextMenu)GetValue(TabContextMenuProperty); }
+            set { SetValue(TabContextMenuProperty, value); }
+        }
+
+        ///// <summary>
+        ///// This event is raised when this MenuButtons's menu is closed.
+        ///// </summary>
+        //public EventHandler MenuClosed;
+#endif
+
         #endregion
 
         /// <summary>
