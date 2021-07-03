@@ -37,13 +37,10 @@ namespace SolidShineUi
         }
 
 
-        #region ShowTabListMenu
+        #region Menu
 
         public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(MenuButton),
             new PropertyMetadata(null));
-
-
-        #endregion
 
 #if NETCOREAPP
         /// <summary>
@@ -76,6 +73,9 @@ namespace SolidShineUi
         /// </summary>
         public EventHandler MenuClosed;
 #endif
+
+        #endregion
+
 
         /// <summary>
         /// Get or set the placement mode for the MenuButton's menu.
@@ -116,6 +116,20 @@ namespace SolidShineUi
         {
             get => (bool)GetValue(ShowMenuArrowProperty);
             set => SetValue(ShowMenuArrowProperty, value);
+        }
+
+        public static readonly DependencyProperty KeepMenuArrowOnRightProperty = DependencyProperty.Register(
+            "KeepMenuArrowOnRight", typeof(bool), typeof(MenuButton),
+            new PropertyMetadata(false));
+
+        /// <summary>
+        /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned.
+        /// </summary>
+        [Category("Common")]
+        public bool KeepMenuArrowOnRight
+        {
+            get => (bool)GetValue(KeepMenuArrowOnRightProperty);
+            set => SetValue(KeepMenuArrowOnRightProperty, value);
         }
 
         public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
