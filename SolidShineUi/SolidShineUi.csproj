@@ -12,9 +12,9 @@
     <Product>SolidShineUi</Product>
     <Description>A collection of UI controls and helper classes with consistent and customizable theming.</Description>
     <Copyright>Copyright 2018-2021 Jayke R. Huempfner, other contributors</Copyright>
-    <Version>1.8.0</Version>
-    <AssemblyVersion>1.8.0.0</AssemblyVersion>
-    <FileVersion>1.8.0.0</FileVersion>
+    <Version>1.8.1</Version>
+    <AssemblyVersion>1.8.1.0</AssemblyVersion>
+    <FileVersion>1.8.1.0</FileVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>Jayke R. Huempfner, other contributors</Authors>
@@ -28,7 +28,12 @@
     <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Version 1.8
+    <PackageReleaseNotes>Version 1.8.1
+- Fixed bugs with TabControl's TabListMenu
+- Added TabContextMenu property to TabItem
+- Added KeepMenuArrowOnRight property to MenuButton
+
+        Version 1.8
 - Added keyboard shortcut handling system, via SolidShineUi.KeyboardShortcuts namespace. See website for easy setup document!
 - TabControl is now ready to go! Moved out of Experimental namespace.
 - Additional appearance properties for ColorPickerDialog and FontSelectDialog.
