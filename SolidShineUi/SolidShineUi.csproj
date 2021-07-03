@@ -33,7 +33,7 @@
 - Added TabContextMenu property to TabItem
 - Added KeepMenuArrowOnRight property to MenuButton
 
-        Version 1.8
+Version 1.8
 - Added keyboard shortcut handling system, via SolidShineUi.KeyboardShortcuts namespace. See website for easy setup document!
 - TabControl is now ready to go! Moved out of Experimental namespace.
 - Additional appearance properties for ColorPickerDialog and FontSelectDialog.
