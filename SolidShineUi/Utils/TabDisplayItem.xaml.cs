@@ -19,12 +19,12 @@ namespace SolidShineUi.Utils
         public event EventHandler? RequestClose;
         public event EventHandler? RightClick;
         public event EventHandler? Click;
-        public event TabItemDropEventHandler? TabItemDrop;
+        //public event TabItemDropEventHandler? TabItemDrop;
 #else
         public event EventHandler RequestClose;
         public event EventHandler RightClick;
         public event EventHandler Click;
-        public event TabItemDropEventHandler TabItemDrop;
+        //public event TabItemDropEventHandler TabItemDrop;
 #endif
 
         public delegate void TabItemDropEventHandler(object sender, TabItemChangeEventArgs e);

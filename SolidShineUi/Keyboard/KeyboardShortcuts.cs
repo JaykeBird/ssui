@@ -228,9 +228,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// </summary>
         /// <param name="combination">The key combination needed, if any, for activating this shortcut.</param>
         /// <param name="key">The specific key that corresponds to this shortcut.</param>
-        /// <param name="method">The method to run when this shortcut is used.</param>
-        /// <param name="methodId">The ID string/name for this method.</param>
-        /// <param name="menuItem">The menu item corresponding with the method.</param>
+        /// <param name="action">The action to perform when this shortcut is activated.</param>
         public KeyboardShortcut(KeyboardCombination combination, Key key, IKeyAction action)
         {
             Combination = combination;
@@ -282,7 +280,7 @@ namespace SolidShineUi.KeyboardShortcuts
         public string KeyString { get; private set; } = "";
 
         /// <summary>
-        /// Generate the string to display to the user, so they know which keys to press to activate the shortcut. 
+        /// Generate the string to display to the user, so they know which keys to press to activate the shortcut.
         /// </summary>
         private void GenerateKeyString()
         {
