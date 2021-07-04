@@ -9,6 +9,9 @@ using System.ComponentModel;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A tab that can be added onto a <see cref="TabControl"/>. Each tab has a title, icon, and close button by default.
+    /// </summary>
     [ContentProperty("Content")]
     public class TabItem : DependencyObject
     {
@@ -68,7 +71,7 @@ namespace SolidShineUi
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsDirtyChanged)));
 
         ///<summary>
-        /// Get or set if the tab is dirty. In this current release, this does not make a visual change on the tab.
+        /// Get or set if the tab is dirty.
         ///</summary>
         [Category("Common")]
         public bool IsDirty
@@ -223,6 +226,9 @@ namespace SolidShineUi
 
         protected event DependencyPropertyChangedEventHandler InternalIconChanged;
 
+        /// <summary>
+        /// Raised when the tab's icon is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? IconChanged;
 #else
@@ -259,6 +265,9 @@ namespace SolidShineUi
 
         protected event DependencyPropertyChangedEventHandler InternalContentChanged;
 
+        /// <summary>
+        /// Raised when the tab's content property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ContentChanged;
 #else
@@ -295,6 +304,9 @@ namespace SolidShineUi
 
         protected event DependencyPropertyChangedEventHandler InternalVisibilityChanged;
 
+        /// <summary>
+        /// Raised when the tab's visibility property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? VisibilityChanged;
 #else

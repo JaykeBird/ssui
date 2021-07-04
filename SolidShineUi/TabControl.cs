@@ -13,6 +13,9 @@ using System.ComponentModel;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A control that can house multiple controls under a number of tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
+    /// </summary>
     public class TabControl : Control
     {
 
@@ -40,6 +43,9 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
         }
 
+        /// <summary>
+        /// Get or set if the first tab should be selected right away when the control is loaded. This property has no effect after the control is loaded.
+        /// </summary>
         public bool SelectFirstTabOnLoad { get; set; } = true;
 
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
@@ -299,6 +305,9 @@ namespace SolidShineUi
 
         //public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
+        /// <summary>
+        /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
+        /// </summary>
         [Category("Common")]
         public SelectableCollection<TabItem> Items
         {
@@ -310,22 +319,59 @@ namespace SolidShineUi
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
 #if NETCOREAPP
+        /// <summary>
+        /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
+        /// </summary>
         [Category("Common")]
         public TabItem? CurrentTab { get => Items.SelectedItems.FirstOrDefault(); }
+
+        /// <summary>
+        /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
+        /// </summary>
         public TabItem? SelectedTab { get => CurrentTab; }
 
+        /// <summary>
+        /// Raised when the tab currently selected is changed.
+        /// </summary>
         public event TabItemChangeEventHandler? TabChanged;
+        /// <summary>
+        /// Raised when a tab is about to be closed, with the ability to cancel the action.
+        /// </summary>
         public event TabItemClosingEventHandler? TabClosing;
+        /// <summary>
+        /// Raised when a tab is closed.
+        /// </summary>
         public event TabItemChangeEventHandler? TabClosed;
+        /// <summary>
+        /// Raised when all tabs are closed at once (via <c>Items.Clear()</c>).
+        /// </summary>
         public event EventHandler? TabsCleared;
 #else
+        /// <summary>
+        /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
+        /// </summary>
         [Category("Common")]
         public TabItem CurrentTab { get; protected set; } = null;
+        /// <summary>
+        /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
+        /// </summary>
         public TabItem SelectedTab { get => CurrentTab; }
 
+        /// <summary>
+        /// Raised when the tab currently selected is changed.
+        /// </summary>
         public event TabItemChangeEventHandler TabChanged;
+        /// <summary>
+        /// Raised when a tab is about to be closed, with the ability to cancel the action.
+        /// </summary>
         public event TabItemClosingEventHandler TabClosing;
+        /// <summary>
+        /// Raised when a tab is closed.
+        /// </summary>
         public event TabItemChangeEventHandler TabClosed;
+        /// <summary>
+        /// Raised when all tabs are closed at once (via <c>Items.Clear()</c>).
+        /// </summary>
         public event EventHandler TabsCleared;
 #endif
 
@@ -334,6 +380,9 @@ namespace SolidShineUi
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
 
+        /// <summary>
+        /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
+        /// </summary>
         [Category("Common")]
         public bool ShowTabsOnBottom
         {
@@ -367,6 +416,9 @@ namespace SolidShineUi
         public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
 
+        /// <summary>
+        /// Get or set if a tab list menu should be shown on the far-right edge of the control, listing all the open tabs. This mimics a similar menu in Visual Studio.
+        /// </summary>
         [Category("Common")]
         public bool ShowTabListMenu
         {
@@ -400,6 +452,9 @@ namespace SolidShineUi
         public static readonly DependencyProperty TabMinWidthProperty = DependencyProperty.Register("TabMinWidth", typeof(double), typeof(TabControl),
             new PropertyMetadata(120.0d, new PropertyChangedCallback(OnInternalTabMinWidthChanged)));
 
+        /// <summary>
+        /// Get or set the minimum width a tab should have in the tab bar. While tabs may be wider than this width, they will never be shorter than it.
+        /// </summary>
         [Category("Layout")]
         public double TabMinWidth
         {
@@ -449,6 +504,9 @@ namespace SolidShineUi
         public static readonly DependencyProperty SelectedTabClosedActionProperty = DependencyProperty.Register("SelectedTabClosedAction", typeof(SelectedTabCloseAction), typeof(TabControl),
             new PropertyMetadata(SelectedTabCloseAction.SelectTabToLeft));
 
+        /// <summary>
+        /// Get or set the action to take when the currently selected tab is closed.
+        /// </summary>
         public SelectedTabCloseAction SelectedTabClosedAction
         {
             get { return (SelectedTabCloseAction)GetValue(SelectedTabClosedActionProperty); }
@@ -485,7 +543,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the color scheme to apply to the window.
+        /// Get or set the color scheme to apply to the control.
         /// </summary>
         [Category("Appearance")]
         public ColorScheme ColorScheme
@@ -597,6 +655,9 @@ namespace SolidShineUi
 
         public static readonly DependencyProperty ScrollButtonsVisibleProperty = ScrollButtonsVisiblePropertyKey.DependencyProperty;
 
+        /// <summary>
+        /// Get if the scroll buttons are currently visible in the tab bar.
+        /// </summary>
         public bool ScrollButtonsVisible
         {
             get { return (bool)GetValue(ScrollButtonsVisibleProperty); }
@@ -695,12 +756,20 @@ namespace SolidShineUi
         public TabItem TabItem { get; private set; }
     }
 
+    /// <summary>
+    /// References the action to take when a currently-selected tab is closed.
+    /// </summary>
     public enum SelectedTabCloseAction
     {
+        /// <summary>Do not select anything; all tabs are deselected and nothing is shown.</summary>
         SelectNothing = 0,
+        /// <summary>Select the first (leftmost) tab on the TabControl.</summary>
         SelectFirstTab = 1,
+        /// <summary>Select the last (rightmost) tab on the TabControl.</summary>
         SelectLastTab = 2,
+        /// <summary>Select the tab to the left of the one being closed.</summary>
         SelectTabToLeft = 3,
+        /// <summary>Select the tab to the right of the one being closed.</summary>
         SelectTabToRight = 4,
     }
 }
