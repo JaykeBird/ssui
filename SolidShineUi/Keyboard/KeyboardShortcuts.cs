@@ -213,7 +213,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
             await w.WriteStartElementAsync("", "shortcuts", "");
 
-            foreach (KeyboardShortcut item in registry.Ksr_All)
+            foreach (KeyboardShortcut item in registry.RegisteredShortcuts)
             {
                 await w.WriteStartElementAsync("", "ks", "");
                 await w.WriteAttributeStringAsync("", "comb", "", item.Combination.ToString("f"));

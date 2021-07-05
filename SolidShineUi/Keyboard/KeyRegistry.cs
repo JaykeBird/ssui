@@ -18,6 +18,9 @@ namespace SolidShineUi.KeyboardShortcuts
         }
     }
 
+    /// <summary>
+    /// A class to hold and handle keyboard shortcuts, and determine which shortcut to use based upon key presses.
+    /// </summary>
     public class KeyRegistry
     {
         public delegate void KeyboardShortcutEventHandler(object sender, KeyboardShortcutEventArgs e);
@@ -30,17 +33,26 @@ namespace SolidShineUi.KeyboardShortcuts
         public event KeyboardShortcutEventHandler ShortcutUnregistered;
 #endif
 
-        public List<KeyboardShortcut> Ksr_All = new List<KeyboardShortcut>();
+        private List<KeyboardShortcut> Ksr_All = new List<KeyboardShortcut>();
 
-        public Dictionary<Key, KeyboardShortcut> Ksr_None = new Dictionary<Key, KeyboardShortcut>();
-        public Dictionary<Key, KeyboardShortcut> Ksr_Ctrl = new Dictionary<Key, KeyboardShortcut>();
-        public Dictionary<Key, KeyboardShortcut> Ksr_Alt = new Dictionary<Key, KeyboardShortcut>();
-        public Dictionary<Key, KeyboardShortcut> Ksr_Shift = new Dictionary<Key, KeyboardShortcut>();
-        public Dictionary<Key, KeyboardShortcut> Ksr_AltShift = new Dictionary<Key, KeyboardShortcut>();
-        public Dictionary<Key, KeyboardShortcut> Ksr_CtrlAlt = new Dictionary<Key, KeyboardShortcut>();
-        public Dictionary<Key, KeyboardShortcut> Ksr_CtrlShift = new Dictionary<Key, KeyboardShortcut>();
-        public Dictionary<Key, KeyboardShortcut> Ksr_CtrlAltShift = new Dictionary<Key, KeyboardShortcut>();
+        /// <summary>
+        /// A read-only list of all keyboard shortcuts registed in this registry. Use the RegisteryKeyShortcut and UnregisterKeyShortcut methods to add or remove shortcuts.
+        /// </summary>
+        public IReadOnlyList<KeyboardShortcut> RegisteredShortcuts { get => Ksr_All.AsReadOnly(); }
 
+        private Dictionary<Key, KeyboardShortcut> Ksr_None = new Dictionary<Key, KeyboardShortcut>();
+        private Dictionary<Key, KeyboardShortcut> Ksr_Ctrl = new Dictionary<Key, KeyboardShortcut>();
+        private Dictionary<Key, KeyboardShortcut> Ksr_Alt = new Dictionary<Key, KeyboardShortcut>();
+        private Dictionary<Key, KeyboardShortcut> Ksr_Shift = new Dictionary<Key, KeyboardShortcut>();
+        private Dictionary<Key, KeyboardShortcut> Ksr_AltShift = new Dictionary<Key, KeyboardShortcut>();
+        private Dictionary<Key, KeyboardShortcut> Ksr_CtrlAlt = new Dictionary<Key, KeyboardShortcut>();
+        private Dictionary<Key, KeyboardShortcut> Ksr_CtrlShift = new Dictionary<Key, KeyboardShortcut>();
+        private Dictionary<Key, KeyboardShortcut> Ksr_CtrlAltShift = new Dictionary<Key, KeyboardShortcut>();
+
+        /// <summary>
+        /// Register a keyboard shortcut with the registry.
+        /// </summary>
+        /// <param name="kc">The keyboard shortcut to register.</param>
         public void RegisterKeyShortcut(KeyboardShortcut kc)
         {
             if (Ksr_All.Any(ks => ks.KeyString == kc.KeyString))
@@ -90,12 +102,25 @@ namespace SolidShineUi.KeyboardShortcuts
             ShortcutRegistered?.Invoke(this, new KeyboardShortcutEventArgs(kc));
         }
 
+        /// <summary>
+        /// Register a keyboard shortcut with the registry.
+        /// </summary>
+        /// <param name="combination">The combination of modifier keys to press for this shortcut.</param>
+        /// <param name="key">The specific key that activates this keyboard shortcut.</param>
+        /// <param name="action">The action to perform when the keyboard shortcut is pressed.</param>
         public void RegisterKeyShortcut(KeyboardCombination combination, Key key, IKeyAction action)
         {
             KeyboardShortcut kc = new KeyboardShortcut(combination, key, action);
             RegisterKeyShortcut(kc);
         }
 
+        /// <summary>
+        /// Unregister (remove) a shortcut from this registry.
+        /// </summary>
+        /// <param name="ks">The keyboard shortcut to unregister.</param>
+        /// <remarks>This overload of this method looks for a specific keyboard shortcut instance that is currently in the registry.
+        /// To remove based upon the keys being pressed, use the other overload instead (<see cref="UnregisterKeyShortcut(KeyboardCombination, Key)"/>).</remarks>
+        /// <returns>Returns if the shortcut was able to be removed or not. Will return false if this registry does not contain this specific shortcut.</returns>
         public bool UnregisterKeyShortcut(KeyboardShortcut ks)
         {
             bool success = true;
@@ -207,6 +232,12 @@ namespace SolidShineUi.KeyboardShortcuts
             }
         }
 
+        /// <summary>
+        /// Unregister (remove) a shortcut from this registry.
+        /// </summary>
+        /// <param name="combination">The combination of modifier keys to be pressed for this shortcut.</param>
+        /// <param name="key">The key to press to activate this shortcut.</param>
+        /// <returns>True if the shortcut was found and removed; false if there is no shortcut with this particular key and modifier key combination.</returns>
         public bool UnregisterKeyShortcut(KeyboardCombination combination, Key key)
         {
 #if NETCOREAPP
@@ -232,7 +263,7 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         ///// <summary>
-        ///// Set if menu items should display the keyboard shortcut combinations directly in the user interface. 
+        ///// Set if menu items should display the keyboard shortcut combinations directly in the user interface.
         ///// </summary>
         ///// <param name="display">True to display keyboard shortcut combinations, false to not have them displayed.</param>
         //public void ApplyDisplaySettings(bool display)
@@ -246,7 +277,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Get a list of keyboard shortcuts registered to a certain method.
         /// </summary>
-        /// <param name="methodId">The name of the method. If you used the RoutedMethodRegistry to fill from a menu, the name will be the name of the MenuItem itself.</param>
+        /// <param name="methodId">The name of the method. If you used <see cref="RoutedEventKeyAction.CreateListFromMenu(Menu)"/> to fill from a menu, the name will be the name of the MenuItem itself.</param>
         /// <returns></returns>
         public IEnumerable<KeyboardShortcut> GetShortcutsForMethod(string methodId)
         {
@@ -388,7 +419,6 @@ namespace SolidShineUi.KeyboardShortcuts
                 }
 
                 // Alt + whatever
-                // (Note: only some keys are allowed for Alt + key shortcuts)
                 if (Ksr_Alt.ContainsKey(key))
                 {
                     return ((Ksr_Alt[key]).Action, "Alt + " + key);
@@ -426,27 +456,40 @@ namespace SolidShineUi.KeyboardShortcuts
         }
     }
 
+    /// <summary>
+    /// A key registry that has a master key registry that it syncs up with. Useful in scenarios where you want to have multiple layers of shortcuts, with only some layers being applicable at certain points.
+    /// </summary>
     public class SubKeyRegistry : KeyRegistry
     {
         private KeyRegistry masterRegistry = new KeyRegistry();
 
-        public SubKeyRegistry(KeyRegistry master, Func<string, RoutedEventHandler> getMethodFunc, Func<string, MenuItem> getMenuFunc)
+        /// <summary>
+        /// Create a SubKeyRegistry.
+        /// </summary>
+        /// <param name="master">The master KeyRegistry to stay in sync with.</param>
+        public SubKeyRegistry(KeyRegistry master)
         {
             masterRegistry = master;
-            GetMethodFunction = getMethodFunc;
-            GetMenuFunction = getMenuFunc;
+            //GetMethodFunction = getMethodFunc;
+            //GetMenuFunction = getMenuFunc;
 
             master.ShortcutRegistered += Master_ShortcutRegistered;
             master.ShortcutUnregistered += Master_ShortcutUnregistered;
+
+            RegisterExistingShortcuts();
         }
 
-        public void RegisterExistingShortcuts()
+        /// <summary>
+        /// Register all shortcuts into this SubKeyRegistry that are currently in the master KeyRegistry.
+        /// </summary>
+        private void RegisterExistingShortcuts()
         {
-            foreach (KeyboardShortcut kc in masterRegistry.Ksr_All)
+            foreach (KeyboardShortcut kc in masterRegistry.RegisteredShortcuts)
             {
                 try
                 {
-                    RegisterKeyShortcut(kc.Combination, kc.Key, kc.Action);
+                    RegisterKeyShortcut(kc);
+                    //RegisterKeyShortcut(kc.Combination, kc.Key, kc.Action);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -455,8 +498,8 @@ namespace SolidShineUi.KeyboardShortcuts
             }
         }
 
-        public Func<string, RoutedEventHandler> GetMethodFunction { get; private set; }
-        public Func<string, MenuItem> GetMenuFunction { get; private set; }
+        //public Func<string, RoutedEventHandler> GetMethodFunction { get; private set; }
+        //public Func<string, MenuItem> GetMenuFunction { get; private set; }
 
         private void Master_ShortcutRegistered(object sender, KeyboardShortcutEventArgs e)
         {
@@ -464,7 +507,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
             try
             {
-                RegisterKeyShortcut(kc.Combination, kc.Key, kc.Action);
+                RegisterKeyShortcut(kc);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -474,7 +517,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
         private void Master_ShortcutUnregistered(object sender, KeyboardShortcutEventArgs e)
         {
-            UnregisterKeyShortcut(e.KeyboardShortcut.Combination, e.KeyboardShortcut.Key);
+            UnregisterKeyShortcut(e.KeyboardShortcut);
         }
 
         //public new void ApplyDisplaySettings(bool display)
