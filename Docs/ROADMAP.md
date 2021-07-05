@@ -16,12 +16,13 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
   - Keyboard shortcut classes
   - Improvements to FontSelectDialog
   - TabControl is now ready!
+- Release version 1.8.1
+  - Bug fixes
 
 ## Very soon
 
-- Release version 1.8.1
-  - Bug fixes
-  - Additional features for TabControl and TabItem
+- Release version 1.8.2
+  - Tab drag/drop
   - Additional XML comments for code
 
 ## 2021 (later)
@@ -32,6 +33,8 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 - Finish online documentation
 - Port to AvaloniaUI (0.10 is out, haven't done any testing or porting yet though)
 - PropertyGrid control
+- DataTable control
+  - use same core bits as PropertyGrid
 
 ## 2022
 
