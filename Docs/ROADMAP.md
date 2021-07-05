@@ -23,6 +23,8 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 
 - Release version 1.8.2
   - Tab drag/drop
+  - Add tab button
+  - Improvements to KeyRegistry
   - Additional XML comments for code
 
 ## 2021 (later)
