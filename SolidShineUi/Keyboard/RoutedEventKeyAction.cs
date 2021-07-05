@@ -42,6 +42,12 @@ namespace SolidShineUi.KeyboardShortcuts
             }
         }
 
+        /// <summary>
+        /// Create a list of key actions from all the menu items in a particular menu. Each menu item with a name and Click event handler will be added to this list.
+        /// </summary>
+        /// <param name="m">The menu to load from.</param>
+        /// <remarks>No exceptions are thrown from this method; a blank list is returned if no menu items could be added.</remarks>
+        /// <returns>A list of key actions created from the menu passed in.</returns>
         public static KeyActionList CreateListFromMenu(Menu m)
         {
             KeyActionList rekya = new KeyActionList();
