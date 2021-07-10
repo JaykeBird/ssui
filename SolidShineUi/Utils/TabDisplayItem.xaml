@@ -9,7 +9,7 @@
              MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave"
              StylusDown="UserControl_StylusDown" StylusUp="UserControl_StylusUp" TouchDown="UserControl_TouchDown" TouchUp="UserControl_TouchUp"
              GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
-             DragEnter="control_DragEnter" DragLeave="control_DragLeave"
+             DragEnter="control_DragEnter" DragLeave="control_DragLeave" AllowDrop="True" Drop="control_Drop"
              KeyDown="UserControl_KeyDown" KeyUp="UserControl_KeyUp" GotKeyboardFocus="UserControl_GotKeyboardFocus" LostKeyboardFocus="UserControl_LostKeyboardFocus" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />

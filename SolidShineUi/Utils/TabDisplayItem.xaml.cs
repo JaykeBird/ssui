@@ -593,17 +593,27 @@ namespace SolidShineUi.Utils
         #region Drag and Drop
         private void control_DragEnter(object sender, DragEventArgs e)
         {
-
+            if (e.Data is TabDisplayItem tdi)
+            {
+                grdDrag.Visibility = Visibility.Visible;
+                e.Effects = DragDropEffects.Move;
+            }
+            else
+            {
+                // raise TabItem.DragEnter
+            }
         }
 
         private void control_Drop(object sender, DragEventArgs e)
         {
-
+            // raise TabItem.Drop
+            grdDrag.Visibility = Visibility.Collapsed;
         }
 
         private void control_DragLeave(object sender, DragEventArgs e)
         {
-
+            // raise TabItem.DragLeave
+            grdDrag.Visibility = Visibility.Collapsed;
         }
 
         private void brdrDragLeft_DragEnter(object sender, DragEventArgs e)
@@ -613,7 +623,7 @@ namespace SolidShineUi.Utils
 
         private void brdrDragLeft_DragLeave(object sender, DragEventArgs e)
         {
-
+            //grdDrag.Visibility = Visibility.Collapsed;
         }
 
         private void brdrDragRght_DragEnter(object sender, DragEventArgs e)
@@ -623,17 +633,17 @@ namespace SolidShineUi.Utils
 
         private void brdrDragRght_DragLeave(object sender, DragEventArgs e)
         {
-
+            //grdDrag.Visibility = Visibility.Collapsed;
         }
 
         private void brdrDragLeft_Drop(object sender, DragEventArgs e)
         {
-
+            grdDrag.Visibility = Visibility.Collapsed;
         }
 
         private void brdrDragRght_Drop(object sender, DragEventArgs e)
         {
-
+            grdDrag.Visibility = Visibility.Collapsed;
         }
         #endregion
     }
