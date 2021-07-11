@@ -591,23 +591,39 @@ namespace SolidShineUi.Utils
         }
 
         #region Drag and Drop
+
+        public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabDisplayItem),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set if the tab can be dragged and dropped.
+        /// </summary>
+        public bool AllowDragDrop
+        {
+            get { return (bool)GetValue(AllowDragDropProperty); }
+            set { SetValue(AllowDragDropProperty, value); }
+        }
+
         private void control_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetData(typeof(TabItem)) != null)
+            if (AllowDragDrop)
             {
-                if (e.Data.GetData(typeof(TabItem)) == TabItem)
+                if (e.Data.GetData(typeof(TabItem)) != null)
                 {
-                    e.Effects = DragDropEffects.None;
+                    if (e.Data.GetData(typeof(TabItem)) == TabItem)
+                    {
+                        e.Effects = DragDropEffects.None;
+                    }
+                    else
+                    {
+                        grdDrag.Visibility = Visibility.Visible;
+                        e.Effects = DragDropEffects.Move;
+                    }
                 }
                 else
                 {
-                    grdDrag.Visibility = Visibility.Visible;
-                    e.Effects = DragDropEffects.Move;
+                    // raise TabItem.DragEnter
                 }
-            }
-            else
-            {
-                // raise TabItem.DragEnter
             }
         }
 
@@ -666,7 +682,7 @@ namespace SolidShineUi.Utils
 
         private void control_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed && AllowDragDrop)
             {
                 DragDropEffects ee = DragDrop.DoDragDrop(this, this.TabItem, DragDropEffects.Move);
             }

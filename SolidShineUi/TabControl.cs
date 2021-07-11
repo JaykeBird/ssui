@@ -38,6 +38,7 @@ namespace SolidShineUi
             InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
             InternalShowTabListMenuChanged += tabControl_InternalShowTabListMenuChanged;
             InternalTabMinWidthChanged += tabControl_InternalTabMinWidthChanged;
+            InternalAllowDragDropChanged += tabControl_InternalAllowDragDropChanged;
 
             CommandBindings.Add(new CommandBinding(TabListMenuItemClick, OnTabListMenuItemClick));
             CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
@@ -518,6 +519,42 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region AllowDragDrop
+
+        public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabControl),
+            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
+
+        /// <summary>
+        /// Get or set if tabs can be dragged and dropped.
+        /// </summary>
+        [Category("Common")]
+        public bool AllowDragDrop
+        {
+            get { return (bool)GetValue(AllowDragDropProperty); }
+            set { SetValue(AllowDragDropProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalAllowDragDropChanged;
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? AllowDragDropChanged;
+#else
+        public event DependencyPropertyChangedEventHandler AllowDragDropChanged;
+#endif
+
+        private static void OnAllowDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl s)
+            {
+                s.InternalAllowDragDropChanged?.Invoke(s, e);
+            }
+        }
+        private void tabControl_InternalAllowDragDropChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            AllowDragDropChanged?.Invoke(this, e);
+        }
+        #endregion
+
         public static readonly RoutedCommand TabListMenuItemClick = new RoutedCommand();
 
         private void OnTabListMenuItemClick(object sender, ExecutedRoutedEventArgs e)
@@ -597,13 +634,30 @@ namespace SolidShineUi
 
         private void tdi_TabItemDrop(object sender, TabItemDropEventArgs e)
         {
+            if (e.DroppedTabItem == e.SourceTabItem) return;
+
             _internalAction = true;
-            TabItem selItem = Items.SelectedItems.First();
+#if NETCOREAPP
+            TabItem? selItem = null;
+#else
+            TabItem selItem = null;
+#endif
+            if (Items.SelectedItems.Count != 0)
+            {
+                selItem = Items.SelectedItems.First();
+            }
             Items.ClearSelection();
 
             Items.Remove(e.DroppedTabItem);
 
             int newIndex = e.Before ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
+
+            if (newIndex == -1)
+            {
+                Items.Add(e.DroppedTabItem);
+                return;
+            }
+
             Items.Insert(newIndex, e.DroppedTabItem);
 
             //try
@@ -645,7 +699,10 @@ namespace SolidShineUi
             //    //}
             //}
             //throw new NotImplementedException();
-            Items.Select(selItem);
+            if (selItem != null)
+            {
+                Items.Select(selItem);
+            }
             _internalAction = false;
         }
 
