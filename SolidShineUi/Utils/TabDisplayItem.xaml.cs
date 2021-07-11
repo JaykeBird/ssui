@@ -27,7 +27,7 @@ namespace SolidShineUi.Utils
         public event TabItemDropEventHandler TabItemDrop;
 #endif
 
-        public delegate void TabItemDropEventHandler(object sender, TabItemChangeEventArgs e);
+        public delegate void TabItemDropEventHandler(object sender, TabItemDropEventArgs e);
 
         public Brush HighlightBrush { get; set; } = new SolidColorBrush(Colors.LightGray);
         public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
@@ -593,10 +593,17 @@ namespace SolidShineUi.Utils
         #region Drag and Drop
         private void control_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data is TabDisplayItem tdi)
+            if (e.Data.GetData(typeof(TabItem)) != null)
             {
-                grdDrag.Visibility = Visibility.Visible;
-                e.Effects = DragDropEffects.Move;
+                if (e.Data.GetData(typeof(TabItem)) == TabItem)
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+                else
+                {
+                    grdDrag.Visibility = Visibility.Visible;
+                    e.Effects = DragDropEffects.Move;
+                }
             }
             else
             {
@@ -618,34 +625,57 @@ namespace SolidShineUi.Utils
 
         private void brdrDragLeft_DragEnter(object sender, DragEventArgs e)
         {
-
+            brdrDragLeft.BorderThickness = new Thickness(5, 0, 0, 0);
         }
 
         private void brdrDragLeft_DragLeave(object sender, DragEventArgs e)
         {
             //grdDrag.Visibility = Visibility.Collapsed;
+            brdrDragLeft.BorderThickness = new Thickness(0, 0, 0, 0);
         }
 
         private void brdrDragRght_DragEnter(object sender, DragEventArgs e)
         {
-
+            brdrDragRght.BorderThickness = new Thickness(0, 0, 5, 0);
         }
 
         private void brdrDragRght_DragLeave(object sender, DragEventArgs e)
         {
             //grdDrag.Visibility = Visibility.Collapsed;
+            brdrDragRght.BorderThickness = new Thickness(0, 0, 0, 0);
         }
 
         private void brdrDragLeft_Drop(object sender, DragEventArgs e)
         {
             grdDrag.Visibility = Visibility.Collapsed;
+            if (e.Data.GetData(typeof(TabItem)) != null)
+            {
+                TabItemDrop?.Invoke(this, new TabItemDropEventArgs(TabItem, (TabItem)e.Data.GetData(typeof(TabItem)), true));
+            }
         }
 
         private void brdrDragRght_Drop(object sender, DragEventArgs e)
         {
             grdDrag.Visibility = Visibility.Collapsed;
+            if (e.Data.GetData(typeof(TabItem)) != null)
+            {
+                TabItemDrop?.Invoke(this, new TabItemDropEventArgs(TabItem, (TabItem)e.Data.GetData(typeof(TabItem)), false));
+            }
         }
         #endregion
+
+        private void control_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragDropEffects ee = DragDrop.DoDragDrop(this, this.TabItem, DragDropEffects.Move);
+            }
+        }
+
+        private void control_StylusMove(object sender, StylusEventArgs e)
+        {
+
+        }
     }
 
     public class TabItemDropEventArgs

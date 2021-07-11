@@ -58,6 +58,8 @@ namespace SolidShineUi
 
         bool itemsLoaded = false;
 
+        bool _internalAction = false;
+
 #if NETCOREAPP
         ItemsControl? ic = null;
         ScrollViewer? sv = null;
@@ -173,6 +175,7 @@ namespace SolidShineUi
         private void items_SelectionChanged(object sender, SelectionChangedEventArgs<TabItem> e)
         {
             LoadTemplateItems();
+            if (_internalAction) return;
 
             if (e.AddedItems.Count > 0)
             {
@@ -272,6 +275,7 @@ namespace SolidShineUi
 
         private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<TabItem> e)
         {
+            if (_internalAction) return;
             if (e.Item != null)
             {
                 TabItemClosingEventArgs ee = new TabItemClosingEventArgs(e.Item);
@@ -591,9 +595,54 @@ namespace SolidShineUi
             }
         }
 
-        private void tdi_TabItemDrop(object sender, TabItemChangeEventArgs e)
+        private void tdi_TabItemDrop(object sender, TabItemDropEventArgs e)
         {
+            _internalAction = true;
+            //TabItem selItem = Items.SelectedItems.First();
+            //Items.ClearSelection();
+            int newIndex = e.Before ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
+
+            try
+            {
+                Items.Move(Items.IndexOf(e.DroppedTabItem), newIndex);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                //if (Items.IndexOf(e.DroppedTabItem) == -1)
+                //{
+                //    //try
+                //    //{
+                //    //    Items.Remove(e.DroppedTabItem);
+                //    //    Items.Insert(newIndex, e.DroppedTabItem);
+                //    //}
+                //    //catch (ArgumentOutOfRangeException)
+                //    //{
+                //    //    if (e.Before)
+                //    //    {
+                //    //        Items.Remove(e.DroppedTabItem);
+                //    //        Items.Insert(0, e.DroppedTabItem);
+                //    //    }
+                //    //    else
+                //    //    {
+                //    //        Items.Remove(e.DroppedTabItem);
+                //    //        Items.Insert(Items.Count - 1, e.DroppedTabItem);
+                //    //    }
+                //    //}
+                //    return;
+                //}
+
+                //if (e.Before)
+                //{
+                //    Items.Move(Items.IndexOf(e.DroppedTabItem), 0);
+                //}
+                //else
+                //{
+                //    Items.Move(Items.IndexOf(e.DroppedTabItem), Items.Count - 1);
+                //}
+            }
             //throw new NotImplementedException();
+            //Items.Select(selItem);
+            _internalAction = false;
         }
 
 #if NETCOREAPP

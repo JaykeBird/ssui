@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:SolidShineUi"
              mc:Ignorable="d"
              d:DesignHeight="24" d:DesignWidth="120" MinWidth="120" Loaded="control_Loaded"
-             MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave"
-             StylusDown="UserControl_StylusDown" StylusUp="UserControl_StylusUp" TouchDown="UserControl_TouchDown" TouchUp="UserControl_TouchUp"
+             MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave" MouseMove="control_MouseMove"
+             StylusDown="UserControl_StylusDown" StylusUp="UserControl_StylusUp" TouchDown="UserControl_TouchDown" TouchUp="UserControl_TouchUp" StylusMove="control_StylusMove"
              GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
              DragEnter="control_DragEnter" DragLeave="control_DragLeave" AllowDrop="True" Drop="control_Drop"
              KeyDown="UserControl_KeyDown" KeyUp="UserControl_KeyUp" GotKeyboardFocus="UserControl_GotKeyboardFocus" LostKeyboardFocus="UserControl_LostKeyboardFocus" >
@@ -40,7 +40,7 @@
                 <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
             </Grid>
         </Border>
-        <Grid x:Name="grdDrag" Visibility="Collapsed" >
+        <Grid x:Name="grdDrag" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
