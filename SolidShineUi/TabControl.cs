@@ -598,50 +598,54 @@ namespace SolidShineUi
         private void tdi_TabItemDrop(object sender, TabItemDropEventArgs e)
         {
             _internalAction = true;
-            //TabItem selItem = Items.SelectedItems.First();
-            //Items.ClearSelection();
+            TabItem selItem = Items.SelectedItems.First();
+            Items.ClearSelection();
+
+            Items.Remove(e.DroppedTabItem);
+
             int newIndex = e.Before ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
+            Items.Insert(newIndex, e.DroppedTabItem);
 
-            try
-            {
-                Items.Move(Items.IndexOf(e.DroppedTabItem), newIndex);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                //if (Items.IndexOf(e.DroppedTabItem) == -1)
-                //{
-                //    //try
-                //    //{
-                //    //    Items.Remove(e.DroppedTabItem);
-                //    //    Items.Insert(newIndex, e.DroppedTabItem);
-                //    //}
-                //    //catch (ArgumentOutOfRangeException)
-                //    //{
-                //    //    if (e.Before)
-                //    //    {
-                //    //        Items.Remove(e.DroppedTabItem);
-                //    //        Items.Insert(0, e.DroppedTabItem);
-                //    //    }
-                //    //    else
-                //    //    {
-                //    //        Items.Remove(e.DroppedTabItem);
-                //    //        Items.Insert(Items.Count - 1, e.DroppedTabItem);
-                //    //    }
-                //    //}
-                //    return;
-                //}
+            //try
+            //{
+            //    Items.Move(Items.IndexOf(e.DroppedTabItem), newIndex);
+            //}
+            //catch (ArgumentOutOfRangeException)
+            //{
+            //    //if (Items.IndexOf(e.DroppedTabItem) == -1)
+            //    //{
+            //    //    //try
+            //    //    //{
+            //    //    //    Items.Remove(e.DroppedTabItem);
+            //    //    //    Items.Insert(newIndex, e.DroppedTabItem);
+            //    //    //}
+            //    //    //catch (ArgumentOutOfRangeException)
+            //    //    //{
+            //    //    //    if (e.Before)
+            //    //    //    {
+            //    //    //        Items.Remove(e.DroppedTabItem);
+            //    //    //        Items.Insert(0, e.DroppedTabItem);
+            //    //    //    }
+            //    //    //    else
+            //    //    //    {
+            //    //    //        Items.Remove(e.DroppedTabItem);
+            //    //    //        Items.Insert(Items.Count - 1, e.DroppedTabItem);
+            //    //    //    }
+            //    //    //}
+            //    //    return;
+            //    //}
 
-                //if (e.Before)
-                //{
-                //    Items.Move(Items.IndexOf(e.DroppedTabItem), 0);
-                //}
-                //else
-                //{
-                //    Items.Move(Items.IndexOf(e.DroppedTabItem), Items.Count - 1);
-                //}
-            }
+            //    //if (e.Before)
+            //    //{
+            //    //    Items.Move(Items.IndexOf(e.DroppedTabItem), 0);
+            //    //}
+            //    //else
+            //    //{
+            //    //    Items.Move(Items.IndexOf(e.DroppedTabItem), Items.Count - 1);
+            //    //}
+            //}
             //throw new NotImplementedException();
-            //Items.Select(selItem);
+            Items.Select(selItem);
             _internalAction = false;
         }
 
