@@ -636,6 +636,7 @@ namespace SolidShineUi
         private void tdi_TabItemDrop(object sender, TabItemDropEventArgs e)
         {
             if (e.DroppedTabItem == e.SourceTabItem) return;
+            if (!Items.Contains(e.DroppedTabItem)) return;
 
             _internalAction = true;
 #if NETCOREAPP
