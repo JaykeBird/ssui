@@ -38,7 +38,7 @@ namespace SolidShineUi
             InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
             InternalShowTabListMenuChanged += tabControl_InternalShowTabListMenuChanged;
             InternalTabMinWidthChanged += tabControl_InternalTabMinWidthChanged;
-            InternalAllowDragDropChanged += tabControl_InternalAllowDragDropChanged;
+            InternalAllowTabDragDropChanged += tabControl_InternalAllowDragDropChanged;
 
             CommandBindings.Add(new CommandBinding(TabListMenuItemClick, OnTabListMenuItemClick));
             CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
@@ -521,37 +521,37 @@ namespace SolidShineUi
 
         #region AllowDragDrop
 
-        public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabControl),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
+        public static readonly DependencyProperty AllowTabDragDropProperty = DependencyProperty.Register("AllowTabDragDrop", typeof(bool), typeof(TabControl),
+            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowTabDragDropChanged)));
 
         /// <summary>
         /// Get or set if tabs can be dragged and dropped.
         /// </summary>
         [Category("Common")]
-        public bool AllowDragDrop
+        public bool AllowTabDragDrop
         {
-            get { return (bool)GetValue(AllowDragDropProperty); }
-            set { SetValue(AllowDragDropProperty, value); }
+            get { return (bool)GetValue(AllowTabDragDropProperty); }
+            set { SetValue(AllowTabDragDropProperty, value); }
         }
 
-        protected event DependencyPropertyChangedEventHandler InternalAllowDragDropChanged;
+        protected event DependencyPropertyChangedEventHandler InternalAllowTabDragDropChanged;
 
 #if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? AllowDragDropChanged;
+        public event DependencyPropertyChangedEventHandler? AllowTabDragDropChanged;
 #else
-        public event DependencyPropertyChangedEventHandler AllowDragDropChanged;
+        public event DependencyPropertyChangedEventHandler AllowTabDragDropChanged;
 #endif
 
-        private static void OnAllowDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnAllowTabDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TabControl s)
             {
-                s.InternalAllowDragDropChanged?.Invoke(s, e);
+                s.InternalAllowTabDragDropChanged?.Invoke(s, e);
             }
         }
         private void tabControl_InternalAllowDragDropChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            AllowDragDropChanged?.Invoke(this, e);
+            AllowTabDragDropChanged?.Invoke(this, e);
         }
         #endregion
 
