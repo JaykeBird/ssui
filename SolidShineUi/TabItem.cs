@@ -109,6 +109,9 @@ namespace SolidShineUi
         ///<summary>
         /// Get or set if this tab can be closed via the UI (i.e. the close button).
         ///</summary>
+        ///<remarks>
+        /// This property does not prevent this tab being closed via other means, such as <see cref="TabItem.Close()"/> or <see cref="SelectableCollection{TabItem}.Remove(TabItem)"/>.
+        /// </remarks>
         [Category("Common")]
         public bool CanClose
         {
@@ -341,11 +344,6 @@ namespace SolidShineUi
             get { return (ContextMenu)GetValue(TabContextMenuProperty); }
             set { SetValue(TabContextMenuProperty, value); }
         }
-
-        ///// <summary>
-        ///// This event is raised when this MenuButtons's menu is closed.
-        ///// </summary>
-        //public EventHandler? TabContextMenuClosed;
 #else
         /// <summary>
         /// Get or set the menu that appears when you right-click on the tab in the TabControl.
@@ -356,18 +354,56 @@ namespace SolidShineUi
             get { return (ContextMenu)GetValue(TabContextMenuProperty); }
             set { SetValue(TabContextMenuProperty, value); }
         }
-
-        ///// <summary>
-        ///// This event is raised when this MenuButtons's menu is closed.
-        ///// </summary>
-        //public EventHandler MenuClosed;
 #endif
 
         #endregion
 
+        #region AllowDrop
+
+        public static readonly DependencyProperty AllowDropProperty = DependencyProperty.Register("AllowDrop", typeof(bool), typeof(TabItem),
+            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalAllowDropChanged)));
+
+        ///<summary>
+        /// Get or set if this tab can be used as a target in drag-and-drop operations.
+        ///</summary>
+        ///<remarks>
+        /// Note that this only sets if this tab can recieve data dropped onto it in the tab bar. The elements inside the tab can set their own AllowDrop property if you want to drop items inside the tab's contents.
+        /// This property does not need to be set to allow tab drag-and-drop on the TabControl (for rearranging tabs). Tab drag-and-drop is controlled via the <see cref="TabControl.AllowTabDragDrop"/> property.
+        /// </remarks>
+        [Category("Common")]
+        public bool AllowDrop
+        {
+            get { return (bool)GetValue(AllowDropProperty); }
+            set { SetValue(AllowDropProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalAllowDropChanged;
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? AllowDropChanged;
+#else
+        public event DependencyPropertyChangedEventHandler AllowDropChanged;
+#endif
+
+        private static void OnInternalAllowDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabItem s)
+            {
+                s.InternalAllowDropChanged?.Invoke(s, e);
+            }
+        }
+        private void tabItem_InternalAllowDropChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            AllowDropChanged?.Invoke(this, e);
+        }
+        #endregion
+
         /// <summary>
-        /// Close the current tab, if it is currently in a TabControl.
+        /// Close this tab (and remove it from the TabControl), if it is currently in a TabControl.
         /// </summary>
+        /// <remarks>
+        /// This function can be run regardless of the state of the <c>CanClose</c> property.
+        /// </remarks>
         public void Close()
         {
             InternalTabClosing?.Invoke(this, EventArgs.Empty);

@@ -593,7 +593,7 @@ namespace SolidShineUi.Utils
         #region Drag and Drop
 
         public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabDisplayItem),
-            new PropertyMetadata(true));
+            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
 
         /// <summary>
         /// Get or set if the tab can be dragged and dropped.
@@ -602,6 +602,26 @@ namespace SolidShineUi.Utils
         {
             get { return (bool)GetValue(AllowDragDropProperty); }
             set { SetValue(AllowDragDropProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowDataDragDropProperty = DependencyProperty.Register("AllowDataDragDrop", typeof(bool), typeof(TabDisplayItem),
+            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
+
+        /// <summary>
+        /// Get or set if the tab can be dragged and dropped.
+        /// </summary>
+        public bool AllowDataDragDrop
+        {
+            get { return (bool)GetValue(AllowDataDragDropProperty); }
+            set { SetValue(AllowDataDragDropProperty, value); }
+        }
+
+        private static void OnAllowDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem tdi)
+            {
+                tdi.AllowDrop = tdi.AllowDataDragDrop || tdi.AllowDragDrop;
+            }
         }
 
         private void control_DragEnter(object sender, DragEventArgs e)
