@@ -10,7 +10,7 @@
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,22,0,0" FontSize="16" Text="SolidShineUI Sample/Test App" VerticalAlignment="Top"/>
         <TextBlock Margin="20,50,20,0" Text="This program is meant to display the functionality and features of the SolidShineUI library. This can be used for testing or just to get an idea of how the controls work." TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock Margin="20,100,0,0" Text="For SolidShineUI Version 1.8.2" VerticalAlignment="Top"/>
+        <TextBlock Margin="20,100,0,0" x:Name="lblSsuiVersion" Text="For SolidShineUI Version 1.8.2" VerticalAlignment="Top"/>
         <TextBlock Margin="20,120,0,0" x:Name="lblNetVersion" Text="Running on .NET version X.X" VerticalAlignment="Top"/>
         <TextBlock Margin="20,145,0,0" Text="Developed by Jayke R. Huempfner (JaykeBird)" VerticalAlignment="Top"/>
         <TextBlock Margin="20,165,20,0" Text="SolidShineUI also contains work by many other developers. See the website below for the full credits:" TextWrapping="Wrap" VerticalAlignment="Top"/>
