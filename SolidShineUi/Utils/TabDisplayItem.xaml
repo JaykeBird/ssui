@@ -32,7 +32,25 @@
                 </Grid.ColumnDefinitions>
                 <Image x:Name="imgIcon" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="4,0,0,0" Height="16" Width="16" Source="{Binding ElementName=control, Path=TabItem.Icon}" UseLayoutRounding="True"
                        Visibility="{Binding ElementName=control, Path=TabItem.ShowIcon, Converter={StaticResource btv}}" />
-                <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title}" Grid.Column="1" Margin="4,0,5,0" />
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="4,0,5,0" >
+                    <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title}" />
+                    <TextBlock x:Name="lblDirty" HorizontalAlignment="Left" VerticalAlignment="Center" Text="*">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=control, Path=TabItem.IsDirty}" Value="True" />
+                                            <Condition Binding="{Binding ElementName=control, Path=TabItem.DisplayDirtyState}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
                 <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Center" Height="20" MinHeight="20" Padding="0" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
                               Visibility="{Binding ElementName=control, Path=TabItem.CanClose, Converter={StaticResource btv}}" >
                     <Image Source="/SolidShineUi;component/Images/SmallExitColor.png" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Stretch="None" MaxHeight="16" UseLayoutRounding="False" />
@@ -41,7 +59,7 @@
                 <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
             </Grid>
         </Border>
-        <Grid x:Name="grdDrag" >
+        <Grid x:Name="grdDrag" Visibility="Collapsed" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />

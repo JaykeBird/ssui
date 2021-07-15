@@ -1193,7 +1193,22 @@
                                     <flat:ContextMenu ItemsSource="{TemplateBinding Items}">
                                         <flat:ContextMenu.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Title}" IsEnabled="{Binding CanSelect}" />
+                                                <TextBlock IsEnabled="{Binding CanSelect}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="{x:Type TextBlock}">
+                                                            <Setter Property="Text" Value="{Binding Title}" />
+                                                            <Style.Triggers>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding IsDirty}" Value="True" />
+                                                                        <Condition Binding="{Binding DisplayDirtyState}" Value="True" />
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Text" Value="{Binding Title, StringFormat={}{0}*}" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
                                                 <!--<MenuItem Tag="{Binding Self}" >
                                                     <MenuItem.Icon>
                                                         <Image Source="{Binding Icon}" />

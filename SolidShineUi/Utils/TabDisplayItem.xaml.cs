@@ -237,7 +237,20 @@ namespace SolidShineUi.Utils
             {
                 TabItem.InternalTabClosing += TabItem_InternalTabClosing;
                 TabItem.InternalBringIntoViewRequested += TabItem_InternalBringIntoViewRequested;
+
+                TabItem.IsDirtyChanged += TabItem_IsDirtyChanged;
+                TabItem.DisplayDirtyStateChanged += TabItem_DisplayDirtyStateChanged;
             }
+        }
+
+        private void TabItem_DisplayDirtyStateChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        private void TabItem_IsDirtyChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
         }
 
 #if NETCOREAPP

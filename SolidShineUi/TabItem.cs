@@ -29,6 +29,7 @@ namespace SolidShineUi
             InternalShowIconChanged += tabItem_InternalShowIconChanged;
             InternalAllowDropChanged += tabItem_InternalAllowDropChanged;
             InternalToolTipChanged += tabItem_InternalToolTipChanged;
+            InternalDisplayDirtyStateChanged += tabItem_InternalDisplayDirtyStateChanged;
         }
 
         #region Title
@@ -100,6 +101,42 @@ namespace SolidShineUi
         private void tabItem_InternalIsDirtyChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             IsDirtyChanged?.Invoke(this, e);
+        }
+        #endregion
+
+        #region DisplayDirtyState
+
+        public static readonly DependencyProperty DisplayDirtyStateProperty = DependencyProperty.Register("DisplayDirtyState", typeof(bool), typeof(TabItem),
+            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalDisplayDirtyStateChanged)));
+
+        ///<summary>
+        /// Get or set if the tab should display the state of its IsDirty property. When set to true, an asterisk (*) will be added to the title when it is dirty.
+        ///</summary>
+        [Category("Common")]
+        public bool DisplayDirtyState
+        {
+            get { return (bool)GetValue(DisplayDirtyStateProperty); }
+            set { SetValue(DisplayDirtyStateProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalDisplayDirtyStateChanged;
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? DisplayDirtyStateChanged;
+#else
+        public event DependencyPropertyChangedEventHandler DisplayDirtyStateChanged;
+#endif
+
+        private static void OnInternalDisplayDirtyStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabItem s)
+            {
+                s.InternalDisplayDirtyStateChanged?.Invoke(s, e);
+            }
+        }
+        private void tabItem_InternalDisplayDirtyStateChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            DisplayDirtyStateChanged?.Invoke(this, e);
         }
         #endregion
 
@@ -363,7 +400,7 @@ namespace SolidShineUi
         #region AllowDrop
 
         public static readonly DependencyProperty AllowDropProperty = DependencyProperty.Register("AllowDrop", typeof(bool), typeof(TabItem),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalAllowDropChanged)));
+            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalAllowDropChanged)));
 
         ///<summary>
         /// Get or set if this tab can be used as a target in drag-and-drop operations.

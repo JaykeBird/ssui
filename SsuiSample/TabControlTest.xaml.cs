@@ -141,5 +141,21 @@ namespace SsuiSample
         {
             txtStatus.Text = "DragDrop on Tab 1";
         }
+
+        bool changingTab = false;
+
+        private void chkDirty_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            if (changingTab) return;
+
+            tabControl.SelectedTab.IsDirty = chkDirty.IsChecked;
+        }
+
+        private void tabControl_TabChanged(object sender, TabItemChangeEventArgs e)
+        {
+            changingTab = true;
+            chkDirty.IsChecked = tabControl.SelectedTab.IsDirty;
+            changingTab = false;
+        }
     }
 }
