@@ -61,11 +61,13 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <param name="file">The file to load from.</param>
         /// <param name="list">A list of actions available to be accessed via keyboard shortcuts.</param>
         /// <returns>A list of keyboard shortcuts, which can be loaded into a KeyRegistry.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the file does not exist.</exception>
+        /// <remarks>If there is a shortcut in this file that reference an action ID that isn't on the <paramref name="list"/>, then that shortcut is skipped.</remarks>
         public static List<KeyboardShortcut> LoadFromFile(string file, KeyActionList list)
         {
             if (!File.Exists(file))
             {
-                throw new ArgumentException("The specified file does not exist. Keyboard shortcuts cannot be loaded.");
+                throw new FileNotFoundException("The specified file does not exist. Keyboard shortcuts cannot be loaded.", file);
             }
 
             List<KeyboardShortcut> entries = new List<KeyboardShortcut>();

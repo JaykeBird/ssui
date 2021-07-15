@@ -11,8 +11,19 @@ using KeyBoard = System.Windows.Input.Keyboard;
 
 namespace SolidShineUi.KeyboardShortcuts
 {
+
+    /// <summary>
+    /// A helper class to manage keyboard shortcut support for a given WPF window. Connect this to a window to easily add and manage keyboard shortcuts.
+    /// </summary>
+    /// <remarks>
+    /// This class listens to a Window's KeyDown and KeyUp events to detect when keyboard shortcuts are pressed and activate them. See online documentation for more info about keyboard shortcut support.
+    /// </remarks>
     public class KeyboardShortcutHandler
     {
+        /// <summary>
+        /// Create a KeyboardShortcutHandler and connect it to a window.
+        /// </summary>
+        /// <param name="w">The window to connect to this KeyboardShortcutHandler.</param>
         public KeyboardShortcutHandler(Window w)
         {
             Window = w;
@@ -23,7 +34,14 @@ namespace SolidShineUi.KeyboardShortcuts
             keyCheck = new DispatcherTimer(new TimeSpan(400), DispatcherPriority.Input, KeyModifierCheck, w.Dispatcher);
         }
 
-        public Window Window { get; set; }
+        /// <summary>
+        /// Get the window that this KeyboardShortcutHandler is connected to. When keys are pressed in this window, this will activate keyboard shortcuts.
+        /// </summary>
+        public Window Window { get; private set; }
+
+        /// <summary>
+        /// Get the KeyRegistry used by this KeyboardShortcutHandler. The KeyRegistry contains a list of all the shortcuts registered.
+        /// </summary>
         public KeyRegistry KeyRegistry { get; } = new KeyRegistry();
 
         private DispatcherTimer keyCheck;
@@ -32,6 +50,10 @@ namespace SolidShineUi.KeyboardShortcuts
         bool ShiftPressed = false;
         bool AltPressed = false;
 
+        /// <summary>
+        /// Load in and register a list of keyboard shortcuts.
+        /// </summary>
+        /// <param name="ks">The list of shortcuts to load.</param>
         public void LoadShortcutsFromList(List<KeyboardShortcut> ks)
         {
             foreach (KeyboardShortcut item in ks)
@@ -40,6 +62,16 @@ namespace SolidShineUi.KeyboardShortcuts
             }
         }
 
+        /// <summary>
+        /// Load in and register keyboard shortcuts from a file. A KeyActionList is needed to map the shortcuts to their actions.
+        /// </summary>
+        /// <param name="file">The file to load from.</param>
+        /// <param name="methodList">The list of actions available for keyboard shortcuts, to use for mapping.</param>
+        /// <exception cref="System.IO.FileNotFoundException">Thrown if the file cannot be found.</exception>
+        /// <remarks>
+        /// If there is a shortcut in the file that references an action not in the <paramref name="methodList"/>, that shortcut is skipped.
+        /// Also, if a shortcut in the file has the same keyboard combination and key as a shortcut already registed, that shortcut is skipped.
+        /// </remarks>
         public void LoadShortcutsFromFile(string file, KeyActionList methodList)
         {
             var list = KeyboardShortcutsIo.LoadFromFile(file, methodList);
@@ -57,13 +89,18 @@ namespace SolidShineUi.KeyboardShortcuts
             }
         }
 
+        /// <summary>
+        /// Write the currently registered keyboard shortcuts to a file, which can be loaded in later.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public async Task WriteShortcutsToFileAsync(string file)
         {
             await KeyboardShortcutsIo.WriteToFile(KeyRegistry, file);
         }
 
         ///// <summary>
-        ///// Set if menu items should display the keyboard shortcut combinations directly in the user interface. 
+        ///// Set if menu items should display the keyboard shortcut combinations directly in the user interface.
         ///// </summary>
         ///// <param name="display">True to display keyboard shortcut combinations, false to not have them displayed.</param>
         //public void ApplyDisplaySettings(bool display)
