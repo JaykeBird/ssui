@@ -562,6 +562,28 @@ namespace SolidShineUi
             if (e.Parameter is TabItem ti)
             {
                 Items.Select(ti);
+                if (ic != null)
+                {
+                    for (int i = 0; i < ic.Items.Count; i++)
+                    {
+                        // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
+                        // from https://stackoverflow.com/a/1876534/2987285
+                        ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+                        c.ApplyTemplate();
+#if NETCOREAPP
+                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+#else
+                        TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+#endif
+                        if (tb != null)
+                        {
+                            if (tb.TabItem == ti)
+                            {
+                                tb.BringIntoView();
+                            }
+                        }
+                    }
+                }
             }
 
         }
