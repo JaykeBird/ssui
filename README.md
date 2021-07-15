@@ -113,6 +113,12 @@ You can use the included SsuiSample app as an example to get started with.
 - **ColorsHelper** - contains various methods for interacting with colors and color spaces
 - **ColorToBrushConverter** - a WPF/XAML converter between a Color and a SolidColorBrush
 - **ImageColorPicker** - select colors from an image, used in the ColorPickerDialog
+- **IKeyAction** - represents an action that can occur when a keyboard shortcut is pressed (such as CommandKeyAction and RoutedEventKeyAction)
+- **KeyboardShortcut** - represents a single keyboard shortcut (and the action to take when it is pressed)
+- **KeyboardShortcutHandler** - a helper class that can be added to any WPF window to add keyboard shortcut support
+- **KeyboardShortcutsIo** - a helper class to load/save keyboard shortcut settings to/from a file
+- **KeyRegistry** - represents a list of keyboard shortcuts currently set, and the actions to take when a shortcut is pressed
+- **SelectableCollection** - an extension on ObservableCollection, with additional functions/properties for selecting items in the collection
 - **SelectableItem** - a type of SelectableUserControl; a basic but powerful control to use to display items in SelectPanel
 - **SelectableUserControl** - the base class from which you can create your own controls to use with a SelectPanel
 - **TabItem** - a tab to use with the TabControl
@@ -129,9 +135,13 @@ To build this library you will need:
 - .NET Core SDK 3.1 and 5.0
 - (In the future, I will be adding AvaloniaUI support, so this will become a requirement as well.)
 
-I recommend using Visual Studio 2019 (16.8) for this library. When opened up, you should be able to just build and run the library without any further action needed.
+I recommend using Visual Studio 2019 for this library. When opened up, you should be able to just build and run the library without any further action needed.
 
 Included is the SsuiSample program, which is useful for demonstrating the library and its functions. I also use this to test the library and its controls. Feel free to use SsuiSample as a basis for your implementations.
+
+### Keyboard shortcuts
+
+To get started with keyboard shortcut support, I recommend looking at the [AddKeyboardSupport](Docs/AddKeyboardSupport.md) file for a step-by-step process and other notes and remarks. Note that this is not a complete drop-in replacement for the InputBindings system in WPF's XAML, but its own system with different advantages.
 
 ### Notes
 
