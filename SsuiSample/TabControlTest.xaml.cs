@@ -121,5 +121,25 @@ namespace SsuiSample
         {
             tabControl.SelectedTabClosedAction = cbbSelectTabClose.SelectedEnumValueAsEnum<SelectedTabCloseAction>();
         }
+
+        private void TabItem_DragEnter(object sender, DragEventArgs e)
+        {
+            txtStatus.Text = "DragEnter on Tab 1";
+        }
+
+        private void TabItem_DragOver(object sender, DragEventArgs e)
+        {
+            txtStatus.Text = "DragOver on Tab 1";
+        }
+
+        private void TabItem_DragLeave(object sender, DragEventArgs e)
+        {
+            txtStatus.Text = "DragLeave on Tab 1";
+        }
+
+        private void TabItem_Drop(object sender, DragEventArgs e)
+        {
+            txtStatus.Text = "DragDrop on Tab 1";
+        }
     }
 }

@@ -14,11 +14,13 @@
                 <RowDefinition/>
                 <RowDefinition Height="55"/>
                 <RowDefinition Height="40"/>
+                <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
             <Border Background="#77FFFFFF" BorderThickness="1" BorderBrush="Black" Margin="20,10,20,20">
                 <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" >
                     <flat:TabControl.Items>
-                        <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png">
+                        <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png" AllowDrop="True" ToolTip="This is a ToolTip"
+                                      DragEnter="TabItem_DragEnter" DragOver="TabItem_DragOver" DragLeave="TabItem_DragLeave" Drop="TabItem_Drop" >
                             <flat:TabItem.TabContextMenu>
                                 <flat:ContextMenu>
                                     <MenuItem Header="Item 1" />
@@ -46,10 +48,10 @@
                     <TextBlock Margin="10,0,5,0" Text="Action on selected tab close:" VerticalAlignment="Center" />
                     <flat:EnumComboBox Enum="{x:Type flat:SelectedTabCloseAction}" x:Name="cbbSelectTabClose" SelectedIndex="0" SelectionChanged="cbbSelectTabClose_SelectionChanged" />
                     <TextBlock Margin="10,0,5,0" Text="Minimum tab width:" VerticalAlignment="Center" />
-                    <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" />
+                    <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
                 </StackPanel>
             </ScrollViewer>
-
+            <TextBlock Grid.Row="3" VerticalAlignment="Center" Margin="10,0" x:Name="txtStatus" />
         </Grid>
 
     </Grid>

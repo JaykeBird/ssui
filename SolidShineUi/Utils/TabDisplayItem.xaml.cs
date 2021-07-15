@@ -62,7 +62,7 @@ namespace SolidShineUi.Utils
             InternalParentChanged += tdi_InternalParentChanged;
             InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
             InternalShowTabsOnBottomChanged += tdi_InternalShowTabsOnBottomChanged;
-            InternalTabItemChanged += tdi_InternalTabITemChanged;
+            InternalTabItemChanged += tdi_InternalTabItemChanged;
         }
 
         public TabDisplayItem(TabItem tab)
@@ -231,12 +231,22 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private void tdi_InternalTabITemChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void tdi_InternalTabItemChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (TabItem != null)
             {
                 TabItem.InternalTabClosing += TabItem_InternalTabClosing;
+                TabItem.InternalBringIntoViewRequested += TabItem_InternalBringIntoViewRequested;
             }
+        }
+
+#if NETCOREAPP
+        private void TabItem_InternalBringIntoViewRequested(object? sender, EventArgs e)
+#else
+        private void TabItem_InternalBringIntoViewRequested(object sender, EventArgs e)
+#endif
+        {
+            BringIntoView();
         }
 
 #if NETCOREAPP
@@ -248,9 +258,9 @@ namespace SolidShineUi.Utils
             RequestClose?.Invoke(this, e);
             //throw new NotImplementedException();
         }
-        #endregion
+#endregion
 
-        #region ShowTabsOnBottom
+#region ShowTabsOnBottom
 
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
@@ -294,14 +304,14 @@ namespace SolidShineUi.Utils
                 border.BorderThickness = new Thickness(1, 1, 1, 1);
             }
         }
-        #endregion
+#endregion
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             RequestClose?.Invoke(this, e);
         }
 
-        #region ParentTabControl
+#region ParentTabControl
 
         public static readonly DependencyProperty ParentTabControlProperty = DependencyProperty.Register("ParentTabControl", typeof(TabControl), typeof(TabDisplayItem),
             new PropertyMetadata(null, OnInternalParentChanged));
@@ -329,9 +339,9 @@ namespace SolidShineUi.Utils
             }
         }
 
-        #endregion
+#endregion
 
-        #region Color Scheme
+#region Color Scheme
 
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
@@ -399,11 +409,11 @@ namespace SolidShineUi.Utils
 
             ApplyColorScheme(cs);
         }
-        #endregion
+#endregion
 
-        #region Click Handling
+#region Click Handling
 
-        #region Variables/Properties
+#region Variables/Properties
         bool initiatingClick = false;
 
         //bool sel = false;
@@ -431,7 +441,7 @@ namespace SolidShineUi.Utils
         //    }
         //}
 
-        #endregion
+#endregion
 
         void PerformClick(bool rightClick = false)
         {
@@ -503,9 +513,9 @@ namespace SolidShineUi.Utils
                 RightClick?.Invoke(this, EventArgs.Empty);
             }
         }
-        #endregion
+#endregion
 
-        #region Focus Events
+#region Focus Events
         bool highlighting = false;
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
@@ -568,7 +578,7 @@ namespace SolidShineUi.Utils
             initiatingClick = false;
         }
 
-        #endregion
+#endregion
 
         private void border_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -590,7 +600,7 @@ namespace SolidShineUi.Utils
             }
         }
 
-        #region Drag and Drop
+#region Drag and Drop
 
         public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
@@ -643,6 +653,7 @@ namespace SolidShineUi.Utils
                 else
                 {
                     // raise TabItem.DragEnter
+                    TabItem.RaiseDragEvent("DragEnter", e);
                 }
             }
         }
@@ -650,12 +661,14 @@ namespace SolidShineUi.Utils
         private void control_Drop(object sender, DragEventArgs e)
         {
             // raise TabItem.Drop
+            TabItem.RaiseDragEvent("Drop", e);
             grdDrag.Visibility = Visibility.Collapsed;
         }
 
         private void control_DragLeave(object sender, DragEventArgs e)
         {
             // raise TabItem.DragLeave
+            TabItem.RaiseDragEvent("DragLeave", e);
             grdDrag.Visibility = Visibility.Collapsed;
         }
 
@@ -698,7 +711,7 @@ namespace SolidShineUi.Utils
                 TabItemDrop?.Invoke(this, new TabItemDropEventArgs(TabItem, (TabItem)e.Data.GetData(typeof(TabItem)), false));
             }
         }
-        #endregion
+#endregion
 
         private void control_MouseMove(object sender, MouseEventArgs e)
         {
@@ -708,9 +721,29 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private void control_StylusMove(object sender, StylusEventArgs e)
+        private void control_PreviewDragEnter(object sender, DragEventArgs e)
         {
+            TabItem.RaiseDragEvent("PreviewDragEnter", e);
+        }
 
+        private void control_PreviewDragLeave(object sender, DragEventArgs e)
+        {
+            TabItem.RaiseDragEvent("PreviewDragLeave", e);
+        }
+
+        private void control_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            TabItem.RaiseDragEvent("PreviewDragOver", e);
+        }
+
+        private void control_PreviewDrop(object sender, DragEventArgs e)
+        {
+            TabItem.RaiseDragEvent("PreviewDrop", e);
+        }
+
+        private void control_DragOver(object sender, DragEventArgs e)
+        {
+            TabItem.RaiseDragEvent("DragOver", e);
         }
     }
 

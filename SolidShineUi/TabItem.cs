@@ -27,6 +27,8 @@ namespace SolidShineUi
             InternalContentChanged += tabItem_InternalContentChanged;
             InternalVisibilityChanged += tabItem_InternalVisibilityChanged;
             InternalShowIconChanged += tabItem_InternalShowIconChanged;
+            InternalAllowDropChanged += tabItem_InternalAllowDropChanged;
+            InternalToolTipChanged += tabItem_InternalToolTipChanged;
         }
 
         #region Title
@@ -398,6 +400,104 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region Drag and drop events
+
+        internal protected void RaiseDragEvent(string ev, DragEventArgs e)
+        {
+            switch (ev)
+            {
+                case "DragEnter":
+                    DragEnter?.Invoke(this, e);
+                    break;
+                case "DragOver":
+                    DragOver?.Invoke(this, e);
+                    break;
+                case "DragLeave":
+                    DragLeave?.Invoke(this, e);
+                    break;
+                case "Drop":
+                    Drop?.Invoke(this, e);
+                    break;
+                case "PreviewDragEnter":
+                    PreviewDragEnter?.Invoke(this, e);
+                    break;
+                case "PreviewDragOver":
+                    PreviewDragOver?.Invoke(this, e);
+                    break;
+                case "PreviewDragLeave":
+                    PreviewDragLeave?.Invoke(this, e);
+                    break;
+                case "PreviewDrop":
+                    PreviewDrop?.Invoke(this, e);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+#if NETCOREAPP
+        public event DragEventHandler? DragEnter;
+        public event DragEventHandler? DragOver;
+        public event DragEventHandler? DragLeave;
+        public event DragEventHandler? Drop;
+
+        public event DragEventHandler? PreviewDragEnter;
+        public event DragEventHandler? PreviewDragOver;
+        public event DragEventHandler? PreviewDragLeave;
+        public event DragEventHandler? PreviewDrop;
+#else
+        public event DragEventHandler DragEnter;
+        public event DragEventHandler DragOver;
+        public event DragEventHandler DragLeave;
+        public event DragEventHandler Drop;
+
+        public event DragEventHandler PreviewDragEnter;
+        public event DragEventHandler PreviewDragOver;
+        public event DragEventHandler PreviewDragLeave;
+        public event DragEventHandler PreviewDrop;
+#endif
+
+        #endregion
+
+        #region ToolTip
+
+        public static readonly DependencyProperty ToolTipProperty = DependencyProperty.Register("ToolTip", typeof(object), typeof(TabItem),
+            new PropertyMetadata(null, new PropertyChangedCallback(OnInternalToolTipChanged)));
+
+        ///<summary>
+        /// Get or set the ToolTip to display when this tab is selected.
+        ///</summary>
+        [Category("Common")]
+        public object ToolTip
+        {
+            get { return (object)GetValue(ToolTipProperty); }
+            set { SetValue(ToolTipProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalToolTipChanged;
+
+        /// <summary>
+        /// Raised when the tab's ToolTip property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ToolTipChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ToolTipChanged;
+#endif
+
+        private static void OnInternalToolTipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabItem s)
+            {
+                s.InternalToolTipChanged?.Invoke(s, e);
+            }
+        }
+        private void tabItem_InternalToolTipChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ToolTipChanged?.Invoke(this, e);
+        }
+        #endregion
+
         /// <summary>
         /// Close this tab (and remove it from the TabControl), if it is currently in a TabControl.
         /// </summary>
@@ -409,10 +509,20 @@ namespace SolidShineUi
             InternalTabClosing?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Attempt to bring the current tab into view on the tab bar
+        /// </summary>
+        public void BringIntoView()
+        {
+            InternalBringIntoViewRequested?.Invoke(this, EventArgs.Empty);
+        }
+
 #if NETCOREAPP
         internal protected event EventHandler? InternalTabClosing;
+        internal protected event EventHandler? InternalBringIntoViewRequested;
 #else
         internal protected event EventHandler InternalTabClosing;
+        internal protected event EventHandler InternalBringIntoViewRequested;
 #endif
 
         ///<summary>
