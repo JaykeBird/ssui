@@ -132,27 +132,27 @@ namespace SolidShineUi
         #region Window extension methods
 
         /// <summary>
-        /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). Note that you'll want to update the CaptionDisplayType to remove the physical button.
+        /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical button.
         /// </summary>
         public static void DisableMaximizeAction(this System.Windows.Window w)
         {
-            NativeMethods.HideMaximizeButton(w);
+            HideMaximizeButton(w);
         }
 
         /// <summary>
-        /// Calls the native Windows method to disable the Minimize action (via the right-click menu and the like). Note that you'll want to update the CaptionDisplayType to remove the physical button.
+        /// Calls the native Windows method to disable the Minimize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical button.
         /// </summary>
         public static void DisableMinimizeAction(this System.Windows.Window w)
         {
-            NativeMethods.HideMinimizeButton(w);
+            HideMinimizeButton(w);
         }
 
         /// <summary>
-        /// Calls the native Windows method to disable the Minimize and Maximize actions (via the right-click menu and the like). Note that you'll want to update the CaptionDisplayType to remove the physical buttons.
+        /// Calls the native Windows method to disable the Minimize and Maximize actions (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical buttons.
         /// </summary>
         public static void DisableMinimizeAndMaximizeActions(this System.Windows.Window w)
         {
-            NativeMethods.HideMinimizeAndMaximizeButtons(w);
+            HideMinimizeAndMaximizeButtons(w);
         }
 
         #endregion

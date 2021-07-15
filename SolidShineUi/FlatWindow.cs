@@ -409,5 +409,29 @@ namespace SolidShineUi
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         #endregion
+
+        /// <summary>
+        /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical button.
+        /// </summary>
+        public void DisableMaximizeAction()
+        {
+            NativeMethods.DisableMaximizeAction(this);
+        }
+
+        /// <summary>
+        /// Calls the native Windows method to disable the Minimize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical button.
+        /// </summary>
+        public void DisableMinimizeAction()
+        {
+            NativeMethods.DisableMinimizeAction(this);
+        }
+
+        /// <summary>
+        /// Calls the native Windows method to disable the Minimize and Maximize actions (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical buttons.
+        /// </summary>
+        public void DisableMaximizeAndMinimizeActions()
+        {
+            NativeMethods.DisableMinimizeAndMaximizeActions(this);
+        }
     }
 }
