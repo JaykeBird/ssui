@@ -39,7 +39,7 @@
                 <flat:FlatButton x:Name="btnAdd" Margin="3" Click="btnAdd_Click" MinWidth="80" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add Tab...</flat:FlatButton>
                 <flat:FlatButton x:Name="btnAddNoClose" Margin="3" Click="btnAddNoClose_Click" MinWidth="125" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add No Close Tab...</flat:FlatButton>
                 <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
-                <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="130" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Current Tab</flat:FlatButton>
+                <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="100" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Tab...</flat:FlatButton>
                 <flat:CheckBox x:Name="chkDirty" Margin="3" CheckChanged="chkDirty_CheckChanged" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Set Tab IsDirty</flat:CheckBox>
             </StackPanel>
             <ScrollViewer Grid.Row="2" Margin="20,0" VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
