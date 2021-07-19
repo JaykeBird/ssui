@@ -636,39 +636,52 @@ namespace SolidShineUi.Utils
 
         private void control_DragEnter(object sender, DragEventArgs e)
         {
-            if (AllowDragDrop)
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
             {
-                if (e.Data.GetData(typeof(TabItem)) != null)
+                if (e.Data.GetData(typeof(TabItem)) == TabItem)
                 {
-                    if (e.Data.GetData(typeof(TabItem)) == TabItem)
-                    {
-                        e.Effects = DragDropEffects.None;
-                    }
-                    else
-                    {
-                        grdDrag.Visibility = Visibility.Visible;
-                        e.Effects = DragDropEffects.Move;
-                    }
+                    e.Effects = DragDropEffects.None;
                 }
                 else
                 {
-                    // raise TabItem.DragEnter
-                    TabItem.RaiseDragEvent("DragEnter", e);
+                    grdDrag.Visibility = Visibility.Visible;
+                    e.Effects = DragDropEffects.Move;
                 }
+            }
+            else if (AllowDataDragDrop)
+            {
+                // raise TabItem.DragEnter
+                TabItem.RaiseDragEvent("DragEnter", e);
             }
         }
 
         private void control_Drop(object sender, DragEventArgs e)
         {
-            // raise TabItem.Drop
-            TabItem.RaiseDragEvent("Drop", e);
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
+            {
+                // ideally, the grdDrag should handle this
+                // if not, I'll fix this in a later version
+            }
+            else if (AllowDataDragDrop)
+            {
+                // raise TabItem.Drop
+                TabItem.RaiseDragEvent("Drop", e);
+            }
             grdDrag.Visibility = Visibility.Collapsed;
         }
 
         private void control_DragLeave(object sender, DragEventArgs e)
         {
-            // raise TabItem.DragLeave
-            TabItem.RaiseDragEvent("DragLeave", e);
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
+            {
+
+            }
+            else if (AllowDataDragDrop)
+            {
+                // raise TabItem.DragLeave
+                TabItem.RaiseDragEvent("DragLeave", e);
+            }
+
             grdDrag.Visibility = Visibility.Collapsed;
         }
 
@@ -723,27 +736,62 @@ namespace SolidShineUi.Utils
 
         private void control_PreviewDragEnter(object sender, DragEventArgs e)
         {
-            TabItem.RaiseDragEvent("PreviewDragEnter", e);
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
+            {
+
+            }
+            else if (AllowDataDragDrop)
+            {
+                TabItem.RaiseDragEvent("PreviewDragEnter", e);
+            }
         }
 
         private void control_PreviewDragLeave(object sender, DragEventArgs e)
         {
-            TabItem.RaiseDragEvent("PreviewDragLeave", e);
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
+            {
+
+            }
+            else if (AllowDataDragDrop)
+            {
+                TabItem.RaiseDragEvent("PreviewDragLeave", e);
+            }
         }
 
         private void control_PreviewDragOver(object sender, DragEventArgs e)
         {
-            TabItem.RaiseDragEvent("PreviewDragOver", e);
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
+            {
+
+            }
+            else if (AllowDataDragDrop)
+            {
+                TabItem.RaiseDragEvent("PreviewDragOver", e);
+            }
         }
 
         private void control_PreviewDrop(object sender, DragEventArgs e)
         {
-            TabItem.RaiseDragEvent("PreviewDrop", e);
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
+            {
+
+            }
+            else if (AllowDataDragDrop)
+            {
+                TabItem.RaiseDragEvent("PreviewDrop", e);
+            }
         }
 
         private void control_DragOver(object sender, DragEventArgs e)
         {
-            TabItem.RaiseDragEvent("DragOver", e);
+            if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
+            {
+
+            }
+            else if (AllowDataDragDrop)
+            {
+                TabItem.RaiseDragEvent("DragOver", e);
+            }
         }
     }
 
