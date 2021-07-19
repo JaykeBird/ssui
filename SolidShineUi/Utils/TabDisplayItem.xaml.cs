@@ -738,7 +738,14 @@ namespace SolidShineUi.Utils
         {
             if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
             {
-
+                if (e.Data.GetData(typeof(TabItem)) == TabItem)
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Move;
+                }
             }
             else if (AllowDataDragDrop)
             {

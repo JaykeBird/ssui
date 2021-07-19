@@ -663,49 +663,39 @@ namespace SolidShineUi
 
             Items.Insert(newIndex, e.DroppedTabItem);
 
-            //try
-            //{
-            //    Items.Move(Items.IndexOf(e.DroppedTabItem), newIndex);
-            //}
-            //catch (ArgumentOutOfRangeException)
-            //{
-            //    //if (Items.IndexOf(e.DroppedTabItem) == -1)
-            //    //{
-            //    //    //try
-            //    //    //{
-            //    //    //    Items.Remove(e.DroppedTabItem);
-            //    //    //    Items.Insert(newIndex, e.DroppedTabItem);
-            //    //    //}
-            //    //    //catch (ArgumentOutOfRangeException)
-            //    //    //{
-            //    //    //    if (e.Before)
-            //    //    //    {
-            //    //    //        Items.Remove(e.DroppedTabItem);
-            //    //    //        Items.Insert(0, e.DroppedTabItem);
-            //    //    //    }
-            //    //    //    else
-            //    //    //    {
-            //    //    //        Items.Remove(e.DroppedTabItem);
-            //    //    //        Items.Insert(Items.Count - 1, e.DroppedTabItem);
-            //    //    //    }
-            //    //    //}
-            //    //    return;
-            //    //}
-
-            //    //if (e.Before)
-            //    //{
-            //    //    Items.Move(Items.IndexOf(e.DroppedTabItem), 0);
-            //    //}
-            //    //else
-            //    //{
-            //    //    Items.Move(Items.IndexOf(e.DroppedTabItem), Items.Count - 1);
-            //    //}
-            //}
-            //throw new NotImplementedException();
             if (selItem != null)
             {
                 Items.Select(selItem);
             }
+
+            // fix to make sure the correct tab has the IsSelected state
+            if (ic != null)
+            {
+                for (int i = 0; i < ic.Items.Count; i++)
+                {
+                    // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
+                    // from https://stackoverflow.com/a/1876534/2987285
+                    ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+                    c.ApplyTemplate();
+#if NETCOREAPP
+                    TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+#else
+                        TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+#endif
+                    if (tb != null)
+                    {
+                        if (tb.TabItem != null && tb.TabItem == selItem)
+                        {
+                            tb.IsSelected = true;
+                        }
+                        else
+                        {
+                            tb.IsSelected = false;
+                        }
+                    }
+                }
+            }
+
             _internalAction = false;
         }
 
