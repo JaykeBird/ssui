@@ -40,6 +40,7 @@ namespace SolidShineUi
         public IntegerSpinner()
         {
             InitializeComponent();
+            Loaded += IntegerSpinner_Loaded;
 
             //txtValue.SetBinding(TextBox.TextProperty, new Binding("Value")
             //{
@@ -69,6 +70,11 @@ namespace SolidShineUi
 
             // moved here from loaded
             //ValidateValue();
+        }
+
+        private void IntegerSpinner_Loaded(object sender, EventArgs e)
+        {
+            txtValue.TextChanged += txtValue_TextChanged;
         }
 
         private void IntegerSpinner_InternalValueChanged(object sender, DependencyPropertyChangedEventArgs e)
