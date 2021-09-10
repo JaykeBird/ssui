@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi"
              mc:Ignorable="d" x:Name="baseSpinner"
-             Height="24" d:DesignWidth="80" Loaded="baseSpinner_Loaded" IsEnabledChanged="BaseSpinner_IsEnabledChanged" >
+             d:DesignWidth="80" Loaded="baseSpinner_Loaded" IsEnabledChanged="BaseSpinner_IsEnabledChanged" >
     <!--<UserControl.Resources>
         <ControlTemplate x:Key="styleUpDown" TargetType="Button">
             <Border x:Name="br" BorderThickness="0" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:IntegerSpinner}}}" 
@@ -47,7 +47,7 @@
                 <ColumnDefinition Width="20" x:Name="colArrows" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="txtValue" x:FieldModifier="private" FontSize="12" VerticalContentAlignment="Center" Padding="3,1" Grid.Column="0" Grid.RowSpan="2" Text="0" 
-                             LostFocus="txtValue_LostFocus" KeyDown="txtValue_KeyDown" KeyUp="txtValue_KeyUp" TextChanged="txtValue_TextChanged" BorderThickness="0" />
+                             LostFocus="txtValue_LostFocus" KeyDown="txtValue_KeyDown" KeyUp="txtValue_KeyUp" BorderThickness="0" />
             <Border x:Name="divider" Grid.Column="2" BorderThickness="1,0,0,0" BorderBrush="LightGray" Margin="0,1,1,1" >
                 <Grid x:Name="grdButtons">
                     <Grid.RowDefinitions>

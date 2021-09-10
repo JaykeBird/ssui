@@ -44,6 +44,7 @@ namespace SolidShineUi
         public DoubleSpinner()
         {
             InitializeComponent();
+            Loaded += DoubleSpinner_Loaded;
 
             //DoubleStringConverter dsc = new DoubleStringConverter();
 
@@ -75,6 +76,11 @@ namespace SolidShineUi
 
             keyDownTimer.Elapsed += KeyDownTimer_Elapsed;
             advanceTimer.Elapsed += AdvanceTimer_Elapsed;
+        }
+
+        private void DoubleSpinner_Loaded(object sender, EventArgs e)
+        {
+            txtValue.TextChanged += txtValue_TextChanged;
         }
 
         private void DoubleSpinner_InternalValueChanged(object sender, DependencyPropertyChangedEventArgs e)
