@@ -4,6 +4,7 @@ using System.Windows.Media;
 using static SolidShineUi.ChromeButtons;
 //using System.Collections.Generic;
 using System.Windows.Shell;
+using System.ComponentModel;
 
 namespace SolidShineUi
 {
@@ -15,6 +16,11 @@ namespace SolidShineUi
         static FlatWindow()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(FlatWindow), new FrameworkPropertyMetadata(typeof(FlatWindow)));
+        }
+
+        public FlatWindow()
+        {
+            InternalCornerRadiusChanged += flatWindow_InternalCornerRadiusChanged;
         }
 
         #region Color Scheme
@@ -133,12 +139,56 @@ namespace SolidShineUi
             WindowChrome wc = new WindowChrome
             {
                 CaptionHeight = height,
-                CornerRadius = new CornerRadius(0),
+                CornerRadius = CornerRadius,
                 ResizeBorderThickness = new Thickness(4),
                 GlassFrameThickness = new Thickness(0, 0, 0, 1)
             };
 
             WindowChrome.SetWindowChrome(this, wc);
+        }
+
+        void ChangeChromeCornerRadius(CornerRadius radius)
+        {
+            // note to self: if updating this method, make sure this matches the WindowChrome settings in the Generic.xaml file.
+            WindowChrome wc = new WindowChrome
+            {
+                CaptionHeight = captionHeight,
+                CornerRadius = radius,
+                ResizeBorderThickness = new Thickness(4),
+                GlassFrameThickness = new Thickness(0, 0, 0, 1)
+            };
+
+            WindowChrome.SetWindowChrome(this, wc);
+        }
+
+
+        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+            "CornerRadius", typeof(CornerRadius), typeof(FlatWindow),
+            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
+
+        /// <summary>
+        /// Get or set the corner radius (or radii) to use for the window and its border. Can be used to created rounded corners for windows (this should apply regardless of what version of Windows is being used).
+        /// </summary>
+        [Category("Appearance")]
+        public CornerRadius CornerRadius
+        {
+            get => (CornerRadius)GetValue(CornerRadiusProperty);
+            set => SetValue(CornerRadiusProperty, value);
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
+
+        private void flatWindow_InternalCornerRadiusChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ChangeChromeCornerRadius(CornerRadius);
+        }
+
+        private static void OnInternalCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is FlatWindow f)
+            {
+                f.InternalCornerRadiusChanged?.Invoke(f, e);
+            }
         }
 
         public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
@@ -183,6 +233,7 @@ namespace SolidShineUi
             "ShowTitle", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
 
+        [Category("Appearance")]
         public bool ShowTitle
         {
             get
@@ -245,6 +296,10 @@ namespace SolidShineUi
             "BorderThickness", typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>
+        /// Get or set the thickness of the border of the window. Setting the thickness to 0 means the border is not visible.
+        /// </summary>
+        [Category("Appearance")]
         public new Thickness BorderThickness
         {
             get

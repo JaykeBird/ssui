@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SsuiSample"
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
-             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
@@ -18,9 +18,11 @@
                 <TextBlock HorizontalAlignment="Left" Margin="40,20,0,0" Text="Window Title Bar:" VerticalAlignment="Top"/>
                 <RadioButton x:Name="rdoDisplayText" GroupName="rdoTitle" Content="Display text below" HorizontalAlignment="Left" Margin="70,45,0,0" VerticalAlignment="Top" IsChecked="True" />
                 <RadioButton x:Name="rdoDisplayImage" GroupName="rdoTitle" Content="Display an image (using TopLeftElement)" HorizontalAlignment="Left" Margin="70,65,0,0" VerticalAlignment="Top"/>
-                <RadioButton x:Name="rdoHide" GroupName="rdoTitle" Content="Do not display text at all (keep blank)" HorizontalAlignment="Left" Margin="70,85,0,0" VerticalAlignment="Top"/>
+                <RadioButton x:Name="rdoHide" GroupName="rdoTitle" Content="Do not display text at all (title bar is blank)" HorizontalAlignment="Left" Margin="70,85,0,0" VerticalAlignment="Top"/>
                 <flat:CheckBox x:Name="chkTopRight" Content="Display an element in the top-right of the window" HorizontalAlignment="Left" Margin="70,140,0,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
                 <flat:ClickSelectTextBox x:Name="txtTitle" HorizontalAlignment="Left" Margin="145,109,0,0" Text="Window Title" VerticalAlignment="Top" Width="120" Height="20" />
+                <TextBlock HorizontalAlignment="Left" Margin="70,110,0,0" Text="Window title:" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="270,110,0,0" Text="(displayed in the title bar and in Windows's taskbar)" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="40,180,0,0" Text="Window Actions:" VerticalAlignment="Top"/>
                 <flat:CheckBox x:Name="chkMinimize" Content="Can minimize" HorizontalAlignment="Left" Margin="70,200,0,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" IsChecked="True" />
                 <flat:CheckBox x:Name="chkMaximize" Content="Can maximize" HorizontalAlignment="Left" Margin="200,200,0,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" IsChecked="True" />
@@ -29,12 +31,12 @@
                 <flat:IntegerSpinner x:Name="nudWidth" Margin="110,256,0,0" Width="70" HorizontalAlignment="Left" Height="24" MinValue="200" Value="400" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
                 <TextBlock HorizontalAlignment="Left" Margin="195,260,0,0" Text="Height:" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nudHeight" Margin="240,256,0,0" Width="70" HorizontalAlignment="Left" Height="24" MinValue="200" Value="400" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-                <TextBlock HorizontalAlignment="Left" Margin="40,290,0,0" Text="Color Scheme:" VerticalAlignment="Top"/>
-                <RadioButton x:Name="rdoCurrentColor" GroupName="rdoColor" Content="Use current color scheme" HorizontalAlignment="Left" Margin="70,315,0,0" VerticalAlignment="Top" IsChecked="True" />
-                <RadioButton x:Name="rdoCustomColor" GroupName="rdoColor" Content="Set custom color scheme" HorizontalAlignment="Left" Margin="70,340,0,0" VerticalAlignment="Top"/>
-                <flat:FlatButton x:Name="btnColorSet" Content="Select color..." HorizontalAlignment="Left" Margin="240,336,0,20" MinWidth="100" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnColorSet_Click" />
-                <TextBlock HorizontalAlignment="Left" Margin="70,110,0,0" Text="Window title:" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="270,110,0,0" Text="(displayed in the title bar and in Windows's taskbar)" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="40,295,0,0" Text="Corner radius (rounded corners):" VerticalAlignment="Top"/>
+                <flat:DoubleSpinner x:Name="nudCornerRadius" Margin="70,320,0,0" Width="80" HorizontalAlignment="Left" Height="24" MinValue="0" Value="0" MaxValue="50" Decimals="2" Step="1" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+                <TextBlock HorizontalAlignment="Left" Margin="40,360,0,0" Text="Color Scheme:" VerticalAlignment="Top"/>
+                <RadioButton x:Name="rdoCurrentColor" GroupName="rdoColor" Content="Use current color scheme" HorizontalAlignment="Left" Margin="70,385,0,0" VerticalAlignment="Top" IsChecked="True" />
+                <RadioButton x:Name="rdoCustomColor" GroupName="rdoColor" Content="Set custom color scheme" HorizontalAlignment="Left" Margin="70,410,0,0" VerticalAlignment="Top"/>
+                <flat:FlatButton x:Name="btnColorSet" Content="Select color..." HorizontalAlignment="Left" Margin="240,406,0,0" MinWidth="100" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnColorSet_Click" />
             </Grid>
         </ScrollViewer>
         <flat:FlatButton x:Name="btnDisplay" Content="Open Flat Window" HorizontalAlignment="Left" Margin="40,10,0,0" Grid.Row="2" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnDisplay_Click" />
