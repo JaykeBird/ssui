@@ -12,7 +12,7 @@
     <flat:RectConverter x:Key="RectConverter" />
 
     <ControlTemplate x:Key="MainWindowControlTemplate" TargetType="{x:Type flat:FlatWindow}">
-        <Border BorderBrush="Green">
+        <Border BorderBrush="DarkGray">
             <Border.Style>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="BorderThickness" Value="0"/>
