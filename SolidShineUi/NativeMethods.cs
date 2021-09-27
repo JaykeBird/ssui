@@ -255,5 +255,30 @@ namespace SolidShineUi
             return color;
         }
 
+        /// <summary>
+        /// Create a rounded rectangular region.
+        /// </summary>
+        /// <param name="x1">The top-left corner's X coordinate.</param>
+        /// <param name="y1">The top-left corner's Y coordinate.</param>
+        /// <param name="x2">The bottom-right corner's X coordinate.</param>
+        /// <param name="y2">The bottom-right corner's Y coordinate.</param>
+        /// <param name="cx">The width of the ellipse used for rounded corners.</param>
+        /// <param name="cy">The height of the ellipse used for rounded corners.</param>
+        /// <returns>The handle of the created region.</returns>
+        /// <remarks>The region should be deleted once you're done using it. However, if you're using this region in conjunction with <see cref="SetWindowRgn(IntPtr, IntPtr, bool)"/>,
+        /// the region doesn't need to be deleted as Windows will delete it for you when needed.</remarks>
+        [DllImport("gdi32.dll")]
+        static extern IntPtr CreateRoundRectRgn(int x1, int y1, int x2, int y2, int cx, int cy);
+
+        /// <summary>
+        /// Set the region (location, size) of a window, using the handle of a created region.
+        /// </summary>
+        /// <param name="hWnd">The handle of the window.</param>
+        /// <param name="hRgn">The handle of the region.</param>
+        /// <param name="redraw">Set if the window's redraw function should be called right after. If the window is visible, this typically should be "true".</param>
+        /// <returns>Returns 0 if successful. If not successful, a different number is returned.</returns>
+        [DllImport("user32.dll")]
+        static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool redraw);
+
     }
 }

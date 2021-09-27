@@ -104,6 +104,8 @@
     </ControlTemplate>
 
     <Style TargetType="{x:Type flat:FlatWindow}">
+        <!--<Setter Property="WindowStyle" Value="None" />
+        <Setter Property="AllowsTransparency" Value="True" />-->
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <!-- Make sure this matches the settings in the ResizeCaptionHeight method. -->
@@ -115,6 +117,14 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Template" Value="{StaticResource MainWindowControlTemplate}"/>
+        <!--<Style.Triggers>
+            <Trigger Property="WindowState" Value="Maximized">
+                <Trigger.Setters>
+                    <Setter Property="AllowsTransparency" Value="False" />
+                    <Setter Property="WindowStyle" Value="SingleBorderWindow" />
+                </Trigger.Setters>
+            </Trigger>
+        </Style.Triggers>-->
     </Style>
 
     <Style TargetType="{x:Type flat:Menu}" >
