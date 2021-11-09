@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <ProjectGuid>{E45CD1DB-F48D-4B29-B832-52D5B634B145}</ProjectGuid>
-    <TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows;net6.0-windows</TargetFrameworks>
     <UseWpf>true</UseWpf>
     <RootNamespace>SolidShineUi</RootNamespace>
     <Platforms>AnyCPU;x86;x64</Platforms>
@@ -29,6 +29,11 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>
+Version 1.8.3
+- Add preliminary .NET 6.0 support
+- Fix parsing issue with parantheses in ArithmeticParser
+- IntegerSpinner and DoubleSpinner can now change height
+		
 Version 1.8.2
 - Added tab drag-and-drop
 - Data can now be dropped onto tabs
@@ -84,6 +89,9 @@ See website for more details!</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0-windows' ">
     <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows' ">
+	<Nullable>enable</Nullable>
   </PropertyGroup>
   <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>

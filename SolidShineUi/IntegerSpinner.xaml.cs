@@ -802,12 +802,21 @@ namespace SolidShineUi
             }
         }
 
+#if NETCOREAPP
+        private void KeyDownTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            advanceTimer.Start();
+        }
+
+        private void AdvanceTimer_Elapsed(object? sender, ElapsedEventArgs e)
+#else
         private void KeyDownTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             advanceTimer.Start();
         }
 
         private void AdvanceTimer_Elapsed(object sender, ElapsedEventArgs e)
+#endif
         {
             try
             {
@@ -876,7 +885,7 @@ namespace SolidShineUi
             }
         }
 
-        #region Touch/Stylus
+#region Touch/Stylus
 
         private void btnUp_TouchDown(object sender, TouchEventArgs e)
         {
@@ -974,6 +983,6 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+#endregion
     }
 }
