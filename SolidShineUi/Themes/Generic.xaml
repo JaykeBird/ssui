@@ -1092,6 +1092,7 @@
                                 </Style>
                             </Grid.Style>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="colLeftElement" Width="Auto" />
                                 <ColumnDefinition x:Name="colScrollLeft">
                                     <ColumnDefinition.Style>
                                         <Style TargetType="ColumnDefinition">
@@ -1117,9 +1118,12 @@
                                         </Style>
                                     </ColumnDefinition.Style>
                                 </ColumnDefinition>
+                                <ColumnDefinition x:Name="colRightElement" Width="Auto" />
                                 <ColumnDefinition Width="Auto" x:Name="colMenu" />
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="brdrScrollLeft" Grid.Column="0" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
+                            <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding LeftTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrLeftElementParent" />
+                            <Border x:Name="brdrScrollLeft" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1133,13 +1137,13 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="0" Padding="1" TransparentBack="True"
+                            <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="1" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
                                              IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}">
                                 <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>
-                            <ScrollViewer x:Name="PART_TabScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="1" >
+                            <ScrollViewer x:Name="PART_TabScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="2" >
                                 <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -1178,7 +1182,7 @@
                                     </Border>
                                 </Grid>
                             </ScrollViewer>
-                            <Border x:Name="brdrScrollRight" Grid.Column="2" Grid.ColumnSpan="2" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
+                            <Border x:Name="brdrScrollRight" Grid.Column="3" Grid.ColumnSpan="3" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1192,13 +1196,15 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <flat:FlatButton x:Name="btnScrollRight" Grid.Column="2" Padding="1" TransparentBack="True"
+                            <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
                                              IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" >
                                 <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>
-                            <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="3" Padding="0" MinWidth="20" Width="20" TransparentBack="True" ToolTip="Tab List" ShowMenuArrow="False"
+                            <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding RightTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrRightElementParent" />
+                            <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="5" Padding="0" MinWidth="20" Width="20" TransparentBack="True" ToolTip="Tab List" ShowMenuArrow="False"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              Visibility="{Binding ShowTabListMenu, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource VisConverter}}">
                                 <flat:MenuButton.Menu>

@@ -88,6 +88,27 @@ namespace SolidShineUi
             }
         }
 
+        #region SelectableCollection handling
+
+        //private static readonly DependencyProperty ItemsProperty
+        //    = DependencyProperty.Register("Items", typeof(ObservableCollection<TabItem>), typeof(TabControl),
+        //    new FrameworkPropertyMetadata(new ObservableCollection<TabItem>()));
+
+        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(SelectableCollection<TabItem>), typeof(TabControl),
+            new FrameworkPropertyMetadata(new SelectableCollection<TabItem>()));
+
+        //public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
+        /// </summary>
+        [Category("Common")]
+        public SelectableCollection<TabItem> Items
+        {
+            get { return (SelectableCollection<TabItem>)GetValue(ItemsProperty); }
+            set { SetValue(ItemsProperty, value); }
+        }
+
 #if NETCOREAPP
         private void Items_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -300,25 +321,9 @@ namespace SolidShineUi
                 }
             }
         }
+        #endregion
 
-        //private static readonly DependencyProperty ItemsProperty
-        //    = DependencyProperty.Register("Items", typeof(ObservableCollection<TabItem>), typeof(TabControl),
-        //    new FrameworkPropertyMetadata(new ObservableCollection<TabItem>()));
-
-        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(SelectableCollection<TabItem>), typeof(TabControl),
-            new FrameworkPropertyMetadata(new SelectableCollection<TabItem>()));
-
-        //public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
-        /// </summary>
-        [Category("Common")]
-        public SelectableCollection<TabItem> Items
-        {
-            get { return (SelectableCollection<TabItem>)GetValue(ItemsProperty); }
-            set { SetValue(ItemsProperty, value); }
-        }
+        #region Basic Properties / Events
 
         public delegate void TabItemChangeEventHandler(object sender, TabItemChangeEventArgs e);
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
@@ -379,6 +384,7 @@ namespace SolidShineUi
         /// </summary>
         public event EventHandler TabsCleared;
 #endif
+        #endregion
 
         #region ShowTabsOnBottom
 
@@ -416,13 +422,41 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region ShowTabListMenu
+        #region LeftTabBarElement and RightTabBarElement
+
+        public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get or set the element to display on the left side of the tab bar.
+        /// </summary>
+        public UIElement LeftTabBarElement
+        {
+            get { return (UIElement)GetValue(LeftTabBarElementProperty); }
+            set { SetValue(LeftTabBarElementProperty, value); }
+        }
+
+        public static readonly DependencyProperty RightTabBarElementProperty = DependencyProperty.Register("RightTabBarElement", typeof(UIElement), typeof(TabControl),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).
+        /// </summary>
+        public UIElement RightTabBarElement
+        {
+            get { return (UIElement)GetValue(RightTabBarElementProperty); }
+            set { SetValue(RightTabBarElementProperty, value); }
+        }
+
+        #endregion
+
+        #region ShowTabListMenu / TabListMenuItemClick command
 
         public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
 
         /// <summary>
-        /// Get or set if a tab list menu should be shown on the far-right edge of the control, listing all the open tabs. This mimics a similar menu in Visual Studio.
+        /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs. This mimics a similar menu in Visual Studio.
         /// </summary>
         [Category("Common")]
         public bool ShowTabListMenu
@@ -450,6 +484,20 @@ namespace SolidShineUi
         {
             ShowTabListMenuChanged?.Invoke(this, e);
         }
+        
+        // The Tab List Menu itself is generated purely in XAML
+
+        public static readonly RoutedCommand TabListMenuItemClick = new RoutedCommand();
+
+        private void OnTabListMenuItemClick(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is TabItem ti)
+            {
+                Items.Select(ti);
+                ti.BringIntoView();
+            }
+        }
+
         #endregion
 
         #region TabMinWidth
@@ -555,18 +603,6 @@ namespace SolidShineUi
         }
         #endregion
 
-        public static readonly RoutedCommand TabListMenuItemClick = new RoutedCommand();
-
-        private void OnTabListMenuItemClick(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Parameter is TabItem ti)
-            {
-                Items.Select(ti);
-                ti.BringIntoView();
-            }
-
-        }
-
         #region Color Scheme
 
         public static readonly DependencyProperty ColorSchemeProperty
@@ -604,6 +640,8 @@ namespace SolidShineUi
             }
         }
         #endregion
+
+        #region Setup TabDisplayItem / Tdi Event Handlers
 
         internal protected void SetupTabDisplay(TabDisplayItem tdi)
         {
@@ -749,9 +787,11 @@ namespace SolidShineUi
             }
         }
 
-#region Scrolling
+        #endregion
 
-#region ScrollButtons
+        #region Scrolling
+
+        #region ScrollButtons
 
         private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("ScrollButtonsVisible", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false));
