@@ -20,7 +20,7 @@ namespace SolidShineUi
 
         public FlatWindow()
         {
-            InternalCornerRadiusChanged += flatWindow_InternalCornerRadiusChanged;
+            //InternalCornerRadiusChanged += flatWindow_InternalCornerRadiusChanged;
         }
 
         #region Color Scheme
@@ -139,7 +139,7 @@ namespace SolidShineUi
             WindowChrome wc = new WindowChrome
             {
                 CaptionHeight = height,
-                CornerRadius = CornerRadius,
+                CornerRadius = new CornerRadius(0),
                 ResizeBorderThickness = new Thickness(4),
                 GlassFrameThickness = new Thickness(0, 0, 0, 1)
             };
