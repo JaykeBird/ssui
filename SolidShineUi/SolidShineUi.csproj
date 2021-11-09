@@ -12,9 +12,9 @@
     <Product>SolidShineUi</Product>
     <Description>A collection of UI controls and helper classes with consistent and customizable theming.</Description>
     <Copyright>Copyright 2018-2021 Jayke R. Huempfner, other contributors</Copyright>
-    <Version>1.8.2</Version>
-    <AssemblyVersion>1.8.2</AssemblyVersion>
-    <FileVersion>1.8.2</FileVersion>
+    <Version>1.8.3</Version>
+    <AssemblyVersion>1.8.3</AssemblyVersion>
+    <FileVersion>1.8.3</FileVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>Jayke R. Huempfner, other contributors</Authors>
@@ -28,8 +28,8 @@
     <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>
-Version 1.8.3
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Version 1.8.3
 - Add preliminary .NET 6.0 support
 - Fix parsing issue with parantheses in ArithmeticParser
 - IntegerSpinner and DoubleSpinner can now change height
@@ -111,6 +111,10 @@ See website for more details!</PackageReleaseNotes>
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <Page Remove="Backup\**" />
     <Page Remove="Docs\**" />
     <Page Remove="TestBackup\**" />
@@ -157,9 +161,6 @@ See website for more details!</PackageReleaseNotes>
   <!--<ItemGroup>
     <Content Include="lib\Microsoft.Windows.Shell.dll" />
   </ItemGroup>-->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-  </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -171,6 +172,12 @@ See website for more details!</PackageReleaseNotes>
   </ItemGroup>
   <ItemGroup>
     <None Remove="integrate.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Utils\TabDisplayItem.xaml">

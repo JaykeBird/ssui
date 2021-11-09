@@ -18,16 +18,14 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
   - TabControl is now ready!
 - Release version 1.8.1
   - Bug fixes
-
-## Very soon
-
 - Release version 1.8.2
   - Tab drag/drop
-  - Add tab button
   - Improvements to KeyRegistry
   - Additional XML comments for code
+- Release version 1.8.3
+  - Bug fixes
 
-## 2021 (later)
+## Later 2021 / early 2022
 
 - Rewrite SelectPanel to not base from UserControl
   - To help with this, SelectableCollection can be used
@@ -40,8 +38,8 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 
 ## 2022
 
-- Port to MAUI?
+- MAUI Port?
 - Toolbar controls
-- Ribbon control?
+- Ribbon control
 - Touch support for ImageColorPicker
   - (Keyboard support may be hard)
