@@ -162,34 +162,34 @@ namespace SolidShineUi
         }
 
 
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(FlatWindow),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
+        //public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
+        //    "CornerRadius", typeof(CornerRadius), typeof(FlatWindow),
+        //    new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
 
-        /// <summary>
-        /// Get or set the corner radius (or radii) to use for the window and its border. Can be used to created rounded corners for windows (this should apply regardless of what version of Windows is being used).
-        /// </summary>
-        [Category("Appearance")]
-        public CornerRadius CornerRadius
-        {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
-        }
+        ///// <summary>
+        ///// Get or set the corner radius (or radii) to use for the window and its border. Can be used to created rounded corners for windows (this should apply regardless of what version of Windows is being used).
+        ///// </summary>
+        //[Category("Appearance")]
+        //public CornerRadius CornerRadius
+        //{
+        //    get => (CornerRadius)GetValue(CornerRadiusProperty);
+        //    set => SetValue(CornerRadiusProperty, value);
+        //}
 
-        protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
+        //protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
 
-        private void flatWindow_InternalCornerRadiusChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            ChangeChromeCornerRadius(CornerRadius);
-        }
+        //private void flatWindow_InternalCornerRadiusChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    ChangeChromeCornerRadius(CornerRadius);
+        //}
 
-        private static void OnInternalCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is FlatWindow f)
-            {
-                f.InternalCornerRadiusChanged?.Invoke(f, e);
-            }
-        }
+        //private static void OnInternalCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is FlatWindow f)
+        //    {
+        //        f.InternalCornerRadiusChanged?.Invoke(f, e);
+        //    }
+        //}
 
         public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
             "TopRightElement", typeof(UIElement), typeof(FlatWindow),

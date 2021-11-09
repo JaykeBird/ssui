@@ -16,7 +16,7 @@
             <Border.Style>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />
+                    <!--<Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />-->
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding WindowState, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="Maximized">
                             <!--<Setter Property="BorderThickness" Value="{Binding Source={x:Static shell:SystemParameters2.Current}, Path=WindowResizeBorderThickness}"/>-->
@@ -26,8 +26,9 @@
                 </Style>
             </Border.Style>
             <AdornerDecorator>
+                <!-- CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" -->
                 <Border Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"
-                    CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
+                    
                     BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
                     BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}">
                     <Grid Tag="WindowGrid">
