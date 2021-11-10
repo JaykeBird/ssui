@@ -30,9 +30,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>Version 1.8.3
-- Add preliminary .NET 6.0 support
+- Add .NET 6.0 support
 - Fix parsing issue with parantheses in ArithmeticParser
 - IntegerSpinner and DoubleSpinner can now change height
+- Add LeftTabBarElement and RightTabBarElement to TabControl
 		
 Version 1.8.2
 - Added tab drag-and-drop
