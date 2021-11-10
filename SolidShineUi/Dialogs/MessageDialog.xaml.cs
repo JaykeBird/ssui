@@ -987,7 +987,7 @@ namespace SolidShineUi
                 return null;
             }
 
-            string packuri = "/UiCore;component/DialogImages/";
+            string packuri = "/SolidShineUi;component/DialogImages/";
             BitmapImage img;
 
             try
