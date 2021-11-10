@@ -31,12 +31,12 @@
                 <flat:IntegerSpinner x:Name="nudWidth" Margin="110,256,0,0" Width="70" HorizontalAlignment="Left" Height="24" MinValue="200" Value="400" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
                 <TextBlock HorizontalAlignment="Left" Margin="195,260,0,0" Text="Height:" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nudHeight" Margin="240,256,0,0" Width="70" HorizontalAlignment="Left" Height="24" MinValue="200" Value="400" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-                <TextBlock HorizontalAlignment="Left" Margin="40,295,0,0" Text="Corner radius (rounded corners):" VerticalAlignment="Top"/>
-                <flat:DoubleSpinner x:Name="nudCornerRadius" Margin="70,320,0,0" Width="80" HorizontalAlignment="Left" Height="24" MinValue="0" Value="0" MaxValue="50" Decimals="2" Step="1" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" />
-                <TextBlock HorizontalAlignment="Left" Margin="40,360,0,0" Text="Color Scheme:" VerticalAlignment="Top"/>
-                <RadioButton x:Name="rdoCurrentColor" GroupName="rdoColor" Content="Use current color scheme" HorizontalAlignment="Left" Margin="70,385,0,0" VerticalAlignment="Top" IsChecked="True" />
-                <RadioButton x:Name="rdoCustomColor" GroupName="rdoColor" Content="Set custom color scheme" HorizontalAlignment="Left" Margin="70,410,0,0" VerticalAlignment="Top"/>
-                <flat:FlatButton x:Name="btnColorSet" Content="Select color..." HorizontalAlignment="Left" Margin="240,406,0,0" MinWidth="100" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnColorSet_Click" />
+                <TextBlock HorizontalAlignment="Left" Margin="40,295,0,0" Text="Corner radius (rounded corners):" VerticalAlignment="Top" Visibility="Collapsed" />
+                <flat:DoubleSpinner x:Name="nudCornerRadius" Margin="70,320,0,0" Width="80" HorizontalAlignment="Left" Height="24" MinValue="0" Value="0" MaxValue="50" Decimals="2" Step="1" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Visibility="Collapsed" />
+                <TextBlock HorizontalAlignment="Left" Margin="40,320,0,0" Text="Color Scheme:" VerticalAlignment="Top"/>
+                <RadioButton x:Name="rdoCurrentColor" GroupName="rdoColor" Content="Use current color scheme" HorizontalAlignment="Left" Margin="70,345,0,0" VerticalAlignment="Top" IsChecked="True" />
+                <RadioButton x:Name="rdoCustomColor" GroupName="rdoColor" Content="Set custom color scheme" HorizontalAlignment="Left" Margin="70,370,0,0" VerticalAlignment="Top"/>
+                <flat:FlatButton x:Name="btnColorSet" Content="Select color..." HorizontalAlignment="Left" Margin="240,366,0,0" MinWidth="100" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnColorSet_Click" />
             </Grid>
         </ScrollViewer>
         <flat:FlatButton x:Name="btnDisplay" Content="Open Flat Window" HorizontalAlignment="Left" Margin="40,10,0,0" Grid.Row="2" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnDisplay_Click" />

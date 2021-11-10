@@ -82,7 +82,7 @@ namespace SsuiSample
                 Width = nudWidth.Value,
                 Height = nudHeight.Value,
                 ColorScheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? ColorScheme : new ColorScheme(selColor),
-                CornerRadius = new CornerRadius(nudCornerRadius.Value)
+                //CornerRadius = new CornerRadius(nudCornerRadius.Value)
             };
 
             fw.SourceInitialized += fw_SourceInitialized;
