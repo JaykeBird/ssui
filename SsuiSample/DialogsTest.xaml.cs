@@ -98,6 +98,8 @@ namespace SsuiSample
             fsd.ShowStyles = true;
             fsd.ShowWeights = true;
 
+            fsd.PreviewText = txtSampleText.Text;
+
             fsd.Owner = Window.GetWindow(this);
             fsd.ShowDialog();
 
