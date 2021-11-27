@@ -94,6 +94,9 @@ See website for more details!</PackageReleaseNotes>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows' ">
 	<Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
   </PropertyGroup>-->
