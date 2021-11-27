@@ -29,7 +29,6 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 
 - Rewrite SelectPanel to not base from UserControl
   - To help with this, SelectableCollection can be used
-- Rebase IntegerSpinner/DoubleSpinner under RangeBase class (breaking change)
 - Finish online documentation
 - Port to AvaloniaUI (0.10 is out, haven't done any testing or porting yet though)
 - PropertyGrid control
