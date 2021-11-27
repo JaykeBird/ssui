@@ -153,9 +153,12 @@ namespace SsuiSample
 
         private void tabControl_TabChanged(object sender, TabItemChangeEventArgs e)
         {
-            changingTab = true;
-            chkDirty.IsChecked = tabControl.SelectedTab.IsDirty;
-            changingTab = false;
+            if (tabControl.SelectedTab != null)
+            {
+                changingTab = true;
+                chkDirty.IsChecked = tabControl.SelectedTab.IsDirty;
+                changingTab = false;
+            }
         }
     }
 }
