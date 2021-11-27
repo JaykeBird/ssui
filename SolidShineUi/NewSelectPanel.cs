@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace SolidShineUi
@@ -21,7 +22,7 @@ namespace SolidShineUi
             //Items = new SelectableCollection<SelectableUserControl>();
             Items.ItemRemoving += Items_ItemRemoving;
             Items.CollectionChanged += Items_CollectionChanged;
-            Items.SelectionChanged += items_SelectionChanged;
+            Items.SelectionChanged += Items_SelectionChanged;
         }
 
         private void LoadTemplateItems()
@@ -71,10 +72,7 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                item.SelectedBrush = SelectedBrush;
-                                item.HighlightBrush = HighlightBrush;
-                                item.ClickBrush = ClickBrush;
-                                item.ApplyColorScheme(ColorScheme);
+                                AddItemInternal(item);
                             }
                         }
                         RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
@@ -97,7 +95,7 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                item.ApplyColorScheme(ColorScheme);
+                                AddItemInternal(item);
                             }
                         }
                         RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
@@ -119,7 +117,7 @@ namespace SolidShineUi
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // update .NET Core section first, copy into here
-            switch (e.Action)
+           switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     if (e.NewItems != null)
@@ -128,7 +126,7 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                item.ApplyColorScheme(ColorScheme);
+                                AddItemInternal(item);
                             }
                         }
                         RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
@@ -151,7 +149,7 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                item.ApplyColorScheme(ColorScheme);
+                                AddItemInternal(item);
                             }
                         }
                         RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
@@ -174,36 +172,111 @@ namespace SolidShineUi
             LoadTemplateItems();
         }
 
-        private void items_SelectionChanged(object sender, SelectionChangedEventArgs<SelectableUserControl> e)
+        void AddItemInternal(SelectableUserControl item)
+        {
+            item.SelectedBrush = SelectedBrush;
+            item.HighlightBrush = HighlightBrush;
+            item.ClickBrush = ClickBrush;
+            item.SelectionChanged += Item_SelectionChanged;
+            item.ApplyColorScheme(ColorScheme);
+        }
+
+#if NETCOREAPP
+        private void Item_SelectionChanged(object? sender, EventArgs e)
+#else
+        private void Item_SelectionChanged(object sender, EventArgs e)
+#endif
+        {
+            if (_internalAction) return;
+
+            if (sender is SelectableUserControl item)
+            {
+                _internalAction = true;
+
+                if (item.IsSelected)
+                {
+                    Items.Select(item);
+
+                    bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+                    List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
+                    if (!multiSelect) removedItems = DeselectAllOthers(new[] { item });
+
+                    RaiseSelectionChangedEvent((new[] {item}).ToList(), removedItems);
+                }
+                else
+                {
+                    Items.Deselect(item);
+
+                    RaiseSelectionChangedEvent(new List<SelectableUserControl>(), (new[] {item}).ToList());
+                }
+
+                _internalAction = false;
+            }
+            //throw new NotImplementedException();
+        }
+
+        private void Items_SelectionChanged(object sender, SelectionChangedEventArgs<SelectableUserControl> e)
         {
             LoadTemplateItems();
             if (_internalAction) return;
 
-            RaiseSelectionChangedEvent(e.AddedItems.OfType<SelectableUserControl>().ToList(), e.RemovedItems.OfType<SelectableUserControl>().ToList());
+            bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+            bool selOnce = false; // set to prevent multiple items being selected if e.AddedItems has more than 1 item
 
-            //if (e.AddedItems.Count > 0)
-            //{
-            //    // selection has changed
-            //    SelectableUserControl newItem = e.AddedItems[0];
+            // internally select these items
+            foreach (SelectableUserControl item in e.AddedItems)
+            {
+                if (selOnce && !multiSelect) break;
+                item.IsSelected = true;
+                selOnce = true;
+            }
 
-            //    //TabChanged?.Invoke(this, new TabItemChangeEventArgs(newItem));
-            //}
-            //else
-            //{
-            //    if (Items.SelectedItems.Count == 0)
-            //    {
+            List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
 
-            //    }
-            //}
+            if (!multiSelect) removedItems = DeselectAllOthers(e.AddedItems);
+
+            foreach (SelectableUserControl item in e.RemovedItems)
+            {
+                item.IsSelected = false;
+                if (!removedItems.Contains(item))
+                {
+                    removedItems.Add(item);
+                }
+            }
+
+            //Console.WriteLine("SELECTIONCHANGE");
+
+            RaiseSelectionChangedEvent(e.AddedItems.OfType<SelectableUserControl>().ToList(), removedItems);
+        }
+
+        /// <summary>deselect all items that aren't the selected ones listed here</summary>
+        private List<SelectableUserControl> DeselectAllOthers(IEnumerable<SelectableUserControl> selectedControls)
+        {
+            List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
+
+            foreach (SelectableUserControl item in Items)
+            {
+                if (selectedControls.Contains(item)) continue;
+
+                _internalAction = true;
+
+                item.IsSelected = false;
+                Items.Deselect(item);
+                removedItems.Add(item);
+
+                _internalAction = false;
+            }
+
+            return removedItems;
         }
 
         private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<SelectableUserControl> e)
         {
             // item hasn't been removed yet
         }
-        #endregion
+#endregion
 
-        #region Color Scheme
+#region Color Scheme
 
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewSelectPanel),
@@ -305,9 +378,9 @@ namespace SolidShineUi
                 item.ApplyColorScheme(ColorScheme);
             }
         }
-        #endregion
+#endregion
 
-        #region Routed Events
+#region Routed Events
 
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
@@ -373,9 +446,9 @@ namespace SolidShineUi
             SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsRemovedEvent, removedItems, new List<SelectableUserControl>());
             RaiseEvent(newEventArgs);
         }
-        #endregion
+#endregion
 
-        #region Visual Properties
+#region Visual Properties
 
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
             = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewSelectPanel),
@@ -399,7 +472,7 @@ namespace SolidShineUi
             set { SetValue(VerticalScrollBarVisibilityProperty, value); }
         }
 
-        #region Brushes
+#region Brushes
 
         [Category("Brushes")]
         public new Brush Background
@@ -489,9 +562,9 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(NewSelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-        #endregion
+#endregion
 
-        #region Border
+#region Border
 
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(NewSelectPanel),
@@ -521,11 +594,11 @@ namespace SolidShineUi
             set => SetValue(CornerRadiusProperty, value);
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region Convenience Methods
+#region Convenience Methods
 
         /// <summary>
         /// Get a collection of items that have been selected, returned as a certain type (that inherits from SelectableUserControl).
@@ -545,7 +618,7 @@ namespace SolidShineUi
             Items.ClearSelection();
         }
 
-        #endregion
+#endregion
 
     }
 }

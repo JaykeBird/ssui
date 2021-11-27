@@ -1480,7 +1480,7 @@
                             Background="{TemplateBinding Background}" >
                         <ScrollViewer Margin="{TemplateBinding Padding}"
                                       VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" >
-                            <ItemsControl x:Name="PART_TabBar" ItemsSource="{TemplateBinding Items}">
+                            <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Vertical" IsItemsHost="True" />
