@@ -21,4 +21,17 @@
     <Resource Include="Resources\Images\SmileyColor.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="NewSelectPanelTest.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="NewSelectPanelTest.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
