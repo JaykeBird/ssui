@@ -171,6 +171,9 @@ namespace SolidShineUi
         /// Select an item, replacing the current selection.
         /// </summary>
         /// <param name="item">The item to select.</param>
+        /// <remarks>If <c>CanSelectMultiple</c> is true, use <see cref="AddToSelection(T)"/> to add more items to the selected list,
+        /// or <see cref="SelectRange(IEnumerable{T})"/> to select multiple items at once.
+        /// This function will always replace whatever is currently selected.</remarks>
         public void Select(T item)
         {
             if (Contains(item))
@@ -185,6 +188,10 @@ namespace SolidShineUi
         /// Add an item to the existing list of selected items. If <c>CanSelectMultiple</c> is false, this item is only selected if nothing else is selected. Otherwise, nothing happens.
         /// </summary>
         /// <param name="item">The item to add.</param>
+        /// <remarks>This function is a complement to <see cref="AddToOrReplaceSelection(T)"/>. 
+        /// <c>AddToSelection</c> should be used if preserving the existing selection is more important while <c>CanSelectMultiple</c> is false.
+        /// <c>AddToOrReplaceSelection</c> should be used if selecting the item in the parameter is more important while <c>CanSelectMultiple</c> is false.
+        /// While <c>CanSelectMultiple</c> is true, the two functions are identical.</remarks>
         public void AddToSelection(T item)
         {
             if (CanSelectMultiple)
@@ -198,6 +205,27 @@ namespace SolidShineUi
                 {
                     Select(item);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Add an item to the existing list of selected items. If <c>CanSelectMultiple</c> is false, this item is selected, replacing the previous selection.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
+        /// <remarks>This function is a complement to <see cref="AddToSelection(T)"/>. 
+        /// <c>AddToSelection</c> should be used if preserving the existing selection is more important while <c>CanSelectMultiple</c> is false.
+        /// <c>AddToOrReplaceSelection</c> should be used if selecting the item in the parameter is more important while <c>CanSelectMultiple</c> is false.
+        /// While <c>CanSelectMultiple</c> is true, the two functions are identical.</remarks>
+        public void AddToOrReplaceSelection(T item)
+        {
+            if (CanSelectMultiple)
+            {
+                selectedItems.Add(item);
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
+            }
+            else
+            {
+                Select(item);
             }
         }
 
@@ -222,6 +250,16 @@ namespace SolidShineUi
             List<T> old = selectedItems;
             selectedItems = new List<T>();
             SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, selectedItems));
+        }
+
+        /// <summary>
+        /// Check if an item is currently selected. Only returns true if the item is in this SelectableCollection and is selected; otherwise, this will return false.
+        /// </summary>
+        /// <param name="item">The item to check.</param>
+        /// <returns>True if the item is in this SelectableCollection and is selected; otherwise, false.</returns>
+        public bool IsSelected(T item)
+        {
+            return selectedItems.Contains(item);
         }
 
         private bool multiSelect = false;
@@ -250,16 +288,18 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Select a collection of items. If <c>CanSelectMultiple</c> is false, only the first item in the collection is selected. If the collection is empty, the selection is not changed.
+        /// Select a collection of items, replacing the current selection. If <c>CanSelectMultiple</c> is false, only the first item in the collection is selected. If the collection is empty, the selection is not changed.
         /// </summary>
         /// <param name="items">The items to select.</param>
+        /// <remarks>This function will always replace whatever is currently selected EXCEPT in the situation that the <paramref name="items"/> parameter is an empty collection.
+        /// If <c>CanSelectMultiple</c> is true, use <see cref="AddToSelection(T)"/> to add to the existing list of selected items, rather than replacing it.</remarks>
         public void SelectRange(IEnumerable<T> items)
         {
             List<T> sel = new List<T>();
 
             if (!items.Any())
             {
-                // select none
+                // do nothing
                 //ClearSelection();
                 return;
             }
@@ -289,6 +329,14 @@ namespace SolidShineUi
                 selectedItems = sel;
                 SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, selectedItems));
             }
+        }
+
+        /// <summary>
+        /// Select all items in the collection. If <c>CanSelectMultiple</c> is false, only the first item in the collection is selected.
+        /// </summary>
+        public void SelectAll()
+        {
+            SelectRange(Items);
         }
 
         public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs<T> e);
