@@ -19,20 +19,27 @@
         <TextBlock HorizontalAlignment="Left" Margin="5,0,0,0" Text="Item Type" x:Name="txtType" VerticalAlignment="Center" Grid.Row="1"/>
         <Grid Grid.Row="2" x:Name="grdSort">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="2" />
-                <ColumnDefinition Width="24" />
-                <ColumnDefinition Width="24" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" IsEnabled="False" Text="Filter..." VerticalContentAlignment="Center" />
-            <flat:FlatButton Grid.Column="3" x:Name="btnName" Click="btnName_Click" Content="N" />
-            <flat:FlatButton Grid.Column="4" x:Name="btnCategory" Click="btnCategory_Click" Content="C" />
+            <flat:MenuButton Grid.Column="3" x:Name="mnuView" Content="Sort" ToolTip="Sort and View" >
+                <flat:MenuButton.Menu>
+                    <flat:ContextMenu>
+                        <MenuItem Header="Sort by Name" Click="btnName_Click" />
+                        <MenuItem Header="Sort by Category" Click="btnCategory_Click" />
+                        <Separator />
+                        <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" Click="mnuTypesCol_Click" />
+                    </flat:ContextMenu>
+                </flat:MenuButton.Menu>
+            </flat:MenuButton>
         </Grid>
         <Grid Grid.Row="3" x:Name="grdHeader" Background="Gainsboro" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" SharedSizeGroup="PropNameCol" />
-                <ColumnDefinition Width="2" SharedSizeGroup="PropTypeCol" />
+                <ColumnDefinition Width="0" x:Name="colTypes" SharedSizeGroup="PropTypeCol" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="PropValuCol" />
                 <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
             </Grid.ColumnDefinitions>

@@ -68,7 +68,7 @@ namespace SolidShineUi.PropertyList
 
         #region Sort and Filter
 
-        private PropertySortOption _sort = PropertySortOption.Category;
+        private PropertySortOption _sort = PropertySortOption.Name;
 
         public PropertySortOption SortOption { get => _sort; set { _sort = value; SortList(); } }
 
@@ -129,7 +129,22 @@ namespace SolidShineUi.PropertyList
             }
             else
             {
-                return comp.Compare(GetCategoryOfProperty(x), GetCategoryOfProperty(y));
+                string xCat = GetCategoryOfProperty(x);
+                string yCat = GetCategoryOfProperty(y);
+
+                if (xCat == "" || yCat == "")
+                {
+                    if (xCat == "" && yCat == "") return ComparePropertyNames(x, y); // if the result is "equal" (0), then compare names
+                    else if (xCat == "") return 1;
+                    else if (yCat == "") return -1;
+                    else return 0; // not quite sure how we got here lol
+                }
+                else
+                {
+                    int res = comp.Compare(xCat, yCat);
+                    if (res == 0) return ComparePropertyNames(x, y);
+                    else return res;
+                }
             }
         }
 
@@ -149,6 +164,7 @@ namespace SolidShineUi.PropertyList
             }
         }
 
+        #region Sort and View menu
         private void btnName_Click(object sender, RoutedEventArgs e)
         {
             SortOption = PropertySortOption.Name;
@@ -160,6 +176,23 @@ namespace SolidShineUi.PropertyList
             SortOption = PropertySortOption.Category;
             LoadPropertyList(properties);
         }
+
+        private void mnuTypesCol_Click(object sender, RoutedEventArgs e)
+        {
+            if (mnuTypesCol.IsChecked)
+            {
+                // hide column
+                colTypes.Width = new GridLength(0, GridUnitType.Pixel);
+                mnuTypesCol.IsChecked = false;
+            }
+            else
+            {
+                // show column
+                colTypes.Width = new GridLength(40, GridUnitType.Pixel);
+                mnuTypesCol.IsChecked = true;
+            }
+        }
+        #endregion
     }
 
     public enum PropertySortOption { Name = 0, Category = 1 }

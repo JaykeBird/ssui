@@ -9,7 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition SharedSizeGroup="PropNameCol" Width="100" />
-            <ColumnDefinition SharedSizeGroup="PropTypeCol" Width="2" />
+            <ColumnDefinition SharedSizeGroup="PropTypeCol" Width="0" />
             <ColumnDefinition SharedSizeGroup="PropValuCol" Width="Auto" />
         </Grid.ColumnDefinitions>
 
