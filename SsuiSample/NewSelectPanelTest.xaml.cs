@@ -76,12 +76,12 @@ namespace SsuiSample
 
         private void btnSelUp_Click(object sender, RoutedEventArgs e)
         {
-            //selPanel.MoveSelectedItemsUp();
+            selPanel.MoveSelectedItemsUp();
         }
 
         private void btnSelDown_Click(object sender, RoutedEventArgs e)
         {
-            //selPanel.MoveSelectedItemsDown();
+            selPanel.MoveSelectedItemsDown();
         }
 
         private void selPanel_ItemsAdded(object sender, SelectionChangedEventArgs e)

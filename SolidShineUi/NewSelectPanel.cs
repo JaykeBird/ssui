@@ -216,10 +216,6 @@ namespace SolidShineUi
                         Items.Select(item);
                     }
 
-                    //bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
-                    //List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
-                    //if (!multiSelect) removedItems = DeselectAllOthers(new[] { item });
-
                     RaiseSelectionChangedEvent((new[] {item}).ToList(), new List<SelectableUserControl>());
                 }
                 else
@@ -243,54 +239,7 @@ namespace SolidShineUi
 
             RefreshVisualSelection();
 
-            //bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
-            //bool selOnce = false; // set to prevent multiple items being selected if e.AddedItems has more than 1 item
-
-            //// internally select these items
-            //foreach (SelectableUserControl item in e.AddedItems)
-            //{
-            //    if (selOnce && !multiSelect) break;
-            //    item.IsSelected = true;
-            //    selOnce = true;
-            //}
-
-            //List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
-
-            //if (!multiSelect) removedItems = DeselectAllOthers(e.AddedItems);
-
-            //foreach (SelectableUserControl item in e.RemovedItems)
-            //{
-            //    item.IsSelected = false;
-            //    if (!removedItems.Contains(item))
-            //    {
-            //        removedItems.Add(item);
-            //    }
-            //}
-
-            //Console.WriteLine("SELECTIONCHANGE");
-
             RaiseSelectionChangedEvent(e.AddedItems.OfType<SelectableUserControl>().ToList(), e.RemovedItems.OfType<SelectableUserControl>().ToList());
-        }
-
-        /// <summary>deselect all items that aren't the selected ones listed here</summary>
-        private List<SelectableUserControl> DeselectAllOthers(IEnumerable<SelectableUserControl> selectedControls)
-        {
-            List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
-
-            foreach (SelectableUserControl item in Items)
-            {
-                if (selectedControls.Contains(item)) continue;
-
-                _internalAction = true;
-
-                item.IsSelected = false;
-                Items.Deselect(item);
-                removedItems.Add(item);
-
-                _internalAction = false;
-            }
-
-            return removedItems;
         }
 
         private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<SelectableUserControl> e)
@@ -624,6 +573,16 @@ namespace SolidShineUi
 #region Convenience Methods
 
         /// <summary>
+        /// Gets the number of items in this NewSelectPanel.
+        /// </summary>
+        public int Count { get => Items.Count; }
+
+        /// <summary>
+        /// Gets the number of items that are currently selected.
+        /// </summary>
+        public int SelectionCount { get => Items.SelectedItems.Count; }
+
+        /// <summary>
         /// Get a collection of items that have been selected, returned as a certain type (that inherits from SelectableUserControl).
         /// </summary>
         /// <typeparam name="T">The type to return the selected items as. It must inherit from SelectableUserControl.</typeparam>
@@ -634,6 +593,14 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Select all items in this NewSelectPanel.
+        /// </summary>
+        public void SelectAll()
+        {
+            Items.SelectAll();
+        }
+
+        /// <summary>
         /// Deselect all items in this NewSelectPanel.
         /// </summary>
         public void DeselectAll()
@@ -641,7 +608,203 @@ namespace SolidShineUi
             Items.ClearSelection();
         }
 
-#endregion
+        public void AddItems(IEnumerable<SelectableUserControl> items)
+        {
+            foreach (SelectableUserControl item in items)
+            {
+                // TODO: add internal variable to suppress events
+                Items.Add(item);
+            }
+            RaiseItemsAddedEvent(items.ToList());
+        }
+
+        public void InsertItem(int index, SelectableUserControl item)
+        {
+            Items.Insert(index, item);
+            //RaiseItemsAddedEvent(new List<SelectableUserControl>() { item });
+        }
+
+        public void InsertItems(int index, IEnumerable<SelectableUserControl> items)
+        {
+            List<SelectableUserControl> litems = items.ToList();
+            litems.Reverse();
+
+            foreach (SelectableUserControl item in litems)
+            {
+                // TODO: add internal variable to suppress events
+                Items.Insert(index, item);
+            }
+
+            RaiseItemsAddedEvent(litems);
+        }
+
+        public IEnumerable<T> GetItemsAsType<T>() where T : SelectableUserControl
+        {
+            foreach (SelectableUserControl item in Items)
+            {
+                if (item is T t)
+                {
+                    yield return t;
+                }
+            }
+        }
+
+        public void RemoveItem(SelectableUserControl item)
+        {
+            Items.Remove(item);
+        }
+
+        public void RemoveItems(IEnumerable<SelectableUserControl> items)
+        {
+            foreach (var item in items)
+            {
+                // TODO: add internal variable to suppress events
+                RemoveItem(item);
+            }
+
+            RaiseItemsRemovedEvent(items.ToList());
+        }
+
+        public void RemoveAt(int index)
+        {
+            Items.RemoveAt(index);
+        }
+
+        public void RemoveSelectedItems()
+        {
+            var items = new List<SelectableUserControl>(Items.SelectedItems);
+            foreach (var item in items)
+            {
+                // TODO: add internal variable to suppress events
+                Items.Remove(item);
+            }
+
+            RaiseItemsRemovedEvent(items.ToList());
+        }
+
+        public int IndexOf(SelectableUserControl item)
+        {
+            return Items.IndexOf(item);
+        }
+
+        public SelectableUserControl Get(int index)
+        {
+            return Items[index];
+        }
+
+        public SelectableUserControl this[int index]
+        {
+            get
+            {
+                return Items[index];
+            }
+        }
+
+        public void Clear()
+        {
+            Items.Clear();
+        }
+
+        #endregion
+
+        #region Move Items
+
+        public void MoveSelectedItemsUp()
+        {
+            bool first = true;
+            int index = -1;
+
+            List<SelectableUserControl> imov = new List<SelectableUserControl>();
+
+            foreach (SelectableUserControl item in Items.SelectedItems)
+            {
+                if (first)
+                {
+                    index = IndexOf(item) - 1;
+                    first = false;
+                }
+
+                imov.Add(item);
+            }
+
+            if (index < 0)
+            {
+                index = 0;
+            }
+
+            foreach (SelectableUserControl item in imov)
+            {
+                Items.Remove(item);
+            }
+
+            imov.Reverse();
+
+            foreach (SelectableUserControl item in imov)
+            {
+                Items.Insert(index, item);
+            }
+            RefreshVisualSelection(); // TODO: re-select items
+        }
+
+        public void MoveSelectedItemsDown()
+        {
+            int index = -1;
+
+            List<SelectableUserControl> imov = new List<SelectableUserControl>();
+
+            foreach (SelectableUserControl item in Items.SelectedItems)
+            {
+                index = IndexOf(item) + 1;
+
+                imov.Add(item);
+            }
+
+            if (index > (Items.Count - 1))
+            {
+                index = (Items.Count - 1);
+            }
+
+            foreach (SelectableUserControl item in imov)
+            {
+                Items.Remove(item);
+                Items.Insert(index, item);
+            }
+            RefreshVisualSelection(); // TODO: re-select items
+        }
+
+        public void MoveItemUp(int index)
+        {
+            SelectableUserControl suc = this[index];
+
+            int moveIndex = index - 1;//IndexOf(suc) - 1;
+            if (moveIndex < 0)
+            {
+                moveIndex = 0;
+            }
+
+            Items.Remove(suc);
+            Items.Insert(moveIndex, suc);
+
+            RefreshVisualSelection(); // TODO: re-select items if they were selected
+        }
+
+        public void MoveItemDown(int index)
+        {
+            SelectableUserControl suc = this[index];
+
+            int moveIndex = index + 1; //IndexOf(suc) + 1;
+            if (moveIndex > (Items.Count - 1))
+            {
+                moveIndex = (Items.Count - 1);
+            }
+
+            Items.Remove(suc);
+            Items.Insert(moveIndex, suc);
+
+            RefreshVisualSelection(); // TODO: re-select items if they were selected
+        }
+
+        #endregion
 
     }
 }
