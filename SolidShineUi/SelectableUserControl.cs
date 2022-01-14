@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace SolidShineUi
 {
-    public class SelectableUserControl : System.Windows.Controls.UserControl
+    public class SelectableUserControl : System.Windows.Controls.UserControl //, IEquatable<SelectableUserControl>
     {
 
         public SelectableUserControl()
@@ -32,9 +33,12 @@ namespace SolidShineUi
 
             Focusable = true;
             IsTabStop = true;
+            UniqueIdentifier = Guid.NewGuid();
 
             base.Background = Background;
         }
+
+        //public Guid UniqueIdentifier { get; set; }
 
         #region Selection Handling
 
@@ -364,6 +368,20 @@ namespace SolidShineUi
         }
 
         #endregion
+
         #endregion
+
+//#if NETCOREAPP
+//        public bool Equals([AllowNull] SelectableUserControl other)
+//#else
+//        public bool Equals(SelectableUserControl other)
+//#endif
+//        {
+//            if (other == null) return false;
+//            else
+//            {
+//                return other.UniqueIdentifier == UniqueIdentifier;
+//            }
+//        }
     }
 }

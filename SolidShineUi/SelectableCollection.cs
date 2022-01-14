@@ -59,7 +59,11 @@ namespace SolidShineUi
 
             if (te.Cancel) return false;
 
-            return base.Remove(item);
+            bool res = base.Remove(item);
+
+            if (res && selectedItems.Contains(item)) selectedItems.Remove(item);
+
+            return res;
         }
 
         /// <summary>
@@ -196,7 +200,10 @@ namespace SolidShineUi
         {
             if (CanSelectMultiple)
             {
-                selectedItems.Add(item);
+                if (!selectedItems.Contains(item))
+                {
+                    selectedItems.Add(item);
+                }
                 SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
             }
             else
@@ -220,7 +227,10 @@ namespace SolidShineUi
         {
             if (CanSelectMultiple)
             {
-                selectedItems.Add(item);
+                if (!selectedItems.Contains(item))
+                {
+                    selectedItems.Add(item);
+                }
                 SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
             }
             else

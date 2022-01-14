@@ -25,9 +25,26 @@ namespace SolidShineUi
             Items.SelectionChanged += Items_SelectionChanged;
         }
 
+        bool itemsLoaded = false;
+
+#if NETCOREAPP
+        ItemsControl? ic = null;
+#else
+        ItemsControl ic = null;
+#endif
+
         private void LoadTemplateItems()
         {
             // TODO: if needed, locate and load in any needed elements from the control template
+            if (!itemsLoaded)
+            {
+                ic = (ItemsControl)GetTemplateChild("PART_Ic");
+
+                if (ic != null)
+                {
+                    itemsLoaded = true;
+                }
+            }
         }
 
         #region SelectableCollection handling
@@ -181,7 +198,7 @@ namespace SolidShineUi
             }
 #endif
 
-            LoadTemplateItems();
+            //LoadTemplateItems();
         }
 
         void AddItemInternal(SelectableUserControl item)
@@ -205,7 +222,7 @@ namespace SolidShineUi
             {
                 _internalAction = true;
 
-                if (item.IsSelected)
+                if (item.IsSelected && !Items.IsSelected(item))
                 {
                     if (Items.CanSelectMultiple && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                     {
@@ -216,13 +233,13 @@ namespace SolidShineUi
                         Items.Select(item);
                     }
 
-                    RaiseSelectionChangedEvent((new[] {item}).ToList(), new List<SelectableUserControl>());
+                    RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<SelectableUserControl>());
                 }
                 else
                 {
                     Items.Deselect(item);
 
-                    RaiseSelectionChangedEvent(new List<SelectableUserControl>(), (new[] {item}).ToList());
+                    RaiseSelectionChangedEvent(new List<SelectableUserControl>(), (new[] { item }).ToList());
                 }
 
                 RefreshVisualSelection();
@@ -234,7 +251,7 @@ namespace SolidShineUi
 
         private void Items_SelectionChanged(object sender, SelectionChangedEventArgs<SelectableUserControl> e)
         {
-            LoadTemplateItems();
+            //LoadTemplateItems();
             if (_internalAction) return;
 
             RefreshVisualSelection();
@@ -245,10 +262,11 @@ namespace SolidShineUi
         private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<SelectableUserControl> e)
         {
             // item hasn't been removed yet
+            e.Item.SelectionChanged -= Item_SelectionChanged;
         }
-#endregion
+        #endregion
 
-#region Color Scheme
+        #region Color Scheme
 
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewSelectPanel),
@@ -350,9 +368,9 @@ namespace SolidShineUi
                 item.ApplyColorScheme(ColorScheme);
             }
         }
-#endregion
+        #endregion
 
-#region Routed Events
+        #region Routed Events
 
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
@@ -418,9 +436,9 @@ namespace SolidShineUi
             SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsRemovedEvent, removedItems, new List<SelectableUserControl>());
             RaiseEvent(newEventArgs);
         }
-#endregion
+        #endregion
 
-#region Visual Properties
+        #region Visual Properties
 
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
             = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewSelectPanel),
@@ -444,7 +462,7 @@ namespace SolidShineUi
             set { SetValue(VerticalScrollBarVisibilityProperty, value); }
         }
 
-#region Brushes
+        #region Brushes
 
         [Category("Brushes")]
         public new Brush Background
@@ -534,9 +552,9 @@ namespace SolidShineUi
             "BorderBrush", typeof(Brush), typeof(NewSelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-#endregion
+        #endregion
 
-#region Border
+        #region Border
 
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(NewSelectPanel),
@@ -566,11 +584,11 @@ namespace SolidShineUi
             set => SetValue(CornerRadiusProperty, value);
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
-#region Convenience Methods
+        #region Convenience Methods
 
         /// <summary>
         /// Gets the number of items in this NewSelectPanel.
@@ -732,6 +750,7 @@ namespace SolidShineUi
                 index = 0;
             }
 
+            // remove the items out of the control, so they can be re-inserted at the new location
             foreach (SelectableUserControl item in imov)
             {
                 Items.Remove(item);
@@ -739,11 +758,14 @@ namespace SolidShineUi
 
             imov.Reverse();
 
+            // re-insert and re-select all the items
             foreach (SelectableUserControl item in imov)
             {
                 Items.Insert(index, item);
+                //Items.AddToSelection(item);
             }
-            RefreshVisualSelection(); // TODO: re-select items
+
+            RefreshVisualSelection();
         }
 
         public void MoveSelectedItemsDown()
@@ -759,17 +781,25 @@ namespace SolidShineUi
                 imov.Add(item);
             }
 
+            // remove the controls
+            foreach (SelectableUserControl item in imov)
+            {
+                Items.Remove(item);
+            }
+
             if (index > (Items.Count - 1))
             {
                 index = (Items.Count - 1);
             }
 
+            // re-insert and re-select the controls at the new location
             foreach (SelectableUserControl item in imov)
             {
-                Items.Remove(item);
                 Items.Insert(index, item);
+                //Items.AddToSelection(item);
             }
-            RefreshVisualSelection(); // TODO: re-select items
+
+            RefreshVisualSelection();
         }
 
         public void MoveItemUp(int index)
@@ -782,10 +812,13 @@ namespace SolidShineUi
                 moveIndex = 0;
             }
 
+            bool resel = Items.IsSelected(suc);
+
             Items.Remove(suc);
             Items.Insert(moveIndex, suc);
+            if (resel) Items.AddToOrReplaceSelection(suc);
 
-            RefreshVisualSelection(); // TODO: re-select items if they were selected
+            RefreshVisualSelection();
         }
 
         public void MoveItemDown(int index)
@@ -798,10 +831,13 @@ namespace SolidShineUi
                 moveIndex = (Items.Count - 1);
             }
 
+            bool resel = Items.IsSelected(suc);
+
             Items.Remove(suc);
             Items.Insert(moveIndex, suc);
+            if (resel) Items.AddToOrReplaceSelection(suc);
 
-            RefreshVisualSelection(); // TODO: re-select items if they were selected
+            RefreshVisualSelection();
         }
 
         #endregion
