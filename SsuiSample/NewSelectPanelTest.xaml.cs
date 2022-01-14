@@ -62,7 +62,7 @@ namespace SsuiSample
 
         private void btnSelRemove_Click(object sender, RoutedEventArgs e)
         {
-            var items = selPanel.Items.SelectedItems;
+            var items = new List<SelectableUserControl>(selPanel.Items.SelectedItems);
             foreach (var item in items)
             {
                 selPanel.Items.Remove(item);
