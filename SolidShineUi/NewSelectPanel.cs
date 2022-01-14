@@ -44,7 +44,7 @@ namespace SolidShineUi
         //public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
+        /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
         /// </summary>
         [Category("Common")]
         public SelectableCollection<SelectableUserControl> Items
@@ -58,6 +58,18 @@ namespace SolidShineUi
         {
             get => Items.CanSelectMultiple;
             set => Items.CanSelectMultiple = value;
+        }
+
+        void RefreshVisualSelection()
+        {
+            _internalAction = true;
+
+            foreach (SelectableUserControl item in Items)
+            {
+                item.IsSelected = Items.IsSelected(item);
+            }
+
+            _internalAction = false;
         }
 
 #if NETCOREAPP
@@ -195,13 +207,20 @@ namespace SolidShineUi
 
                 if (item.IsSelected)
                 {
-                    Items.Select(item);
+                    if (Items.CanSelectMultiple && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                    {
+                        Items.AddToSelection(item);
+                    }
+                    else
+                    {
+                        Items.Select(item);
+                    }
 
-                    bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
-                    List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
-                    if (!multiSelect) removedItems = DeselectAllOthers(new[] { item });
+                    //bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+                    //List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
+                    //if (!multiSelect) removedItems = DeselectAllOthers(new[] { item });
 
-                    RaiseSelectionChangedEvent((new[] {item}).ToList(), removedItems);
+                    RaiseSelectionChangedEvent((new[] {item}).ToList(), new List<SelectableUserControl>());
                 }
                 else
                 {
@@ -209,6 +228,8 @@ namespace SolidShineUi
 
                     RaiseSelectionChangedEvent(new List<SelectableUserControl>(), (new[] {item}).ToList());
                 }
+
+                RefreshVisualSelection();
 
                 _internalAction = false;
             }
@@ -220,33 +241,35 @@ namespace SolidShineUi
             LoadTemplateItems();
             if (_internalAction) return;
 
-            bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
-            bool selOnce = false; // set to prevent multiple items being selected if e.AddedItems has more than 1 item
+            RefreshVisualSelection();
 
-            // internally select these items
-            foreach (SelectableUserControl item in e.AddedItems)
-            {
-                if (selOnce && !multiSelect) break;
-                item.IsSelected = true;
-                selOnce = true;
-            }
+            //bool multiSelect = MultiSelect && Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+            //bool selOnce = false; // set to prevent multiple items being selected if e.AddedItems has more than 1 item
 
-            List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
+            //// internally select these items
+            //foreach (SelectableUserControl item in e.AddedItems)
+            //{
+            //    if (selOnce && !multiSelect) break;
+            //    item.IsSelected = true;
+            //    selOnce = true;
+            //}
 
-            if (!multiSelect) removedItems = DeselectAllOthers(e.AddedItems);
+            //List<SelectableUserControl> removedItems = new List<SelectableUserControl>();
 
-            foreach (SelectableUserControl item in e.RemovedItems)
-            {
-                item.IsSelected = false;
-                if (!removedItems.Contains(item))
-                {
-                    removedItems.Add(item);
-                }
-            }
+            //if (!multiSelect) removedItems = DeselectAllOthers(e.AddedItems);
+
+            //foreach (SelectableUserControl item in e.RemovedItems)
+            //{
+            //    item.IsSelected = false;
+            //    if (!removedItems.Contains(item))
+            //    {
+            //        removedItems.Add(item);
+            //    }
+            //}
 
             //Console.WriteLine("SELECTIONCHANGE");
 
-            RaiseSelectionChangedEvent(e.AddedItems.OfType<SelectableUserControl>().ToList(), removedItems);
+            RaiseSelectionChangedEvent(e.AddedItems.OfType<SelectableUserControl>().ToList(), e.RemovedItems.OfType<SelectableUserControl>().ToList());
         }
 
         /// <summary>deselect all items that aren't the selected ones listed here</summary>
