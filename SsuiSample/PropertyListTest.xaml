@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="SsuiSample.PropertyListTest" x:Name="control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SsuiSample"
+             xmlns:prop="clr-namespace:SolidShineUi.PropertyList;assembly=SolidShineUi" xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="250" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="cbbComboBox" HorizontalAlignment="Left" Margin="30,40,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" >
+                <ComboBoxItem Content="Item 1" />
+                <ComboBoxItem Content="Item 2" />
+                <ComboBoxItem Content="Item 3" />
+            </ComboBox>
+            <TextBox x:Name="txtTextBox" HorizontalAlignment="Left" Margin="30,80,0,0" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="30,120,0,0" VerticalAlignment="Top" Width="120" Height="23" x:Name="btnButton" />
+            <flat:FileSelect HorizontalAlignment="Left" Margin="30,160,0,0" VerticalAlignment="Top" Width="200" x:Name="ctrFileSelect" />
+
+            <flat:FlatButton x:Name="btnSel1" Content="Select Item" HorizontalAlignment="Left" Margin="5,40,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel1_Click" />
+            <flat:FlatButton x:Name="btnSel2" Content="Select Item" HorizontalAlignment="Left" Margin="5,80,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel2_Click" />
+            <flat:FlatButton x:Name="btnSel3" Content="Select Item" HorizontalAlignment="Left" Margin="5,120,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel3_Click" />
+            <flat:FlatButton x:Name="btnSel4" Content="Select Item" HorizontalAlignment="Left" Margin="5,160,5,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Column="1" Click="btnSel4_Click" />
+
+        </Grid>
+
+        <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Left" Background="#55555555" />
+        <prop:ExperimentalPropertyList Grid.Column="2" Margin="2,0,0,0" x:Name="prop" />
+    </Grid>
+</UserControl>
