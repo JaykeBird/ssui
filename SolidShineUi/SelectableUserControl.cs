@@ -33,7 +33,7 @@ namespace SolidShineUi
 
             Focusable = true;
             IsTabStop = true;
-            UniqueIdentifier = Guid.NewGuid();
+            //UniqueIdentifier = Guid.NewGuid();
 
             base.Background = Background;
         }
