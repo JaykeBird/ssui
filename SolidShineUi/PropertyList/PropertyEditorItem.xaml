@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi.PropertyList"
-             mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="400">
+             mc:Ignorable="d" MinHeight="24"
+             d:DesignHeight="60" d:DesignWidth="250">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition SharedSizeGroup="PropNameCol" Width="100" />
@@ -15,7 +15,7 @@
 
         <TextBlock x:Name="txtName" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="2,0,0,0" />
         <TextBlock x:Name="txtType" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="2,0,0,0" />
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="2" x:Name="grdValue">
             <TextBlock x:Name="txtValue" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="2,0,0,0" />
         </Grid>
     </Grid>

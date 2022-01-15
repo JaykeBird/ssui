@@ -7,6 +7,7 @@ using System.Linq;
 using System.ComponentModel;
 using System.Collections;
 using System.Globalization;
+using SolidShineUi.PropertyList.PropertyEditors;
 
 namespace SolidShineUi.PropertyList
 {
@@ -18,6 +19,7 @@ namespace SolidShineUi.PropertyList
         public ExperimentalPropertyList()
         {
             InitializeComponent();
+            PreregisterEditors();
         }
 
         #region Basics / Object Loading
@@ -59,14 +61,27 @@ namespace SolidShineUi.PropertyList
             foreach (PropertyInfo item in properties)
             {
                 PropertyEditorItem pei = new PropertyEditorItem();
-                pei.LoadProperty(item, item.GetValue(_baseObject));
+#if NETCOREAPP
+                IPropertyEditor? ipe = null;
+#else
+                IPropertyEditor ipe = null;
+#endif
+                if (registeredEditors.ContainsKey(item.PropertyType))
+                {
+                    object o = Activator.CreateInstance(registeredEditors[item.PropertyType]) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        ipe = i;
+                    }
+                }
+                pei.LoadProperty(item, item.GetValue(_baseObject), ipe);
                 stkProperties.Children.Add(pei);
             }
         }
 
-        #endregion
+#endregion
 
-        #region Sort and Filter
+#region Sort and Filter
 
         private PropertySortOption _sort = PropertySortOption.Name;
 
@@ -164,7 +179,7 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-        #region Sort and View menu
+#region Sort and View menu
         private void btnName_Click(object sender, RoutedEventArgs e)
         {
             SortOption = PropertySortOption.Name;
@@ -192,7 +207,44 @@ namespace SolidShineUi.PropertyList
                 mnuTypesCol.IsChecked = true;
             }
         }
-        #endregion
+#endregion
+
+#region Registered Editors
+        private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
+
+        public void RegisterEditor(Type type, Type editor)
+        {
+            if (!editor.GetInterfaces().Contains(typeof(IPropertyEditor)))
+            {
+                throw new ArgumentException("The editor must inherit the IPropertyEditor interface.", nameof(editor));
+            }
+
+            if (registeredEditors.ContainsKey(type))
+            {
+                registeredEditors[type] = editor;
+            }
+            else
+            {
+                registeredEditors.Add(type, editor);
+            }
+        }
+
+        private void PreregisterEditors()
+        {
+            RegisterEditor(typeof(bool), typeof(BooleanEditor));
+            RegisterEditor(typeof(bool?), typeof(BooleanEditor));
+            RegisterEditor(typeof(Nullable<bool>), typeof(BooleanEditor));
+            RegisterEditor(typeof(string), typeof(StringEditor));
+            RegisterEditor(typeof(double), typeof(DoubleEditor));
+            RegisterEditor(typeof(float), typeof(DoubleEditor));
+            RegisterEditor(typeof(int), typeof(IntegerEditor));
+            RegisterEditor(typeof(short), typeof(IntegerEditor));
+            RegisterEditor(typeof(ushort), typeof(IntegerEditor));
+            RegisterEditor(typeof(byte), typeof(IntegerEditor));
+            RegisterEditor(typeof(sbyte), typeof(IntegerEditor));
+        }
+
+#endregion
     }
 
     public enum PropertySortOption { Name = 0, Category = 1 }

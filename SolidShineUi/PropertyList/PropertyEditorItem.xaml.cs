@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Reflection;
 
@@ -19,26 +20,38 @@ namespace SolidShineUi.PropertyList
 
         object? _value = null;
         public object? PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
+
+        public IPropertyEditor? PropertyEditorControl { get; set; }
 #else
         public PropertyInfo PropertyInfo { get; set; } = null;
 
         object _value = null;
         public object PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
+
+        public IPropertyEditor PropertyEditorControl { get; set; }
 #endif
 
         public string PropertyName { get => txtName.Text; set => txtName.Text = value; }
         public string PropertyType { get => txtType.Text; set => txtType.Text = value; }
 
 #if NETCOREAPP
-        public void LoadProperty(PropertyInfo property, object? value)
+        public void LoadProperty(PropertyInfo property, object? value, IPropertyEditor? editor)
 #else
-        public void LoadProperty(PropertyInfo property, object value)
+        public void LoadProperty(PropertyInfo property, object value, IPropertyEditor editor)
 #endif
         {
             PropertyInfo = property;
             PropertyName = property.Name;
             PropertyType = property.PropertyType.ToString();
             PropertyValue = value;
+            if (editor != null)
+            {
+                PropertyEditorControl = editor;
+                editor.LoadValue(value, property.PropertyType);
+                txtValue.Visibility = Visibility.Collapsed;
+                UIElement uie = PropertyEditorControl.GetUiElement();
+                grdValue.Children.Add(uie);
+            }
         }
 
         public void ApplyPropertyValue(object targetObject)
