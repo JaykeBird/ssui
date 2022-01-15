@@ -23,14 +23,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         public ColorScheme ColorScheme { set { chkValue.ColorScheme = value; } }
 
-        public UIElement GetUiElement()
+        public FrameworkElement GetFrameworkElement()
         {
             return this;
         }
 
         private Type _propType = typeof(bool);
 
+
 #if NETCOREAPP
+        public event EventHandler? ValueChanged;
+
         public object? GetValue()
         {
             if (_propType == typeof(bool))
@@ -82,6 +85,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 #else
+        public event EventHandler ValueChanged;
+
         public object GetValue()
         {
             if (_propType == typeof(bool))
@@ -129,5 +134,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 #endif
+
+        private void chkValue_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            ValueChanged?.Invoke(sender, e);
+        }
     }
 }

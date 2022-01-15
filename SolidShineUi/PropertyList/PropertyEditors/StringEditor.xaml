@@ -12,14 +12,14 @@
             <ColumnDefinition />
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
-        <flat:ClickSelectTextBox x:Name="txtText" />
+        <flat:ClickSelectTextBox x:Name="txtText" TextChanged="txtText_TextChanged" />
         <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="1" ShowMenuArrow="False" >
             <Image Width="16" Height="16" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="Set to Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" />
                     <Separator />
-                    <MenuItem Header="Advanced Editor..." IsEnabled="False" />
+                    <MenuItem Header="Multiline Editor..." IsEnabled="False" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>

@@ -12,9 +12,11 @@ namespace SolidShineUi.PropertyList
 
         bool CanEdit { get; }
 
-        UIElement GetUiElement();
+        FrameworkElement GetFrameworkElement();
 
         ColorScheme ColorScheme { set; }
+
+        event EventHandler ValueChanged;
 
 #if NETCOREAPP
         public void LoadValue(object? value, Type type);

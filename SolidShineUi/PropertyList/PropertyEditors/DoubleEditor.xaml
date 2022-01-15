@@ -8,6 +8,6 @@
              mc:Ignorable="d" Width="Auto"
              d:DesignHeight="450" d:DesignWidth="200">
     <Grid>
-        <flat:DoubleSpinner x:Name="dblSpinner" />
+        <flat:DoubleSpinner x:Name="dblSpinner" ValueChanged="dblSpinner_ValueChanged" Step="1" />
     </Grid>
 </UserControl>

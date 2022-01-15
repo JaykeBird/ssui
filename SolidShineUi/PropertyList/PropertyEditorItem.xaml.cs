@@ -22,6 +22,10 @@ namespace SolidShineUi.PropertyList
         public object? PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
 
         public IPropertyEditor? PropertyEditorControl { get; set; }
+
+        public delegate void PropertyEditorValueChangedEventHandler(object? sender, PropertyEditorValueChangedEventArgs e);
+
+        public event PropertyEditorValueChangedEventHandler? PropertyEditorValueChanged;
 #else
         public PropertyInfo PropertyInfo { get; set; } = null;
 
@@ -29,6 +33,10 @@ namespace SolidShineUi.PropertyList
         public object PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
 
         public IPropertyEditor PropertyEditorControl { get; set; }
+        
+        public delegate void PropertyEditorValueChangedEventHandler(object sender, PropertyEditorValueChangedEventArgs e);
+
+        public event PropertyEditorValueChangedEventHandler PropertyEditorValueChanged;
 #endif
 
         public string PropertyName { get => txtName.Text; set => txtName.Text = value; }
@@ -49,8 +57,33 @@ namespace SolidShineUi.PropertyList
                 PropertyEditorControl = editor;
                 editor.LoadValue(value, property.PropertyType);
                 txtValue.Visibility = Visibility.Collapsed;
-                UIElement uie = PropertyEditorControl.GetUiElement();
+                FrameworkElement uie = PropertyEditorControl.GetFrameworkElement();
+                PropertyEditorControl.ValueChanged += PropertyEditorControl_ValueChanged;
                 grdValue.Children.Add(uie);
+            }
+        }
+
+#if NETCOREAPP
+        private void PropertyEditorControl_ValueChanged(object? sender, EventArgs e)
+#else
+        private void PropertyEditorControl_ValueChanged(object sender, EventArgs e)
+#endif
+        {
+            if (PropertyEditorControl != null)
+            {
+                PropertyValue = PropertyEditorControl.GetValue();
+                var ev = new PropertyEditorValueChangedEventArgs(PropertyValue, PropertyName, PropertyInfo);
+                PropertyEditorValueChanged?.Invoke(this, ev);
+
+                if (ev.ChangeFailed)
+                {
+                    PropertyValue = ev.FailedChangePropertyValue;
+
+                    if (PropertyInfo != null)
+                    {
+                        PropertyEditorControl.LoadValue(PropertyValue, PropertyInfo.PropertyType);
+                    }
+                }
             }
         }
 
@@ -62,4 +95,40 @@ namespace SolidShineUi.PropertyList
             PropertyInfo.SetValue(targetObject, PropertyValue);
         }
     }
+
+#if NETCOREAPP
+    public class PropertyEditorValueChangedEventArgs
+    {
+        public object? NewValue { get; private set; }
+        public string PropertyName { get; private set; }
+        public PropertyInfo? PropertyInfo { get; private set; }
+
+        public bool ChangeFailed { get; set; } = false;
+        public object? FailedChangePropertyValue { get; set; } = null;
+
+        public PropertyEditorValueChangedEventArgs(object? newValue, string propertyName, PropertyInfo? propertyInfo)
+        {
+            NewValue = newValue;
+            PropertyName = propertyName;
+            PropertyInfo = propertyInfo;
+        }
+    }
+#else
+    public class PropertyEditorValueChangedEventArgs
+    {
+        public object NewValue { get; private set; }
+        public string PropertyName { get; private set; }
+        public PropertyInfo PropertyInfo { get; private set; }
+
+        public bool ChangeFailed { get; set; } = false;
+        public object FailedChangePropertyValue { get; set; } = null;
+
+        public PropertyEditorValueChangedEventArgs(object newValue, string propertyName, PropertyInfo propertyInfo)
+        {
+            NewValue = newValue;
+            PropertyName = propertyName;
+            PropertyInfo = propertyInfo;
+        }
+    }
+#endif
 }

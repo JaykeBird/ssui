@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Collections;
 using System.Globalization;
 using SolidShineUi.PropertyList.PropertyEditors;
+using System.Collections.ObjectModel;
 
 namespace SolidShineUi.PropertyList
 {
@@ -66,16 +67,71 @@ namespace SolidShineUi.PropertyList
 #else
                 IPropertyEditor ipe = null;
 #endif
-                if (registeredEditors.ContainsKey(item.PropertyType))
+                if (!item.CanWrite)
                 {
-                    object o = Activator.CreateInstance(registeredEditors[item.PropertyType]) ?? new object();
+                    // readonly property
+                }
+
+                Type propType = item.PropertyType;
+                // let's do some tests on the properties
+                if (propType.IsEnum)
+                {
+                    // load enum editor
+                    object o = Activator.CreateInstance(registeredEditors[typeof(Enum)] ?? typeof(EnumEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         ipe = i;
                     }
                 }
+                else if (item.PropertyType.IsGenericType && item.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    Type itemType = item.PropertyType.GetGenericArguments()[0];
+                }
+                else
+                {
+                    if (registeredEditors.ContainsKey(propType))
+                    {
+                        object o = Activator.CreateInstance(registeredEditors[item.PropertyType]) ?? new object();
+                        if (o is IPropertyEditor i)
+                        {
+                            ipe = i;
+                        }
+                    }
+                }
+                    
                 pei.LoadProperty(item, item.GetValue(_baseObject), ipe);
+                pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
                 stkProperties.Children.Add(pei);
+            }
+        }
+
+#if NETCOREAPP
+        private void editor_PropertyEditorValueChanged(object? sender, PropertyEditorValueChangedEventArgs e)
+#else
+        private void editor_PropertyEditorValueChanged(object sender, PropertyEditorValueChangedEventArgs e)
+#endif
+        {
+            if (e.PropertyInfo != null)
+            {
+                try
+                {
+                    e.PropertyInfo.SetValue(_baseObject, e.NewValue);
+                }
+                catch (ArgumentException)
+                {
+                    // property doesn't have a setter, probably
+
+                    e.ChangeFailed = true;
+                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
+                }
+                catch (TargetInvocationException)
+                {
+                    // tried to set property, but some exception occurred
+                    // use the InnerException to learn more as to what the issue was
+
+                    e.ChangeFailed = true;
+                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
+                }
             }
         }
 
@@ -212,6 +268,8 @@ namespace SolidShineUi.PropertyList
 #region Registered Editors
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
+        public ReadOnlyDictionary<Type, Type> RegisteredPropertyEditors { get => new ReadOnlyDictionary<Type, Type>(registeredEditors); }
+
         public void RegisterEditor(Type type, Type editor)
         {
             if (!editor.GetInterfaces().Contains(typeof(IPropertyEditor)))
@@ -242,6 +300,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(ushort), typeof(IntegerEditor));
             RegisterEditor(typeof(byte), typeof(IntegerEditor));
             RegisterEditor(typeof(sbyte), typeof(IntegerEditor));
+            RegisterEditor(typeof(Enum), typeof(EnumEditor));
         }
 
 #endregion

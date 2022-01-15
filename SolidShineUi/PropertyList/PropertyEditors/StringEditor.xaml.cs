@@ -16,12 +16,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             InitializeComponent();
         }
 
-
         public bool CanEdit => true;
 
         public ColorScheme ColorScheme { set => btnMenu.ColorScheme = value; }
 
-        public UIElement GetUiElement()
+        public FrameworkElement GetFrameworkElement()
         {
             return this;
         }
@@ -47,9 +46,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 txtText.IsEnabled = false;
                 mnuSetNull.IsChecked = true;
             }
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
 #if NETCOREAPP
+        public event EventHandler? ValueChanged;
 
         public object? GetValue()
         {
@@ -61,7 +62,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    return txtText.ToString();
+                    return txtText.Text.ToString();
                 }
             }
             else return null;
@@ -76,6 +77,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 #else
+        public event EventHandler ValueChanged;
+
         public object GetValue()
         {
             if (_itemType == typeof(string))
@@ -86,7 +89,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    return txtText.ToString();
+                    return txtText.Text.ToString();
                 }
             }
             else return null;
@@ -102,6 +105,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 #endif
 
+        private void txtText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValueChanged?.Invoke(this, e);
+        }
 
     }
 }

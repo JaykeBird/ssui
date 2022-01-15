@@ -23,7 +23,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         public ColorScheme ColorScheme { set => dblSpinner.ColorScheme = value; }
 
-        public UIElement GetUiElement()
+        public FrameworkElement GetFrameworkElement()
         {
             return this;
         }
@@ -31,6 +31,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         Type _propType = typeof(double);
 
 #if NETCOREAPP
+        public event EventHandler? ValueChanged;
+
         public object? GetValue()
         {
             if (_propType == typeof(double))
@@ -53,6 +55,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             dblSpinner.Value = (double)(value ?? 0); // TODO: properly handle null
         }
 #else
+        public event EventHandler ValueChanged;
+
         public object GetValue()
         {
             if (_propType == typeof(double))
@@ -75,5 +79,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             dblSpinner.Value = (double)(value ?? 0); // TODO: properly handle null
         }
 #endif
+
+        private void dblSpinner_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
