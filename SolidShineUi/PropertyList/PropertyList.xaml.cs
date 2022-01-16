@@ -23,7 +23,50 @@ namespace SolidShineUi.PropertyList
             PreregisterEditors();
         }
 
-        #region Basics / Object Loading
+
+        #region ColorScheme
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
+        public static DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+
+        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ExperimentalPropertyList w)
+            {
+                w.ColorSchemeChanged?.Invoke(d, e);
+#if NETCOREAPP
+                w.ApplyColorScheme((e.NewValue as ColorScheme)!);
+#else
+                w.ApplyColorScheme((e.NewValue as ColorScheme));
+#endif
+            }
+        }
+
+        public ColorScheme ColorScheme
+        {
+            get => (ColorScheme)GetValue(ColorSchemeProperty);
+            set => SetValue(ColorSchemeProperty, value);
+        }
+
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+        }
+
+#endregion
+
+#region Basics / Object Loading
 
         private List<PropertyInfo> properties = new List<PropertyInfo>();
 #if NETCOREAPP
@@ -80,12 +123,14 @@ namespace SolidShineUi.PropertyList
                     object o = Activator.CreateInstance(registeredEditors[typeof(Enum)] ?? typeof(EnumEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
+                        i.ColorScheme = ColorScheme;
                         ipe = i;
                     }
                 }
                 else if (item.PropertyType.IsGenericType && item.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                 {
                     Type itemType = item.PropertyType.GetGenericArguments()[0];
+                    // TODO: add handling for list items
                 }
                 else
                 {
@@ -94,6 +139,7 @@ namespace SolidShineUi.PropertyList
                         object o = Activator.CreateInstance(registeredEditors[item.PropertyType]) ?? new object();
                         if (o is IPropertyEditor i)
                         {
+                            i.ColorScheme = ColorScheme;
                             ipe = i;
                         }
                     }

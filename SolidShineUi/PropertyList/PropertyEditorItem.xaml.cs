@@ -59,6 +59,8 @@ namespace SolidShineUi.PropertyList
                 txtValue.Visibility = Visibility.Collapsed;
                 FrameworkElement uie = PropertyEditorControl.GetFrameworkElement();
                 PropertyEditorControl.ValueChanged += PropertyEditorControl_ValueChanged;
+                uie.VerticalAlignment = VerticalAlignment.Stretch;
+                uie.Width = double.NaN;
                 grdValue.Children.Add(uie);
             }
         }

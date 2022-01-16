@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SolidShineUi.PropertyList.ExperimentalPropertyList"
+﻿<UserControl x:Class="SolidShineUi.PropertyList.ExperimentalPropertyList" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,6 +7,9 @@
              xmlns:flat="clr-namespace:SolidShineUi"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="250">
+    <UserControl.Resources>
+        <flat:ColorToBrushConverter x:Key="ctb" />
+    </UserControl.Resources>
     <Grid Grid.IsSharedSizeScope="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -25,7 +28,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" IsEnabled="False" Text="Filter..." VerticalContentAlignment="Center" />
-            <flat:MenuButton Grid.Column="3" x:Name="mnuView" Content="Sort" ToolTip="Sort and View" >
+            <flat:MenuButton Grid.Column="3" x:Name="mnuView" Content="Sort" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, ElementName=control}" >
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Sort by Name" Click="btnName_Click" />
@@ -36,7 +39,7 @@
                 </flat:MenuButton.Menu>
             </flat:MenuButton>
         </Grid>
-        <Grid Grid.Row="3" x:Name="grdHeader" Background="Gainsboro" >
+        <Grid Grid.Row="3" x:Name="grdHeader" Background="{Binding ElementName=control, Path=ColorScheme.ThirdHighlightColor, Converter={StaticResource ctb}}" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" SharedSizeGroup="PropNameCol" />
                 <ColumnDefinition Width="0" x:Name="colTypes" SharedSizeGroup="PropTypeCol" />
@@ -44,9 +47,9 @@
                 <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Name" />
-            <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Background="DarkGray" />
+            <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Background="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}" />
             <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Type" />
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Background="DarkGray" />
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Background="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}" />
             <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Value" />
         </Grid>
         <Grid x:Name="grdProperties" Grid.Row="4" >
