@@ -9,6 +9,7 @@ using System.Collections;
 using System.Globalization;
 using SolidShineUi.PropertyList.PropertyEditors;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace SolidShineUi.PropertyList
 {
@@ -347,6 +348,13 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(byte), typeof(IntegerEditor));
             RegisterEditor(typeof(sbyte), typeof(IntegerEditor));
             RegisterEditor(typeof(Enum), typeof(EnumEditor));
+            RegisterEditor(typeof(Brush), typeof(BrushEditor));
+            RegisterEditor(typeof(SolidColorBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(LinearGradientBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(RadialGradientBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(ImageBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(DrawingBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(BitmapCacheBrush), typeof(BrushEditor));
         }
 
 #endregion

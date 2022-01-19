@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="SolidShineUi.PropertyList.PropertyEditors.BrushEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
+             xmlns:flat="clr-namespace:SolidShineUi"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" MinWidth="80"/>
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Bitmap Cache" Margin="3,0" />
+        <flat:FlatButton x:Name="btnBrush" Click="btnBrush_Click" />
+        <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="2" ShowMenuArrow="False" >
+            <Image Width="16" Height="16" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
+            <flat:MenuButton.Menu>
+                <flat:ContextMenu>
+                    <MenuItem Header="Set as Null" x:Name="mnuSetNull" />
+                    <Separator />
+                    <MenuItem Header="Set as Gradient Brush..." x:Name="mnuGradientBrush" />
+                    <MenuItem Header="Set as Image Brush..." x:Name="mnuImageBrush" />
+                    <Separator />
+                    <MenuItem Header="Bitmap Cache Brush Info..." IsEnabled="False" x:Name="mnuBitmapCacheInfo" />
+                    <MenuItem Header="Drawing Brush Info..." IsEnabled="False" x:Name="mnuDrawingInfo" />
+                </flat:ContextMenu>
+            </flat:MenuButton.Menu>
+        </flat:MenuButton>
+    </Grid>
+</UserControl>

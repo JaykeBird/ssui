@@ -17,7 +17,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             InitializeComponent();
         }
 
+#if NET5_0_OR_GREATER
+        public List<Type> ValidTypes => (new[] { typeof(float), typeof(double), typeof(Half) }).ToList();
+#else
         public List<Type> ValidTypes => (new[] {typeof(float), typeof(double)}).ToList();
+#endif
 
         public bool CanEdit => true;
 
@@ -43,6 +47,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 return (float)dblSpinner.Value;
             }
+#if NET5_0_OR_GREATER
+            else if (_propType == typeof(Half))
+            {
+                return (Half)dblSpinner.Value;
+            }
+#endif
             else
             {
                 return dblSpinner.Value;
