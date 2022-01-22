@@ -51,14 +51,16 @@ namespace SolidShineUi
 
         void UpdateAppearance()
         {
-            Background = BrushFactory.Create(cs.MainColor);
-            grid.Background = BrushFactory.Create(cs.BackgroundColor);
-            SelectionBrush = BrushFactory.Create(cs.SelectionColor);
-            CaptionButtonsBrush = BrushFactory.Create(cs.ForegroundColor);
-            HighlightBrush = BrushFactory.Create(cs.HighlightColor);
-            BorderBrush = BrushFactory.Create(cs.BorderColor);
-            Foreground = BrushFactory.Create(cs.ForegroundColor);
-            InactiveTextBrush = BrushFactory.Create("#505050");
+            ColorScheme = cs;
+            grid.Background = cs.BackgroundColor.ToBrush();
+            //Background = BrushFactory.Create(cs.MainColor);
+            //grid.Background = BrushFactory.Create(cs.BackgroundColor);
+            //SelectionBrush = BrushFactory.Create(cs.SelectionColor);
+            //CaptionButtonsBrush = BrushFactory.Create(cs.ForegroundColor);
+            //HighlightBrush = BrushFactory.Create(cs.HighlightColor);
+            //BorderBrush = BrushFactory.Create(cs.BorderColor);
+            //Foreground = BrushFactory.Create(cs.ForegroundColor);
+            //InactiveTextBrush = BrushFactory.Create("#505050");
 
             colorList.ApplyColorScheme(cs);
 
