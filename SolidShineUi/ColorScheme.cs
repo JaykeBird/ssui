@@ -88,7 +88,7 @@ namespace SolidShineUi
         public Color WindowInactiveColor { get; set; } = DarkGray;
 
         public bool MenusUseAccent { get; set; } = false;
-        public bool PanelUseAccent { get; set; } = false;
+        //public bool PanelUseAccent { get; set; } = false;
 
         void CreatePalette(Color baseColor)
         {
@@ -245,6 +245,56 @@ namespace SolidShineUi
             AccentSecondHighlightColor = baseScheme.SecondHighlightColor;
             AccentSelectionColor = baseScheme.SelectionColor;
             AccentThirdHighlightColor = baseScheme.ThirdHighlightColor;
+        }
+
+        public static ColorScheme CreateLightTheme()
+        {
+            return CreateLightTheme(CreateFromHex("A8A8A8"));
+        }
+
+        public static ColorScheme CreateLightTheme(Color accentColor)
+        {
+            ColorScheme cs = new ColorScheme(accentColor);
+            cs.BackgroundColor = Color.FromRgb(242,242,242);
+            cs.LightBackgroundColor = Color.FromRgb(255, 255, 255);
+            cs.MainColor = Color.FromRgb(200, 200, 200);
+            cs.WindowTitleBarColor = Color.FromRgb(200, 200, 200);
+            cs.WindowInactiveColor = Color.FromRgb(200, 200, 200);
+            cs.WindowTitleBarTextColor = Color.FromRgb(0, 0, 0);
+            cs.SecondaryColor = Color.FromRgb(220, 220, 220);
+            cs.BorderColor = Color.FromRgb(128, 128, 128);
+            cs.ForegroundColor = Color.FromRgb(0, 0, 0);
+
+            return cs;
+        }
+
+        public static ColorScheme CreateDarkTheme()
+        {
+            return CreateDarkTheme(CreateFromHex("C8C8C8"));
+        }
+
+        public static ColorScheme CreateDarkTheme(Color accentColor)
+        {
+            ColorScheme cs = new ColorScheme(accentColor);
+            Color dark = cs.BorderColor;
+            ToHSV(dark, out double h, out double s, out double v);
+
+            Color dark2 = AddValue(h, s, v, -0.2);
+
+            cs.BackgroundColor = Color.FromRgb(15, 15, 15);
+            cs.LightBackgroundColor = Color.FromRgb(0, 0, 0);
+            cs.MainColor = Color.FromRgb(55, 55, 55);
+            cs.WindowTitleBarColor = Color.FromRgb(55, 55, 55);
+            cs.WindowInactiveColor = Color.FromRgb(55, 55, 55);
+            cs.WindowTitleBarTextColor = Color.FromRgb(255, 255, 255);
+            cs.SecondaryColor = Color.FromRgb(40, 40, 40);
+            cs.SecondHighlightColor = dark;
+            cs.ThirdHighlightColor = dark2;
+            cs.BorderColor = Color.FromRgb(128, 128, 128);
+            cs.ForegroundColor = Color.FromRgb(255, 255, 255);
+            cs.LightDisabledColor = CreateFromHex("9D9D9D");
+
+            return cs;
         }
 
         /// <summary>
