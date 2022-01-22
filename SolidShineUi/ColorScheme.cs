@@ -255,7 +255,7 @@ namespace SolidShineUi
         public static ColorScheme CreateLightTheme(Color accentColor)
         {
             ColorScheme cs = new ColorScheme(accentColor);
-            cs.BackgroundColor = Color.FromRgb(242,242,242);
+            cs.BackgroundColor = Color.FromRgb(246,246,246);
             cs.LightBackgroundColor = Color.FromRgb(255, 255, 255);
             cs.MainColor = Color.FromRgb(200, 200, 200);
             cs.WindowTitleBarColor = Color.FromRgb(200, 200, 200);
