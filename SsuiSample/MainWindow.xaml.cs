@@ -41,6 +41,31 @@ namespace SsuiSample
             }
         }
 
+        private void mnuLightTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ColorScheme = ColorScheme.CreateLightTheme(ColorScheme.AccentMainColor);
+        }
+
+        private void mnuDarkTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ColorScheme = ColorScheme.CreateDarkTheme(ColorScheme.AccentMainColor);
+        }
+
+        private void mnuHcTheme1_Click(object sender, RoutedEventArgs e)
+        {
+            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.WhiteOnBlack);
+        }
+
+        private void mnuHcTheme2_Click(object sender, RoutedEventArgs e)
+        {
+            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.GreenOnBlack);
+        }
+
+        private void mnuHcTheme3_Click(object sender, RoutedEventArgs e)
+        {
+            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.BlackOnWhite);
+        }
+
         void SetupSidebar()
         {
             foreach (UserControl item in grdTests.Children)
@@ -95,6 +120,5 @@ namespace SsuiSample
         }
 #pragma warning restore IDE0017 // Simplify object initialization
         #endregion
-
     }
 }

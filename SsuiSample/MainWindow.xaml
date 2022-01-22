@@ -18,7 +18,16 @@
         </Grid.ColumnDefinitions>
         <flat:Menu Grid.ColumnSpan="2" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" >
             <MenuItem Header="_Application">
-                <MenuItem Header="_Change Colors..." x:Name="mnuColors" Click="mnuColors_Click" />
+                <MenuItem Header="_Change Colors"  >
+                    <MenuItem Header="_Select Color..." x:Name="mnuColors" Click="mnuColors_Click" />
+                    <Separator />
+                    <MenuItem Header="_Light Theme" x:Name="mnuLightTheme" Click="mnuLightTheme_Click" />
+                    <MenuItem Header="_Dark Theme" x:Name="mnuDarkTheme" Click="mnuDarkTheme_Click" />
+                    <Separator />
+                    <MenuItem Header="_High Contrast - White on Black" x:Name="mnuHcTheme1" Click="mnuHcTheme1_Click" />
+                    <MenuItem Header="_High Contrast - Green on Black" x:Name="mnuHcTheme2" Click="mnuHcTheme2_Click" />
+                    <MenuItem Header="_High Contrast - Black on White" x:Name="mnuHcTheme3" Click="mnuHcTheme3_Click" />
+                </MenuItem>
                 <MenuItem Header="_Exit" x:Name="mnuExit" Click="mnuExit_Click" />
             </MenuItem>
             <MenuItem Header="_Test Menu">

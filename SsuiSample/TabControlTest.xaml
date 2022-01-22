@@ -16,7 +16,7 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
-            <Border Background="#77FFFFFF" BorderThickness="1" BorderBrush="Black" Margin="20,10,20,20">
+            <Border Background="#44FFFFFF" BorderThickness="1" BorderBrush="#55000000" Margin="20,10,20,20">
                 <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" TabChanged="tabControl_TabChanged" >
                     <flat:TabControl.Items>
                         <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png" AllowDrop="True" ToolTip="This is a ToolTip"
