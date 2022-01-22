@@ -25,20 +25,21 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 - Release version 1.8.3
   - Bug fixes
 
-## Later 2021 / early 2022
+## Early 2022
 
 - Rewrite SelectPanel to not base from UserControl
   - To help with this, SelectableCollection can be used
 - Finish online documentation
-- Port to AvaloniaUI (0.10 is out, haven't done any testing or porting yet though)
-- PropertyGrid control
-- DataTable control
-  - use same core bits as PropertyGrid
+- Add "light theme" and "dark theme" to ColorScheme
+- first pass at PropertyGrid control
 
 ## 2022
 
-- MAUI Port?
+- DataTable control
+  - use same core bits as PropertyGrid
+- Port to AvaloniaUI (0.10 is out, haven't done any testing or porting yet though)
 - Toolbar controls
 - Ribbon control
+- Redesigned ColorScheme system (might be renamed SsuiTheme)
 - Touch support for ImageColorPicker
   - (Keyboard support may be hard)
