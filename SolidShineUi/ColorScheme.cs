@@ -15,6 +15,9 @@ namespace SolidShineUi
         BlackOnWhite = 2
     }
 
+    /// <summary>
+    /// A collection of colors and other settings that can be used to set the color and appearance of various Solid Shine UI controls.
+    /// </summary>
     public class ColorScheme
     {
         /// <summary>
@@ -28,7 +31,7 @@ namespace SolidShineUi
         /// <summary>
         /// Create a color scheme with a single preset color as the basis. All other colors in the scheme are based off this color.
         /// </summary>
-        /// <param name="mainColor"></param>
+        /// <param name="mainColor">The main base color for this color scheme.</param>
         public ColorScheme(Color mainColor)
         {
             CreatePalette(mainColor);
@@ -38,8 +41,8 @@ namespace SolidShineUi
         /// <summary>
         /// Create a color scheme with a preset color for the basis, and an additional preset color to use as a secondary accent. All other colors are based off one of these two colors.
         /// </summary>
-        /// <param name="mainColor"></param>
-        /// <param name="accentColor"></param>
+        /// <param name="mainColor">The main base color for this color scheme.</param>
+        /// <param name="accentColor">The base color to use as the accent color for this color scheme.</param>
         public ColorScheme(Color mainColor, Color accentColor)
         {
             CreatePalette(mainColor);
@@ -47,30 +50,66 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set whether this is a high-contrast color scheme.
+        /// Get or set whether this is a high-contrast color scheme. Some controls will differ their appearnce if this color scheme is a high contrast one.
         /// </summary>
         public bool IsHighContrast { get; set; } = false;
 
         /// <summary>
-        /// Main interface color. With High Contrast color schemes, this will be the same as BackgroundColor.
+        /// This is the main interface color, and generally the most vibrant. Despite the name, this color should not be used too commonly. With High Contrast color schemes, this will be the same as BackgroundColor.
         /// </summary>
         public Color MainColor { get; set; } = Gray;
         /// <summary>
-        /// Secondary color. Do not use with High Contrast color schemes
+        /// This is the secondary interface color, which can be used to differentiate regions of a user interface by color.
+        /// Do not use this with High Contrast color schemes (use <see cref="IsHighContrast"/> to check if this color scheme is a high contrast theme.
         /// </summary>
         public Color SecondaryColor { get; set; } = CreateFromHex("DDDDDD");
+
+        /// <summary>
+        /// The primary background color of a window or pane.
+        /// </summary>
         public Color BackgroundColor { get; set; } = CreateFromHex("F4F4F4");
+        /// <summary>
+        /// The color used for when certain elements are being clicked on; this a darker color than the main color, and is generally used for the caption buttons of a window.
+        /// </summary>
         public Color SelectionColor { get; set; } = CreateFromHex("4C4C4C");
+        /// <summary>
+        /// The color used for when certain elements have focus or have the mouse over them; this is a darker color than the main color, and is generally used for the caption buttons of a window.
+        /// </summary>
         public Color HighlightColor { get; set; } = DarkGray;
+        /// <summary>
+        /// The color used for the borders of elements and windows.
+        /// </summary>
         public Color BorderColor { get; set; } = CreateFromHex("333333");
+        /// <summary>
+        /// The color used for when certain elements have focus or have the mouse over them; this is a lighter color than the main color, and is generally used by many UI elements.
+        /// </summary>
         public Color SecondHighlightColor { get; set; } = Gray;
+        /// <summary>
+        /// The color used for when certain elements are being clicked on; this is a lighter color than the main color, and is generally used by many UI elements.
+        /// </summary>
         public Color ThirdHighlightColor { get; set; } = DarkGray;
+        /// <summary>
+        /// The color used for the background of certain elements. This background color is lighter than the main background color.
+        /// </summary>
         public Color LightBackgroundColor { get; set; } = White;
 
+        /// <summary>
+        /// The main color used for foreground elements, such as text. Ideally, this color should contrast greatly against the background colors and also the main color.
+        /// </summary>
         public Color ForegroundColor { get; set; } = Black;
+
+        /// <summary>
+        /// This color is not used in Solid Shine UI, and is included for backwards compatibility reasons. You can utilize this color for your own custom needs, if desired.
+        /// </summary>
         public Color ItemColor { get; set; } = Black;
 
+        /// <summary>
+        /// The color to display for items that are disabled or not usable. This color is primarily used for the backgrounds of disabled elements.
+        /// </summary>
         public Color LightDisabledColor { get; set; } = CreateFromHex("F5F5F5");
+        /// <summary>
+        /// The color to display for items that are disabled or not usable. This color is primarily used for the borders and foregrounds of disabled elements.
+        /// </summary>
         public Color DarkDisabledColor { get; set; } = CreateFromHex("AAAAAF");
 
         public Color AccentMainColor { get; set; } = CreateFromHex("E34234");
@@ -83,8 +122,17 @@ namespace SolidShineUi
         public Color AccentThirdHighlightColor { get; set; } = CreateFromHex("FFD9D6");
         public Color AccentLightBackgroundColor { get; set; } = CreateFromHex("FFF8F7");
 
+        /// <summary>
+        /// This color is used for the title bar of windows, while they are active (as in, in the foreground and with focus).
+        /// </summary>
         public Color WindowTitleBarColor { get; set; } = Gray;
+        /// <summary>
+        /// This color is used for the text in the title bar of windows, as well as for the caption buttons' icons.
+        /// </summary>
         public Color WindowTitleBarTextColor { get; set; } = Black;
+        /// <summary>
+        /// This color is used for the titlebar of windows, while they are inactive (as in, does not have focus).
+        /// </summary>
         public Color WindowInactiveColor { get; set; } = DarkGray;
 
         public bool MenusUseAccent { get; set; } = false;
