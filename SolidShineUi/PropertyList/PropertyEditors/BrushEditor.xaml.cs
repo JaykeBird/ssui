@@ -21,7 +21,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public List<Type> ValidTypes => (new[] { typeof(Brush), typeof(SolidColorBrush), typeof(LinearGradientBrush), typeof(RadialGradientBrush), 
             typeof(ImageBrush), typeof(BitmapCacheBrush), typeof(DrawingBrush) }).ToList();
 
-        public bool CanEdit => false;
+        public bool EditorAllowsModifying => false;
 
         private ColorScheme _cs = new ColorScheme();
 
@@ -38,7 +38,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     btnBrush.BorderHighlightBrush = value.BorderColor.ToBrush();
                     btnBrush.BorderSelectedBrush = value.BorderColor.ToBrush();
                     btnBrush.BorderDisabledBrush = value.DarkDisabledColor.ToBrush();
-                    btnBrush.DisabledBrush = value.BackgroundColor.ToBrush();
+                    //btnBrush.DisabledBrush = value.BackgroundColor.ToBrush();
                     btnBrush.Foreground = value.ForegroundColor.ToBrush();
                     btnBrush.ClickBrush = value.ThirdHighlightColor.ToBrush();
                 }
@@ -58,6 +58,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public FrameworkElement GetFrameworkElement()
         {
             return this;
+        }
+        public bool IsPropertyReadOnly
+        {
+            get => btnBrush.IsEnabled;
+            set => btnBrush.IsEnabled = value;
         }
 
         Type _propType = typeof(Brush);
@@ -79,6 +84,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = Colors.Black.ToBrush();
                 btnBrush.HighlightBrush = Colors.Black.ToBrush();
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
+                btnBrush.DisabledBrush = Colors.Black.ToBrush();
                 return;
             }
 
@@ -88,6 +94,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = Colors.Black.ToBrush();
                 btnBrush.HighlightBrush = Colors.Black.ToBrush();
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
+                btnBrush.DisabledBrush = Colors.Black.ToBrush();
                 return;
             }
 
@@ -107,6 +114,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = (SolidColorBrush)value;
                 btnBrush.HighlightBrush = (SolidColorBrush)value;
                 btnBrush.ClickBrush = (SolidColorBrush)value;
+                btnBrush.DisabledBrush = (SolidColorBrush)value;
             }
             else if (brushType == typeof(LinearGradientBrush))
             {
@@ -114,6 +122,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = (LinearGradientBrush)value;
                 btnBrush.HighlightBrush = (LinearGradientBrush)value;
                 btnBrush.ClickBrush = (LinearGradientBrush)value;
+                btnBrush.DisabledBrush = (LinearGradientBrush)value;
             }
             else if (brushType == typeof(RadialGradientBrush))
             {
@@ -121,6 +130,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = (RadialGradientBrush)value;
                 btnBrush.HighlightBrush = (RadialGradientBrush)value;
                 btnBrush.ClickBrush = (RadialGradientBrush)value;
+                btnBrush.DisabledBrush = (RadialGradientBrush)value;
             }
             else if (brushType == typeof(ImageBrush))
             {
@@ -128,6 +138,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = (ImageBrush)value;
                 btnBrush.HighlightBrush = (ImageBrush)value;
                 btnBrush.ClickBrush = (ImageBrush)value;
+                btnBrush.DisabledBrush = (ImageBrush)value;
             }
             else if (brushType == typeof(BitmapCacheBrush))
             {
@@ -135,6 +146,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = Colors.LightGray.ToBrush();
                 btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
                 btnBrush.ClickBrush = Colors.LightGray.ToBrush();
+                btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
             }
             else if (brushType == typeof(DrawingBrush))
             {
@@ -142,6 +154,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = Colors.LightGray.ToBrush();
                 btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
                 btnBrush.ClickBrush = Colors.LightGray.ToBrush();
+                btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
             }
             else
             {
@@ -149,6 +162,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.Background = Colors.Black.ToBrush();
                 btnBrush.HighlightBrush = Colors.Black.ToBrush();
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
+                btnBrush.DisabledBrush = Colors.Black.ToBrush();
             }
         }
 #else

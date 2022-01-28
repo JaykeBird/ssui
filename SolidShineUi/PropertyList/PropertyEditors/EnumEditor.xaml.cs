@@ -19,13 +19,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         public List<Type> ValidTypes => (new[] {typeof(Enum)}).ToList();
 
-        public bool CanEdit => true;
+        public bool EditorAllowsModifying => true;
 
         public ColorScheme ColorScheme { set { } }
 
         public FrameworkElement GetFrameworkElement()
         {
             return this;
+        }
+        public bool IsPropertyReadOnly
+        {
+            get => cbbEnums.IsEnabled;
+            set => cbbEnums.IsEnabled = value;
         }
 
 #if NETCOREAPP

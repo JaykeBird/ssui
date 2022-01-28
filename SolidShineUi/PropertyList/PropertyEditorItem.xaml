@@ -8,9 +8,9 @@
              d:DesignHeight="60" d:DesignWidth="200">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition SharedSizeGroup="PropNameCol" Width="100" />
-            <ColumnDefinition SharedSizeGroup="PropTypeCol" Width="0" />
-            <ColumnDefinition SharedSizeGroup="PropValuCol" Width="Auto" />
+            <ColumnDefinition Width="100" x:Name="colNames" />
+            <ColumnDefinition Width="0" x:Name="colType" />
+            <ColumnDefinition Width="1*" x:Name="colValues" />
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="txtName" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="2,0,0,0" />

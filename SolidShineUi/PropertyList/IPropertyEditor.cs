@@ -10,7 +10,9 @@ namespace SolidShineUi.PropertyList
 
         List<Type> ValidTypes { get; }
 
-        bool CanEdit { get; }
+        bool EditorAllowsModifying { get; }
+
+        bool IsPropertyReadOnly { get; set; }
 
         FrameworkElement GetFrameworkElement();
 

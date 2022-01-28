@@ -22,6 +22,11 @@ namespace SolidShineUi.PropertyList
         {
             InitializeComponent();
             PreregisterEditors();
+
+            var colDescriptor = DependencyPropertyDescriptor.FromProperty(ColumnDefinition.WidthProperty, typeof(ColumnDefinition));
+            colDescriptor.AddValueChanged(colNames, ColumnWidthChanged);
+            colDescriptor.AddValueChanged(colTypes, ColumnWidthChanged);
+            colDescriptor.AddValueChanged(colValues, ColumnWidthChanged);
         }
 
 
@@ -145,9 +150,15 @@ namespace SolidShineUi.PropertyList
                         }
                     }
                 }
+
+                if (ipe != null)
+                {
+                    ipe.IsPropertyReadOnly = item.CanWrite;
+                }
                     
                 pei.LoadProperty(item, item.GetValue(_baseObject), ipe);
                 pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
+                pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
                 stkProperties.Children.Add(pei);
             }
         }
@@ -302,12 +313,14 @@ namespace SolidShineUi.PropertyList
                 // hide column
                 colTypes.Width = new GridLength(0, GridUnitType.Pixel);
                 mnuTypesCol.IsChecked = false;
+                splTypes.Visibility = Visibility.Collapsed;
             }
             else
             {
                 // show column
                 colTypes.Width = new GridLength(40, GridUnitType.Pixel);
                 mnuTypesCol.IsChecked = true;
+                splTypes.Visibility = Visibility.Visible;
             }
         }
 #endregion
@@ -357,7 +370,27 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(BitmapCacheBrush), typeof(BrushEditor));
         }
 
+        #endregion
+
+        #region Visual Elements
+
+#if NETCOREAPP
+        private void ColumnWidthChanged(object? sender, EventArgs e)
+#else
+        private void ColumnWidthChanged(object sender, EventArgs e)
+#endif
+        {
+            foreach (UIElement item in stkProperties.Children)
+            {
+                if (item is PropertyEditorItem pei)
+                {
+                    pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
+                }
+            }
+        }
+
 #endregion
+
     }
 
     public enum PropertySortOption { Name = 0, Category = 1 }

@@ -18,13 +18,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
         public List<Type> ValidTypes => (new[] { typeof(int), typeof(short), typeof(ushort), typeof(byte), typeof(sbyte) }).ToList();
 
-        public bool CanEdit => true;
+        public bool EditorAllowsModifying => true;
 
         public ColorScheme ColorScheme { set => intSpinner.ColorScheme = value; }
 
         public FrameworkElement GetFrameworkElement()
         {
             return this;
+        }
+        public bool IsPropertyReadOnly
+        {
+            get => intSpinner.IsEnabled;
+            set => intSpinner.IsEnabled = value;
         }
 
         Type _propType = typeof(int);

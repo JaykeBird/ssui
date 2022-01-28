@@ -19,7 +19,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         public List<Type> ValidTypes => (new[] { typeof(bool), typeof(Nullable<bool>) }).ToList();
 
-        public bool CanEdit => true;
+        public bool EditorAllowsModifying => true;
 
         public ColorScheme ColorScheme { set { chkValue.ColorScheme = value; } }
 
@@ -29,6 +29,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         private Type _propType = typeof(bool);
+
+        public bool IsPropertyReadOnly
+        {
+            get => chkValue.IsEnabled;
+            set => chkValue.IsEnabled = value;
+        }
 
 
 #if NETCOREAPP
@@ -72,10 +78,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (val == null)
                 {
                     chkValue.CheckState = CheckState.Indeterminate;
+                    txtValue.Text = "(null)";
                 }
                 else
                 {
                     chkValue.CheckState = val.Value ? CheckState.Checked : CheckState.Unchecked;
+                    txtValue.Text = val.Value ? "True" : "False";
                 }
             }
             else
@@ -137,6 +145,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void chkValue_CheckChanged(object sender, RoutedEventArgs e)
         {
+            switch (chkValue.CheckState)
+            {
+                case CheckState.Unchecked:
+                    txtValue.Text = "False";
+                    break;
+                case CheckState.Checked:
+                    txtValue.Text = "True";
+                    break;
+                case CheckState.Indeterminate:
+                    txtValue.Text = "(null)";
+                    break;
+                default:
+                    txtValue.Text = "(null)";
+                    break;
+            }
             ValueChanged?.Invoke(sender, e);
         }
     }

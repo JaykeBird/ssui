@@ -96,6 +96,14 @@ namespace SolidShineUi.PropertyList
 
             PropertyInfo.SetValue(targetObject, PropertyValue);
         }
+
+        public void UpdateColumnWidths(GridLength namesCol, GridLength typesCol, GridLength valueCol)
+        {
+            colNames.Width = namesCol;
+            colType.Width = typesCol;
+            colValues.Width = valueCol;
+        }
+
     }
 
 #if NETCOREAPP

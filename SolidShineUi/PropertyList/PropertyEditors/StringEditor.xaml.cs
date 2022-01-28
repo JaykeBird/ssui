@@ -16,13 +16,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             InitializeComponent();
         }
 
-        public bool CanEdit => true;
+        public bool EditorAllowsModifying => true;
 
         public ColorScheme ColorScheme { set => btnMenu.ColorScheme = value; }
 
         public FrameworkElement GetFrameworkElement()
         {
             return this;
+        }
+        public bool IsPropertyReadOnly
+        {
+            get => btnMenu.IsEnabled;
+            set 
+            { 
+                btnMenu.IsEnabled = value;
+                txtText.IsEnabled = value && !setAsNull;
+            }
         }
 
         bool setAsNull = false;

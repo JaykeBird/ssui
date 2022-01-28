@@ -8,6 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="400">
     <Grid>
-        <flat:CheckBox x:Name="chkValue" Margin="5,0" CheckChanged="chkValue_CheckChanged" />
+        <flat:CheckBox x:Name="chkValue" Margin="5,0" CheckChanged="chkValue_CheckChanged">
+            <TextBlock x:Name="txtValue" Text="False" />
+        </flat:CheckBox>
     </Grid>
 </UserControl>

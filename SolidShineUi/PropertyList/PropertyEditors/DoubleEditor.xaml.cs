@@ -23,13 +23,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public List<Type> ValidTypes => (new[] {typeof(float), typeof(double)}).ToList();
 #endif
 
-        public bool CanEdit => true;
+        public bool EditorAllowsModifying => true;
 
         public ColorScheme ColorScheme { set => dblSpinner.ColorScheme = value; }
 
         public FrameworkElement GetFrameworkElement()
         {
             return this;
+        }
+        public bool IsPropertyReadOnly
+        {
+            get => dblSpinner.IsEnabled;
+            set => dblSpinner.IsEnabled = value;
         }
 
         Type _propType = typeof(double);
