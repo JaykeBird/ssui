@@ -153,7 +153,7 @@ namespace SolidShineUi.PropertyList
 
                 if (ipe != null)
                 {
-                    ipe.IsPropertyReadOnly = item.CanWrite;
+                    ipe.IsPropertyWritable = item.CanWrite;
                 }
                     
                 pei.LoadProperty(item, item.GetValue(_baseObject), ipe);

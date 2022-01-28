@@ -31,7 +31,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return this;
         }
-        public bool IsPropertyReadOnly
+        public bool IsPropertyWritable
         {
             get => dblSpinner.IsEnabled;
             set => dblSpinner.IsEnabled = value;

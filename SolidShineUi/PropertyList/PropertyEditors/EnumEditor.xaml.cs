@@ -27,7 +27,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return this;
         }
-        public bool IsPropertyReadOnly
+        public bool IsPropertyWritable
         {
             get => cbbEnums.IsEnabled;
             set => cbbEnums.IsEnabled = value;

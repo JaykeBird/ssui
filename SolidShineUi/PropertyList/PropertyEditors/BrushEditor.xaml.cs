@@ -59,7 +59,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return this;
         }
-        public bool IsPropertyReadOnly
+        public bool IsPropertyWritable
         {
             get => btnBrush.IsEnabled;
             set => btnBrush.IsEnabled = value;

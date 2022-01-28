@@ -30,7 +30,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private Type _propType = typeof(bool);
 
-        public bool IsPropertyReadOnly
+        public bool IsPropertyWritable
         {
             get => chkValue.IsEnabled;
             set => chkValue.IsEnabled = value;

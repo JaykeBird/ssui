@@ -12,7 +12,7 @@ namespace SolidShineUi.PropertyList
 
         bool EditorAllowsModifying { get; }
 
-        bool IsPropertyReadOnly { get; set; }
+        bool IsPropertyWritable { get; set; }
 
         FrameworkElement GetFrameworkElement();
 

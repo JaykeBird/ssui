@@ -24,7 +24,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return this;
         }
-        public bool IsPropertyReadOnly
+        public bool IsPropertyWritable
         {
             get => btnMenu.IsEnabled;
             set 
