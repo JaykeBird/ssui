@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -22,7 +23,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         public bool IsPropertyWritable { get => btnEdit.IsEnabled; set => btnEdit.IsEnabled = value; }
-        public ColorScheme ColorScheme { set { btnEdit.ColorScheme = value; _cs = value; } }
+        public ColorScheme ColorScheme { set 
+            { 
+                btnEdit.ColorScheme = value;
+                _cs = value;
+
+                if (value.BackgroundColor == Colors.Black)
+                {
+                    imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/StringWhite.png", UriKind.Relative));
+                }
+                else
+                {
+                    imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/StringBlack.png", UriKind.Relative));
+                }
+            }
+        }
 
         private ColorScheme _cs = new ColorScheme();
 
@@ -82,6 +97,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 font = dlg.SelectedFontFamily;
                 txtFontName.Text = dlg.SelectedFontFamily.Source;
+                ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
