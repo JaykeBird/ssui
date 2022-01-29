@@ -517,7 +517,11 @@ namespace SolidShineUi
             }
             set
             {
-                if (value.Contains("|"))
+                if (string.IsNullOrEmpty(value))
+                {
+                    filter = ALL_FILES_FILTER;
+                }
+                else if (value.Contains("|"))
                 {
                     throw new ArgumentException("FileFilter cannot contain a '|' character.");
                 }
