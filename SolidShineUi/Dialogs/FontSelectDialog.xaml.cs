@@ -266,7 +266,7 @@ namespace SolidShineUi
 
         #region Visibility Properties
 
-        BooleanToVisibilityConverter btv = new BooleanToVisibilityConverter();
+        //BooleanToVisibilityConverter btv = new BooleanToVisibilityConverter();
 
         public bool ShowStyles
         {
@@ -276,8 +276,8 @@ namespace SolidShineUi
             }
             set
             {
-                chkItalic.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
-                chkOblique.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                chkItalic.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                chkOblique.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
 
                 if (value)
                 {
@@ -285,11 +285,13 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Styles/Decorations:";
                         RealignStylesAndDecorations();
+                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
                     }
                     else
                     {
                         lblStyles.Text = "Styles:";
                         RealignStylesOnly();
+                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
                     }
                 }
                 else
@@ -298,11 +300,13 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Decorations:";
                         RealignDecorationsOnly();
+                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
                     }
                     else
                     {
                         lblStyles.Text = "";
                         RealignStylesAndDecorations();
+                        rowStyles.Height = new GridLength(0, GridUnitType.Pixel);
                     }
                 }
             }
@@ -316,10 +320,10 @@ namespace SolidShineUi
             }
             set
             {
-                chkUnderline.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
-                chkOverline.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
-                chkStrike.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
-                chkBaseline.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                chkUnderline.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                chkOverline.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                chkStrike.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                chkBaseline.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
 
                 if (value)
                 {
@@ -327,11 +331,13 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Styles/Decorations:";
                         RealignStylesAndDecorations();
+                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
                     }
                     else
                     {
                         lblStyles.Text = "Decorations:";
                         RealignDecorationsOnly();
+                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
                     }
                 }
                 else
@@ -340,11 +346,13 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Styles:";
                         RealignStylesOnly();
+                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
                     }
                     else
                     {
                         lblStyles.Text = "";
                         RealignStylesAndDecorations();
+                        rowStyles.Height = new GridLength(0, GridUnitType.Pixel);
                     }
                 }
             }
@@ -358,8 +366,8 @@ namespace SolidShineUi
             }
             set
             {
-                lstWeight.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
-                lblWeight.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                lstWeight.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                lblWeight.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
             }
         }
 
@@ -371,29 +379,29 @@ namespace SolidShineUi
             }
             set
             {
-                txtSize.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
-                lstSize.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
-                lblSize.Visibility = (Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                txtSize.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                lstSize.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                lblSize.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
             }
         }
 
         void RealignStylesOnly()
         {
-            chkItalic.Margin = new Thickness(25, 275, 0, 0);
-            chkOblique.Margin = new Thickness(25, 295, 0, 0);
+            chkItalic.Margin = new Thickness(25, 27, 0, 0);
+            chkOblique.Margin = new Thickness(25, 47, 0, 0);
         }
 
         void RealignDecorationsOnly()
         {
-            chkBaseline.Margin = new Thickness(135, 275, 0, 0);
+            chkBaseline.Margin = new Thickness(135, 27, 0, 0);
         }
 
         void RealignStylesAndDecorations()
         {
-            chkItalic.Margin = new Thickness(135, 275, 0, 0);
-            chkOblique.Margin = new Thickness(135, 295, 0, 0);
+            chkItalic.Margin = new Thickness(135, 27, 0, 0);
+            chkOblique.Margin = new Thickness(135, 47, 0, 0);
 
-            chkBaseline.Margin = new Thickness(135, 315, 0, 0);
+            chkBaseline.Margin = new Thickness(135, 67, 0, 0);
         }
 
         #endregion
