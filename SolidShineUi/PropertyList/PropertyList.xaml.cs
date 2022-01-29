@@ -68,6 +68,17 @@ namespace SolidShineUi.PropertyList
                 ColorScheme = cs;
                 return;
             }
+
+            foreach (UIElement item in stkProperties.Children)
+            {
+                if (item is PropertyEditorItem pei)
+                {
+                    if (pei.PropertyEditorControl != null)
+                    {
+                        pei.PropertyEditorControl.ColorScheme = cs;
+                    }
+                }
+            }
         }
 
 #endregion

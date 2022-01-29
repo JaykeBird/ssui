@@ -28,7 +28,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnEdit.ColorScheme = value;
                 _cs = value;
 
-                if (value.BackgroundColor == Colors.Black)
+                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
                 {
                     imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/StringWhite.png", UriKind.Relative));
                 }

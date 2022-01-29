@@ -21,7 +21,7 @@
             <flat:FlatButton x:Name="btnRadGradient" Width="28" MinHeight="20" Content="RG" VerticalAlignment="Stretch" ToolTip="Radial Gradient" />
             <flat:FlatButton x:Name="btnImageBrush" Width="28" MinHeight="20" Content="I" VerticalAlignment="Stretch" ToolTip="Image" />
             <flat:MenuButton x:Name="btnMenu" Width="28" MinHeight="20" ShowMenuArrow="False" >
-                <Image Width="16" Height="16" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
+                <Image Width="16" Height="16" x:Name="imgMenu"  Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Bitmap Cache Brush Info..." IsEnabled="False" x:Name="mnuBitmapCacheInfo" />

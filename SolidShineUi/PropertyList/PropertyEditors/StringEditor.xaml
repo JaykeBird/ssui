@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <flat:ClickSelectTextBox x:Name="txtText" TextChanged="txtText_TextChanged" />
         <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="1" ShowMenuArrow="False" >
-            <Image Width="16" Height="16" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
+            <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="Set to Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" />

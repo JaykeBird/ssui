@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Linq;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -56,6 +57,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     btnBrush.BorderSelectedBrush = value.SelectionColor.ToBrush();
                     btnBrush.Foreground = value.ForegroundColor.ToBrush();
                     btnBrush.ClickBrush = value.ThirdHighlightColor.ToBrush();
+                }
+
+                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
+                {
+                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
+                }
+                else if (value.BackgroundColor == Colors.White)
+                {
+                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
+                }
+                else
+                {
+                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
                 }
             }
         }
