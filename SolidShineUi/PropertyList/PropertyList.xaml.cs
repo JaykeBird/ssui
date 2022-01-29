@@ -380,6 +380,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(DrawingBrush), typeof(BrushEditor));
             RegisterEditor(typeof(BitmapCacheBrush), typeof(BrushEditor));
             RegisterEditor(typeof(FontFamily), typeof(FontFamilyEditor));
+            RegisterEditor(typeof(FontStyle), typeof(FontStyleEditor));
         }
 
         #endregion
