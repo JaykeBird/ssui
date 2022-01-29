@@ -5,29 +5,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
              xmlns:flat="clr-namespace:SolidShineUi"
-             mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="800">
+             mc:Ignorable="d" Height="24" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="Auto" MinWidth="80"/>
-            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="Auto" MinWidth="170"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Bitmap Cache" Margin="3,0" />
         <flat:FlatButton x:Name="btnBrush" Click="btnBrush_Click" />
-        <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="2" ShowMenuArrow="False" >
-            <Image Width="16" Height="16" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
-            <flat:MenuButton.Menu>
-                <flat:ContextMenu>
-                    <MenuItem Header="Set as Null" x:Name="mnuSetNull" />
-                    <Separator />
-                    <MenuItem Header="Set as Gradient Brush..." x:Name="mnuGradientBrush" />
-                    <MenuItem Header="Set as Image Brush..." x:Name="mnuImageBrush" />
-                    <Separator />
-                    <MenuItem Header="Bitmap Cache Brush Info..." IsEnabled="False" x:Name="mnuBitmapCacheInfo" />
-                    <MenuItem Header="Drawing Brush Info..." IsEnabled="False" x:Name="mnuDrawingInfo" />
-                </flat:ContextMenu>
-            </flat:MenuButton.Menu>
-        </flat:MenuButton>
+        <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Bitmap Cache" Margin="3,0" IsHitTestVisible="False" />
+
+        <StackPanel Grid.Column="1" Margin="3,1,0,1" Orientation="Horizontal" >
+            <flat:FlatButton x:Name="btnNullBrush" Width="28" MinHeight="20" Content="N" VerticalAlignment="Stretch" ToolTip="(null)" />
+            <flat:FlatButton x:Name="btnSolidColor" Width="28" MinHeight="20" Content="S" VerticalAlignment="Stretch" ToolTip="Solid Color" />
+            <flat:FlatButton x:Name="btnLinGradient" Width="28" MinHeight="20" Content="LG" VerticalAlignment="Stretch" ToolTip="Linear Gradient" />
+            <flat:FlatButton x:Name="btnRadGradient" Width="28" MinHeight="20" Content="RG" VerticalAlignment="Stretch" ToolTip="Radial Gradient" />
+            <flat:FlatButton x:Name="btnImageBrush" Width="28" MinHeight="20" Content="I" VerticalAlignment="Stretch" ToolTip="Image" />
+            <flat:MenuButton x:Name="btnMenu" Width="28" MinHeight="20" ShowMenuArrow="False" >
+                <Image Width="16" Height="16" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
+                <flat:MenuButton.Menu>
+                    <flat:ContextMenu>
+                        <MenuItem Header="Bitmap Cache Brush Info..." IsEnabled="False" x:Name="mnuBitmapCacheInfo" />
+                        <MenuItem Header="Drawing Brush Info..." IsEnabled="False" x:Name="mnuDrawingInfo" />
+                    </flat:ContextMenu>
+                </flat:MenuButton.Menu>
+            </flat:MenuButton>
+        </StackPanel>
+
     </Grid>
 </UserControl>

@@ -31,7 +31,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 _cs = value;
                 btnMenu.ColorScheme = value;
-                
+                btnNullBrush.ColorScheme = value;
+                btnSolidColor.ColorScheme = value;
+                btnLinGradient.ColorScheme = value;
+                btnRadGradient.ColorScheme = value;
+                btnImageBrush.ColorScheme = value;
+
                 if (value.IsHighContrast)
                 {
                     btnBrush.BorderBrush = value.BorderColor.ToBrush();
@@ -85,6 +90,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = Colors.Black.ToBrush();
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
+
+                btnNullBrush.IsSelected = true;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = false;
                 return;
             }
 
@@ -95,6 +107,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = Colors.Black.ToBrush();
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = true;
                 return;
             }
 
@@ -115,6 +134,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = (SolidColorBrush)value;
                 btnBrush.ClickBrush = (SolidColorBrush)value;
                 btnBrush.DisabledBrush = (SolidColorBrush)value;
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = true;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = false;
             }
             else if (brushType == typeof(LinearGradientBrush))
             {
@@ -123,6 +149,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = (LinearGradientBrush)value;
                 btnBrush.ClickBrush = (LinearGradientBrush)value;
                 btnBrush.DisabledBrush = (LinearGradientBrush)value;
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = true;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = false;
             }
             else if (brushType == typeof(RadialGradientBrush))
             {
@@ -131,6 +164,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = (RadialGradientBrush)value;
                 btnBrush.ClickBrush = (RadialGradientBrush)value;
                 btnBrush.DisabledBrush = (RadialGradientBrush)value;
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = true;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = false;
             }
             else if (brushType == typeof(ImageBrush))
             {
@@ -139,6 +179,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = (ImageBrush)value;
                 btnBrush.ClickBrush = (ImageBrush)value;
                 btnBrush.DisabledBrush = (ImageBrush)value;
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = true;
+                btnMenu.IsSelected = false;
             }
             else if (brushType == typeof(BitmapCacheBrush))
             {
@@ -147,6 +194,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
                 btnBrush.ClickBrush = Colors.LightGray.ToBrush();
                 btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = true;
             }
             else if (brushType == typeof(DrawingBrush))
             {
@@ -155,6 +209,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
                 btnBrush.ClickBrush = Colors.LightGray.ToBrush();
                 btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = true;
             }
             else
             {
@@ -163,6 +224,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.HighlightBrush = Colors.Black.ToBrush();
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = true;
             }
         }
 #else
