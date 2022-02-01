@@ -20,9 +20,12 @@
         <Grid x:Name="grdBase" AllowDrop="True" Drop="grdBase_Drop" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition x:Name="colBrowse" Width="70"/>
+                <ColumnDefinition x:Name="colBrowse" Width="Auto" MinWidth="70"/>
             </Grid.ColumnDefinitions>
-            <local:FlatButton x:Name="btnBrowse" Margin="2,2" Height="Auto" MinHeight="16" Grid.Column="1" Content="Browse..." Click="btnBrowse_Click" />
+            <local:FlatButton x:Name="btnBrowse" Margin="2,2" Height="Auto" MinHeight="16" Grid.Column="1" Click="btnBrowse_Click" >
+                <TextBlock Text="Browse..." x:Name="txtBrowse" />
+                <!--<TextBlock Text="{Binding ElementName=control, Path=BrowseButtonText}" />-->
+            </local:FlatButton>
             <Grid Background="#01000000" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="24" x:Name="colImage" />
