@@ -419,6 +419,24 @@ namespace SolidShineUi
 
         bool _showIcon = true;
 
+        //[Category("Common")]
+        //public string BrowseButtonText
+        //{
+        //    get => (string)GetValue(BrowseButtonTextProperty);
+        //    set => SetValue(BrowseButtonTextProperty, value);
+        //}
+
+        //public static readonly DependencyProperty BrowseButtonTextProperty = DependencyProperty.Register(
+        //    "BrowseButtonTextProperty", typeof(string), typeof(FileSelect),
+        //    new PropertyMetadata("Browse..."));
+
+        [Category("Common")]
+        public string BrowseButtonText
+        {
+            get => txtBrowse.Text;
+            set => txtBrowse.Text = value;
+        }
+
         public bool ShowIcon
         {
             get
