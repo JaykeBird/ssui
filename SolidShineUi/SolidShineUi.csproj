@@ -134,6 +134,12 @@ See website for more details!</PackageReleaseNotes>
     <Compile Update="ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Update="PropertyList\PropertyEditors\GuidEditor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PropertyList\PropertyEditors\UriEditor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Utils\ColorListItem.xaml.cs">
       <DependentUpon>ColorListItem.xaml</DependentUpon>
     </Compile>
@@ -184,6 +190,14 @@ See website for more details!</PackageReleaseNotes>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="PropertyList\PropertyEditors\GuidEditor.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PropertyList\PropertyEditors\UriEditor.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Utils\TabDisplayItem.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

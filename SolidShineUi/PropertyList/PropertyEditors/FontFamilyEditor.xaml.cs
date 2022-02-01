@@ -77,30 +77,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
-        {
-            FontSelectDialog dlg = new FontSelectDialog();
-            dlg.ColorScheme = _cs;
-            dlg.Owner = Window.GetWindow(this);
-
-            dlg.ShowDecorations = false;
-            dlg.ShowSizes = false;
-            dlg.ShowStyles = false;
-            dlg.ShowWeights = false;
-
-            dlg.SelectedFontFamily = font;
-            dlg.SelectedFontSize = 16.0; // used for the preview box
-
-            dlg.ShowDialog();
-
-            if (dlg.DialogResult)
-            {
-                font = dlg.SelectedFontFamily;
-                txtFontName.Text = dlg.SelectedFontFamily.Source;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
 #else
         public event EventHandler ValueChanged;
 
@@ -130,5 +106,29 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 #endif
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            FontSelectDialog dlg = new FontSelectDialog();
+            dlg.ColorScheme = _cs;
+            dlg.Owner = Window.GetWindow(this);
+
+            dlg.ShowDecorations = false;
+            dlg.ShowSizes = false;
+            dlg.ShowStyles = false;
+            dlg.ShowWeights = false;
+
+            dlg.SelectedFontFamily = font;
+            dlg.SelectedFontSize = 16.0; // used for the preview box
+
+            dlg.ShowDialog();
+
+            if (dlg.DialogResult)
+            {
+                font = dlg.SelectedFontFamily;
+                txtFontName.Text = dlg.SelectedFontFamily.Source;
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 }
