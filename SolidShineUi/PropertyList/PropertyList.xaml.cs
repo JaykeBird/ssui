@@ -69,8 +69,13 @@ namespace SolidShineUi.PropertyList
                 return;
             }
 
+#if NETCOREAPP
+            foreach (UIElement? item in stkProperties.Children)
+#else
             foreach (UIElement item in stkProperties.Children)
+#endif
             {
+                if (item == null) continue;
                 if (item is PropertyEditorItem pei)
                 {
                     if (pei.PropertyEditorControl != null)
@@ -385,18 +390,21 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Guid), typeof(GuidEditor));
         }
 
-        #endregion
+#endregion
 
-        #region Visual Elements
+#region Visual Elements
 
 #if NETCOREAPP
         private void ColumnWidthChanged(object? sender, EventArgs e)
+        {
+            foreach (UIElement? item in stkProperties.Children)
+            {
 #else
         private void ColumnWidthChanged(object sender, EventArgs e)
-#endif
-        {
+                {
             foreach (UIElement item in stkProperties.Children)
             {
+#endif
                 if (item is PropertyEditorItem pei)
                 {
                     pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
