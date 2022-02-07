@@ -431,8 +431,8 @@ namespace SolidShineUi
         [Category("Brushes")]
         public Brush CheckForeground
         {
-            get => (Brush)GetValue(CheckBackgroundProperty);
-            set => SetValue(CheckBackgroundProperty, value);
+            get => (Brush)GetValue(CheckForegroundProperty);
+            set => SetValue(CheckForegroundProperty, value);
         }
 
         //[Category("Brushes")]
