@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi.Utils"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400" Focusable="True" IsTabStop="True" >
     <Border BorderBrush="{Binding ElementName=control, Path=BorderBrush}" Background="{Binding ElementName=control, Path=ControlBackground}" BorderThickness="1">
         <Grid x:Name="grdOverall" Background="#01FFFFFF"
               MouseDown="grdGuidelines_MouseDown" MouseUp="grdGuidelines_MouseUp" MouseMove="grdGuidelines_MouseMove" MouseLeave="grdGuidelines_MouseLeave" >
+            <Border x:Name="brdrKeyFocus" IsHitTestVisible="False" BorderThickness="4.5" BorderBrush="Transparent" />
             <Grid x:Name="grdGuidelines" IsHitTestVisible="False" >
                 <Grid x:Name="canVertical" />
                 <Grid x:Name="canHorizontal" />

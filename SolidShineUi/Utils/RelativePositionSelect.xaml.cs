@@ -23,6 +23,15 @@ namespace SolidShineUi.Utils
             HorizontalSnapPoints.CollectionChanged += HorizontalSnapPoints_CollectionChanged;
             VerticalSnapPoints.CollectionChanged += VerticalSnapPoints_CollectionChanged;
             SizeChanged += RelativePositionSelect_SizeChanged;
+            GotKeyboardFocus += RelativePositionSelect_GotKeyboardFocus;
+            LostKeyboardFocus += RelativePositionSelect_LostKeyboardFocus;
+            PreviewKeyDown += RelativePositionSelect_PreviewKeyDown;
+            PreviewKeyUp += RelativePositionSelect_PreviewKeyUp;
+            KeyDown += RelativePositionSelect_KeyDown;
+            KeyUp += RelativePositionSelect_KeyUp;
+
+            //KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Continue);
+            KeyboardNavigation.SetDirectionalNavigation(this, KeyboardNavigationMode.Contained);
         }
 
         #region Color Scheme
@@ -78,6 +87,7 @@ namespace SolidShineUi.Utils
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
                 SelectorBrush = cs.ForegroundColor.ToBrush();
                 SnapLineBrush = cs.BorderColor.ToBrush();
+                KeyboardFocusHighlight = cs.SecondHighlightColor.ToBrush();
             }
             else
             {
@@ -85,6 +95,7 @@ namespace SolidShineUi.Utils
                 BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
                 SelectorBrush = cs.HighlightColor.ToBrush();
                 SnapLineBrush = cs.SecondaryColor.ToBrush();
+                KeyboardFocusHighlight = cs.ThirdHighlightColor.ToBrush();
             }
 
             BorderBrush = cs.BorderColor.ToBrush();
@@ -157,10 +168,21 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the brush used for the snap point lines.
         /// </summary>
+        [Category("Brushes")]
         public Brush SnapLineBrush
         {
             get => (Brush)GetValue(SnapLineBrushProperty);
             set => SetValue(SnapLineBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the outline when the control is keyboard focused.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush KeyboardFocusHighlight
+        {
+            get => (Brush)GetValue(KeyboardFocusHighlightProperty);
+            set => SetValue(KeyboardFocusHighlightProperty, value);
         }
 
         public static readonly DependencyProperty ControlBackgroundProperty = DependencyProperty.Register(
@@ -191,6 +213,10 @@ namespace SolidShineUi.Utils
             "SnapLineBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnSnapLineBrushChanged));
 
+        public static readonly DependencyProperty KeyboardFocusHighlightProperty = DependencyProperty.Register(
+            "KeyboardFocusHighlight", typeof(Brush), typeof(RelativePositionSelect),
+            new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
+
         public static void OnSnapLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is RelativePositionSelect r)
@@ -214,6 +240,22 @@ namespace SolidShineUi.Utils
                 {
                     b.BorderBrush = SnapLineBrush;
                 }
+            }
+        }
+
+        public static void OnKeyboardFocusHighlightBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is RelativePositionSelect r)
+            {
+                r.UpdateSnapLineBrush();
+            }
+        }
+
+        internal protected void UpdateKeyboardFocusHighlightBrush()
+        {
+            if (IsKeyboardFocused || HasEffectiveKeyboardFocus)
+            {
+                brdrKeyFocus.BorderBrush = KeyboardFocusHighlight;
             }
         }
 
@@ -466,6 +508,107 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #region Keyboard Controls
+
+        /// <summary>
+        /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
+        /// </summary>
+        public double KeyMoveStep { get; set; } = 0.05;
+
+        private void RelativePositionSelect_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            brdrKeyFocus.BorderBrush = Colors.Transparent.ToBrush();
+        }
+
+        private void RelativePositionSelect_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            brdrKeyFocus.BorderBrush = KeyboardFocusHighlight;
+        }
+
+        private void RelativePositionSelect_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Left:
+                    SelectedWidth -= KeyMoveStep;
+                    break;
+                case Key.Right:
+                    SelectedWidth += KeyMoveStep;
+                    break;
+                case Key.Up:
+                    SelectedHeight -= KeyMoveStep;
+                    break;
+                case Key.Down:
+                    SelectedHeight += KeyMoveStep;
+                    break;
+                case Key.Home:
+                    SelectedWidth = 0;
+                    break;
+                case Key.End:
+                    SelectedWidth = 1;
+                    break;
+                case Key.PageUp:
+                    SelectedHeight = 0;
+                    break;
+                case Key.PageDown:
+                    SelectedHeight = 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void RelativePositionSelect_KeyDown(object sender, KeyEventArgs e)
+        {
+    
+        }
+
+        private void RelativePositionSelect_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Left:
+                case Key.Right:
+                case Key.Up:
+                case Key.Down:
+                case Key.Home:
+                case Key.End:
+                case Key.PageUp:
+                case Key.PageDown:
+                    if (e.OriginalSource == this)
+                    {
+                        //e.Handled = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void RelativePositionSelect_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Left:
+                case Key.Right:
+                case Key.Up:
+                case Key.Down:
+                case Key.Home:
+                case Key.End:
+                case Key.PageUp:
+                case Key.PageDown:
+                    if (e.OriginalSource == this)
+                    {
+                        e.Handled = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
         public double SelectorSize
         {
             get { return ellSelect.Width; }
@@ -476,6 +619,7 @@ namespace SolidShineUi.Utils
 
                 double sshalf = value / 2;
                 grdSelArea.Margin = new Thickness(sshalf);
+                brdrKeyFocus.BorderThickness = new Thickness(sshalf);
             }
         }
 
