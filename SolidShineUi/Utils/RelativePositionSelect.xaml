@@ -9,13 +9,13 @@
     <Border BorderBrush="{Binding ElementName=control, Path=BorderBrush}" Background="{Binding ElementName=control, Path=ControlBackground}" BorderThickness="1">
         <Grid x:Name="grdOverall" Background="#01FFFFFF"
               MouseDown="grdGuidelines_MouseDown" MouseUp="grdGuidelines_MouseUp" MouseMove="grdGuidelines_MouseMove" MouseLeave="grdGuidelines_MouseLeave" >
-            <Canvas x:Name="grdSelArea" Margin="4.5" IsHitTestVisible="False" ClipToBounds="False" >
-                <Ellipse x:Name="ellSelect" Fill="{Binding ElementName=control, Path=SelectorBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="9" Height="9" Canvas.Top="0" Canvas.Left="0" />
-            </Canvas>
             <Grid x:Name="grdGuidelines" IsHitTestVisible="False" >
                 <Grid x:Name="canVertical" />
                 <Grid x:Name="canHorizontal" />
             </Grid>
+            <Canvas x:Name="grdSelArea" Margin="4.5" IsHitTestVisible="False" ClipToBounds="False" >
+                <Ellipse x:Name="ellSelect" Fill="{Binding ElementName=control, Path=SelectorBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="9" Height="9" Canvas.Top="0" Canvas.Left="0" />
+            </Canvas>
         </Grid>
     </Border>
 </UserControl>

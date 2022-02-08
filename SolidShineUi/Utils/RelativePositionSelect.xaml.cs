@@ -83,8 +83,8 @@ namespace SolidShineUi.Utils
             {
                 ControlBackground = cs.LightBackgroundColor.ToBrush();
                 BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
-                SelectorBrush = cs.SecondaryColor.ToBrush();
-                SnapLineBrush = cs.HighlightColor.ToBrush();
+                SelectorBrush = cs.HighlightColor.ToBrush();
+                SnapLineBrush = cs.SecondaryColor.ToBrush();
             }
 
             BorderBrush = cs.BorderColor.ToBrush();
@@ -92,21 +92,6 @@ namespace SolidShineUi.Utils
             BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
             SelectorDisabledBrush = cs.DarkDisabledColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
-
-            foreach (UIElement item in canVertical.Children)
-            {
-                if (item is Border b)
-                {
-                    b.BorderBrush = SnapLineBrush;
-                }
-            }
-            foreach (UIElement item in canHorizontal.Children)
-            {
-                if (item is Border b)
-                {
-                    b.BorderBrush = SnapLineBrush;
-                }
-            }
         }
         #endregion
 
@@ -204,7 +189,33 @@ namespace SolidShineUi.Utils
 
         public static readonly DependencyProperty SnapLineBrushProperty = DependencyProperty.Register(
             "SnapLineBrush", typeof(Brush), typeof(RelativePositionSelect),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+            new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnSnapLineBrushChanged));
+
+        public static void OnSnapLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is RelativePositionSelect r)
+            {
+                r.UpdateSnapLineBrush();
+            }
+        }
+
+        internal protected void UpdateSnapLineBrush()
+        {
+            foreach (UIElement item in canVertical.Children)
+            {
+                if (item is Border b)
+                {
+                    b.BorderBrush = SnapLineBrush;
+                }
+            }
+            foreach (UIElement item in canHorizontal.Children)
+            {
+                if (item is Border b)
+                {
+                    b.BorderBrush = SnapLineBrush;
+                }
+            }
+        }
 
         #endregion
 
@@ -338,6 +349,7 @@ namespace SolidShineUi.Utils
 
         private void AddVerticalSnapPoint(double point)
         {
+            double sshalf = SelectorSize / 2;
             Border b = new Border();
             b.BorderThickness = new Thickness(0.75);
             b.BorderBrush = SnapLineBrush;
@@ -345,7 +357,7 @@ namespace SolidShineUi.Utils
             b.Tag = point;
             b.HorizontalAlignment = HorizontalAlignment.Left;
             b.VerticalAlignment = VerticalAlignment.Stretch;
-            b.Margin = new Thickness(grdSelArea.ActualWidth * point, 0, 0, 0);
+            b.Margin = new Thickness(grdSelArea.ActualWidth * point + sshalf, 0, 0, 0);
             b.SnapsToDevicePixels = true;
             b.UseLayoutRounding = false;
 
@@ -378,6 +390,7 @@ namespace SolidShineUi.Utils
 
         private void AddHorizontalSnapPoint(double point)
         {
+            double sshalf = SelectorSize / 2;
             Border b = new Border();
             b.BorderThickness = new Thickness(0.75);
             b.BorderBrush = SnapLineBrush;
@@ -385,7 +398,7 @@ namespace SolidShineUi.Utils
             b.Tag = point;
             b.HorizontalAlignment = HorizontalAlignment.Stretch;
             b.VerticalAlignment = VerticalAlignment.Top;
-            b.Margin = new Thickness(0, grdSelArea.ActualHeight * point, 0, 0);
+            b.Margin = new Thickness(0, grdSelArea.ActualHeight * point + sshalf, 0, 0);
             b.SnapsToDevicePixels = true;
             b.UseLayoutRounding = false;
 
@@ -418,6 +431,8 @@ namespace SolidShineUi.Utils
 
         private void RelativePositionSelect_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            double sshalf = SelectorSize / 2;
+
             if (e.WidthChanged)
             {
                 foreach (UIElement item in canVertical.Children)
@@ -426,10 +441,11 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Tag is double d)
                         {
-                            b.Margin = new Thickness(grdSelArea.ActualWidth * d, 0, 0, 0);
+                            b.Margin = new Thickness(grdSelArea.ActualWidth * d + sshalf, 0, 0, 0);
                         }
                     }
                 }
+                Canvas.SetLeft(ellSelect, (grdSelArea.ActualWidth * SelectedWidth) - sshalf);
             }
 
             if (e.HeightChanged)
@@ -440,10 +456,11 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Tag is double d)
                         {
-                            b.Margin = new Thickness(0, grdSelArea.ActualHeight * d, 0, 0);
+                            b.Margin = new Thickness(0, grdSelArea.ActualHeight * d + sshalf, 0, 0);
                         }
                     }
                 }
+                Canvas.SetTop(ellSelect, (grdSelArea.ActualHeight * SelectedHeight) - sshalf);
             }
         }
 
@@ -526,7 +543,7 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Margin.Left > widthMin && b.Margin.Left < widthMax)
                         {
-                            p.X = b.Margin.Left;
+                            p.X = b.Margin.Left - sshalf;
                         }
                     }
                 }
@@ -538,7 +555,7 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Margin.Top > heightMin && b.Margin.Top < heightMax)
                         {
-                            p.Y = b.Margin.Top;
+                            p.Y = b.Margin.Top - sshalf;
                         }
                     }
                 }
