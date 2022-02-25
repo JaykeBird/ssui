@@ -729,23 +729,20 @@ namespace SolidShineUi
 
         public void MoveSelectedItemsUp()
         {
-            bool first = true;
-            int index = -1;
+            // set up variables
+            int index = int.MaxValue;
 
             List<SelectableUserControl> imov = new List<SelectableUserControl>();
 
             foreach (SelectableUserControl item in Items.SelectedItems)
             {
-                if (first)
-                {
-                    index = IndexOf(item) - 1;
-                    first = false;
-                }
-
+                if (IndexOf(item) < index) index = IndexOf(item);
                 imov.Add(item);
             }
 
-            if (index < 0)
+            index--;
+
+            if (index < 0 || index == int.MaxValue - 1)
             {
                 index = 0;
             }
@@ -756,7 +753,9 @@ namespace SolidShineUi
                 Items.Remove(item);
             }
 
-            imov.Reverse();
+            //imov.Reverse();
+
+            Items.ClearSelection();
 
             // re-insert and re-select all the items
             foreach (SelectableUserControl item in imov)
@@ -765,20 +764,32 @@ namespace SolidShineUi
                 //Items.AddToSelection(item);
             }
 
+            foreach (SelectableUserControl item in imov)
+            {
+                Items.AddToSelection(item);
+            }
+
             RefreshVisualSelection();
         }
 
         public void MoveSelectedItemsDown()
         {
-            int index = -1;
+            int index = int.MinValue;
 
             List<SelectableUserControl> imov = new List<SelectableUserControl>();
 
             foreach (SelectableUserControl item in Items.SelectedItems)
             {
-                index = IndexOf(item) + 1;
+                if (IndexOf(item) > index) index = IndexOf(item);
 
                 imov.Add(item);
+            }
+
+            index++;
+
+            if (index > (Items.Count - 1) || index == int.MinValue + 1)
+            {
+                index = (Items.Count - 1);
             }
 
             // remove the controls
@@ -789,14 +800,21 @@ namespace SolidShineUi
 
             if (index > (Items.Count - 1))
             {
-                index = (Items.Count - 1);
+                index = Items.Count;
             }
+
+            Items.ClearSelection();
 
             // re-insert and re-select the controls at the new location
             foreach (SelectableUserControl item in imov)
             {
                 Items.Insert(index, item);
                 //Items.AddToSelection(item);
+            }
+
+            foreach (SelectableUserControl item in imov)
+            {
+                Items.AddToSelection(item);
             }
 
             RefreshVisualSelection();
