@@ -97,6 +97,14 @@ namespace SolidShineUi.PropertyList
         private object _baseObject = null;
 #endif
 
+        public void ReloadObject()
+        {
+            if (_baseObject != null)
+            {
+                LoadObject(_baseObject);
+            }
+        }
+
         public void LoadObject(object o)
         {
             _baseObject = o;
@@ -389,6 +397,8 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Uri), typeof(UriEditor));
             RegisterEditor(typeof(Guid), typeof(GuidEditor));
             RegisterEditor(typeof(Thickness), typeof(ThicknessEditor));
+            RegisterEditor(typeof(Size), typeof(SizeEditor));
+            RegisterEditor(typeof(Point), typeof(PointEditor));
         }
 
 #endregion
@@ -413,7 +423,19 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#endregion
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            ReloadObject();
+        }
+
+        public bool ShowReloadButton
+        {
+            get => btnRefresh.Visibility == Visibility.Visible;
+            set => btnRefresh.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        #endregion
+
 
     }
 
