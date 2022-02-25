@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -30,11 +30,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                 if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
                 {
-                    imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/StringWhite.png", UriKind.Relative));
+                    imgFontEdit.Source = LoadIcon("String", ICON_WHITE);
                 }
                 else
                 {
-                    imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/StringBlack.png", UriKind.Relative));
+                    imgFontEdit.Source = LoadIcon("String", ICON_BLACK);
                 }
             }
         }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -22,27 +22,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         public bool EditorAllowsModifying => true;
 
-        public bool IsPropertyWritable { get => btnEdit.IsEnabled; set => btnEdit.IsEnabled = value; }
+        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
         public ColorScheme ColorScheme { set 
             { 
-                btnEdit.ColorScheme = value;
                 btnMenu.ColorScheme = value;
                 _cs = value;
 
                 if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
                 {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-                    imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ReloadWhite.png", UriKind.Relative));
+                    imgNew.Source = LoadIcon("Reload", ICON_WHITE);
+                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
                 }
                 else if (value.BackgroundColor == Colors.White)
                 {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-                    imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ReloadBlack.png", UriKind.Relative));
+                    imgNew.Source = LoadIcon("Reload", ICON_BLACK);
+                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
                 }
                 else
                 {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-                    imgFontEdit.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ReloadColor.png", UriKind.Relative));
+                    imgNew.Source = LoadIcon("Reload", ICON_COLOR);
+                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
                 }
             }
         }

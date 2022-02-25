@@ -9,20 +9,22 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="60" />
-            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="80" />
         </Grid.ColumnDefinitions>
         <TextBox x:Name="txtFontName" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" Opacity="0.8" />
-        <flat:FlatButton x:Name="btnEdit" Grid.Column="1" Click="btnEdit_Click">
+        <flat:MenuButton x:Name="btnMenu" Grid.Column="1" ShowMenuArrow="True" >
             <StackPanel Orientation="Horizontal">
-                <Image Height="16" Width="16" x:Name="imgFontEdit" Source="/SolidShineUi;component/Images/ReloadColor.png" UseLayoutRounding="True" />
-                <TextBlock Text="New" Margin="3,0" />
+                <Image Height="16" Width="16" x:Name="imgFontEdit" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
+                <TextBlock Text="Edit" Margin="3,0" />
             </StackPanel>
-        </flat:FlatButton>
-        <flat:MenuButton x:Name="btnMenu" Grid.Column="2" ShowMenuArrow="False" >
-            <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
+                    <MenuItem Header="Generate New Guid" x:Name="mnuNewGuid" Click="btnEdit_Click">
+                        <MenuItem.Icon>
+                            <Image x:Name="imgNew" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
                     <MenuItem Header="Set Guid..." x:Name="mnuSetGuid" Click="mnuSetGuid_Click" />
                     <MenuItem Header="Set to Empty" x:Name="mnuEmptyGuid" Click="mnuEmptyGuid_Click" />
                 </flat:ContextMenu>
