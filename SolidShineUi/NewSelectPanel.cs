@@ -274,14 +274,15 @@ namespace SolidShineUi
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            if (d is NewSelectPanel s)
+            if (d is NewSelectPanel sp)
             {
-                s.ApplyColorScheme((e.NewValue as ColorScheme)!);
-            }
+                sp.ColorSchemeChanged?.Invoke(d, e);
+#if NETCOREAPP
+                sp.ApplyColorScheme((e.NewValue as ColorScheme)!, sp.UseLighterBorder);
 #else
-            (d as NewSelectPanel).ApplyColorScheme(e.NewValue as ColorScheme);
+                sp.ApplyColorScheme((e.NewValue as ColorScheme), sp.UseLighterBorder);
 #endif
+            }
         }
 
         /// <summary>
@@ -293,6 +294,12 @@ namespace SolidShineUi
             get => (ColorScheme)GetValue(ColorSchemeProperty);
             set => SetValue(ColorSchemeProperty, value);
         }
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
 
         public bool use_lbrdr = false;
         bool runApply = true;
