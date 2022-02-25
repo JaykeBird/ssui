@@ -29,6 +29,7 @@ namespace SolidShineUi
             Loaded += TabControl_Loaded;
             SizeChanged += control_SizeChanged;
 
+            SetValue(ItemsProperty, new SelectableCollection<TabItem>());
             //Items = new SelectableCollection<TabItem>();
             Items.CanSelectMultiple = false;
             Items.CollectionChanged += Items_CollectionChanged;
