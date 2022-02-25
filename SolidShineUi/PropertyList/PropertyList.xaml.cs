@@ -388,6 +388,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(FontStyle), typeof(FontStyleEditor));
             RegisterEditor(typeof(Uri), typeof(UriEditor));
             RegisterEditor(typeof(Guid), typeof(GuidEditor));
+            RegisterEditor(typeof(Thickness), typeof(ThicknessEditor));
         }
 
 #endregion
