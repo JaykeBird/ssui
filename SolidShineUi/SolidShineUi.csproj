@@ -11,10 +11,10 @@
     <Company></Company>
     <Product>SolidShineUi</Product>
     <Description>A collection of UI controls and helper classes with consistent and customizable theming.</Description>
-    <Copyright>Copyright 2018-2021 Jayke R. Huempfner, other contributors</Copyright>
-    <Version>1.8.3</Version>
-    <AssemblyVersion>1.8.3</AssemblyVersion>
-    <FileVersion>1.8.3</FileVersion>
+    <Copyright>Copyright 2018-2022 Jayke R. Huempfner, other contributors</Copyright>
+    <Version>1.8.4</Version>
+    <AssemblyVersion>1.8.4</AssemblyVersion>
+    <FileVersion>1.8.4</FileVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>Jayke R. Huempfner, other contributors</Authors>
@@ -29,7 +29,13 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Version 1.8.3
+    <PackageReleaseNotes>Version 1.8.4
+- Broke and then fixed TabControl
+- Improvements to ColorScheme
+- Layout changes in FontSelectDialog
+- Improvements to FileSelect control
+		
+Version 1.8.3
 - Add .NET 6.0 support
 - Fix parsing issue with parantheses in ArithmeticParser
 - IntegerSpinner and DoubleSpinner can now change height
@@ -41,11 +47,6 @@ Version 1.8.2
 - Rewrites/fixes for keyboard support classes
 - Added ToolTip property to TabItem
 - Tab's dirty state is now displayed
-
-Version 1.8.1
-- Fixed bugs with TabControl's TabListMenu
-- Added TabContextMenu property to TabItem
-- Added KeepMenuArrowOnRight property to MenuButton
 
 See website for more details!</PackageReleaseNotes>
   </PropertyGroup>
@@ -173,9 +174,6 @@ See website for more details!</PackageReleaseNotes>
   <ItemGroup>
     <Resource Include="Images\**" />
     <Resource Include="DialogImages\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="integrate.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
