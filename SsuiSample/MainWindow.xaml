@@ -113,6 +113,7 @@
             <local:TabControlTest x:Name="tabControlTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:PropertyListTest x:Name="propListTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:PositionSelectTest x:Name="posSelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:TwoBasicSelectPanels x:Name="twoBasicTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
         </Grid>
     </Grid>
 </flat:FlatWindow>

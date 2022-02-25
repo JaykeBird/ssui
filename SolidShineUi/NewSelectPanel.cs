@@ -19,6 +19,7 @@ namespace SolidShineUi
 
         public NewSelectPanel()
         {
+            SetValue(ItemsProperty, new SelectableCollection<SelectableUserControl>());
             //Items = new SelectableCollection<SelectableUserControl>();
             Items.ItemRemoving += Items_ItemRemoving;
             Items.CollectionChanged += Items_CollectionChanged;
