@@ -136,7 +136,9 @@ namespace SolidShineUi
         public Color WindowInactiveColor { get; set; } = DarkGray;
 
         public bool MenusUseAccent { get; set; } = false;
-        //public bool PanelUseAccent { get; set; } = false;
+        
+        [Obsolete("This property is currently not used in SolidShineUI, and will be removed in the next version.", false)]
+        public bool PanelUseAccent { get; set; } = false;
 
         void CreatePalette(Color baseColor)
         {
