@@ -13,26 +13,25 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="55"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="48"/>
                 <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
             <Border Background="#44FFFFFF" BorderThickness="1" BorderBrush="#55000000" Margin="20,10,20,20">
-                <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" TabChanged="tabControl_TabChanged" >
-                    <flat:TabControl.Items>
-                        <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png" AllowDrop="True" ToolTip="This is a ToolTip"
+                <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabChanged="tabControl_TabChanged"
+                                 TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" HorizontalTabBarHeight="{Binding ElementName=nudTabBarHeight, Path=Value}" >
+                    <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png" AllowDrop="True" ToolTip="This is a ToolTip"
                                       DragEnter="TabItem_DragEnter" DragOver="TabItem_DragOver" DragLeave="TabItem_DragLeave" Drop="TabItem_Drop" >
-                            <flat:TabItem.TabContextMenu>
-                                <flat:ContextMenu>
-                                    <MenuItem Header="Item 1" />
-                                    <MenuItem Header="Item 2" />
-                                </flat:ContextMenu>
-                            </flat:TabItem.TabContextMenu>
-                            <TextBlock Text="Tab 1" />
-                        </flat:TabItem>
-                        <flat:TabItem Title="Tab 2" ShowIcon="False" >
-                            <TextBlock Text="Tab 2" />
-                        </flat:TabItem>
-                    </flat:TabControl.Items>
+                        <flat:TabItem.TabContextMenu>
+                            <flat:ContextMenu>
+                                <MenuItem Header="Item 1" />
+                                <MenuItem Header="Item 2" />
+                            </flat:ContextMenu>
+                        </flat:TabItem.TabContextMenu>
+                        <TextBlock Text="Tab 1" />
+                    </flat:TabItem>
+                    <flat:TabItem Title="Tab 2" ShowIcon="False" >
+                        <TextBlock Text="Tab 2" />
+                    </flat:TabItem>
                 </flat:TabControl>
             </Border>
             <StackPanel Margin="20,0" Height="Auto" VerticalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
@@ -42,14 +41,17 @@
                 <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="100" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Tab...</flat:FlatButton>
                 <flat:CheckBox x:Name="chkDirty" Margin="3" CheckChanged="chkDirty_CheckChanged" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Set Tab IsDirty</flat:CheckBox>
             </StackPanel>
-            <ScrollViewer Grid.Row="2" Margin="20,0" VerticalAlignment="Center" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
-                <StackPanel Orientation="Horizontal" >
+            <ScrollViewer Grid.Row="2" Margin="20,0" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" >
                     <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged"
                                    ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" />
-                    <TextBlock Margin="10,0,5,0" Text="Action on selected tab close:" VerticalAlignment="Center" />
-                    <flat:EnumComboBox Enum="{x:Type flat:SelectedTabCloseAction}" x:Name="cbbSelectTabClose" SelectedIndex="0" SelectionChanged="cbbSelectTabClose_SelectionChanged" />
                     <TextBlock Margin="10,0,5,0" Text="Minimum tab width:" VerticalAlignment="Center" />
                     <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
+                    <TextBlock Margin="10,0,5,0" Text="Tab bar height:" VerticalAlignment="Center" />
+                    <flat:DoubleSpinner x:Name="nudTabBarHeight" Value="24" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
+                    <Border Width="1" Margin="10,2" BorderThickness="1" BorderBrush="#CC333333" />
+                    <TextBlock Margin="10,0,5,0" Text="Action on selected tab close:" VerticalAlignment="Center" />
+                    <flat:EnumComboBox Enum="{x:Type flat:SelectedTabCloseAction}" x:Name="cbbSelectTabClose" SelectedIndex="0" SelectionChanged="cbbSelectTabClose_SelectionChanged" />
                 </StackPanel>
             </ScrollViewer>
             <TextBlock Grid.Row="3" VerticalAlignment="Center" Margin="10,0" x:Name="txtStatus" />

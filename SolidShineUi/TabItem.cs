@@ -30,6 +30,8 @@ namespace SolidShineUi
             InternalAllowDropChanged += tabItem_InternalAllowDropChanged;
             InternalToolTipChanged += tabItem_InternalToolTipChanged;
             InternalDisplayDirtyStateChanged += tabItem_InternalDisplayDirtyStateChanged;
+            InternalTabBackgroundChanged += tabItem_InternalTabBackgroundChanged;
+            InternalPaddingChanged += tabItem_InternalPaddingChanged;
         }
 
         #region Title
@@ -290,6 +292,45 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region TabBackground
+
+        public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register("TabBackground", typeof(Brush), typeof(TabItem),
+            new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
+
+        ///<summary>
+        /// Get or set the brush displayed in the background of the tab. This will override the color of the TabControl itself, but transparency does allow the standard color to show through.
+        ///</summary>
+        [Category("Brush")]
+        public Brush TabBackground
+        {
+            get { return (Brush)GetValue(TabBackgroundProperty); }
+            set { SetValue(TabBackgroundProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalTabBackgroundChanged;
+
+        /// <summary>
+        /// Raised when the tab's background is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? TabBackgroundChanged;
+#else
+        public event DependencyPropertyChangedEventHandler TabBackgroundChanged;
+#endif
+
+        private static void OnInternalTabBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabItem s)
+            {
+                s.InternalTabBackgroundChanged?.Invoke(s, e);
+            }
+        }
+        private void tabItem_InternalTabBackgroundChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            TabBackgroundChanged?.Invoke(this, e);
+        }
+        #endregion
+
         #region Content
 
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(UIElement), typeof(TabItem),
@@ -327,6 +368,43 @@ namespace SolidShineUi
         {
             ContentChanged?.Invoke(this, e);
         }
+        #endregion
+
+        #region Padding
+
+        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(TabItem),
+            new PropertyMetadata(new Thickness(4,0,4,0), new PropertyChangedCallback(OnInternalPaddingChanged)));
+
+        ///<summary>
+        /// Get or set the padding (or space) applied around the tab's title and icon. (This does not set the padding for the content.)
+        ///</summary>
+        [Category("Common")]
+        public Thickness Padding
+        {
+            get { return (Thickness)GetValue(PaddingProperty); }
+            set { SetValue(PaddingProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalPaddingChanged;
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? PaddingChanged;
+#else
+        public event DependencyPropertyChangedEventHandler PaddingChanged;
+#endif
+
+        private static void OnInternalPaddingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabItem s)
+            {
+                s.InternalPaddingChanged?.Invoke(s, e);
+            }
+        }
+        private void tabItem_InternalPaddingChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            PaddingChanged?.Invoke(this, e);
+        }
+
         #endregion
 
         #region Visibility
@@ -439,6 +517,9 @@ namespace SolidShineUi
 
         #region Drag and drop events
 
+        // The TabDisplayItem is the visual item that actually displays tabs in the TabControl
+        // When a drag event occurs in the TabDisplayItem, it calls this RaiseDragEvent method so that the TabItem can raise the respective event.
+
         internal protected void RaiseDragEvent(string ev, DragEventArgs e)
         {
             switch (ev)
@@ -502,7 +583,7 @@ namespace SolidShineUi
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalToolTipChanged)));
 
         ///<summary>
-        /// Get or set the ToolTip to display when this tab is selected.
+        /// Get or set the ToolTip to display when the mouse is hovering over this tab.
         ///</summary>
         [Category("Common")]
         public object ToolTip

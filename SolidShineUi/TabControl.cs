@@ -10,12 +10,14 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
 using System.ComponentModel;
+using System.Windows.Markup;
 
 namespace SolidShineUi
 {
     /// <summary>
     /// A control that can house multiple controls under a number of tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
     /// </summary>
+    [ContentProperty("Items")]
     public class TabControl : Control
     {
 
@@ -40,6 +42,7 @@ namespace SolidShineUi
             InternalShowTabListMenuChanged += tabControl_InternalShowTabListMenuChanged;
             InternalTabMinWidthChanged += tabControl_InternalTabMinWidthChanged;
             InternalAllowTabDragDropChanged += tabControl_InternalAllowDragDropChanged;
+            InternalHorizontalTabBarHeightChanged += tabControl_InternalHorizontalTabBarHeightChanged;
 
             CommandBindings.Add(new CommandBinding(TabListMenuItemClick, OnTabListMenuItemClick));
             CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
@@ -423,6 +426,42 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region HorizontalTabBarHeight
+
+        public static readonly DependencyProperty HorizontalTabBarHeightProperty = DependencyProperty.Register("HorizontalTabBarHeight", typeof(double), typeof(TabControl),
+            new PropertyMetadata(24.0, new PropertyChangedCallback(OnInternalHorizontalTabBarHeightChanged)));
+
+        /// <summary>
+        /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
+        /// </summary>
+        [Category("Common")]
+        public double HorizontalTabBarHeight
+        {
+            get { return (double)GetValue(HorizontalTabBarHeightProperty); }
+            set { SetValue(HorizontalTabBarHeightProperty, value); }
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalHorizontalTabBarHeightChanged;
+
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? HorizontalTabBarHeightChanged;
+#else
+        public event DependencyPropertyChangedEventHandler HorizontalTabBarHeightChanged;
+#endif
+
+        private static void OnInternalHorizontalTabBarHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl s)
+            {
+                s.InternalHorizontalTabBarHeightChanged?.Invoke(s, e);
+            }
+        }
+        private void tabControl_InternalHorizontalTabBarHeightChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            HorizontalTabBarHeightChanged?.Invoke(this, e);
+        }
+        #endregion
+
         #region LeftTabBarElement and RightTabBarElement
 
         public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
@@ -746,7 +785,7 @@ namespace SolidShineUi
         {
             if (sender != null && sender is TabDisplayItem tdi)
             {
-                if (tdi.TabItem != null)
+                if (tdi.TabItem != null && tdi.CanSelect)
                 {
                     Items.Select(tdi.TabItem);
                 }
@@ -901,7 +940,7 @@ namespace SolidShineUi
     }
 
     /// <summary>
-    /// References the action to take when a currently-selected tab is closed.
+    /// References the action to take when the currently-selected tab is closed.
     /// </summary>
     public enum SelectedTabCloseAction
     {
@@ -916,4 +955,28 @@ namespace SolidShineUi
         /// <summary>Select the tab to the right of the one being closed.</summary>
         SelectTabToRight = 4,
     }
+
+    //public enum TabBarDisplay
+    //{
+    //    /// <summary>
+    //    /// Do not display the tab bar at all.
+    //    /// </summary>
+    //    Hidden = 0,
+    //    /// <summary>
+    //    /// Display the tab bar horizontally at the top of the control.
+    //    /// </summary>
+    //    Top = 1,
+    //    /// <summary>
+    //    /// Display the tab bar horizontally at the bottom of the control.
+    //    /// </summary>
+    //    Bottom = 2,
+    //    /// <summary>
+    //    /// Display the tab bar vertically at the left of the control.
+    //    /// </summary>
+    //    Left = 3,
+    //    /// <summary>
+    //    /// Display the tab bar vertically at the right of the control.
+    //    /// </summary>
+    //    Right = 4,
+    //}
 }

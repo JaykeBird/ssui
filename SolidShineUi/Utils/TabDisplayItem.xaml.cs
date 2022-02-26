@@ -33,6 +33,28 @@ namespace SolidShineUi.Utils
         public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
         public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
 
+        private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
+
+        public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register(
+            "TabBackground", typeof(Brush), typeof(TabDisplayItem),
+            new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
+
+        public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
+
+        private static void OnInternalTabBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem s)
+            {
+                s.InternalTabBackgroundChanged?.Invoke(s, e);
+            }
+        }
+        private void tdi_InternalTabBackgroundChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            
+        }
+
+        protected event DependencyPropertyChangedEventHandler InternalTabBackgroundChanged;
+
         private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
 
         public TabDisplayItem()
@@ -63,6 +85,7 @@ namespace SolidShineUi.Utils
             InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
             InternalShowTabsOnBottomChanged += tdi_InternalShowTabsOnBottomChanged;
             InternalTabItemChanged += tdi_InternalTabItemChanged;
+            InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
         public TabDisplayItem(TabItem tab)
@@ -520,7 +543,7 @@ namespace SolidShineUi.Utils
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (IsEnabled)
+            if (IsEnabled && CanSelect)
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
@@ -530,7 +553,7 @@ namespace SolidShineUi.Utils
 
         private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (IsEnabled)
+            if (IsEnabled && CanSelect)
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
@@ -540,7 +563,7 @@ namespace SolidShineUi.Utils
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (IsEnabled)
+            if (IsEnabled && CanSelect)
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
