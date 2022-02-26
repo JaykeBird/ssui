@@ -203,8 +203,8 @@ namespace SolidShineUi
                 if (!selectedItems.Contains(item))
                 {
                     selectedItems.Add(item);
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
                 }
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
             }
             else
             {
@@ -230,8 +230,8 @@ namespace SolidShineUi
                 if (!selectedItems.Contains(item))
                 {
                     selectedItems.Add(item);
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
                 }
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
             }
             else
             {
