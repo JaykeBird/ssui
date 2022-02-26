@@ -15,6 +15,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
         <local:ColorToBrushConverter x:Key="ctb" />
+        <local:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>
         <Border BorderThickness="1,1,1,0" BorderBrush="Black" x:Name="border" Focusable="{Binding ElementName=control, Path=TabItem.CanSelect}" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
@@ -58,6 +59,10 @@
                             </TextBlock.Style>
                         </TextBlock>
                     </StackPanel>
+                </Grid>
+                <Grid Grid.Column="1" x:Name="grdExtraHolder">
+                    <Border local:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding ElementName=control, Path=TabItem.ExtraTabElement}" x:Name="brdrExtraElement" />
                 </Grid>
                 <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" Margin="0,1" Padding="0" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
                               Visibility="{Binding ElementName=control, Path=TabItem.CanClose, Converter={StaticResource btv}}" >

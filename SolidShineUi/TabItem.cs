@@ -616,6 +616,22 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region ExtraTabElement
+
+        public static readonly DependencyProperty ExtraTabElementProperty = DependencyProperty.Register("ExtraTabElement", typeof(UIElement), typeof(TabItem),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Get or set the element to display on the right side of the tab, next to the Close button.
+        /// </summary>
+        public UIElement ExtraTabElement
+        {
+            get { return (UIElement)GetValue(ExtraTabElementProperty); }
+            set { SetValue(ExtraTabElementProperty, value); }
+        }
+
+        #endregion
+
         /// <summary>
         /// Close this tab (and remove it from the TabControl), if it is currently in a TabControl.
         /// </summary>
