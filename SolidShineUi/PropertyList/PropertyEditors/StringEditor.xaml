@@ -10,7 +10,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
         <flat:ClickSelectTextBox x:Name="txtText" TextChanged="txtText_TextChanged" />
         <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="1" ShowMenuArrow="False" >

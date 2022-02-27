@@ -34,18 +34,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 nudWidth.ColorScheme = value;
                 btnMenu.ColorScheme = value;
 
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
-                }
-                else
-                {
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
-                }
+                imgFontEdit.Source = LoadIcon("ThreeDots", value);
             }
         }
 

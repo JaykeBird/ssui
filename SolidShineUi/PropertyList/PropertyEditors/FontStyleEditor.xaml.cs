@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -27,18 +28,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         { 
             set
             {
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgItalic.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/TextItalicWhite.png", UriKind.Relative));
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgItalic.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/TextItalicBlack.png", UriKind.Relative));
-                }
-                else
-                {
-                    imgItalic.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/TextItalicColor.png", UriKind.Relative));
-                }
+                imgItalic.Source = LoadIcon("TextItalic", value);
             }
         }
 

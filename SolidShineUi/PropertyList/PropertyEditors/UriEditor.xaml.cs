@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -28,18 +29,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 btnMenu.ColorScheme = value;
 
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-                }
-                else
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-                }
+                imgMenu.Source = LoadIcon("ThreeDots", value);
             }
         }
 

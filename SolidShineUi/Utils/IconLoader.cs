@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.Utils
@@ -25,6 +26,28 @@ namespace SolidShineUi.Utils
             catch (IOException ex)
             {
                 throw new ArgumentException("Cannot find an icon with this name.", nameof(iconName), ex);
+            }
+        }
+
+        /// <summary>
+        /// Load an icon from SolidShineUI's internal icon list, using the given ColorScheme to determine which variation to use.
+        /// </summary>
+        /// <param name="iconName">The name of the icon.</param>
+        /// <param name="cs">The ColorScheme to use to determine which variation to use.</param>
+        /// <returns></returns>
+        public static BitmapSource LoadIcon(string iconName, ColorScheme cs)
+        {
+            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
+            {
+                return LoadIcon(iconName, ICON_WHITE);
+            }
+            else if (cs.BackgroundColor == Colors.White)
+            {
+                return LoadIcon(iconName, ICON_BLACK);
+            }
+            else
+            {
+                return LoadIcon(iconName, ICON_COLOR);
             }
         }
 
