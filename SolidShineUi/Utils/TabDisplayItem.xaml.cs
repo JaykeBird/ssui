@@ -114,6 +114,7 @@ namespace SolidShineUi.Utils
 
             InternalParentChanged += tdi_InternalParentChanged;
             InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
+            InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
 #if NETCOREAPP

@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Doesn't matter in application")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "Cannot use as older C# versions (i.e. .NET Framework) does not support this pattern.")]

@@ -96,6 +96,7 @@ See website for more details!</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup>
     <WarningLevel>4</WarningLevel>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
   </PropertyGroup>
   <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>

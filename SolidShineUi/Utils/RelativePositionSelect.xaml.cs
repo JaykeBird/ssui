@@ -227,16 +227,24 @@ namespace SolidShineUi.Utils
 
         internal protected void UpdateSnapLineBrush()
         {
+#if NETCOREAPP
+            foreach (UIElement? item in canVertical.Children)
+#else
             foreach (UIElement item in canVertical.Children)
+#endif
             {
-                if (item is Border b)
+                if (item != null && item is Border b)
                 {
                     b.BorderBrush = SnapLineBrush;
                 }
             }
+#if NETCOREAPP
+            foreach (UIElement? item in canHorizontal.Children)
+#else
             foreach (UIElement item in canHorizontal.Children)
+#endif
             {
-                if (item is Border b)
+                if (item != null && item is Border b)
                 {
                     b.BorderBrush = SnapLineBrush;
                 }
@@ -410,9 +418,13 @@ namespace SolidShineUi.Utils
         {
             List<UIElement> toRemove = new List<UIElement>();
 
+#if NETCOREAPP
+            foreach (UIElement? item in canVertical.Children)
+#else
             foreach (UIElement item in canVertical.Children)
+#endif
             {
-                if (item is Border b)
+                if (item != null && item is Border b)
                 {
                     if (b.Tag is double d)
                     {
@@ -451,9 +463,13 @@ namespace SolidShineUi.Utils
         {
             List<UIElement> toRemove = new List<UIElement>();
 
+#if NETCOREAPP
+            foreach (UIElement? item in canHorizontal.Children)
+#else
             foreach (UIElement item in canHorizontal.Children)
+#endif
             {
-                if (item is Border b)
+                if (item != null && item is Border b)
                 {
                     if (b.Tag is double d)
                     {
@@ -477,9 +493,13 @@ namespace SolidShineUi.Utils
 
             if (e.WidthChanged)
             {
+#if NETCOREAPP
+                foreach (UIElement? item in canVertical.Children)
+#else
                 foreach (UIElement item in canVertical.Children)
+#endif
                 {
-                    if (item is Border b)
+                    if (item != null && item is Border b)
                     {
                         if (b.Tag is double d)
                         {
@@ -492,9 +512,13 @@ namespace SolidShineUi.Utils
 
             if (e.HeightChanged)
             {
+#if NETCOREAPP
+                foreach (UIElement? item in canHorizontal.Children)
+#else
                 foreach (UIElement item in canHorizontal.Children)
+#endif
                 {
-                    if (item is Border b)
+                    if (item != null && item is Border b)
                     {
                         if (b.Tag is double d)
                         {
@@ -506,9 +530,9 @@ namespace SolidShineUi.Utils
             }
         }
 
-        #endregion
+#endregion
 
-        #region Keyboard Controls
+#region Keyboard Controls
 
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
@@ -607,7 +631,7 @@ namespace SolidShineUi.Utils
             }
         }
 
-        #endregion
+#endregion
 
         public double SelectorSize
         {
@@ -681,9 +705,13 @@ namespace SolidShineUi.Utils
                 double heightMax = p.Y + SnapDistance;
 
                 // check vertical snap points
+#if NETCOREAPP
+                foreach (UIElement? item in canVertical.Children)
+#else
                 foreach (UIElement item in canVertical.Children)
+#endif
                 {
-                    if (item is Border b)
+                    if (item != null && item is Border b)
                     {
                         if (b.Margin.Left > widthMin && b.Margin.Left < widthMax)
                         {
@@ -693,9 +721,13 @@ namespace SolidShineUi.Utils
                 }
 
                 // check horizontal snap points
+#if NETCOREAPP
+                foreach (UIElement? item in canHorizontal.Children)
+#else
                 foreach (UIElement item in canHorizontal.Children)
+#endif
                 {
-                    if (item is Border b)
+                    if (item != null && item is Border b)
                     {
                         if (b.Margin.Top > heightMin && b.Margin.Top < heightMax)
                         {
