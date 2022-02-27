@@ -314,12 +314,14 @@ namespace SolidShineUi
 
         #region Color Resources
 
-        /// <summary>A preselected color, good to use for a color scheme. Has hex string 0080E5.</summary>
-        public static Color DarkBlue { get; } = CreateFromHex("0080E5"); // CornflowerBlue may work too
+        /// <summary>A preselected color, good to use for a color scheme. Has hex string 168FE5.</summary>
+        public static Color Blue { get; } = CreateFromHex("168FE5"); // CornflowerBlue may work too
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 00AEDB.</summary>
-        public static Color Blue { get; } = CreateFromHex("00AEDB");
+        public static Color Cyan { get; } = CreateFromHex("00AEDB");        
+        /// <summary>A preselected color. Has hex string 5C8ED3.</summary>
+        public static Color GrayBlue { get; } = CreateFromHex("5C8ED3");
         /// <summary>A preselected color, good to use for a color scheme. Has hex string FFBE00.</summary>
-        public static Color Yellow { get; } = CreateFromHex("FFBE00"); // Goldenrod or #FFC425 may work too
+        public static Color Yellow { get; } = CreateFromHex("FAD400"); // Goldenrod or #FFC425 may work too
         /// <summary>A preselected color, good to use for a color scheme. Has hex string FF7000.</summary>
         public static Color Orange { get; } = CreateFromHex("FF7000"); // DarkOrange may work too
         /// <summary>A preselected color, good to use for a color scheme. Has hex string E34234.</summary>
@@ -331,7 +333,7 @@ namespace SolidShineUi
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 228B22.</summary>
         public static Color Green { get; } = CreateFromHex("228B22"); // ForestGreen from X11
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 21B17E.</summary>
-        public static Color Cyan { get; } = CreateFromHex("21B17E");
+        public static Color DullGreen { get; } = CreateFromHex("21B17E");
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 74C365.</summary>
         public static Color LightGreen { get; } = CreateFromHex("74C365"); // Mantis
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 6C7C59.</summary>
@@ -362,6 +364,9 @@ namespace SolidShineUi
         public static Color Olive { get; } = CreateFromHex("808000");
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 666666.</summary>
         public static Color DarkGray { get; } = CreateFromHex("666666");
+
+        /// <summary>A preselected color. Has hex string FFC22C.</summary>
+        public static Color Gold { get; } = CreateFromHex("FFC22C");
 
         /// <summary>A color used in high contrast color schemes, which mirrors Windows's high contrast themes. Has hex string 1AEBFF.</summary>
         public static Color HighContrastLightBlue { get; } = CreateFromHex("1AEBFF"); //1AEBFF
