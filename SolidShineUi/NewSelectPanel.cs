@@ -737,6 +737,8 @@ namespace SolidShineUi
 
         public void MoveSelectedItemsUp()
         {
+            if (Items.SelectedItems.Count == 0) return;
+
             // set up variables
             int index = int.MaxValue;
 
@@ -783,6 +785,8 @@ namespace SolidShineUi
 
         public void MoveSelectedItemsDown()
         {
+            if (Items.SelectedItems.Count == 0) return;
+
             int index = int.MaxValue;
 
             List<SelectableUserControl> imov = new List<SelectableUserControl>();
@@ -794,6 +798,7 @@ namespace SolidShineUi
                 imov.Add(item);
             }
 
+            if (index == int.MaxValue) index = (Items.Count);
             index++;
 
             if (index > (Items.Count - 1) || index == int.MinValue + 1)

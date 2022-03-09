@@ -1502,16 +1502,6 @@
                                         <StackPanel Orientation="Vertical" IsItemsHost="True" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
-                                <!--<ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <ssut:TabDisplayItem x:Name="PART_TabItem"
-                                                                     Visibility="{Binding Visibility}" TabItem="{Binding .}" AllowDataDragDrop="{Binding AllowDrop}" ToolTip="{Binding ToolTip}"
-                                                                     ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
-                                                                     ShowTabsOnBottom="{Binding ShowTabsOnBottom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
-                                                                     AllowDragDrop="{Binding AllowTabDragDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
-                                                                     ParentTabControl="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>-->
                             </ItemsControl>
                         </ScrollViewer>
                     </Border>
