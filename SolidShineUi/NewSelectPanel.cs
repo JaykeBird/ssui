@@ -761,6 +761,7 @@ namespace SolidShineUi
                 Items.Remove(item);
             }
 
+            // sometimes the list needs to be reversed, sometimes it doesn't???
             //imov.Reverse();
 
             Items.ClearSelection();
@@ -782,13 +783,13 @@ namespace SolidShineUi
 
         public void MoveSelectedItemsDown()
         {
-            int index = int.MinValue;
+            int index = int.MaxValue;
 
             List<SelectableUserControl> imov = new List<SelectableUserControl>();
 
             foreach (SelectableUserControl item in Items.SelectedItems)
             {
-                if (IndexOf(item) > index) index = IndexOf(item);
+                if (IndexOf(item) < index) index = IndexOf(item);
 
                 imov.Add(item);
             }
