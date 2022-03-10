@@ -1,15 +1,14 @@
-﻿<UiCore:FlatWindow xmlns:UiCore="clr-namespace:SolidShineUi" x:Name="window"
+﻿<flat:FlatWindow xmlns:flat="clr-namespace:SolidShineUi" x:Name="window"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
-    xmlns:flat="clr-namespace:SolidShineUi"
     x:Class="SolidShineUi.ColorPickerDialog"
         mc:Ignorable="d"
         Title="Pick a Color" Height="500" Width="412"
     ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" CaptionDisplayType="Close" >
-    <UiCore:FlatWindow.Resources>
+    <flat:FlatWindow.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -68,7 +67,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </UiCore:FlatWindow.Resources>
+    </flat:FlatWindow.Resources>
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -76,245 +75,242 @@
         </Grid.RowDefinitions>
         <flat:TabControl x:Name="tabControl" Margin="10" TabMinWidth="0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                          ShowTabListMenu="False" AllowTabDragDrop="False" >
-            <flat:TabControl.Items>
-                <flat:TabItem x:Name="tabSwatches" Title="Swatches" ShowIcon="False" CanClose="False" Padding="8,0" >
-                    <Grid>
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="9,4" >
-                            <StackPanel Orientation="Horizontal" >
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSteelBlue" ToolTip="LightSteelBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BlueViolet" ToolTip="BlueViolet"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumPurple" ToolTip="MediumPurple"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSlateBlue" ToolTip="MediumSlateBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SlateBlue" ToolTip="SlateBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SteelBlue" ToolTip="SteelBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MidnightBlue" ToolTip="MidnightBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSlateBlue" ToolTip="DarkSlateBlue"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Lavender" ToolTip="Lavender"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Thistle" ToolTip="Thistle"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Plum" ToolTip="Plum"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Violet" ToolTip="Violet"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Magenta" ToolTip="Magenta"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Fuchsia" ToolTip="Fuchsia"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Orchid" ToolTip="Orchid"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumOrchid" ToolTip="MediumOrchid"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkViolet" ToolTip="DarkViolet"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOrchid" ToolTip="DarkOrchid"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkMagenta" ToolTip="DarkMagenta"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Purple" ToolTip="Purple"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Indigo" ToolTip="Indigo"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30" >
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Snow" ToolTip="Snow"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MistyRose" ToolTip="MistyRose"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSalmon" ToolTip="DarkSalmon"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightCoral" ToolTip="LightCoral"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="RosyBrown" ToolTip="RosyBrown"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="IndianRed" ToolTip="IndianRed"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Red" ToolTip="Red"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Crimson" ToolTip="Crimson"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Firebrick" ToolTip="Firebrick"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Brown" ToolTip="Brown"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkRed" ToolTip="DarkRed"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Maroon" ToolTip="Maroon"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SeaShell" ToolTip="SeaShell"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Linen" ToolTip="Linen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LavenderBlush" ToolTip="LavenderBlush"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Pink" ToolTip="Pink"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightPink" ToolTip="LightPink"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="HotPink" ToolTip="HotPink"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleVioletRed" ToolTip="PaleVioletRed"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DeepPink" ToolTip="DeepPink"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumVioletRed" ToolTip="MediumVioletRed"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="FloralWhite" ToolTip="FloralWhite"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PapayaWhip" ToolTip="PapayaWhip"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Moccasin" ToolTip="Moccasin"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PeachPuff" ToolTip="PeachPuff"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="NavajoWhite" ToolTip="NavajoWhite"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSalmon" ToolTip="LightSalmon"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Orange" ToolTip="Orange"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOrange" ToolTip="DarkOrange"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Salmon" ToolTip="Salmon"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Coral" ToolTip="Coral"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Tomato" ToolTip="Tomato"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OrangeRed" ToolTip="OrangeRed"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Cornsilk" ToolTip="Cornsilk"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OldLace" ToolTip="OldLace"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="AntiqueWhite" ToolTip="AntiqueWhite"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BlanchedAlmond" ToolTip="BlanchedAlmond"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Bisque" ToolTip="Bisque"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Wheat" ToolTip="Wheat"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Tan" ToolTip="Tan"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BurlyWood" ToolTip="BurlyWood"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SandyBrown" ToolTip="SandyBrown"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Peru" ToolTip="Peru"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Chocolate" ToolTip="Chocolate"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Sienna" ToolTip="Sienna"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SaddleBrown" ToolTip="SaddleBrown"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Ivory" ToolTip="Ivory"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightYellow" ToolTip="LightYellow"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Beige" ToolTip="Beige"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGoldenrodYellow" ToolTip="LightGoldenrodYellow"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LemonChiffon" ToolTip="LemonChiffon"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleGoldenrod" ToolTip="PaleGoldenrod"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Khaki" ToolTip="Khaki"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Yellow" ToolTip="Yellow"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gold" ToolTip="Gold"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkKhaki" ToolTip="DarkKhaki"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Goldenrod" ToolTip="Goldenrod"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGoldenrod" ToolTip="DarkGoldenrod"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Olive" ToolTip="Olive"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Honeydew" ToolTip="Honeydew"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="GreenYellow" ToolTip="GreenYellow"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Chartreuse" ToolTip="Chartreuse"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LawnGreen" ToolTip="LawnGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Lime" ToolTip="Lime"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LimeGreen" ToolTip="LimeGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="YellowGreen" ToolTip="YellowGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OliveDrab" ToolTip="OliveDrab"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="ForestGreen" ToolTip="ForestGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Green" ToolTip="Green"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOliveGreen" ToolTip="DarkOliveGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGreen" ToolTip="DarkGreen"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MintCream" ToolTip="MintCream"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleGreen" ToolTip="PaleGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Aquamarine" ToolTip="Aquamarine"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SpringGreen" ToolTip="SpringGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGreen" ToolTip="LightGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSpringGreen" ToolTip="MediumSpringGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumAquamarine" ToolTip="MediumAquamarine"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSeaGreen" ToolTip="DarkSeaGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="CadetBlue" ToolTip="CadetBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSeaGreen" ToolTip="MediumSeaGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SeaGreen" ToolTip="SeaGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSlateGray" ToolTip="DarkSlateGray"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Azure" ToolTip="Azure"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightCyan" ToolTip="LightCyan"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleTurquoise" ToolTip="PaleTurquoise"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PowderBlue" ToolTip="PowderBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightBlue" ToolTip="LightBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Cyan" ToolTip="Cyan/Aqua"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Turquoise" ToolTip="Turquoise"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumTurquoise" ToolTip="MediumTurquoise"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkTurquoise" ToolTip="DarkTurquoise"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSeaGreen" ToolTip="LightSeaGreen"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkCyan" ToolTip="DarkCyan"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Teal" ToolTip="Teal"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="AliceBlue" ToolTip="AliceBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SkyBlue" ToolTip="SkyBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSkyBlue" ToolTip="LightSkyBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DeepSkyBlue" ToolTip="DeepSkyBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DodgerBlue" ToolTip="DodgerBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="CornflowerBlue" ToolTip="CornflowerBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="RoyalBlue" ToolTip="RoyalBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Blue" ToolTip="Blue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumBlue" ToolTip="MediumBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkBlue" ToolTip="DarkBlue"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Navy" ToolTip="Navy"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Vertical" Width="30">
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="White" ToolTip="White"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="GhostWhite" ToolTip="GhostWhite"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="WhiteSmoke" ToolTip="WhiteSmoke"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gainsboro" ToolTip="Gainsboro"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGray" ToolTip="LightGray"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Silver" ToolTip="Silver"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGray" ToolTip="DarkGray"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSlateGray" ToolTip="LightSlateGray"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SlateGray" ToolTip="SlateGray"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gray" ToolTip="Gray"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DimGray" ToolTip="DimGray"/>
-                                    <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Black" ToolTip="Black"/>
-                                </StackPanel>
+            <flat:TabItem x:Name="tabSwatches" Title="Swatches" ShowIcon="False" CanClose="False" Padding="8,0" >
+                <Grid>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="9,4" >
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSteelBlue" ToolTip="LightSteelBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BlueViolet" ToolTip="BlueViolet"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumPurple" ToolTip="MediumPurple"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSlateBlue" ToolTip="MediumSlateBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SlateBlue" ToolTip="SlateBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SteelBlue" ToolTip="SteelBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MidnightBlue" ToolTip="MidnightBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSlateBlue" ToolTip="DarkSlateBlue"/>
                             </StackPanel>
-                        </Border>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Lavender" ToolTip="Lavender"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Thistle" ToolTip="Thistle"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Plum" ToolTip="Plum"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Violet" ToolTip="Violet"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Magenta" ToolTip="Magenta"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Fuchsia" ToolTip="Fuchsia"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Orchid" ToolTip="Orchid"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumOrchid" ToolTip="MediumOrchid"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkViolet" ToolTip="DarkViolet"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOrchid" ToolTip="DarkOrchid"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkMagenta" ToolTip="DarkMagenta"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Purple" ToolTip="Purple"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Indigo" ToolTip="Indigo"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30" >
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Snow" ToolTip="Snow"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MistyRose" ToolTip="MistyRose"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSalmon" ToolTip="DarkSalmon"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightCoral" ToolTip="LightCoral"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="RosyBrown" ToolTip="RosyBrown"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="IndianRed" ToolTip="IndianRed"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Red" ToolTip="Red"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Crimson" ToolTip="Crimson"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Firebrick" ToolTip="Firebrick"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Brown" ToolTip="Brown"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkRed" ToolTip="DarkRed"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Maroon" ToolTip="Maroon"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SeaShell" ToolTip="SeaShell"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Linen" ToolTip="Linen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LavenderBlush" ToolTip="LavenderBlush"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Pink" ToolTip="Pink"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightPink" ToolTip="LightPink"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="HotPink" ToolTip="HotPink"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleVioletRed" ToolTip="PaleVioletRed"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DeepPink" ToolTip="DeepPink"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumVioletRed" ToolTip="MediumVioletRed"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="FloralWhite" ToolTip="FloralWhite"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PapayaWhip" ToolTip="PapayaWhip"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Moccasin" ToolTip="Moccasin"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PeachPuff" ToolTip="PeachPuff"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="NavajoWhite" ToolTip="NavajoWhite"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSalmon" ToolTip="LightSalmon"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Orange" ToolTip="Orange"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOrange" ToolTip="DarkOrange"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Salmon" ToolTip="Salmon"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Coral" ToolTip="Coral"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Tomato" ToolTip="Tomato"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OrangeRed" ToolTip="OrangeRed"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Cornsilk" ToolTip="Cornsilk"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OldLace" ToolTip="OldLace"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="AntiqueWhite" ToolTip="AntiqueWhite"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BlanchedAlmond" ToolTip="BlanchedAlmond"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Bisque" ToolTip="Bisque"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Wheat" ToolTip="Wheat"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Tan" ToolTip="Tan"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BurlyWood" ToolTip="BurlyWood"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SandyBrown" ToolTip="SandyBrown"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Peru" ToolTip="Peru"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Chocolate" ToolTip="Chocolate"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Sienna" ToolTip="Sienna"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SaddleBrown" ToolTip="SaddleBrown"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Ivory" ToolTip="Ivory"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightYellow" ToolTip="LightYellow"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Beige" ToolTip="Beige"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGoldenrodYellow" ToolTip="LightGoldenrodYellow"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LemonChiffon" ToolTip="LemonChiffon"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleGoldenrod" ToolTip="PaleGoldenrod"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Khaki" ToolTip="Khaki"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Yellow" ToolTip="Yellow"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gold" ToolTip="Gold"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkKhaki" ToolTip="DarkKhaki"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Goldenrod" ToolTip="Goldenrod"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGoldenrod" ToolTip="DarkGoldenrod"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Olive" ToolTip="Olive"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Honeydew" ToolTip="Honeydew"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="GreenYellow" ToolTip="GreenYellow"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Chartreuse" ToolTip="Chartreuse"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LawnGreen" ToolTip="LawnGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Lime" ToolTip="Lime"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LimeGreen" ToolTip="LimeGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="YellowGreen" ToolTip="YellowGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OliveDrab" ToolTip="OliveDrab"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="ForestGreen" ToolTip="ForestGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Green" ToolTip="Green"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOliveGreen" ToolTip="DarkOliveGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGreen" ToolTip="DarkGreen"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MintCream" ToolTip="MintCream"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleGreen" ToolTip="PaleGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Aquamarine" ToolTip="Aquamarine"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SpringGreen" ToolTip="SpringGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGreen" ToolTip="LightGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSpringGreen" ToolTip="MediumSpringGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumAquamarine" ToolTip="MediumAquamarine"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSeaGreen" ToolTip="DarkSeaGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="CadetBlue" ToolTip="CadetBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSeaGreen" ToolTip="MediumSeaGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SeaGreen" ToolTip="SeaGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSlateGray" ToolTip="DarkSlateGray"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Azure" ToolTip="Azure"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightCyan" ToolTip="LightCyan"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleTurquoise" ToolTip="PaleTurquoise"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PowderBlue" ToolTip="PowderBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightBlue" ToolTip="LightBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Cyan" ToolTip="Cyan/Aqua"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Turquoise" ToolTip="Turquoise"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumTurquoise" ToolTip="MediumTurquoise"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkTurquoise" ToolTip="DarkTurquoise"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSeaGreen" ToolTip="LightSeaGreen"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkCyan" ToolTip="DarkCyan"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Teal" ToolTip="Teal"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="AliceBlue" ToolTip="AliceBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SkyBlue" ToolTip="SkyBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSkyBlue" ToolTip="LightSkyBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DeepSkyBlue" ToolTip="DeepSkyBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DodgerBlue" ToolTip="DodgerBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="CornflowerBlue" ToolTip="CornflowerBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="RoyalBlue" ToolTip="RoyalBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Blue" ToolTip="Blue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumBlue" ToolTip="MediumBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkBlue" ToolTip="DarkBlue"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Navy" ToolTip="Navy"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Width="30">
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="White" ToolTip="White"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="GhostWhite" ToolTip="GhostWhite"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="WhiteSmoke" ToolTip="WhiteSmoke"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gainsboro" ToolTip="Gainsboro"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGray" ToolTip="LightGray"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Silver" ToolTip="Silver"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGray" ToolTip="DarkGray"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSlateGray" ToolTip="LightSlateGray"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SlateGray" ToolTip="SlateGray"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gray" ToolTip="Gray"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DimGray" ToolTip="DimGray"/>
+                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Black" ToolTip="Black"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
 
-                    </Grid>
-                </flat:TabItem>
-                <flat:TabItem x:Name="tabSliders" Title="Sliders" ShowIcon="False" CanClose="False" Padding="8,0" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <UiCore:FlatButton x:Name="btnInvert" HorizontalAlignment="Left" Height="24" Margin="10,84,0,0" VerticalAlignment="Top" Width="60" Content="Invert" Click="btnInvert_Click" />
-                        <Border x:Name="brdrSlColor" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" VerticalAlignment="Top" Width="60"/>
-                        <!-- RGB -->
-                        <TextBlock x:Name="lblRGB" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Text="RGB" VerticalAlignment="Top"/>
-                        <!-- R -->
-                        <TextBlock x:Name="lblR" Grid.Column="1" HorizontalAlignment="Left" Margin="10,39,0,0" Text="R" VerticalAlignment="Top" Width="22"/>
-                        <Slider x:Name="sldR" Grid.Column="1" Margin="40,39,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldR_ValueChanged" />
-                        <UiCore:IntegerSpinner x:Name="nudR" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,35,10,0" Width="61" Value="0" MinValue="0" MaxValue="255" AcceptExpressions="True" ValueChanged="nudR_ValueChanged" />
-                        <!-- G -->
-                        <TextBlock x:Name="lblG" Grid.Column="1" HorizontalAlignment="Left" Margin="10,68,0,0" Text="G" VerticalAlignment="Top" Width="22"/>
-                        <Slider x:Name="sldG" Grid.Column="1" Margin="40,68,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldG_ValueChanged" />
-                        <UiCore:IntegerSpinner x:Name="nudG" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,64,10,0" Width="61" Value="0" MinValue="0" MaxValue="255" AcceptExpressions="True" ValueChanged="nudG_ValueChanged" />
-                        <!-- B -->
-                        <TextBlock x:Name="lblB" Grid.Column="1" HorizontalAlignment="Left" Margin="10,97,0,0" Text="B" VerticalAlignment="Top" Width="22"/>
-                        <Slider x:Name="sldB" Grid.Column="1" Margin="40,97,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldB_ValueChanged" />
-                        <UiCore:IntegerSpinner x:Name="nudB" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,93,10,0" Width="61" Value="0" MinValue="0" MaxValue="255" AcceptExpressions="True" ValueChanged="nudB_ValueChanged" />
-                        <!-- HSV -->
-                        <TextBlock x:Name="lblHSL" Grid.Column="1" HorizontalAlignment="Left" Margin="10,130,0,0" Text="HSV" VerticalAlignment="Top"/>
-                        <!-- H -->
-                        <TextBlock x:Name="lblH" Grid.Column="1" HorizontalAlignment="Left" Margin="10,160,0,0" Text="H" VerticalAlignment="Top" Width="22"/>
-                        <Slider x:Name="sldH" Grid.Column="1" Margin="40,160,76,0" VerticalAlignment="Top" Minimum="0" Maximum="359" Value="0" ValueChanged="sldH_ValueChanged" />
-                        <UiCore:IntegerSpinner x:Name="nudH" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,156,10,0" Width="61" Value="0" MinValue="0" MaxValue="359" ValueChanged="nudH_ValueChanged" />
-                        <!-- S -->
-                        <TextBlock x:Name="lblS" Grid.Column="1" HorizontalAlignment="Left" Margin="10,188,0,0" Text="S" VerticalAlignment="Top" Width="22"/>
-                        <Slider x:Name="sldS" Grid.Column="1" Margin="40,188,76,0" VerticalAlignment="Top" Minimum="0" Maximum="1000" Value="0" ValueChanged="sldS_ValueChanged" />
-                        <UiCore:DoubleSpinner x:Name="nudS" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,184,10,0" Width="61" Value="0" MinValue="0" MaxValue="1" Step="0.01" Decimals="3" ValueChanged="nudS_ValueChanged" />
-                        <!-- V -->
-                        <TextBlock x:Name="lblV" Grid.Column="1" HorizontalAlignment="Left" Margin="10,218,0,0" Text="V" VerticalAlignment="Top" Width="22"/>
-                        <Slider x:Name="sldV" Grid.Column="1" Margin="40,218,76,0" VerticalAlignment="Top" Minimum="0" Maximum="1000" Value="0" ValueChanged="sldV_ValueChanged" />
-                        <UiCore:DoubleSpinner x:Name="nudV" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,214,10,0" Width="61" Value="0" MinValue="0" MaxValue="1" Step="0.01" Decimals="3" ValueChanged="nudV_ValueChanged" />
-                        <!-- Hex -->
-                        <TextBlock x:Name="lblHex" Grid.Column="1" HorizontalAlignment="Left" Margin="10,265,0,0" Text="Hex" VerticalAlignment="Top"/>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="40,265,0,0" Text="#" VerticalAlignment="Top"/>
-                        <TextBox x:Name="txtHex" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="50,264,0,0" TextWrapping="Wrap" Text="000000" VerticalAlignment="Top" Width="70" MaxLength="7" TextChanged="txtHex_TextChanged" />
-                        <TextBlock x:Name="lblQ" Grid.Column="1" HorizontalAlignment="Left" Margin="125,267,0,0" TextWrapping="Wrap" Text="s" FontFamily="Webdings" FontSize="16" VerticalAlignment="Top" Visibility="Collapsed" />
-                    </Grid>
-                </flat:TabItem>
-                <flat:TabItem x:Name="tabImage" Title="From Image" ShowIcon="False" CanClose="False" Padding="8,0" >
-                    <Grid>
-                        <Border Margin="10,10,10,45" BorderBrush="Black" Background="DarkGray" BorderThickness="1">
-                            <ssut:ImageColorPicker x:Name="imgPicker" SelectedColorChanged="imgPicker_SelectedColorChanged" />
-                        </Border>
-                        <UiCore:FlatButton x:Name="btnOpenImage" Content="Load Image..." HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="24" Click="btnOpenImage_Click" />
-                        <TextBlock x:Name="lblImageExplain" HorizontalAlignment="Right" Margin="0,0,10,15" TextWrapping="Wrap" Text="Click on the image to select the color." VerticalAlignment="Bottom" />
-                    </Grid>
-                </flat:TabItem>
-                <flat:TabItem x:Name="tabPalette" Title="Palette File" ShowIcon="False" CanClose="False" Padding="8,0" >
-                    <Grid>
-                        <UiCore:FlatButton x:Name="btnLoadPal" Content="Open Palette..." HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="109" Height="24" Click="btnLoadPal_Click" />
-                        <ComboBox x:Name="cbbListDisplay" Margin="0,20,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="60" SelectedIndex="0" Height="24" SelectionChanged="cbbListDisplay_SelectionChanged" >
-                            <ComboBoxItem Content="Hex" />
-                            <ComboBoxItem Content="RGB" />
-                            <ComboBoxItem Content="HSV" />
-                        </ComboBox>
-                        <TextBlock x:Name="lblDisplay" HorizontalAlignment="Right" Margin="0,23,74,0" TextWrapping="Wrap" Text="Display as:" VerticalAlignment="Top"/>
-                        <UiCore:SelectPanel x:Name="colorList" Margin="10,55,10,20" SelectionChanged="colorList_SelectionChanged" />
-
-                    </Grid>
-                </flat:TabItem>
-            </flat:TabControl.Items>
+                </Grid>
+            </flat:TabItem>
+            <flat:TabItem x:Name="tabSliders" Title="Sliders" ShowIcon="False" CanClose="False" Padding="8,0" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <flat:FlatButton x:Name="btnInvert" HorizontalAlignment="Left" Height="24" Margin="10,84,0,0" VerticalAlignment="Top" Width="60" Content="Invert" Click="btnInvert_Click" />
+                    <Border x:Name="brdrSlColor" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" VerticalAlignment="Top" Width="60"/>
+                    <!-- RGB -->
+                    <TextBlock x:Name="lblRGB" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Text="RGB" VerticalAlignment="Top"/>
+                    <!-- R -->
+                    <TextBlock x:Name="lblR" Grid.Column="1" HorizontalAlignment="Left" Margin="10,39,0,0" Text="R" VerticalAlignment="Top" Width="22"/>
+                    <Slider x:Name="sldR" Grid.Column="1" Margin="40,39,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldR_ValueChanged" />
+                    <flat:IntegerSpinner x:Name="nudR" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,35,10,0" Width="61" Value="0" MinValue="0" MaxValue="255" AcceptExpressions="True" ValueChanged="nudR_ValueChanged" />
+                    <!-- G -->
+                    <TextBlock x:Name="lblG" Grid.Column="1" HorizontalAlignment="Left" Margin="10,68,0,0" Text="G" VerticalAlignment="Top" Width="22"/>
+                    <Slider x:Name="sldG" Grid.Column="1" Margin="40,68,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldG_ValueChanged" />
+                    <flat:IntegerSpinner x:Name="nudG" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,64,10,0" Width="61" Value="0" MinValue="0" MaxValue="255" AcceptExpressions="True" ValueChanged="nudG_ValueChanged" />
+                    <!-- B -->
+                    <TextBlock x:Name="lblB" Grid.Column="1" HorizontalAlignment="Left" Margin="10,97,0,0" Text="B" VerticalAlignment="Top" Width="22"/>
+                    <Slider x:Name="sldB" Grid.Column="1" Margin="40,97,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldB_ValueChanged" />
+                    <flat:IntegerSpinner x:Name="nudB" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,93,10,0" Width="61" Value="0" MinValue="0" MaxValue="255" AcceptExpressions="True" ValueChanged="nudB_ValueChanged" />
+                    <!-- HSV -->
+                    <TextBlock x:Name="lblHSL" Grid.Column="1" HorizontalAlignment="Left" Margin="10,130,0,0" Text="HSV" VerticalAlignment="Top"/>
+                    <!-- H -->
+                    <TextBlock x:Name="lblH" Grid.Column="1" HorizontalAlignment="Left" Margin="10,160,0,0" Text="H" VerticalAlignment="Top" Width="22"/>
+                    <Slider x:Name="sldH" Grid.Column="1" Margin="40,160,76,0" VerticalAlignment="Top" Minimum="0" Maximum="359" Value="0" ValueChanged="sldH_ValueChanged" />
+                    <flat:IntegerSpinner x:Name="nudH" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,156,10,0" Width="61" Value="0" MinValue="0" MaxValue="359" ValueChanged="nudH_ValueChanged" />
+                    <!-- S -->
+                    <TextBlock x:Name="lblS" Grid.Column="1" HorizontalAlignment="Left" Margin="10,188,0,0" Text="S" VerticalAlignment="Top" Width="22"/>
+                    <Slider x:Name="sldS" Grid.Column="1" Margin="40,188,76,0" VerticalAlignment="Top" Minimum="0" Maximum="1000" Value="0" ValueChanged="sldS_ValueChanged" />
+                    <flat:DoubleSpinner x:Name="nudS" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,184,10,0" Width="61" Value="0" MinValue="0" MaxValue="1" Step="0.01" Decimals="3" ValueChanged="nudS_ValueChanged" />
+                    <!-- V -->
+                    <TextBlock x:Name="lblV" Grid.Column="1" HorizontalAlignment="Left" Margin="10,218,0,0" Text="V" VerticalAlignment="Top" Width="22"/>
+                    <Slider x:Name="sldV" Grid.Column="1" Margin="40,218,76,0" VerticalAlignment="Top" Minimum="0" Maximum="1000" Value="0" ValueChanged="sldV_ValueChanged" />
+                    <flat:DoubleSpinner x:Name="nudV" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,214,10,0" Width="61" Value="0" MinValue="0" MaxValue="1" Step="0.01" Decimals="3" ValueChanged="nudV_ValueChanged" />
+                    <!-- Hex -->
+                    <TextBlock x:Name="lblHex" Grid.Column="1" HorizontalAlignment="Left" Margin="10,265,0,0" Text="Hex" VerticalAlignment="Top"/>
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="40,265,0,0" Text="#" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtHex" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="50,264,0,0" TextWrapping="Wrap" Text="000000" VerticalAlignment="Top" Width="70" MaxLength="7" TextChanged="txtHex_TextChanged" />
+                    <TextBlock x:Name="lblQ" Grid.Column="1" HorizontalAlignment="Left" Margin="125,267,0,0" TextWrapping="Wrap" Text="s" FontFamily="Webdings" FontSize="16" VerticalAlignment="Top" Visibility="Collapsed" />
+                </Grid>
+            </flat:TabItem>
+            <flat:TabItem x:Name="tabImage" Title="From Image" ShowIcon="False" CanClose="False" Padding="8,0" >
+                <Grid>
+                    <Border Margin="10,10,10,45" BorderBrush="Black" Background="DarkGray" BorderThickness="1">
+                        <ssut:ImageColorPicker x:Name="imgPicker" SelectedColorChanged="imgPicker_SelectedColorChanged" />
+                    </Border>
+                    <flat:FlatButton x:Name="btnOpenImage" Content="Load Image..." HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="24" Click="btnOpenImage_Click" />
+                    <TextBlock x:Name="lblImageExplain" HorizontalAlignment="Right" Margin="0,0,10,15" TextWrapping="Wrap" Text="Click on the image to select the color." VerticalAlignment="Bottom" />
+                </Grid>
+            </flat:TabItem>
+            <flat:TabItem x:Name="tabPalette" Title="Palette File" ShowIcon="False" CanClose="False" Padding="8,0" >
+                <Grid>
+                    <flat:FlatButton x:Name="btnLoadPal" Content="Open Palette..." HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="109" Height="24" Click="btnLoadPal_Click" />
+                    <ComboBox x:Name="cbbListDisplay" Margin="0,20,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="60" SelectedIndex="0" Height="24" SelectionChanged="cbbListDisplay_SelectionChanged" >
+                        <ComboBoxItem Content="Hex" />
+                        <ComboBoxItem Content="RGB" />
+                        <ComboBoxItem Content="HSV" />
+                    </ComboBox>
+                    <TextBlock x:Name="lblDisplay" HorizontalAlignment="Right" Margin="0,23,74,0" TextWrapping="Wrap" Text="Display as:" VerticalAlignment="Top"/>
+                    <flat:SelectPanel x:Name="colorList" Margin="10,55,10,20" SelectionChanged="colorList_SelectionChanged" />
+                </Grid>
+            </flat:TabItem>
         </flat:TabControl>
 
         <TextBlock x:Name="lblSel" HorizontalAlignment="Left" Margin="12,0,0,47" TextWrapping="Wrap" Text="Selected Color:" VerticalAlignment="Bottom" Grid.Row="1" Height="16" Width="83"/>
@@ -330,7 +326,7 @@
             </Grid>
         </Border>
 
-        <UiCore:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="1" />
-        <UiCore:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="1" />
+        <flat:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="1" />
+        <flat:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="1" />
     </Grid>
-</UiCore:FlatWindow>
+</flat:FlatWindow>

@@ -19,7 +19,7 @@ namespace SolidShineUi
 
         public NewSelectPanel()
         {
-            SetValue(ItemsProperty, new SelectableCollection<SelectableUserControl>());
+            SetValue(ItemsPropertyKey, new SelectableCollection<SelectableUserControl>());
             //Items = new SelectableCollection<SelectableUserControl>();
             Items.ItemRemoving += Items_ItemRemoving;
             Items.CollectionChanged += Items_CollectionChanged;
@@ -52,14 +52,14 @@ namespace SolidShineUi
 
         bool _internalAction = false;
 
-        //private static readonly DependencyProperty ItemsProperty
-        //    = DependencyProperty.Register("Items", typeof(ObservableCollection<TabItem>), typeof(TabControl),
-        //    new FrameworkPropertyMetadata(new ObservableCollection<TabItem>()));
+        //public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(NewSelectPanel),
+        //    new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
 
-        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(NewSelectPanel),
+        private static readonly DependencyPropertyKey ItemsPropertyKey
+            = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(NewSelectPanel),
             new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
 
-        //public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
@@ -68,7 +68,7 @@ namespace SolidShineUi
         public SelectableCollection<SelectableUserControl> Items
         {
             get { return (SelectableCollection<SelectableUserControl>)GetValue(ItemsProperty); }
-            set { SetValue(ItemsProperty, value); }
+            private set { SetValue(ItemsPropertyKey, value); }
         }
 
         [Category("Common")]

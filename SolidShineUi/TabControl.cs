@@ -31,8 +31,7 @@ namespace SolidShineUi
             Loaded += TabControl_Loaded;
             SizeChanged += control_SizeChanged;
 
-            SetValue(ItemsProperty, new SelectableCollection<TabItem>());
-            //Items = new SelectableCollection<TabItem>();
+            SetValue(ItemsPropertyKey, new SelectableCollection<TabItem>());
             Items.CanSelectMultiple = false;
             Items.CollectionChanged += Items_CollectionChanged;
             Items.SelectionChanged += items_SelectionChanged;
@@ -94,14 +93,10 @@ namespace SolidShineUi
 
         #region SelectableCollection handling
 
-        //private static readonly DependencyProperty ItemsProperty
-        //    = DependencyProperty.Register("Items", typeof(ObservableCollection<TabItem>), typeof(TabControl),
-        //    new FrameworkPropertyMetadata(new ObservableCollection<TabItem>()));
-
-        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(SelectableCollection<TabItem>), typeof(TabControl),
+        private static readonly DependencyPropertyKey ItemsPropertyKey = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<TabItem>), typeof(TabControl),
             new FrameworkPropertyMetadata(new SelectableCollection<TabItem>()));
 
-        //public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
@@ -110,7 +105,7 @@ namespace SolidShineUi
         public SelectableCollection<TabItem> Items
         {
             get { return (SelectableCollection<TabItem>)GetValue(ItemsProperty); }
-            set { SetValue(ItemsProperty, value); }
+            private set { SetValue(ItemsPropertyKey, value); }
         }
 
 #if NETCOREAPP
