@@ -15,7 +15,8 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
@@ -30,6 +31,9 @@
             <TextBlock Grid.Row="2" Text="MenuButton" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" >
                 FlatButton<LineBreak/>As ToggleButton
+            </TextBlock>
+            <TextBlock Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" >
+                FlatButton<LineBreak/>In Accent Color
             </TextBlock>
             <flat:FlatButton x:Name="btnFlat1" Content="Button Text" Width="100" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Click="Button_Click" RightClick="Button_RightClick" />
             <flat:FlatButton x:Name="btnFlat2" Content="Button Text" Width="100" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TransparentBack="True" Click="Button_Click" RightClick="Button_RightClick" />
@@ -64,7 +68,10 @@
             <flat:FlatButton x:Name="btnTogg1" Content="Toggle Button" Width="100" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" />
             <flat:FlatButton x:Name="btnTogg2" Content="Toggle Button" Width="100" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" TransparentBack="True" />
             <flat:FlatButton x:Name="btnTogg3" Content="Toggle Button" Width="100" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" IsEnabled="False" />
-            <TextBlock x:Name="txtResult" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="4" Text="(this will update once you click on something)" VerticalAlignment="Bottom"/>
+            <flat:FlatButton x:Name="btnAcc1" Content="Button Text" Width="100" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Click="Button_Click" RightClick="Button_RightClick" UseAccentColors="True" />
+            <flat:FlatButton x:Name="btnAcc2" Content="Button Text" Width="100" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TransparentBack="True" Click="Button_Click" RightClick="Button_RightClick" UseAccentColors="True" />
+            <flat:FlatButton x:Name="btnAcc3" Content="Button Text" Width="100" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" IsEnabled="False" Click="Button_Click" RightClick="Button_RightClick" UseAccentColors="True" />
+            <TextBlock x:Name="txtResult" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="5" Text="(this will update once you click on something)" VerticalAlignment="Bottom"/>
         </Grid>
     </Grid>
 </UserControl>
