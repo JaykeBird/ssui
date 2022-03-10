@@ -64,9 +64,10 @@
                     <Border local:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding ElementName=control, Path=TabItem.ExtraTabElement}" x:Name="brdrExtraElement" />
                 </Grid>
-                <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" Margin="0,1" Padding="0" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
+                <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" MinWidth="16" Margin="0,1" Padding="0" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
                               Visibility="{Binding ElementName=control, Path=TabItem.CanClose, Converter={StaticResource btv}}" >
-                    <Image Source="/SolidShineUi;component/Images/SmallExitColor.png" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Stretch="None" MaxHeight="16" UseLayoutRounding="False" />
+                    <Path x:Name="pathClose" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Black" Data="M1,0 L0,1 L4,5 L0,9 L1,10 L5,6 L9,10 L10,9 L6,5 L10,1 L9,0 L5,4 z"/>
+                    <!--<Image Source="/SolidShineUi;component/Images/SmallExitColor.png" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Stretch="None" MaxHeight="16" UseLayoutRounding="False" />-->
                 </local:FlatButton>
 
                 <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />

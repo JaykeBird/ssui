@@ -33,6 +33,8 @@ namespace SolidShineUi.Utils
         public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
         public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
 
+        //public Brush CloseBrush { get; set; } = new SolidColorBrush(Colors.Black);
+
         private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
 
         public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register(
@@ -406,6 +408,7 @@ namespace SolidShineUi.Utils
                 BorderBrush = cs.BorderColor.ToBrush();
                 HighlightBrush = cs.HighlightColor.ToBrush();
                 BorderHighlightBrush = cs.BorderColor.ToBrush();
+                pathClose.Fill = cs.BorderColor.ToBrush();
             }
             else
             {
@@ -413,6 +416,7 @@ namespace SolidShineUi.Utils
                 BorderBrush = cs.BorderColor.ToBrush();
                 HighlightBrush = cs.SecondHighlightColor.ToBrush();
                 BorderHighlightBrush = cs.HighlightColor.ToBrush();
+                pathClose.Fill = cs.ForegroundColor.ToBrush();
             }
 
             if (highlighting)
