@@ -87,6 +87,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         Type _propType = typeof(Brush);
         Brush _dataValue = new SolidColorBrush(Colors.Black);
 
+        #region GetValue / LoadValue
+
 #if NETCOREAPP
         public event EventHandler? ValueChanged;
 
@@ -141,6 +143,68 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _propType = brushType;
             _dataValue = (Brush)value;
 
+            SetUiButtons(brushType, value);
+        }
+#else
+        public event EventHandler ValueChanged;
+
+        public object GetValue()
+        {
+            return _dataValue;
+        }
+
+        public void LoadValue(object value, Type type)
+        {
+            if (value == null)
+            {
+                txtBrushType.Text = "(null)";
+                btnBrush.Background = Colors.Black.ToBrush();
+                btnBrush.HighlightBrush = Colors.Black.ToBrush();
+                btnBrush.ClickBrush = Colors.Black.ToBrush();
+                btnBrush.DisabledBrush = Colors.Black.ToBrush();
+
+                btnNullBrush.IsSelected = true;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = false;
+                return;
+            }
+
+            if (!(value is Brush))
+            {
+                txtBrushType.Text = "Unknown";
+                btnBrush.Background = Colors.Black.ToBrush();
+                btnBrush.HighlightBrush = Colors.Black.ToBrush();
+                btnBrush.ClickBrush = Colors.Black.ToBrush();
+                btnBrush.DisabledBrush = Colors.Black.ToBrush();
+
+                btnNullBrush.IsSelected = false;
+                btnSolidColor.IsSelected = false;
+                btnLinGradient.IsSelected = false;
+                btnRadGradient.IsSelected = false;
+                btnImageBrush.IsSelected = false;
+                btnMenu.IsSelected = true;
+                return;
+            }
+
+            Type brushType = type;
+
+            if (brushType == typeof(Brush))
+            {
+                brushType = value.GetType();
+            }
+
+            _propType = brushType;
+            _dataValue = (Brush)value;
+
+            SetUiButtons(brushType, value);
+        }
+#endif
+
+        private void SetUiButtons(Type brushType, object value)
+        {
             if (brushType == typeof(SolidColorBrush))
             {
                 txtBrushType.Text = "Solid Color";
@@ -247,95 +311,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnMenu.IsSelected = true;
             }
         }
-#else
-        public event EventHandler ValueChanged;
 
-        public object GetValue()
-        {
-            return _dataValue;
-        }
-
-        public void LoadValue(object value, Type type)
-        {
-            if (value == null)
-            {
-                txtBrushType.Text = "(null)";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-                return;
-            }
-
-            if (!(value is Brush))
-            {
-                txtBrushType.Text = "Unknown";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-                return;
-            }
-
-            Type brushType = type;
-
-            if (brushType == typeof(Brush))
-            {
-                brushType = value.GetType();
-            }
-
-            _propType = brushType;
-            _dataValue = (Brush)value;
-
-            if (brushType == typeof(SolidColorBrush))
-            {
-                txtBrushType.Text = "Solid Color";
-                btnBrush.Background = (SolidColorBrush)value;
-                btnBrush.HighlightBrush = (SolidColorBrush)value;
-                btnBrush.ClickBrush = (SolidColorBrush)value;
-            }
-            else if (brushType == typeof(LinearGradientBrush))
-            {
-                txtBrushType.Text = "Gradient";
-                btnBrush.Background = (LinearGradientBrush)value;
-                btnBrush.HighlightBrush = (LinearGradientBrush)value;
-                btnBrush.ClickBrush = (LinearGradientBrush)value;
-            }
-            else if (brushType == typeof(RadialGradientBrush))
-            {
-                txtBrushType.Text = "Gradient";
-                btnBrush.Background = (RadialGradientBrush)value;
-                btnBrush.HighlightBrush = (RadialGradientBrush)value;
-                btnBrush.ClickBrush = (RadialGradientBrush)value;
-            }
-            else if (brushType == typeof(ImageBrush))
-            {
-                txtBrushType.Text = "Image";
-                btnBrush.Background = (ImageBrush)value;
-                btnBrush.HighlightBrush = (ImageBrush)value;
-                btnBrush.ClickBrush = (ImageBrush)value;
-            }
-            else if (brushType == typeof(BitmapCacheBrush))
-            {
-                txtBrushType.Text = "Bitmap Cache";
-                btnBrush.Background = Colors.LightGray.ToBrush();
-                btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
-                btnBrush.ClickBrush = Colors.LightGray.ToBrush();
-            }
-            else if (brushType == typeof(DrawingBrush))
-            {
-                txtBrushType.Text = "Drawing";
-                btnBrush.Background = Colors.LightGray.ToBrush();
-                btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
-                btnBrush.ClickBrush = Colors.LightGray.ToBrush();
-            }
-            else
-            {
-                txtBrushType.Text = "Unknown";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-            }
-        }
-#endif
+        #endregion
+        
         private void btnBrush_Click(object sender, RoutedEventArgs e)
         {
             if (_propType == typeof(SolidColorBrush))
@@ -345,6 +323,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (cpd.DialogResult)
                 {
                     // update color
+                    _dataValue = new SolidColorBrush(cpd.SelectedColor);
+                    ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
             else
