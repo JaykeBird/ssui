@@ -1,0 +1,72 @@
+﻿<flat:SelectableUserControl x:Class="SolidShineUi.Utils.ImageTextListItem" x:Name="control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:flat="clr-namespace:SolidShineUi"
+             xmlns:local="clr-namespace:SolidShineUi.Utils"
+             mc:Ignorable="d" 
+             d:DesignHeight="32" d:DesignWidth="600">
+    <flat:SelectableUserControl.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="btv" />
+        </ResourceDictionary>
+    </flat:SelectableUserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" x:Name="colIcon" />
+            <ColumnDefinition/>
+            <ColumnDefinition x:Name="colClose">
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition" >
+                        <Setter Property="Width" Value="24" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=control, Path=CanRemove}" Value="False">
+                                <Setter Property="Width" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Image x:Name="imgIcon" Grid.Column="0" VerticalAlignment="Center" Width="16" Margin="4,0" Source="{Binding ElementName=control, Path=Icon}" UseLayoutRounding="True"
+                       Visibility="{Binding ElementName=control, Path=ShowIcon, Converter={StaticResource btv}}" />
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,0,0" >
+            <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=Title}" />
+            <!--<TextBlock x:Name="lblDirty" HorizontalAlignment="Left" VerticalAlignment="Center" Text="*">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=control, Path=IsDirty}" Value="True" />
+                                    <Condition Binding="{Binding ElementName=control, Path=DisplayDirtyState}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>-->
+        </StackPanel>
+        <flat:FlatButton x:Name="btnRemove" Grid.Column="2" TransparentBack="True" MaxHeight="24" Click="btnRemove_Click"
+                         HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}"
+                         ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}"
+                         BorderHighlightBrush="{Binding ElementName=control, Path=BorderBrush}"
+                         DisabledBrush="{Binding ElementName=control, Path=ButtonBackgroundDisabledBrush}"
+                         BorderDisabledBrush="{Binding ElementName=control, Path=ButtonBorderDisabledBrush}"
+                         Command="{Binding ElementName=control, Path=Command}"
+                         CommandParameter="{Binding ElementName=control, Path=CommandParameter}"
+                         CommandTarget="{Binding ElementName=control, Path=CommandTarget}"
+                         ToolTip="{Binding ElementName=control, Path=ButtonToolTip}">
+            <!--
+                         Background="{Binding ElementName=control, Path=ButtonBackground}"
+                         BorderBrush="{Binding ElementName=control, Path=BorderBrush}"
+            -->
+            <Path x:Name="pathClose" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Black" Data="M1,0 L0,1 L4,5 L0,9 L1,10 L5,6 L9,10 L10,9 L6,5 L10,1 L9,0 L5,4 z"/>
+        </flat:FlatButton>
+
+    </Grid>
+</flat:SelectableUserControl>

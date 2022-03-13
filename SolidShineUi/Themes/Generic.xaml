@@ -10,6 +10,9 @@
     <BooleanToVisibilityConverter x:Key="VisConverter" />
     <flat:BindableChildConverter x:Key="BindableChildConverter" />
     <flat:RectConverter x:Key="RectConverter" />
+    <ssut:FilePathToNameConverter x:Key="FileNameConverter" />
+    <!--<ssut:FileSelectSingleTitleConverter x:Key="FileSelectSstConverter" />-->
+    <ssut:FilePathToIconConverter x:Key="FileIconConverter" />
 
     <ControlTemplate x:Key="MainWindowControlTemplate" TargetType="{x:Type flat:FlatWindow}">
         <Border BorderBrush="DarkGray">
@@ -828,8 +831,8 @@
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
                                             <!--<Setter Property="Width" Value="Auto" />-->
-                                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Path=KeepMenuArrowOnRight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True">
                                                     <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -837,13 +840,14 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                    <ContentPresenter Grid.Column="0" x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
+                                    <ContentPresenter Grid.Column="0" x:Name="btn_Cc" VerticalAlignment="Center" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
                                         <ContentPresenter.Style>
                                             <Style TargetType="{x:Type ContentPresenter}" >
+                                                <Setter Property="HorizontalAlignment" Value="Center" />
                                                 <Setter Property="Opacity" Value="1.0" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Path=KeepMenuArrowOnRight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True">
-                                                        <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                                        <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                                 <!--<Style.Triggers>
@@ -1504,6 +1508,210 @@
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type flat:NewFileSelect}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <flat:ContextMenu>
+                    <MenuItem Header="Browse..." Command="{x:Static flat:NewFileSelect.BrowseForFile}"
+                              CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                    <Separator />
+                    <MenuItem Header="Open Containing Folders" Command="{x:Static flat:NewFileSelect.OpenContainingFolders}"
+                              CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                    <MenuItem Header="Copy Filenames" Command="{x:Static flat:NewFileSelect.CopyFilenames}"
+                              CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                    <Separator />
+                    <MenuItem Header="Clear All Files" Command="{x:Static flat:NewFileSelect.ClearSelectedFiles}"
+                              CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                </flat:ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:NewFileSelect}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" >
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" />
+                                <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" Value="False">
+                                        <Setter Property="Background" Value="{Binding BackgroundDisabledBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" />
+                                        <Setter Property="BorderBrush" Value="{Binding BorderDisabledBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid x:Name="PART_ButtonHolder">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Grid.Row" Value="1" />
+                                        <Setter Property="Grid.Column" Value="2" />
+                                        <Setter Property="Visibility" Value="Visible" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ButtonPlacement, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" Value="Top">
+                                                <Setter Property="Grid.Row" Value="0" />
+                                                <Setter Property="Grid.Column" Value="1" />
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ButtonPlacement, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" Value="Left">
+                                                <Setter Property="Grid.Row" Value="1" />
+                                                <Setter Property="Grid.Column" Value="0" />
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ButtonPlacement, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" Value="Right">
+                                                <Setter Property="Grid.Row" Value="1" />
+                                                <Setter Property="Grid.Column" Value="2" />
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ButtonPlacement, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" Value="Bottom">
+                                                <Setter Property="Grid.Row" Value="2" />
+                                                <Setter Property="Grid.Column" Value="1" />
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ButtonPlacement, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:NewFileSelect}}}" Value="Hidden">
+                                                <Setter Property="Grid.Row" Value="1" />
+                                                <Setter Property="Grid.Column" Value="2" />
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <flat:FlatButton x:Name="PART_Button" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}"
+                                    BorderHighlightBrush="{TemplateBinding BorderBrush}" BorderSelectedBrush="{TemplateBinding BorderBrush}"
+                                    Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding ButtonHighlightBrush}" 
+                                    ClickBrush="{TemplateBinding ButtonClickBrush}" DisabledBrush="{TemplateBinding BackgroundDisabledBrush}"
+                                    Command="{x:Static flat:NewFileSelect.BrowseForFile}" Padding="2" CornerRadius="{TemplateBinding ButtonCornerRadius}" >
+                                    <TextBlock Text="{TemplateBinding BrowseButtonText}" />
+                                </flat:FlatButton>
+                            </Grid>
+                            <Grid x:Name="PART_Content" Grid.Row="1" Grid.Column="1" >
+                                <ScrollViewer
+                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" >
+                                    <ScrollViewer.Style>
+                                        <Style TargetType="ScrollViewer">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=DisplayFilenames, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ScrollViewer.Style>
+                                    <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding SelectedFiles}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical" IsItemsHost="True" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <ssut:ImageTextListItem Title="{Binding .,Converter={StaticResource FileNameConverter}}" Icon="{Binding ., Converter={StaticResource FileIconConverter}}" 
+                                                                        CanSelect="False" Command="{x:Static flat:NewFileSelect.RemoveSelectedFile}" CommandParameter="{Binding .}"
+                                                                        ButtonToolTip="Remove" ShowIcon="{Binding Path=ShowIcon, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        HighlightBrush="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        ClickBrush="{Binding Path=ButtonClickBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        ButtonBackground="{Binding Path=ButtonBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        ButtonHighlightBrush="{Binding Path=ButtonHighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        ButtonClickBrush="{Binding Path=ButtonClickBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        ButtonBackgroundDisabledBrush="{Binding Path=BackgroundDisabledBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        ButtonBorderDisabledBrush="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                                        BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Path=DisplayFilenames, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="True" />
+                                                        <Condition Binding="{Binding Path=SelectedFiles.Count, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="0" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <TextBlock Text="{Binding Path=NoFilesSelectedMessage, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" 
+                                               VerticalAlignment="Center" x:Name="PART_NoFiles_FileList">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Margin" Value="24,0,0,0" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=ShowIcon, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="False">
+                                                        <Setter Property="Margin" Value="2,0,0,0" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=DisplayFilenames, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <ssut:ImageTextListItem x:Name="itleNonList" CanRemove="False" CanSelect="False"
+                                                            ShowIcon="{Binding Path=ShowIcon, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                            HighlightBrush="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}"
+                                                            ClickBrush="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" >
+                                        <ssut:ImageTextListItem.Style>
+                                            <Style TargetType="{x:Type ssut:ImageTextListItem}">
+                                                <Setter Property="Title" Value="{Binding Path=SelectedFiles.Count, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}, StringFormat='\{0\} file(s) selected'}" >
+                                                    <!--<Setter.Value>
+                                                        <MultiBinding StringFormat="\{0\} \{1\}">
+                                                            <Binding Path="SelectedFiles.Count" RelativeSource="{RelativeSource AncestorType={x:Type flat:NewFileSelect}}" />
+                                                            <Binding Path="StackCountMessage" RelativeSource="{RelativeSource AncestorType={x:Type flat:NewFileSelect}}" />
+                                                        </MultiBinding>
+                                                    </Setter.Value>-->
+                                                </Setter>
+                                                <Setter Property="Icon" Value="/SolidShineUi;component/Images/StackColor.png" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=SelectedFiles.Count, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="0">
+                                                        <Setter Property="Title" Value="{Binding Path=NoFilesSelectedMessage, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" />
+                                                        <Setter Property="Icon" Value="{x:Null}" />
+                                                    </DataTrigger>
+                                                    <!--<DataTrigger Binding="{Binding Path=SelectedFiles.Count, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="1">
+                                                        <Setter Property="Title" Value="{Binding Path=SelectedFiles, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}, Converter={StaticResource FileSelectSstConverter}}" />
+                                                        <Setter Property="Icon" Value="{Binding Path=SelectedFiles, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}, Converter={StaticResource FileIconConverter}}" />
+                                                    </DataTrigger>-->
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ssut:ImageTextListItem.Style>
+                                    </ssut:ImageTextListItem>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

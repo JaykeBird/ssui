@@ -464,6 +464,7 @@ namespace SolidShineUi
             }
         }
 
+        #region Selected Files
         private List<string> _acceptedFiles = new List<string>();
 
         /// <summary>
@@ -522,6 +523,7 @@ namespace SolidShineUi
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
+        #endregion
 
         /// <summary>
         /// Get or set the file filter to use when selecting files. Use semicolons (;) to separate multiple extensions/filters (i.e. <c>"*.docx;*.xlsx;*.pptx"</c>).
@@ -559,6 +561,7 @@ namespace SolidShineUi
         /// </summary>
         public bool AllowMultipleFiles { get; set; } = false;
 
+        #region Base Functions
         /// <summary>
         /// Display an OpenFileDialog for the user to select files.
         /// </summary>
@@ -675,6 +678,7 @@ namespace SolidShineUi
         {
             InternalSelectFiles(new List<string> { });
         }
+        #endregion
 
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {

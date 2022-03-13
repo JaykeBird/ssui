@@ -19,6 +19,7 @@
                         <flat:ContextMenu>
                             <MenuItem Header="Add Editable Item" Click="mnuSelEdit_Click" />
                             <MenuItem Header="Add Image Item" Click="mnuSelImage_Click" />
+                            <MenuItem Header="Add Image Item (Legacy)" Click="mnuSelImageLegacy_Click" />
                             <MenuItem Header="Add Separator" Click="mnuSelSep_Click" />
                         </flat:ContextMenu>
                     </flat:MenuButton.Menu>

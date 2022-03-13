@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SsuiSample.Resources;
+using SolidShineUi.Utils;
 
 namespace SsuiSample
 {
@@ -33,6 +34,18 @@ namespace SsuiSample
         }
 
         private void mnuSelImage_Click(object sender, RoutedEventArgs e)
+        {
+            ImageTextListItem itle = new ImageTextListItem();
+            itle.Title = "Image";
+            itle.ShowIcon = true;
+            itle.Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/ImageColor.png", UriKind.RelativeOrAbsolute));
+            itle.CanRemove = false;
+
+            selPanel.Items.Add(itle);
+        }
+
+
+        private void mnuSelImageLegacy_Click(object sender, RoutedEventArgs e)
         {
             SelectableItem si = new SelectableItem();
             si.Text = "Image";
