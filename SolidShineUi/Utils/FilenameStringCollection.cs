@@ -54,6 +54,7 @@ namespace SolidShineUi.Utils
 
         public new void Add(string item)
         {
+            if (Contains(item)) return;
             AddingItemStringEventArgs e = new AddingItemStringEventArgs(item);
             AddingItem?.Invoke(this, e);
             if (e.Cancel) return;
@@ -66,6 +67,7 @@ namespace SolidShineUi.Utils
 
         public new void Insert(int index, string item)
         {
+            if (Contains(item)) return;
             AddingItemStringEventArgs e = new AddingItemStringEventArgs(item);
             AddingItem?.Invoke(this, e);
             if (e.Cancel) return;

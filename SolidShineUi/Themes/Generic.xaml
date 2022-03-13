@@ -1596,13 +1596,13 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Grid.Style>
-                                <flat:FlatButton x:Name="PART_Button" 
+                                <flat:FlatButton x:Name="PART_Button" MinHeight="18" Padding="2"
                                     BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}"
                                     BorderHighlightBrush="{TemplateBinding BorderBrush}" BorderSelectedBrush="{TemplateBinding BorderBrush}"
                                     Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding ButtonHighlightBrush}" 
                                     ClickBrush="{TemplateBinding ButtonClickBrush}" DisabledBrush="{TemplateBinding BackgroundDisabledBrush}"
-                                    Command="{x:Static flat:NewFileSelect.BrowseForFile}" Padding="2" CornerRadius="{TemplateBinding ButtonCornerRadius}" >
-                                    <TextBlock Text="{TemplateBinding BrowseButtonText}" />
+                                    Command="{x:Static flat:NewFileSelect.BrowseForFile}" CornerRadius="{TemplateBinding ButtonCornerRadius}" >
+                                    <TextBlock Text="{TemplateBinding BrowseButtonText}" Margin="0,2" />
                                 </flat:FlatButton>
                             </Grid>
                             <Grid x:Name="PART_Content" Grid.Row="1" Grid.Column="1" >
@@ -1660,10 +1660,10 @@
                                                VerticalAlignment="Center" x:Name="PART_NoFiles_FileList">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="Margin" Value="24,0,0,0" />
+                                                <Setter Property="Margin" Value="24,4,0,4" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Path=ShowIcon, RelativeSource={RelativeSource AncestorType={x:Type flat:NewFileSelect}}}" Value="False">
-                                                        <Setter Property="Margin" Value="2,0,0,0" />
+                                                        <Setter Property="Margin" Value="2,4,0,4" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

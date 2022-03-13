@@ -25,7 +25,7 @@
             </ComboBox>
             <TextBox x:Name="txtTextBox" HorizontalAlignment="Left" Margin="30,80,0,0" Text="TextBox" VerticalAlignment="Top" Width="120"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="30,120,0,0" VerticalAlignment="Top" Width="120" Height="23" x:Name="btnButton" />
-            <flat:FileSelect HorizontalAlignment="Left" Margin="30,160,0,0" VerticalAlignment="Top" Width="200" x:Name="ctrFileSelect" />
+            <flat:NewFileSelect HorizontalAlignment="Left" Margin="30,160,0,0" VerticalAlignment="Top" Width="200" x:Name="ctrFileSelect" />
 
             <flat:FlatButton x:Name="btnSel1" Content="Select Item" HorizontalAlignment="Left" Margin="5,40,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel1_Click" />
             <flat:FlatButton x:Name="btnSel2" Content="Select Item" HorizontalAlignment="Left" Margin="5,80,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel2_Click" />

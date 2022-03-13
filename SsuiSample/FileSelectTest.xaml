@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="File Select Test" FontSize="16" VerticalAlignment="Top"/>
-        <flat:FileSelect x:Name="fsSingle" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" ClickOnPress="True" />
+        <flat:NewFileSelect x:Name="fsSingle" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
         <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" Text="Select a single file" VerticalAlignment="Top"/>
         <flat:NewFileSelect x:Name="fsMultiple" HorizontalAlignment="Left" Margin="20,145,0,0" VerticalAlignment="Top" AllowMultipleFiles="True" DisplayFilenames="False" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,125,0,0" Text="Select multiple files, show count only" VerticalAlignment="Top" />
