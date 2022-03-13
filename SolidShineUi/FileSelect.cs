@@ -15,6 +15,10 @@ using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
+
+    /// <summary>
+    /// A control that provides a responsive and customizable UI for users to select files on their computer, similar to the "<c>input type="file"</c>" element in HTML.
+    /// </summary>
     public class FileSelect : Control
     {
         static FileSelect()
@@ -525,7 +529,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty SelectedFilesProperty = SelectedFilesPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
+        /// Get the list of files selected in this FileSelect. You can add or remove items from the collection, or set the collection's max size via the <c>Capacity</c> property.
         /// </summary>
         [Category("Common")]
         public FilenameStringCollection SelectedFiles
@@ -601,6 +605,9 @@ namespace SolidShineUi
 
         #region File Filtering Properties
 
+        /// <summary>
+        /// Defines the standard filter for displaying all files (as in, no filter is applied).
+        /// </summary>
         public const string ALL_FILES_FILTER = "*.*";
 
         public static readonly DependencyProperty FileFilterProperty = DependencyProperty.Register(
@@ -611,6 +618,12 @@ namespace SolidShineUi
             "AllowMultipleFiles", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalAllowMultipleFilesChanged)));
 
+        /// <summary>
+        /// Get or set the file filter used when selecting files. Use semicolons (;) to separate multiple extensions/filters (i.e. <c>*.docx;*.xlsx;*.pptx</c>). Supports * and ? wildcards like Windows.
+        /// </summary>
+        /// <remarks>
+        /// If the filter is changed after files have been selected, the existing selected files are not re-run against the new filter. This only applies to files added in afterwards.
+        /// </remarks>
         [Category("Common")]
         public string FileFilter
         {
@@ -618,6 +631,12 @@ namespace SolidShineUi
             set => SetValue(FileFilterProperty, value);
         }
 
+        /// <summary>
+        /// Get or set if multiple files can be selected with the FileSelect. If false, only one file can be selected.
+        /// </summary>
+        /// <remarks>
+        /// If you want to set a specific max number of files that can be selected, set this to "true" and then set the max value via the <c>SelectedFiles.Capacity</c> property.
+        /// </remarks>
         [Category("Common")]
         public bool AllowMultipleFiles
         {
@@ -746,6 +765,12 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Check if a file matches against a collection of filters.
+        /// </summary>
+        /// <param name="file">The file path to check.</param>
+        /// <param name="filters">The filters to check against. If using the FileFilter property, split the string via the <c>Split</c> function, splitting with the ";" delimiter.</param>
+        /// <returns></returns>
         private static bool FileMatchesFilter(string file, string[] filters)
         {
             // we only need to match at least one filter wildcard
@@ -891,12 +916,30 @@ namespace SolidShineUi
 
     }
 
+    /// <summary>
+    /// Used to indicate the placement of a UI element within a larger UI element.
+    /// </summary>
     public enum PlacementDirection
     {
+        /// <summary>
+        /// Hide the UI element.
+        /// </summary>
         Hidden = 0,
+        /// <summary>
+        /// Display the UI element at the top side of the larger UI element.
+        /// </summary>
         Top = 1,
+        /// <summary>
+        /// Display the UI element at the left side of the larger UI element.
+        /// </summary>
         Left = 2,
+        /// <summary>
+        /// Display the UI element at the right side of the larger UI element.
+        /// </summary>
         Right = 3,
+        /// <summary>
+        /// Display the UI element at the bottom side of the larger UI element.
+        /// </summary>
         Bottom = 4,
     }
 }
