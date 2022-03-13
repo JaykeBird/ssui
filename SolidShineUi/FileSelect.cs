@@ -15,14 +15,14 @@ using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
-    public class NewFileSelect : Control
+    public class FileSelect : Control
     {
-        static NewFileSelect()
+        static FileSelect()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewFileSelect), new FrameworkPropertyMetadata(typeof(NewFileSelect)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(FileSelect), new FrameworkPropertyMetadata(typeof(FileSelect)));
         }
 
-        public NewFileSelect()
+        public FileSelect()
         {
             DragEnter += NewFileSelect_DragEnter;
             DragLeave += NewFileSelect_DragLeave;
@@ -84,7 +84,7 @@ namespace SolidShineUi
 #endif
 
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewFileSelect),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FileSelect),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -95,7 +95,7 @@ namespace SolidShineUi
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
 
-            if (d is NewFileSelect c)
+            if (d is FileSelect c)
             {
                 c.ColorSchemeChanged?.Invoke(d, e);
                 c.ApplyColorScheme(cs);
@@ -210,31 +210,31 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
-            "BackgroundDisabledBrush", typeof(Brush), typeof(NewFileSelect),
+            "BackgroundDisabledBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(NewFileSelect),
+            "BorderDisabledBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(NewFileSelect),
+            "BorderBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(NewFileSelect),
+            "Background", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.White)));
 
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
-            "ButtonBackground", typeof(Brush), typeof(NewFileSelect),
+            "ButtonBackground", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         public static readonly DependencyProperty ButtonHighlightBrushProperty = DependencyProperty.Register(
-            "ButtonHighlightBrush", typeof(Brush), typeof(NewFileSelect),
+            "ButtonHighlightBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
         public static readonly DependencyProperty ButtonClickBrushProperty = DependencyProperty.Register(
-            "ButtonClickBrush", typeof(Brush), typeof(NewFileSelect),
+            "ButtonClickBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         #endregion
@@ -249,13 +249,13 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(NewFileSelect),
+            "CornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnCornerRadiusChanged)));
 
         protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
 
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewFileSelect));
+            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
 
         public event RoutedEventHandler CornerRadiusChanged
         {
@@ -265,7 +265,7 @@ namespace SolidShineUi
 
         private static void OnCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is NewFileSelect f)
+            if (d is FileSelect f)
             {
                 f.InternalCornerRadiusChanged?.Invoke(f, e);
             }
@@ -285,7 +285,7 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty ButtonCornerRadiusProperty = DependencyProperty.Register(
-            "ButtonCornerRadius", typeof(CornerRadius), typeof(NewFileSelect),
+            "ButtonCornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0)));
 
         #endregion
@@ -293,15 +293,15 @@ namespace SolidShineUi
         #region Other Appearance Properties
 
         public static readonly DependencyProperty BrowseButtonTextProperty = DependencyProperty.Register(
-            "BrowseButtonText", typeof(string), typeof(NewFileSelect),
+            "BrowseButtonText", typeof(string), typeof(FileSelect),
             new PropertyMetadata("Browse..."));
 
         public static readonly DependencyProperty NoFilesSelectedMessageProperty = DependencyProperty.Register(
-            "NoFilesSelectedMessage", typeof(string), typeof(NewFileSelect),
+            "NoFilesSelectedMessage", typeof(string), typeof(FileSelect),
             new PropertyMetadata("(no files selected)"));
 
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
-            "ShowIcon", typeof(bool), typeof(NewFileSelect),
+            "ShowIcon", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true));
 
         [Category("Common")]
@@ -326,7 +326,7 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty ButtonPlacementProperty = DependencyProperty.Register(
-            "ButtonPlacement", typeof(PlacementDirection), typeof(NewFileSelect),
+            "ButtonPlacement", typeof(PlacementDirection), typeof(FileSelect),
             new PropertyMetadata(PlacementDirection.Right));
 
         public PlacementDirection ButtonPlacement
@@ -336,7 +336,7 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty DispalyFilenamesProperty = DependencyProperty.Register(
-            "DisplayFilenames", typeof(bool), typeof(NewFileSelect),
+            "DisplayFilenames", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true));
 
         public bool DisplayFilenames
@@ -346,7 +346,7 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register(
-            "HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewFileSelect),
+            "HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
 
         [Category("Layout")]
@@ -357,7 +357,7 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
-            "VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewFileSelect),
+            "VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
 
         [Category("Layout")]
@@ -519,7 +519,7 @@ namespace SolidShineUi
         #region Selected Files
 
         private static readonly DependencyPropertyKey SelectedFilesPropertyKey
-            = DependencyProperty.RegisterReadOnly("SelectedFiles", typeof(FilenameStringCollection), typeof(NewFileSelect),
+            = DependencyProperty.RegisterReadOnly("SelectedFiles", typeof(FilenameStringCollection), typeof(FileSelect),
             new FrameworkPropertyMetadata(new FilenameStringCollection()));
 
         public static readonly DependencyProperty SelectedFilesProperty = SelectedFilesPropertyKey.DependencyProperty;
@@ -555,7 +555,7 @@ namespace SolidShineUi
         }
 
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewFileSelect));
+            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
 
         /// <summary>
         /// Raised when the list of selected files is changed.
@@ -604,11 +604,11 @@ namespace SolidShineUi
         public const string ALL_FILES_FILTER = "*.*";
 
         public static readonly DependencyProperty FileFilterProperty = DependencyProperty.Register(
-            "FileFilter", typeof(string), typeof(NewFileSelect),
+            "FileFilter", typeof(string), typeof(FileSelect),
             new PropertyMetadata("*.*"));
 
         public static readonly DependencyProperty AllowMultipleFilesProperty = DependencyProperty.Register(
-            "AllowMultipleFiles", typeof(bool), typeof(NewFileSelect),
+            "AllowMultipleFiles", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalAllowMultipleFilesChanged)));
 
         [Category("Common")]
@@ -635,7 +635,7 @@ namespace SolidShineUi
 
         private static void OnInternalAllowMultipleFilesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is NewFileSelect s)
+            if (d is FileSelect s)
             {
                 s.InternalAllowMultipleFilesChanged?.Invoke(s, e);
             }

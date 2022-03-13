@@ -147,9 +147,6 @@ See website for more details!</PackageReleaseNotes>
     <Compile Update="Dialogs\ColorPickerDialog.xaml.cs">
       <DependentUpon>ColorPickerDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Update="FileSelect.xaml.cs">
-      <DependentUpon>FileSelect.xaml</DependentUpon>
-    </Compile>
     <Compile Update="IntegerSpinner.xaml.cs">
       <DependentUpon>IntegerSpinner.xaml</DependentUpon>
     </Compile>
