@@ -159,6 +159,8 @@ namespace SolidShineUi
                 ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
             }
 
+            // I couldn't find a way to bind the default context menu's ColorScheme to this control's ColorScheme, so I decided to do it this way
+            // there may be situations where this is undesirable, but I'd imagine it's not as likely as the alternative where a developer wants a context menu with the default colors
             if (ContextMenu is ContextMenu cm)
             {
                 cm.ApplyColorScheme(cs);
@@ -168,6 +170,9 @@ namespace SolidShineUi
 
         #region Brushes
 
+        /// <summary>
+        /// Get or set the brush used for the background of the control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush Background
         {
@@ -175,6 +180,9 @@ namespace SolidShineUi
             set => SetValue(BackgroundProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the Browse button in the control.
+        /// </summary>
         [Category("Brushes")]
         public Brush ButtonBackground
         {
@@ -182,6 +190,9 @@ namespace SolidShineUi
             set => SetValue(ButtonBackgroundProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the Browse button while the mouse is over it.
+        /// </summary>
         [Category("Brushes")]
         public Brush ButtonHighlightBrush
         {
@@ -189,6 +200,9 @@ namespace SolidShineUi
             set => SetValue(ButtonHighlightBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the Browse button while the mouse is clicking it.
+        /// </summary>
         [Category("Brushes")]
         public Brush ButtonClickBrush
         {
@@ -196,13 +210,19 @@ namespace SolidShineUi
             set => SetValue(ButtonClickBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the control (and button) when the control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush BackgroundDisabledBrush
         {
             get => (Brush)GetValue(BackgroundDisabledBrushProperty);
             set => SetValue(BackgroundDisabledBrushProperty, value);
         }
-
+        
+        /// <summary>
+        /// Get or set the brush used for the border of the control (and button) when the control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderDisabledBrush
         {
@@ -210,6 +230,9 @@ namespace SolidShineUi
             set => SetValue(BorderDisabledBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border around the edges of the control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush BorderBrush
         {
