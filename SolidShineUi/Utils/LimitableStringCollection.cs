@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+using System.ComponentModel;
 
 namespace SolidShineUi.Utils
 {
-    public class FilenameStringCollection : ObservableCollection<string>
+    /// <summary>
+    /// A string collection where a limit can be applied to the number of items allowed. This collection can be observed via the CollectionChanged event.
+    /// </summary>
+    [DefaultEvent("CollectionChanged")]
+    public class LimitableStringCollection : ObservableCollection<string>
     {
-        public FilenameStringCollection()
+        public LimitableStringCollection()
         {
-            Capacity = -1;
+            MaxCount = -1;
         }
 
-        public FilenameStringCollection(int capacity)
+        public LimitableStringCollection(int maxCount)
         {
-            Capacity = capacity;
+            MaxCount = maxCount;
         }
 
         public delegate void AddingItemStringEventHandler(object sender, AddingItemStringEventArgs e);
@@ -26,23 +30,26 @@ namespace SolidShineUi.Utils
 #endif
 
         //private bool _internalAction = false;
-        private int _capacity = -1;
+        private int _maxCount = -1;
 
-        public int Capacity
+        /// <summary>
+        /// Get or set the maximum number of items allowed for this collection. If the maximum count is less than 0, then the collection is allowed to grow to any size without a limit.
+        /// </summary>
+        public int MaxCount
         {
-            get => _capacity;
+            get => _maxCount;
             set
             {
-                int oldCapacity = _capacity;
-                _capacity = value;
-                if (_capacity < 0) return;
-                if (_capacity < oldCapacity)
+                int oldCapacity = _maxCount;
+                _maxCount = value;
+                if (_maxCount < 0) return;
+                else if (_maxCount < oldCapacity)
                 {
                     // capacity went down
-                    if (Count > _capacity)
+                    if (Count > _maxCount)
                     {
                         //_internalAction = true;
-                        while (Count > _capacity)
+                        while (Count > _maxCount)
                         {
                             RemoveAt(Count - 1);
                         }
@@ -58,7 +65,7 @@ namespace SolidShineUi.Utils
             AddingItemStringEventArgs e = new AddingItemStringEventArgs(item);
             AddingItem?.Invoke(this, e);
             if (e.Cancel) return;
-            if (Capacity >= 0 && Count >= Capacity)
+            if (MaxCount >= 0 && Count >= MaxCount)
             {
                 RemoveAt(Count - 1);
             }
@@ -71,7 +78,7 @@ namespace SolidShineUi.Utils
             AddingItemStringEventArgs e = new AddingItemStringEventArgs(item);
             AddingItem?.Invoke(this, e);
             if (e.Cancel) return;
-            if (Capacity >= 0 && Count >= Capacity)
+            if (MaxCount >= 0 && Count >= MaxCount)
             {
                 RemoveAt(Count - 1);
             }

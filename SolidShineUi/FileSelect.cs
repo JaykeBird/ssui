@@ -6,12 +6,12 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Linq;
 using SolidShineUi.Utils;
+using System.Windows.Markup;
 
 namespace SolidShineUi
 {
@@ -19,6 +19,7 @@ namespace SolidShineUi
     /// <summary>
     /// A control that provides a responsive and customizable UI for users to select files on their computer, similar to the "<c>input type="file"</c>" element in HTML.
     /// </summary>
+    [DefaultEvent("SelectionChanged"), ContentProperty("SelectedFiles")]
     public class FileSelect : Control
     {
         static FileSelect()
@@ -36,7 +37,7 @@ namespace SolidShineUi
             SetValue(PaddingProperty, new Thickness(2));
             SetValue(DispalyFilenamesProperty, false);
 
-            SetValue(SelectedFilesPropertyKey, new FilenameStringCollection());
+            SetValue(SelectedFilesPropertyKey, new LimitableStringCollection());
             SelectedFiles.AddingItem += SelectedFiles_AddingItem;
             SelectedFiles.CollectionChanged += SelectedFiles_CollectionChanged;
 
@@ -106,6 +107,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -523,8 +527,8 @@ namespace SolidShineUi
         #region Selected Files
 
         private static readonly DependencyPropertyKey SelectedFilesPropertyKey
-            = DependencyProperty.RegisterReadOnly("SelectedFiles", typeof(FilenameStringCollection), typeof(FileSelect),
-            new FrameworkPropertyMetadata(new FilenameStringCollection()));
+            = DependencyProperty.RegisterReadOnly("SelectedFiles", typeof(LimitableStringCollection), typeof(FileSelect),
+            new FrameworkPropertyMetadata(new LimitableStringCollection()));
 
         public static readonly DependencyProperty SelectedFilesProperty = SelectedFilesPropertyKey.DependencyProperty;
 
@@ -532,9 +536,9 @@ namespace SolidShineUi
         /// Get the list of files selected in this FileSelect. You can add or remove items from the collection, or set the collection's max size via the <c>Capacity</c> property.
         /// </summary>
         [Category("Common")]
-        public FilenameStringCollection SelectedFiles
+        public LimitableStringCollection SelectedFiles
         {
-            get { return (FilenameStringCollection)GetValue(SelectedFilesProperty); }
+            get { return (LimitableStringCollection)GetValue(SelectedFilesProperty); }
             private set { SetValue(SelectedFilesPropertyKey, value); }
         }
 
@@ -662,7 +666,7 @@ namespace SolidShineUi
         private void fs_InternalAllowMultipleFilesChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             AllowMultipleFilesChanged?.Invoke(this, e);
-            SelectedFiles.Capacity = AllowMultipleFiles ? -1 : 1;
+            SelectedFiles.MaxCount = AllowMultipleFiles ? -1 : 1;
         }
 
         #endregion
