@@ -36,7 +36,7 @@ namespace SolidShineUi
 
         private void LoadTemplateItems()
         {
-            // TODO: if needed, locate and load in any needed elements from the control template
+            
             if (!itemsLoaded)
             {
                 ic = (ItemsControl)GetTemplateChild("PART_Ic");
@@ -71,6 +71,9 @@ namespace SolidShineUi
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
+        /// <summary>
+        /// Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.
+        /// </summary>
         [Category("Common")]
         public bool MultiSelect
         {
@@ -287,7 +290,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the color scheme to apply to the control.
+        /// Get or set the color scheme to apply to the control. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
         [Category("Appearance")]
         public ColorScheme ColorScheme
@@ -306,7 +309,8 @@ namespace SolidShineUi
         bool runApply = true;
 
         /// <summary>
-        /// Use a lighter border color when applying color schemes. Note that this does not apply in high-contrast mode.
+        /// Use a lighter border color when applying color schemes. Note that this does not apply in high-contrast mode,
+        /// nor does it apply if you are not using color schemes to set this control's appearance.
         /// </summary>
         public bool UseLighterBorder
         {
@@ -321,6 +325,11 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        /// <param name="useLighterBorder">Set if a lighter border color should be used.</param>
         public void ApplyColorScheme(ColorScheme cs, bool useLighterBorder = false)
         {
             runApply = false;
@@ -383,6 +392,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
 
+        /// <summary>
+        /// Raised when an item is selected or deselected in this list.
+        /// </summary>
         public event SelectionChangedEventHandler SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
@@ -408,6 +420,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent ItemsAddedEvent = EventManager.RegisterRoutedEvent(
             "ItemsAdded", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
 
+        /// <summary>
+        /// Raised when an item is added to this list.
+        /// </summary>
         public event SelectionChangedEventHandler ItemsAdded
         {
             add { AddHandler(ItemsAddedEvent, value); }
@@ -428,6 +443,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent ItemsRemovedEvent = EventManager.RegisterRoutedEvent(
             "ItemsRemoved", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
 
+        /// <summary>
+        /// Raised when an item is removed from this list.
+        /// </summary>
         public event SelectionChangedEventHandler ItemsRemoved
         {
             add { AddHandler(ItemsRemovedEvent, value); }
@@ -452,6 +470,9 @@ namespace SolidShineUi
             = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewSelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
 
+        /// <summary>
+        /// Get or set the appearance of the horizontal scroll bar for this control.
+        /// </summary>
         [Category("Layout")]
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
@@ -463,6 +484,9 @@ namespace SolidShineUi
             = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewSelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
 
+        /// <summary>
+        /// Get or set the appearance of the vertical scroll bar for this control.
+        /// </summary>
         [Category("Layout")]
         public ScrollBarVisibility VerticalScrollBarVisibility
         {
@@ -472,6 +496,9 @@ namespace SolidShineUi
 
         #region Brushes
 
+        /// <summary>
+        /// Get or set the brush used for the background of this control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush Background
         {
@@ -479,6 +506,9 @@ namespace SolidShineUi
             set => SetValue(BackgroundProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used when an item in this control is being clicked.
+        /// </summary>
         [Category("Brushes")]
         public Brush ClickBrush
         {
@@ -490,6 +520,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used when an item in this control is selected.
+        /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
         {
@@ -501,6 +534,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used when an item in this control is highlighted (i.e. has the mouse over it or has keyboard focus).
+        /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
         {
@@ -511,6 +547,10 @@ namespace SolidShineUi
                 UpdateChildrenAppearance();
             }
         }
+
+        /// <summary>
+        /// Get or set the brush used for the background when this control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush DisabledBrush
         {
@@ -518,6 +558,9 @@ namespace SolidShineUi
             set => SetValue(DisabledBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border when this control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderDisabledBrush
         {
@@ -525,6 +568,9 @@ namespace SolidShineUi
             set => SetValue(BorderDisabledBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border around this control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush BorderBrush
         {
@@ -573,7 +619,7 @@ namespace SolidShineUi
             new PropertyMetadata(new CornerRadius(0)));
 
         /// <summary>
-        /// Get or set the thickness of the border around the button.
+        /// Get or set the thickness of the border around this control.
         /// </summary>
         [Category("Appearance")]
         public new Thickness BorderThickness
@@ -583,7 +629,8 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.
+        /// Get or set the corner radius (or radii) to use for the control's border. Setting the corners to 0 means there is no rounding; square corners are used.
+        /// Any corners with a higher number will be rounded.
         /// </summary>
         [Category("Appearance")]
         public CornerRadius CornerRadius
@@ -596,23 +643,25 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Convenience Methods
+        #region Convenience Methods (to remove later)
 
         /// <summary>
         /// Gets the number of items in this NewSelectPanel.
         /// </summary>
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.Count\".", false)]
         public int Count { get => Items.Count; }
 
         /// <summary>
         /// Gets the number of items that are currently selected.
         /// </summary>
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.SelectedItems.Count\".", false)]
         public int SelectionCount { get => Items.SelectedItems.Count; }
 
         /// <summary>
         /// Get a collection of items that have been selected, returned as a certain type (that inherits from SelectableUserControl).
         /// </summary>
         /// <typeparam name="T">The type to return the selected items as. It must inherit from SelectableUserControl.</typeparam>
-        /// <returns></returns>
+        [Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.SelectedItems.OfType<>\".", false)]
         public IEnumerable<T> GetSelectedItemsOfType<T>() where T : SelectableUserControl
         {
             return Items.SelectedItems.OfType<T>();
@@ -621,6 +670,7 @@ namespace SolidShineUi
         /// <summary>
         /// Select all items in this NewSelectPanel.
         /// </summary>
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.SelectAll\".", false)]
         public void SelectAll()
         {
             Items.SelectAll();
@@ -629,27 +679,30 @@ namespace SolidShineUi
         /// <summary>
         /// Deselect all items in this NewSelectPanel.
         /// </summary>
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.ClearSelection\".", false)]
         public void DeselectAll()
         {
             Items.ClearSelection();
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
         public void AddItems(IEnumerable<SelectableUserControl> items)
         {
             foreach (SelectableUserControl item in items)
             {
-                // TODO: add internal variable to suppress events
                 Items.Add(item);
             }
-            RaiseItemsAddedEvent(items.ToList());
+            //RaiseItemsAddedEvent(items.ToList());
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.Insert\".", false)]
         public void InsertItem(int index, SelectableUserControl item)
         {
             Items.Insert(index, item);
             //RaiseItemsAddedEvent(new List<SelectableUserControl>() { item });
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Insert\".", false)]
         public void InsertItems(int index, IEnumerable<SelectableUserControl> items)
         {
             List<SelectableUserControl> litems = items.ToList();
@@ -657,67 +710,73 @@ namespace SolidShineUi
 
             foreach (SelectableUserControl item in litems)
             {
-                // TODO: add internal variable to suppress events
                 Items.Insert(index, item);
             }
 
-            RaiseItemsAddedEvent(litems);
+            //RaiseItemsAddedEvent(litems);
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.OfType<>\".", false)]
         public IEnumerable<T> GetItemsAsType<T>() where T : SelectableUserControl
         {
-            foreach (SelectableUserControl item in Items)
-            {
-                if (item is T t)
-                {
-                    yield return t;
-                }
-            }
+            return Items.OfType<T>();
+            //foreach (SelectableUserControl item in Items)
+            //{
+            //    if (item is T t)
+            //    {
+            //        yield return t;
+            //    }
+            //}
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.Remove\".", false)]
         public void RemoveItem(SelectableUserControl item)
         {
             Items.Remove(item);
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Remove\".", false)]
         public void RemoveItems(IEnumerable<SelectableUserControl> items)
         {
             foreach (var item in items)
             {
-                // TODO: add internal variable to suppress events
-                RemoveItem(item);
+                Items.Remove(item);
             }
 
-            RaiseItemsRemovedEvent(items.ToList());
+            //RaiseItemsRemovedEvent(items.ToList());
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.RemoveAt\".", false)]
         public void RemoveAt(int index)
         {
             Items.RemoveAt(index);
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Remove\".", false)]
         public void RemoveSelectedItems()
         {
             var items = new List<SelectableUserControl>(Items.SelectedItems);
             foreach (var item in items)
             {
-                // TODO: add internal variable to suppress events
                 Items.Remove(item);
             }
 
-            RaiseItemsRemovedEvent(items.ToList());
+            //RaiseItemsRemovedEvent(items.ToList());
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.IndexOf\".", false)]
         public int IndexOf(SelectableUserControl item)
         {
             return Items.IndexOf(item);
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
         public SelectableUserControl Get(int index)
         {
             return Items[index];
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
         public SelectableUserControl this[int index]
         {
             get
@@ -726,6 +785,7 @@ namespace SolidShineUi
             }
         }
 
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.Clear\".", false)]
         public void Clear()
         {
             Items.Clear();
@@ -735,6 +795,9 @@ namespace SolidShineUi
 
         #region Move Items
 
+        /// <summary>
+        /// Move the currently selected items up by one in the list.
+        /// </summary>
         public void MoveSelectedItemsUp()
         {
             if (Items.SelectedItems.Count == 0) return;
@@ -746,7 +809,7 @@ namespace SolidShineUi
 
             foreach (SelectableUserControl item in Items.SelectedItems)
             {
-                if (IndexOf(item) < index) index = IndexOf(item);
+                if (Items.IndexOf(item) < index) index = Items.IndexOf(item);
                 imov.Add(item);
             }
 
@@ -783,6 +846,9 @@ namespace SolidShineUi
             RefreshVisualSelection();
         }
 
+        /// <summary>
+        /// Move the currently selected items down by one in the list.
+        /// </summary>
         public void MoveSelectedItemsDown()
         {
             if (Items.SelectedItems.Count == 0) return;
@@ -793,12 +859,12 @@ namespace SolidShineUi
 
             foreach (SelectableUserControl item in Items.SelectedItems)
             {
-                if (IndexOf(item) < index) index = IndexOf(item);
+                if (Items.IndexOf(item) < index) index = Items.IndexOf(item);
 
                 imov.Add(item);
             }
 
-            if (index == int.MaxValue) index = (Items.Count);
+            if (index == int.MaxValue) index = Items.Count;
             index++;
 
             if (index > (Items.Count - 1) || index == int.MinValue + 1)
@@ -836,7 +902,7 @@ namespace SolidShineUi
 
         public void MoveItemUp(int index)
         {
-            SelectableUserControl suc = this[index];
+            SelectableUserControl suc = Items[index];
 
             int moveIndex = index - 1;//IndexOf(suc) - 1;
             if (moveIndex < 0)
@@ -855,7 +921,7 @@ namespace SolidShineUi
 
         public void MoveItemDown(int index)
         {
-            SelectableUserControl suc = this[index];
+            SelectableUserControl suc = Items[index];
 
             int moveIndex = index + 1; //IndexOf(suc) + 1;
             if (moveIndex > (Items.Count - 1))
