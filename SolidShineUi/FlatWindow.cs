@@ -5,6 +5,7 @@ using static SolidShineUi.ChromeButtons;
 //using System.Collections.Generic;
 using System.Windows.Shell;
 using System.ComponentModel;
+using System;
 
 namespace SolidShineUi
 {
@@ -18,6 +19,9 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(FlatWindow), new FrameworkPropertyMetadata(typeof(FlatWindow)));
         }
 
+        /// <summary>
+        /// Create a new FlatWindow.
+        /// </summary>
         public FlatWindow()
         {
             //InternalCornerRadiusChanged += flatWindow_InternalCornerRadiusChanged;
@@ -48,7 +52,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the color scheme to apply to the window.
+        /// Get or set the color scheme to apply to the window. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
         public ColorScheme ColorScheme
         {
@@ -56,6 +60,10 @@ namespace SolidShineUi
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -85,6 +93,12 @@ namespace SolidShineUi
             ContentBackground = cs.BackgroundColor.ToBrush();
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="hco">The high-contrast color scheme to apply.</param>
+        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
+            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
         public void ApplyColorScheme(HighContrastOption hco)
         {
             ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
@@ -316,6 +330,9 @@ namespace SolidShineUi
 
         #region Brushes
 
+        /// <summary>
+        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) is being clicked.
+        /// </summary>
         public Brush SelectionBrush
         {
             get
@@ -328,6 +345,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) has focus or has the mouse over it.
+        /// </summary>
         public Brush HighlightBrush
         {
             get
@@ -355,6 +375,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the icons of the caption buttons (in the top-right in non-RTL systems).
+        /// </summary>
         public Brush CaptionButtonsBrush
         {
             get
@@ -367,6 +390,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
+        /// </summary>
         public Brush CaptionTextBrush
         {
             get
@@ -379,6 +405,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border around the window.
+        /// </summary>
         public new Brush BorderBrush
         {
             get
@@ -391,6 +420,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the text in the caption area (title bar) when the window isn't focused/active. This has no effect if <c>ShowTitle</c> is false.
+        /// </summary>
         public Brush InactiveTextBrush
         {
             get
@@ -403,6 +435,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the caption area (title bar) when the window isn't focused/active. This does not change the color of the content area of the window.
+        /// </summary>
         public Brush InactiveBackground
         {
             get
@@ -415,6 +450,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the content area of the window (where most content and controls are displayed).
+        /// </summary>
         public Brush ContentBackground
         {
             get
@@ -466,7 +504,8 @@ namespace SolidShineUi
         #endregion
 
         /// <summary>
-        /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical button.
+        /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, 
+        /// you'll want to update the CaptionDisplayType to remove the physical button.
         /// </summary>
         public void DisableMaximizeAction()
         {
@@ -474,7 +513,8 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Calls the native Windows method to disable the Minimize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical button.
+        /// Calls the native Windows method to disable the Minimize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, 
+        /// you'll want to update the CaptionDisplayType to remove the physical button.
         /// </summary>
         public void DisableMinimizeAction()
         {
@@ -482,7 +522,8 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Calls the native Windows method to disable the Minimize and Maximize actions (via the right-click menu and the like). For <see cref="FlatWindow"/>, you'll want to update the CaptionDisplayType to remove the physical buttons.
+        /// Calls the native Windows method to disable the Minimize and Maximize actions (via the right-click menu and the like). For <see cref="FlatWindow"/>, 
+        /// you'll want to update the CaptionDisplayType to remove the physical buttons.
         /// </summary>
         public void DisableMaximizeAndMinimizeActions()
         {
