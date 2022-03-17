@@ -27,6 +27,9 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(FileSelect), new FrameworkPropertyMetadata(typeof(FileSelect)));
         }
 
+        /// <summary>
+        /// Create a new FileSelect control.
+        /// </summary>
         public FileSelect()
         {
             DragEnter += NewFileSelect_DragEnter;
@@ -82,6 +85,9 @@ namespace SolidShineUi
         #endregion
 
         #region Color Scheme
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
@@ -116,6 +122,10 @@ namespace SolidShineUi
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs == null)
@@ -272,6 +282,9 @@ namespace SolidShineUi
 
         #region Corner Radius
 
+        /// <summary>
+        /// Get or set how much rounding to apply to the corners of the control. Setting the corners to 0 means no rounding is done; straight corners are shown.
+        /// </summary>
         [Category("Appearance")]
         public CornerRadius CornerRadius
         {
@@ -288,6 +301,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
             "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
 
+        /// <summary>
+        /// Raised when the CornerRadius property is changed.
+        /// </summary>
         public event RoutedEventHandler CornerRadiusChanged
         {
             add { AddHandler(CornerRadiusChangedEvent, value); }
@@ -308,6 +324,9 @@ namespace SolidShineUi
             RaiseEvent(re);
         }
 
+        /// <summary>
+        /// Get or set how much rounding to apply to the Browse button inside the control. Settings the corners to 0 means no rounding is done; straight corners are shown.
+        /// </summary>
         [Category("Appearance")]
         public CornerRadius ButtonCornerRadius
         {
@@ -335,6 +354,9 @@ namespace SolidShineUi
             "ShowIcon", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set the text displayed in the Browse button. The default value is "Browse...".
+        /// </summary>
         [Category("Common")]
         public string BrowseButtonText
         {
@@ -342,6 +364,9 @@ namespace SolidShineUi
             set => SetValue(BrowseButtonTextProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the message displayed when no files have been selected. The default value is "(no files selected)".
+        /// </summary>
         [Category("Common")]
         public string NoFilesSelectedMessage
         {
@@ -349,6 +374,9 @@ namespace SolidShineUi
             set => SetValue(NoFilesSelectedMessageProperty, value);
         }
 
+        /// <summary>
+        /// Get or set if the file icons are shown for selected files.
+        /// </summary>
         [Category("Common")]
         public bool ShowIcon
         {
@@ -360,6 +388,10 @@ namespace SolidShineUi
             "ButtonPlacement", typeof(PlacementDirection), typeof(FileSelect),
             new PropertyMetadata(PlacementDirection.Right));
 
+        /// <summary>
+        /// Get or set the placement location of the Browse button. The button can be placed on any of the four edges of the control, or it can be hidden entirely.
+        /// </summary>
+        [Category("Common")]
         public PlacementDirection ButtonPlacement
         {
             get => (PlacementDirection)GetValue(ButtonPlacementProperty);
@@ -370,6 +402,11 @@ namespace SolidShineUi
             "DisplayFilenames", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set if the filenames of the selected files are displayed. If true, then all selected files are displayed in a vertical list (with scrolling if needed).
+        /// If false, then only a count is displayed (i.e. "3 file(s) selected").
+        /// </summary>
+        [Category("Common")]
         public bool DisplayFilenames
         {
             get => (bool)GetValue(DispalyFilenamesProperty);
@@ -380,6 +417,9 @@ namespace SolidShineUi
             "HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
 
+        /// <summary>
+        /// Get or set the appearance of the horizontal scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
+        /// </summary>
         [Category("Layout")]
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
@@ -391,6 +431,9 @@ namespace SolidShineUi
             "VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
 
+        /// <summary>
+        /// Get or set the appearance of the vertical scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
+        /// </summary>
         [Category("Layout")]
         public ScrollBarVisibility VerticalScrollBarVisibility
         {
@@ -404,10 +447,15 @@ namespace SolidShineUi
 
         #region Commands
 
+        /// <summary>When executed, displays the Browse for Files dialog so a user can select one (or more) files.</summary>
         public static readonly RoutedCommand BrowseForFile = new RoutedCommand();
+        /// <summary>When executed, clears all files from the SelectedFiles list. Only executable if there is one or more files currently selected.</summary>
         public static readonly RoutedCommand ClearSelectedFiles = new RoutedCommand();
+        /// <summary>When executed, copies a list of the selected files to the clipboard. Only executable if there is one or more files currently selected.</summary>
         public static readonly RoutedCommand CopyFilenames = new RoutedCommand();
+        /// <summary>When executed, opens the containing folders of each selected file. Only executable if there is one or more files currently selected.</summary>
         public static readonly RoutedCommand OpenContainingFolders = new RoutedCommand();
+        /// <summary>When executed, removes the specific file passed in through the command parameter. Only executable if the file is present in the list of selected files.</summary>
         public static readonly RoutedCommand RemoveSelectedFile = new RoutedCommand();
 
         private void OnBrowseForFile(object sender, ExecutedRoutedEventArgs e)
@@ -579,7 +627,7 @@ namespace SolidShineUi
         private void SelectedFiles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 #endif
         {
-            LoadTemplateItems();
+            //LoadTemplateItems();
 
             RoutedEventArgs re = new RoutedEventArgs(SelectionChangedEvent);
             RaiseEvent(re);
@@ -673,6 +721,9 @@ namespace SolidShineUi
 
         protected event DependencyPropertyChangedEventHandler InternalAllowMultipleFilesChanged;
 
+        /// <summary>
+        /// Raised when the AllowMultipleFiles property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? AllowMultipleFilesChanged;
 #else
