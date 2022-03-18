@@ -24,6 +24,12 @@ namespace SsuiSample
             InitializeComponent();
         }
 
+#if NETCOREAPP
+        FlatWindow? fwRunning = null;
+#else
+        FlatWindow fwRunning = null;
+#endif
+
         #region ColorScheme
 
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
@@ -59,7 +65,7 @@ namespace SsuiSample
         }
 
 
-        #endregion
+#endregion
 
         Color selColor = Colors.Salmon;
 
@@ -77,6 +83,12 @@ namespace SsuiSample
 
         private void btnDisplay_Click(object sender, RoutedEventArgs e)
         {
+            if (fwRunning != null)
+            {
+                fwRunning.Focus();
+                return;
+            }
+
             FlatWindow fw = new FlatWindow
             {
                 Width = nudWidth.Value,
@@ -86,6 +98,7 @@ namespace SsuiSample
             };
 
             fw.SourceInitialized += fw_SourceInitialized;
+            fw.Closed += Fw_Closed;
 
             // set up the TopRightElement
             if (chkTopRight.IsChecked)
@@ -152,6 +165,17 @@ namespace SsuiSample
             }
 
             fw.Show();
+            fwRunning = fw;
+            btnShowProperties.Visibility = Visibility.Visible;
+            propList.LoadObject(fw);
+        }
+
+        private void Fw_Closed(object sender, EventArgs e)
+        {
+            fwRunning = null;
+            colProperties.MinWidth = 0;
+            colProperties.Width = new GridLength(0, GridUnitType.Pixel);
+            btnShowProperties.Visibility = Visibility.Collapsed;
         }
 
         private void fw_SourceInitialized(object sender, EventArgs e)
@@ -170,6 +194,28 @@ namespace SsuiSample
                         fw.DisableMinimizeAction();
                     }
                 });
+            }
+        }
+
+        private void btnShowProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (colProperties.ActualWidth > 0)
+            {
+                colProperties.MinWidth = 0;
+                colProperties.Width = new GridLength(0, GridUnitType.Pixel);
+            }
+            else
+            {
+                colProperties.Width = new GridLength(4, GridUnitType.Star);
+                colProperties.MinWidth = 6;
+            }
+        }
+
+        private void control_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (fwRunning != null)
+            {
+                fwRunning.Close();
             }
         }
     }
