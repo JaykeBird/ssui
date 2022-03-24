@@ -19,6 +19,9 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MenuButton), new FrameworkPropertyMetadata(typeof(MenuButton)));
         }
 
+        /// <summary>
+        /// Create a new MenuButton.
+        /// </summary>
         public MenuButton()
         {
             ColorSchemeChanged += OnColorSchemeChanged;
@@ -132,18 +135,35 @@ namespace SolidShineUi
             set => SetValue(KeepMenuArrowOnRightProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply</param>
+        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
+        /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
+        /// This can also be achieved with the <c>UseAccentColors</c> property.
+        /// </param>
         public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
         {
             base.ApplyColorScheme(cs, transparentBack, useAccentColors);
             if (Menu != null) Menu.ApplyColorScheme(cs);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="hco">The high-contrast color scheme to apply.</param>
+        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
+            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
         public new void ApplyColorScheme(HighContrastOption hco, bool transparentBack = false)
         {
             base.ApplyColorScheme(hco, transparentBack);
             if (Menu != null) Menu.ApplyColorScheme(hco);
         }
 
+        /// <summary>
+        /// Internal method for opening up the menu when the button is clicked
+        /// </summary>
         private void MenuButton_Click(object sender, RoutedEventArgs e)
         {
             if (Menu != null)

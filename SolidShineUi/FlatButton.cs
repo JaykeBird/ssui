@@ -82,6 +82,9 @@ namespace SolidShineUi
 
         #region Brushes
 
+        /// <summary>
+        /// Get or set the brush used for the background of the control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush Background
         {
@@ -89,6 +92,9 @@ namespace SolidShineUi
             set => SetValue(BackgroundProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the control while the mouse is clicking it.
+        /// </summary>
         [Category("Brushes")]
         public Brush ClickBrush
         {
@@ -96,6 +102,10 @@ namespace SolidShineUi
             set => SetValue(ClickBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of this button while it is selected
+        /// (i.e. the <c>IsSelected</c> property is true).
+        /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
         {
@@ -103,12 +113,19 @@ namespace SolidShineUi
             set => SetValue(SelectedBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the control while the mouse is over it, or it has keyboard focus.
+        /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
         {
             get => (Brush)GetValue(HighlightBrushProperty);
             set => SetValue(HighlightBrushProperty, value);
         }
+
+        /// <summary>
+        /// Get or set the brush used for the background of the control when the control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush DisabledBrush
         {
@@ -116,6 +133,9 @@ namespace SolidShineUi
             set => SetValue(DisabledBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border of the control when the control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderDisabledBrush
         {
@@ -123,6 +143,9 @@ namespace SolidShineUi
             set => SetValue(BorderDisabledBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border around the edges of the control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush BorderBrush
         {
@@ -130,6 +153,9 @@ namespace SolidShineUi
             set => SetValue(BorderBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderHighlightBrush
         {
@@ -137,6 +163,10 @@ namespace SolidShineUi
             set => SetValue(BorderHighlightBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border while the control is selected
+        /// (i.e. the <c>IsSelected</c> property is true).
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderSelectedBrush
         {
@@ -313,6 +343,14 @@ namespace SolidShineUi
         //    }
         //}
 
+        /// <summary>
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply</param>
+        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
+        /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
+        /// This can also be achieved with the <c>UseAccentColors</c> property.
+        /// </param>
         public void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
         {
             if (runApply == false)
@@ -459,6 +497,12 @@ namespace SolidShineUi
             //fBtn_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="hco">The high-contrast color scheme to apply.</param>
+        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
+            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
         public void ApplyColorScheme(HighContrastOption hco, bool transparentBack = false)
         {
             ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
