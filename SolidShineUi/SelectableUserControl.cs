@@ -163,7 +163,7 @@ namespace SolidShineUi
         /// <summary>
         /// Make sure the control's visuals match the set brush properties. Call this if the parent's ColorScheme was changed.
         /// </summary>
-        public void UpdateBrushes()
+        private void UpdateBrushes()
         {
             if (performingClick)
             {
@@ -189,6 +189,7 @@ namespace SolidShineUi
         /// <param name="cs">The new color scheme.</param>
         public virtual void ApplyColorScheme(ColorScheme cs)
         {
+            UpdateBrushes();
             if (IsEnabled)
             {
                 Foreground = cs.ForegroundColor.ToBrush();

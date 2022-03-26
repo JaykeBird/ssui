@@ -401,6 +401,9 @@ namespace SolidShineUi
         {
             foreach (SelectableUserControl item in Items)
             {
+                item.SelectedBrush = SelectedBrush;
+                item.HighlightBrush = HighlightBrush;
+                item.ClickBrush = ClickBrush;
                 item.ApplyColorScheme(ColorScheme);
             }
         }
