@@ -9,7 +9,7 @@ using System.Windows.Controls;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A ComboBox where the items are populated from an inputted Enum.
+    /// A ComboBox where the items are populated from an Enum.
     /// </summary>
     public class EnumComboBox : ComboBox
     {
@@ -29,6 +29,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent EnumChangedEvent = EventManager.RegisterRoutedEvent(
             "EnumChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(EnumComboBox));
 
+        /// <summary>
+        /// Raised when the Enum property is changed.
+        /// </summary>
         public event RoutedEventHandler EnumChanged
         {
             add { AddHandler(EnumChangedEvent, value); }
