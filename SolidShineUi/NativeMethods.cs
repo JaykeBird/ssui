@@ -80,11 +80,11 @@ namespace SolidShineUi
         /// Hide/disable the maximize button, so that the window cannot be maximized.
         /// </summary>
         /// <param name="hwnd">The handle to the window.</param>
-        public static void HideMaximizeButton(IntPtr hwnd)
+        public static int HideMaximizeButton(IntPtr hwnd)
         {
             int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
 
-            SetWindowLong(hwnd, GWL_STYLE, (currentStyle & ~WS_MAXIMIZEBOX));
+            return SetWindowLong(hwnd, GWL_STYLE, (currentStyle & ~WS_MAXIMIZEBOX));
         }
 
         /// <summary>
@@ -101,11 +101,11 @@ namespace SolidShineUi
         /// Hide/disable the minimize button, so that the window cannot be minimized (hidden in taskbar).
         /// </summary>
         /// <param name="hwnd">The handle to the window.</param>
-        public static void HideMinimizeButton(IntPtr hwnd)
+        public static int HideMinimizeButton(IntPtr hwnd)
         {
             int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
 
-            SetWindowLong(hwnd, GWL_STYLE, (currentStyle & ~WS_MINIMIZEBOX));
+            return SetWindowLong(hwnd, GWL_STYLE, (currentStyle & ~WS_MINIMIZEBOX));
         }
 
         /// <summary>
