@@ -242,10 +242,11 @@ namespace SolidShineUi.PropertyList
         }
 
         /// <summary>
-        /// Change the text used to filter the list of properties. Applying a filter text will hide any properties that don't contain this text,
-        /// and clearing the filter text (by passing in <c>null</c> or an empty string) will allow all properties to be shown.
+        /// Change the text used to filter the list of properties. Applying a filter text will hide any properties that don't contain this text (or its type doesn't contain this text).
         /// </summary>
-        /// <param name="filter">The filter text to apply. Use <c>null</c> or an empty string to not apply a filter.</param>
+        /// <param name="filter">
+        /// The filter text to apply. Use <c>null</c> or an empty string to not apply a filter. Start the string with "@" to only filter by property name (not type).
+        /// </param>
 #if NETCOREAPP
         public void FilterProperties(string? filter)
 #else
@@ -275,7 +276,15 @@ namespace SolidShineUi.PropertyList
             }
             else
             {
-                var propInfos = Filter(filter);
+                IEnumerable<PropertyInfo> propInfos;
+                if (filter.StartsWith("@"))
+                {
+                    propInfos = FilterNameOnly(filter.Substring(1));
+                }
+                else
+                {
+                    propInfos = Filter(filter);
+                }
 
 #if NETCOREAPP
                 foreach (UIElement? item in stkProperties.Children)
@@ -301,6 +310,16 @@ namespace SolidShineUi.PropertyList
                 }
             }
         }
+
+        private IEnumerable<PropertyInfo> FilterNameOnly(string filter)
+        {
+#if NETCOREAPP
+            return properties.Where(p => p.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase));// || (p.PropertyType.FullName ?? "").Contains(filter, StringComparison.InvariantCultureIgnoreCase));
+#else
+            return properties.Where(p => p.Name.Contains(filter));// || (p.PropertyType.FullName ?? "").Contains(filter));
+#endif
+        }
+
 
         private IEnumerable<PropertyInfo> Filter(string filter)
         {
