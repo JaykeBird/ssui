@@ -10,6 +10,9 @@ using System.Windows.Media;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A ListBox-like control that can be used to select and interact with multiple items, with extra functionality and a visual style that matches the rest of the Solid Shine UI controls.
+    /// </summary>
     public class NewSelectPanel : Control
     {
         static NewSelectPanel()
@@ -17,6 +20,9 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NewSelectPanel), new FrameworkPropertyMetadata(typeof(NewSelectPanel)));
         }
 
+        /// <summary>
+        /// Create a new NewSelectPanel.
+        /// </summary>
         public NewSelectPanel()
         {
             SetValue(ItemsPropertyKey, new SelectableCollection<SelectableUserControl>());
