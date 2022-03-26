@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,24 +33,28 @@ namespace SolidShineUi
             Items.ItemRemoving += Items_ItemRemoving;
             Items.CollectionChanged += Items_CollectionChanged;
             Items.SelectionChanged += Items_SelectionChanged;
+
         }
 
         bool itemsLoaded = false;
 
 #if NETCOREAPP
         ItemsControl? ic = null;
+        ScrollViewer? sv = null;
 #else
         ItemsControl ic = null;
+        ScrollViewer sv = null;
 #endif
 
         private void LoadTemplateItems()
         {
-            
+
             if (!itemsLoaded)
             {
                 ic = (ItemsControl)GetTemplateChild("PART_Ic");
+                sv = (ScrollViewer)GetTemplateChild("PART_Sv");
 
-                if (ic != null)
+                if (ic != null && sv != null)
                 {
                     itemsLoaded = true;
                 }
@@ -692,6 +699,13 @@ namespace SolidShineUi
         }
 
         [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
+        public void AddItem(SelectableUserControl item)
+        {
+            Items.Add(item);
+            //RaiseItemsAddedEvent(items.ToList());
+        }
+
+        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
         public void AddItems(IEnumerable<SelectableUserControl> items)
         {
             foreach (SelectableUserControl item in items)
@@ -801,12 +815,68 @@ namespace SolidShineUi
 
         #region Move Items
 
+        private class SortByParentIndex : IComparer<SelectableUserControl>
+        {
+
+#if NETCOREAPP
+            public SelectableCollection<SelectableUserControl>? ParentCollection { get; set; }
+
+            public int Compare(SelectableUserControl? a, SelectableUserControl? b)
+#else
+            public SelectableCollection<SelectableUserControl> ParentCollection { get; set; }
+
+            public int Compare(SelectableUserControl a, SelectableUserControl b)
+#endif
+            {
+                // do null checks first
+                // I don't think we'll run into a situation where these will actually be null, but better safe than sorry
+                if (a == null)
+                {
+                    if (b == null) return 0;
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                else if (b == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    if (ParentCollection == null)
+                    {
+                        // no sorting can be done
+                        return 0;
+                    }
+                    else
+                    {
+                        if (ParentCollection.IndexOf(a) > ParentCollection.IndexOf(b))
+                        {
+                            return 1;
+                        }
+                        else if (ParentCollection.IndexOf(a) < ParentCollection.IndexOf(b))
+                        {
+                            return -1;
+                        }
+                        else { return 0; }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Move the currently selected items up by one in the list.
         /// </summary>
         public void MoveSelectedItemsUp()
         {
             if (Items.SelectedItems.Count == 0) return;
+
+            if (Items.SelectedItems.Count == 1)
+            {
+                MoveItemUp(Items.IndexOf(Items.SelectedItems[0]));
+                return;
+            }
 
             // set up variables
             int index = int.MaxValue;
@@ -818,6 +888,8 @@ namespace SolidShineUi
                 if (Items.IndexOf(item) < index) index = Items.IndexOf(item);
                 imov.Add(item);
             }
+
+            imov.Sort(new SortByParentIndex() { ParentCollection = Items });
 
             index--;
 
@@ -832,8 +904,7 @@ namespace SolidShineUi
                 Items.Remove(item);
             }
 
-            // sometimes the list needs to be reversed, sometimes it doesn't???
-            //imov.Reverse();
+            imov.Reverse();
 
             Items.ClearSelection();
 
@@ -945,6 +1016,7 @@ namespace SolidShineUi
         }
 
         #endregion
+
 
     }
 }
