@@ -5,3 +5,6 @@ dotnet_diagnostic.RXRA001.severity = none
 
 # RXRA004: Property can be expanded
 dotnet_diagnostic.RXRA004.severity = silent
+
+# CA1401: P/Invokes should not be visible
+dotnet_diagnostic.CA1401.severity = none

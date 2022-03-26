@@ -43,7 +43,7 @@ namespace SolidShineUi.Utils
 #endif
         }
 
-        private BitmapSource GetImageFromFilePath(string path)
+        private static BitmapSource GetImageFromFilePath(string path)
         {
             return NativeMethods.GetSmallIcon(path);
         }

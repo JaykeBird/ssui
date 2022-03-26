@@ -176,6 +176,7 @@ namespace SolidShineUi
             return CreateFromHSV(h, s, v);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         static Color AddSatValue(double h, double s, double v, double addS, double addV)
         {
             if (v + addV < 0)
@@ -201,7 +202,7 @@ namespace SolidShineUi
             }
             else
             {
-                s = s + addS;
+                s += addS;
             }
 
             return CreateFromHSV(h, s, v);
@@ -281,9 +282,9 @@ namespace SolidShineUi
             double x = c * (1 - Math.Abs((h % 2) - 1));
             double m = value - c;
 
-            double r1 = 0;
-            double g1 = 0;
-            double b1 = 0;
+            double r1;
+            double g1;
+            double b1;
 
             if (0 <= h && h < 1)
             {

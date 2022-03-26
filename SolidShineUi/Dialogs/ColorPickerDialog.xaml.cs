@@ -389,37 +389,37 @@ namespace SolidShineUi
 
         }
 
-        void UpdateValuesHsv(double h, double s, double v)
-        {
-            updating = true;
+        //void UpdateValuesHsv(double h, double s, double v)
+        //{
+        //    updating = true;
 
-            Color col = ColorsHelper.CreateFromHSV(h, s, v);
+        //    Color col = ColorsHelper.CreateFromHSV(h, s, v);
 
-            nudR.Value = col.R;
-            nudG.Value = col.G;
-            nudB.Value = col.B;
+        //    nudR.Value = col.R;
+        //    nudG.Value = col.G;
+        //    nudB.Value = col.B;
 
-            sldR.Value = col.R;
-            sldG.Value = col.G;
-            sldB.Value = col.B;
+        //    sldR.Value = col.R;
+        //    sldG.Value = col.G;
+        //    sldB.Value = col.B;
 
-            txtHex.Text = col.GetHexString();
+        //    txtHex.Text = col.GetHexString();
 
-            updating = true;
+        //    updating = true;
 
-            nudH.Value = (int)h;
-            nudS.Value = s;
-            nudV.Value = v;
+        //    nudH.Value = (int)h;
+        //    nudS.Value = s;
+        //    nudV.Value = v;
 
-            sldH.Value = h;
-            sldS.Value = s * 1000;
-            sldV.Value = v * 1000;
+        //    sldH.Value = h;
+        //    sldS.Value = s * 1000;
+        //    sldV.Value = v * 1000;
 
-            UpdateSelectedColor(col, false);
-            brdrSlColor.Background = BrushFactory.Create(col);
+        //    UpdateSelectedColor(col, false);
+        //    brdrSlColor.Background = BrushFactory.Create(col);
 
-            updating = false;
-        }
+        //    updating = false;
+        //}
 
         #endregion
 

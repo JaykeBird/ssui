@@ -43,7 +43,7 @@ namespace SolidShineUi.Utils
 #endif
         }
 
-        private string GetFileNameFromFullPath(string path)
+        private static string GetFileNameFromFullPath(string path)
         {
             return Path.GetFileName(path);
         }

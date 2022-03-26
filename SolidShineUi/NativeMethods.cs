@@ -122,11 +122,11 @@ namespace SolidShineUi
         /// Hide/disable the minimize and maximize buttons, so that the window cannot be maximized or minimized.
         /// </summary>
         /// <param name="hwnd">The handle to the window.</param>
-        public static void HideMinimizeAndMaximizeButtons(IntPtr hwnd)
+        public static int HideMinimizeAndMaximizeButtons(IntPtr hwnd)
         {
             int currentStyle = GetWindowLong(hwnd, GWL_STYLE);
 
-            SetWindowLong(hwnd, GWL_STYLE, (currentStyle & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX));
+            return SetWindowLong(hwnd, GWL_STYLE, (currentStyle & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX));
         }
 
         #region Window extension methods
@@ -172,7 +172,7 @@ namespace SolidShineUi
         public const uint SHGFI_LARGEICON = 0x0; // Large icon
         public const uint SHGFI_SMALLICON = 0x1; // Small icon
 
-        [DllImport("shell32.dll")]
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr SHGetFileInfo(string path, uint fattrs, ref SHFILEINFO sfi, uint size, uint flags);
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace SolidShineUi
         {
             IntPtr hdc = GetDC(IntPtr.Zero);
             uint pixel = GetPixel(hdc, x, y);
-            ReleaseDC(IntPtr.Zero, hdc);
+            int _ = ReleaseDC(IntPtr.Zero, hdc);
             Color color = Color.FromRgb((byte)(pixel & 0x000000FF),
                          (byte)((pixel & 0x0000FF00) >> 8),
                          (byte)((pixel & 0x00FF0000) >> 16));

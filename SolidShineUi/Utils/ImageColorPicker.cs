@@ -97,14 +97,14 @@ namespace SolidShineUi.Utils
 
         private void ImageColorPicker_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            ReleaseDC(IntPtr.Zero, dc);
+            var _ = ReleaseDC(IntPtr.Zero, dc);
             dc = IntPtr.Zero;
             dc_present = false;
         }
 
         private void ImageColorPicker_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ReleaseDC(IntPtr.Zero, dc);
+            var _ = ReleaseDC(IntPtr.Zero, dc);
             dc = IntPtr.Zero;
             dc_present = false;
         }
@@ -147,14 +147,14 @@ namespace SolidShineUi.Utils
 
         private void imageColorPicker_StylusLeave(object sender, System.Windows.Input.StylusEventArgs e)
         {
-            ReleaseDC(IntPtr.Zero, dc);
+            int _ = ReleaseDC(IntPtr.Zero, dc);
             dc = IntPtr.Zero;
             dc_present = false;
         }
 
         private void imageColorPicker_StylusUp(object sender, System.Windows.Input.StylusEventArgs e)
         {
-            ReleaseDC(IntPtr.Zero, dc);
+            int _ = ReleaseDC(IntPtr.Zero, dc);
             dc = IntPtr.Zero;
             dc_present = false;
         }

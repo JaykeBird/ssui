@@ -498,6 +498,7 @@ namespace SolidShineUi
             listBoxUpdate = false;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void txtSize_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (lstSize == null)
