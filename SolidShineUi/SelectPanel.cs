@@ -16,17 +16,17 @@ namespace SolidShineUi
     /// <summary>
     /// A ListBox-like control that can be used to select and interact with multiple items, with extra functionality and a visual style that matches the rest of the Solid Shine UI controls.
     /// </summary>
-    public class NewSelectPanel : Control
+    public class SelectPanel : Control
     {
-        static NewSelectPanel()
+        static SelectPanel()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewSelectPanel), new FrameworkPropertyMetadata(typeof(NewSelectPanel)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SelectPanel), new FrameworkPropertyMetadata(typeof(SelectPanel)));
         }
 
         /// <summary>
         /// Create a new NewSelectPanel.
         /// </summary>
-        public NewSelectPanel()
+        public SelectPanel()
         {
             SetValue(ItemsPropertyKey, new SelectableCollection<SelectableUserControl>());
             //Items = new SelectableCollection<SelectableUserControl>();
@@ -75,7 +75,7 @@ namespace SolidShineUi
         //    new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
-            = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(NewSelectPanel),
+            = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(SelectPanel),
             new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
 
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
@@ -292,12 +292,12 @@ namespace SolidShineUi
         #region Color Scheme
 
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewSelectPanel),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanel),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is NewSelectPanel sp)
+            if (d is SelectPanel sp)
             {
                 sp.ColorSchemeChanged?.Invoke(d, e);
 #if NETCOREAPP
@@ -409,7 +409,7 @@ namespace SolidShineUi
         #region Routed Events
 
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-            "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
+            "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
 
         /// <summary>
         /// Raised when an item is selected or deselected in this list.
@@ -437,7 +437,7 @@ namespace SolidShineUi
         }
 
         public static readonly RoutedEvent ItemsAddedEvent = EventManager.RegisterRoutedEvent(
-            "ItemsAdded", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
+            "ItemsAdded", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
 
         /// <summary>
         /// Raised when an item is added to this list.
@@ -460,7 +460,7 @@ namespace SolidShineUi
         }
 
         public static readonly RoutedEvent ItemsRemovedEvent = EventManager.RegisterRoutedEvent(
-            "ItemsRemoved", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(NewSelectPanel));
+            "ItemsRemoved", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
 
         /// <summary>
         /// Raised when an item is removed from this list.
@@ -486,7 +486,7 @@ namespace SolidShineUi
         #region Visual Properties
 
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
-            = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewSelectPanel),
+            = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
 
         /// <summary>
@@ -500,7 +500,7 @@ namespace SolidShineUi
         }
 
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty
-            = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(NewSelectPanel),
+            = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
 
         /// <summary>
@@ -598,31 +598,31 @@ namespace SolidShineUi
         }
 
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(NewSelectPanel),
+            "Background", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(NewSelectPanel),
+            "ClickBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.LightSalmon.ToBrush()));
 
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(NewSelectPanel),
+            "SelectedBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.MistyRose.ToBrush()));
 
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(NewSelectPanel),
+            "HighlightBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.Salmon.ToBrush()));
 
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(NewSelectPanel),
+            "DisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(NewSelectPanel),
+            "BorderDisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(NewSelectPanel),
+            "BorderBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         #endregion
@@ -630,11 +630,11 @@ namespace SolidShineUi
         #region Border
 
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(NewSelectPanel),
+            "BorderThickness", typeof(Thickness), typeof(SelectPanel),
             new PropertyMetadata(new Thickness(1)));
 
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(NewSelectPanel),
+            "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
 
         /// <summary>
@@ -1026,7 +1026,7 @@ namespace SolidShineUi
         #region ScrollViewer
 
         public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
-            "AllowParentScrolling", typeof(bool), typeof(NewSelectPanel),
+            "AllowParentScrolling", typeof(bool), typeof(SelectPanel),
             new PropertyMetadata(true));
 
         /// <summary>

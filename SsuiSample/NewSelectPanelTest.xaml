@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <flat:NewSelectPanel Margin="20,60,250,10" x:Name="selPanel" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" 
+        <flat:SelectPanel Margin="20,60,250,10" x:Name="selPanel" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" 
                           ItemsAdded="selPanel_ItemsAdded" ItemsRemoved="selPanel_ItemsRemoved" SelectionChanged="selPanel_SelectionChanged" MultiSelect="True" />
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Select Panel Test" FontSize="16" VerticalAlignment="Top"/>
         <ScrollViewer Margin="0,60,10,0" HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto" Width="240" >

@@ -156,9 +156,6 @@ See website for more details!</PackageReleaseNotes>
     <Compile Update="SelectableItem.xaml.cs">
       <DependentUpon>SelectableItem.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SelectPanel.xaml.cs">
-      <DependentUpon>SelectPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Dialogs\StringInputDialog.xaml.cs">
       <DependentUpon>StringInputDialog.xaml</DependentUpon>
     </Compile>
