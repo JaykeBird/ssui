@@ -88,6 +88,11 @@ namespace SolidShineUi
                 DisabledBrush = cs.LightDisabledColor.ToBrush();
                 CheckedBrush = cs.HighlightColor.ToBrush();
             }
+            else if (cs.MenusUseAccent)
+            {
+                HighlightSubitemBrush = cs.AccentThirdHighlightColor.ToBrush();
+                CheckedBrush = cs.AccentSecondaryColor.ToBrush();
+            }
         }
 
         /// <summary>
