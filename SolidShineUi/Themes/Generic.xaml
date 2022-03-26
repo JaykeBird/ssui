@@ -814,75 +814,76 @@
                             <Grid>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition>
-                                            <ColumnDefinition.Style>
-                                                <Style TargetType="{x:Type ColumnDefinition}">
-                                                    <Setter Property="Width" Value="Auto" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Path=KeepMenuArrowOnRight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True">
-                                                            <Setter Property="Width" Value="1*" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </ColumnDefinition.Style>
-                                        </ColumnDefinition>
+                                        <ColumnDefinition Width="1*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <Grid.Style>
-                                        <Style TargetType="{x:Type Grid}">
-                                            <!--<Setter Property="Width" Value="Auto" />-->
-                                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
-                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=KeepMenuArrowOnRight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True">
-                                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-                                    <ContentPresenter Grid.Column="0" x:Name="btn_Cc" VerticalAlignment="Center" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
-                                        <ContentPresenter.Style>
-                                            <Style TargetType="{x:Type ContentPresenter}" >
-                                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                                <Setter Property="Opacity" Value="1.0" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=KeepMenuArrowOnRight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True">
-                                                        <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                                <!--<Style.Triggers>
+                                    <StackPanel Orientation="Horizontal" >
+                                        <StackPanel.Style>
+                                            <Style TargetType="{x:Type StackPanel}">
+                                                <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                                <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
+                                            <ContentPresenter.Style>
+                                                <Style TargetType="{x:Type ContentPresenter}" >
+                                                    <Setter Property="Opacity" Value="1.0" />
+                                                    <!--<Style.Triggers>
                                             <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
                                                 <Setter Property="Opacity" Value="0.6"/>
                                             </DataTrigger>
                                         </Style.Triggers>-->
-                                            </Style>
-                                        </ContentPresenter.Style>
-                                    </ContentPresenter>
-                                    <Path Grid.Column="1" Data="M0,0 L8,0 4,4 z" Fill="Black" Stroke="Black" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                </Style>
+                                            </ContentPresenter.Style>
+                                        </ContentPresenter>
+                                        <Path Grid.Column="1" Data="M0,0 L8,0 4,4 z" HorizontalAlignment="Left" VerticalAlignment="Center"
                                   Height="5" Width="8" Margin="5,0,3,0" Stretch="Fill">
+                                            <Path.Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Setter Property="Opacity" Value="1.0" />
+                                                    <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                                    <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding ShowMenuArrow, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True" />
+                                                                <Condition Binding="{Binding KeepMenuArrowOnRight, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" />
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </MultiDataTrigger>
+                                                        <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
+                                                            <Setter Property="Opacity" Value="0.6"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
+                                    </StackPanel>
+                                    <Path Grid.Column="1" Data="M0,0 L8,0 4,4 z" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                        Height="5" Width="8" Margin="5,0,3,0" Stretch="Fill">
                                         <Path.Style>
                                             <Style TargetType="Path">
                                                 <Setter Property="Visibility" Value="Collapsed" />
+                                                <Setter Property="Opacity" Value="1.0" />
                                                 <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
                                                 <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ShowMenuArrow, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True" >
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding ShowMenuArrow, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True" />
+                                                            <Condition Binding="{Binding KeepMenuArrowOnRight, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
                                                         <Setter Property="Visibility" Value="Visible" />
+                                                    </MultiDataTrigger>
+                                                    <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
+                                                        <Setter Property="Opacity" Value="0.6"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Path.Style>
                                     </Path>
                                 </Grid>
-                                <!--<StackPanel Orientation="Horizontal" >
-                                    <StackPanel.Style>
-                                        <Style TargetType="{x:Type StackPanel}">
-                                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-                                        </Style>
-                                    </StackPanel.Style>
-
-                                </StackPanel>-->
                                 <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
                                            Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
                                     <Rectangle.Style>
@@ -1468,9 +1469,9 @@
                         </Grid>
 
                         <Grid Margin="0,0,0,0" x:Name="grdVerticalTabs" Grid.Column="0" Grid.Row="1" Visibility="Collapsed" >
-                            
+
                         </Grid>
-                        
+
                         <Grid Grid.Row="1" Grid.Column="1" >
                             <Border x:Name="PART_Content" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
                                 <Border.Style>
