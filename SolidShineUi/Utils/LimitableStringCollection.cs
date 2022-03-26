@@ -21,12 +21,12 @@ namespace SolidShineUi.Utils
             MaxCount = maxCount;
         }
 
-        public delegate void AddingItemStringEventHandler(object sender, AddingItemStringEventArgs e);
+        public delegate void ItemAddingStringEventHandler(object sender, ItemAddingStringEventArgs e);
 
 #if NETCOREAPP
-        public event AddingItemStringEventHandler? AddingItem;
+        public event ItemAddingStringEventHandler? ItemAdding;
 #else
-        public event AddingItemStringEventHandler AddingItem;
+        public event ItemAddingStringEventHandler ItemAdding;
 #endif
 
         //private bool _internalAction = false;
@@ -62,8 +62,8 @@ namespace SolidShineUi.Utils
         public new void Add(string item)
         {
             if (Contains(item)) return;
-            AddingItemStringEventArgs e = new AddingItemStringEventArgs(item);
-            AddingItem?.Invoke(this, e);
+            ItemAddingStringEventArgs e = new ItemAddingStringEventArgs(item);
+            ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             if (MaxCount >= 0 && Count >= MaxCount)
             {
@@ -75,8 +75,8 @@ namespace SolidShineUi.Utils
         public new void Insert(int index, string item)
         {
             if (Contains(item)) return;
-            AddingItemStringEventArgs e = new AddingItemStringEventArgs(item);
-            AddingItem?.Invoke(this, e);
+            ItemAddingStringEventArgs e = new ItemAddingStringEventArgs(item);
+            ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             if (MaxCount >= 0 && Count >= MaxCount)
             {
@@ -87,27 +87,16 @@ namespace SolidShineUi.Utils
 
     }
 
-    public class AddingItemStringEventArgs : EventArgs
+    public class ItemAddingStringEventArgs : EventArgs
     {
         public string Item { get; private set; }
 
         public bool Cancel { get; set; } = false;
 
-        public AddingItemStringEventArgs(string item)
+        public ItemAddingStringEventArgs(string item)
         {
             Item = item;
         }
     }
 
-    public class AddingItemEventArgs<T> : EventArgs
-    {
-        public T Item { get; private set; }
-
-        public bool Cancel { get; set; } = false;
-
-        public AddingItemEventArgs(T item)
-        {
-            Item = item;
-        }
-    }
 }

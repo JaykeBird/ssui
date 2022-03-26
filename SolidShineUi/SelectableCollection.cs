@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -45,6 +46,32 @@ namespace SolidShineUi
 #else
         public event ItemRemovingEventHandler ItemRemoving;
 #endif
+
+        public delegate void ItemAddingEventHandler(object sender, ItemAddingEventArgs<T> e);
+
+#if NETCOREAPP
+        public event ItemAddingEventHandler? ItemAdding;
+#else
+        public event ItemAddingEventHandler ItemAdding;
+#endif
+
+        public new void Add(T item)
+        {
+            //if (Contains(item)) return;
+            ItemAddingEventArgs<T> e = new ItemAddingEventArgs<T>(item);
+            ItemAdding?.Invoke(this, e);
+            if (e.Cancel) return;
+            base.Add(item);
+        }
+
+        public new void Insert(int index, T item)
+        {
+            //if (Contains(item)) return;
+            ItemAddingEventArgs<T> e = new ItemAddingEventArgs<T>(item);
+            ItemAdding?.Invoke(this, e);
+            if (e.Cancel) return;
+            base.Insert(index, item);
+        }
 
         /// <summary>
         /// Removes the first occurrence of a specific object in the collection.
@@ -373,6 +400,18 @@ namespace SolidShineUi
         public bool Cancel { get; set; }
     }
 
+
+    public class ItemAddingEventArgs<T> : EventArgs
+    {
+        public T Item { get; private set; }
+
+        public bool Cancel { get; set; } = false;
+
+        public ItemAddingEventArgs(T item)
+        {
+            Item = item;
+        }
+    }
 
     public class SelectionChangedEventArgs<T>
     {

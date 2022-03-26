@@ -41,7 +41,7 @@ namespace SolidShineUi
             SetValue(DispalyFilenamesProperty, false);
 
             SetValue(SelectedFilesPropertyKey, new LimitableStringCollection());
-            SelectedFiles.AddingItem += SelectedFiles_AddingItem;
+            SelectedFiles.ItemAdding += SelectedFiles_AddingItem;
             SelectedFiles.CollectionChanged += SelectedFiles_CollectionChanged;
 
             InternalCornerRadiusChanged += FileSelect_InternalCornerRadiusChanged;
@@ -613,7 +613,7 @@ namespace SolidShineUi
             private set { SetValue(SelectedFilesPropertyKey, value); }
         }
 
-        private void SelectedFiles_AddingItem(object sender, AddingItemStringEventArgs e)
+        private void SelectedFiles_AddingItem(object sender, ItemAddingStringEventArgs e)
         {
             if (!File.Exists(e.Item) && !FileMatchesFilter(e.Item, FileFilter.Split(';')))
             {
