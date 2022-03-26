@@ -85,9 +85,9 @@ namespace SolidShineUi
                 case 3:
                     try
                     {
-                        string r = hex.Substring(0, 1) + hex.Substring(0, 1);
-                        string g = hex.Substring(1, 1) + hex.Substring(1, 1);
-                        string b = hex.Substring(2, 1) + hex.Substring(2, 1);
+                        string r = $"{hex.Substring(0, 1)}{hex.Substring(0, 1)}";
+                        string g = $"{hex.Substring(1, 1)}{hex.Substring(1, 1)}";
+                        string b = $"{hex.Substring(2, 1)}{hex.Substring(2, 1)}";
 
                         return Color.FromRgb(
                             byte.Parse(r, NumberStyles.AllowHexSpecifier),
@@ -170,7 +170,7 @@ namespace SolidShineUi
             }
             else
             {
-                v = v + add;
+                v += add;
             }
 
             return CreateFromHSV(h, s, v);
@@ -189,7 +189,7 @@ namespace SolidShineUi
             }
             else
             {
-                v = v + addV;
+                v += addV;
             }
 
             if (s + addS < 0)

@@ -161,19 +161,19 @@ namespace SolidShineUi
             WindowChrome.SetWindowChrome(this, wc);
         }
 
-        void ChangeChromeCornerRadius(CornerRadius radius)
-        {
-            // note to self: if updating this method, make sure this matches the WindowChrome settings in the Generic.xaml file.
-            WindowChrome wc = new WindowChrome
-            {
-                CaptionHeight = captionHeight,
-                CornerRadius = radius,
-                ResizeBorderThickness = new Thickness(4),
-                GlassFrameThickness = new Thickness(0, 0, 0, 1)
-            };
+        //void ChangeChromeCornerRadius(CornerRadius radius)
+        //{
+        //    // note to self: if updating this method, make sure this matches the WindowChrome settings in the Generic.xaml file.
+        //    WindowChrome wc = new WindowChrome
+        //    {
+        //        CaptionHeight = captionHeight,
+        //        CornerRadius = radius,
+        //        ResizeBorderThickness = new Thickness(4),
+        //        GlassFrameThickness = new Thickness(0, 0, 0, 1)
+        //    };
 
-            WindowChrome.SetWindowChrome(this, wc);
-        }
+        //    WindowChrome.SetWindowChrome(this, wc);
+        //}
 
 
         //public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(

@@ -112,6 +112,7 @@ namespace SolidShineUi
         /// Loads colors from a color palette file formatted using the JASC format.
         /// </summary>
         /// <param name="filename">The file to load.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the file cannot be opened for reading.</exception>
         /// <exception cref="FormatException">Thrown if the file doesn't match the expected format.</exception>
         public static List<Color> LoadJascPalette(string filename)
         {
@@ -120,7 +121,7 @@ namespace SolidShineUi
 
                 if (stream == null)
                 {
-                    throw new ArgumentNullException(nameof(stream));
+                    throw new ArgumentNullException(nameof(filename));
                 }
 
                 List<Color> results = new List<Color>();
@@ -143,20 +144,13 @@ namespace SolidShineUi
                     colorCount = Convert.ToInt32(reader.ReadLine());
                     for (int i = 0; i < colorCount; i++)
                     {
-                        int r;
-                        int g;
-                        int b;
                         string data;
                         string[] parts;
 
                         data = reader.ReadLine() ?? "";
-                        parts = !string.IsNullOrEmpty(data) ? data.Split(new[]
-                                                                         {
-                                                             ' ',
-                                                             '\t'
-                                                           }, StringSplitOptions.RemoveEmptyEntries) : new string[0];
+                        parts = !string.IsNullOrEmpty(data) ? data.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
 
-                        if (!int.TryParse(parts[0], out r) || !int.TryParse(parts[1], out g) || !int.TryParse(parts[2], out b))
+                        if (!int.TryParse(parts[0], out int r) || !int.TryParse(parts[1], out int g) || !int.TryParse(parts[2], out int b))
                         {
                             throw new InvalidDataException(string.Format("Invalid palette contents found with data '{0}'", data));
                         }
@@ -173,6 +167,7 @@ namespace SolidShineUi
         /// Loads colors from a color palette file, reading from raw binary bytes.
         /// </summary>
         /// <param name="filename">The file to load.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the file cannot be opened for reading.</exception>
         /// <exception cref="FormatException">Thrown if the file doesn't match the expected format.</exception>
         public static List<Color> LoadRawPalette(string filename)
         {
@@ -180,7 +175,7 @@ namespace SolidShineUi
             {
                 if (stream == null)
                 {
-                    throw new ArgumentNullException(nameof(stream));
+                    throw new ArgumentNullException(nameof(filename));
                 }
 
                 List<Color> results = new List<Color>();

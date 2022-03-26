@@ -73,15 +73,13 @@ namespace SolidShineUi
             {
                 if (c.SelectOnFocus)
                 {
-                    var textBox = e.OriginalSource as TextBox;
-                    if (textBox != null)
+                    if (e.OriginalSource is TextBox textBox)
                         textBox.SelectAll();
                 }
             }
             else
             {
-                var textBox = e.OriginalSource as TextBox;
-                if (textBox != null)
+                if (e.OriginalSource is TextBox textBox)
                     textBox.SelectAll();
             }
         }

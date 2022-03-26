@@ -331,7 +331,7 @@ namespace SolidShineUi
                 chkBox.Visibility = Visibility.Visible;
             }
 
-            Image = Image;
+            //Image = Image;
 
             if (Owner != null)
             {
@@ -878,6 +878,7 @@ namespace SolidShineUi
         //    return result;
         //}
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
 #if NETCOREAPP
         string GetStringOrNull(string? value, string defaultValue, bool zeroAsNull = false)
 #else

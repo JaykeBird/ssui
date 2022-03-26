@@ -211,12 +211,11 @@ namespace SolidShineUi
                         // from https://stackoverflow.com/a/1876534/2987285
                         ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                         c.ApplyTemplate();
-#if NETCOREAPP
-                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-#else
-                        TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-#endif
-                        if (tb != null)
+//#if NETCOREAPP
+//                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+//#else
+//#endif
+                        if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
                         {
                             if (tb.TabItem != null && tb.TabItem == newItem)
                             {

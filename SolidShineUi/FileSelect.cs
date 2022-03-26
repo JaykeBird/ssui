@@ -661,6 +661,7 @@ namespace SolidShineUi
         Grid ch = null;
 #endif
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         void LoadTemplateItems()
         {
             if (!itemsLoaded)

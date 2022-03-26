@@ -108,6 +108,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 #endif
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private void intSpinner_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ValueChanged?.Invoke(this, EventArgs.Empty);

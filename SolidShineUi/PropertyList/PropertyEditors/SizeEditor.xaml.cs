@@ -156,6 +156,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private void nudLeft_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (!_internalAction)

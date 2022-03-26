@@ -35,7 +35,7 @@ namespace SolidShineUi.Utils
 
         //public Brush CloseBrush { get; set; } = new SolidColorBrush(Colors.Black);
 
-        private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
+        //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
 
         public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register(
             "TabBackground", typeof(Brush), typeof(TabDisplayItem),
@@ -69,14 +69,7 @@ namespace SolidShineUi.Utils
             //    imgIcon.Source = tab.Icon;
             //}
             //lblTitle.Text = tab.Title;
-            if (IsSelected)
-            {
-                border.BorderThickness = TabBorderThickSelected;
-            }
-            else
-            {
-                border.BorderThickness = new Thickness(1, 1, 1, 1);
-            }
+            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -100,14 +93,7 @@ namespace SolidShineUi.Utils
             //    imgIcon.Source = tab.Icon;
             //}
             //lblTitle.Text = tab.Title;
-            if (IsSelected)
-            {
-                border.BorderThickness = TabBorderThickSelected;
-            }
-            else
-            {
-                border.BorderThickness = new Thickness(1, 1, 1, 1);
-            }
+            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -125,14 +111,7 @@ namespace SolidShineUi.Utils
         private void tab_IsSelectedChanged(object sender, EventArgs e)
 #endif
         {
-            if (IsSelected)
-            {
-                border.BorderThickness = TabBorderThickSelected;
-            }
-            else
-            {
-                border.BorderThickness = new Thickness(1, 1, 1, 1);
-            }
+            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
         }
 
 
@@ -220,14 +199,7 @@ namespace SolidShineUi.Utils
 
         private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (IsSelected)
-            {
-                border.BorderThickness = TabBorderThickSelected;
-            }
-            else
-            {
-                border.BorderThickness = new Thickness(1, 1, 1, 1);
-            }
+            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
         }
 
         #endregion
@@ -758,7 +730,7 @@ namespace SolidShineUi.Utils
         {
             if (e.LeftButton == MouseButtonState.Pressed && AllowDragDrop)
             {
-                DragDropEffects ee = DragDrop.DoDragDrop(this, this.TabItem, DragDropEffects.Move);
+                DragDropEffects _ = DragDrop.DoDragDrop(this, this.TabItem, DragDropEffects.Move);
             }
         }
 
