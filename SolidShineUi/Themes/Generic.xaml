@@ -1498,7 +1498,7 @@
                 <ControlTemplate TargetType="{x:Type flat:NewSelectPanel}">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}"
                             Background="{TemplateBinding Background}" >
-                        <ScrollViewer Margin="{TemplateBinding Padding}"
+                        <ScrollViewer x:Name="PART_Sv" Margin="{TemplateBinding Padding}"
                                       VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" >
                             <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}">
                                 <ItemsControl.ItemsPanel>

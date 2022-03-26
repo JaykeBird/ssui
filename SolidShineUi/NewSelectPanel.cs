@@ -34,6 +34,12 @@ namespace SolidShineUi
             Items.CollectionChanged += Items_CollectionChanged;
             Items.SelectionChanged += Items_SelectionChanged;
 
+            LoadTemplateItems();
+            if (itemsLoaded && sv != null)
+            {
+                sv.PreviewMouseWheel += HandlePreviewMouseWheel;
+                sv.Unloaded += (s, e) => sv.PreviewMouseWheel -= HandlePreviewMouseWheel;
+            }
         }
 
         bool itemsLoaded = false;
@@ -1017,6 +1023,60 @@ namespace SolidShineUi
 
         #endregion
 
+        #region ScrollViewer
 
+        public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
+            "AllowParentScrolling", typeof(bool), typeof(NewSelectPanel),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may disable any child items from scrolling.
+        /// </summary>
+        public bool AllowParentScrolling
+        {
+            get => (bool)GetValue(AllowParentScrollingProperty);
+            set => SetValue(AllowParentScrollingProperty, value);
+        }
+
+        // source: https://serialseb.com/blog/2007/09/03/wpf-tips-6-preventing-scrollviewer-from/
+        // author: Sebastien Lambla
+
+        private static List<MouseWheelEventArgs> _reentrantList = new List<MouseWheelEventArgs>();
+
+        private void HandlePreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (AllowParentScrolling)
+            {
+                if (sender is ScrollViewer scrollControl)
+                {
+                    if (!e.Handled && sender != null && !_reentrantList.Contains(e))
+                    {
+                        var previewEventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+                        {
+                            RoutedEvent = PreviewMouseWheelEvent,
+                            Source = sender
+                        };
+
+                        var originalSource = (e.OriginalSource as UIElement) ?? null;
+                        _reentrantList.Add(previewEventArg);
+                        originalSource?.RaiseEvent(previewEventArg);
+                        _reentrantList.Remove(previewEventArg);
+                        // at this point if no one else handled the event in our children, we do our job
+
+                        if (!previewEventArg.Handled && ((e.Delta > 0 && scrollControl.VerticalOffset == 0) || (e.Delta <= 0 && scrollControl.VerticalOffset >= scrollControl.ExtentHeight - scrollControl.ViewportHeight)))
+                        {
+                            e.Handled = true;
+                            var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                            eventArg.RoutedEvent = MouseWheelEvent;
+                            eventArg.Source = sender;
+                            var parent = (((Control)sender).Parent as UIElement) ?? null;
+                            parent?.RaiseEvent(eventArg);
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }
