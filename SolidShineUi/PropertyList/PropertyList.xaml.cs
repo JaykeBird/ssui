@@ -241,6 +241,67 @@ namespace SolidShineUi.PropertyList
             }
         }
 
+        /// <summary>
+        /// Change the text used to filter the list of properties. Applying a filter text will hide any properties that don't contain this text,
+        /// and clearing the filter text (by passing in <c>null</c> or an empty string) will allow all properties to be shown.
+        /// </summary>
+        /// <param name="filter">The filter text to apply. Use <c>null</c> or an empty string to not apply a filter.</param>
+#if NETCOREAPP
+        public void FilterProperties(string? filter)
+#else
+        public void FilterProperties(string filter)
+#endif
+        {
+            if (stkProperties == null) return;
+
+            if (string.IsNullOrEmpty(filter))
+            {
+                // no filter, display all
+#if NETCOREAPP
+                foreach (UIElement? item in stkProperties.Children)
+#else
+                foreach (UIElement item in stkProperties.Children)
+#endif
+                {
+                    if (item == null) continue;
+                    if (item is PropertyEditorItem pei)
+                    {
+                        if (pei != null)
+                        {
+                            pei.Visibility = Visibility.Visible;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var propInfos = Filter(filter);
+
+#if NETCOREAPP
+                foreach (UIElement? item in stkProperties.Children)
+#else
+                foreach (UIElement item in stkProperties.Children)
+#endif
+                {
+                    if (item == null) continue;
+                    if (item is PropertyEditorItem pei)
+                    {
+                        if (pei != null)
+                        {
+                            if (propInfos.Contains(pei.PropertyInfo))
+                            {
+                                pei.Visibility = Visibility.Visible;
+                            }
+                            else
+                            {
+                                pei.Visibility = Visibility.Collapsed;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private IEnumerable<PropertyInfo> Filter(string filter)
         {
 #if NETCOREAPP
@@ -248,6 +309,11 @@ namespace SolidShineUi.PropertyList
 #else
             return properties.Where(p => p.Name.Contains(filter) || (p.PropertyType.FullName ?? "").Contains(filter));
 #endif
+        }
+
+        private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterProperties(txtFilter.Text);
         }
 
         private static int ComparePropertyNames(PropertyInfo x, PropertyInfo y)
@@ -352,8 +418,21 @@ namespace SolidShineUi.PropertyList
 #region Registered Editors
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
+        /// <summary>
+        /// Get a list of editors currently registered for each property type.
+        /// </summary>
+        /// <remarks>
+        /// The key of the dictionary is a property type. The corresponding value is the type of the editor that will handle viewing and editing that type.
+        /// </remarks>
         public ReadOnlyDictionary<Type, Type> RegisteredPropertyEditors { get => new ReadOnlyDictionary<Type, Type>(registeredEditors); }
 
+        /// <summary>
+        /// Register an editor for a certain property type. When the control loads an object with a property of this type, the registered editor will be used to view and edit it.
+        /// </summary>
+        /// <param name="type">The type to register the <paramref name="editor"/> for.</param>
+        /// <param name="editor">The type of the IPropertyEditor control that will handle viewing and editing <paramref name="type"/>.</param>
+        /// <exception cref="ArgumentException">Thrown if the editor type does not inherit the IPropertyEditor interface.</exception>
+        /// <remarks>If a different editor is already registered for a certain type, this will replace that registration and the control will use this editor instead.</remarks>
         public void RegisterEditor(Type type, Type editor)
         {
             if (!editor.GetInterfaces().Contains(typeof(IPropertyEditor)))
@@ -369,6 +448,20 @@ namespace SolidShineUi.PropertyList
             {
                 registeredEditors.Add(type, editor);
             }
+        }
+
+        /// <summary>
+        /// Unregister the editor for a certain type.
+        /// </summary>
+        /// <param name="type">The property type to unregister the editor of. (For example, enter in <c>typeof(string)</c>, not <c>typeof(StringEditor)</c>).</param>
+        /// <returns>Returns true on success. Returns false if the editor couldn't be unregistered, or there was no editor registered to begin with.</returns>
+        public bool UnregisterEditor(Type type)
+        {
+            if (registeredEditors.ContainsKey(type))
+            {
+                return registeredEditors.Remove(type);
+            }
+            else return false;
         }
 
         private void PreregisterEditors()
@@ -437,8 +530,8 @@ namespace SolidShineUi.PropertyList
             set => btnRefresh.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        #endregion
 
+        #endregion
 
     }
 

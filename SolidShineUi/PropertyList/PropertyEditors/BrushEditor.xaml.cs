@@ -22,7 +22,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public List<Type> ValidTypes => (new[] { typeof(Brush), typeof(SolidColorBrush), typeof(LinearGradientBrush), typeof(RadialGradientBrush), 
             typeof(ImageBrush), typeof(BitmapCacheBrush), typeof(DrawingBrush) }).ToList();
 
-        public bool EditorAllowsModifying => false;
+        public bool EditorAllowsModifying => true;
 
         private ColorScheme _cs = new ColorScheme();
 
@@ -326,6 +326,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     _dataValue = new SolidColorBrush(cpd.SelectedColor);
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
+            }
+            else if (_propType == typeof(DrawingBrush))
+            {
+                // not supported for editing
+            }
+            else if (_propType == typeof(BitmapCacheBrush))
+            {
+                // not supported for editing
             }
             else
             {

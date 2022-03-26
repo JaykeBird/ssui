@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" IsEnabled="False" Text="Filter..." VerticalContentAlignment="Center" />
+            <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" ToolTip="Filter" VerticalContentAlignment="Center" TextChanged="txtFilter_TextChanged" />
             <flat:FlatButton Grid.Column="2" x:Name="btnRefresh" ToolTip="Reload" ColorScheme="{Binding ColorScheme, ElementName=control}" TransparentBack="True" Click="btnRefresh_Click" >
                 <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png"  />
             </flat:FlatButton>
