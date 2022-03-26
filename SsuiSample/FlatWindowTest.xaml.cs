@@ -9,8 +9,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SsuiSample
 {
@@ -24,11 +22,13 @@ namespace SsuiSample
             InitializeComponent();
         }
 
-#if NETCOREAPP
-        FlatWindow? fwRunning = null;
-#else
         FlatWindow fwRunning = null;
-#endif
+
+//#if NETCOREAPP
+//        FlatWindow? fwRunning = null;
+//#else
+//        FlatWindow fwRunning = null;
+//#endif
 
         #region ColorScheme
 

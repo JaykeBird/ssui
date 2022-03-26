@@ -22,11 +22,11 @@ namespace SolidShineUi
             AutoCompleteBehavior.SetAutoCompleteItemsSource(txtFont, FontFamiliesByString());
         }
 
-        private FontFamily _fam = new FontFamily("Segoe UI");
-        private FontWeight _weight;
-        private double _size;
-        private FontStyle _style;
-        private TextDecorationCollection _dec = new TextDecorationCollection();
+        //private FontFamily _fam = new FontFamily("Segoe UI");
+        //private FontWeight _weight;
+        //private double _size;
+        //private FontStyle _style;
+        //private TextDecorationCollection _dec = new TextDecorationCollection();
         private List<string> _fallbackList = new List<string>();
 
         public new bool DialogResult { get; set; } = false;
@@ -81,7 +81,7 @@ namespace SolidShineUi
                         {
                             found = true;
                             FontFamily ff = new FontFamily(f.Trim());
-                            _fam = ff;
+                            //_fam = ff;
                             lstFont.SelectedItem = ff;
                             lstFont.ScrollIntoView(ff);
                         }
@@ -89,7 +89,7 @@ namespace SolidShineUi
                 }
                 else
                 {
-                    _fam = value;
+                    //_fam = value;
                     lstFont.SelectedItem = value;
                     lstFont.ScrollIntoView(value);
                 }
@@ -104,7 +104,7 @@ namespace SolidShineUi
             }
             set
             {
-                _weight = value;
+                //_weight = value;
                 lstWeight.SelectedItem = value;
             }
         }
@@ -117,7 +117,7 @@ namespace SolidShineUi
             }
             set
             {
-                _size = value;
+                //_size = value;
                 txtSize.Value = value;
             }
         }
@@ -141,7 +141,7 @@ namespace SolidShineUi
             }
             set
             {
-                _style = value;
+                //_style = value;
 
                 if (value == FontStyles.Italic)
                 {
@@ -174,7 +174,7 @@ namespace SolidShineUi
             }
             set
             {
-                _dec = value;
+                //_dec = value;
 
                 foreach (TextDecoration item in value)
                 {

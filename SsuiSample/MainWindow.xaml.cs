@@ -77,7 +77,7 @@ namespace SsuiSample
                     Height = 28
                 };
                 si.Click += si_Click;
-                stkTabs.AddItem(si);
+                stkTabs.Items.Add(si);
             }
         }
 

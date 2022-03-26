@@ -235,114 +235,114 @@ namespace SolidShineUi
             }
         }
 
-        private void nudR_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!updating)
-            {
-                try
-                {
-                    Color col = ColorsHelper.CreateFromRgb((byte)nudR.Value, (byte)nudG.Value, (byte)nudB.Value);
+        //private void nudR_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (!updating)
+        //    {
+        //        try
+        //        {
+        //            Color col = ColorsHelper.CreateFromRgb((byte)nudR.Value, (byte)nudG.Value, (byte)nudB.Value);
 
-                    UpdateValues(col, "RGB");
-                }
-                catch (NullReferenceException)
-                {
+        //            UpdateValues(col, "RGB");
+        //        }
+        //        catch (NullReferenceException)
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
-        private void nudG_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!updating)
-            {
-                try
-                {
-                    Color col = ColorsHelper.CreateFromRgb((byte)nudR.Value, (byte)nudG.Value, (byte)nudB.Value);
+        //private void nudG_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (!updating)
+        //    {
+        //        try
+        //        {
+        //            Color col = ColorsHelper.CreateFromRgb((byte)nudR.Value, (byte)nudG.Value, (byte)nudB.Value);
 
-                    UpdateValues(col, "RGB");
-                }
-                catch (NullReferenceException)
-                {
+        //            UpdateValues(col, "RGB");
+        //        }
+        //        catch (NullReferenceException)
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
-        private void nudB_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!updating)
-            {
-                try
-                {
-                    Color col = ColorsHelper.CreateFromRgb((byte)nudR.Value, (byte)nudG.Value, (byte)nudB.Value);
+        //private void nudB_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (!updating)
+        //    {
+        //        try
+        //        {
+        //            Color col = ColorsHelper.CreateFromRgb((byte)nudR.Value, (byte)nudG.Value, (byte)nudB.Value);
 
-                    UpdateValues(col, "RGB");
-                }
-                catch (NullReferenceException)
-                {
+        //            UpdateValues(col, "RGB");
+        //        }
+        //        catch (NullReferenceException)
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
-        private void nudH_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!updating)
-            {
-                try
-                {
-                    //Color col = ColorsHelper.CreateFromHSV(nudH.Value, nudS.Value, nudV.Value);
+        //private void nudH_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (!updating)
+        //    {
+        //        try
+        //        {
+        //            //Color col = ColorsHelper.CreateFromHSV(nudH.Value, nudS.Value, nudV.Value);
 
-                    UpdateValuesHsv(nudH.Value, nudS.Value, nudV.Value);
+        //            UpdateValuesHsv(nudH.Value, nudS.Value, nudV.Value);
 
-                    //UpdateValues(col, "HSV");
-                }
-                catch (NullReferenceException)
-                {
+        //            //UpdateValues(col, "HSV");
+        //        }
+        //        catch (NullReferenceException)
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
-        private void nudS_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!updating)
-            {
-                try
-                {
-                    //Color col = ColorsHelper.CreateFromHSV(nudH.Value, nudS.Value, nudV.Value);
+        //private void nudS_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (!updating)
+        //    {
+        //        try
+        //        {
+        //            //Color col = ColorsHelper.CreateFromHSV(nudH.Value, nudS.Value, nudV.Value);
 
-                    UpdateValuesHsv(nudH.Value, nudS.Value, nudV.Value);
+        //            UpdateValuesHsv(nudH.Value, nudS.Value, nudV.Value);
 
-                    //UpdateValues(col, "HSV");
-                }
-                catch (NullReferenceException)
-                {
+        //            //UpdateValues(col, "HSV");
+        //        }
+        //        catch (NullReferenceException)
+        //        {
 
-                }
-            }
+        //        }
+        //    }
 
-        }
+        //}
 
-        private void nudV_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!updating)
-            {
-                try
-                {
-                    //Color col = ColorsHelper.CreateFromHSV(nudH.Value, nudS.Value, nudV.Value);
+        //private void nudV_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (!updating)
+        //    {
+        //        try
+        //        {
+        //            //Color col = ColorsHelper.CreateFromHSV(nudH.Value, nudS.Value, nudV.Value);
 
-                    UpdateValuesHsv(nudH.Value, nudS.Value, nudV.Value);
+        //            UpdateValuesHsv(nudH.Value, nudS.Value, nudV.Value);
 
-                    //UpdateValues(col, "HSV");
-                }
-                catch (NullReferenceException)
-                {
+        //            //UpdateValues(col, "HSV");
+        //        }
+        //        catch (NullReferenceException)
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
         void UpdateValues(Color col, string except)
         {
@@ -546,7 +546,7 @@ namespace SolidShineUi
                         break;
                 }
 
-                colorList.Clear();
+                colorList.Items.Clear();
 
                 // now that we have our list of colors
                 foreach (Color item in colors)
@@ -554,7 +554,7 @@ namespace SolidShineUi
                     ColorListItem cli = new ColorListItem();
                     cli.Color = item;
                     cli.DisplayMode = cld;
-                    colorList.AddItem(cli);
+                    colorList.Items.Add(cli);
                 }
             }
         }
@@ -591,7 +591,7 @@ namespace SolidShineUi
 
         private void colorList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateSelectedColor(colorList.GetSelectedItemsOfType<ColorListItem>().First().Color);
+            UpdateSelectedColor(colorList.Items.OfType<ColorListItem>().First().Color);
         }
 
         #endregion
