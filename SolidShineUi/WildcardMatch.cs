@@ -17,9 +17,10 @@ namespace SolidShineUi
         /// <param name="wildcardString">The string to match against, containing the wildcards.</param>
         /// <returns>True if it can be matched; false if they cannot be.</returns>
         /// <remarks>
-        /// This function can match a string against a wildcard string. This is used, for example, in Windows's file dialogs for opening or saving files.
+        /// This function can match a string against a wildcard string.
+        /// Wildcards are used, for example, in Windows's file dialogs for file filters, as well as other places in Windows or MS-DOS where one or more files can be interacted with.
         /// Supported wildcard characters are "*", which matches any number of characters, and "?", which matches just one character.
-        /// (For example, "d*g" will match both "dig" and "ding", where as "d?g" will only match "dig" and not "ding".)
+        /// (For example, "d*g" will match both "dig" and "ding", where as "d?g" will only match "dig", and not "ding" or "dg".)
         /// Regex (regular expressions) is a lot more powerful than what wildcards alone can provide, but regex strings can also be a lot more complicated to decipher.
         /// <para/>
         /// This class was written by H.A. Sullivan.
@@ -284,9 +285,10 @@ namespace SolidShineUi
         /// <param name="ignoreCase">Set if letter casing is ignored while matching.</param>
         /// <returns>True if it can be matched; false if they cannot be.</returns>
         /// <remarks>
-        /// This function can match a string against a wildcard string. This is used, for example, in Windows's file dialogs for opening or saving files.
+        /// This function can match a string against a wildcard string.
+        /// Wildcards are used, for example, in Windows's file dialogs for file filters, as well as other places in Windows or MS-DOS where one or more files can be interacted with.
         /// Supported wildcard characters are "*", which matches any number of characters, and "?", which matches just one character.
-        /// (For example, "d*g" will match both "dig" and "ding", where as "d?g" will only match "dig" and not "ding".)
+        /// (For example, "d*g" will match both "dig" and "ding", where as "d?g" will only match "dig", and not "ding" or "dg".)
         /// Regex (regular expressions) is a lot more powerful than what wildcards alone can provide, but regex strings can also be a lot more complicated to decipher.
         /// <para/>
         /// This class was written by H.A. Sullivan.
