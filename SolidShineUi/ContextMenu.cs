@@ -9,6 +9,9 @@ using System.Windows.Media;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A popup menu that can display items specific to the context it's invoked by, with a visual style that matches the rest of the Solid Shine UI controls.
+    /// </summary>
     public class ContextMenu : System.Windows.Controls.ContextMenu
     {
 
@@ -22,7 +25,9 @@ namespace SolidShineUi
         }
 
         #region ColorScheme
-
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
@@ -47,6 +52,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
         [Category("Appearance")]
         public ColorScheme ColorScheme
         {
@@ -54,6 +62,10 @@ namespace SolidShineUi
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -78,6 +90,12 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="hco">The high-contrast color scheme to apply.</param>
+        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
+            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
         public void ApplyColorScheme(HighContrastOption hco)
         {
             ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
@@ -102,6 +120,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the foreground/text of a child menu item when it is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush DisabledBrush
         {
@@ -180,7 +201,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set if the context menu has rounded corners.
+        /// Get or set if the context menu has rounded corners. When true, each corner has a corner radius of 4.
         /// </summary>
         [Category("Appearance")]
         public bool RoundedCorners
