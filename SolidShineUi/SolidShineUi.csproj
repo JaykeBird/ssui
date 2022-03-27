@@ -8,7 +8,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyTitle>Ssui</AssemblyTitle>
-    <Company></Company>
+    <Company>Jayke R. Huempfner, other contributors</Company>
     <Product>SolidShineUi</Product>
     <Description>A collection of UI controls and helper classes with consistent and customizable theming.</Description>
     <Copyright>Copyright 2018-2022 Jayke R. Huempfner, other contributors</Copyright>
@@ -33,6 +33,7 @@
 - Rewrote SelectPanel
 - Rewrite FileSelect
 - Add new controls: ExperimentalPropertyList and RelativePositionSelect
+- Improvements to TabControl and TabItem
 
 Version 1.8.4
 - Broke and then fixed TabControl
