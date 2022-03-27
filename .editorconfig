@@ -42,3 +42,6 @@ csharp_style_prefer_switch_expression = false
 
 # IDE0079: Remove unnecessary suppression
 dotnet_diagnostic.IDE0079.severity = silent
+
+# IDE0083: Use pattern matching
+dotnet_diagnostic.IDE0083.severity = none
