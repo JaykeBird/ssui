@@ -32,7 +32,7 @@ namespace SolidShineUi
         // since it only displays colors as a flat list, and not as anything more complex, all these functions will do is output a list of colors
         // if you're looking for something more advanced, you'll want to turn to Cyotek's blog linked above
 
-#region PAL
+        #region PAL
 
         /// <summary>
         /// Loads colors from a .pal color palette file. Supports JASC and RIFF file types.
@@ -204,9 +204,9 @@ namespace SolidShineUi
             return ae.GetString(br.ReadBytes(length));
         }
 
-#endregion
+        #endregion
 
-#region Photoshop ACO
+        #region Photoshop ACO
         // see notes at top of code file
         // https://www.mechanikadesign.com/2014/07/reading-adobe-color-swatch-aco-files-using-c/
         // https://www.cyotek.com/blog/reading-photoshop-color-swatch-aco-files-using-csharp
@@ -499,7 +499,7 @@ namespace SolidShineUi
 
         //#endregion
 
-        #region Paint.NET/GIMP
+        #region Paint.NET/GIMP/PowerToys
 
         /// <summary>
         /// Loads colors from a PAINT.NET or basic HEX color palette file (.txt;.hex).
@@ -512,7 +512,7 @@ namespace SolidShineUi
             {
                 if (stream == null)
                 {
-                    throw new ArgumentException("stream");
+                    throw new ArgumentException("The file was not able to be opened for reading.", nameof(filename));
                 }
 
                 List<Color> results = new List<Color>();
@@ -528,7 +528,7 @@ namespace SolidShineUi
                         {
                             try
                             {
-                                results.Add(ColorsHelper.CreateFromHex(line));
+                                results.Add(ColorsHelper.CreateFromHex(line.Trim()));
                             }
                             catch (FormatException)
                             {
@@ -550,7 +550,7 @@ namespace SolidShineUi
         /// Loads colors from a GIMP color palette file (.gpl).
         /// </summary>
         /// <param name="filename">The file to load.</param>
-        /// <exception cref="FormatException">Thrown if the file doesn't match the GIMP file format (the first lime must say "gimp palette").</exception>
+        /// <exception cref="FormatException">Thrown if the file doesn't match the GIMP file format (the first line must say "gimp palette").</exception>
         /// <exception cref="ArgumentException">Thrown if the file cannot be opened.</exception>
         public static List<Color> LoadGimpPalette(string filename)
         {
@@ -559,7 +559,7 @@ namespace SolidShineUi
 
                 if (stream == null)
                 {
-                    throw new ArgumentException("stream");
+                    throw new ArgumentException("The file was not able to be opened for reading.", nameof(filename));
                 }
 
                 List<Color> results = new List<Color>();
@@ -692,6 +692,260 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Load a color palette from a text file (.txt) that was exported by the Microsoft PowerToys Color Picker tool.
+        /// </summary>
+        /// <param name="filename">The name of the file to read.</param>
+        /// <returns>A list of colors, if the formats in the palette could be read. Otherwise, an empty list if there were no compatible formats.</returns>
+        /// <exception cref="ArgumentException">Thrown if the file could not be opened for reading.</exception>
+        /// <remarks>
+        /// Only the color formats HEX, RGB, and HSV are understood; if an exported file does not contain one of these formats,
+        /// then no colors will be read and empty list will be returned.
+        /// This function will not throw an exception for a file that could not be parsed or if there were no understood formats; if these issues occur,
+        /// then you'll see an empty list returned. A non-empty list will be returned if the file could be parsed and a format understood.
+        /// <para></para>
+        /// This is built to support the files exported by PowerToys version 0.57.
+        /// </remarks>
+        public static List<Color> LoadPowerToysColorList(string filename)
+        {
+            using (Stream stream = File.OpenRead(filename))
+            {
+
+                if (stream == null)
+                {
+                    throw new ArgumentException("The file was not able to be opened for reading.", nameof(filename));
+                }
+
+                List<Color> results = new List<Color>();
+
+                using (StreamReader reader = new StreamReader(stream))
+                {
+
+                    // PowerToys version 0.57 added the ability for the colors in its Color Picker tool to be exported to a file
+                    // rather than utilizing any existing format, the person who wrote the code came up with their own text format
+                    // the person who requested this feature wanted them exported in a text list similar to Paint.NET's format, but that wasn't what was implemented lol
+                    //
+                    // for the exported file, it can be organized "by color" or "by format"; this distinction is what makes detecting and reading this more difficult
+                    // if it is "by color", then each color is on its own line, starting with the color name and then each selected format
+                    // if it is "by format", then each format is on its own line, starting with the format name and then each color
+                    // (with formats, PowerToys supports a looooot of color formats, where I only support RGB, HSV, and HEX right now)
+                    //
+                    // another thing to be concerned about is if PowerToys adds the ability to name saved colors. Right now, the colors are given generic names
+                    // like "color1", "color2", "color3", etc.
+                    // if a color is able to be named, then someone naming a color "HEX" and exporting with the "by color" format will break this
+                    //
+                    // While any of these existing text-based formats (or even the non-text-based ones) can be changed and thus break our reader code at any time,
+                    // most other programs have no incentive to actually modify their format for a handful of reasons (i.e. backwards compatibility, interoperability with other programs)
+                    // However, PowerToys doesn't necessarily have this problem because the exported files were meant to be read by humans, rather than being interpreted by software.
+                    // also, at the time of writing this, 0.57 is the latest version and thus this is very brand new code, which may be modified in the next version or so.
+                    // this is the source of all my apprehension here.
+                    // I wouldn't want to reach out to the team about ensuring the format will go unchanged, as they don't really have a reason to hold themselves to that.
+                    // Thus, the best I can do right now is write based upon what's been implemented right now, and adjust as I may need to in the future
+                    // 
+                    // relevant code in PowerToys repo:
+                    // SerializationHelper (actually writes the files):
+                    // https://github.com/microsoft/PowerToys/blob/main/src/modules/colorPicker/ColorPickerUI/Helpers/SerializationHelper.cs
+                    // ColorEditorViewModel (how it's activated from UI):
+                    // https://github.com/microsoft/PowerToys/blob/main/src/modules/colorPicker/ColorPickerUI/ViewModels/ColorEditorViewModel.cs#L175
+
+                    bool? formatSort = null;
+
+                    while (!reader.EndOfStream)
+                    {
+                        // read the next line in the file
+                        string line = reader.ReadLine() ?? "";
+
+                        if (string.IsNullOrEmpty(line))
+                        {
+                            continue;
+                        }
+                        else if (line.StartsWith("#"))
+                        {
+                            // PowerToys lines currently doesn't have comments, but... why not lol
+                            continue;
+                        }
+                        else
+                        {
+                            string[] entries = line.Split(';');
+
+                            if (entries.Length == 1)
+                            {
+                                // this line probably isn't a color data line
+                                continue;
+                            }
+
+                            if (formatSort == null)
+                            {
+                                // don't know what it is yet
+                                if (entries[0].StartsWith("color"))
+                                {
+                                    // likely by color
+                                    formatSort = false;
+                                }
+                                else
+                                {
+                                    // likely by format
+                                    formatSort = true;
+                                }
+                            }
+
+
+                            if (formatSort == true)
+                            {
+                                // sorted by format
+                                List<Color> color = GetColorsFromByFormatLine(entries);
+
+                                // if by format, then we have all the colors and don't need to go further
+                                if (color.Count == 0)
+                                {
+                                    // we don't know this format, move on?
+                                    continue;
+                                }
+                                else
+                                {
+                                    // with a "by format" line, all the colors are on one line
+                                    // so now that we have all the colors, we don't need to keep going
+                                    // just quickly return
+                                    return color;
+                                }
+                            }
+                            else
+                            {
+                                // sorted by color
+                                var color = GetColorFromByColorLine(entries);
+                                if (color != null)
+                                {
+                                    results.Add(color.Value);
+                                }
+                            }
+                        }
+                    } // end while
+
+                }
+
+                return results;
+            }
+
+            List<Color> GetColorsFromByFormatLine(string[] entries)
+            {
+                List<Color> colors = new List<Color>();
+                // first, read the first entry to understand what the format is
+                string format = entries[0];
+
+                switch (format.ToUpperInvariant())
+                {
+                    case "HEX":
+                        // conveniently, they specifically write in the hash symbol (#), so we can use this to locate this color
+                        foreach (string item in entries)
+                        {
+                            if (item == "HEX") { continue; } // first item
+
+                            string hex = item.Substring(item.IndexOf('#'));
+                            Color c = ColorsHelper.CreateFromHex(hex);
+                            colors.Add(c);
+                        }
+                        break;
+                    case "RGB":
+                        foreach (string item in entries)
+                        {
+                            if (item == "RGB") { continue; } // first item
+
+                            string rgb = GetStringInsideParantheses(item);
+                            string[] vals = rgb.Split(',');
+                            Color c = Color.FromRgb(TryParseByte(vals[0]), TryParseByte(vals[1]), TryParseByte(vals[2]));
+                            colors.Add(c);
+                        }
+                        break;
+                    case "HSV":
+                        foreach (string item in entries)
+                        {
+                            if (item == "HSV") { continue; } // first item
+
+                            string rgb = GetStringInsideParantheses(item);
+                            string[] vals = rgb.Split(',');
+                            Color c = ColorsHelper.CreateFromHSV(TryParseDouble(vals[0]), TryParseDouble(vals[1].Replace("%", "")) / 100, TryParseDouble(vals[2].Replace("%", "")) / 100);
+                            colors.Add(c);
+                        }
+                        break;
+                    default:
+                        // not a format I understand
+                        break;
+                }
+
+                return colors;
+            }
+
+            Color? GetColorFromByColorLine(string[] entries)
+            {
+                foreach (string item in entries)
+                {
+                    if (item.StartsWith("HEX"))
+                    {
+                        string hex = item.Substring(item.IndexOf('#'));
+                        Color c = ColorsHelper.CreateFromHex(hex);
+                        return c;
+                    }
+                    else if (item.StartsWith("RGB"))
+                    {
+                        string rgb = GetStringInsideParantheses(item);
+                        string[] vals = rgb.Split(',');
+                        Color c = Color.FromRgb(TryParseByte(vals[0]), TryParseByte(vals[1]), TryParseByte(vals[2]));
+                        return c;
+                    }
+                    else if (item.StartsWith("HSV"))
+                    {
+                        string rgb = GetStringInsideParantheses(item);
+                        string[] vals = rgb.Split(',');
+                        Color c = ColorsHelper.CreateFromHSV(TryParseDouble(vals[0]), TryParseDouble(vals[1].Replace("%", "")) / 100, TryParseDouble(vals[2].Replace("%", "")) / 100);
+                        return c;
+                    }
+                    else
+                    {
+                        // not a format I understand
+                        // next!
+                    }
+                }
+
+                return null;
+            }
+
+            byte TryParseByte(string value)
+            {
+                try
+                {
+                    return byte.Parse(value);
+                }
+                catch (FormatException)
+                {
+                    return 0;
+                }
+            }
+
+            double TryParseDouble(string value)
+            {
+                try
+                {
+                    return double.Parse(value);
+                }
+                catch (FormatException)
+                {
+                    return 0.0;
+                }
+            }
+
+            string GetStringInsideParantheses(string input)
+            {
+                int open = input.IndexOf('(');
+                int close = input.IndexOf(')');
+
+                if (close - open <= 0) return "";
+                else
+                {
+                    return input.Substring(open + 1, close - open - 1);
+                }
+            }
+        }
+
         #endregion
 
         #region Bitmap Palette (TIF, GIF)
@@ -718,7 +972,7 @@ namespace SolidShineUi
             return bpal.Colors.ToList();
         }
 
-#endregion
+        #endregion
 
     }
 }
