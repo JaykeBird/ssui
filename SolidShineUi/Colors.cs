@@ -44,7 +44,7 @@ namespace SolidShineUi
         /// <summary>
         /// Create a color based upon a hex string.
         /// </summary>
-        /// <param name="hex">The hex string. Should have 3, 6, or 8 characters (i.e. "FFF", "FF00FF", or "FF00FF00"). The starting hash is allowed.</param>
+        /// <param name="hex">The hex string. Should have 3, 6, or 8 characters (i.e. "FFF", "FF00FF", or "FF00FF00"). The starting hash is also allowed (such as "#FF00FF").</param>
         /// <exception cref="FormatException">Thrown if the string is not a hex string, or incorrectly formatted (including if the string is not of the length 3, 6, or 8).</exception>
         public static Color CreateFromHex(string hex)
         {
