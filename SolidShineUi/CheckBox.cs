@@ -36,6 +36,8 @@ namespace SolidShineUi
 
             CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
 
+            SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
+
             //if (Template != null)
             //{
             //    try
@@ -389,13 +391,13 @@ namespace SolidShineUi
 
             if (cs.IsHighContrast)
             {
-                Background = cs.BackgroundColor.ToBrush();
+                //Background = cs.BackgroundColor.ToBrush();
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
                 CheckForeground = cs.ForegroundColor.ToBrush();
             }
             else
             {
-                Background = Colors.White.ToBrush();
+                //Background = Colors.White.ToBrush();
                 BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
                 CheckForeground = Colors.Black.ToBrush();
             }

@@ -957,7 +957,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="flat:CheckBox" >
-                    <Grid Background="#01000000">
+                    <Grid Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="3" x:Name="colLeftSpace"/>
