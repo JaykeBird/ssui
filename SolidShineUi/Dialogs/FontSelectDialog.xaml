@@ -16,7 +16,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="rowLists" />
-            <RowDefinition x:Name="rowStyles" Height="95"/>
+            <RowDefinition x:Name="rowStyles" Height="90"/>
             <RowDefinition x:Name="rowPreviewText" Height="23"/>
             <RowDefinition x:Name="rowPreviewBox" Height="Auto"/>
             <RowDefinition x:Name="rowButtons" Height="64"/>
@@ -150,12 +150,12 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="25,2,0,0" Text="Styles/Decorations:" VerticalAlignment="Top" x:Name="lblStyles" Grid.Row="1" />
         <TextBlock HorizontalAlignment="Left" Margin="25,1,0,0" Text="Preview:" VerticalAlignment="Top" x:Name="lblPreview" Grid.Row="2" />
-        <CheckBox x:Name="chkOverline" Content="Overline" HorizontalAlignment="Left" Margin="25,27,0,0" VerticalAlignment="Top" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked" Grid.Row="1" />
-        <CheckBox x:Name="chkStrike" Content="Strikethrough" HorizontalAlignment="Left" Margin="25,47,0,0" VerticalAlignment="Top" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked" Grid.Row="1" />
-        <CheckBox x:Name="chkUnderline" Content="Underline" HorizontalAlignment="Left" Margin="25,67,0,0" VerticalAlignment="Top" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked" Grid.Row="1" />
-        <CheckBox x:Name="chkItalic" Content="Italic" HorizontalAlignment="Left" Margin="135,27,0,0" VerticalAlignment="Top" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked" Grid.Row="1" />
-        <CheckBox x:Name="chkOblique" Content="Oblique" HorizontalAlignment="Left" Margin="135,47,0,0" VerticalAlignment="Top" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked" Grid.Row="1" />
-        <CheckBox x:Name="chkBaseline" Content="Baseline" HorizontalAlignment="Left" Margin="135,67,0,0" VerticalAlignment="Top" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked" Grid.Row="1" />
+        <flat:CheckBox x:Name="chkOverline" Content="Overline" HorizontalAlignment="Left" Margin="25,27,0,0" VerticalAlignment="Top" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked" Grid.Row="1" Padding="5,0" />
+        <flat:CheckBox x:Name="chkStrike" Content="Strikethrough" HorizontalAlignment="Left" Margin="25,52,0,0" VerticalAlignment="Top" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked" Grid.Row="1" Padding="5,0" />
+        <flat:CheckBox x:Name="chkUnderline" Content="Underline" HorizontalAlignment="Left" Margin="135,52,0,0" VerticalAlignment="Top" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked" Grid.Row="1" Padding="5,0" />
+        <flat:CheckBox x:Name="chkBaseline" Content="Baseline" HorizontalAlignment="Left" Margin="135,27,0,0" VerticalAlignment="Top" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked" Grid.Row="1" Padding="5,0" />
+        <flat:CheckBox x:Name="chkItalic" Content="Italic" HorizontalAlignment="Left" Margin="225,27,0,0" VerticalAlignment="Top" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked" Grid.Row="1" Padding="5,0" />
+        <flat:CheckBox x:Name="chkOblique" Content="Oblique" HorizontalAlignment="Left" Margin="225,52,0,0" VerticalAlignment="Top" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked" Grid.Row="1" Padding="5,0" />
 
         <!--<TextBlock HorizontalAlignment="Left" Margin="240,250,0,0" Text="Font color:" VerticalAlignment="Top"/>-->
 

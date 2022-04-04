@@ -126,11 +126,11 @@ namespace SolidShineUi
         {
             get
             {
-                if (chkItalic.IsChecked.GetValueOrDefault(false))
+                if (chkItalic.IsChecked)
                 {
                     return FontStyles.Italic;
                 }
-                else if (chkOblique.IsChecked.GetValueOrDefault(false))
+                else if (chkOblique.IsChecked)
                 {
                     return FontStyles.Oblique;
                 }
@@ -165,10 +165,10 @@ namespace SolidShineUi
             {
                 TextDecorationCollection tdc = new TextDecorationCollection();
 
-                if (chkUnderline.IsChecked.GetValueOrDefault(false)) tdc.Add(TextDecorations.Underline);
-                if (chkBaseline.IsChecked.GetValueOrDefault(false)) tdc.Add(TextDecorations.Baseline);
-                if (chkStrike.IsChecked.GetValueOrDefault(false)) tdc.Add(TextDecorations.Strikethrough);
-                if (chkOverline.IsChecked.GetValueOrDefault(false)) tdc.Add(TextDecorations.OverLine);
+                if (chkUnderline.IsChecked) tdc.Add(TextDecorations.Underline);
+                if (chkBaseline.IsChecked) tdc.Add(TextDecorations.Baseline);
+                if (chkStrike.IsChecked) tdc.Add(TextDecorations.Strikethrough);
+                if (chkOverline.IsChecked) tdc.Add(TextDecorations.OverLine);
 
                 return tdc;
             }
@@ -285,13 +285,13 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Styles/Decorations:";
                         RealignStylesAndDecorations();
-                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
+                        rowStyles.Height = new GridLength(90, GridUnitType.Pixel);
                     }
                     else
                     {
                         lblStyles.Text = "Styles:";
                         RealignStylesOnly();
-                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
+                        rowStyles.Height = new GridLength(90, GridUnitType.Pixel);
                     }
                 }
                 else
@@ -300,7 +300,7 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Decorations:";
                         RealignDecorationsOnly();
-                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
+                        rowStyles.Height = new GridLength(90, GridUnitType.Pixel);
                     }
                     else
                     {
@@ -331,13 +331,13 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Styles/Decorations:";
                         RealignStylesAndDecorations();
-                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
+                        rowStyles.Height = new GridLength(90, GridUnitType.Pixel);
                     }
                     else
                     {
                         lblStyles.Text = "Decorations:";
                         RealignDecorationsOnly();
-                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
+                        rowStyles.Height = new GridLength(90, GridUnitType.Pixel);
                     }
                 }
                 else
@@ -346,7 +346,7 @@ namespace SolidShineUi
                     {
                         lblStyles.Text = "Styles:";
                         RealignStylesOnly();
-                        rowStyles.Height = new GridLength(95, GridUnitType.Pixel);
+                        rowStyles.Height = new GridLength(90, GridUnitType.Pixel);
                     }
                     else
                     {
@@ -388,7 +388,7 @@ namespace SolidShineUi
         void RealignStylesOnly()
         {
             chkItalic.Margin = new Thickness(25, 27, 0, 0);
-            chkOblique.Margin = new Thickness(25, 47, 0, 0);
+            chkOblique.Margin = new Thickness(25, 52, 0, 0);
         }
 
         void RealignDecorationsOnly()
@@ -398,10 +398,10 @@ namespace SolidShineUi
 
         void RealignStylesAndDecorations()
         {
-            chkItalic.Margin = new Thickness(135, 27, 0, 0);
-            chkOblique.Margin = new Thickness(135, 47, 0, 0);
+            chkItalic.Margin = new Thickness(225, 27, 0, 0);
+            chkOblique.Margin = new Thickness(225, 52, 0, 0);
 
-            chkBaseline.Margin = new Thickness(135, 67, 0, 0);
+            chkBaseline.Margin = new Thickness(135, 27, 0, 0);
         }
 
         #endregion
@@ -579,12 +579,12 @@ namespace SolidShineUi
 
         private void chkItalic_Unchecked(object sender, RoutedEventArgs e)
         {
-            txtPreview.FontStyle = chkOblique.IsChecked.GetValueOrDefault(false) ? FontStyles.Oblique : FontStyles.Normal;
+            txtPreview.FontStyle = chkOblique.IsChecked ? FontStyles.Oblique : FontStyles.Normal;
         }
 
         private void chkOblique_Unchecked(object sender, RoutedEventArgs e)
         {
-            txtPreview.FontStyle = chkItalic.IsChecked.GetValueOrDefault(false) ? FontStyles.Italic : FontStyles.Normal;
+            txtPreview.FontStyle = chkItalic.IsChecked ? FontStyles.Italic : FontStyles.Normal;
         }
 
         private void chkBaseline_Unchecked(object sender, RoutedEventArgs e)
