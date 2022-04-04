@@ -1630,7 +1630,7 @@
                                                 <ssut:ImageTextListItem Title="{Binding .,Converter={StaticResource FileNameConverter}}" Icon="{Binding ., Converter={StaticResource FileIconConverter}}" 
                                                                         CanSelect="False" Command="{x:Static flat:FileSelect.RemoveSelectedFile}" CommandParameter="{Binding .}"
                                                                         ButtonToolTip="Remove" ShowIcon="{Binding Path=ShowIcon, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}"
-                                                                        HighlightBrush="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}"
+                                                                        HighlightBrush="#01FFFFFF"
                                                                         ClickBrush="{Binding Path=ButtonClickBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}"
                                                                         ButtonBackground="{Binding Path=ButtonBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}"
                                                                         ButtonHighlightBrush="{Binding Path=ButtonHighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}"
@@ -1684,8 +1684,7 @@
                                     </Grid.Style>
                                     <ssut:ImageTextListItem x:Name="itleNonList" CanRemove="False" CanSelect="False"
                                                             ShowIcon="{Binding Path=ShowIcon, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}"
-                                                            HighlightBrush="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}"
-                                                            ClickBrush="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}}" >
+                                                            HighlightBrush="#01FFFFFF" ClickBrush="#01FFFFFF" >
                                         <ssut:ImageTextListItem.Style>
                                             <Style TargetType="{x:Type ssut:ImageTextListItem}">
                                                 <Setter Property="Title" Value="{Binding Path=SelectedFiles.Count, RelativeSource={RelativeSource AncestorType={x:Type flat:FileSelect}}, StringFormat='\{0\} file(s) selected'}" >
