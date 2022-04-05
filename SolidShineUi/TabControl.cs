@@ -43,8 +43,11 @@ namespace SolidShineUi
             InternalAllowTabDragDropChanged += tabControl_InternalAllowDragDropChanged;
             InternalHorizontalTabBarHeightChanged += tabControl_InternalHorizontalTabBarHeightChanged;
 
-            CommandBindings.Add(new CommandBinding(TabListMenuItemClick, OnTabListMenuItemClick));
             CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
+
+            CommandBindings.Add(new CommandBinding(CloseCurrentTab, DoCloseCurrentTab, CanExecuteIfAnyTabSelected));
+            CommandBindings.Add(new CommandBinding(CloseSpecificTab, DoCloseSpecificTab, CanExecuteIfTabPresent));
+            CommandBindings.Add(new CommandBinding(SwitchToTab, DoSwitchToTab, CanExecuteIfTabPresent));
         }
 
         /// <summary>
@@ -384,6 +387,114 @@ namespace SolidShineUi
 #endif
         #endregion
 
+        #region Base Functions
+
+        /// <summary>
+        /// Close a specific tab in this TabControl.
+        /// </summary>
+        /// <param name="tab">The tab to close.</param>
+        /// <remarks>
+        /// If <paramref name="tab"/> is not in this TabControl, or if the tab closing is cancelled via the TabClosing event, then nothing will happen.
+        /// This does not take the <paramref name="tab"/>'s CanClose property into account; the tab will be closed regardless.
+        /// </remarks>
+        public void CloseTab(TabItem tab)
+        {
+            if (Items.Contains(tab))
+            {
+                TabItemClosingEventArgs ee = new TabItemClosingEventArgs(tab);
+                TabClosing?.Invoke(this, ee);
+
+                if (ee.Cancel)
+                {
+                    // don't remove or close anything, just exit
+                    closedTabIndex = -1;
+                    return;
+                }
+
+                if (Items.IsSelected(tab) && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
+                {
+                    closedTabIndex = Items.IndexOf(tab);
+                }
+                else
+                {
+                    closedTabIndex = -1;
+                }
+                Items.Remove(tab);
+            }
+        }
+
+        #endregion
+
+        #region Commands
+
+        /// <summary>Close the currently open tab.</summary>
+        public static readonly RoutedCommand CloseCurrentTab = new RoutedCommand();
+        /// <summary>Close a specific tab on this TabControl.</summary>
+        public static readonly RoutedCommand CloseSpecificTab = new RoutedCommand();
+        /// <summary>Select and display a specific tab on this TabControl.</summary>
+        public static readonly RoutedCommand SwitchToTab = new RoutedCommand();
+
+        private void DoCloseCurrentTab(object sender, ExecutedRoutedEventArgs e)
+        {
+            var ti = CurrentTab;
+            if (ti != null)
+            {
+                CloseTab(ti);
+            }
+        }
+
+        private void DoCloseSpecificTab(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                if (e.Parameter is TabItem tab)
+                {
+                    CloseTab(tab);
+                }
+            }
+        }
+
+        private void DoSwitchToTab(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                if (e.Parameter is TabItem tab)
+                {
+                    if (Items.Contains(tab))
+                    {
+                        Items.Select(tab);
+                        tab.BringIntoView();
+                    }
+                }
+            }
+        }
+
+        private void CanExecuteAlways(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CanExecuteIfAnyTabSelected(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = CurrentTab != null;
+        }
+
+        private void CanExecuteIfTabPresent(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                if (e.Parameter is TabItem tab)
+                {
+                    e.CanExecute = Items.Contains(tab);
+                    return;
+                }
+            }
+
+            e.CanExecute = false;
+        }
+
+        #endregion  
+
         #region ShowTabsOnBottom
 
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabControl),
@@ -517,19 +628,6 @@ namespace SolidShineUi
         private void tabControl_InternalShowTabListMenuChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ShowTabListMenuChanged?.Invoke(this, e);
-        }
-        
-        // The Tab List Menu itself is generated purely in XAML
-
-        public static readonly RoutedCommand TabListMenuItemClick = new RoutedCommand();
-
-        private void OnTabListMenuItemClick(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Parameter is TabItem ti)
-            {
-                Items.Select(ti);
-                ti.BringIntoView();
-            }
         }
 
         #endregion
