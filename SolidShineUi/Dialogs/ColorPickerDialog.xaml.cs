@@ -152,6 +152,9 @@ namespace SolidShineUi
 
         #region Sliders
 
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
+
         private void btnInvert_Click(object sender, RoutedEventArgs e)
         {
             UpdateSelectedColor(SelectedColor.GetInversion());
@@ -234,7 +237,6 @@ namespace SolidShineUi
 
             }
         }
-
         private void nudR_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (!updating)
@@ -421,6 +423,8 @@ namespace SolidShineUi
             updating = false;
         }
 
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0060 // Remove unused parameter
         #endregion
 
         #region From Image
