@@ -1,0 +1,7 @@
+﻿How to use:
+
+In Visual Studio, right click on the XmlDocGen project item in the Solution Explorer, and then go to "Debug > Start New Instance" (OR select "XmlDocGen" from the startup projects list and go from there).
+
+In VS Code, open the Run and Debug pane. Make sure that ".NET Core Launch (console)" is selected, and then click on Start Debugging.
+
+Note that the resulting "docs" folder will be in either "/bin/Debug" or "/bin/Release" depending upon which build configuration is currently set.

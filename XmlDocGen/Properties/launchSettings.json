@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "XmlDocGen": {
+      "commandName": "Project",
+      "commandLineArgs": "SolidShineUi docs"
+    }
+  }
+}
