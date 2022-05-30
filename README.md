@@ -76,6 +76,8 @@ From here, you should be on your way!
 
 You can use the included SsuiSample app as an example to get started with.
 
+Documentation is available on [the wiki here on GitHub](https://github.com/JaykeBird/ssui/wiki).
+
 ## Included
 
 ### Windows
