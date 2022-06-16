@@ -377,6 +377,10 @@ namespace SolidShineUi
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs == null)
@@ -571,6 +575,9 @@ namespace SolidShineUi
             "CornerRadius", typeof(CornerRadius), typeof(CheckBox),
             new PropertyMetadata(new CornerRadius(0)));
 
+        /// <summary>
+        /// Get or set the thickness of the border 
+        /// </summary>
         [Category("Appearance")]
         public new Thickness BorderThickness
         {
