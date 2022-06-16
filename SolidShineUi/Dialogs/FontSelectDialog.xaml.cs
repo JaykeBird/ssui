@@ -16,6 +16,9 @@ namespace SolidShineUi
     /// </summary>
     public partial class FontSelectDialog : FlatWindow
     {
+        /// <summary>
+        /// Create a FontSelectDialog.
+        /// </summary>
         public FontSelectDialog()
         {
             InitializeComponent();
@@ -29,6 +32,9 @@ namespace SolidShineUi
         //private TextDecorationCollection _dec = new TextDecorationCollection();
         private List<string> _fallbackList = new List<string>();
 
+        /// <summary>
+        /// Get or set the result of the dialog. Set to true if the user clicked OK.
+        /// </summary>
         public new bool DialogResult { get; set; } = false;
 
         /// <summary>
@@ -37,7 +43,10 @@ namespace SolidShineUi
         public bool PreserveFontFallback { get; set; } = true;
 
         #region Selection Properties
-
+        
+        /// <summary>
+        /// Get or set the font family selected in the dialog.
+        /// </summary>
         public FontFamily SelectedFontFamily
         {
             get
@@ -96,6 +105,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the selected font weight in the dialog.
+        /// </summary>
         public FontWeight SelectedFontWeight
         {
             get
@@ -109,6 +121,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the selected font size in the dialog.
+        /// </summary>
         public double SelectedFontSize
         {
             get
@@ -122,6 +137,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the selected font style in the dialog.
+        /// </summary>
         public FontStyle SelectedFontStyle
         {
             get
@@ -159,6 +177,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the selected text decorations in the dialog.
+        /// </summary>
         public TextDecorationCollection SelectedTextDecorations
         {
             get
@@ -268,6 +289,9 @@ namespace SolidShineUi
 
         //BooleanToVisibilityConverter btv = new BooleanToVisibilityConverter();
 
+        /// <summary>
+        /// Get or set if the font styles section of the dialog is visible.
+        /// </summary>
         public bool ShowStyles
         {
             get
@@ -312,6 +336,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set if the text decorations section of the dialog is visible.
+        /// </summary>
         public bool ShowDecorations
         {
             get
@@ -358,6 +385,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set if the font weights section of the dialog is visible.
+        /// </summary>
         public bool ShowWeights
         {
             get
@@ -371,6 +401,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set if the font sizes section of the dialog is visible.
+        /// </summary>
         public bool ShowSizes
         {
             get
@@ -418,6 +451,9 @@ namespace SolidShineUi
             return ls;
         }
 
+        /// <summary>
+        /// The list of font weights that are displayed in the dialog. Note that there's a lot of repeats of FontWeights in the base enum.
+        /// </summary>
         public static List<FontWeight> AvailableFontWeights = new List<FontWeight>()
         {
             FontWeights.Thin,

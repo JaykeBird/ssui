@@ -747,6 +747,9 @@ namespace SolidShineUi
             OnClick();
         }
 
+        /// <summary>
+        /// Defines the actions the button performs when it is clicked.
+        /// </summary>
         protected override void OnClick()
         {
             if (SelectOnClick)

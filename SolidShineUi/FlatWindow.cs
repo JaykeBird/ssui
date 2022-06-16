@@ -247,6 +247,9 @@ namespace SolidShineUi
             "ShowTitle", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set if the <see cref="Window.Title"/> should be displayed at the top of the window.
+        /// </summary>
         [Category("Appearance")]
         public bool ShowTitle
         {
