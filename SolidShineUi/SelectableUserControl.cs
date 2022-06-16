@@ -7,9 +7,15 @@ using System.Windows.Media;
 
 namespace SolidShineUi
 {
+
+    /// <summary>
+    /// The basic control that can be added into a SelectPanel. Extend this class to create your own UI elements to use with the SelectPanel.
+    /// </summary>
     public class SelectableUserControl : System.Windows.Controls.UserControl //, IEquatable<SelectableUserControl>
     {
-
+        /// <summary>
+        /// Create a SelectableUserControl.
+        /// </summary>
         public SelectableUserControl()
         {
             MouseEnter += UserControl_MouseEnter;
@@ -43,6 +49,10 @@ namespace SolidShineUi
         #region Selection Handling
 
         bool canSel = true;
+
+        /// <summary>
+        /// Get or set if this control can be selected.
+        /// </summary>
         public bool CanSelect
         {
             get
@@ -68,6 +78,10 @@ namespace SolidShineUi
         }
 
         bool sel = false;
+
+        /// <summary>
+        /// Get or set if this control is currently selected.
+        /// </summary>
         public bool IsSelected
         {
             get
@@ -100,6 +114,9 @@ namespace SolidShineUi
 
         static Color transparent = Color.FromArgb(1, 0, 0, 0);
 
+        /// <summary>
+        /// Get or set the brush to use for the background of this control while it is being clicked.
+        /// </summary>
         [Category("Brushes")]
         public Brush ClickBrush
         {
@@ -107,6 +124,9 @@ namespace SolidShineUi
             set => SetValue(ClickBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush to use for the background of this control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush Background
         {
@@ -114,6 +134,9 @@ namespace SolidShineUi
             set => SetValue(BackgroundProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush to use for the background of this control while it is selected.
+        /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
         {
@@ -121,6 +144,9 @@ namespace SolidShineUi
             set => SetValue(SelectedBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush to use for the background of this contol while it is highlighted (i.e. has a mouse over it, or has keyboard focus).
+        /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
         {
@@ -128,6 +154,7 @@ namespace SolidShineUi
             set => SetValue(HighlightBrushProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(transparent.ToBrush()));
@@ -143,20 +170,45 @@ namespace SolidShineUi
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         bool performingClick = false;
         bool highlighting = false;
         bool rightClick = false;
 
 #if NETCOREAPP
+        /// <summary>
+        /// Raised if the IsSelected property is changed.
+        /// </summary>
         public event EventHandler? SelectionChanged;
+        /// <summary>
+        /// Raised if the CanSelect property is changed.
+        /// </summary>
         public event EventHandler? CanSelectChanged;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
         public event EventHandler? Click;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
         public event EventHandler? RightClick;
 #else
+        /// <summary>
+        /// Raised if the IsSelected property is changed.
+        /// </summary>
         public event EventHandler SelectionChanged;
+        /// <summary>
+        /// Raised if the CanSelect property is changed.
+        /// </summary>
         public event EventHandler CanSelectChanged;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
         public event EventHandler Click;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
         public event EventHandler RightClick;
 #endif
 
