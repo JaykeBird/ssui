@@ -25,9 +25,8 @@ namespace SolidShineUi
         #endregion
 
         /// <summary>
-        /// This event is never used, and will be removed in a future release.
+        /// Raised when the Value, Decimals, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
         /// </summary>
-        [Obsolete("This event is never used, and will be removed in a future release.")]
         public event EventHandler PropertyChanged;
 
         /// <summary>
@@ -386,6 +385,9 @@ namespace SolidShineUi
 
         #region ValueProperty
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalValueChanged;
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
@@ -544,6 +546,10 @@ namespace SolidShineUi
             "RepeatDelay", typeof(double), typeof(DoubleSpinner),
             new PropertyMetadata(300d, new PropertyChangedCallback(OnInternalRepeatDelayChanged)));
 
+
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalRepeatDelayChanged;
 
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
@@ -591,6 +597,10 @@ namespace SolidShineUi
             "CornerRadius", typeof(CornerRadius), typeof(DoubleSpinner),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
 
+
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
 
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
@@ -661,6 +671,9 @@ namespace SolidShineUi
             "ShowArrows", typeof(bool), typeof(DoubleSpinner),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowArrowsChanged)));
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowArrowsChanged;
 
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(

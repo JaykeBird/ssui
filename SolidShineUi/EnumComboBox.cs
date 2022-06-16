@@ -29,6 +29,9 @@ namespace SolidShineUi
             "Enum", typeof(Type), typeof(EnumComboBox),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalEnumChanged)));
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalEnumChanged;
 
         public static readonly RoutedEvent EnumChangedEvent = EventManager.RegisterRoutedEvent(

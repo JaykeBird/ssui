@@ -54,6 +54,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalBrushChanged;
 
         private void LinkTextBlock_InternalBrushChanged(object sender, DependencyPropertyChangedEventArgs e)

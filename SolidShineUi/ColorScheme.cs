@@ -10,8 +10,17 @@ namespace SolidShineUi
     /// </summary>
     public enum HighContrastOption
     {
+        /// <summary>
+        /// A white foreground on a black background.
+        /// </summary>
         WhiteOnBlack = 0,
+        /// <summary>
+        /// A green (and white) foreground on a black background.
+        /// </summary>
         GreenOnBlack = 1,
+        /// <summary>
+        /// A black foreground on a white background.
+        /// </summary>
         BlackOnWhite = 2
     }
 
@@ -112,14 +121,51 @@ namespace SolidShineUi
         /// </summary>
         public Color DarkDisabledColor { get; set; } = CreateFromHex("AAAAAF");
 
+        /// <summary>
+        /// This is the main interface accent color, and generally the most vibrant. With High Contrast color schemes, this will be the same as AccentBackgroundColor.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentMainColor { get; set; } = CreateFromHex("E34234");
+        /// <summary>
+        /// This is the secondary interface accent color, which can be used to differentiate regions of a user interface by color.
+        /// Do not use this with High Contrast color schemes (use <see cref="IsHighContrast"/> to check if this color scheme is a high contrast theme.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentSecondaryColor { get; set; } = CreateFromHex("FFB9B2");
+        /// <summary>
+        /// The primary background accent color of a window or pane.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentBackgroundColor { get; set; } = CreateFromHex("FFF1F0");
+        /// <summary>
+        /// The accent color used for when certain elements have focus or have the mouse over them; this is a darker color than the main color, and is generally used for the caption buttons of a window.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentHighlightColor { get; set; } = CreateFromHex("C4392D");
+        /// <summary>
+        /// The accent color used for when certain elements are being clicked on; this a darker color than the main color, and is generally used for the caption buttons of a window.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentSelectionColor { get; set; } = CreateFromHex("B03328");
+        /// <summary>
+        /// The accent color used for the borders of elements and windows.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentBorderColor { get; set; } = CreateFromHex("7D241D");
+        /// <summary>
+        /// The accent color used for when certain elements have focus or have the mouse over them; this is a lighter color than the main color, and is generally used by many UI elements.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentSecondHighlightColor { get; set; } = CreateFromHex("FFE3E0");
+        /// <summary>
+        /// The accent color used for when certain elements are being clicked on; this is a lighter color than the main color, and is generally used by many UI elements.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentThirdHighlightColor { get; set; } = CreateFromHex("FFD9D6");
+        /// <summary>
+        /// The accent color used for the background of certain elements. This background color is lighter than the main background color.
+        /// Accent colors can be used wherever you wish to add more contrasting color to your UI.
+        /// </summary>
         public Color AccentLightBackgroundColor { get; set; } = CreateFromHex("FFF8F7");
 
         /// <summary>
@@ -135,6 +181,9 @@ namespace SolidShineUi
         /// </summary>
         public Color WindowInactiveColor { get; set; } = DarkGray;
 
+        /// <summary>
+        /// Determine if menus should use some accent colors while highlighting items.
+        /// </summary>
         public bool MenusUseAccent { get; set; } = false;
         //public bool PanelUseAccent { get; set; } = false;
 
@@ -295,11 +344,20 @@ namespace SolidShineUi
             AccentThirdHighlightColor = baseScheme.ThirdHighlightColor;
         }
 
+        /// <summary>
+        /// Create a premade light theme color scheme. Lighter gray colors are used.
+        /// </summary>
+        /// <returns></returns>
         public static ColorScheme CreateLightTheme()
         {
             return CreateLightTheme(CreateFromHex("A8A8A8"));
         }
 
+        /// <summary>
+        /// Create a premade light theme color scheme. Lighter gray colors are used, and a custom accent color can be provided to add some more color.
+        /// </summary>
+        /// <param name="accentColor">The accent color to use with the light theme, to add more color to certain elements.</param>
+        /// <returns></returns>
         public static ColorScheme CreateLightTheme(Color accentColor)
         {
             ColorScheme cs = new ColorScheme(accentColor)
@@ -318,11 +376,20 @@ namespace SolidShineUi
             return cs;
         }
 
+        /// <summary>
+        /// Create a premade dark theme color scheme. Darker gray colors are used.
+        /// </summary>
+        /// <returns></returns>
         public static ColorScheme CreateDarkTheme()
         {
             return CreateDarkTheme(CreateFromHex("C8C8C8"));
         }
 
+        /// <summary>
+        /// Create a premade dark theme color scheme. Darker gray colors are used, and a custom accent color can be provided to add some more color.
+        /// </summary>
+        /// <param name="accentColor">The accent color to use with the dark theme, to add more color to certain elements.</param>
+        /// <returns></returns>
         public static ColorScheme CreateDarkTheme(Color accentColor)
         {
             ColorScheme cs = new ColorScheme(accentColor);

@@ -55,6 +55,9 @@ namespace SolidShineUi.Utils
             
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalTabBackgroundChanged;
 
         private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
@@ -195,6 +198,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalIsSelectedChanged;
 
         private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -215,6 +221,9 @@ namespace SolidShineUi.Utils
             set { SetValue(TabItemProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
 #if NETCOREAPP
         protected event DependencyPropertyChangedEventHandler? InternalTabItemChanged;
 #else
@@ -269,6 +278,9 @@ namespace SolidShineUi.Utils
             set { SetValue(ShowTabsOnBottomProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
 #if NETCOREAPP
         protected event DependencyPropertyChangedEventHandler? InternalShowTabsOnBottomChanged;
 #else
@@ -320,6 +332,9 @@ namespace SolidShineUi.Utils
             set { SetValue(ParentTabControlProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalParentChanged;
 
         private static void OnInternalParentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

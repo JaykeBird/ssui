@@ -15,6 +15,9 @@ namespace SolidShineUi
     [ContentProperty("Content")]
     public class TabItem : DependencyObject
     {
+        /// <summary>
+        /// Create a TabItem.
+        /// </summary>
         public TabItem()
         {
             //Self = this;
@@ -49,6 +52,9 @@ namespace SolidShineUi
             set { SetValue(TitleProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalTitleChanged;
 
 #if NETCOREAPP
@@ -85,6 +91,9 @@ namespace SolidShineUi
             set { SetValue(IsDirtyProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalIsDirtyChanged;
 
 #if NETCOREAPP
@@ -121,6 +130,9 @@ namespace SolidShineUi
             set { SetValue(DisplayDirtyStateProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalDisplayDirtyStateChanged;
 
 #if NETCOREAPP
@@ -160,6 +172,9 @@ namespace SolidShineUi
             set { SetValue(CanCloseProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCanCloseChanged;
 
 #if NETCOREAPP
@@ -196,6 +211,9 @@ namespace SolidShineUi
             set { SetValue(ShowIconProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowIconChanged;
 
 #if NETCOREAPP
@@ -232,6 +250,9 @@ namespace SolidShineUi
             set { SetValue(CanSelectProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCanSelectChanged;
 
 #if NETCOREAPP
@@ -268,6 +289,9 @@ namespace SolidShineUi
             set { SetValue(IconProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalIconChanged;
 
         /// <summary>
@@ -307,6 +331,9 @@ namespace SolidShineUi
             set { SetValue(TabBackgroundProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalTabBackgroundChanged;
 
         /// <summary>
@@ -346,6 +373,9 @@ namespace SolidShineUi
             set { SetValue(ContentProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalContentChanged;
 
         /// <summary>
@@ -385,6 +415,9 @@ namespace SolidShineUi
             set { SetValue(PaddingProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalPaddingChanged;
 
 #if NETCOREAPP
@@ -422,6 +455,9 @@ namespace SolidShineUi
             set { SetValue(VisibilityProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalVisibilityChanged;
 
         /// <summary>
@@ -494,6 +530,9 @@ namespace SolidShineUi
             set { SetValue(AllowDropProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalAllowDropChanged;
 
 #if NETCOREAPP
@@ -592,6 +631,9 @@ namespace SolidShineUi
             set { SetValue(ToolTipProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalToolTipChanged;
 
         /// <summary>
@@ -651,11 +693,23 @@ namespace SolidShineUi
             InternalBringIntoViewRequested?.Invoke(this, EventArgs.Empty);
         }
 
+
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
 #if NETCOREAPP
         internal protected event EventHandler? InternalTabClosing;
+
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         internal protected event EventHandler? InternalBringIntoViewRequested;
 #else
         internal protected event EventHandler InternalTabClosing;
+        
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         internal protected event EventHandler InternalBringIntoViewRequested;
 #endif
 

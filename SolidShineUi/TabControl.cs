@@ -26,6 +26,10 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TabControl), new FrameworkPropertyMetadata(typeof(TabControl)));
         }
 
+
+        /// <summary>
+        /// Create a TabControl.
+        /// </summary>
         public TabControl()
         {
             Loaded += TabControl_Loaded;
@@ -510,6 +514,9 @@ namespace SolidShineUi
             set { SetValue(ShowTabsOnBottomProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowTabsOnBottomChanged;
 
 #if NETCOREAPP
@@ -546,6 +553,9 @@ namespace SolidShineUi
             set { SetValue(HorizontalTabBarHeightProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalHorizontalTabBarHeightChanged;
 
 #if NETCOREAPP
@@ -610,6 +620,9 @@ namespace SolidShineUi
             set { SetValue(ShowTabListMenuProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowTabListMenuChanged;
 
 #if NETCOREAPP
@@ -647,6 +660,9 @@ namespace SolidShineUi
             set { SetValue(TabMinWidthProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalTabMinWidthChanged;
 
 #if NETCOREAPP
@@ -714,6 +730,9 @@ namespace SolidShineUi
             set { SetValue(AllowTabDragDropProperty, value); }
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalAllowTabDragDropChanged;
 
 #if NETCOREAPP

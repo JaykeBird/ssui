@@ -24,15 +24,33 @@ namespace SolidShineUi
 
         #endregion
 
+        /// <summary>
+        /// Raised when the Value, Decimals, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
+        /// </summary>
         public event EventHandler PropertyChanged;
+
+        /// <summary>
+        /// Raised when the Value property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ValueChanged;
+
+        /// <summary>
+        /// Raised when the Value property is validated, and changed to a valid value if needed.
+        /// </summary>
         public event EventHandler? ValueValidated;
 #else
         public event DependencyPropertyChangedEventHandler ValueChanged;
+
+        /// <summary>
+        /// Raised when the Value property is validated, and changed to a valid value if needed.
+        /// </summary>
         public event EventHandler ValueValidated;
 #endif
 
+        /// <summary>
+        /// Create an IntegerSpinner.
+        /// </summary>
         public IntegerSpinner()
         {
             InitializeComponent();
@@ -125,6 +143,9 @@ namespace SolidShineUi
 
         #region ColorScheme
 
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
@@ -149,12 +170,19 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the color scheme used for this spinner. For easier color scheme management, bind this to the window or larger control you're using.
+        /// </summary>
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -247,6 +275,9 @@ namespace SolidShineUi
             "BorderDisabledBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
+        /// <summary>
+        /// Get or set the brush used for the background of the buttons of the spinner.
+        /// </summary>
         [Category("Brushes")]
         public Brush ButtonBackground
         {
@@ -260,6 +291,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the background of the buttons when the control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush DisabledBrush
         {
@@ -273,6 +307,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush of the border around the control.
+        /// </summary>
         [Category("Brushes")]
         public new Brush BorderBrush
         {
@@ -286,6 +323,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used when a button is highlighted (i.e. has a mouse over it or keyboard focus).
+        /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
         {
@@ -299,6 +339,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used when a button is being clicked.
+        /// </summary>
         [Category("Brushes")]
         public Brush ClickBrush
         {
@@ -312,6 +355,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border around the control, while the control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderDisabledBrush
         {
@@ -329,6 +375,9 @@ namespace SolidShineUi
 
         #region ValueProperty
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalValueChanged;
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
@@ -425,11 +474,17 @@ namespace SolidShineUi
             "RepeatDelay", typeof(double), typeof(IntegerSpinner),
             new PropertyMetadata(300d, new PropertyChangedCallback(OnInternalRepeatDelayChanged)));
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalRepeatDelayChanged;
 
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
             "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
 
+        /// <summary>
+        /// Raised when the RepeatDelay property is changed.
+        /// </summary>
         public event RoutedEventHandler RepeatDelayChanged
         {
             add { AddHandler(RepeatDelayChangedEvent, value); }
@@ -469,11 +524,17 @@ namespace SolidShineUi
             "CornerRadius", typeof(CornerRadius), typeof(IntegerSpinner),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
 
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
             "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
 
+        /// <summary>
+        /// Raised when the CornerRadius property is changed.
+        /// </summary>
         public event RoutedEventHandler CornerRadiusChanged
         {
             add { AddHandler(CornerRadiusChangedEvent, value); }
@@ -497,6 +558,9 @@ namespace SolidShineUi
             RaiseEvent(re);
         }
 
+        /// <summary>
+        /// Get or set the corner radius to use around the corners of this control. Setting the corner radius to a value other than 0 displays rounded corners.
+        /// </summary>
         [Category("Appearance")]
         public CornerRadius CornerRadius
         {
@@ -533,11 +597,17 @@ namespace SolidShineUi
             "ShowArrows", typeof(bool), typeof(IntegerSpinner),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowArrowsChanged)));
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowArrowsChanged;
 
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
             "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
 
+        /// <summary>
+        /// Raised when the ShowArrows property is changed.
+        /// </summary>
         public event RoutedEventHandler ShowArrowsChanged
         {
             add { AddHandler(ShowArrowsChangedEvent, value); }
@@ -881,7 +951,7 @@ namespace SolidShineUi
             }
         }
 
-#region Touch/Stylus
+        #region Touch/Stylus
 
         private void btnUp_TouchDown(object sender, TouchEventArgs e)
         {
@@ -979,6 +1049,6 @@ namespace SolidShineUi
             }
         }
 
-#endregion
+        #endregion
     }
 }

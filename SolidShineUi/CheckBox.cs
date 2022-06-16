@@ -169,7 +169,14 @@ namespace SolidShineUi
             "IsIndeterminate", typeof(bool), typeof(CheckBox),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsIndeterminateChanged)));
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalIsCheckedChanged;
+
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalIsIndeterminateChanged;
 
         /// <summary>

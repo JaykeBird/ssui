@@ -296,6 +296,9 @@ namespace SolidShineUi
             "CornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnCornerRadiusChanged)));
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
 
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
@@ -720,6 +723,9 @@ namespace SolidShineUi
             set => SetValue(AllowMultipleFilesProperty, value);
         }
 
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalAllowMultipleFilesChanged;
 
         /// <summary>
