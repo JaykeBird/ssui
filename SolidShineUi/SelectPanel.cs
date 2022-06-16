@@ -81,17 +81,17 @@ namespace SolidShineUi
 
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable<SelectableUserControl>), typeof(SelectPanel), 
-                new PropertyMetadata(new PropertyChangedCallback(OnItemsSourcePropertyChanged)));
+                new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
 
-        private static void OnItemsSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnInternalItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             if (sender is SelectPanel sp)
             {
-                sp.OnItemsSourceChanged((IEnumerable<SelectableUserControl>)e.OldValue, (IEnumerable<SelectableUserControl>)e.NewValue);
+                sp.SelectPanel_InternalOnItemsSourceChanged((IEnumerable<SelectableUserControl>)e.OldValue, (IEnumerable<SelectableUserControl>)e.NewValue);
             }
         }
 
-        private void OnItemsSourceChanged(IEnumerable<SelectableUserControl> oldValue, IEnumerable<SelectableUserControl> newValue)
+        private void SelectPanel_InternalOnItemsSourceChanged(IEnumerable<SelectableUserControl> oldValue, IEnumerable<SelectableUserControl> newValue)
         {
             if (ItemsSource == null)
             {
