@@ -4,6 +4,9 @@ using System.Windows.Data;
 
 namespace SolidShineUi.Utils
 {
+    /// <summary>
+    /// Converts a double into a string for display in XAML.
+    /// </summary>
     public class DoubleStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

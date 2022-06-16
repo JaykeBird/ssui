@@ -141,6 +141,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used when a button is being clicked.
+        /// </summary>
         public Brush SelectionBrush
         {
             get
@@ -153,6 +156,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used when a button is being highlighted.
+        /// </summary>
         public Brush HighlightBrush
         {
             get

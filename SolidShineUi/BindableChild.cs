@@ -10,6 +10,9 @@ using System.Windows.Data;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// Add the ability to set a child to an object via WPF binding.
+    /// </summary>
     public class BindableChild
     {
         /// <summary>

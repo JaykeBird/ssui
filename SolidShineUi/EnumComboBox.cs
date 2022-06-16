@@ -13,6 +13,11 @@ namespace SolidShineUi
     /// </summary>
     public class EnumComboBox : ComboBox
     {
+
+
+        /// <summary>
+        /// Create an EnumComboBox.
+        /// </summary>
         public EnumComboBox()
         {
             InternalEnumChanged += EnumComboBox_InternalEnumChanged;

@@ -487,6 +487,9 @@ namespace SolidShineUi
             set => SetValue(BackgroundDisabledBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush used for the border of the checkbox's box when it is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderDisabledBrush
         {
@@ -591,7 +594,7 @@ namespace SolidShineUi
             new PropertyMetadata(new CornerRadius(0)));
 
         /// <summary>
-        /// Get or set the thickness of the border 
+        /// Get or set the thickness of the border of the check box.
         /// </summary>
         [Category("Appearance")]
         public new Thickness BorderThickness
@@ -600,6 +603,9 @@ namespace SolidShineUi
             set => SetValue(BorderThicknessProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the thickness of the border of the check box, while the check box's IsChecked property is true.
+        /// </summary>
         [Category("Appearance")]
         public Thickness BorderSelectionThickness
         {
@@ -638,6 +644,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
             "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
+        /// <summary>
+        /// Raised when the check box is right-clicked.
+        /// </summary>
         public event RoutedEventHandler RightClick
         {
             add { AddHandler(RightClickEvent, value); }
@@ -804,10 +813,22 @@ namespace SolidShineUi
 #endregion
     }
 
+    /// <summary>
+    /// Represents the current state of a CheckBox.
+    /// </summary>
     public enum CheckState
     {
+        /// <summary>
+        /// The CheckBox is unchecked. Nothing is displayed in the box.
+        /// </summary>
         Unchecked = 0,
+        /// <summary>
+        /// The CheckBox is checked. A check mark is displayed in the box.
+        /// </summary>
         Checked = 1,
+        /// <summary>
+        /// The CheckBox is indeterminate. A square is displayed in the box.
+        /// </summary>
         Indeterminate = 2,
     }
 }

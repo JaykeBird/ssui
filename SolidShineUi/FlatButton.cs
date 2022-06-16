@@ -216,6 +216,9 @@ namespace SolidShineUi
 
         //DispatcherTimer invalidTimer = new DispatcherTimer();
 
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else

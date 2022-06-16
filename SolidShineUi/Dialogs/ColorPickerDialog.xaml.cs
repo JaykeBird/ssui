@@ -32,6 +32,10 @@ namespace SolidShineUi
             UpdateAppearance();
         }
 
+        /// <summary>
+        /// Create a ColorPickerDialog.
+        /// </summary>
+        /// <param name="cs">The ColorScheme to use with this dialog.</param>
         public ColorPickerDialog(ColorScheme cs)
         {
             this.cs = cs;
@@ -40,6 +44,11 @@ namespace SolidShineUi
             UpdateAppearance();
         }
 
+        /// <summary>
+        /// Create a ColorPickerDialog.
+        /// </summary>
+        /// <param name="cs">The ColorScheme to use with this dialog.</param>
+        /// <param name="color">The Color to preset as the selected color (i.e. as an existing or default value).</param>
         public ColorPickerDialog(ColorScheme cs, Color color)
         {
             this.cs = cs;
@@ -84,7 +93,14 @@ namespace SolidShineUi
 
         #region General
 
+        /// <summary>
+        /// Get or set the color that is selected in the dialog.
+        /// </summary>
         public Color SelectedColor { get; private set; } = ColorsHelper.Black;
+
+        /// <summary>
+        /// Get or set the result of this dialog when closed. Set to true when the user clicks OK.
+        /// </summary>
         public new bool DialogResult { get; set; } = false;
 
         void LoadInSelectedColor(Color col)
@@ -112,24 +128,36 @@ namespace SolidShineUi
 
         #region Tab Visibility
 
+        /// <summary>
+        /// Get or set if the Swatches tab is visible in the dialog.
+        /// </summary>
         public bool ShowSwatchesTab
         {
             get => tabSwatches.Visibility == Visibility.Visible;
             set => tabSwatches.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Get or set if the Sliders tab is visible in the dialog.
+        /// </summary>
         public bool ShowSlidersTab
         {
             get => tabSliders.Visibility == Visibility.Visible;
             set => tabSliders.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Get or set if the From Image tab is visible in the dialog.
+        /// </summary>
         public bool ShowImageTab
         {
             get => tabImage.Visibility == Visibility.Visible;
             set => tabImage.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Get or set if the Palette File tab is visible in the dialog.
+        /// </summary>
         public bool ShowPaletteFileTab
         {
             get => tabPalette.Visibility == Visibility.Visible;

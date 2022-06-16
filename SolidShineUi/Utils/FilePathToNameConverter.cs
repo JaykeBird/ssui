@@ -7,6 +7,10 @@ using System.IO;
 
 namespace SolidShineUi.Utils
 {
+
+    /// <summary>
+    /// Convert a fully-qualified path to a file into just displaying the filename, for use in XAML.
+    /// </summary>
     public class FilePathToNameConverter : IValueConverter
     {
 
@@ -48,6 +52,9 @@ namespace SolidShineUi.Utils
             return Path.GetFileName(path);
         }
 
+        /// <summary>
+        /// This is not implemented.
+        /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
