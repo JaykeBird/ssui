@@ -5,10 +5,22 @@ using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.Utils
 {
+    /// <summary>
+    /// Load an icon from SolidShineUi's internal icon list.
+    /// </summary>
     public static class IconLoader
     {
+        /// <summary>
+        /// Black monochrome icon
+        /// </summary>
         public const string ICON_BLACK = "Black";
+        /// <summary>
+        /// Multi-colored icon
+        /// </summary>
         public const string ICON_COLOR = "Color";
+        /// <summary>
+        /// White monochrome icon
+        /// </summary>
         public const string ICON_WHITE = "White";
 
         /// <summary>
