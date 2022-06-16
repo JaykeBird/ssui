@@ -18,7 +18,7 @@ namespace SolidShineUi
         private static KeyEventHandler onKeyDown = new KeyEventHandler(OnPreviewKeyDown);
 
         /// <summary>
-        /// The collection to search for matches from.
+        /// The collection to search for auto-complete matches from.
         /// </summary>
         public static readonly DependencyProperty AutoCompleteItemsSource =
             DependencyProperty.RegisterAttached
@@ -28,8 +28,9 @@ namespace SolidShineUi
                 typeof(AutoCompleteBehavior),
                 new UIPropertyMetadata(null, OnAutoCompleteItemsSource)
             );
+
         /// <summary>
-        /// Whether or not to ignore case when searching for matches.
+        /// The string comparison method to utilize when supplying auto-completion suggestions.
         /// </summary>
         public static readonly DependencyProperty AutoCompleteStringComparison =
             DependencyProperty.RegisterAttached
@@ -41,9 +42,9 @@ namespace SolidShineUi
             );
 
         /// <summary>
-		/// What string should indicate that we should start giving auto-completion suggestions.  For example: @
-        /// If this is null or empty, auto-completion suggestions will begin at the beginning of the textbox's text.
-		/// </summary>
+        /// The string that, when typed, activates the auto-completion suggestions, such as "@". If this is null or empty,
+        /// auto-complete suggestions will be supplied once any text is typed into the TextBox.
+        /// </summary>
 		public static readonly DependencyProperty AutoCompleteIndicator =
             DependencyProperty.RegisterAttached
             (
@@ -53,7 +54,7 @@ namespace SolidShineUi
                 new UIPropertyMetadata(string.Empty)
             );
 
-#region Items Source
+        #region Items Source
         /// <summary>
         /// Return the string list/enumerable associated with a specified object; this list is used as the source for the auto complete list.
         /// </summary>
@@ -101,26 +102,40 @@ namespace SolidShineUi
                 }
             }
         }
-#endregion
+        #endregion
 
-#region String Comparison
+        #region String Comparison
+        /// <summary>
+        /// Get the string comparison method to utilize when supplying auto-completion suggestions.
+        /// </summary>
         public static StringComparison GetAutoCompleteStringComparison(DependencyObject obj)
         {
             return (StringComparison)obj.GetValue(AutoCompleteStringComparison);
         }
 
+        /// <summary>
+        /// Set the string comparison method to utilize when supplying auto-completion suggestions.
+        /// </summary>
         public static void SetAutoCompleteStringComparison(DependencyObject obj, StringComparison value)
         {
             obj.SetValue(AutoCompleteStringComparison, value);
         }
-#endregion
+        #endregion
 
-#region Indicator
+        #region Indicator
+        /// <summary>
+        /// Get the string that, when typed, activates the auto-completion suggestions, such as "@". If this is null or empty,
+        /// auto-complete suggestions will be supplied once any text is typed into the TextBox.
+        /// </summary>
         public static string GetAutoCompleteIndicator(DependencyObject obj)
         {
             return (string)obj.GetValue(AutoCompleteIndicator);
         }
 
+        /// <summary>
+        /// Set the string that, when typed, activates the auto-completion suggestions, such as "@". If this is null or empty,
+        /// auto-complete suggestions will be supplied once any text is typed into the TextBox.
+        /// </summary>
         public static void SetAutoCompleteIndicator(DependencyObject obj, string value)
         {
             obj.SetValue(AutoCompleteIndicator, value);
