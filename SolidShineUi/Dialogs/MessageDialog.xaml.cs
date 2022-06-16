@@ -1008,19 +1008,68 @@ namespace SolidShineUi
         /// </summary>
         public enum MessageDialogImageColor
         {
-            Black, Color, White
+            /// <summary>
+            /// Black monochrome icon
+            /// </summary>
+            Black,
+            /// <summary>
+            /// Multicolored icon
+            /// </summary>
+            Color,
+            /// <summary>
+            /// White monochrome icon
+            /// </summary>
+            White
         }
     }
 
+    /// <summary>
+    /// Represents the result of the MessageDialog; specifically, which button that was clicked.
+    /// </summary>
+    /// <remarks>
+    /// Note that since the buttons can be relabeled via the <see cref="MessageDialog.OkButtonText"/>, <see cref="MessageDialog.CancelButtonText"/>, and other properties,
+    /// the button names here may not directly relate to the labels that were given.
+    /// </remarks>
     public enum MessageDialogResult
     {
-        OK = 1, Cancel = 2, Extra1 = 3, Extra2 = 4, Extra3 = 5, Discard = 101,
+        /// <summary>
+        /// The OK button was clicked. This is the far-left button on the bottom of the dialog.
+        /// </summary>
+        OK = 1,
+        /// <summary>
+        /// The Cancel button was clicked. This is the far-right button on the bottom of the dialog.
+        /// </summary>
+        Cancel = 2,
+        /// <summary>
+        /// The first "extra" button was clicked. If visible, this is at the top of the list of buttons in the middle of the dialog.
+        /// </summary>
+        Extra1 = 3,
+        /// <summary>
+        /// The second "extra" button was clicked. If visible, this is at the middle of the list of buttons in the middle of the dialog.
+        /// </summary>
+        Extra2 = 4,
+        /// <summary>
+        /// The third "extra" button was clicked. If visible, this is at the bottom of the list of buttons in the middle of the dialog.
+        /// </summary>
+        Extra3 = 5,
+        /// <summary>
+        /// The Discard button was clicked. If visible, this button is in between the OK and Cancel buttons on the bottom of the dialog.
+        /// </summary>
+        Discard = 101,
     }
 
+    /// <summary>
+    /// Set how many buttons to display at the bottom of the dialog.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="Auto"/> is used by default; if <see cref="Auto"/> is used, the <see cref="MessageDialog.OkButtonText"/>, <see cref="MessageDialog.CancelButtonText"/>, 
+    /// and <see cref="MessageDialog.DiscardButtonText"/> properties determine which buttons are displayed.
+    /// </remarks>
     public enum MessageDialogButtonDisplay
     {
         /// <summary>
-        /// If set, uses the OkButtonText, CancelButtonText, and DiscardButtonText properties to determine which buttons should be displayed. If a property is null, then the corresponding button isn't displayed.
+        /// If set, uses the OkButtonText, CancelButtonText, and DiscardButtonText properties to determine which buttons should be displayed. 
+        /// If a property is null or empty, then the corresponding button isn't displayed.
         /// </summary>
         Auto = 0,
         /// <summary>

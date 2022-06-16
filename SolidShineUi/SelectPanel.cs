@@ -392,6 +392,10 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+        /// <summary>
+        /// This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.
+        /// </summary>
+        [Obsolete("This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.")]
         public bool use_lbrdr = false;
         bool runApply = true;
 
