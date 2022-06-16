@@ -9,10 +9,15 @@ using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// Represents a dynamic data collection, which provides notifications as items are added or removed, and which items can be marked as "selected".
+    /// This is ideal for scenarios where you're working with a list or collection of objects, and want the ability to only affect any arbitrary subset of these objects.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the collection.</typeparam>
     public class SelectableCollection<T> : ObservableCollection<T>
     {
         /// <summary>
-        /// Initializes a new SelectableCollection&lt;<typeparamref name="T"/>&gt;.
+        /// Initializes a new SelectableCollection.
         /// </summary>
         public SelectableCollection() : base()
         {
@@ -20,7 +25,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Initializes a new SelectableCollection&lt;<typeparamref name="T"/>&gt; that contains elements copied from the specified collection.
+        /// Initializes a new SelectableCollection that contains elements copied from the specified collection.
         /// </summary>
         /// <param name="collection">The collection to copy from.</param>
         /// <exception cref="ArgumentNullException">Thrown if the collection is null.</exception>
@@ -30,7 +35,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Initializes a new SelectableCollection&lt;<typeparamref name="T"/>&gt; that contains elements copied from the specified list.
+        /// Initializes a new SelectableCollection that contains elements copied from the specified list.
         /// </summary>
         /// <param name="list">The list to copy from.</param>
         /// <exception cref="ArgumentNullException">Thrown if the list is null.</exception>
@@ -39,22 +44,42 @@ namespace SolidShineUi
             CollectionChanged += this_CollectionChanged;
         }
 
+        /// <summary>
+        /// Represents a handler for the ItemRemoving event.
+        /// </summary>
+        /// <param name="sender">The source object of the event.</param>
+        /// <param name="e">The event arguments, containing the item being removed and the ability to cancel the removal.</param>
         public delegate void ItemRemovingEventHandler(object sender, ItemRemovingEventArgs<T> e);
 
+        /// <summary>
+        /// Raised before an item is removed, to give the ability to cancel removing this item.
+        /// </summary>
 #if NETCOREAPP
         public event ItemRemovingEventHandler? ItemRemoving;
 #else
         public event ItemRemovingEventHandler ItemRemoving;
 #endif
 
+        /// <summary>
+        /// Represents a handler for the ItemAdding event.
+        /// </summary>
+        /// <param name="sender">The source object of the event.</param>
+        /// <param name="e">The event arguments, containing the item being added and the ability to cancel the addition.</param>
         public delegate void ItemAddingEventHandler(object sender, ItemAddingEventArgs<T> e);
 
+        /// <summary>
+        /// Raised before an item is added, to give the ability to cancel adding this item.
+        /// </summary>
 #if NETCOREAPP
         public event ItemAddingEventHandler? ItemAdding;
 #else
         public event ItemAddingEventHandler ItemAdding;
 #endif
 
+        /// <summary>
+        /// Add an item to the end of this collection.
+        /// </summary>
+        /// <param name="item">The item to add to the collection.</param>
         public new void Add(T item)
         {
             //if (Contains(item)) return;
@@ -64,6 +89,11 @@ namespace SolidShineUi
             base.Add(item);
         }
 
+        /// <summary>
+        /// Insert an item into this collection at the specified index. 
+        /// </summary>
+        /// <param name="index">The zero-based index at which to add the item.</param>
+        /// <param name="item">The item to add to the collection.</param>
         public new void Insert(int index, T item)
         {
             //if (Contains(item)) return;
@@ -376,6 +406,11 @@ namespace SolidShineUi
             SelectRange(Items);
         }
 
+        /// <summary>
+        /// Represents a handler for the SelectionChanged event.
+        /// </summary>
+        /// <param name="sender">The source object of the event.</param>
+        /// <param name="e">The event arguments, containing the list of items being added or removed from the selection.</param>
         public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs<T> e);
 
         /// <summary>
@@ -388,40 +423,82 @@ namespace SolidShineUi
 #endif
     }
 
+    /// <summary>
+    /// Event arguments for an ItemRemoving event. This is used for when an item is about to be removed.
+    /// </summary>
+    /// <typeparam name="T">Represents the type of item being removed.</typeparam>
     public class ItemRemovingEventArgs<T>
     {
+        /// <summary>
+        /// Create an ItemRemovingEventArgs.
+        /// </summary>
+        /// <param name="item">The item being removed.</param>
         public ItemRemovingEventArgs(T item)
         {
             Item = item;
         }
 
+        /// <summary>
+        /// The item being removed.
+        /// </summary>
         public T Item { get; private set; }
 
-        public bool Cancel { get; set; }
+        /// <summary>
+        /// Get or set if the removal of this item should be cancelled. If true, the item will not be removed.
+        /// </summary>
+        public bool Cancel { get; set; } = false;
     }
 
-
+    /// <summary>
+    /// Event arguments for an ItemAdding event. This is used for when an item is about to be added.
+    /// </summary>
+    /// <typeparam name="T">Represents the type of item being added.</typeparam>
     public class ItemAddingEventArgs<T> : EventArgs
     {
+        /// <summary>
+        /// The item being added.
+        /// </summary>
         public T Item { get; private set; }
 
+        /// <summary>
+        /// Get or set if the addition of this item should be cancelled. If true, the item will not be added.
+        /// </summary>
         public bool Cancel { get; set; } = false;
 
+        /// <summary>
+        /// Create an ItemAddingEventArgs.
+        /// </summary>
+        /// <param name="item">The item being added.</param>
         public ItemAddingEventArgs(T item)
         {
             Item = item;
         }
     }
 
+    /// <summary>
+    /// Event arguments for when the current selection of a SelectableCollection is changed.
+    /// </summary>
+    /// <typeparam name="T">Represents the type of item in the collection.</typeparam>
     public class SelectionChangedEventArgs<T>
     {
+        /// <summary>
+        /// Create a SelectionChangedEventArgs.
+        /// </summary>
+        /// <param name="removedItems">A list of items being removed.</param>
+        /// <param name="addedItems">A list of item being added.</param>
         public SelectionChangedEventArgs(IList<T> removedItems, IList<T> addedItems)
         {
             AddedItems = addedItems;
             RemovedItems = removedItems;
         }
 
+        /// <summary>
+        /// The list of items being added to the selection ("selected").
+        /// </summary>
         public IList<T> AddedItems { get; private set; }
+        /// <summary>
+        /// The list of items being removed from the selection ("deselected").
+        /// </summary>
         public IList<T> RemovedItems { get; private set; }
     }
 }
