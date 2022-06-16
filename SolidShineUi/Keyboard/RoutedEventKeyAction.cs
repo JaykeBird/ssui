@@ -9,17 +9,40 @@ using System.Windows.Controls;
 
 namespace SolidShineUi.KeyboardShortcuts
 {
+    /// <summary>
+    /// A key action that executes a routed event when activated.
+    /// </summary>
     public class RoutedEventKeyAction : IKeyAction
     {
 #if NETCOREAPP
         RoutedEventHandler? reh = null;
+
+        /// <summary>
+        /// Gets the UI element that this action is related to, if any.
+        /// </summary>
         public UIElement? SourceElement { get; private set; }
 
+        /// <summary>
+        /// Create a RoutedEventKeyAction.
+        /// </summary>
+        /// <param name="reh">The RoutedEventHandler to invoke when this key action is activated.</param>
+        /// <param name="methodId">The unique ID to associate with this key action.</param>
+        /// <param name="sourceElement">The UI element, if any, associated with this RoutedEventHandler. For example, it could be a menu item or button that would alternatively invoke this routed event handler.</param>
         public RoutedEventKeyAction(RoutedEventHandler reh, string methodId, UIElement? sourceElement = null)
 #else
         RoutedEventHandler reh = null;
+
+        /// <summary>
+        /// Gets the UI element that this action is related to, if any.
+        /// </summary>
         public UIElement SourceElement { get; private set; }
 
+        /// <summary>
+        /// Create a RoutedEventKeyAction.
+        /// </summary>
+        /// <param name="reh">The RoutedEventHandler to invoke when this key action is activated.</param>
+        /// <param name="methodId">The unique ID to associate with this key action.</param>
+        /// <param name="sourceElement">The UI element, if any, associated with this RoutedEventHandler. For example, it could be a menu item or button that would alternatively invoke this routed event handler.</param>
         public RoutedEventKeyAction(RoutedEventHandler reh, string methodId, UIElement sourceElement = null)
 #endif
         {
@@ -28,8 +51,14 @@ namespace SolidShineUi.KeyboardShortcuts
             SourceElement = sourceElement;
         }
 
+        /// <summary>
+        /// Get or set the unique ID associated with this key action.
+        /// </summary>
         public string ID { get; set; }
 
+        /// <summary>
+        /// Activate this key action.
+        /// </summary>
         public void Execute()
         {
             if (reh != null)

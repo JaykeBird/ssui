@@ -7,12 +7,24 @@ using System.Windows;
 
 namespace SolidShineUi.KeyboardShortcuts
 {
+    /// <summary>
+    /// The interface which all key actions are based on.
+    /// </summary>
     public interface IKeyAction
     {
+        /// <summary>
+        /// Get or set the unique ID associated with this key action.
+        /// </summary>
         string ID { get; set; }
 
+        /// <summary>
+        /// Execute this key action.
+        /// </summary>
         void Execute();
 
+        /// <summary>
+        /// Get the UI element associated with the key action's activator, if any.
+        /// </summary>
 #if NETCOREAPP
         UIElement? SourceElement { get; }
 #else
@@ -20,6 +32,9 @@ namespace SolidShineUi.KeyboardShortcuts
 #endif
     }
 
+    /// <summary>
+    /// A list of IKeyActions, used for loading a keyboard shortcuts settings file and associating the commands' IDs to their key actions. Also verifies that there are not multiple key actions with the same ID.
+    /// </summary>
     public class KeyActionList : List<IKeyAction>
     {
 
