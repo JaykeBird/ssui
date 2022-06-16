@@ -29,10 +29,11 @@ namespace SolidShineUi
         public SelectPanel()
         {
             SetValue(ItemsPropertyKey, new SelectableCollection<SelectableUserControl>());
+            SetValue(ItemsSourceProperty, Items);
             //Items = new SelectableCollection<SelectableUserControl>();
-            Items.ItemRemoving += Items_ItemRemoving;
-            Items.CollectionChanged += Items_CollectionChanged;
-            Items.SelectionChanged += Items_SelectionChanged;
+            //Items.ItemRemoving += Items_ItemRemoving;
+            //Items.CollectionChanged += Items_CollectionChanged;
+            //Items.SelectionChanged += Items_SelectionChanged;
 
             LoadTemplateItems();
             if (itemsLoaded && sv != null)
@@ -66,6 +67,73 @@ namespace SolidShineUi
                 }
             }
         }
+
+        #region ItemsSource
+
+        /// <summary>
+        /// Gets or sets a collection used to generate the content of this SelectPanel.
+        /// </summary>
+        public IEnumerable<SelectableUserControl> ItemsSource
+        {
+            get { return (IEnumerable<SelectableUserControl>)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
+
+        public static readonly DependencyProperty ItemsSourceProperty =
+            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<SelectableUserControl>), typeof(SelectPanel), 
+                new PropertyMetadata(new PropertyChangedCallback(OnItemsSourcePropertyChanged)));
+
+        private static void OnItemsSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is SelectPanel sp)
+            {
+                sp.OnItemsSourceChanged((IEnumerable<SelectableUserControl>)e.OldValue, (IEnumerable<SelectableUserControl>)e.NewValue);
+            }
+        }
+
+        private void OnItemsSourceChanged(IEnumerable<SelectableUserControl> oldValue, IEnumerable<SelectableUserControl> newValue)
+        {
+            if (ItemsSource == null)
+            {
+                ItemsSource = Items;
+            }
+            else if (ItemsSource == Items)
+            {
+                Items.ItemRemoving += Items_ItemRemoving;
+                Items.CollectionChanged += Items_CollectionChanged;
+                Items.SelectionChanged += Items_SelectionChanged;
+            }
+            else
+            {
+                // Remove handler for oldValue.CollectionChanged
+                if (oldValue is INotifyCollectionChanged oldColl)
+                {
+                    oldColl.CollectionChanged -= Items_CollectionChanged;
+                }
+
+                if (oldValue is SelectableCollection<SelectableUserControl> oldSc)
+                {
+                    oldSc.ItemRemoving -= Items_ItemRemoving;
+                    oldSc.SelectionChanged -= Items_SelectionChanged;
+                }
+                
+                // Add handler for newValue.CollectionChanged (if possible)
+                if (newValue is INotifyCollectionChanged newColl)
+                {
+                    newColl.CollectionChanged += Items_CollectionChanged;
+                }
+
+                if (newValue is SelectableCollection<SelectableUserControl> newSc)
+                {
+                    newSc.ItemRemoving += Items_ItemRemoving;
+                    newSc.SelectionChanged += Items_SelectionChanged;
+                }
+
+
+            }
+        }
+
+        #endregion
 
         #region SelectableCollection handling
 
