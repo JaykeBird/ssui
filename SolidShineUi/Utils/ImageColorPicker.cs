@@ -15,6 +15,10 @@ namespace SolidShineUi.Utils
     /// </summary>
     public class ImageColorPicker : Image
     {
+
+        /// <summary>
+        /// Create a ImageColorPicker.
+        /// </summary>
         public ImageColorPicker()
         {
             MouseDown += ImageColorPicker_MouseDown;
@@ -37,6 +41,9 @@ namespace SolidShineUi.Utils
         public static readonly RoutedEvent SelectedColorChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectedColorChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ImageColorPicker));
 
+        /// <summary>
+        /// Raised when the SelectedColor property is changed.
+        /// </summary>
         public event RoutedEventHandler SelectedColorChanged
         {
             add { AddHandler(SelectedColorChangedEvent, value); }
