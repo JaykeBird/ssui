@@ -115,6 +115,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent CheckChangedEvent = EventManager.RegisterRoutedEvent(
             "CheckChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
+        /// <summary>
+        /// Raised when the CheckState property is changed, either to Checked, Indeterminate, or Unchecked.
+        /// </summary>
         public event RoutedEventHandler CheckChanged
         {
             add { AddHandler(CheckChangedEvent, value); }
@@ -124,6 +127,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent(
             "Checked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
+        /// <summary>
+        /// Raised when the CheckState property is changed to Checked.
+        /// </summary>
         public event RoutedEventHandler Checked
         {
             add { AddHandler(CheckedEvent, value); }
@@ -133,6 +139,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent(
             "Unchecked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
+        /// <summary>
+        /// Raised when the CheckState property is changed to Unchecked.
+        /// </summary>
         public event RoutedEventHandler Unchecked
         {
             add { AddHandler(UncheckedEvent, value); }
@@ -142,6 +151,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent(
             "Indeterminate", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
+        /// <summary>
+        /// Raised when the CheckState property is changed to Indeterminate.
+        /// </summary>
         public event RoutedEventHandler Indeterminate
         {
             add { AddHandler(IndeterminateEvent, value); }
@@ -343,6 +355,9 @@ namespace SolidShineUi
         #endregion
 
         #region Color Scheme
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
@@ -592,6 +607,9 @@ namespace SolidShineUi
             set => SetValue(BorderSelectionThicknessProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the corner radius of the check box.
+        /// </summary>
         [Category("Appearance")]
         public CornerRadius CornerRadius
         {
@@ -608,6 +626,9 @@ namespace SolidShineUi
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
             "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
+        /// <summary>
+        /// Raised when the check box is clicked.
+        /// </summary>
         public event RoutedEventHandler Click
         {
             add { AddHandler(ClickEvent, value); }

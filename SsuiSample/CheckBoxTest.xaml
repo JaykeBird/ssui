@@ -25,7 +25,7 @@
         <flat:CheckBox x:Name="chkLimited" HorizontalAlignment="Left" Margin="20,290,0,0" VerticalAlignment="Top" Content="Clicking on this text will do nothing" OnlyAllowCheckBoxClick="True" ColorScheme="{Binding ColorScheme, ElementName=control}" />
         <TextBlock HorizontalAlignment="Left" Margin="20,270,0,0" Text="Check box, only clicking on box will activate" VerticalAlignment="Top" />
         <flat:CheckBox x:Name="chkColored" HorizontalAlignment="Left" Margin="20,375,0,0" VerticalAlignment="Top" Content="Check box" ColorScheme="{Binding ColorScheme, ElementName=control}"
-                       BorderThickness="2" BorderSelectionThickness="3" CheckBackground="LightGreen" />
+                       BorderThickness="2" BorderSelectionThickness="3" CheckBackground="LightGreen" CornerRadius="3" />
         <TextBlock HorizontalAlignment="Left" Margin="20,355,0,0" Text="Check box with colors!" VerticalAlignment="Top"/>
 
     </Grid>
