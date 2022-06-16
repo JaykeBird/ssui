@@ -24,16 +24,19 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
   - Additional XML comments for code
 - Release version 1.8.3
   - Bug fixes
-
-## Early 2022
-
-- Rewrite SelectPanel to not base from UserControl
-  - To help with this, SelectableCollection can be used
-- Finish online documentation
-- Add "light theme" and "dark theme" to ColorScheme
-- first pass at PropertyGrid control
+- Release version 1.9
+  - Rewrite SelectPanel to not base from UserControl
+    - To help with this, SelectableCollection can be used
+  - Add "light theme" and "dark theme" to ColorScheme
+  - first pass at PropertyGrid control
 
 ## 2022
+
+- Finish online documentation
+- Continue work on PropertyGrid
+- Begin testing with AvaloniaUI support
+
+## Early 2023
 
 - DataTable control
   - use same core bits as PropertyGrid
