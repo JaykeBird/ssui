@@ -11,14 +11,15 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used in SelectPanel.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionView<T> : CollectionView, ISelectableCollectionSource<T>
+    public class SelectableCollectionViewSource<T> : CollectionViewSource, ISelectableCollectionSource<T>
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified collection.
         /// </summary>
         /// <param name="collection">The collection that is represented in this view.</param>
-        public SelectableCollectionView(IEnumerable<T> collection) : base(collection)
+        public SelectableCollectionViewSource(IEnumerable<T> collection) : base()
         {
+            Source = collection;
             baseCollection = collection;
 
             //if (collection is IEnumerable<T>)
