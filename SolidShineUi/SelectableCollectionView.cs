@@ -11,7 +11,7 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used in SelectPanel.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionViewSource<T> : CollectionViewSource, ISelectableCollectionSource<T>
+    public class SelectableCollectionViewSource<T> : CollectionViewSource, ISelectableCollectionSource<T>, INotifyCollectionChanged
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified collection.
@@ -38,6 +38,8 @@ namespace SolidShineUi
 
         private void baseCol_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            CollectionChanged?.Invoke(this, e);
+
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -92,8 +94,29 @@ namespace SolidShineUi
 
         private List<T> selectedItems = new List<T>();
 
+#if NETCOREAPP
+        /// <summary>
+        /// Raised when the list of selected items is changed.
+        /// </summary>
         public event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler? SelectionChanged;
+        /// <summary>
+        /// Raised when the source collection is changed. Note that this is only raised if the source collection also raises CollectionChanged
+        /// </summary>
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
+#else
+        /// <summary>
+        /// Raised when the list of selected items is changed.
+        /// </summary>
+        public event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler SelectionChanged;
+        /// <summary>
+        /// Raised when the source collection is changed. Note that this is only raised if the source collection also raises CollectionChanged
+        /// </summary>
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+#endif
 
+        /// <summary>
+        /// Get a list of currently selected items.
+        /// </summary>
         public ReadOnlyCollection<T> SelectedItems => selectedItems.AsReadOnly();
 
         /// <summary>
