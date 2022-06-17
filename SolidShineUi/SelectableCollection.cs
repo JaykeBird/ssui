@@ -15,7 +15,7 @@ namespace SolidShineUi
     /// This is ideal for scenarios where you're working with a list or collection of objects, and want the ability to only affect any arbitrary subset of these objects.
     /// </summary>
     /// <typeparam name="T">The type of elements in the collection.</typeparam>
-    public class SelectableCollection<T> : ObservableCollection<T>, ISelectableCollection<T>
+    public class SelectableCollection<T> : ObservableCollection<T>, ISelectableCollectionSource<T>
     {
         /// <summary>
         /// Initializes a new SelectableCollection.
@@ -228,7 +228,6 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>To interact with the collection to add or remove items, use the methods of the SelectableCollection itself, such as Select, AddToSelection, Deselect, and ClearSelection.</remarks>
         public ReadOnlyCollection<T> SelectedItems { get => selectedItems.AsReadOnly(); }
-        IReadOnlyList<T> ISelectableCollection<T>.SelectedItems => SelectedItems;
 
         /// <summary>
         /// Select an item, replacing the current selection.

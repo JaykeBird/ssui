@@ -110,7 +110,7 @@ namespace SolidShineUi
                     oldColl.CollectionChanged -= Items_CollectionChanged;
                 }
 
-                if (oldValue is ISelectableCollection<SelectableUserControl> oldSc)
+                if (oldValue is ISelectableCollectionSource<SelectableUserControl> oldSc)
                 {
                     oldSc.SelectionChanged -= Items_SelectionChanged;
                 }
@@ -121,7 +121,7 @@ namespace SolidShineUi
                     newColl.CollectionChanged += Items_CollectionChanged;
                 }
 
-                if (newValue is ISelectableCollection<SelectableUserControl> newSc)
+                if (newValue is ISelectableCollectionSource<SelectableUserControl> newSc)
                 {
                     newSc.SelectionChanged += Items_SelectionChanged;
                 }

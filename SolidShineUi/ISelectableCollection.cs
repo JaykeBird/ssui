@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace SolidShineUi
@@ -9,12 +10,12 @@ namespace SolidShineUi
     /// Defines a generic interface for a collection where items within it can be selected.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public interface ISelectableCollection<T> : ICollection<T>, INotifyCollectionChanged
+    public interface ISelectableCollectionSource<T>
     {
         /// <summary>
         /// Get a list of currently selected items.
         /// </summary>
-        IReadOnlyList<T> SelectedItems { get; }
+        ReadOnlyCollection<T> SelectedItems { get; }
 
         /// <summary>
         /// Add an item to the existing list of selected items.
