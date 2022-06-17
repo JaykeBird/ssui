@@ -99,7 +99,6 @@ namespace SolidShineUi
             }
             else if (ItemsSource == Items)
             {
-                Items.ItemRemoving += Items_ItemRemoving;
                 Items.CollectionChanged += Items_CollectionChanged;
                 Items.SelectionChanged += Items_SelectionChanged;
             }
@@ -111,9 +110,8 @@ namespace SolidShineUi
                     oldColl.CollectionChanged -= Items_CollectionChanged;
                 }
 
-                if (oldValue is SelectableCollection<SelectableUserControl> oldSc)
+                if (oldValue is ISelectableCollection<SelectableUserControl> oldSc)
                 {
-                    oldSc.ItemRemoving -= Items_ItemRemoving;
                     oldSc.SelectionChanged -= Items_SelectionChanged;
                 }
                 
@@ -123,9 +121,8 @@ namespace SolidShineUi
                     newColl.CollectionChanged += Items_CollectionChanged;
                 }
 
-                if (newValue is SelectableCollection<SelectableUserControl> newSc)
+                if (newValue is ISelectableCollection<SelectableUserControl> newSc)
                 {
-                    newSc.ItemRemoving += Items_ItemRemoving;
                     newSc.SelectionChanged += Items_SelectionChanged;
                 }
 
@@ -201,6 +198,13 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldItems != null)
                     {
+                        foreach (SelectableUserControl? item in e.OldItems)
+                        {
+                            if (item != null)
+                            {
+                                item.SelectionChanged -= Item_SelectionChanged;
+                            }
+                        }
                         RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
                     }
                     break;
@@ -255,6 +259,13 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldItems != null)
                     {
+                        foreach (SelectableUserControl item in e.OldItems)
+                        {
+                            if (item != null)
+                            {
+                                item.SelectionChanged -= Item_SelectionChanged;
+                            }
+                        }
                         RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
                     }
                     break;
@@ -348,12 +359,6 @@ namespace SolidShineUi
             RefreshVisualSelection();
 
             RaiseSelectionChangedEvent(e.AddedItems.OfType<SelectableUserControl>().ToList(), e.RemovedItems.OfType<SelectableUserControl>().ToList());
-        }
-
-        private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<SelectableUserControl> e)
-        {
-            // item hasn't been removed yet
-            e.Item.SelectionChanged -= Item_SelectionChanged;
         }
         #endregion
 
