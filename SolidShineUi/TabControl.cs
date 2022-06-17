@@ -200,15 +200,15 @@ namespace SolidShineUi
             CheckScrolling();
         }
 
-        private void items_SelectionChanged(object sender, SelectionChangedEventArgs<TabItem> e)
+        private void items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
             LoadTemplateItems();
             if (_internalAction) return;
 
-            if (e.AddedItems.Count > 0)
+            if (((SelectionChangedEventArgs<TabItem>)e).AddedItems.Count > 0)
             {
                 // selection has changed
-                TabItem newItem = e.AddedItems[0];
+                TabItem newItem = ((SelectionChangedEventArgs<TabItem>)e).AddedItems[0];
 
                 if (ic != null)
                 {

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using SolidShineUi.Utils;
+using static SolidShineUi.CollectionSelectionChangedEventArgs;
 
 namespace SolidShineUi
 {
@@ -14,7 +15,7 @@ namespace SolidShineUi
     /// This is ideal for scenarios where you're working with a list or collection of objects, and want the ability to only affect any arbitrary subset of these objects.
     /// </summary>
     /// <typeparam name="T">The type of elements in the collection.</typeparam>
-    public class SelectableCollection<T> : ObservableCollection<T>
+    public class SelectableCollection<T> : ObservableCollection<T>, ISelectableCollection<T>
     {
         /// <summary>
         /// Initializes a new SelectableCollection.
@@ -227,6 +228,7 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>To interact with the collection to add or remove items, use the methods of the SelectableCollection itself, such as Select, AddToSelection, Deselect, and ClearSelection.</remarks>
         public ReadOnlyCollection<T> SelectedItems { get => selectedItems.AsReadOnly(); }
+        IReadOnlyList<T> ISelectableCollection<T>.SelectedItems => SelectedItems;
 
         /// <summary>
         /// Select an item, replacing the current selection.
@@ -407,13 +409,6 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Represents a handler for the SelectionChanged event.
-        /// </summary>
-        /// <param name="sender">The source object of the event.</param>
-        /// <param name="e">The event arguments, containing the list of items being added or removed from the selection.</param>
-        public delegate void SelectionChangedEventHandler(object sender, SelectionChangedEventArgs<T> e);
-
-        /// <summary>
         /// Raised when the selection is changed in any way, including additions, removals, and the selection being cleared.
         /// </summary>
 #if NETCOREAPP
@@ -421,6 +416,7 @@ namespace SolidShineUi
 #else
         public event SelectionChangedEventHandler SelectionChanged;
 #endif
+
     }
 
     /// <summary>
@@ -479,14 +475,14 @@ namespace SolidShineUi
     /// Event arguments for when the current selection of a SelectableCollection is changed.
     /// </summary>
     /// <typeparam name="T">Represents the type of item in the collection.</typeparam>
-    public class SelectionChangedEventArgs<T>
+    public class SelectionChangedEventArgs<T> : CollectionSelectionChangedEventArgs
     {
         /// <summary>
         /// Create a SelectionChangedEventArgs.
         /// </summary>
         /// <param name="removedItems">A list of items being removed.</param>
         /// <param name="addedItems">A list of item being added.</param>
-        public SelectionChangedEventArgs(IList<T> removedItems, IList<T> addedItems)
+        public SelectionChangedEventArgs(IList<T> removedItems, IList<T> addedItems) : base(removedItems, addedItems)
         {
             AddedItems = addedItems;
             RemovedItems = removedItems;

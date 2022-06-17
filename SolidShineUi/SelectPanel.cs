@@ -340,7 +340,7 @@ namespace SolidShineUi
             //throw new NotImplementedException();
         }
 
-        private void Items_SelectionChanged(object sender, SelectionChangedEventArgs<SelectableUserControl> e)
+        private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
             //LoadTemplateItems();
             if (_internalAction) return;
