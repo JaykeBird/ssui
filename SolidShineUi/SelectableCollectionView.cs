@@ -8,31 +8,23 @@ using System.Collections.Specialized;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A type of CollectionView that operates as a SelectableCollection. This can be used in SelectPanel.
+    /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> is SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionViewSource<T> : CollectionViewSource, ISelectableCollectionSource<T>
+    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>
     {
         /// <summary>
-        /// Create a SelectableCollectionView, that represents a view of the specified collection.
+        /// Create a SelectableCollectionView, that represents a view of the specified list.
         /// </summary>
         /// <param name="collection">The collection that is represented in this view.</param>
-        public SelectableCollectionViewSource(IEnumerable<T> collection) : base()
+        public SelectableCollectionView(List<T> collection) : base(collection)
         {
-            Source = collection;
+            //Source = collection;
             baseCollection = collection;
 
-            //if (collection is IEnumerable<T>)
-            //{
-            //}
-            //else
-            //{
-            //    throw new ArgumentException("The collection inputted must be of the same type as the generic type defined for this SelectableCollectionView.");
-            //}
-
-            if (baseCollection is INotifyCollectionChanged inn)
+            if (baseCollection is INotifyCollectionChanged incc)
             {
-                inn.CollectionChanged += baseCol_CollectionChanged;
+                incc.CollectionChanged += baseCol_CollectionChanged;
             } // else... welp lol
         }
 
