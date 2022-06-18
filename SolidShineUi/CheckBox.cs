@@ -82,10 +82,17 @@ namespace SolidShineUi
         //    if (Debugger.IsAttached) Debugger.Log(0, "CheckBox", "Border enter");
         //}
 
+        /// <summary>
+        /// The command that activates when the box of the checkbox itself has been clicked.
+        /// </summary>
         public static readonly RoutedCommand CheckBoxClickCommand = new RoutedCommand();
 
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent CheckBoxClickEvent = EventManager.RegisterRoutedEvent(
             "CheckBoxClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// An event that raises only when the checkbox itself is clicked.
@@ -112,8 +119,10 @@ namespace SolidShineUi
         //private byte sel = 0;
 
         #region Routed Events
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent CheckChangedEvent = EventManager.RegisterRoutedEvent(
             "CheckChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed, either to Checked, Indeterminate, or Unchecked.
@@ -124,8 +133,10 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckChangedEvent, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent(
             "Checked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed to Checked.
@@ -136,8 +147,10 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckedEvent, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent(
             "Unchecked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed to Unchecked.
@@ -148,8 +161,10 @@ namespace SolidShineUi
             remove { RemoveHandler(UncheckedEvent, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent(
             "Indeterminate", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed to Indeterminate.
@@ -161,6 +176,7 @@ namespace SolidShineUi
         }
         #endregion
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
             "IsChecked", typeof(bool), typeof(CheckBox),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsCheckedChanged)));
@@ -168,6 +184,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
             "IsIndeterminate", typeof(bool), typeof(CheckBox),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsIndeterminateChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
@@ -371,10 +388,17 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(CheckBox),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Perform an action when a property of an object has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP
@@ -541,6 +565,7 @@ namespace SolidShineUi
         //    set => SetValue(BorderSelectedBrushProperty, value);
         //}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CheckBackgroundProperty = DependencyProperty.Register(
             "CheckBackground", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
@@ -599,6 +624,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(CheckBox),
             new PropertyMetadata(new CornerRadius(0)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border of the check box.
@@ -636,8 +662,10 @@ namespace SolidShineUi
 
         #region Routed Events
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
             "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the check box is clicked.
@@ -648,8 +676,10 @@ namespace SolidShineUi
             remove { RemoveHandler(ClickEvent, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
             "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the check box is right-clicked.

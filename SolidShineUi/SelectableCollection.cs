@@ -490,10 +490,10 @@ namespace SolidShineUi
         /// <summary>
         /// The list of items being added to the selection ("selected").
         /// </summary>
-        public IList<T> AddedItems { get; private set; }
+        public new IList<T> AddedItems { get; private set; }
         /// <summary>
         /// The list of items being removed from the selection ("deselected").
         /// </summary>
-        public IList<T> RemovedItems { get; private set; }
+        public new IList<T> RemovedItems { get; private set; }
     }
 }

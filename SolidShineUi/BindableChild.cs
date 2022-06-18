@@ -35,8 +35,10 @@ namespace SolidShineUi
             obj.SetValue(BindableChildProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty BindableChildProperty =
             DependencyProperty.RegisterAttached("BindableChild", typeof(UIElement), typeof(BindableChild), new UIPropertyMetadata(null, BindableChildPropertyChanged));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         static void BindableChildPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -47,8 +49,14 @@ namespace SolidShineUi
         }
     }
 
+    /// <summary>
+    /// A converter used to set the child of a control to a bound element.
+    /// </summary>
     public class BindableChildConverter : IValueConverter
     {
+        /// <summary>
+        /// Convert an UIElement to be the child of a Border.
+        /// </summary>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
 #if NETCOREAPP
@@ -67,6 +75,9 @@ namespace SolidShineUi
             };
         }
 
+        /// <summary>
+        /// Convert a Border's child to get the UIElement it represents.
+        /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is Border b)

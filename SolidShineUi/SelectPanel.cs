@@ -858,7 +858,9 @@ namespace SolidShineUi
             Items.RemoveAt(index);
         }
 
-        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Remove\".", false)]
+        /// <summary>
+        /// Remove the currently selected items from the list.
+        /// </summary>
         public void RemoveSelectedItems()
         {
             var items = new List<SelectableUserControl>(Items.SelectedItems);

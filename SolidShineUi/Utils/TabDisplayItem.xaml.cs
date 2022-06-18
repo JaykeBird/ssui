@@ -817,8 +817,17 @@ namespace SolidShineUi.Utils
         }
     }
 
+    /// <summary>
+    /// Event arguments for a TabItem being dropped onto a TabControl. Primarily used internally.
+    /// </summary>
     public class TabItemDropEventArgs
     {
+        /// <summary>
+        /// Create a TabItemDropEventArgs.
+        /// </summary>
+        /// <param name="sourceTabItem">The tab item that triggered the event.</param>
+        /// <param name="droppedTabItem">The tab item to be dropped.</param>
+        /// <param name="before">Determine whether to drop the <paramref name="droppedTabItem"/> before or after the <paramref name="sourceTabItem"/>.</param>
         public TabItemDropEventArgs(TabItem sourceTabItem, TabItem droppedTabItem, bool before)
         {
             SourceTabItem = sourceTabItem;
@@ -826,10 +835,19 @@ namespace SolidShineUi.Utils
             Before = before;
         }
 
+        /// <summary>
+        /// Get the TabItem that triggered the TabItemDrop event.
+        /// </summary>
         public TabItem SourceTabItem { get; private set; }
 
+        /// <summary>
+        /// Get the TabItem that is being dropped.
+        /// </summary>
         public TabItem DroppedTabItem { get; private set; }
 
+        /// <summary>
+        /// Get whether the dropped TabItem should be put before or after the source TabItem.
+        /// </summary>
         public bool Before { get; private set; }
     }
 }

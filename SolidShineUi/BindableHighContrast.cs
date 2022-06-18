@@ -21,15 +21,24 @@ namespace SolidShineUi
     /// </remarks>
     public static class BindableHighContrast
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty HighContrastProperty =
             DependencyProperty.RegisterAttached("HighContrast", typeof(bool), typeof(BindableHighContrast),
                 new FrameworkPropertyMetadata() { Inherits = true });
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get whether a Windows High Contrast mode is currently activated.
+        /// </summary>
+        /// <param name="obj">The object to get the property value for.</param>
         public static bool GetHighContrast(DependencyObject obj)
         {
             return (bool)obj.GetValue(HighContrastProperty);
         }
 
+        /// <summary>
+        /// Set whether a Windows High Contrast mode is currently activated. This shouldn't be directly used in your code. Please see the remarks for <see cref="BindableHighContrast"/>.
+        /// </summary>
         public static void SetHighContrast(DependencyObject obj, bool value)
         {
             obj.SetValue(HighContrastProperty, value);

@@ -5,13 +5,12 @@ using System.Windows.Media;
 namespace SolidShineUi
 {
     /// <summary>
-    /// Interaction logic for ChromeButtons.xaml
+    /// A control that hosts the caption buttons for a <see cref="FlatWindow"/>.
+    /// These buttons are the Minimize, Maximize/Restore, and Close buttons visible at the top corner of most windows.
     /// </summary>
     public partial class ChromeButtons
     {
-        /// <summary>
-        /// The parent Window of the control.
-        /// </summary>
+
 #if NETCOREAPP
         private Window? _parent;
 #else
@@ -27,62 +26,41 @@ namespace SolidShineUi
             Loaded += CaptionButtonsLoaded;
         }
 
-        /// <summary>
-        /// Event when the control is loaded.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
         void CaptionButtonsLoaded(object sender, RoutedEventArgs e)
         {
             _parent = GetTopParent();
         }
 
-        /// <summary>
-        /// Action on the button to close the window.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        // Close the window
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
             if (_parent == null) return;
             _parent.Close();
         }
 
-        /// <summary>
-        /// Changes the view of the window (maximized or normal).
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        // Maximize or restore the window
         private void RestoreButtonClick(object sender, RoutedEventArgs e)
         {
             if (_parent == null) return;
             _parent.WindowState = _parent.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
         }
 
-        /// <summary>
-        /// Minimizes the Window.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        // Minimize the window
         private void MinimizeButtonClick(object sender, RoutedEventArgs e)
         {
             if (_parent == null) return;
             _parent.WindowState = WindowState.Minimized;
         }
 
-        /// <summary>
-        /// Gets the top parent (Window).
-        /// </summary>
-        /// <returns>The parent Window.</returns>
+        // Get the parent window
         private Window GetTopParent()
         {
             return Window.GetWindow(this);
         }
 
         /// <summary>
-        /// Gets or sets the margin button.
+        /// Gets or sets the padding around each of the caption buttons.
         /// </summary>
-        /// <value>The margin button.</value>
         public Thickness MarginButton
         {
             get
@@ -96,11 +74,10 @@ namespace SolidShineUi
             }
         }
 
-        /// <summary>
-        /// The dependency property for the Margin between the buttons.
-        /// </summary>
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty MarginButtonProperty = DependencyProperty.Register(
              "MarginButton", typeof(Thickness), typeof(ChromeButtons));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Determines which caption buttons will appear on a window.
@@ -126,18 +103,22 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Gets or sets the visibility of the buttons.
+        /// Gets or sets the visibility of the caption buttons, specifically which buttons should be visible.
         /// </summary>
         /// <value>The visible buttons.</value>
+        /// <remarks>
+        /// Note that this does not disable these functions from being possible with a window, it only hides the buttons in the top corner.
+        /// Please use <see cref="FlatWindow.DisableMaximizeAction"/> and <see cref="FlatWindow.DisableMinimizeAction"/> to disable actions in a window.
+        /// </remarks>
         public CaptionType DisplayType
         {
             get
             {
-                return (CaptionType) GetValue(TypeProperty);
+                return (CaptionType) GetValue(DisplayTypeProperty);
             }
             set
             {
-                SetValue(TypeProperty, value);
+                SetValue(DisplayTypeProperty, value);
             }
         }
 
@@ -171,10 +152,8 @@ namespace SolidShineUi
             }
         }
 
-        /// <summary>
-        /// The dependency property for the Margin between the buttons.
-        /// </summary>
-        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly DependencyProperty DisplayTypeProperty = DependencyProperty.Register(
             "DisplayType", typeof(CaptionType), typeof(ChromeButtons),
             new PropertyMetadata(CaptionType.Full));
 
@@ -185,6 +164,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(ChromeButtons),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

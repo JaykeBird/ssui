@@ -24,6 +24,9 @@ namespace SolidShineUi
 
         #region Window Actions
 
+        /// <summary>
+        /// Create a ColorPickerDialog. Please use the constructor with the ColorScheme argument.
+        /// </summary>
         [Obsolete("Please use the constructor with the ColorScheme argument.", false)]
         public ColorPickerDialog()
         {
