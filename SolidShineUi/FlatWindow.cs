@@ -35,6 +35,15 @@ namespace SolidShineUi
 
         // TODO: add different color for inactive window caption (especially for High Contrast Mode)
 
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindow),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
@@ -45,6 +54,7 @@ namespace SolidShineUi
             if (d is FlatWindow w)
             {
                 w.ApplyColorScheme((e.NewValue as ColorScheme)!);
+                w.ColorSchemeChanged?.Invoke(w, e);
             }
 #else
             (d as FlatWindow).ApplyColorScheme(e.NewValue as ColorScheme);
