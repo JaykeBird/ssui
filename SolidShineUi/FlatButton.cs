@@ -238,8 +238,8 @@ namespace SolidShineUi
             {
                 if (d is FlatButton f)
                 {
-                    f.ColorSchemeChanged?.Invoke(d, e);
                     f.ApplyColorScheme(cs, f.TransparentBack, f.UseAccentColors);
+                    f.ColorSchemeChanged?.Invoke(d, e);
                 }
             }
 
