@@ -50,15 +50,25 @@ namespace SolidShineUi
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            if (d is FlatWindow w)
+            if (e.NewValue is ColorScheme cs)
             {
-                w.ApplyColorScheme((e.NewValue as ColorScheme)!);
-                w.ColorSchemeChanged?.Invoke(w, e);
+                if (d is FlatWindow w)
+                {
+                    w.ApplyColorScheme(cs);
+                    w.ColorSchemeChanged?.Invoke(d, e);
+                }
             }
-#else
-            (d as FlatWindow).ApplyColorScheme(e.NewValue as ColorScheme);
-#endif
+
+            //#if NETCOREAPP
+            //            if (d is FlatWindow w)
+            //            {
+            //                w.ApplyColorScheme((e.NewValue as ColorScheme));
+            //                w.ColorSchemeChanged?.Invoke(w, e);
+            //            }
+            //#else
+            //            (d as FlatWindow).ApplyColorScheme(e.NewValue as ColorScheme);
+            //            (d as FlatWindow).ColorSchemeChanged?.Invoke(
+            //#endif
         }
 
         /// <summary>
