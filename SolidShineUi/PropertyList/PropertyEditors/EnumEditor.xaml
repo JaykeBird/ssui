@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
              xmlns:flat="clr-namespace:SolidShineUi"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="24" d:DesignWidth="300">
     <Grid>
         <flat:EnumComboBox x:Name="cbbEnums" SelectionChanged="cbbEnums_SelectionChanged" />
     </Grid>
