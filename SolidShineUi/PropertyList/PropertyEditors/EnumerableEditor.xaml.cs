@@ -72,7 +72,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     }
                     else
                     {
-                        contentsData = "collection of";
+                        if (lval is ICollection icol)
+                        {
+                            contentsData = icol.Count + " items";
+                        }
+                        else
+                        {
+                            contentsData = "collection";
+                        }
                     }
                 }
 
