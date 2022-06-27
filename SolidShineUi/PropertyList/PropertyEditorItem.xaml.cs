@@ -26,6 +26,9 @@ namespace SolidShineUi.PropertyList
         public delegate void PropertyEditorValueChangedEventHandler(object? sender, PropertyEditorValueChangedEventArgs e);
 
         public event PropertyEditorValueChangedEventHandler? PropertyEditorValueChanged;
+
+        public Type? DeclaringType { get; set; } = null;
+
 #else
         public PropertyInfo PropertyInfo { get; set; } = null;
 
@@ -37,7 +40,12 @@ namespace SolidShineUi.PropertyList
         public delegate void PropertyEditorValueChangedEventHandler(object sender, PropertyEditorValueChangedEventArgs e);
 
         public event PropertyEditorValueChangedEventHandler PropertyEditorValueChanged;
+
+        public Type DeclaringType { get; set; } = null;
 #endif
+
+        public bool IsInherited { get; set; } = false;
+
 
         public string PropertyName { get => txtName.Text; set => txtName.Text = value; }
         public string PropertyType { get => txtType.Text; set => txtType.Text = value; }

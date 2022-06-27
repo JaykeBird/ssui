@@ -142,12 +142,18 @@ namespace SolidShineUi.PropertyList
                 ObjectDisplayName = "No name";
             }
             txtType.Text = "Type: " + type.Name; // name of the type (not the object)
+            txtType.ToolTip = type.FullName;
 
             // load all properties
             properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
             SortList();
 
             LoadPropertyList(properties);
+
+            txtFilter.Text = "";
+            _filterString = "";
+            ShowInheritedProperties = true;
+            mnuShowInherited.IsChecked = true;
         }
 
         #region Display Name
@@ -163,30 +169,12 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        #region Show/Hide Toolbar Items
-        public bool ShowFilterBox { get => (bool)GetValue(ShowFilterBoxProperty); set => SetValue(ShowFilterBoxProperty, value); }
-
-        public static DependencyProperty ShowFilterBoxProperty
-            = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(ExperimentalPropertyList),
-            new FrameworkPropertyMetadata(true));
-
-        public bool ShowReloadButton { get => (bool)GetValue(ShowReloadButtonProperty); set => SetValue(ShowReloadButtonProperty, value); }
-
-        public static DependencyProperty ShowReloadButtonProperty
-            = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(ExperimentalPropertyList),
-            new FrameworkPropertyMetadata(true));
-
-        public bool ShowViewMenu { get => (bool)GetValue(ShowViewMenuProperty); set => SetValue(ShowViewMenuProperty, value); }
-
-        public static DependencyProperty ShowViewMenuProperty
-            = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(ExperimentalPropertyList),
-            new FrameworkPropertyMetadata(true));
-
-        #endregion
 
         void LoadPropertyList(IEnumerable<PropertyInfo> properties)
         {
             stkProperties.Children.Clear();
+
+            Type baseType = _baseObject?.GetType() ?? typeof(object);
 
             foreach (PropertyInfo item in properties)
             {
@@ -200,6 +188,13 @@ namespace SolidShineUi.PropertyList
                 {
                     // readonly property
                 }
+
+                if (item.DeclaringType != baseType)
+                {
+                    // item was inherited
+                    pei.IsInherited = true;
+                }
+                pei.DeclaringType = item.DeclaringType;
 
                 Type propType = item.PropertyType;
                 // let's do some tests on the properties
@@ -300,11 +295,19 @@ namespace SolidShineUi.PropertyList
 
         private PropertySortOption _sort = PropertySortOption.Name;
 
+        private string _filterString = "";
+
         /// <summary>
         /// Get or set how the list of properties are sorted in this PropertyList.
         /// </summary>
         public PropertySortOption SortOption { get => _sort; set { _sort = value; SortList(); } }
 
+        private bool _showInherited = true;
+
+        /// <summary>
+        /// Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.
+        /// </summary>
+        public bool ShowInheritedProperties { get => _showInherited; set { _showInherited = value; FilterProperties(_filterString); mnuShowInherited.IsChecked = value; } }
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -332,7 +335,7 @@ namespace SolidShineUi.PropertyList
         /// Change the text used to filter the list of properties. Applying a filter text will hide any properties that don't contain this text (or its type doesn't contain this text).
         /// </summary>
         /// <param name="filter">
-        /// The filter text to apply. Use <c>null</c> or an empty string to not apply a filter. Start the string with "@" to only filter by property name (not type).
+        /// The filter text to apply. Use <c>null</c> or an empty string to not apply a filter. Start the string with "@" to only filter by property name only (not name or type).
         /// </param>
 #if NETCOREAPP
         public void FilterProperties(string? filter)
@@ -360,6 +363,7 @@ namespace SolidShineUi.PropertyList
                         }
                     }
                 }
+                _filterString = "";
             }
             else
             {
@@ -389,6 +393,29 @@ namespace SolidShineUi.PropertyList
                                 pei.Visibility = Visibility.Visible;
                             }
                             else
+                            {
+                                pei.Visibility = Visibility.Collapsed;
+                            }
+                        }
+                    }
+                }
+                _filterString = filter;
+            }
+
+            if (!ShowInheritedProperties)
+            {
+#if NETCOREAPP
+                foreach (UIElement? item in stkProperties.Children)
+#else
+                foreach (UIElement item in stkProperties.Children)
+#endif
+                {
+                    if (item == null) continue;
+                    if (item is PropertyEditorItem pei)
+                    {
+                        if (pei != null)
+                        {
+                            if (pei.IsInherited)
                             {
                                 pei.Visibility = Visibility.Collapsed;
                             }
@@ -629,16 +656,56 @@ namespace SolidShineUi.PropertyList
             ReloadObject();
         }
 
-        //public bool ShowReloadButton
-        //{
-        //    get => btnRefresh.Visibility == Visibility.Visible;
-        //    set => btnRefresh.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-        //}
 
+        #region Show/Hide Toolbar Items (Dependency properties)
+        public bool ShowFilterBox { get => (bool)GetValue(ShowFilterBoxProperty); set => SetValue(ShowFilterBoxProperty, value); }
+
+        public static DependencyProperty ShowFilterBoxProperty
+            = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
+
+        public bool ShowReloadButton { get => (bool)GetValue(ShowReloadButtonProperty); set => SetValue(ShowReloadButtonProperty, value); }
+
+        public static DependencyProperty ShowReloadButtonProperty
+            = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
+
+        public bool ShowViewMenu { get => (bool)GetValue(ShowViewMenuProperty); set => SetValue(ShowViewMenuProperty, value); }
+
+        public static DependencyProperty ShowViewMenuProperty
+            = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
 
         #endregion
 
+        #endregion
+
+
+        private void mnuShowInherited_Click(object sender, RoutedEventArgs e)
+        {
+            if (ShowInheritedProperties)
+            {
+                ShowInheritedProperties = false;
+                //mnuShowInherited.IsChecked = false;
+            }
+            else
+            {
+                ShowInheritedProperties = true;
+                //mnuShowInherited.IsChecked = true;
+            }
+        }
     }
 
-    public enum PropertySortOption { Name = 0, Category = 1 }
+    /// <summary>
+    /// Represents the sorting method used for sorting properties in a PropertyList.
+    /// </summary>
+    public enum PropertySortOption {
+        /// <summary>
+        /// Sorted alphabetically by property name
+        /// </summary>
+        Name = 0,
+        /// <summary>
+        /// Sorted by category (as determined by a Category attribute being present)
+        /// </summary>
+        Category = 1 }
 }
