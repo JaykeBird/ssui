@@ -145,6 +145,9 @@ See website for more details!</PackageReleaseNotes>
     <Compile Update="PropertyList\PropertyEditors\GuidEditor.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="PropertyList\PropertyEditors\EnumerableEditor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="PropertyList\PropertyEditors\UriEditor.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -193,6 +196,10 @@ See website for more details!</PackageReleaseNotes>
   </ItemGroup>
   <ItemGroup>
     <Page Update="PropertyList\PropertyEditors\GuidEditor.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PropertyList\PropertyEditors\EnumerableEditor.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

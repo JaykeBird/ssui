@@ -14,10 +14,14 @@ using System.Windows.Media;
 namespace SolidShineUi.PropertyList
 {
     /// <summary>
-    /// Interaction logic for PropertyList.xaml
+    /// A control that can display the properties and values of a .NET object, with support for live editing of many of them.
+    /// (Note that there are missing features and potential bugs.)
     /// </summary>
     public partial class ExperimentalPropertyList : UserControl
     {
+        /// <summary>
+        /// Create a PropertyList.
+        /// </summary>
         public ExperimentalPropertyList()
         {
             InitializeComponent();
@@ -55,12 +59,19 @@ namespace SolidShineUi.PropertyList
             }
         }
 
+        /// <summary>
+        /// Get or set the color scheme to apply to the control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -86,9 +97,9 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#endregion
+        #endregion
 
-#region Basics / Object Loading
+        #region Basics / Object Loading
 
         private List<PropertyInfo> properties = new List<PropertyInfo>();
 #if NETCOREAPP
@@ -97,6 +108,9 @@ namespace SolidShineUi.PropertyList
         private object _baseObject = null;
 #endif
 
+        /// <summary>
+        /// Reload the properties and values from the currently observed object.
+        /// </summary>
         public void ReloadObject()
         {
             if (_baseObject != null)
@@ -105,6 +119,14 @@ namespace SolidShineUi.PropertyList
             }
         }
 
+        /// <summary>
+        /// Set the object to observe. All properties of the observed object will be displayed in the ExperimentalPropertyList, alongside the values of these properties.
+        /// </summary>
+        /// <param name="o">The object to load and observe.</param>
+        /// <remarks>
+        /// Note that if the object has a property called "Name", that name will be displayed at the top of the ExperimentalPropertyList control.
+        /// If this object doesn't have a Name property, or you want to set a different name, please use the <see cref="ObjectDisplayName"/> property.
+        /// </remarks>
         public void LoadObject(object o)
         {
             _baseObject = o;
@@ -113,11 +135,11 @@ namespace SolidShineUi.PropertyList
 
             if (nameProp != null)
             {
-                txtName.Text = (nameProp.GetValue(o) ?? "No name").ToString();
+                ObjectDisplayName = (nameProp.GetValue(o) ?? "No name").ToString() ?? "No name";
             }
             else
             {
-                txtName.Text = "No name";
+                ObjectDisplayName = "No name";
             }
             txtType.Text = "Type: " + type.Name; // name of the type (not the object)
 
@@ -127,6 +149,40 @@ namespace SolidShineUi.PropertyList
 
             LoadPropertyList(properties);
         }
+
+        #region Display Name
+        /// <summary>
+        /// Get or set the string used to name the object being observed. The PropertyList will try to set this automatically via looking at the Name property,
+        /// or otherwise you can set a custom name to display.
+        /// </summary>
+        public string ObjectDisplayName { get => (string)GetValue(ObjectDisplayNameProperty); set => SetValue(ObjectDisplayNameProperty, value); }
+
+        public static DependencyProperty ObjectDisplayNameProperty
+            = DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata("No name"));
+
+        #endregion
+
+        #region Show/Hide Toolbar Items
+        public bool ShowFilterBox { get => (bool)GetValue(ShowFilterBoxProperty); set => SetValue(ShowFilterBoxProperty, value); }
+
+        public static DependencyProperty ShowFilterBoxProperty
+            = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
+
+        public bool ShowReloadButton { get => (bool)GetValue(ShowReloadButtonProperty); set => SetValue(ShowReloadButtonProperty, value); }
+
+        public static DependencyProperty ShowReloadButtonProperty
+            = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
+
+        public bool ShowViewMenu { get => (bool)GetValue(ShowViewMenuProperty); set => SetValue(ShowViewMenuProperty, value); }
+
+        public static DependencyProperty ShowViewMenuProperty
+            = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
+
+        #endregion
 
         void LoadPropertyList(IEnumerable<PropertyInfo> properties)
         {
@@ -160,7 +216,28 @@ namespace SolidShineUi.PropertyList
                 else if (item.PropertyType.IsGenericType && item.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
                 {
                     Type itemType = item.PropertyType.GetGenericArguments()[0];
-                    // TODO: add handling for list items
+                    if (registeredEditors.ContainsKey(typeof(List<>)))
+                    {
+                        object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
+                        if (o is IPropertyEditor i)
+                        {
+                            i.ColorScheme = ColorScheme;
+                            ipe = i;
+                        }
+                    }
+                }
+                else if (item.PropertyType.IsGenericType && item.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                {
+                    Type itemType = item.PropertyType.GetGenericArguments()[0];
+                    if (registeredEditors.ContainsKey(typeof(IEnumerable<>)))
+                    {
+                        object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                        if (o is IPropertyEditor i)
+                        {
+                            i.ColorScheme = ColorScheme;
+                            ipe = i;
+                        }
+                    }
                 }
                 else
                 {
@@ -179,7 +256,7 @@ namespace SolidShineUi.PropertyList
                 {
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
-                    
+
                 pei.LoadProperty(item, item.GetValue(_baseObject), ipe);
                 pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
                 pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
@@ -217,14 +294,24 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#endregion
+        #endregion
 
-#region Sort and Filter
+        #region Sort and Filter
 
         private PropertySortOption _sort = PropertySortOption.Name;
 
+        /// <summary>
+        /// Get or set how the list of properties are sorted in this PropertyList.
+        /// </summary>
         public PropertySortOption SortOption { get => _sort; set { _sort = value; SortList(); } }
 
+
+        private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterProperties(txtFilter.Text);
+        }
+
+        #region Sort, Filter, Compare functions
         void SortList()
         {
             switch (SortOption)
@@ -330,11 +417,6 @@ namespace SolidShineUi.PropertyList
 #endif
         }
 
-        private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            FilterProperties(txtFilter.Text);
-        }
-
         private static int ComparePropertyNames(PropertyInfo x, PropertyInfo y)
         {
             var comp = StringComparer.InvariantCulture;
@@ -386,12 +468,14 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#endregion
+        #endregion
+
+        #endregion
 
         private static string GetCategoryOfProperty(PropertyInfo pi)
         {
             IEnumerable<CategoryAttribute> attributes = pi.GetCustomAttributes<CategoryAttribute>(true);
-            
+
             if (attributes.Any())
             {
                 return attributes.First().Category;
@@ -402,7 +486,7 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#region Sort and View menu
+        #region Sort and View menu
         private void btnName_Click(object sender, RoutedEventArgs e)
         {
             SortOption = PropertySortOption.Name;
@@ -432,9 +516,9 @@ namespace SolidShineUi.PropertyList
                 splTypes.Visibility = Visibility.Visible;
             }
         }
-#endregion
+        #endregion
 
-#region Registered Editors
+        #region Registered Editors
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
         /// <summary>
@@ -514,11 +598,13 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Thickness), typeof(ThicknessEditor));
             RegisterEditor(typeof(Size), typeof(SizeEditor));
             RegisterEditor(typeof(Point), typeof(PointEditor));
+            RegisterEditor(typeof(List<>), typeof(ListEditor));
+            RegisterEditor(typeof(IEnumerable<>), typeof(EnumerableEditor));
         }
 
-#endregion
+        #endregion
 
-#region Visual Elements
+        #region Visual Elements
 
 #if NETCOREAPP
         private void ColumnWidthChanged(object? sender, EventArgs e)
@@ -543,11 +629,11 @@ namespace SolidShineUi.PropertyList
             ReloadObject();
         }
 
-        public bool ShowReloadButton
-        {
-            get => btnRefresh.Visibility == Visibility.Visible;
-            set => btnRefresh.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-        }
+        //public bool ShowReloadButton
+        //{
+        //    get => btnRefresh.Visibility == Visibility.Visible;
+        //    set => btnRefresh.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        //}
 
 
         #endregion
