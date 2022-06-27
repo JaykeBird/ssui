@@ -174,6 +174,7 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.White.ToBrush()));
@@ -209,6 +210,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
             "BorderSelectedBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -225,9 +227,13 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatButton),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         //bool use_transp = false;
         //bool use_accent = false;
@@ -253,7 +259,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the color scheme to use with the button.
+        /// Get or set the color scheme to apply to this button. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
         [Category("Appearance")]
         public ColorScheme ColorScheme

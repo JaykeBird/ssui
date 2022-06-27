@@ -756,9 +756,13 @@ namespace SolidShineUi
 
         #region Color Scheme
 
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabControl),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -773,7 +777,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the color scheme to apply to the control.
+        /// Get or set the color scheme to apply to the control. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
         [Category("Appearance")]
         public ColorScheme ColorScheme
