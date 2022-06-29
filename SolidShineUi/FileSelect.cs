@@ -38,7 +38,7 @@ namespace SolidShineUi
 
             SetValue(BorderThicknessProperty, new Thickness(1));
             SetValue(PaddingProperty, new Thickness(2));
-            SetValue(DispalyFilenamesProperty, false);
+            SetValue(DisplayFilenamesProperty, false);
 
             SetValue(SelectedFilesPropertyKey, new LimitableStringCollection());
             SelectedFiles.ItemAdding += SelectedFiles_AddingItem;
@@ -250,6 +250,7 @@ namespace SolidShineUi
             set => SetValue(BorderBrushProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
@@ -277,6 +278,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty ButtonClickBrushProperty = DependencyProperty.Register(
             "ButtonClickBrush", typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -292,17 +294,21 @@ namespace SolidShineUi
             set => SetValue(CornerRadiusProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnCornerRadiusChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
             "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
@@ -337,14 +343,17 @@ namespace SolidShineUi
             set => SetValue(ButtonCornerRadiusProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ButtonCornerRadiusProperty = DependencyProperty.Register(
             "ButtonCornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
         #region Other Appearance Properties
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty BrowseButtonTextProperty = DependencyProperty.Register(
             "BrowseButtonText", typeof(string), typeof(FileSelect),
             new PropertyMetadata("Browse..."));
@@ -356,6 +365,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
             "ShowIcon", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the text displayed in the Browse button. The default value is "Browse...".
@@ -401,9 +411,11 @@ namespace SolidShineUi
             set => SetValue(ButtonPlacementProperty, value);
         }
 
-        public static readonly DependencyProperty DispalyFilenamesProperty = DependencyProperty.Register(
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly DependencyProperty DisplayFilenamesProperty = DependencyProperty.Register(
             "DisplayFilenames", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the filenames of the selected files are displayed. If true, then all selected files are displayed in a vertical list (with scrolling if needed).
@@ -412,13 +424,15 @@ namespace SolidShineUi
         [Category("Common")]
         public bool DisplayFilenames
         {
-            get => (bool)GetValue(DispalyFilenamesProperty);
-            set => SetValue(DispalyFilenamesProperty, value);
+            get => (bool)GetValue(DisplayFilenamesProperty);
+            set => SetValue(DisplayFilenamesProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register(
             "HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
@@ -430,9 +444,11 @@ namespace SolidShineUi
             set => SetValue(HorizontalScrollBarVisibilityProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
             "VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
@@ -450,15 +466,15 @@ namespace SolidShineUi
 
         #region Commands
 
-        /// <summary>When executed, displays the Browse for Files dialog so a user can select one (or more) files.</summary>
+        /// <summary>A WPF command that when executed, displays the Browse for Files dialog so a user can select one (or more) files.</summary>
         public static readonly RoutedCommand BrowseForFile = new RoutedCommand();
-        /// <summary>When executed, clears all files from the SelectedFiles list. Only executable if there is one or more files currently selected.</summary>
+        /// <summary>A WPF command that when executed, clears all files from the SelectedFiles list. Only executable if there is one or more files currently selected.</summary>
         public static readonly RoutedCommand ClearSelectedFiles = new RoutedCommand();
-        /// <summary>When executed, copies a list of the selected files to the clipboard. Only executable if there is one or more files currently selected.</summary>
+        /// <summary>A WPF command that when executed, copies a list of the selected files to the clipboard. Only executable if there is one or more files currently selected.</summary>
         public static readonly RoutedCommand CopyFilenames = new RoutedCommand();
-        /// <summary>When executed, opens the containing folders of each selected file. Only executable if there is one or more files currently selected.</summary>
+        /// <summary>A WPF command that when executed, opens the containing folders of each selected file. Only executable if there is one or more files currently selected.</summary>
         public static readonly RoutedCommand OpenContainingFolders = new RoutedCommand();
-        /// <summary>When executed, removes the specific file passed in through the command parameter. Only executable if the file is present in the list of selected files.</summary>
+        /// <summary>A WPF command that when executed, removes the specific file passed in through the command parameter. Only executable if the file is present in the list of selected files.</summary>
         public static readonly RoutedCommand RemoveSelectedFile = new RoutedCommand();
 
         private void OnBrowseForFile(object sender, ExecutedRoutedEventArgs e)
@@ -689,6 +705,7 @@ namespace SolidShineUi
         /// </summary>
         public const string ALL_FILES_FILTER = "*.*";
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty FileFilterProperty = DependencyProperty.Register(
             "FileFilter", typeof(string), typeof(FileSelect),
             new PropertyMetadata("*.*"));
@@ -696,6 +713,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty AllowMultipleFilesProperty = DependencyProperty.Register(
             "AllowMultipleFiles", typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalAllowMultipleFilesChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the file filter used when selecting files. Use semicolons (;) to separate multiple extensions/filters (i.e. <c>*.docx;*.xlsx;*.pptx</c>). Supports * and ? wildcards like Windows.
