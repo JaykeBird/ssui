@@ -10,6 +10,9 @@ using static SolidShineUi.ColorsHelper;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A menu control that can display and organize commands within various drop-down elements. This differs from the WPF menu with a visual style that matches other Solid Shine UI controls.
+    /// </summary>
     public class Menu : System.Windows.Controls.Menu
     {
 
@@ -24,12 +27,16 @@ namespace SolidShineUi
 
         #region ColorScheme
 
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(Menu),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
@@ -47,7 +54,11 @@ namespace SolidShineUi
                 s.ApplyColorScheme(cs);
             }
         }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
         [Category("Appearance")]
         public ColorScheme ColorScheme
         {
@@ -55,6 +66,10 @@ namespace SolidShineUi
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -84,6 +99,10 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="hco">The high-contrast color scheme to apply.</param>
         public void ApplyColorScheme(HighContrastOption hco)
         {
             ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
@@ -108,6 +127,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the brush used for the foreground of menu items that are disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush DisabledBrush
         {
@@ -185,6 +207,7 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
             "MenuBackground", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
@@ -208,6 +231,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
             "CheckedBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     }
 }
