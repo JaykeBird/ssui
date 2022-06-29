@@ -237,8 +237,10 @@ namespace SolidShineUi
 
         #region CanSelect
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register("CanSelect", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalCanSelectChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set whether this tab can be selected via UI.
@@ -255,6 +257,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCanSelectChanged;
 
+        /// <summary>
+        /// Raised when the CanSelect property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? CanSelectChanged;
 #else
@@ -276,8 +281,10 @@ namespace SolidShineUi
 
         #region Icon
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalIconChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the icon to display with this tab.
@@ -318,8 +325,10 @@ namespace SolidShineUi
 
         #region TabBackground
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register("TabBackground", typeof(Brush), typeof(TabItem),
             new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the brush displayed in the background of the tab. This will override the color of the TabControl itself, but transparency does allow the standard color to show through.
@@ -360,8 +369,10 @@ namespace SolidShineUi
 
         #region Content
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(UIElement), typeof(TabItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalContentChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the content to display when this tab is selected.
@@ -402,8 +413,10 @@ namespace SolidShineUi
 
         #region Padding
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(TabItem),
             new PropertyMetadata(new Thickness(4,0,4,0), new PropertyChangedCallback(OnInternalPaddingChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the padding (or space) applied around the tab's title and icon. (This does not set the padding for the content.)
@@ -420,6 +433,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalPaddingChanged;
 
+        /// <summary>
+        /// Raised when the Padding property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? PaddingChanged;
 #else
@@ -442,8 +458,10 @@ namespace SolidShineUi
 
         #region Visibility
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(TabItem),
             new PropertyMetadata(System.Windows.Visibility.Visible, new PropertyChangedCallback(OnInternalVisibilityChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if this tab is visually displayed in the UI.
@@ -484,8 +502,10 @@ namespace SolidShineUi
 
         #region TabContextMenu
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TabContextMenuProperty = DependencyProperty.Register("TabContextMenu", typeof(ContextMenu), typeof(TabItem),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 #if NETCOREAPP
         /// <summary>
@@ -535,6 +555,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalAllowDropChanged;
 
+        /// <summary>
+        /// Raised when the AllowDrop property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? AllowDropChanged;
 #else
@@ -559,6 +582,19 @@ namespace SolidShineUi
         // The TabDisplayItem is the visual item that actually displays tabs in the TabControl
         // When a drag event occurs in the TabDisplayItem, it calls this RaiseDragEvent method so that the TabItem can raise the respective event.
 
+        /// <summary>
+        /// Instructs the TabItem to raise a particular drag-and-drop event, used internally to support drag-and-drop in TabControls.
+        /// </summary>
+        /// <param name="ev">The name of the event to raise.</param>
+        /// <param name="e">The DragEventArgs to include with the event.</param>
+        /// <remarks>
+        /// Due to how the WPF architecture is set up, routed events are not possible within the TabItem class, and thus regular .NET events are used instead.
+        /// This method allows visual representations of a TabItem (such as TabDisplayItem) to handle drag and drop events and hand them off to the TabItem.
+        /// Although the TabItem and TabDisplayItem in Solid Shine UI don't support being a drag source by themselves (excepting to drag and drop tabs within
+        /// a TabControl), the GiveFeedback and QueryContinueDrag events are present as well, in case it is needed by classes that inherit TabItem.
+        /// See <see cref="RaiseGiveFeedbackEvent(GiveFeedbackEventArgs, bool)"/> and <see cref="RaiseQueryContinueDragEvent(QueryContinueDragEventArgs, bool)"/>
+        /// for methods for raising those events.
+        /// </remarks>
         internal protected void RaiseDragEvent(string ev, DragEventArgs e)
         {
             switch (ev)
@@ -592,34 +628,199 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Invoke the GiveFeedback event for drag-and-drop.
+        /// </summary>
+        /// <param name="e">The GiveFeedbackEventArgs to pass to the event.</param>
+        /// <param name="preview">Determine if the PreviewGiveFeedback event should be raised, rather than GiveFeedback.</param>
+        /// <remarks>See the remarks for <see cref="RaiseDragEvent(string, DragEventArgs)"/> for more information.</remarks>
+        internal protected void RaiseGiveFeedbackEvent(GiveFeedbackEventArgs e, bool preview = false)
+        {
+            if (preview)
+            {
+                PreviewGiveFeedback?.Invoke(this, e);
+            }
+            else
+            {
+                GiveFeedback?.Invoke(this, e);
+            }
+        }
+
+        /// <summary>
+        /// Invoke the QueryContinueDrag event for drag-and-drop.
+        /// </summary>
+        /// <param name="e">The QueryContinueDragEventArgs to pass to the event.</param>
+        /// <remarks>See the remarks for <see cref="RaiseDragEvent(string, DragEventArgs)"/> for more information.</remarks>
+        internal protected void RaiseQueryContinueDragEvent(QueryContinueDragEventArgs e, bool preview = false)
+        {
+            if (preview)
+            {
+                PreviewQueryContinueDrag?.Invoke(this, e);
+            }
+            else
+            {
+                QueryContinueDrag?.Invoke(this, e);
+            }
+        }
+
 #if NETCOREAPP
+        /// <summary>
+        /// Raised when data is dragged into the TabItem.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler? DragEnter;
+        /// <summary>
+        /// Raised when data is dragged within this TabItem. This event is raised continuously while the data is over the tab.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler? DragOver;
+        /// <summary>
+        /// Raised when data is dragged out of this TabItem, and is not dropped.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler? DragLeave;
+        /// <summary>
+        /// Raised when data is dropped within this TabItem.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler? Drop;
 
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing feedback to be provided to the user and the drop target.
+        /// </summary>
+        public event GiveFeedbackEventHandler? GiveFeedback;
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing the drag-and-drop to be cancelled in certain situations.
+        /// </summary>
+        public event QueryContinueDragEventHandler? QueryContinueDrag;
+
+        /// <summary>
+        /// Raised when data is dragged into this TabItem. This is a tunneling version of the <see cref="DragEnter"/> event.
+        /// </summary>
         public event DragEventHandler? PreviewDragEnter;
+        /// <summary>
+        /// Raised when data is dragged within this TabItem. This is a tunneling version of the <see cref="DragOver"/> event.
+        /// </summary>
         public event DragEventHandler? PreviewDragOver;
+        /// <summary>
+        /// Raised when data is dragged out of this TabItem, without being dropped. This is a tunneling version of the <see cref="DragLeave"/> event.
+        /// </summary>
         public event DragEventHandler? PreviewDragLeave;
+        /// <summary>
+        /// Raised when data is dropped within this TabItem. This is a tunneling version of the <see cref="Drop"/> event.
+        /// </summary>
         public event DragEventHandler? PreviewDrop;
+
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing feedback to be provided to the user and the drop target.
+        /// This is a tunneling version of the <see cref="GiveFeedback"/> event.
+        /// </summary>
+        public event GiveFeedbackEventHandler? PreviewGiveFeedback;
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing the drag-and-drop to be cancelled in certain situations.
+        /// This is a tunneling version of the <see cref="QueryContinueDrag"/> event.
+        /// </summary>
+        public event QueryContinueDragEventHandler? PreviewQueryContinueDrag;
 #else
+        /// <summary>
+        /// Raised when data is dragged into the TabItem.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler DragEnter;
+        /// <summary>
+        /// Raised when data is dragged within this TabItem. This event is raised continuously while the data is over the tab.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler DragOver;
+        /// <summary>
+        /// Raised when data is dragged out of this TabItem, and is not dropped.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler DragLeave;
+        /// <summary>
+        /// Raised when data is dropped within this TabItem.
+        /// </summary>
+        /// <remarks>
+        /// This specifically is raised when data is dragged within a TabItem's visual representation (such as a TabDisplayItem).
+        /// Note that this event is not raised when a tab is dragged over another tab.
+        /// Due to how the WPF architecture is designed, this is not a routed event.
+        /// </remarks>
         public event DragEventHandler Drop;
 
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing feedback to be provided to the user and the drop target.
+        /// </summary>
+        public event GiveFeedbackEventHandler GiveFeedback;
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing the drag-and-drop to be cancelled in certain situations.
+        /// </summary>
+        public event QueryContinueDragEventHandler QueryContinueDrag;
+
+        /// <summary>
+        /// Raised when data is dragged into this TabItem. This is a tunneling version of the <see cref="DragEnter"/> event.
+        /// </summary>
         public event DragEventHandler PreviewDragEnter;
+        /// <summary>
+        /// Raised when data is dragged within this TabItem. This is a tunneling version of the <see cref="DragOver"/> event.
+        /// </summary>
         public event DragEventHandler PreviewDragOver;
+        /// <summary>
+        /// Raised when data is dragged out of this TabItem, without being dropped. This is a tunneling version of the <see cref="DragLeave"/> event.
+        /// </summary>
         public event DragEventHandler PreviewDragLeave;
+        /// <summary>
+        /// Raised when data is dropped within this TabItem. This is a tunneling version of the <see cref="Drop"/> event.
+        /// </summary>
         public event DragEventHandler PreviewDrop;
+
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing feedback to be provided to the user and the drop target.
+        /// This is a tunneling version of the <see cref="GiveFeedback"/> event.
+        /// </summary>
+        public event GiveFeedbackEventHandler PreviewGiveFeedback;
+        /// <summary>
+        /// Raised while a drag-and-drop action is occurring, allowing the drag-and-drop to be cancelled in certain situations.
+        /// This is a tunneling version of the <see cref="QueryContinueDrag"/> event.
+        /// </summary>
+        public event QueryContinueDragEventHandler PreviewQueryContinueDrag;
 #endif
 
         #endregion
 
         #region ToolTip
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ToolTipProperty = DependencyProperty.Register("ToolTip", typeof(object), typeof(TabItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalToolTipChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the ToolTip to display when the mouse is hovering over this tab.
@@ -660,8 +861,10 @@ namespace SolidShineUi
 
         #region ExtraTabElement
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ExtraTabElementProperty = DependencyProperty.Register("ExtraTabElement", typeof(UIElement), typeof(TabItem),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the element to display on the right side of the tab, next to the Close button.

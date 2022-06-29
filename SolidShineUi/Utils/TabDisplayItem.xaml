@@ -11,6 +11,7 @@
              GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
              PreviewDragEnter="control_PreviewDragEnter" PreviewDragLeave="control_PreviewDragLeave" PreviewDragOver="control_PreviewDragOver" PreviewDrop="control_PreviewDrop"
              DragEnter="control_DragEnter" DragOver="control_DragOver" DragLeave="control_DragLeave" AllowDrop="True" Drop="control_Drop"
+             GiveFeedback="control_GiveFeedback" PreviewGiveFeedback="control_PreviewGiveFeedback" QueryContinueDrag="control_QueryContinueDrag" PreviewQueryContinueDrag="control_PreviewQueryContinueDrag"
              KeyDown="UserControl_KeyDown" KeyUp="UserControl_KeyUp" GotKeyboardFocus="UserControl_GotKeyboardFocus" LostKeyboardFocus="UserControl_LostKeyboardFocus" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />

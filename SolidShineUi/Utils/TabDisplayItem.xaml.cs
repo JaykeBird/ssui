@@ -31,9 +31,21 @@ namespace SolidShineUi.Utils
         /// </summary>
         public event TabItemDropEventHandler? TabItemDrop;
 #else
+        /// <summary>
+        /// Raised when the Close button is clicked, and this tab wants to be closed.
+        /// </summary>
         public event EventHandler RequestClose;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
         public event EventHandler RightClick;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
         public event EventHandler Click;
+        /// <summary>
+        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
+        /// </summary>
         public event TabItemDropEventHandler TabItemDrop;
 #endif
 
@@ -241,8 +253,11 @@ namespace SolidShineUi.Utils
 
         #region TabItem
 
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TabItemProperty = DependencyProperty.Register("TabItem", typeof(TabItem), typeof(TabDisplayItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalTabItemChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// The TabItem that this TabDisplayItem is representing. It is not advisable to change this property after the control is loaded; instead, just create a new TabDisplayItem.
@@ -361,8 +376,10 @@ namespace SolidShineUi.Utils
 
         #region ParentTabControl
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ParentTabControlProperty = DependencyProperty.Register("ParentTabControl", typeof(TabControl), typeof(TabDisplayItem),
             new PropertyMetadata(null, OnInternalParentChanged));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the parent TabControl item that holds this tab item.
@@ -397,9 +414,11 @@ namespace SolidShineUi.Utils
 
         #region Color Scheme
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -655,8 +674,10 @@ namespace SolidShineUi.Utils
 
         #region Drag and Drop
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the tab can be dragged and dropped.
@@ -667,8 +688,10 @@ namespace SolidShineUi.Utils
             set { SetValue(AllowDragDropProperty, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AllowDataDragDropProperty = DependencyProperty.Register("AllowDataDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if data can be dropped onto this TabDisplayItem.
@@ -687,6 +710,7 @@ namespace SolidShineUi.Utils
             }
         }
 
+        #region Event Handlers
         private void control_DragEnter(object sender, DragEventArgs e)
         {
             if (AllowDragDrop && e.Data.GetData(typeof(TabItem)) != null)
@@ -737,48 +761,6 @@ namespace SolidShineUi.Utils
 
             grdDrag.Visibility = Visibility.Collapsed;
         }
-
-        private void brdrDragLeft_DragEnter(object sender, DragEventArgs e)
-        {
-            brdrDragLeft.BorderThickness = new Thickness(5, 0, 0, 0);
-        }
-
-        private void brdrDragLeft_DragLeave(object sender, DragEventArgs e)
-        {
-            //grdDrag.Visibility = Visibility.Collapsed;
-            brdrDragLeft.BorderThickness = new Thickness(0, 0, 0, 0);
-        }
-
-        private void brdrDragRght_DragEnter(object sender, DragEventArgs e)
-        {
-            brdrDragRght.BorderThickness = new Thickness(0, 0, 5, 0);
-        }
-
-        private void brdrDragRght_DragLeave(object sender, DragEventArgs e)
-        {
-            //grdDrag.Visibility = Visibility.Collapsed;
-            brdrDragRght.BorderThickness = new Thickness(0, 0, 0, 0);
-        }
-
-        private void brdrDragLeft_Drop(object sender, DragEventArgs e)
-        {
-            grdDrag.Visibility = Visibility.Collapsed;
-            if (e.Data.GetData(typeof(TabItem)) != null)
-            {
-                TabItemDrop?.Invoke(this, new TabItemDropEventArgs(TabItem, (TabItem)e.Data.GetData(typeof(TabItem)), true));
-            }
-        }
-
-        private void brdrDragRght_Drop(object sender, DragEventArgs e)
-        {
-            grdDrag.Visibility = Visibility.Collapsed;
-            if (e.Data.GetData(typeof(TabItem)) != null)
-            {
-                TabItemDrop?.Invoke(this, new TabItemDropEventArgs(TabItem, (TabItem)e.Data.GetData(typeof(TabItem)), false));
-            }
-        }
-        #endregion
-
         private void control_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && AllowDragDrop)
@@ -853,6 +835,84 @@ namespace SolidShineUi.Utils
                 TabItem.RaiseDragEvent("DragOver", e);
             }
         }
+
+        private void control_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            if (AllowDataDragDrop)
+            {
+                TabItem.RaiseGiveFeedbackEvent(e, false);
+            }
+        }
+
+        private void control_PreviewGiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            if (AllowDataDragDrop)
+            {
+                TabItem.RaiseGiveFeedbackEvent(e, true);
+            }
+        }
+
+        private void control_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+        {
+            if (AllowDataDragDrop)
+            {
+                TabItem.RaiseQueryContinueDragEvent(e, false);
+            }
+        }
+
+        private void control_PreviewQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+        {
+            if (AllowDataDragDrop)
+            {
+                TabItem.RaiseQueryContinueDragEvent(e, true);
+            }
+        }
+
+        #endregion
+
+        #region Drag border event handlers
+        private void brdrDragLeft_DragEnter(object sender, DragEventArgs e)
+        {
+            brdrDragLeft.BorderThickness = new Thickness(5, 0, 0, 0);
+        }
+
+        private void brdrDragLeft_DragLeave(object sender, DragEventArgs e)
+        {
+            //grdDrag.Visibility = Visibility.Collapsed;
+            brdrDragLeft.BorderThickness = new Thickness(0, 0, 0, 0);
+        }
+
+        private void brdrDragRght_DragEnter(object sender, DragEventArgs e)
+        {
+            brdrDragRght.BorderThickness = new Thickness(0, 0, 5, 0);
+        }
+
+        private void brdrDragRght_DragLeave(object sender, DragEventArgs e)
+        {
+            //grdDrag.Visibility = Visibility.Collapsed;
+            brdrDragRght.BorderThickness = new Thickness(0, 0, 0, 0);
+        }
+
+        private void brdrDragLeft_Drop(object sender, DragEventArgs e)
+        {
+            grdDrag.Visibility = Visibility.Collapsed;
+            if (e.Data.GetData(typeof(TabItem)) != null)
+            {
+                TabItemDrop?.Invoke(this, new TabItemDropEventArgs(TabItem, (TabItem)e.Data.GetData(typeof(TabItem)), true));
+            }
+        }
+
+        private void brdrDragRght_Drop(object sender, DragEventArgs e)
+        {
+            grdDrag.Visibility = Visibility.Collapsed;
+            if (e.Data.GetData(typeof(TabItem)) != null)
+            {
+                TabItemDrop?.Invoke(this, new TabItemDropEventArgs(TabItem, (TabItem)e.Data.GetData(typeof(TabItem)), false));
+            }
+        }
+        #endregion
+
+        #endregion
     }
 
     /// <summary>
