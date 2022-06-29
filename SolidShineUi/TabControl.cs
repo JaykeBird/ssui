@@ -100,10 +100,12 @@ namespace SolidShineUi
 
         #region SelectableCollection handling
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<TabItem>), typeof(TabControl),
             new FrameworkPropertyMetadata(new SelectableCollection<TabItem>()));
 
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
@@ -431,11 +433,11 @@ namespace SolidShineUi
 
         #region Commands
 
-        /// <summary>Close the currently open tab.</summary>
+        /// <summary>A WPF command that when executed, will close the currently open tab.</summary>
         public static readonly RoutedCommand CloseCurrentTab = new RoutedCommand();
-        /// <summary>Close a specific tab on this TabControl.</summary>
+        /// <summary>A WPF command that when executed, will close a specific tab on this TabControl.</summary>
         public static readonly RoutedCommand CloseSpecificTab = new RoutedCommand();
-        /// <summary>Select and display a specific tab on this TabControl.</summary>
+        /// <summary>A WPF command that when executed, will select and display a specific tab on this TabControl.</summary>
         public static readonly RoutedCommand SwitchToTab = new RoutedCommand();
 
         private void DoCloseCurrentTab(object sender, ExecutedRoutedEventArgs e)
@@ -497,12 +499,14 @@ namespace SolidShineUi
             e.CanExecute = false;
         }
 
-        #endregion  
+        #endregion
 
         #region ShowTabsOnBottom
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
@@ -519,6 +523,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowTabsOnBottomChanged;
 
+        /// <summary>
+        /// Raised when the ShowTabsOnBottom property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ShowTabsOnBottomChanged;
 #else
@@ -540,8 +547,10 @@ namespace SolidShineUi
 
         #region HorizontalTabBarHeight
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty HorizontalTabBarHeightProperty = DependencyProperty.Register("HorizontalTabBarHeight", typeof(double), typeof(TabControl),
             new PropertyMetadata(24.0, new PropertyChangedCallback(OnInternalHorizontalTabBarHeightChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
@@ -558,6 +567,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalHorizontalTabBarHeightChanged;
 
+        /// <summary>
+        /// Raised when the HorizontalTabBarHeight property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? HorizontalTabBarHeightChanged;
 #else
@@ -579,8 +591,10 @@ namespace SolidShineUi
 
         #region LeftTabBarElement and RightTabBarElement
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the element to display on the left side of the tab bar.
@@ -591,8 +605,10 @@ namespace SolidShineUi
             set { SetValue(LeftTabBarElementProperty, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty RightTabBarElementProperty = DependencyProperty.Register("RightTabBarElement", typeof(UIElement), typeof(TabControl),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).
@@ -607,8 +623,10 @@ namespace SolidShineUi
 
         #region ShowTabListMenu / TabListMenuItemClick command
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs. This mimics a similar menu in Visual Studio.
@@ -625,6 +643,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowTabListMenuChanged;
 
+        /// <summary>
+        /// Raised when the ShowTabListMenu property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ShowTabListMenuChanged;
 #else
@@ -647,8 +668,10 @@ namespace SolidShineUi
 
         #region TabMinWidth
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TabMinWidthProperty = DependencyProperty.Register("TabMinWidth", typeof(double), typeof(TabControl),
             new PropertyMetadata(120.0d, new PropertyChangedCallback(OnInternalTabMinWidthChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the minimum width a tab should have in the tab bar. While tabs may be wider than this width, they will never be shorter than it.
@@ -665,6 +688,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalTabMinWidthChanged;
 
+        /// <summary>
+        /// Raised when the TabMinWidth property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? TabMinWidthChanged;
 #else
@@ -702,8 +728,10 @@ namespace SolidShineUi
 
         #region SelectedTabClosedAction
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty SelectedTabClosedActionProperty = DependencyProperty.Register("SelectedTabClosedAction", typeof(SelectedTabCloseAction), typeof(TabControl),
             new PropertyMetadata(SelectedTabCloseAction.SelectTabToLeft));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the action to take when the currently selected tab is closed.
@@ -717,8 +745,10 @@ namespace SolidShineUi
 
         #region AllowDragDrop
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AllowTabDragDropProperty = DependencyProperty.Register("AllowTabDragDrop", typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowTabDragDropChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if tabs can be dragged and dropped.
@@ -735,6 +765,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalAllowTabDragDropChanged;
 
+        /// <summary>
+        /// Raised when the AllowTabDragDrop property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? AllowTabDragDropChanged;
 #else
@@ -786,6 +819,10 @@ namespace SolidShineUi
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -947,10 +984,13 @@ namespace SolidShineUi
 
         #region ScrollButtons
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
         private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("ScrollButtonsVisible", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false));
 
         public static readonly DependencyProperty ScrollButtonsVisibleProperty = ScrollButtonsVisiblePropertyKey.DependencyProperty;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get if the scroll buttons are currently visible in the tab bar.
@@ -962,6 +1002,9 @@ namespace SolidShineUi
         }
 #endregion
 
+        /// <summary>
+        /// A WPF command that when executed, will scroll the tab control's tab bar to the left or right.
+        /// </summary>
         public static readonly RoutedCommand TabBarScrollCommand = new RoutedCommand("TabBarScrollCommand", typeof(TabControl));
 
         void CheckScrolling()
@@ -1031,25 +1074,48 @@ namespace SolidShineUi
 #endregion
     }
 
+    /// <summary>
+    /// Event arguments for the TabClosing event in TabControl.
+    /// </summary>
     public class TabItemClosingEventArgs
     {
+        /// <summary>
+        /// Create a TabItemClosingEventArgs.
+        /// </summary>
+        /// <param name="t">The tab item being closed.</param>
         public TabItemClosingEventArgs(TabItem t)
         {
             TabItem = t;
         }
 
+        /// <summary>
+        /// The TabItem being closed (and removed from the TabControl).
+        /// </summary>
         public TabItem TabItem { get; private set; }
 
+        /// <summary>
+        /// Get or set if this operation should be cancelled. If <c>true</c>, this tab will not be closed and removed from the TabControl.
+        /// </summary>
         public bool Cancel { get; set; } = false;
     }
 
+    /// <summary>
+    /// Event arguments for the TabChanged event in TabControl.
+    /// </summary>
     public class TabItemChangeEventArgs
     {
+        /// <summary>
+        /// Create a TabItemChangeEventArgs.
+        /// </summary>
+        /// <param name="t">The TabItem being changed to.</param>
         public TabItemChangeEventArgs(TabItem t)
         {
             TabItem = t;
         }
 
+        /// <summary>
+        /// The TabItem being changed to. This is the new TabItem being displayed.
+        /// </summary>
         public TabItem TabItem { get; private set; }
     }
 
