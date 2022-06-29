@@ -619,8 +619,10 @@ namespace SolidShineUi
 
         #region Routed Events
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
             "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
@@ -637,9 +639,14 @@ namespace SolidShineUi
 
         // from https://stackoverflow.com/questions/10667545/why-ismouseover-is-recognized-and-mousedown-isnt-wpf-style-trigger
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsMouseDown",
             typeof(bool), typeof(FlatButton), new FrameworkPropertyMetadata(false));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get if there is a mouse button currently being pressed, while the mouse cursor is over this control.
+        /// </summary>
         public static readonly DependencyProperty IsMouseDownProperty = IsMouseDownPropertyKey.DependencyProperty;
 
         protected static void SetIsMouseDown(DependencyObject obj, bool value)
@@ -659,9 +666,11 @@ namespace SolidShineUi
 
         //bool sel = false;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -678,6 +687,11 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets whether this button is selected. This property (combined with <c>SelectOnClick</c>) allows the button to function like a ToggleButton.
         /// </summary>
+        /// <remarks>
+        /// A selected button will have a slightly different visual appearance to differentiate it as being selected. This will include, by default, the border being a bit thicker.
+        /// This can be changed via the <see cref="BorderSelectionThickness"/> property. You can also directly edit the brushes used via the <see cref="SelectedBrush"/> and
+        /// <see cref="BorderSelectedBrush"/> properties.
+        /// </remarks>
         public bool IsSelected
         {
             get
@@ -709,13 +723,21 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
             "SelectOnClick", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
         /// </summary>
+        /// <remarks>
+        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton). A selected button will, by default, have some visual
+        /// differences to help make it look distinct from unselected buttons. The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
+        /// IsSelected property has already changed. While you could use the Click event to check when the button's IsSelected property is changed, it is better to use the IsSelectedChanged event,
+        /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
+        /// </remarks>
         [Category("Common")]
         public bool SelectOnClick
         {
@@ -725,17 +747,13 @@ namespace SolidShineUi
 
         #endregion
 
-        /// <summary>
-        /// Sets up the button to be clicked. This must be run before PerformClick.
-        /// </summary>
+        // Sets up the button to be clicked. This must be run before PerformClick.
         void PressRightClick()
         {
             initiatingClick = true;
         }
 
-        /// <summary>
-        /// If the button is prepared by PerformPress, perform the Click actions, including raising the Click event.
-        /// </summary>
+        // If the button is prepared by PerformPress, perform the Click actions, including raising the Click event.
         void PerformRightClick()
         {
             if (initiatingClick)
@@ -857,6 +875,9 @@ namespace SolidShineUi
             = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsDefaultChanged)));
 
+        /// <summary>
+        /// Get or set if this button is the default button in the dialog or window it is located in. May not currently function correctly.
+        /// </summary>
         public bool IsDefault
         {
             get => (bool)GetValue(IsDefaultProperty);
