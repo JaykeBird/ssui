@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using static SolidShineUi.KeyboardShortcuts.KeyboardShortcut;
-using System.Windows.Controls;
 
 namespace SolidShineUi.KeyboardShortcuts
 {
+    /// <summary>
+    /// The generic event arguments for keyboard shortcut related events in the KeyRegistry.
+    /// </summary>
     public class KeyboardShortcutEventArgs
     {
+        /// <summary>
+        /// The keyboard shortcut referenced in the event.
+        /// </summary>
         public KeyboardShortcut KeyboardShortcut { get; private set; }
 
+        /// <summary>
+        /// Create a KeyboardShortcutEventArgs.
+        /// </summary>
+        /// <param name="shortcut">The keyboard shortcut referenced in the event.</param>
         public KeyboardShortcutEventArgs(KeyboardShortcut shortcut)
         {
             KeyboardShortcut = shortcut;
@@ -26,10 +34,22 @@ namespace SolidShineUi.KeyboardShortcuts
         public delegate void KeyboardShortcutEventHandler(object sender, KeyboardShortcutEventArgs e);
 
 #if NETCOREAPP
+        /// <summary>
+        /// Raised when a shortcut is added (registered) to this KeyRegistry.
+        /// </summary>
         public event KeyboardShortcutEventHandler? ShortcutRegistered;
+        /// <summary>
+        /// Raised when a shortcut is removed (unregistered) from this KeyRegistry.
+        /// </summary>
         public event KeyboardShortcutEventHandler? ShortcutUnregistered;
 #else
+        /// <summary>
+        /// Raised when a shortcut is added (registered) to this KeyRegistry.
+        /// </summary>
         public event KeyboardShortcutEventHandler ShortcutRegistered;
+        /// <summary>
+        /// Raised when a shortcut is removed (unregistered) from this KeyRegistry.
+        /// </summary>
         public event KeyboardShortcutEventHandler ShortcutUnregistered;
 #endif
 
