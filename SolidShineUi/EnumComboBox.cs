@@ -25,17 +25,21 @@ namespace SolidShineUi
 
         #region EnumProperty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty EnumProperty = DependencyProperty.Register(
             "Enum", typeof(Type), typeof(EnumComboBox),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalEnumChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalEnumChanged;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent EnumChangedEvent = EventManager.RegisterRoutedEvent(
             "EnumChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(EnumComboBox));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the Enum property is changed.

@@ -488,6 +488,7 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
             "SelectionBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
@@ -523,6 +524,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
             "ContentBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 

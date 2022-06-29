@@ -34,9 +34,11 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(ContextMenu),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -238,6 +240,7 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
             "MenuBackground", typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
@@ -269,5 +272,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
             "VerticalScrollBarVisibility", typeof(System.Windows.Controls.ScrollBarVisibility), typeof(ContextMenu),
             new PropertyMetadata(System.Windows.Controls.ScrollBarVisibility.Auto));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }
