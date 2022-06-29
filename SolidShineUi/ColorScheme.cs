@@ -185,6 +185,7 @@ namespace SolidShineUi
         /// Determine if menus should use some accent colors while highlighting items.
         /// </summary>
         public bool MenusUseAccent { get; set; } = false;
+
         //public bool PanelUseAccent { get; set; } = false;
 
         void CreatePalette(Color baseColor)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,14 +9,26 @@ using TabItem = SolidShineUi.TabItem;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// Interaction logic for TabDisplayItem.xaml
+    /// A visual rendering of a <see cref="SolidShineUi.TabItem" />, to display in a <see cref="TabControl"/>.
     /// </summary>
     public partial class TabDisplayItem : UserControl
     {
 #if NETCOREAPP
+        /// <summary>
+        /// Raised when the Close button is clicked, and this tab wants to be closed.
+        /// </summary>
         public event EventHandler? RequestClose;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
         public event EventHandler? RightClick;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
         public event EventHandler? Click;
+        /// <summary>
+        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
+        /// </summary>
         public event TabItemDropEventHandler? TabItemDrop;
 #else
         public event EventHandler RequestClose;
@@ -29,8 +39,17 @@ namespace SolidShineUi.Utils
 
         public delegate void TabItemDropEventHandler(object sender, TabItemDropEventArgs e);
 
+        /// <summary>
+        /// Get or set the brush for the background while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it has keyboard focus).
+        /// </summary>
         public Brush HighlightBrush { get; set; } = new SolidColorBrush(Colors.LightGray);
+        /// <summary>
+        /// Get or set the brush for the border while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it had keyboard focus).
+        /// </summary>
         public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
+        /// <summary>
+        /// Get or set the brush for the border of this control.
+        /// </summary>
         public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
 
         //public Brush CloseBrush { get; set; } = new SolidColorBrush(Colors.Black);
@@ -41,6 +60,9 @@ namespace SolidShineUi.Utils
             "TabBackground", typeof(Brush), typeof(TabDisplayItem),
             new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
 
+        /// <summary>
+        /// Get or set the brush used for the custom background of this tab. Taken from <see cref="TabItem.TabBackground"/>.
+        /// </summary>
         public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
         private static void OnInternalTabBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -62,6 +84,9 @@ namespace SolidShineUi.Utils
 
         private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
 
+        /// <summary>
+        /// Create a TabDisplayItem.
+        /// </summary>
         public TabDisplayItem()
         {
             InitializeComponent();
@@ -86,6 +111,10 @@ namespace SolidShineUi.Utils
             InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
+        /// <summary>
+        /// Create a TabDisplayItem.
+        /// </summary>
+        /// <param name="tab">The base TabItem that this TabDisplayItem represents.</param>
         public TabDisplayItem(TabItem tab)
         {
             InitializeComponent();
@@ -215,6 +244,9 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty TabItemProperty = DependencyProperty.Register("TabItem", typeof(TabItem), typeof(TabDisplayItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalTabItemChanged)));
 
+        /// <summary>
+        /// The TabItem that this TabDisplayItem is representing. It is not advisable to change this property after the control is loaded; instead, just create a new TabDisplayItem.
+        /// </summary>
         public TabItem TabItem
         {
             get { return (TabItem)GetValue(TabItemProperty); }
@@ -272,6 +304,12 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
 
+        /// <summary>
+        /// Get or set if the parent tab control has its ShowTabsOnBottom property set.
+        /// </summary>
+        /// <remarks>
+        /// This setting is used as there are some visual differences, depending upon if the tab list is on the top or bottom of the tab control.
+        /// </remarks>
         public bool ShowTabsOnBottom
         {
             get { return (bool)GetValue(ShowTabsOnBottomProperty); }
@@ -326,6 +364,9 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty ParentTabControlProperty = DependencyProperty.Register("ParentTabControl", typeof(TabControl), typeof(TabDisplayItem),
             new PropertyMetadata(null, OnInternalParentChanged));
 
+        /// <summary>
+        /// Get or set the parent TabControl item that holds this tab item.
+        /// </summary>
         public TabControl ParentTabControl
         {
             get { return (TabControl)GetValue(ParentTabControlProperty); }
@@ -381,6 +422,10 @@ namespace SolidShineUi.Utils
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -416,13 +461,6 @@ namespace SolidShineUi.Utils
                 border.Background = Background;
                 border.BorderBrush = BorderBrush;
             }
-        }
-
-        public void ApplyColorScheme(HighContrastOption hco)
-        {
-            ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
-
-            ApplyColorScheme(cs);
         }
         #endregion
 
@@ -633,7 +671,7 @@ namespace SolidShineUi.Utils
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
 
         /// <summary>
-        /// Get or set if the tab can be dragged and dropped.
+        /// Get or set if data can be dropped onto this TabDisplayItem.
         /// </summary>
         public bool AllowDataDragDrop
         {
