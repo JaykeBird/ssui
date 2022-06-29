@@ -12,10 +12,14 @@ using System.Windows.Shapes;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// Interaction logic for RelativePositionSelect.xaml
+    /// A control to visually select a value between 0.0 and 1.0 in both the X (width) and Y (height) axes.
     /// </summary>
     public partial class RelativePositionSelect : UserControl
     {
+
+        /// <summary>
+        /// Create a RelativePositionSelect.
+        /// </summary>
         public RelativePositionSelect()
         {
             InitializeComponent();
@@ -35,15 +39,21 @@ namespace SolidShineUi.Utils
         }
 
         #region Color Scheme
+
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RelativePositionSelect),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -69,6 +79,10 @@ namespace SolidShineUi.Utils
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (cs == null)
@@ -138,6 +152,9 @@ namespace SolidShineUi.Utils
             set => SetValue(BackgroundDisabledBrushProperty, value);
         }
 
+        /// <summary>
+        /// Get or set the brush to use for the border of the cotnrol, while the control is disabled.
+        /// </summary>
         [Category("Brushes")]
         public Brush BorderDisabledBrush
         {
@@ -185,6 +202,7 @@ namespace SolidShineUi.Utils
             set => SetValue(KeyboardFocusHighlightProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ControlBackgroundProperty = DependencyProperty.Register(
             "ControlBackground", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
@@ -216,6 +234,7 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty KeyboardFocusHighlightProperty = DependencyProperty.Register(
             "KeyboardFocusHighlight", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnSnapLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -271,11 +290,28 @@ namespace SolidShineUi.Utils
 
         #region Snap Points
 
+        /// <summary>
+        /// Get or set if the selector should snap to the snap lines within the control.
+        /// </summary>
         public bool SnapToSnapLines { get; set; } = true;
 
+        /// <summary>
+        /// The distance, in pixels, within which the selector should snap to the nearest snap line.
+        /// The larger the distance, the further the selector can be away from a snap line before it snaps to the line.
+        /// </summary>
         public double SnapDistance { get; set; } = 3;
 
+        #region ObservableCollection handling
+        /// <summary>
+        /// Get or set the list of snap points that are displayed along the horizontal (X) axis of the control.
+        /// <c>0.0</c> represents the far left of the control, and <c>1.0</c> represents the far right of the control.
+        /// </summary>
         public ObservableCollection<double> HorizontalSnapPoints { get; set; } = new ObservableCollection<double>();
+
+        /// <summary>
+        /// Get or set the list of snap points that are displayed along the vertical (Y) axis of the control.
+        /// <c>0.0</c> represents the far top of the control, and <c>1.0</c> represents the far bottom of the control.
+        /// </summary>
         public ObservableCollection<double> VerticalSnapPoints { get; set; } = new ObservableCollection<double>();
 
 #if NETCOREAPP
@@ -396,6 +432,9 @@ namespace SolidShineUi.Utils
                     break;
             }
         }
+        #endregion
+
+        #region Internal Add/Remove methods
 
         private void AddVerticalSnapPoint(double point)
         {
@@ -486,6 +525,7 @@ namespace SolidShineUi.Utils
                 canHorizontal.Children.Remove(item);
             }
         }
+        #endregion
 
         private void RelativePositionSelect_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -530,9 +570,9 @@ namespace SolidShineUi.Utils
             }
         }
 
-#endregion
+        #endregion
 
-#region Keyboard Controls
+        #region Keyboard Controls
 
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
@@ -584,7 +624,7 @@ namespace SolidShineUi.Utils
 
         private void RelativePositionSelect_KeyDown(object sender, KeyEventArgs e)
         {
-    
+
         }
 
         private void RelativePositionSelect_PreviewKeyUp(object sender, KeyEventArgs e)
@@ -631,8 +671,11 @@ namespace SolidShineUi.Utils
             }
         }
 
-#endregion
+        #endregion
 
+        /// <summary>
+        /// Get or set the size of the selector. The larger the selector, the easier it will be to see and also to click and drag, but also harder to visualize a particular value.
+        /// </summary>
         public double SelectorSize
         {
             get { return ellSelect.Width; }
@@ -751,6 +794,10 @@ namespace SolidShineUi.Utils
         private double oWidth = 0.5;
         private double oHeight = 0.5;
 
+        /// <summary>
+        /// Get or set the selected value on the horizontal (X) axis.
+        /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
+        /// </summary>
         public double SelectedWidth
         {
             get { return oWidth; }
@@ -774,6 +821,11 @@ namespace SolidShineUi.Utils
                 SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        /// <summary>
+        /// Get or set the selected value on the vertical (Y) axis.
+        /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
+        /// </summary>
         public double SelectedHeight
         {
             get { return oHeight; }
@@ -798,6 +850,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Raised when either the SelectedHeight or SelectedWidth properties change (i.e., when the selector was moved).
+        /// </summary>
 #if NETCOREAPP
         public event EventHandler? SelectedPositionChanged;
 #else
