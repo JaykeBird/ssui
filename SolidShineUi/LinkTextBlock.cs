@@ -8,13 +8,18 @@ using System.Windows.Media;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A text block that has a Click event, thus looking and acting more like a generic hyperlink from a web page.
+    /// </summary>
     [DefaultEvent("Click")]
     public class LinkTextBlock : TextBlock
     {
         bool isHighlighted = false;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
             "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(LinkTextBlock));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// This event is raised when the control is clicked.
@@ -25,6 +30,7 @@ namespace SolidShineUi
             remove { RemoveHandler(ClickEvent, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TextBrushProperty = DependencyProperty.Register(
             "TextBrush", typeof(Brush), typeof(LinkTextBlock),
             new PropertyMetadata(Color.FromRgb(0, 102, 204).ToBrush(), new PropertyChangedCallback(OnInternalBrushChanged)));
@@ -44,6 +50,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty UnderlineOnHighlightProperty = DependencyProperty.Register(
             "UnderlineOnHighlight", typeof(bool), typeof(LinkTextBlock),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #region Brush change hook
         private static void OnInternalBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -139,6 +146,9 @@ namespace SolidShineUi
             set => SetValue(UnderlineOnHighlightProperty, value);
         }
 
+        /// <summary>
+        /// Create a LinkTextBlock.
+        /// </summary>
         public LinkTextBlock() : base()
         {
             TextDecorations = null;
@@ -160,6 +170,10 @@ namespace SolidShineUi
             InternalBrushChanged += LinkTextBlock_InternalBrushChanged;
         }
 
+        /// <summary>
+        /// Create a LinkTextBlock, with a <see cref="System.Windows.Documents.Inline"/> as the initial display content.
+        /// </summary>
+        /// <param name="inline">The object to be displayed as the initial content.</param>
         public LinkTextBlock(System.Windows.Documents.Inline inline) : base(inline)
         {
             TextDecorations = null;
@@ -320,6 +334,46 @@ namespace SolidShineUi
                     Debugger.Log(0, "LinkTextBlock", "Link \"" + Text + "\" could not be opened, from LinkTextBlock " + Name + ".\n");
                 }
             }
+            //catch (PlatformNotSupportedException)
+            //{
+            //    try
+            //    {
+            //        // must use UseShellExecute so that it works on .NET Core
+            //        Process.Start(new ProcessStartInfo { FileName = Text });
+            //    }
+            //    catch (ArgumentNullException)
+            //    {
+            //        // could not open the link as it is null
+            //        if (Debugger.IsAttached)
+            //        {
+            //            Debugger.Log(0, "LinkTextBlock", "Link is null, from LinkTextBlock " + Name + ".\n");
+            //        }
+            //    }
+            //    catch (System.IO.FileNotFoundException)
+            //    {
+            //        // could not open the link as it doesn't exist
+            //        if (Debugger.IsAttached)
+            //        {
+            //            Debugger.Log(0, "LinkTextBlock", "Link \"" + Text + "\" does not exist, from LinkTextBlock " + Name + ".\n");
+            //        }
+            //    }
+            //    catch (InvalidOperationException)
+            //    {
+            //        // could not open the link for some reason
+            //        if (Debugger.IsAttached)
+            //        {
+            //            Debugger.Log(0, "LinkTextBlock", "Link \"" + Text + "\" was not defined, from LinkTextBlock " + Name + ".\n");
+            //        }
+            //    }
+            //    catch (Win32Exception)
+            //    {
+            //        // could not open the link for some reason
+            //        if (Debugger.IsAttached)
+            //        {
+            //            Debugger.Log(0, "LinkTextBlock", "Link \"" + Text + "\" could not be opened, from LinkTextBlock " + Name + ".\n");
+            //        }
+            //    }
+            //}
         }
 
     }
