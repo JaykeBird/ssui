@@ -43,7 +43,7 @@
                         <MenuItem Header="Sort by Name" Click="btnName_Click" />
                         <MenuItem Header="Sort by Category" Click="btnCategory_Click" />
                         <Separator />
-                        <MenuItem Header="Show Inherited" x:Name="mnuShowInherited" Click="mnuShowInherited_Click" />
+                        <MenuItem Header="Show Inherited" x:Name="mnuShowInherited" Click="mnuShowInherited_Click" IsChecked="True" />
                         <Separator />
                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" Click="mnuTypesCol_Click" />
                     </flat:ContextMenu>

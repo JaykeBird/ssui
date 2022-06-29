@@ -402,7 +402,7 @@ namespace SolidShineUi.PropertyList
                 _filterString = filter;
             }
 
-            if (!ShowInheritedProperties)
+            if (!_showInherited)
             {
 #if NETCOREAPP
                 foreach (UIElement? item in stkProperties.Children)
