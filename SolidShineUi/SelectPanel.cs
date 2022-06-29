@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -79,9 +78,11 @@ namespace SolidShineUi
             set { SetValue(ItemsSourceProperty, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable<SelectableUserControl>), typeof(SelectPanel), 
                 new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private static void OnInternalItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -139,11 +140,13 @@ namespace SolidShineUi
         //public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(NewSelectPanel),
         //    new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(SelectPanel),
             new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
 
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
@@ -391,6 +394,9 @@ namespace SolidShineUi
             set => SetValue(ColorSchemeProperty, value);
         }
 
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
@@ -488,8 +494,10 @@ namespace SolidShineUi
 
         #region Routed Events
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when an item is selected or deselected in this list.
@@ -516,8 +524,10 @@ namespace SolidShineUi
             RaiseEvent(newEventArgs);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent ItemsAddedEvent = EventManager.RegisterRoutedEvent(
             "ItemsAdded", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when an item is added to this list.
@@ -539,8 +549,10 @@ namespace SolidShineUi
             RaiseEvent(newEventArgs);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent ItemsRemovedEvent = EventManager.RegisterRoutedEvent(
             "ItemsRemoved", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when an item is removed from this list.
@@ -565,9 +577,11 @@ namespace SolidShineUi
 
         #region Visual Properties
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
             = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar for this control.
@@ -579,9 +593,11 @@ namespace SolidShineUi
             set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty
             = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar for this control.
@@ -677,6 +693,7 @@ namespace SolidShineUi
             set => SetValue(BorderBrushProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
@@ -704,11 +721,13 @@ namespace SolidShineUi
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
         #region Border
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(SelectPanel),
             new PropertyMetadata(new Thickness(1)));
@@ -716,6 +735,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border around this control.
@@ -745,19 +765,22 @@ namespace SolidShineUi
         #region Convenience Methods (to remove later)
 
         /// <summary>
-        /// Gets the number of items in this NewSelectPanel.
+        /// Gets the number of items in this SelectPanel.
+        /// Note that this function will be removed in a future version. Please instead use <c>Items.Count</c>.
         /// </summary>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.Count\".", false)]
         public int Count { get => Items.Count; }
 
         /// <summary>
         /// Gets the number of items that are currently selected.
+        /// Note that this function will be removed in a future version. Please instead use <c>Items.SelectedItems.Count</c>.
         /// </summary>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.SelectedItems.Count\".", false)]
         public int SelectionCount { get => Items.SelectedItems.Count; }
 
         /// <summary>
         /// Get a collection of items that have been selected, returned as a certain type (that inherits from SelectableUserControl).
+        /// Note that this function will be removed in a future version. Please instead use <c>Items.SelectedItems.OfType</c> (Linq).
         /// </summary>
         /// <typeparam name="T">The type to return the selected items as. It must inherit from SelectableUserControl.</typeparam>
         [Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.SelectedItems.OfType<>\".", false)]
@@ -767,7 +790,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Select all items in this NewSelectPanel.
+        /// Select all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.SelectAll</c>.
         /// </summary>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.SelectAll\".", false)]
         public void SelectAll()
@@ -776,7 +799,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Deselect all items in this NewSelectPanel.
+        /// Deselect all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.ClearSelection</c>.
         /// </summary>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.ClearSelection\".", false)]
         public void DeselectAll()
@@ -784,6 +807,10 @@ namespace SolidShineUi
             Items.ClearSelection();
         }
 
+        /// <summary>
+        /// Add an item to this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Add</c>.
+        /// </summary>
+        /// <param name="item">Item to be added.</param>
         [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
         public void AddItem(SelectableUserControl item)
         {
@@ -791,6 +818,10 @@ namespace SolidShineUi
             //RaiseItemsAddedEvent(items.ToList());
         }
 
+        /// <summary>
+        /// Add a collection of items to this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Add</c>.
+        /// </summary>
+        /// <param name="items">The items to be added.</param>
         [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
         public void AddItems(IEnumerable<SelectableUserControl> items)
         {
@@ -801,6 +832,11 @@ namespace SolidShineUi
             //RaiseItemsAddedEvent(items.ToList());
         }
 
+        /// <summary>
+        /// Insert an item into this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Insert</c>.
+        /// </summary>
+        /// <param name="index">The index to insert the item at.</param>
+        /// <param name="item">The item to insert.</param>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.Insert\".", false)]
         public void InsertItem(int index, SelectableUserControl item)
         {
@@ -808,6 +844,11 @@ namespace SolidShineUi
             //RaiseItemsAddedEvent(new List<SelectableUserControl>() { item });
         }
 
+        /// <summary>
+        /// Insert a collection of items into this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Insert</c>.
+        /// </summary>
+        /// <param name="index">The index to insert the items at.</param>
+        /// <param name="items">The items to insert.</param>
         [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Insert\".", false)]
         public void InsertItems(int index, IEnumerable<SelectableUserControl> items)
         {
@@ -822,6 +863,11 @@ namespace SolidShineUi
             //RaiseItemsAddedEvent(litems);
         }
 
+        /// <summary>
+        /// Get all items in the SelectPanel that match the specified type. Note that this function will be removed in a future version. Please instead use <c>Items.OfType</c> (Linq).
+        /// </summary>
+        /// <typeparam name="T">The type to filter the SelectPanel items for.</typeparam>
+        /// <returns></returns>
         [Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.OfType<>\".", false)]
         public IEnumerable<T> GetItemsAsType<T>() where T : SelectableUserControl
         {
@@ -835,12 +881,20 @@ namespace SolidShineUi
             //}
         }
 
+        /// <summary>
+        /// Remove an item from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Remove</c>.
+        /// </summary>
+        /// <param name="item">The item to be removed.</param>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.Remove\".", false)]
         public void RemoveItem(SelectableUserControl item)
         {
             Items.Remove(item);
         }
 
+        /// <summary>
+        /// Remove multiple items from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Remove</c>.
+        /// </summary>
+        /// <param name="items">The items to be removed.</param>
         [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Remove\".", false)]
         public void RemoveItems(IEnumerable<SelectableUserControl> items)
         {
@@ -852,6 +906,10 @@ namespace SolidShineUi
             //RaiseItemsRemovedEvent(items.ToList());
         }
 
+        /// <summary>
+        /// Remove an item at a specified index from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.RemoveAt</c>.
+        /// </summary>
+        /// <param name="index">The index of the item to be removed.</param>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.RemoveAt\".", false)]
         public void RemoveAt(int index)
         {
@@ -861,6 +919,9 @@ namespace SolidShineUi
         /// <summary>
         /// Remove the currently selected items from the list.
         /// </summary>
+        /// <remarks>
+        /// Note: unlike many other functions, this one is not being removed in a near future version.
+        /// </remarks>
         public void RemoveSelectedItems()
         {
             var items = new List<SelectableUserControl>(Items.SelectedItems);
@@ -868,22 +929,32 @@ namespace SolidShineUi
             {
                 Items.Remove(item);
             }
-
-            //RaiseItemsRemovedEvent(items.ToList());
         }
 
+        /// <summary>
+        /// Get the index of an item in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.IndexOf</c>.
+        /// </summary>
+        /// <param name="item">The item to get the index of.</param>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.IndexOf\".", false)]
         public int IndexOf(SelectableUserControl item)
         {
             return Items.IndexOf(item);
         }
 
+        /// <summary>
+        /// Get an item at a specified index in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items[]</c>.
+        /// </summary>
+        /// <param name="index">The index of the item to be removed.</param>
         [Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
         public SelectableUserControl Get(int index)
         {
             return Items[index];
         }
 
+        /// <summary>
+        /// Get an item at a specified index in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items[]</c>.
+        /// </summary>
+        /// <param name="index">The index of the item to be removed.</param>
         [Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
         public SelectableUserControl this[int index]
         {
@@ -893,6 +964,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Clear all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Clear</c>.
+        /// </summary>
         [Obsolete("This will be removed in a future version. You can instead use \"Items.Clear\".", false)]
         public void Clear()
         {
@@ -905,9 +979,10 @@ namespace SolidShineUi
 
         private class SortByParentIndex : IComparer<SelectableUserControl>
         {
+            // A class to sort a collection of SelectableUserControls by their index in the parent SelectableCollection.
 
 #if NETCOREAPP
-            public SelectableCollection<SelectableUserControl>? ParentCollection { get; set; }
+            public IList<SelectableUserControl>? ParentCollection { get; set; }
 
             public int Compare(SelectableUserControl? a, SelectableUserControl? b)
 #else
@@ -958,7 +1033,7 @@ namespace SolidShineUi
         /// </summary>
         public void MoveSelectedItemsUp()
         {
-            if (Items.SelectedItems.Count == 0) return;
+            if (Items.SelectedItems.Count == 0 || ItemsSource != Items) return;
 
             if (Items.SelectedItems.Count == 1)
             {
@@ -1014,9 +1089,12 @@ namespace SolidShineUi
         /// <summary>
         /// Move the currently selected items down by one in the list.
         /// </summary>
+        /// <remarks>
+        /// This function does not operate if the ItemsSource is set to a different collection.
+        /// </remarks>
         public void MoveSelectedItemsDown()
         {
-            if (Items.SelectedItems.Count == 0) return;
+            if (Items.SelectedItems.Count == 0 || ItemsSource != Items) return;
 
             int index = int.MaxValue;
 
@@ -1065,8 +1143,19 @@ namespace SolidShineUi
             RefreshVisualSelection();
         }
 
+        /// <summary>
+        /// Move an item in the SelectPanel up by one position in the list.
+        /// </summary>
+        /// <param name="index">The index of the item to move.</param>
+        /// <remarks>
+        /// If the index passed in is 0, then nothing is moved, as it's already at the top of the list.
+        /// This function does not operate if the ItemsSource is set to a different collection.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the index passed in is beyond the number of items in the collection.</exception>
         public void MoveItemUp(int index)
         {
+            if (ItemsSource != Items) return;
+
             SelectableUserControl suc = Items[index];
 
             int moveIndex = index - 1;//IndexOf(suc) - 1;
@@ -1084,8 +1173,19 @@ namespace SolidShineUi
             RefreshVisualSelection();
         }
 
+        /// <summary>
+        /// Move an item in the SelectPanel down by one position in the list.
+        /// </summary>
+        /// <param name="index">The index of the item to move.</param>
+        /// <remarks>
+        /// If the index passed in is the last index in the collection, then nothing is moved, as it's already at the bottom of the list.
+        /// This function does not operate if the ItemsSource is set to a different collection.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the index passed in is beyond the number of items in the collection.</exception>
         public void MoveItemDown(int index)
         {
+            if (ItemsSource != Items) return;
+
             SelectableUserControl suc = Items[index];
 
             int moveIndex = index + 1; //IndexOf(suc) + 1;
@@ -1107,9 +1207,11 @@ namespace SolidShineUi
 
         #region ScrollViewer
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
             "AllowParentScrolling", typeof(bool), typeof(SelectPanel),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may disable any child items from scrolling.
