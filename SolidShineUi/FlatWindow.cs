@@ -1,9 +1,8 @@
 ﻿using System.Windows;
-//using Microsoft.Windows.Shell;
 using System.Windows.Media;
 using static SolidShineUi.ChromeButtons;
-//using System.Collections.Generic;
 using System.Windows.Shell;
+//using Microsoft.Windows.Shell;
 using System.ComponentModel;
 using System;
 
@@ -44,9 +43,11 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindow),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -131,9 +132,11 @@ namespace SolidShineUi
 
         int captionHeight = 29;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
             "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
             new PropertyMetadata(CaptionType.Full));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the visibility of the caption buttons (close, maximize, minimize). The actions may still be available via other methods even if the buttons are hidden.
@@ -225,9 +228,11 @@ namespace SolidShineUi
         //    }
         //}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
             "TopRightElement", typeof(UIElement), typeof(FlatWindow),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the UI element to place in the top-right of the window, to the left of the caption buttons.
@@ -244,9 +249,11 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
             "TopLeftElement", typeof(UIElement), typeof(FlatWindow),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the UI element to place in the top-left corner of the window.
@@ -263,9 +270,11 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
             "ShowTitle", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the <see cref="Window.Title"/> should be displayed at the top of the window.
@@ -283,9 +292,11 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
             "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the top-left element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
@@ -306,9 +317,11 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ExcludeTopRightElementFromChromeProperty = DependencyProperty.Register(
             "ExcludeTopRightElementFromChrome", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the top-right element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
@@ -329,9 +342,11 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(1)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border of the window. Setting the thickness to 0 means the border is not visible.

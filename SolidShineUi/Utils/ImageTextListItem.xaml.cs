@@ -39,6 +39,7 @@ namespace SolidShineUi.Utils
 
         #region Properties
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             "Title", typeof(string), typeof(ImageTextListItem),
             new PropertyMetadata("(no title)"));
@@ -54,6 +55,7 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             "Icon", typeof(ImageSource), typeof(ImageTextListItem),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the title or text to display within the control.
@@ -99,6 +101,7 @@ namespace SolidShineUi.Utils
 
         #region Button Brushes
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
             "ButtonBackground", typeof(Brush), typeof(ImageTextListItem),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
@@ -118,6 +121,7 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty ButtonBorderDisabledBrushProperty = DependencyProperty.Register(
             "ButtonBorderDisabledBrush", typeof(Brush), typeof(ImageTextListItem),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the brush used for the background of the Remove button in the control.
@@ -173,6 +177,7 @@ namespace SolidShineUi.Utils
 
         #region Button Command Properties
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ButtonToolTipProperty = DependencyProperty.Register(
             "ButtonToolTip", typeof(object), typeof(ImageTextListItem),
             new PropertyMetadata(null));
@@ -188,6 +193,7 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty CommandTargetProperty = DependencyProperty.Register(
             "CommandTarget", typeof(IInputElement), typeof(ImageTextListItem),
             new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the command that is executed when the Remove button is pressed.

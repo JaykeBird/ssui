@@ -23,6 +23,9 @@ namespace SolidShineUi
 
         #region Window Actions
 
+        /// <summary>
+        /// Create a new MessageDialog.
+        /// </summary>
         public MessageDialog()
         {
             InitializeComponent();
@@ -33,6 +36,10 @@ namespace SolidShineUi
             invalidTimer.Tick += InvalidTimer_Tick;
         }
 
+        /// <summary>
+        /// Create a new MessageDialog, with the ColorScheme property preset.
+        /// </summary>
+        /// <param name="cs">The ColorScheme to use for this MessageDialog.</param>
         public MessageDialog(ColorScheme cs)
         {
             InitializeComponent();
@@ -71,6 +78,10 @@ namespace SolidShineUi
 
         #region Color Scheme
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public new void ApplyColorScheme(ColorScheme cs)
         {
             if (cs != ColorScheme)
@@ -82,6 +93,10 @@ namespace SolidShineUi
             UpdateAppearance();
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="hco">The high-contast color scheme to apply.</param>
         public new void ApplyColorScheme(HighContrastOption hco)
         {
             ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
@@ -110,9 +125,11 @@ namespace SolidShineUi
             chkBox.ApplyColorScheme(ColorScheme);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(MessageDialog),
                 new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// The color scheme to use with the message dialog.

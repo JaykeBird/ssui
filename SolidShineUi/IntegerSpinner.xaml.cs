@@ -152,9 +152,12 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(IntegerSpinner),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -251,6 +254,7 @@ namespace SolidShineUi
 
         #region Brushes
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
             "ButtonBackground", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
@@ -274,6 +278,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the brush used for the background of the buttons of the spinner.
@@ -380,9 +385,11 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalValueChanged;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(0, new PropertyChangedCallback(OnValueChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the value of the spinner.
@@ -407,9 +414,11 @@ namespace SolidShineUi
 
         #region StepProperty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(1));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set how much to change the value by when you press the up or down button.
@@ -424,10 +433,12 @@ namespace SolidShineUi
         #endregion
 
         #region MinValueProperty
-
+        
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(int.MinValue));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the minimum value allowed for this spinner (inclusive).
@@ -447,9 +458,12 @@ namespace SolidShineUi
 
         #region MaxValueProperty
 
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof(int), typeof(IntegerSpinner),
             new PropertyMetadata(int.MaxValue));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the maximum value allowed for this spinner (inclusive).
@@ -470,6 +484,7 @@ namespace SolidShineUi
 
         #region RepeatDelayProperty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
             "RepeatDelay", typeof(double), typeof(IntegerSpinner),
             new PropertyMetadata(300d, new PropertyChangedCallback(OnInternalRepeatDelayChanged)));
@@ -481,6 +496,7 @@ namespace SolidShineUi
 
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
             "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
@@ -520,6 +536,7 @@ namespace SolidShineUi
 
         #region CornerRadiusProperty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(IntegerSpinner),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
@@ -531,6 +548,7 @@ namespace SolidShineUi
 
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
             "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
@@ -572,9 +590,10 @@ namespace SolidShineUi
 
         #region AcceptExpressionsProperty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(IntegerSpinner),
-            new PropertyMetadata(true));
+            "AcceptExpressions", typeof(bool), typeof(IntegerSpinner),  new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the spinner should evaluate arithmetic expressions (such as "2+5") to accept as a value.
@@ -593,6 +612,7 @@ namespace SolidShineUi
 
         #region ShowArrowsProperty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
             "ShowArrows", typeof(bool), typeof(IntegerSpinner),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowArrowsChanged)));
@@ -604,6 +624,7 @@ namespace SolidShineUi
 
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
             "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the ShowArrows property is changed.

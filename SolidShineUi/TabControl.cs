@@ -835,6 +835,11 @@ namespace SolidShineUi
 
         #region Setup TabDisplayItem / Tdi Event Handlers
 
+        /// <summary>
+        /// Set up a new TabDisplayItem that was added to this TabControl.
+        /// This will set up the necessary event handlers and other properties to allow the TabDisplayItem to interact with the TabControl.
+        /// </summary>
+        /// <param name="tdi">The TabDisplayItem to set up.</param>
         internal protected void SetupTabDisplay(TabDisplayItem tdi)
         {
             tdi.RequestClose += tdi_RequestClose;

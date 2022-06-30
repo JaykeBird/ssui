@@ -58,6 +58,10 @@ namespace SolidShineUi
             IsEnabledChanged += SelectableItem_IsEnabledChanged;
         }
 
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
         public override void ApplyColorScheme(ColorScheme cs)
         {
             base.ApplyColorScheme(cs);
@@ -72,8 +76,10 @@ namespace SolidShineUi
             lblText.IsEnabled = IsEnabled;
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
             "TextChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<string>), typeof(SelectableItem));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the Text property is changed, either via updating the property or via the the user's text editing view.
@@ -241,6 +247,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the FontFamily to use for the text on the right side of the control.
+        /// </summary>
         public FontFamily RightFontFamily
         {
             get
@@ -253,6 +262,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the font size to use for the text on the right side of the control.
+        /// </summary>
         public double RightFontSize
         {
             get
@@ -265,6 +277,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the font weight to use for the text on the right side of the control.
+        /// </summary>
         public FontWeight RightFontWeight
         {
             get
@@ -277,6 +292,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the font stretch to use for the text on the right side of the control.
+        /// </summary>
         public FontStretch RightFontStretch
         {
             get
@@ -289,6 +307,9 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the FontStyle to use for the text on the right side of the control.
+        /// </summary>
         public FontStyle RightFontStyle
         {
             get
@@ -301,6 +322,10 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the width of the right text section of the control.
+        /// This can be used to limit the width of the right text section, or make it as wide as needed for the right text to fit fully.
+        /// </summary>
         public GridLength RightTextWidth
         {
             get
@@ -313,6 +338,10 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the width of the main text section of the control.
+        /// This can be used to limit the width of the main text section, or make it as wide as needed for the full text to fit.
+        /// </summary>
         public GridLength TextColumnWidth
         {
             get

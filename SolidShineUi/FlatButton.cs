@@ -270,9 +270,11 @@ namespace SolidShineUi
 
         bool runApply = true;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TransparentBackProperty 
             = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton), 
             new PropertyMetadata(false, new PropertyChangedCallback(OnTransparentBackChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set whether the button should have a transparent background when the button is not focused.
@@ -295,9 +297,11 @@ namespace SolidShineUi
             }
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty UseAccentColorsProperty
             = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnUseAccentColorsChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
@@ -571,6 +575,7 @@ namespace SolidShineUi
 
         #region Border
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(1)));
@@ -582,6 +587,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
             new PropertyMetadata(new CornerRadius(0)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border around the button.
@@ -649,11 +655,20 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty IsMouseDownProperty = IsMouseDownPropertyKey.DependencyProperty;
 
+        /// <summary>
+        /// Set the IsMouseDown property for a FlatButton.
+        /// </summary>
+        /// <param name="obj">The FlatButton to apply the property change to.</param>
+        /// <param name="value">The new value to set for the property.</param>
         protected static void SetIsMouseDown(DependencyObject obj, bool value)
         {
             obj.SetValue(IsMouseDownPropertyKey, value);
         }
 
+        /// <summary>
+        /// Get the IsMouseDown property for a FlatButton.
+        /// </summary>
+        /// <param name="obj">The Flatbutton to get the property value from.</param>
         public static bool GetIsMouseDown(DependencyObject obj)
         {
             return (bool)obj.GetValue(IsMouseDownProperty);
@@ -871,9 +886,11 @@ namespace SolidShineUi
         // OnDefault code adapted from .NET Core WPF repository
         // https://github.com/dotnet/wpf/blob/master/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Button.cs
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsDefaultProperty
             = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsDefaultChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if this button is the default button in the dialog or window it is located in. May not currently function correctly.
@@ -901,14 +918,14 @@ namespace SolidShineUi
             }
         }
 
-        /// <summary>
-        ///     The key needed set a read-only property.
-        /// </summary>
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey IsDefaultedPropertyKey
             = DependencyProperty.RegisterReadOnly("IsDefaulted", typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(false));
 
         public static readonly DependencyProperty IsDefaultedProperty = IsDefaultedPropertyKey.DependencyProperty;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Specifies whether or not this button is the button that would be invoked when Enter is pressed.

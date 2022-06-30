@@ -157,6 +157,7 @@ namespace SolidShineUi
 
         #endregion
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         [StructLayout(LayoutKind.Sequential)]
         public struct SHFILEINFO
         {
@@ -174,6 +175,7 @@ namespace SolidShineUi
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr SHGetFileInfo(string path, uint fattrs, ref SHFILEINFO sfi, uint size, uint flags);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get a handle for a small (16x16) icon associated with a file.
@@ -244,6 +246,12 @@ namespace SolidShineUi
         [DllImport("gdi32.dll")]
         public static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
 
+        /// <summary>
+        /// Get the color of a particular pixel on the screen.
+        /// </summary>
+        /// <param name="x">The X coordinate of the pixel.</param>
+        /// <param name="y">The Y coordinate of the pixel.</param>
+        /// <returns></returns>
         static public Color GetPixelColor(int x, int y)
         {
             IntPtr hdc = GetDC(IntPtr.Zero);

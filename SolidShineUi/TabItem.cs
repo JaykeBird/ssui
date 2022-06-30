@@ -39,8 +39,10 @@ namespace SolidShineUi
 
         #region Title
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabItem),
             new PropertyMetadata("New Tab", new PropertyChangedCallback(OnInternalTitleChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the title of this tab.
@@ -57,6 +59,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalTitleChanged;
 
+        /// <summary>
+        /// Raised when the Title property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? TitleChanged;
 #else
@@ -78,8 +83,10 @@ namespace SolidShineUi
 
         #region IsDirty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(TabItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsDirtyChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if the tab is dirty.
@@ -96,6 +103,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalIsDirtyChanged;
 
+        /// <summary>
+        /// Raised when the IsDirty property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? IsDirtyChanged;
 #else
@@ -117,8 +127,10 @@ namespace SolidShineUi
 
         #region DisplayDirtyState
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty DisplayDirtyStateProperty = DependencyProperty.Register("DisplayDirtyState", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalDisplayDirtyStateChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if the tab should display the state of its IsDirty property. When set to true, an asterisk (*) will be added to the title when it is dirty.
@@ -135,6 +147,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalDisplayDirtyStateChanged;
 
+        /// <summary>
+        /// Raised when the DisplayDirtyState property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? DisplayDirtyStateChanged;
 #else
@@ -156,8 +171,10 @@ namespace SolidShineUi
 
         #region CanClose
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register("CanClose", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalCanCloseChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if this tab can be closed via the UI (i.e. the close button).
@@ -177,6 +194,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCanCloseChanged;
 
+        /// <summary>
+        /// Raised when the CanClosed property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? CanCloseChanged;
 #else
@@ -198,8 +218,10 @@ namespace SolidShineUi
 
         #region ShowIcon
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowIconChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if an icon is shown for this tab. The icon section of the tab will be visible if this is true, even if there is no icon set.
@@ -216,6 +238,9 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowIconChanged;
 
+        /// <summary>
+        /// Raised when the ShowIcon property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ShowIconChanged;
 #else
@@ -533,8 +558,10 @@ namespace SolidShineUi
 
         #region AllowDrop
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AllowDropProperty = DependencyProperty.Register("AllowDrop", typeof(bool), typeof(TabItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalAllowDropChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if this tab can be used as a target in drag-and-drop operations.
@@ -650,6 +677,7 @@ namespace SolidShineUi
         /// Invoke the QueryContinueDrag event for drag-and-drop.
         /// </summary>
         /// <param name="e">The QueryContinueDragEventArgs to pass to the event.</param>
+        /// <param name="preview">Determine if the PreviewQueryContinueDrag event should be raised, rather than QueryContinueDrag.</param>
         /// <remarks>See the remarks for <see cref="RaiseDragEvent(string, DragEventArgs)"/> for more information.</remarks>
         internal protected void RaiseQueryContinueDragEvent(QueryContinueDragEventArgs e, bool preview = false)
         {

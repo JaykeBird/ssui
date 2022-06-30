@@ -28,7 +28,11 @@ namespace SolidShineUi
             } // else... welp lol
         }
 
+#if NETCOREAPP
+        private void baseCol_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+#else
         private void baseCol_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+#endif
         {
             switch (e.Action)
             {

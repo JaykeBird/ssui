@@ -94,9 +94,11 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FileSelect),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -397,9 +399,11 @@ namespace SolidShineUi
             set => SetValue(ShowIconProperty, value);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ButtonPlacementProperty = DependencyProperty.Register(
             "ButtonPlacement", typeof(PlacementDirection), typeof(FileSelect),
             new PropertyMetadata(PlacementDirection.Right));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the placement location of the Browse button. The button can be placed on any of the four edges of the control, or it can be hidden entirely.
@@ -616,11 +620,13 @@ namespace SolidShineUi
 
         #region Selected Files
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey SelectedFilesPropertyKey
             = DependencyProperty.RegisterReadOnly("SelectedFiles", typeof(LimitableStringCollection), typeof(FileSelect),
             new FrameworkPropertyMetadata(new LimitableStringCollection()));
 
         public static readonly DependencyProperty SelectedFilesProperty = SelectedFilesPropertyKey.DependencyProperty;
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get the list of files selected in this FileSelect. You can add or remove items from the collection, or set the collection's max size via the <c>Capacity</c> property.
@@ -652,8 +658,10 @@ namespace SolidShineUi
             RaiseEvent(re);
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the list of selected files is changed.

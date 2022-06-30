@@ -68,9 +68,11 @@ namespace SolidShineUi.Utils
 
         //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register(
             "TabBackground", typeof(Brush), typeof(TabDisplayItem),
             new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the brush used for the custom background of this tab. Taken from <see cref="TabItem.TabBackground"/>.
@@ -174,9 +176,14 @@ namespace SolidShineUi.Utils
 
         #region CanSelect
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register("CanSelect", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get or set if the tab can be selected.
+        /// </summary>
         public bool CanSelect
         {
             get { return (bool)GetValue(CanSelectProperty); }
@@ -198,9 +205,14 @@ namespace SolidShineUi.Utils
 
         #region IsDirty
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get or set if this tab is dirty. This can be used to visually indicate, for example, unsaved changes in the tab's contents. 
+        /// </summary>
         public bool IsDirty
         {
             get { return (bool)GetValue(IsDirtyProperty); }
@@ -222,9 +234,14 @@ namespace SolidShineUi.Utils
 
         #region IsSelected
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false, OnIsSelectedChanged));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get or set if this tab is selected. A selected tab will have visual differences to show that it is selected.
+        /// </summary>
         public bool IsSelected
         {
             get { return (bool)GetValue(IsSelectedProperty); }
@@ -316,8 +333,10 @@ namespace SolidShineUi.Utils
 
         #region ShowTabsOnBottom
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the parent tab control has its ShowTabsOnBottom property set.
