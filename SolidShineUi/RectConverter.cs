@@ -15,11 +15,23 @@ namespace SolidShineUi
     {
         #region IMultiValueConverter Members
 
+        /// <summary>
+        /// Convert 4 doubles to a Rect structure.
+        /// </summary>
+        /// <param name="values">The four doubles to use to measure the Rect's X, Y, Width, and Height values respectively.</param>
+        /// <param name="targetType">Not used, always returns a <see cref="Rect"/></param>
+        /// <param name="parameter">Not used</param>
+        /// <param name="culture">Not used</param>
+        /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             return new Rect((double)values[0], (double)values[1], (double)values[2], (double)values[3]);
         }
 
+        /// <summary>
+        /// Convert a Rect into an array of doubles representing its X, Y, Width, and Height values respectively.
+        /// </summary>
+        /// <exception cref="InvalidCastException">Thrown if the value passed in is not a Rect structure.</exception>
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is Rect r)

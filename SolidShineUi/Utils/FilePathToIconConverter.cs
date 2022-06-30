@@ -14,6 +14,10 @@ namespace SolidShineUi.Utils
     /// </summary>
     public class FilePathToIconConverter : IValueConverter
     {
+
+        /// <summary>
+        /// Converts a file's full path to a 16x16 <see cref="BitmapSource"/> icon.
+        /// </summary>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 #if NETCOREAPP

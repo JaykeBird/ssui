@@ -13,7 +13,9 @@ namespace SolidShineUi.Utils
     /// </summary>
     public class FilePathToNameConverter : IValueConverter
     {
-
+        /// <summary>
+        /// Convert a file's full path to only display the filename.
+        /// </summary>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 #if NETCOREAPP
