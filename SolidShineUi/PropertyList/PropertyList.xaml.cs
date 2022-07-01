@@ -36,15 +36,20 @@ namespace SolidShineUi.PropertyList
 
         #region ColorScheme
 
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
 #else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -163,9 +168,11 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public string ObjectDisplayName { get => (string)GetValue(ObjectDisplayNameProperty); set => SetValue(ObjectDisplayNameProperty, value); }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static DependencyProperty ObjectDisplayNameProperty
             = DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata("No name"));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -514,6 +521,7 @@ namespace SolidShineUi.PropertyList
         }
 
         #region Sort and View menu
+
         private void btnName_Click(object sender, RoutedEventArgs e)
         {
             SortOption = PropertySortOption.Name;
@@ -546,6 +554,7 @@ namespace SolidShineUi.PropertyList
         #endregion
 
         #region Registered Editors
+
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
         /// <summary>
@@ -658,23 +667,39 @@ namespace SolidShineUi.PropertyList
 
 
         #region Show/Hide Toolbar Items (Dependency properties)
+
+        /// <summary>
+        /// Get or set if the Filter textbox should be visible at the top of the PropertyList control.
+        /// </summary>
         public bool ShowFilterBox { get => (bool)GetValue(ShowFilterBoxProperty); set => SetValue(ShowFilterBoxProperty, value); }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static DependencyProperty ShowFilterBoxProperty
             = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get or set if the Reload button should be visible at the top of the PropertyList control.
+        /// </summary>
         public bool ShowReloadButton { get => (bool)GetValue(ShowReloadButtonProperty); set => SetValue(ShowReloadButtonProperty, value); }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static DependencyProperty ShowReloadButtonProperty
             = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Get or set if the View and Sort menu button should be visible at the top of the PropertyList control.
+        /// </summary>
         public bool ShowViewMenu { get => (bool)GetValue(ShowViewMenuProperty); set => SetValue(ShowViewMenuProperty, value); }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static DependencyProperty ShowViewMenuProperty
             = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
