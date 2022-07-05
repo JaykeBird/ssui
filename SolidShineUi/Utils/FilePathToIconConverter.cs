@@ -28,7 +28,14 @@ namespace SolidShineUi.Utils
             }
             else if (value is string s)
             {
-                return GetImageFromFilePath(s);
+                try
+                {
+                    return GetImageFromFilePath(s);
+                }
+                catch (ArgumentNullException)
+                {
+                    return null!;
+                }
             }
             else
             {

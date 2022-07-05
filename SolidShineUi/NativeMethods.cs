@@ -205,6 +205,7 @@ namespace SolidShineUi
         /// Get an 16x16 image that is associated with a file.
         /// </summary>
         /// <param name="path">The file to get the icon for.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the icon cannot be created (such as there being no existing file in the given path)</exception>
         public static BitmapSource GetSmallIcon(string path)
         {
             return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(GetSmallIconHandle(path), System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
@@ -214,6 +215,7 @@ namespace SolidShineUi
         /// Get an 32x32 image that is associated with a file.
         /// </summary>
         /// <param name="path">The file to get the icon for.</param>
+        /// <exception cref="ArgumentNullException">Thrown if the icon cannot be created (such as there being no existing file in the given path)</exception>
         public static BitmapSource GetLargeIcon(string path)
         {
             return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(GetLargeIconHandle(path), System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
