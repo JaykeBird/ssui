@@ -126,6 +126,12 @@ namespace SolidShineUi.PropertyList.Dialogs
             baseType = enumerableType;
             editorType = editor;
 
+            if (editorType != null)
+            {
+                propList.Visibility = Visibility.Collapsed;
+                txtAvailableEditor.Visibility = Visibility.Visible;
+            }
+
             if (baseType.GetConstructor(Type.EmptyTypes) == null)
             {
                 btnAdd.IsEnabled = false;
@@ -182,7 +188,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 #if NETCOREAPP
             IPropertyEditor? editor = null;
 #else
-                IPropertyEditor editor = null;
+            IPropertyEditor editor = null;
 #endif
             if (editorType != null)
             {
@@ -200,8 +206,6 @@ namespace SolidShineUi.PropertyList.Dialogs
                         editor.ParentPropertyList = parentList;
                     }
                 }
-
-                propList.Visibility = Visibility.Collapsed;
             }
             lei.LoadItem(item, baseType ?? typeof(object), editor);
             lei.ItemIndex = index;
@@ -215,6 +219,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     {
                         icol.Remove(lei.ItemValue);
                         selList.Items.Remove(lei);
+                        count--;
                     }
                 }
             };
@@ -283,8 +288,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                 var newItem = Activator.CreateInstance(baseType);
                 if (newItem != null)
                 {
-                    ListEditorItem lei = CreateListItem(newItem, ((IList)baseObject).Count);
+                    ListEditorItem lei = CreateListItem(newItem, count);
                     ((IList)baseObject).Add(newItem);
+                    count++;
                     selList.Items.Add(lei);
                 }
                 else

@@ -7,6 +7,9 @@
         xmlns:flat="clr-namespace:SolidShineUi"
         mc:Ignorable="d"
         Title="List Viewer/Editor" Height="450" Width="600" MinWidth="500" MinHeight="300" >
+    <flat:FlatWindow.Resources>
+        <flat:ColorToBrushConverter x:Key="ctb" />
+    </flat:FlatWindow.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -26,8 +29,13 @@
                    Text="{Binding EditItemLabel, ElementName=window, FallbackValue='Edit selected item:'}"/>
 
         <flat:SelectPanel Margin="20,0,10,0" Grid.Row="2" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:Name="selList" MultiSelect="False" SelectionChanged="selList_SelectionChanged" />
-        <Border Grid.Column="1" Grid.Row="2" Margin="10,0,20,0" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush}" >
-            <pl:ExperimentalPropertyList x:Name="propList" ShowReloadButton="False" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <Border Grid.Column="1" Grid.Row="2" Margin="10,0,20,0" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush}"
+                Background="{Binding ElementName=window, Path=ColorScheme.LightBackgroundColor, Converter={StaticResource ctb}}" >
+            <Grid>
+                <pl:ExperimentalPropertyList x:Name="propList" ShowReloadButton="False" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+                <TextBlock x:Name="txtAvailableEditor" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="10,0"
+                           Text="For this type, values can be directly edited in the left-side pane." Visibility="Collapsed" />
+            </Grid>
         </Border>
 
         <Border x:Name="brdrShowEnumerable" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="LightBlue" BorderThickness="0,1" Visibility="Collapsed" >
