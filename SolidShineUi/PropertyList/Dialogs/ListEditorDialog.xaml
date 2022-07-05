@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
         xmlns:flat="clr-namespace:SolidShineUi"
-        mc:Ignorable="d"
-        Title="List Viewer/Editor" Height="450" Width="600" MinWidth="500" MinHeight="300" >
+        mc:Ignorable="d" SourceInitialized="window_SourceInitialized"
+        Title="List Viewer/Editor" Height="450" Width="600" MinWidth="500" MinHeight="300" CaptionDisplayType="MaximizeClose" >
     <flat:FlatWindow.Resources>
         <flat:ColorToBrushConverter x:Key="ctb" />
     </flat:FlatWindow.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*" MinWidth="200" />
+            <ColumnDefinition Width="1*" MinWidth="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
@@ -22,14 +22,15 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left" Margin="20,10,0,0" x:Name="txtDescription" Text="{Binding ElementName=window, Path=Description, FallbackValue='Collection of items:'}" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,10,0,0" x:Name="txtDescription" VerticalAlignment="Top" Grid.ColumnSpan="2"
+                   Text="{Binding ElementName=window, Path=Description, FallbackValue='Collection of items:'}"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" x:Name="txtListOfItems" VerticalAlignment="Center" Grid.Row="1"
                    Text="{Binding ListOfItemsLabel, ElementName=window, FallbackValue='List of items:'}" />
         <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" x:Name="txtEditItem" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"
                    Text="{Binding EditItemLabel, ElementName=window, FallbackValue='Edit selected item:'}"/>
 
-        <flat:SelectPanel Margin="20,0,10,0" Grid.Row="2" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:Name="selList" MultiSelect="False" SelectionChanged="selList_SelectionChanged" />
-        <Border Grid.Column="1" Grid.Row="2" Margin="10,0,20,0" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush}"
+        <flat:SelectPanel Margin="20,0,7,0" Grid.Row="2" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:Name="selList" MultiSelect="False" SelectionChanged="selList_SelectionChanged" />
+        <Border Grid.Column="1" Grid.Row="2" Margin="13,0,20,0" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush}"
                 Background="{Binding ElementName=window, Path=ColorScheme.LightBackgroundColor, Converter={StaticResource ctb}}" >
             <Grid>
                 <pl:ExperimentalPropertyList x:Name="propList" ShowReloadButton="False" ColorScheme="{Binding ColorScheme, ElementName=window}" />
@@ -37,6 +38,9 @@
                            Text="For this type, values can be directly edited in the left-side pane." Visibility="Collapsed" />
             </Grid>
         </Border>
+
+        <GridSplitter Grid.Row="2" Grid.Column="1" Width="6" HorizontalAlignment="Left" Cursor="SizeWE"
+                      Background="{Binding ElementName=window, Path=ColorScheme.ThirdHighlightColor, Converter={StaticResource ctb}}"/>
 
         <Border x:Name="brdrShowEnumerable" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="LightBlue" BorderThickness="0,1" Visibility="Collapsed" >
             <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0" >

@@ -21,6 +21,11 @@ namespace SolidShineUi.PropertyList.Dialogs
             InitializeComponent();
         }
 
+        private void window_SourceInitialized(object sender, EventArgs e)
+        {
+            DisableMinimizeAction();
+        }
+
         #region Base variables
 
         IEnumerable baseObject = new List<string>();
