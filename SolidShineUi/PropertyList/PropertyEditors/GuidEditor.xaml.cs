@@ -23,6 +23,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
+
+        public ExperimentalPropertyList ParentPropertyList { set { } }
+
         public ColorScheme ColorScheme { set 
             { 
                 btnMenu.ColorScheme = value;

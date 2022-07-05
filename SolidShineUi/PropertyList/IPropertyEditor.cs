@@ -46,6 +46,11 @@ namespace SolidShineUi.PropertyList
         ColorScheme ColorScheme { set; }
 
         /// <summary>
+        /// Set the parent PropertyList control for this IPropertyEditor. This allows the IPropertyEditor to connect to the PropertyList directly, to get info or set certain values.
+        /// </summary>
+        ExperimentalPropertyList ParentPropertyList { set; }
+
+        /// <summary>
         /// Raised when the value is changed, by changing the data in this editor control.
         /// Handlers should then call <see cref="GetValue"/> to then get the value to set the underlying property to.
         /// </summary>

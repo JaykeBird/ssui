@@ -23,6 +23,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         public ColorScheme ColorScheme { set { chkValue.ColorScheme = value; } }
 
+        public ExperimentalPropertyList ParentPropertyList { set { } }
+
         public FrameworkElement GetFrameworkElement()
         {
             return this;

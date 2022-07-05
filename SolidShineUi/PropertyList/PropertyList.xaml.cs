@@ -125,6 +125,11 @@ namespace SolidShineUi.PropertyList
         }
 
         /// <summary>
+        /// The string "No name", used for objects that don't have a Name property to get a name from.
+        /// </summary>
+        public static string NO_NAME = "No name";
+
+        /// <summary>
         /// Set the object to observe. All properties of the observed object will be displayed in the ExperimentalPropertyList, alongside the values of these properties.
         /// </summary>
         /// <param name="o">The object to load and observe.</param>
@@ -140,11 +145,11 @@ namespace SolidShineUi.PropertyList
 
             if (nameProp != null)
             {
-                ObjectDisplayName = (nameProp.GetValue(o) ?? "No name").ToString() ?? "No name";
+                ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
             }
             else
             {
-                ObjectDisplayName = "No name";
+                ObjectDisplayName = NO_NAME;
             }
             txtType.Text = "Type: " + type.Name; // name of the type (not the object)
             txtType.ToolTip = type.FullName;
@@ -205,57 +210,12 @@ namespace SolidShineUi.PropertyList
 
                 Type propType = item.PropertyType;
                 // let's do some tests on the properties
-                if (propType.IsEnum)
-                {
-                    // load enum editor
-                    object o = Activator.CreateInstance(registeredEditors[typeof(Enum)] ?? typeof(EnumEditor)) ?? new object();
-                    if (o is IPropertyEditor i)
-                    {
-                        i.ColorScheme = ColorScheme;
-                        ipe = i;
-                    }
-                }
-                else if (item.PropertyType.IsGenericType && item.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
-                {
-                    Type itemType = item.PropertyType.GetGenericArguments()[0];
-                    if (registeredEditors.ContainsKey(typeof(List<>)))
-                    {
-                        object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
-                        if (o is IPropertyEditor i)
-                        {
-                            i.ColorScheme = ColorScheme;
-                            ipe = i;
-                        }
-                    }
-                }
-                else if (item.PropertyType.IsGenericType && item.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                {
-                    Type itemType = item.PropertyType.GetGenericArguments()[0];
-                    if (registeredEditors.ContainsKey(typeof(IEnumerable<>)))
-                    {
-                        object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
-                        if (o is IPropertyEditor i)
-                        {
-                            i.ColorScheme = ColorScheme;
-                            ipe = i;
-                        }
-                    }
-                }
-                else
-                {
-                    if (registeredEditors.ContainsKey(propType))
-                    {
-                        object o = Activator.CreateInstance(registeredEditors[item.PropertyType]) ?? new object();
-                        if (o is IPropertyEditor i)
-                        {
-                            i.ColorScheme = ColorScheme;
-                            ipe = i;
-                        }
-                    }
-                }
+                ipe = CreateEditorForType(propType);
 
                 if (ipe != null)
                 {
+                    ipe.ColorScheme = ColorScheme;
+                    ipe.ParentPropertyList = this;
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
 
@@ -555,6 +515,7 @@ namespace SolidShineUi.PropertyList
 
         #region Registered Editors
 
+
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
         /// <summary>
@@ -636,6 +597,90 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Point), typeof(PointEditor));
             RegisterEditor(typeof(List<>), typeof(ListEditor));
             RegisterEditor(typeof(IEnumerable<>), typeof(EnumerableEditor));
+        }
+
+        /// <summary>
+        /// Create a new IPropertyEditor object appropriate for the passed-in type. This is based upon what types are registered in this PropertyList control.
+        /// </summary>
+        /// <param name="propType">The type for which to get a IPropertyEditor for.</param>
+        /// <returns></returns>
+#if NETCOREAPP
+        public IPropertyEditor? CreateEditorForType(Type propType)
+#else
+        public IPropertyEditor CreateEditorForType(Type propType)
+#endif
+        {
+            // TODO: add exception handling for Activator.CreateInstance
+
+            if (registeredEditors.ContainsKey(propType))
+            {
+                object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
+                if (o is IPropertyEditor i)
+                {
+                    return i;
+                }
+            }
+            else if (propType.IsEnum)
+            {
+                // load enum editor
+                object o = Activator.CreateInstance(registeredEditors[typeof(Enum)] ?? typeof(EnumEditor)) ?? new object();
+                if (o is IPropertyEditor i)
+                {
+                    return i;
+                }
+            }
+            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(List<>) && registeredEditors.ContainsKey(typeof(List<>)))
+            {
+                Type itemType = propType.GetGenericArguments()[0];
+                object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
+                if (o is IPropertyEditor i)
+                {
+                    return i;
+                }
+            }
+            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable<>) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
+            {
+                Type itemType = propType.GetGenericArguments()[0];
+                object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                if (o is IPropertyEditor i)
+                {
+                    return i;
+                }
+            }
+            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
+            {
+                object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                if (o is IPropertyEditor i)
+                {
+                    return i;
+                }
+            }
+            else if (typeof(IList).IsAssignableFrom(propType))
+            {
+                object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
+                if (o is IPropertyEditor i)
+                {
+                    return i;
+                }
+            }
+            else if (typeof(IEnumerable).IsAssignableFrom(propType))
+            {
+                object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                if (o is IPropertyEditor i)
+                {
+                    return i;
+                }
+            }
+            else
+            {
+
+                //else
+                //{
+                    return null;
+                //}
+            }
+
+            return null;
         }
 
         #endregion
@@ -724,7 +769,8 @@ namespace SolidShineUi.PropertyList
     /// <summary>
     /// Represents the sorting method used for sorting properties in a PropertyList.
     /// </summary>
-    public enum PropertySortOption {
+    public enum PropertySortOption
+    {
         /// <summary>
         /// Sorted alphabetically by property name
         /// </summary>
@@ -732,5 +778,6 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Sorted by category (as determined by a Category attribute being present)
         /// </summary>
-        Category = 1 }
+        Category = 1
+    }
 }

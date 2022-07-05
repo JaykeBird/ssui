@@ -18,7 +18,7 @@
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
-                    <MenuItem Header="View Items..." x:Name="mnuNewGuid" Click="btnEdit_Click" />
+                    <MenuItem Header="View Items..." x:Name="mnuEdit" Click="btnEdit_Click" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>

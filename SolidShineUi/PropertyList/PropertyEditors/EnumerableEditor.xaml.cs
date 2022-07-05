@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using SolidShineUi;
+using SolidShineUi.PropertyList.Dialogs;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -12,6 +13,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class EnumerableEditor : UserControl, IPropertyEditor
     {
+        /// <summary>
+        /// Create an EnumerableEditor.
+        /// </summary>
         public EnumerableEditor()
         {
             InitializeComponent();
@@ -19,35 +23,55 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         // TODO: add section to load in the propertyeditor type needed for child items in the list
 
+        /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(IEnumerable<>) };
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
-        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
+        bool _writable = true;
 
+        /// <inheritdoc/>
+        public bool IsPropertyWritable { get => _writable; set => _writable = value; }
+
+        /// <inheritdoc/>
+        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
+
+        ColorScheme _cs = new ColorScheme();
+
+        /// <inheritdoc/>
         public ColorScheme ColorScheme {
             set
             {
+                _cs = value;
                 btnMenu.ColorScheme = value;
                 imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", value);
             }
         }
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
         {
             return this;
         }
 
-#if NETCOREAPP
-        object? listVal;
+        Type _listType = typeof(object);
 
+#if NETCOREAPP
+        IEnumerable? listVal;
+
+        ExperimentalPropertyList? _parent = null;
+
+        /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
+        /// <inheritdoc/>
         public object? GetValue()
         {
             return listVal;
         }
 
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
             string contentsData = "";
@@ -55,8 +79,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 Type listType = type.GenericTypeArguments[0];
+                _listType = listType;
 
-                listVal = value;
+                listVal = (IEnumerable?)value;
                 if (listVal == null)
                 {
                     // null value
@@ -64,42 +89,45 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    IEnumerable lval = (IEnumerable)listVal;
-
-                    if (lval == null)
+                    if (listVal is ICollection icol)
                     {
-                        // this is not a list!
+                        contentsData = icol.Count + " items";
                     }
                     else
                     {
-                        if (lval is ICollection icol)
-                        {
-                            contentsData = icol.Count + " items";
-                        }
-                        else
-                        {
-                            contentsData = "collection";
-                        }
+                        contentsData = "collection";
                     }
                 }
 
                 txtListData.Text = contentsData + " (" + listType.Name + ")";
             }
+            else if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                // this is an IEnumerable, just not a generic type (IEnumerable<T>)
+                listVal = (IEnumerable?)value;
+
+                txtListData.Text = "collection - " + type.Name;
+            }
             else
             {
-                // type is not a List
+                // type is not a IEnumerable
             }
         }
 #else
-        object listVal;
-
+        IEnumerable listVal;
+        
+        ExperimentalPropertyList _parent = null;
+        
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
-
+        
+        /// <inheritdoc/>
         public object GetValue()
         {
             return listVal;
         }
-
+        
+        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
             string contentsData = "";
@@ -108,7 +136,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 Type listType = type.GenericTypeArguments[0];
 
-                listVal = value;
+                listVal = (IEnumerable)value;
                 if (listVal == null)
                 {
                     // null value
@@ -116,19 +144,24 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    IEnumerable lval = (IEnumerable)listVal;
-
-                    if (lval == null)
+                    if (listVal is ICollection icol)
                     {
-                        // this is not a list!
+                        contentsData = icol.Count + " items";
                     }
                     else
                     {
-                        contentsData = "collection of";
+                        contentsData = "collection";
                     }
                 }
 
                 txtListData.Text = contentsData + " (" + type.GenericTypeArguments[0].Name + ")";
+            }
+            else if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                // this is an IEnumerable, just not a generic type (IEnumerable<T>)
+                listVal = (IEnumerable)value;
+
+                txtListData.Text = "collection - " + type.Name;
             }
             else
             {
@@ -138,6 +171,37 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 #endif
 
+        void OpenListDialog()
+        {
+            if (listVal != null)
+            {
+#if NETCOREAPP
+                IPropertyEditor? ipe = _parent?.CreateEditorForType(_listType);
+                Type? propEditorType = null;
+#else
+                IPropertyEditor ipe = _parent?.CreateEditorForType(_listType);
+                Type propEditorType = null;
+#endif
+
+                if (ipe != null)
+                {
+                    propEditorType = ipe.GetType();
+                }
+
+                ListEditorDialog led = new ListEditorDialog();
+                led.ColorScheme = _cs;
+                led.LoadEnumerable(listVal, _listType, propEditorType);
+                led.Description = "collection of " + _listType.Name + ((listVal is ICollection icol) ? ", with " + icol.Count + " items:" : ":");
+
+                led.Owner = Window.GetWindow(this);
+                led.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No value is set for this property (it is set to null).");
+            }
+        }
+
         private void mnuEmptyList_Click(object sender, RoutedEventArgs e)
         {
 
@@ -145,7 +209,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            OpenListDialog();
         }
     }
 }

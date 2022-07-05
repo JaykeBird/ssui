@@ -19,7 +19,7 @@
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="View/Edit List..." x:Name="mnuNewGuid" Click="btnEdit_Click" />
-                    <MenuItem Header="Set to New Empty List..." x:Name="mnuEmptyGuid" Click="mnuEmptyList_Click" />
+                    <MenuItem Header="Set to New Empty List..." x:Name="mnuEmptyGuid" Click="mnuEmptyList_Click" Visibility="Collapsed" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>

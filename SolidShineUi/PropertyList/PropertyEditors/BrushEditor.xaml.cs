@@ -24,6 +24,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         public bool EditorAllowsModifying => true;
 
+        public ExperimentalPropertyList ParentPropertyList { set { } }
+
         private ColorScheme _cs = new ColorScheme();
 
         public ColorScheme ColorScheme

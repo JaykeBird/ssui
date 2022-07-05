@@ -27,6 +27,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnMenu.IsEnabled = value;
             }
         }
+
+        public ExperimentalPropertyList ParentPropertyList { set { } }
+
         public ColorScheme ColorScheme
         {
             set

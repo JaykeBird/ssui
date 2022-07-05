@@ -24,6 +24,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         public bool IsPropertyWritable { get => cbbStyles.IsEnabled; set => cbbStyles.IsEnabled = value; }
+
+        public ExperimentalPropertyList ParentPropertyList { set { } }
+
         public ColorScheme ColorScheme
         { 
             set
