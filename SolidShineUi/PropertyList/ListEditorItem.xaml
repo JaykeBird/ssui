@@ -20,13 +20,13 @@
         </Grid>
 
         <StackPanel Grid.Column="2" x:Name="stkControls" Margin="5,0,0,0" Orientation="Horizontal" Visibility="Collapsed">
-            <flat:FlatButton x:Name="btnMoveDn" TransparentBack="True" Width="24" Height="24" VerticalAlignment="Stretch" Click="btnMoveDn_Click" Visibility="Collapsed" >
+            <flat:FlatButton x:Name="btnMoveDn" TransparentBack="True" Width="24" Height="24" VerticalAlignment="Stretch" Click="btnMoveDn_Click" ToolTip="Move Down" Visibility="Collapsed" >
                 <Image x:Name="imgMoveDn" Height="16" />
             </flat:FlatButton>
-            <flat:FlatButton x:Name="btnMoveUp" TransparentBack="True" Width="24" Height="24" VerticalAlignment="Stretch" Click="btnMoveUp_Click" Visibility="Collapsed">
+            <flat:FlatButton x:Name="btnMoveUp" TransparentBack="True" Width="24" Height="24" VerticalAlignment="Stretch" Click="btnMoveUp_Click" ToolTip="Move Up" Visibility="Collapsed">
                 <Image x:Name="imgMoveUp" Height="16" />
             </flat:FlatButton>
-            <flat:FlatButton x:Name="btnRemove" TransparentBack="True" Width="24" Height="24" VerticalAlignment="Stretch" Click="btnRemove_Click" >
+            <flat:FlatButton x:Name="btnRemove" TransparentBack="True" Width="24" Height="24" VerticalAlignment="Stretch" Click="btnRemove_Click" ToolTip="Remove" >
                 <Image x:Name="imgRemove" Height="16" />
             </flat:FlatButton>
         </StackPanel>
