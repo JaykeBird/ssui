@@ -259,7 +259,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 ListEditorDialog led = new ListEditorDialog();
                 led.ColorScheme = _cs;
                 led.LoadEnumerable(listVal, _listType, propEditorType);
-                led.Description = "collection of " + _listType.Name + ", with " + listVal.Count + " items:";
+                led.Description = "collection " + listVal.GetType().Name.Replace("`1", "") + ", of type " + _listType.Name + ", with " + listVal.Count + " items:";
 
                 led.ShowDialog();
             }
