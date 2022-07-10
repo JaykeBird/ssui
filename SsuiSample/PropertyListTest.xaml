@@ -40,6 +40,7 @@
             <flat:FlatButton x:Name="btnSel3" Content="Select Item" HorizontalAlignment="Left" Margin="5,120,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel3_Click" />
             <flat:FlatButton x:Name="btnSel4" Content="Select Item" HorizontalAlignment="Left" Margin="5,160,5,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Column="1" Click="btnSel4_Click" />
             <flat:FlatButton x:Name="btnSel5" Content="Select Item" HorizontalAlignment="Left" Margin="5,220,5,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Column="1" Click="btnSel5_Click" />
+            <flat:FlatButton x:Name="btnClear" Content="Clear" HorizontalAlignment="Center" Margin="0,2,0,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Column="1" Click="btnClear_Click" />
 
         </Grid>
 

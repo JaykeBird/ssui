@@ -31,6 +31,8 @@ namespace SolidShineUi.PropertyList
             colDescriptor.AddValueChanged(colNames, ColumnWidthChanged);
             colDescriptor.AddValueChanged(colTypes, ColumnWidthChanged);
             colDescriptor.AddValueChanged(colValues, ColumnWidthChanged);
+
+            Clear();
         }
 
 
@@ -125,6 +127,23 @@ namespace SolidShineUi.PropertyList
         }
 
         /// <summary>
+        /// Unload the currently observed object, so that nothing is observed.
+        /// </summary>
+        /// <remarks>
+        /// This clears out the UI and resets internal properties; however, this does not need to be run before loading in another object.
+        /// </remarks>
+        public void Clear()
+        {
+            LoadObject(new object());
+            _baseObject = null;
+            ObjectDisplayName = "";
+            txtType.Text = "Nothing loaded";
+            txtType.ToolTip = "";
+
+            btnRefresh.IsEnabled = false;
+        }
+
+        /// <summary>
         /// The string "No name", used for objects that don't have a Name property to get a name from.
         /// </summary>
         public static string NO_NAME = "No name";
@@ -164,6 +183,8 @@ namespace SolidShineUi.PropertyList
             _filterString = "";
             ShowInheritedProperties = true;
             mnuShowInherited.IsChecked = true;
+
+            btnRefresh.IsEnabled = true;
         }
 
         #region Display Name

@@ -74,5 +74,10 @@ namespace SsuiSample
         {
             prop.LoadObject(grdItems);
         }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            prop.Clear();
+        }
     }
 }
