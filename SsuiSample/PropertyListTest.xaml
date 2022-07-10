@@ -26,11 +26,20 @@
             <TextBox x:Name="txtTextBox" HorizontalAlignment="Left" Margin="30,80,0,0" Text="TextBox" VerticalAlignment="Top" Width="120"/>
             <Button Content="Button" HorizontalAlignment="Left" Margin="30,120,0,0" VerticalAlignment="Top" Width="120" Height="23" x:Name="btnButton" />
             <flat:FileSelect HorizontalAlignment="Left" Margin="30,160,0,0" VerticalAlignment="Top" Width="200" x:Name="ctrFileSelect" />
+            <Border BorderThickness="1" BorderBrush="Black" Background="#33FFFFFF" Width="200" Height="150" Margin="30,220,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  >
+                <Grid x:Name="grdItems">
+                    <Ellipse Fill="Red" Width="40" Height="20" Margin="30,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <flat:CheckBox Content="Check" Margin="10,50,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <TextBlock HorizontalAlignment="Left" Margin="21,106,0,0" TextWrapping="Wrap" Text="WHaaaaat" VerticalAlignment="Top"/>
+
+                </Grid>
+            </Border>
 
             <flat:FlatButton x:Name="btnSel1" Content="Select Item" HorizontalAlignment="Left" Margin="5,40,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel1_Click" />
             <flat:FlatButton x:Name="btnSel2" Content="Select Item" HorizontalAlignment="Left" Margin="5,80,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel2_Click" />
             <flat:FlatButton x:Name="btnSel3" Content="Select Item" HorizontalAlignment="Left" Margin="5,120,5,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Column="1" Click="btnSel3_Click" />
             <flat:FlatButton x:Name="btnSel4" Content="Select Item" HorizontalAlignment="Left" Margin="5,160,5,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Column="1" Click="btnSel4_Click" />
+            <flat:FlatButton x:Name="btnSel5" Content="Select Item" HorizontalAlignment="Left" Margin="5,220,5,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Column="1" Click="btnSel5_Click" />
 
         </Grid>
 

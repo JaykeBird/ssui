@@ -51,6 +51,8 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         int count = -1;
 
+        bool stringListMode = false;
+
         #endregion
 
         #region Dependency Properties
@@ -139,8 +141,16 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             if (baseType.GetConstructor(Type.EmptyTypes) == null)
             {
-                btnAdd.IsEnabled = false;
-                txtCannotAdd.Visibility = Visibility.Visible;
+                if (baseType == typeof(string))
+                {
+                    // special handling for List<string>, since there is no parameterless constructor for string
+                    stringListMode = true;
+                }
+                else
+                {
+                    btnAdd.IsEnabled = false;
+                    txtCannotAdd.Visibility = Visibility.Visible;
+                }
             }
 
             // first, let's determine what we're working with here
@@ -187,7 +197,11 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+#if NETCOREAPP
+        ListEditorItem CreateListItem(object? item, int index)
+#else
         ListEditorItem CreateListItem(object item, int index)
+#endif
         {
             ListEditorItem lei = new ListEditorItem();
 #if NETCOREAPP
@@ -233,7 +247,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 if (isList && canEdit)
                 {
-                    ValueChanged(e.NewValue, item);
+                    ValueChanged(e.NewValue, item, e);
                 }
                 else
                 {
@@ -246,14 +260,23 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
 #if NETCOREAPP
-        void ValueChanged(object? newValue, object baseItem)
+        void ValueChanged(object? newValue, object? baseItem, PropertyEditorValueChangedEventArgs e)
 #else
-        void ValueChanged(object newValue, object baseItem)
+        void ValueChanged(object newValue, object baseItem, PropertyEditorValueChangedEventArgs e)
 #endif
         {
             if (baseObject is IList icol)
             {
                 int index = icol.IndexOf(baseItem);
+                if (index != -1)
+                {
+                    // this means the base list actually removed this item in the interim
+                    // for now, we'll mark this as a failed change
+                    // TODO: actually remove the offending ListEditorItem from the dialog
+                    e.ChangeFailed = true;
+                    e.FailedChangePropertyValue = null;
+                    return;
+                }
                 icol[index] = newValue;
             }
         }
@@ -290,17 +313,28 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             if (isList && baseType != null)
             {
-                var newItem = Activator.CreateInstance(baseType);
-                if (newItem != null)
+                if (stringListMode)
                 {
-                    ListEditorItem lei = CreateListItem(newItem, count);
-                    ((IList)baseObject).Add(newItem);
+                    string newStr = "";
+                    ListEditorItem lei = CreateListItem(newStr, count);
+                    ((IList)baseObject).Add(newStr);
                     count++;
                     selList.Items.Add(lei);
                 }
                 else
                 {
-                    btnAdd.IsEnabled = false;
+                    var newItem = Activator.CreateInstance(baseType);
+                    if (newItem != null)
+                    {
+                        ListEditorItem lei = CreateListItem(newItem, count);
+                        ((IList)baseObject).Add(newItem);
+                        count++;
+                        selList.Items.Add(lei);
+                    }
+                    else
+                    {
+                        btnAdd.IsEnabled = false;
+                    }
                 }
             }
             else

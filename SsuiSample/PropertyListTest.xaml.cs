@@ -69,5 +69,10 @@ namespace SsuiSample
         {
             prop.LoadObject(ctrFileSelect);
         }
+
+        private void btnSel5_Click(object sender, RoutedEventArgs e)
+        {
+            prop.LoadObject(grdItems);
+        }
     }
 }
