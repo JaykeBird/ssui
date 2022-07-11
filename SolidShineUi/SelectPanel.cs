@@ -100,11 +100,17 @@ namespace SolidShineUi
             }
             else if (ItemsSource == Items)
             {
+                RemoveOldCollectionHandlers();
+
                 Items.CollectionChanged += Items_CollectionChanged;
                 Items.SelectionChanged += Items_SelectionChanged;
+
+                AddNewCollectionHandlers();
             }
             else
             {
+                RemoveOldCollectionHandlers();
+
                 // Remove handler for oldValue.CollectionChanged
                 if (oldValue is INotifyCollectionChanged oldColl)
                 {
@@ -125,9 +131,28 @@ namespace SolidShineUi
                 if (newValue is ISelectableCollectionSource<SelectableUserControl> newSc)
                 {
                     newSc.SelectionChanged += Items_SelectionChanged;
+                    RefreshVisualSelection();
                 }
 
+                AddNewCollectionHandlers();
+            }
 
+            void RemoveOldCollectionHandlers()
+            {
+                if (oldValue == null) return;
+                foreach (SelectableUserControl item in oldValue)
+                {
+                    item.SelectionChanged -= Item_SelectionChanged;
+                }
+            }
+
+            void AddNewCollectionHandlers()
+            {
+                foreach (SelectableUserControl item in newValue)
+                {
+                    AddItemInternal(item);
+                    //item.SelectionChanged += Item_SelectionChanged;
+                }
             }
         }
 
@@ -172,9 +197,12 @@ namespace SolidShineUi
         {
             _internalAction = true;
 
-            foreach (SelectableUserControl item in Items)
+            if (ItemsSource is ISelectableCollectionSource<SelectableUserControl> isl)
             {
-                item.IsSelected = Items.IsSelected(item);
+                foreach (SelectableUserControl item in ItemsSource)
+                {
+                    item.IsSelected = isl.IsSelected(item);
+                }
             }
 
             _internalAction = false;
@@ -327,24 +355,28 @@ namespace SolidShineUi
             {
                 _internalAction = true;
 
-                if (item.IsSelected && !Items.IsSelected(item))
+                if (ItemsSource is ISelectableCollectionSource<SelectableUserControl> isl)
                 {
-                    if (Items.CanSelectMultiple && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+
+                    if (item.IsSelected && !isl.IsSelected(item))
                     {
-                        Items.AddToSelection(item);
+                        if (isl is SelectableCollection<SelectableUserControl> isel && isel.CanSelectMultiple && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                        {
+                            isl.AddToSelection(item);
+                        }
+                        else
+                        {
+                            isl.Select(item);
+                        }
+
+                        RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<SelectableUserControl>());
                     }
                     else
                     {
-                        Items.Select(item);
+                        isl.Deselect(item);
+
+                        RaiseSelectionChangedEvent(new List<SelectableUserControl>(), (new[] { item }).ToList());
                     }
-
-                    RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<SelectableUserControl>());
-                }
-                else
-                {
-                    Items.Deselect(item);
-
-                    RaiseSelectionChangedEvent(new List<SelectableUserControl>(), (new[] { item }).ToList());
                 }
 
                 RefreshVisualSelection();
@@ -484,7 +516,7 @@ namespace SolidShineUi
 
         private void UpdateChildrenAppearance()
         {
-            foreach (SelectableUserControl item in Items)
+            foreach (SelectableUserControl item in ItemsSource)
             {
                 item.SelectedBrush = SelectedBrush;
                 item.HighlightBrush = HighlightBrush;
