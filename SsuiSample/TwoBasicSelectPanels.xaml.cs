@@ -1,6 +1,7 @@
 ﻿using SolidShineUi;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,7 +64,8 @@ namespace SsuiSample
 
         private void btnAddRight_Click(object sender, RoutedEventArgs e)
         {
-            basic2.Items.Add(new SelectableItem("TEXT"));
+            var list = (SelectableListItemCollection)Resources["selList"];
+            list.Add(new SelectableItem("TEXT"));
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -71,5 +73,10 @@ namespace SsuiSample
             basic1.Items.Clear();
             basic2.Items.Clear();
         }
+    }
+
+    internal class SelectableListItemCollection : SelectableCollection<SelectableUserControl>
+    {
+
     }
 }
