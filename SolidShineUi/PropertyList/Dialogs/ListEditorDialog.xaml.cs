@@ -237,6 +237,13 @@ namespace SolidShineUi.PropertyList.Dialogs
                     if (baseObject is IList icol)
                     {
                         icol.Remove(lei.ItemValue);
+
+                        // if this item is currently shown in the PropertyList, then unload it from the PropertyList
+                        if (propList.GetCurrentlyLoadedObject() == lei.ItemValue)
+                        {
+                            propList.Clear();
+                        }
+
                         selList.Items.Remove(lei);
                         count--;
                     }
