@@ -113,10 +113,6 @@ namespace SolidShineUi.PropertyList
             VisibleControlsChanged?.Invoke(sender, e);
         }
 
-        public event EventHandler RequestRemove;
-        public event EventHandler RequestMoveUp;
-        public event EventHandler RequestMoveDown;
-
 #if NETCOREAPP
 
         object? _value = null;
@@ -135,6 +131,19 @@ namespace SolidShineUi.PropertyList
         /// Raised when the value of this property is changed, by use of a <see cref="PropertyEditorControl"/>.
         /// </summary>
         public event PropertyEditorValueChangedEventHandler? PropertyEditorValueChanged;
+
+        /// <summary>
+        /// Raised when the Remove button is clicked, indicating the user wants to remove this item from the list.
+        /// </summary>
+        public event EventHandler? RequestRemove;
+        /// <summary>
+        /// Raised when the Move Up button is clicked, indicating the user wants to move this item up in the list.
+        /// </summary>
+        public event EventHandler? RequestMoveUp;
+        /// <summary>
+        /// Raised when the Move Down button is clicked, indicating the user wants to move this item down in the list.
+        /// </summary>
+        public event EventHandler? RequestMoveDown;
 #else
 
         object _value = null;
@@ -153,6 +162,19 @@ namespace SolidShineUi.PropertyList
         /// Raised when the value of this property is changed, by use of a <see cref="PropertyEditorControl"/>.
         /// </summary>
         public event PropertyEditorValueChangedEventHandler PropertyEditorValueChanged;
+
+        /// <summary>
+        /// Raised when the Remove button is clicked, indicating the user wants to remove this item from the list.
+        /// </summary>
+        public event EventHandler RequestRemove;
+        /// <summary>
+        /// Raised when the Move Up button is clicked, indicating the user wants to move this item up in the list.
+        /// </summary>
+        public event EventHandler RequestMoveUp;
+        /// <summary>
+        /// Raised when the Move Down button is clicked, indicating the user wants to move this item down in the list.
+        /// </summary>
+        public event EventHandler RequestMoveDown;
 #endif
         #endregion
 
