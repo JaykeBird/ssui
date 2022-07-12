@@ -25,7 +25,7 @@ namespace SolidShineUi
         #endregion
 
         /// <summary>
-        /// Raised when the Value, Decimals, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
+        /// Raised when the Value, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
         /// </summary>
         public event EventHandler PropertyChanged;
 
@@ -388,7 +388,7 @@ namespace SolidShineUi
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(int), typeof(IntegerSpinner),
-            new PropertyMetadata(0, new PropertyChangedCallback(OnValueChanged)));
+            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnValueChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>

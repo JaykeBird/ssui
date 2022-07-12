@@ -397,7 +397,7 @@ namespace SolidShineUi
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(double), typeof(DoubleSpinner),
-            new PropertyMetadata(0d, new PropertyChangedCallback(OnValueChanged)));
+            new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnValueChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
