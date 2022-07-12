@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Linq;
 using System.Collections.Specialized;
+using System.Collections;
 
 namespace SolidShineUi
 {
@@ -11,7 +12,7 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> is SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>
+    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, ICollection<T>
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
@@ -21,11 +22,35 @@ namespace SolidShineUi
         {
             //Source = collection;
             baseCollection = collection;
+            baseEnumerator = this;
 
             if (baseCollection is INotifyCollectionChanged incc)
             {
                 incc.CollectionChanged += baseCol_CollectionChanged;
             } // else... welp lol
+        }
+
+        /// <summary>
+        /// Create a SelectableCollectionView, that represents a view of the specified list.
+        /// </summary>
+        /// <param name="collection">The collection that is represented in this view.</param>
+        /// <exception cref="ArgumentException">Thrown if collection is not a generic IList of type <typeparamref name="T"/> (<c>IList&lt;<typeparamref name="T"/>&gt;</c>).</exception>
+        public SelectableCollectionView(IList collection) : base(collection)
+        {
+            if (collection is IList<T> tcol)
+            {
+                baseCollection = tcol;
+                baseEnumerator = this;
+
+                if (baseCollection is INotifyCollectionChanged incc)
+                {
+                    incc.CollectionChanged += baseCol_CollectionChanged;
+                } // else... welp lol
+            }
+            else
+            {
+                throw new ArgumentException("The collection passed in is not a generic IList of type " + typeof(T).Name + ".", nameof(collection));
+            }
         }
 
 #if NETCOREAPP
@@ -84,7 +109,9 @@ namespace SolidShineUi
             }
         }
 
-        private IEnumerable<T> baseCollection;
+        private IList<T> baseCollection;
+
+        private IEnumerable baseEnumerator;
 
         private List<T> selectedItems = new List<T>();
 
@@ -195,5 +222,88 @@ namespace SolidShineUi
 
             SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(oldSel, newSel));
         }
+
+        #region IList implementations
+        /// <summary>
+        /// Get if this collection is read-only.
+        /// </summary>
+        public bool IsReadOnly => true;
+
+        /// <summary>
+        /// Get the item at the specified index in the underlying list.
+        /// </summary>
+        /// <param name="index">The index of the item.</param>
+        public T this[int index]
+        {
+            get => (T)base.GetItemAt(index);
+            set
+            {
+                throw new NotSupportedException("Not supported in a ListCollectionView.");
+            }
+        }
+
+        /// <summary>
+        /// Get the index of an item in this collection, or -1 if the index is unknown.
+        /// </summary>
+        /// <param name="item">The index of the item.</param>
+        /// <returns></returns>
+        public int IndexOf(T item)
+        {
+            return base.IndexOf(item);
+            //return baseCollection.IndexOf(item);
+        }
+
+        void ICollection<T>.Add(T item)
+        {
+            throw new NotSupportedException("Not supported in a ListCollectionView.");
+        }
+
+        void ICollection<T>.Clear()
+        {
+            throw new NotSupportedException("Not supported in a ListCollectionView.");
+        }
+
+        /// <summary>
+        /// Returns if this collection currently contains the specified item.
+        /// </summary>
+        /// <param name="item">The item to check.</param>
+        public bool Contains(T item)
+        {
+            return base.Contains(item);
+            //return baseCollection.Contains(item);
+        }
+
+        /// <summary>
+        /// Copy this collection into an array.
+        /// </summary>
+        /// <param name="array">The array to copy into.</param>
+        /// <param name="arrayIndex">The index in the array to start copying in at.</param>
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            baseEnumerator.OfType<T>().ToList().CopyTo(array, arrayIndex);
+        }
+
+        /// <summary>
+        /// Remove an item from this collection.
+        /// </summary>
+        /// <param name="item">The item to remove.</param>
+        /// <returns></returns>
+        public bool Remove(T item)
+        {
+            //if (!base.Contains(item))
+            //{
+            //    return false;
+            //}
+
+            base.Remove(item);
+            return true;
+            //return baseCollection.Remove(item);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return baseEnumerator.OfType<T>().GetEnumerator();
+        }
+        #endregion
     }
 }
