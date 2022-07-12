@@ -12,7 +12,7 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> is SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, ICollection<T>
+    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, IEnumerable<T>
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
@@ -224,10 +224,10 @@ namespace SolidShineUi
         }
 
         #region IList implementations
-        /// <summary>
-        /// Get if this collection is read-only.
-        /// </summary>
-        public bool IsReadOnly => true;
+        ///// <summary>
+        ///// Get if this collection is read-only.
+        ///// </summary>
+        //public bool IsReadOnly => true;
 
         /// <summary>
         /// Get the item at the specified index in the underlying list.
@@ -236,10 +236,10 @@ namespace SolidShineUi
         public T this[int index]
         {
             get => (T)base.GetItemAt(index);
-            set
-            {
-                throw new NotSupportedException("Not supported in a ListCollectionView.");
-            }
+            //set
+            //{
+            //    throw new NotSupportedException("Not supported in a ListCollectionView.");
+            //}
         }
 
         /// <summary>
@@ -253,15 +253,15 @@ namespace SolidShineUi
             //return baseCollection.IndexOf(item);
         }
 
-        void ICollection<T>.Add(T item)
-        {
-            throw new NotSupportedException("Not supported in a ListCollectionView.");
-        }
+        //void ICollection<T>.Add(T item)
+        //{
+        //    throw new NotSupportedException("Not supported in a ListCollectionView.");
+        //}
 
-        void ICollection<T>.Clear()
-        {
-            throw new NotSupportedException("Not supported in a ListCollectionView.");
-        }
+        //void ICollection<T>.Clear()
+        //{
+        //    throw new NotSupportedException("Not supported in a ListCollectionView.");
+        //}
 
         /// <summary>
         /// Returns if this collection currently contains the specified item.
@@ -273,31 +273,23 @@ namespace SolidShineUi
             //return baseCollection.Contains(item);
         }
 
-        /// <summary>
-        /// Copy this collection into an array.
-        /// </summary>
-        /// <param name="array">The array to copy into.</param>
-        /// <param name="arrayIndex">The index in the array to start copying in at.</param>
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            baseEnumerator.OfType<T>().ToList().CopyTo(array, arrayIndex);
-        }
+        ///// <summary>
+        ///// Copy this collection into an array.
+        ///// </summary>
+        ///// <param name="array">The array to copy into.</param>
+        ///// <param name="arrayIndex">The index in the array to start copying in at.</param>
+        //public void CopyTo(T[] array, int arrayIndex)
+        //{
+        //    baseEnumerator.OfType<T>().ToList().CopyTo(array, arrayIndex);
+        //}
 
         /// <summary>
         /// Remove an item from this collection.
         /// </summary>
         /// <param name="item">The item to remove.</param>
-        /// <returns></returns>
-        public bool Remove(T item)
+        public void Remove(T item)
         {
-            //if (!base.Contains(item))
-            //{
-            //    return false;
-            //}
-
             base.Remove(item);
-            return true;
-            //return baseCollection.Remove(item);
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
