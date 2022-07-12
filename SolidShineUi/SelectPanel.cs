@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -72,6 +73,12 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets a collection used to generate the content of this SelectPanel.
         /// </summary>
+        /// <remarks>
+        /// It is recommended to set this property to an <see cref="ObservableCollection{T}"/>, <see cref="SelectableCollection{T}"/>, or <see cref="SelectableCollectionView{T}"/>.
+        /// If you use other IEnumerable types that do not also implement <see cref="INotifyCollectionChanged"/>, then this control's contents will not update automatically.
+        /// If you do not use a SelectableCollection or SelectableCollectionView, you may also need to implement your own code for handling the selection state of the items
+        /// in your collection.
+        /// </remarks>
         public IEnumerable<SelectableUserControl> ItemsSource
         {
             get { return (IEnumerable<SelectableUserControl>)GetValue(ItemsSourceProperty); }
