@@ -12,6 +12,7 @@
             <local:SelectableListItemCollection x:Key="selList">
                 <flat:SelectableItem Text="Potato" />
                 <flat:SelectableItem Text="Whaaaaat" />
+                <flat:SelectableItem Text="Wheat" />
             </local:SelectableListItemCollection>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -31,7 +32,7 @@
         </Grid.RowDefinitions>
 
         <flat:SelectPanel Grid.Column="1" Grid.Row="2" x:Name="basic1" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-        <flat:SelectPanel Grid.Column="3" Grid.Row="2" x:Name="basic2" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" ItemsSource="{StaticResource selList}" />
+        <flat:SelectPanel Grid.Column="3" Grid.Row="2" x:Name="basic2" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" ItemsSource="{Binding Source={StaticResource selList}}" />
 
         <TextBlock Grid.Column="1" Grid.Row="0" Text="2 Select Panels Test" FontSize="14" VerticalAlignment="Center" />
 

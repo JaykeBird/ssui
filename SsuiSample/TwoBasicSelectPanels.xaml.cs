@@ -1,9 +1,6 @@
 ﻿using SolidShineUi;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +15,12 @@ namespace SsuiSample
         public TwoBasicSelectPanels()
         {
             InitializeComponent();
+
+            // for testing/trying with a SelectableCollectionView, uncomment the below text
+
+            //var lcv = new SelectableCollectionView<SelectableUserControl>((Collection<SelectableUserControl>)Resources["selList"]);
+            //lcv.SortDescriptions.Add(new System.ComponentModel.SortDescription("Text", System.ComponentModel.ListSortDirection.Ascending));
+            //basic2.ItemsSource = lcv;
         }
 
         #region ColorScheme
