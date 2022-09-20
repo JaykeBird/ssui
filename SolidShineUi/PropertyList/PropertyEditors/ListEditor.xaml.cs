@@ -91,7 +91,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    contentsData = listVal.Count + "items";
+                    contentsData = listVal.Count + " items";
                 }
 
                 txtListData.Text = contentsData + " (" + listType.Name + ")";
