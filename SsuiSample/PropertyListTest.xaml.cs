@@ -79,5 +79,28 @@ namespace SsuiSample
         {
             prop.Clear();
         }
+
+        private void btnSelCs_Click(object sender, RoutedEventArgs e)
+        {
+            prop.LoadObject(ColorScheme);
+        }
+
+        private void btnSelObj_Click(object sender, RoutedEventArgs e)
+        {
+            prop.LoadObject(ptto);
+        }
+
+        PropertyTestTestObject ptto = new PropertyTestTestObject();
+
+        public class PropertyTestTestObject
+        {
+            public System.Collections.Generic.List<int> Numbers { get; set; } = new System.Collections.Generic.List<int>() { 5, 12, 48, 2 };
+
+            public string TestString { get; set; } = "noodles";
+
+            public double NumberWithDecimal { get; set; } = 3.6;
+
+            public decimal NumberWithActualDecimal { get; set; } = (decimal)7.3;
+        }
     }
 }

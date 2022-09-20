@@ -180,7 +180,7 @@ namespace SolidShineUi
         /// Get or set if this tab can be closed via the UI (i.e. the close button).
         ///</summary>
         ///<remarks>
-        /// This property does not prevent this tab being closed via other means, such as <see cref="TabItem.Close()"/> or <see cref="SelectableCollection{TabItem}.Remove(TabItem)"/>.
+        /// This property does not prevent this tab being closed via other means, such as <see cref="Close()"/> or <see cref="SelectableCollection{TabItem}.Remove(TabItem)"/>.
         /// </remarks>
         [Category("Common")]
         public bool CanClose
