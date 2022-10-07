@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace SolidShineUi
@@ -16,6 +17,7 @@ namespace SolidShineUi
     /// <summary>
     /// A ListBox-like control that can be used to select and interact with multiple items, with extra functionality and a visual style that matches the rest of the Solid Shine UI controls.
     /// </summary>
+    [ContentProperty("Items")]
     public class SelectPanel : Control
     {
         static SelectPanel()
@@ -28,18 +30,22 @@ namespace SolidShineUi
         /// </summary>
         public SelectPanel()
         {
+            Loaded += SelectPanel_Loaded;
             SetValue(ItemsPropertyKey, new SelectableCollection<SelectableUserControl>());
             SetValue(ItemsSourceProperty, Items);
             //Items = new SelectableCollection<SelectableUserControl>();
             //Items.ItemRemoving += Items_ItemRemoving;
             //Items.CollectionChanged += Items_CollectionChanged;
             //Items.SelectionChanged += Items_SelectionChanged;
+        }
 
+        private void SelectPanel_Loaded(object sender, RoutedEventArgs e)
+        {
             LoadTemplateItems();
             if (itemsLoaded && sv != null)
             {
                 sv.PreviewMouseWheel += HandlePreviewMouseWheel;
-                sv.Unloaded += (s, e) => sv.PreviewMouseWheel -= HandlePreviewMouseWheel;
+                sv.Unloaded += (s, _) => sv.PreviewMouseWheel -= HandlePreviewMouseWheel;
             }
         }
 
@@ -55,7 +61,6 @@ namespace SolidShineUi
 
         private void LoadTemplateItems()
         {
-
             if (!itemsLoaded)
             {
                 ic = (ItemsControl)GetTemplateChild("PART_Ic");
