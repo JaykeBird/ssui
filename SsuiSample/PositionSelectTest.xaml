@@ -17,7 +17,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <utils:RelativePositionSelect Width="250" Height="250" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" 
-                                      ColorScheme="{Binding ElementName=control, Path=ColorScheme}" SnapDistance="5"
+                                      ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
                                       SelectedHeight="0.5" SelectedWidth="0.5" SelectorSize="15" x:Name="selPos1" SelectedPositionChanged="selPos1_SelectedPositionChanged" >
             <utils:RelativePositionSelect.HorizontalSnapPoints>
                 <system:Double>0.25</system:Double>
@@ -36,5 +36,10 @@
         <TextBlock Grid.Row="2" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Height:" />
         <ssui:DoubleSpinner Grid.Row="2" Margin="70,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}" 
                             MinValue="0" MaxValue="1" Decimals="3" Step="0.05" x:Name="nudHeight1" ValueChanged="nudHeight1_ValueChanged" />
+        <ssui:CheckBox Grid.Row="1" Margin="160,0,0,0" Content="Snap to Snap Points" ColorScheme="{Binding ColorScheme, ElementName=control}"
+                       CheckChanged="chkSnap_CheckChanged" x:Name="chkSnap" IsChecked="True" />
+        <TextBlock Grid.Row="2" Margin="160,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Snap distance:" />
+        <ssui:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}" 
+                            MinValue="0" MaxValue="20" Value="5" Decimals="3" Step="1" x:Name="nudSnapsize" ValueChanged="nudSnapsize_ValueChanged" />
     </Grid>
 </UserControl>

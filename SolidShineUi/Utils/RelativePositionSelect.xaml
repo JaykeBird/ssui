@@ -10,7 +10,7 @@
         <Grid x:Name="grdOverall" Background="#01FFFFFF"
               MouseDown="grdGuidelines_MouseDown" MouseUp="grdGuidelines_MouseUp" MouseMove="grdGuidelines_MouseMove" MouseLeave="grdGuidelines_MouseLeave" >
             <Border x:Name="brdrKeyFocus" IsHitTestVisible="False" BorderThickness="4.5" BorderBrush="Transparent" />
-            <Grid x:Name="grdGuidelines" IsHitTestVisible="False" >
+            <Grid x:Name="grdGuidelines" IsHitTestVisible="False" Margin="4.5" >
                 <Grid x:Name="canVertical" />
                 <Grid x:Name="canHorizontal" />
             </Grid>

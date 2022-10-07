@@ -446,7 +446,8 @@ namespace SolidShineUi.Utils
             b.Tag = point;
             b.HorizontalAlignment = HorizontalAlignment.Left;
             b.VerticalAlignment = VerticalAlignment.Stretch;
-            b.Margin = new Thickness(grdSelArea.ActualWidth * point + sshalf, 0, 0, 0);
+            b.Margin = new Thickness(grdSelArea.ActualWidth * point, 0, 0, 0);
+            //b.Margin = new Thickness(grdSelArea.ActualWidth * point + sshalf, 0, 0, 0);
             b.SnapsToDevicePixels = true;
             b.UseLayoutRounding = false;
 
@@ -491,7 +492,8 @@ namespace SolidShineUi.Utils
             b.Tag = point;
             b.HorizontalAlignment = HorizontalAlignment.Stretch;
             b.VerticalAlignment = VerticalAlignment.Top;
-            b.Margin = new Thickness(0, grdSelArea.ActualHeight * point + sshalf, 0, 0);
+            b.Margin = new Thickness(0, grdSelArea.ActualHeight * point, 0, 0);
+            //b.Margin = new Thickness(0, grdSelArea.ActualHeight * point + sshalf, 0, 0);
             b.SnapsToDevicePixels = true;
             b.UseLayoutRounding = false;
 
@@ -543,7 +545,8 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Tag is double d)
                         {
-                            b.Margin = new Thickness(grdSelArea.ActualWidth * d + sshalf, 0, 0, 0);
+                            b.Margin = new Thickness(grdSelArea.ActualWidth * d, 0, 0, 0);
+                            //b.Margin = new Thickness(grdSelArea.ActualWidth * d + sshalf, 0, 0, 0);
                         }
                     }
                 }
@@ -562,7 +565,8 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Tag is double d)
                         {
-                            b.Margin = new Thickness(0, grdSelArea.ActualHeight * d + sshalf, 0, 0);
+                            b.Margin = new Thickness(0, grdSelArea.ActualHeight * d, 0, 0);
+                            //b.Margin = new Thickness(0, grdSelArea.ActualHeight * d + sshalf, 0, 0);
                         }
                     }
                 }
@@ -687,6 +691,7 @@ namespace SolidShineUi.Utils
                 double sshalf = value / 2;
                 grdSelArea.Margin = new Thickness(sshalf);
                 brdrKeyFocus.BorderThickness = new Thickness(sshalf);
+                grdGuidelines.Margin = new Thickness(sshalf);
             }
         }
 
@@ -758,7 +763,8 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Margin.Left > widthMin && b.Margin.Left < widthMax)
                         {
-                            p.X = b.Margin.Left - sshalf;
+                            p.X = b.Margin.Left;
+                            //p.X = b.Margin.Left - sshalf;
                         }
                     }
                 }
@@ -774,7 +780,8 @@ namespace SolidShineUi.Utils
                     {
                         if (b.Margin.Top > heightMin && b.Margin.Top < heightMax)
                         {
-                            p.Y = b.Margin.Top - sshalf;
+                            p.Y = b.Margin.Top;
+                            //p.Y = b.Margin.Top - sshalf;
                         }
                     }
                 }

@@ -83,5 +83,15 @@ namespace SsuiSample
 
             _internalAction = false;
         }
+
+        private void chkSnap_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            selPos1.SnapToSnapLines = chkSnap.IsChecked;
+        }
+
+        private void nudSnapsize_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            selPos1.SnapDistance = nudSnapsize.Value;
+        }
     }
 }
