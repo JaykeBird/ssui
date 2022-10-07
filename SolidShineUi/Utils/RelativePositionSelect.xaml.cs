@@ -293,13 +293,23 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set if the selector should snap to the snap lines within the control.
         /// </summary>
-        public bool SnapToSnapLines { get; set; } = true;
+        public bool SnapToSnapLines { get => (bool)GetValue(SnapToSnapLinesProperty); set => SetValue(SnapToSnapLinesProperty, value); }
+
+        public static DependencyProperty SnapToSnapLinesProperty
+            = DependencyProperty.Register("SnapToSnapLines", typeof(bool), typeof(RelativePositionSelect),
+            new FrameworkPropertyMetadata(true));
+
 
         /// <summary>
         /// The distance, in pixels, within which the selector should snap to the nearest snap line.
         /// The larger the distance, the further the selector can be away from a snap line before it snaps to the line.
         /// </summary>
-        public double SnapDistance { get; set; } = 3;
+        public double SnapDistance { get => (double)GetValue(SnapDistanceProperty); set => SetValue(SnapDistanceProperty, value); }
+
+        public static DependencyProperty SnapDistanceProperty
+            = DependencyProperty.Register("SnapDistance", typeof(double), typeof(RelativePositionSelect),
+            new FrameworkPropertyMetadata(3));
+
 
         #region ObservableCollection handling
         /// <summary>
@@ -581,7 +591,12 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
         /// </summary>
-        public double KeyMoveStep { get; set; } = 0.05;
+        public double KeyMoveStep { get => (double)GetValue(KeyMoveStepProperty); set => SetValue(KeyMoveStepProperty, value); }
+
+        public static DependencyProperty KeyMoveStepProperty
+            = DependencyProperty.Register("KeyMoveStep", typeof(double), typeof(RelativePositionSelect),
+            new FrameworkPropertyMetadata(0.05));
+
 
         private void RelativePositionSelect_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
