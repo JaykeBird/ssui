@@ -34,7 +34,15 @@
                     <flat:FileSelect HorizontalAlignment="Left" Margin="30,160,0,0" VerticalAlignment="Top" Width="200" x:Name="ctrFileSelect" />
                     <Border BorderThickness="1" BorderBrush="Black" Background="#33FFFFFF" Width="200" Height="150" Margin="30,220,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"  >
                         <Grid x:Name="grdItems">
-                            <Ellipse Fill="Red" Width="40" Height="20" Margin="30,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                            <Ellipse Width="40" Height="20" Margin="30,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush EndPoint="1,1" StartPoint="0.2,0">
+                                        <GradientStop Color="#FF54514C"/>
+                                        <GradientStop Color="#FFFF1E1E" Offset="1"/>
+                                        <GradientStop Color="#FFCA951E" Offset="0.578"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
                             <flat:CheckBox Content="Check" Margin="10,50,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
                             <TextBlock HorizontalAlignment="Left" Margin="21,106,0,0" TextWrapping="Wrap" Text="WHaaaaat" VerticalAlignment="Top"/>
                         </Grid>

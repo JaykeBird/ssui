@@ -34,11 +34,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 _cs = value;
                 btnMenu.ColorScheme = value;
-                btnNullBrush.ColorScheme = value;
-                btnSolidColor.ColorScheme = value;
-                btnLinGradient.ColorScheme = value;
-                btnRadGradient.ColorScheme = value;
-                btnImageBrush.ColorScheme = value;
+                btnEditBrush.ColorScheme = value;
+                selChange.ColorScheme = value;
+                brdrPop.BorderBrush = value.BorderColor.ToBrush();
+                brdrPop.Background = value.ThirdHighlightColor.ToBrush();
 
                 if (value.IsHighContrast)
                 {
@@ -109,12 +108,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
 
-                btnNullBrush.IsSelected = true;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = false;
+                txtCurrentBrush.Text = "(null brush)";
+                txtCurrentValue.Text = "";
+                btnEditBrush.IsEnabled = false;
+                btnEditBrush.Content = "Edit...";
                 return;
             }
 
@@ -126,12 +123,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = true;
+                txtCurrentBrush.Text = "(unknown)";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = false;
+                btnEditBrush.Content = "Edit...";
                 return;
             }
 
@@ -165,12 +160,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
 
-                btnNullBrush.IsSelected = true;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = false;
+                txtCurrentBrush.Text = "(null brush)";
+                txtCurrentValue.Text = "";
+                btnEditBrush.IsEnabled = false;
+                btnEditBrush.Content = "Edit...";
                 return;
             }
 
@@ -182,12 +175,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = true;
+                txtCurrentBrush.Text = "(unknown)";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = false;
+                btnEditBrush.Content = "Edit...";
                 return;
             }
 
@@ -215,12 +206,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = (SolidColorBrush)value;
                 btnBrush.DisabledBrush = (SolidColorBrush)value;
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = true;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = false;
+                txtCurrentBrush.Text = "Solid Color Brush";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = true;
+                btnEditBrush.Content = "Edit Color...";
             }
             else if (brushType == typeof(LinearGradientBrush))
             {
@@ -230,12 +219,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = (LinearGradientBrush)value;
                 btnBrush.DisabledBrush = (LinearGradientBrush)value;
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = true;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = false;
+                txtCurrentBrush.Text = "Linear Gradient Brush";
+                txtCurrentValue.Text = GetGradientDescriptor((LinearGradientBrush)value);
+                btnEditBrush.IsEnabled = true;
+                btnEditBrush.Content = "Edit Gradient...";
             }
             else if (brushType == typeof(RadialGradientBrush))
             {
@@ -245,12 +232,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = (RadialGradientBrush)value;
                 btnBrush.DisabledBrush = (RadialGradientBrush)value;
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = true;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = false;
+                txtCurrentBrush.Text = "Radial Gradient Brush";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = true;
+                btnEditBrush.Content = "Edit Gradient...";
             }
             else if (brushType == typeof(ImageBrush))
             {
@@ -260,12 +245,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = (ImageBrush)value;
                 btnBrush.DisabledBrush = (ImageBrush)value;
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = true;
-                btnMenu.IsSelected = false;
+                txtCurrentBrush.Text = "Image Brush";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = true;
+                btnEditBrush.Content = "Edit...";
             }
             else if (brushType == typeof(BitmapCacheBrush))
             {
@@ -275,12 +258,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = Colors.LightGray.ToBrush();
                 btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = true;
+                txtCurrentBrush.Text = "Bitmap Cache Brush";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = true;
+                btnEditBrush.Content = "Brush Info...";
             }
             else if (brushType == typeof(DrawingBrush))
             {
@@ -290,12 +271,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = Colors.LightGray.ToBrush();
                 btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = true;
+                txtCurrentBrush.Text = "Drawing Brush";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = true;
+                btnEditBrush.Content = "Brush Info...";
             }
             else
             {
@@ -305,13 +284,29 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.ClickBrush = Colors.Black.ToBrush();
                 btnBrush.DisabledBrush = Colors.Black.ToBrush();
 
-                btnNullBrush.IsSelected = false;
-                btnSolidColor.IsSelected = false;
-                btnLinGradient.IsSelected = false;
-                btnRadGradient.IsSelected = false;
-                btnImageBrush.IsSelected = false;
-                btnMenu.IsSelected = true;
+                txtCurrentBrush.Text = "(unknown)";
+                txtCurrentValue.Text = value.ToString();
+                btnEditBrush.IsEnabled = false;
+                btnEditBrush.Content = "Edit...";
             }
+        }
+
+        string GetGradientDescriptor(LinearGradientBrush brush)
+        {
+            double height = brush.StartPoint.Y - brush.EndPoint.Y;
+            double width = brush.StartPoint.X - brush.EndPoint.Y;
+
+            double angleR = Math.Tan(height / width);
+            // time for some trigonometry! remember that from high school?
+            // after converting from radians to degrees, it seems there's some random numbers at the end, so let's round it to XX.X degrees
+            double angle = Math.Round(angleR * 180 / Math.PI, 1);
+
+            if (brush.GradientStops.Count == 2)
+            {
+                return $"Angle: {angle}º, {brush.GradientStops[0].Color.GetHexString()} - {brush.GradientStops[1].Color.GetHexString()}";
+            }
+
+            return $"Angle: {angle}º, {brush.GradientStops.Count} stops";
         }
 
         #endregion
@@ -329,19 +324,39 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
+            else if (_propType == typeof(LinearGradientBrush))
+            {
+                // need to add gradient editor dialog
+            }
+            else if (_propType == typeof(RadialGradientBrush))
+            {
+                // need to add gradient editor dialog
+            }
+            else if (_propType == typeof(ImageBrush))
+            {
+                // need to add image brush editor dialog
+            }
             else if (_propType == typeof(DrawingBrush))
             {
-                // not supported for editing
+                // not supported for editing, just display some info
             }
             else if (_propType == typeof(BitmapCacheBrush))
             {
-                // not supported for editing
+                // not supported for editing, just display some info
             }
             else
             {
-                // others not supported yet
+                // uhhhhhhhhhhhhh
             }
         }
 
+        private void btnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            popBrush.PlacementTarget = btnMenu;
+            popBrush.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+
+            popBrush.IsOpen = true;
+            popBrush.StaysOpen = false;
+        }
     }
 }

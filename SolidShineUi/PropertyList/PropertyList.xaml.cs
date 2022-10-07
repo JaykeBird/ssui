@@ -199,7 +199,7 @@ namespace SolidShineUi.PropertyList
             btnRefresh.IsEnabled = true;
         }
 
-#region Display Name
+        #region Display Name
         /// <summary>
         /// Get or set the string used to name the object being observed. The PropertyList will try to set this automatically via looking at the Name property,
         /// or otherwise you can set a custom name to display.
@@ -212,7 +212,7 @@ namespace SolidShineUi.PropertyList
             new FrameworkPropertyMetadata("No name"));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-#endregion
+        #endregion
 
 
         void LoadPropertyList(IEnumerable<PropertyInfo> properties)
@@ -289,9 +289,9 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#endregion
+        #endregion
 
-#region Sort and Filter
+        #region Sort and Filter
 
         private PropertySortOption _sort = PropertySortOption.Name;
 
@@ -314,7 +314,7 @@ namespace SolidShineUi.PropertyList
             FilterProperties(txtFilter.Text);
         }
 
-#region Sort, Filter, Compare functions
+        #region Sort, Filter, Compare functions
         void SortList()
         {
             switch (SortOption)
@@ -495,9 +495,9 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
         private static string GetCategoryOfProperty(PropertyInfo pi)
         {
@@ -513,7 +513,7 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#region Sort and View menu
+        #region Sort and View menu
 
         private void btnName_Click(object sender, RoutedEventArgs e)
         {
@@ -544,9 +544,9 @@ namespace SolidShineUi.PropertyList
                 splTypes.Visibility = Visibility.Visible;
             }
         }
-#endregion
+        #endregion
 
-#region Registered Editors
+        #region Registered Editors
 
 
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
@@ -614,13 +614,13 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(byte), typeof(IntegerEditor));
             RegisterEditor(typeof(sbyte), typeof(IntegerEditor));
             RegisterEditor(typeof(Enum), typeof(EnumEditor));
-            //RegisterEditor(typeof(Brush), typeof(BrushEditor));
-            //RegisterEditor(typeof(SolidColorBrush), typeof(BrushEditor));
-            //RegisterEditor(typeof(LinearGradientBrush), typeof(BrushEditor));
-            //RegisterEditor(typeof(RadialGradientBrush), typeof(BrushEditor));
-            //RegisterEditor(typeof(ImageBrush), typeof(BrushEditor));
-            //RegisterEditor(typeof(DrawingBrush), typeof(BrushEditor));
-            //RegisterEditor(typeof(BitmapCacheBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(Brush), typeof(BrushEditor));
+            RegisterEditor(typeof(SolidColorBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(LinearGradientBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(RadialGradientBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(ImageBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(DrawingBrush), typeof(BrushEditor));
+            RegisterEditor(typeof(BitmapCacheBrush), typeof(BrushEditor));
             RegisterEditor(typeof(FontFamily), typeof(FontFamilyEditor));
             RegisterEditor(typeof(FontStyle), typeof(FontStyleEditor));
             RegisterEditor(typeof(Uri), typeof(UriEditor));
@@ -709,16 +709,16 @@ namespace SolidShineUi.PropertyList
 
                 //else
                 //{
-                    return null;
+                return null;
                 //}
             }
 
             return null;
         }
 
-#endregion
+        #endregion
 
-#region Visual Elements
+        #region Visual Elements
 
 #if NETCOREAPP
         private void ColumnWidthChanged(object? sender, EventArgs e)
@@ -744,7 +744,7 @@ namespace SolidShineUi.PropertyList
         }
 
 
-#region Show/Hide Toolbar Items (Dependency properties)
+        #region Show/Hide Toolbar Items (Dependency properties)
 
         /// <summary>
         /// Get or set if the Filter textbox should be visible at the top of the PropertyList control.
@@ -779,9 +779,9 @@ namespace SolidShineUi.PropertyList
             new FrameworkPropertyMetadata(true));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
 
         private void mnuShowInherited_Click(object sender, RoutedEventArgs e)

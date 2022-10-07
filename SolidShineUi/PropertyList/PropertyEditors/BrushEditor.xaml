@@ -9,27 +9,52 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="Auto" MinWidth="170"/>
+            <ColumnDefinition Width="Auto" MinWidth="30"/>
         </Grid.ColumnDefinitions>
         <flat:FlatButton x:Name="btnBrush" Click="btnBrush_Click" />
-        <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Bitmap Cache" Margin="3,0" IsHitTestVisible="False" />
+        <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Unknown" Margin="3,0" IsHitTestVisible="False" />
 
-        <StackPanel Grid.Column="1" Margin="3,1,0,1" Orientation="Horizontal" >
-            <flat:FlatButton x:Name="btnNullBrush" Width="28" MinHeight="20" Content="N" VerticalAlignment="Stretch" ToolTip="(null)" />
-            <flat:FlatButton x:Name="btnSolidColor" Width="28" MinHeight="20" Content="S" VerticalAlignment="Stretch" ToolTip="Solid Color" />
-            <flat:FlatButton x:Name="btnLinGradient" Width="28" MinHeight="20" Content="LG" VerticalAlignment="Stretch" ToolTip="Linear Gradient" />
-            <flat:FlatButton x:Name="btnRadGradient" Width="28" MinHeight="20" Content="RG" VerticalAlignment="Stretch" ToolTip="Radial Gradient" />
-            <flat:FlatButton x:Name="btnImageBrush" Width="28" MinHeight="20" Content="I" VerticalAlignment="Stretch" ToolTip="Image" />
-            <flat:MenuButton x:Name="btnMenu" Width="28" MinHeight="20" ShowMenuArrow="False" >
-                <Image Width="16" Height="16" x:Name="imgMenu"  Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
-                <flat:MenuButton.Menu>
+        <flat:FlatButton x:Name="btnMenu" Width="28" MinHeight="20" Grid.Column="1" Margin="3,1,0,1" Click="btnMenu_Click" >
+            <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
+            <!--<flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Bitmap Cache Brush Info..." IsEnabled="False" x:Name="mnuBitmapCacheInfo" />
                         <MenuItem Header="Drawing Brush Info..." IsEnabled="False" x:Name="mnuDrawingInfo" />
                     </flat:ContextMenu>
-                </flat:MenuButton.Menu>
-            </flat:MenuButton>
-        </StackPanel>
+                </flat:MenuButton.Menu>-->
+        </flat:FlatButton>
 
+        <Popup x:Name="popBrush">
+            <Border x:Name="brdrPop" BorderThickness="1" BorderBrush="Black" Background="White" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" x:Name="grdCurrent" MinWidth="250" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Currently set to:" FontWeight="Bold" Margin="8,10,0,0" FontSize="12" Grid.Row="0" />
+                        <TextBlock Text="(unknown)" FontSize="16" Margin="8,3" x:Name="txtCurrentBrush" Grid.Row="1" />
+                        <TextBlock Text="(value unset)" FontSize="12" Margin="8,3" x:Name="txtCurrentValue" Grid.Row="2" />
+                        <flat:FlatButton Content="Edit..." x:Name="btnEditBrush" FontSize="12" HorizontalAlignment="Right" Margin="0,3,10,3" Click="btnBrush_Click" Grid.Row="3" />
+                    </Grid>
+                    <TextBlock Text="Change to:" Margin="5,3" Grid.Row="1" />
+                    <flat:SelectPanel Grid.Row="2" x:Name="selChange" BorderThickness="0,1,0,0" >
+                        <flat:SelectableItem Text="Nothing (null)" />
+                        <flat:SelectableItem Text="Solid Color Brush" />
+                        <flat:SelectableItem Text="Linear Gradient Brush" />
+                        <flat:SelectableItem Text="Radial Gradient Brush" />
+                        <flat:SelectableItem Text="Image Brush" />
+                    </flat:SelectPanel>
+                </Grid>
+            </Border>
+        </Popup>
     </Grid>
 </UserControl>

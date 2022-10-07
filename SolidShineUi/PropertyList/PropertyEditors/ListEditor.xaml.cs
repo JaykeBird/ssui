@@ -239,7 +239,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 #endif
 
-        void OpenListDialog()
+        /// <summary>
+        /// Open the ListEditorDialog, with the contents being the list of this property.
+        /// </summary>
+        public void OpenListDialog()
         {
             if (listVal != null)
             {
