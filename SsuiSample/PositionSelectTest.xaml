@@ -31,10 +31,10 @@
             </utils:RelativePositionSelect.VerticalSnapPoints>
         </utils:RelativePositionSelect>
         <TextBlock Grid.Row="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Width:" />
-        <ssui:DoubleSpinner Grid.Row="1" Margin="70,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}"
+        <ssui:DoubleSpinner Grid.Row="1" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}"
                             MinValue="0" MaxValue="1" Decimals="3" Step="0.05" x:Name="nudWidth1" ValueChanged="nudWidth1_ValueChanged" />
         <TextBlock Grid.Row="2" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Height:" />
-        <ssui:DoubleSpinner Grid.Row="2" Margin="70,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}" 
+        <ssui:DoubleSpinner Grid.Row="2" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}" 
                             MinValue="0" MaxValue="1" Decimals="3" Step="0.05" x:Name="nudHeight1" ValueChanged="nudHeight1_ValueChanged" />
         <ssui:CheckBox Grid.Row="1" Margin="160,0,0,0" Content="Snap to Snap Points" ColorScheme="{Binding ColorScheme, ElementName=control}"
                        CheckChanged="chkSnap_CheckChanged" x:Name="chkSnap" IsChecked="True" />

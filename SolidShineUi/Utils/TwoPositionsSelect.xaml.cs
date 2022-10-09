@@ -1,38 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Windows.Shapes;
 
 namespace SolidShineUi.Utils
 {
     /// <summary>
     /// A control to visually select a value between 0.0 and 1.0 in both the X (width) and Y (height) axes.
     /// </summary>
-    public partial class RelativePositionSelect : UserControl
+    public partial class TwoPositionsSelect : UserControl
     {
 
         /// <summary>
-        /// Create a RelativePositionSelect.
+        /// Create a TwoPositionsSelect.
         /// </summary>
-        public RelativePositionSelect()
+        public TwoPositionsSelect()
         {
             InitializeComponent();
 
             HorizontalSnapPoints.CollectionChanged += HorizontalSnapPoints_CollectionChanged;
             VerticalSnapPoints.CollectionChanged += VerticalSnapPoints_CollectionChanged;
-            SizeChanged += RelativePositionSelect_SizeChanged;
-            GotKeyboardFocus += RelativePositionSelect_GotKeyboardFocus;
-            LostKeyboardFocus += RelativePositionSelect_LostKeyboardFocus;
-            PreviewKeyDown += RelativePositionSelect_PreviewKeyDown;
-            PreviewKeyUp += RelativePositionSelect_PreviewKeyUp;
-            KeyDown += RelativePositionSelect_KeyDown;
-            KeyUp += RelativePositionSelect_KeyUp;
+            SizeChanged += TwoPositionsSelect_SizeChanged;
+            GotKeyboardFocus += TwoPositionsSelect_GotKeyboardFocus;
+            LostKeyboardFocus += TwoPositionsSelect_LostKeyboardFocus;
+            PreviewKeyDown += TwoPositionsSelect_PreviewKeyDown;
+            PreviewKeyUp += TwoPositionsSelect_PreviewKeyUp;
+            KeyDown += TwoPositionsSelect_KeyDown;
+            KeyUp += TwoPositionsSelect_KeyUp;
 
             //KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Continue);
             KeyboardNavigation.SetDirectionalNavigation(this, KeyboardNavigationMode.Contained);
@@ -51,7 +49,7 @@ namespace SolidShineUi.Utils
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RelativePositionSelect),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -63,7 +61,7 @@ namespace SolidShineUi.Utils
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
 
-            if (d is RelativePositionSelect r)
+            if (d is TwoPositionsSelect r)
             {
                 r.ColorSchemeChanged?.Invoke(d, e);
                 r.ApplyColorScheme(cs);
@@ -71,7 +69,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the color scheme used for this RelativePositionSelect. For easier color scheme management, bind this to the window or larger control you're using.
+        /// Get or set the color scheme used for this TwoPositionsSelect. For easier color scheme management, bind this to the window or larger control you're using.
         /// </summary>
         public ColorScheme ColorScheme
         {
@@ -123,7 +121,7 @@ namespace SolidShineUi.Utils
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used for the background of the RelativePositionSelect's box.
+        /// Get or set the brush used for the background of the TwoPositionsSelect's box.
         /// </summary>
         [Category("Brushes")]
         public Brush ControlBackground
@@ -133,7 +131,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the brush used for the selector ellipse in the RelativePositionSelect.
+        /// Get or set the brush used for the selector ellipses in the TwoPositionsSelect.
         /// </summary>
         [Category("Brushes")]
         public Brush SelectorBrush
@@ -143,7 +141,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the brush to use for the background of the RelativePositionSelect's box when it is disabled.
+        /// Get or set the brush to use for the background of the TwoPositionsSelect's box when it is disabled.
         /// </summary>
         [Category("Brushes")]
         public Brush BackgroundDisabledBrush
@@ -173,7 +171,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the brush used for the border of the RelativePositionSelect's box.
+        /// Get or set the brush used for the border of the TwoPositionsSelect's box.
         /// </summary>
         [Category("Brushes")]
         public new Brush BorderBrush
@@ -204,41 +202,41 @@ namespace SolidShineUi.Utils
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ControlBackgroundProperty = DependencyProperty.Register(
-            "ControlBackground", typeof(Brush), typeof(RelativePositionSelect),
+            "ControlBackground", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
         public static readonly DependencyProperty SelectorBrushProperty = DependencyProperty.Register(
-            "SelectorBrush", typeof(Brush), typeof(RelativePositionSelect),
+            "SelectorBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
-            "BackgroundDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
+            "BackgroundDisabledBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
+            "BorderDisabledBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         public static readonly DependencyProperty SelectorDisabledBrushProperty = DependencyProperty.Register(
-            "SelectorDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
+            "SelectorDisabledBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(RelativePositionSelect),
+            "BorderBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         public static readonly DependencyProperty SnapLineBrushProperty = DependencyProperty.Register(
-            "SnapLineBrush", typeof(Brush), typeof(RelativePositionSelect),
+            "SnapLineBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnSnapLineBrushChanged));
 
         public static readonly DependencyProperty KeyboardFocusHighlightProperty = DependencyProperty.Register(
-            "KeyboardFocusHighlight", typeof(Brush), typeof(RelativePositionSelect),
+            "KeyboardFocusHighlight", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         public static void OnSnapLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is RelativePositionSelect r)
+            if (d is TwoPositionsSelect r)
             {
                 r.UpdateSnapLineBrush();
             }
@@ -272,7 +270,7 @@ namespace SolidShineUi.Utils
 
         public static void OnKeyboardFocusHighlightBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is RelativePositionSelect r)
+            if (d is TwoPositionsSelect r)
             {
                 r.UpdateSnapLineBrush();
             }
@@ -296,7 +294,7 @@ namespace SolidShineUi.Utils
         public bool SnapToSnapLines { get => (bool)GetValue(SnapToSnapLinesProperty); set => SetValue(SnapToSnapLinesProperty, value); }
 
         public static DependencyProperty SnapToSnapLinesProperty
-            = DependencyProperty.Register("SnapToSnapLines", typeof(bool), typeof(RelativePositionSelect),
+            = DependencyProperty.Register("SnapToSnapLines", typeof(bool), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(true));
 
 
@@ -307,7 +305,7 @@ namespace SolidShineUi.Utils
         public double SnapDistance { get => (double)GetValue(SnapDistanceProperty); set => SetValue(SnapDistanceProperty, value); }
 
         public static DependencyProperty SnapDistanceProperty
-            = DependencyProperty.Register("SnapDistance", typeof(double), typeof(RelativePositionSelect),
+            = DependencyProperty.Register("SnapDistance", typeof(double), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(3.0));
 
 
@@ -539,7 +537,7 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        private void RelativePositionSelect_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void TwoPositionsSelect_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             double sshalf = SelectorSize / 2;
 
@@ -560,7 +558,8 @@ namespace SolidShineUi.Utils
                         }
                     }
                 }
-                Canvas.SetLeft(ellSelect, (grdSelArea.ActualWidth * SelectedWidth) - sshalf);
+                Canvas.SetLeft(ellSelect, (grdSelArea.ActualWidth * SelectedWidth1) - sshalf);
+                Canvas.SetLeft(ellSelect2, (grdSelArea.ActualWidth * SelectedWidth2) - sshalf);
             }
 
             if (e.HeightChanged)
@@ -580,13 +579,48 @@ namespace SolidShineUi.Utils
                         }
                     }
                 }
-                Canvas.SetTop(ellSelect, (grdSelArea.ActualHeight * SelectedHeight) - sshalf);
+                Canvas.SetTop(ellSelect, (grdSelArea.ActualHeight * SelectedHeight1) - sshalf);
+                Canvas.SetTop(ellSelect2, (grdSelArea.ActualHeight * SelectedHeight2) - sshalf);
             }
         }
 
         #endregion
 
+        static bool? SELECTOR_NONE = null;
+        static bool? SELECTOR_1 = false;
+        static bool? SELECTOR_2 = true;
+
+        /// <summary>
+        /// Set which selector is receiving key and mouse focus. <c>false</c> for selector 1, <c>true</c> for selector 2, and <c>null</c> for neither.
+        /// </summary>
+        /// <param name="focusValue">Value indicating which selector should have focus: <c>false</c> for selector 1, <c>true</c> for selector 2, and <c>null</c> for neither</param>
+        void SetSelectorFocus(bool? focusValue)
+        {
+            selectorFocus = focusValue;
+            if (focusValue == null)
+            {
+                // no focus
+                ellSelect.Opacity = 1.0;
+                ellSelect2.Opacity = 1.0;
+            }
+            else if (focusValue.Value == true)
+            {
+                // selector 2
+                ellSelect.Opacity = 0.6;
+                ellSelect2.Opacity = 1.0;
+            }
+            else
+            {
+                // selector 1
+                ellSelect.Opacity = 1.0;
+                ellSelect2.Opacity = 0.6;
+            }
+        }
+
+        bool? selectorFocus = null;
+
         #region Keyboard Controls
+
 
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
@@ -594,59 +628,104 @@ namespace SolidShineUi.Utils
         public double KeyMoveStep { get => (double)GetValue(KeyMoveStepProperty); set => SetValue(KeyMoveStepProperty, value); }
 
         public static DependencyProperty KeyMoveStepProperty
-            = DependencyProperty.Register("KeyMoveStep", typeof(double), typeof(RelativePositionSelect),
+            = DependencyProperty.Register("KeyMoveStep", typeof(double), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(0.05));
 
 
-        private void RelativePositionSelect_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            brdrKeyFocus.BorderBrush = Colors.Transparent.ToBrush();
-        }
-
-        private void RelativePositionSelect_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void TwoPositionsSelect_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             brdrKeyFocus.BorderBrush = KeyboardFocusHighlight;
+            SetSelectorFocus(SELECTOR_1);
         }
 
-        private void RelativePositionSelect_KeyUp(object sender, KeyEventArgs e)
+        private void TwoPositionsSelect_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            switch (e.Key)
+            brdrKeyFocus.BorderBrush = Colors.Transparent.ToBrush();
+            SetSelectorFocus(SELECTOR_NONE);
+        }
+
+        private void TwoPositionsSelect_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((selectorFocus ?? false) == SELECTOR_2)
             {
-                case Key.Left:
-                    SelectedWidth -= KeyMoveStep;
-                    break;
-                case Key.Right:
-                    SelectedWidth += KeyMoveStep;
-                    break;
-                case Key.Up:
-                    SelectedHeight -= KeyMoveStep;
-                    break;
-                case Key.Down:
-                    SelectedHeight += KeyMoveStep;
-                    break;
-                case Key.Home:
-                    SelectedWidth = 0;
-                    break;
-                case Key.End:
-                    SelectedWidth = 1;
-                    break;
-                case Key.PageUp:
-                    SelectedHeight = 0;
-                    break;
-                case Key.PageDown:
-                    SelectedHeight = 1;
-                    break;
-                default:
-                    break;
+                switch (e.Key)
+                {
+                    case Key.Left:
+                        SelectedWidth2 -= KeyMoveStep;
+                        break;
+                    case Key.Right:
+                        SelectedWidth2 += KeyMoveStep;
+                        break;
+                    case Key.Up:
+                        SelectedHeight2 -= KeyMoveStep;
+                        break;
+                    case Key.Down:
+                        SelectedHeight2 += KeyMoveStep;
+                        break;
+                    case Key.Home:
+                        SelectedWidth2 = 0;
+                        break;
+                    case Key.End:
+                        SelectedWidth2 = 1;
+                        break;
+                    case Key.PageUp:
+                        SelectedHeight2 = 0;
+                        break;
+                    case Key.PageDown:
+                        SelectedHeight2 = 1;
+                        break;
+                    case Key.LeftShift:
+                    case Key.RightShift:
+                        SetSelectorFocus(SELECTOR_1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Left:
+                        SelectedWidth1 -= KeyMoveStep;
+                        break;
+                    case Key.Right:
+                        SelectedWidth1 += KeyMoveStep;
+                        break;
+                    case Key.Up:
+                        SelectedHeight1 -= KeyMoveStep;
+                        break;
+                    case Key.Down:
+                        SelectedHeight1 += KeyMoveStep;
+                        break;
+                    case Key.Home:
+                        SelectedWidth1 = 0;
+                        break;
+                    case Key.End:
+                        SelectedWidth1 = 1;
+                        break;
+                    case Key.PageUp:
+                        SelectedHeight1 = 0;
+                        break;
+                    case Key.PageDown:
+                        SelectedHeight1 = 1;
+                        break;
+                    case Key.LeftShift:
+                    case Key.RightShift:
+                        SetSelectorFocus(SELECTOR_2);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
-        private void RelativePositionSelect_KeyDown(object sender, KeyEventArgs e)
+        private void TwoPositionsSelect_KeyDown(object sender, KeyEventArgs e)
         {
 
         }
 
-        private void RelativePositionSelect_PreviewKeyUp(object sender, KeyEventArgs e)
+        private void TwoPositionsSelect_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -658,6 +737,8 @@ namespace SolidShineUi.Utils
                 case Key.End:
                 case Key.PageUp:
                 case Key.PageDown:
+                case Key.RightShift:
+                case Key.LeftShift:
                     if (e.OriginalSource == this)
                     {
                         //e.Handled = true;
@@ -668,7 +749,7 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private void RelativePositionSelect_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void TwoPositionsSelect_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -680,6 +761,8 @@ namespace SolidShineUi.Utils
                 case Key.End:
                 case Key.PageUp:
                 case Key.PageDown:
+                case Key.RightShift:
+                case Key.LeftShift:
                     if (e.OriginalSource == this)
                     {
                         e.Handled = true;
@@ -702,6 +785,8 @@ namespace SolidShineUi.Utils
             {
                 ellSelect.Width = value;
                 ellSelect.Height = value;
+                ellSelect2.Width = value;
+                ellSelect2.Height = value;
 
                 double sshalf = value / 2;
                 grdSelArea.Margin = new Thickness(sshalf);
@@ -715,16 +800,20 @@ namespace SolidShineUi.Utils
 
         private void grdGuidelines_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            selectMode = true;
+            //selectMode = true;
 
-            // get point from mouse
-            Point p = Mouse.GetPosition(grdSelArea);
-            SelectPoint(p);
+            //// get point from mouse
+            //Point p = Mouse.GetPosition(grdSelArea);
+            //SelectPointSelector1(p);
         }
 
         private void grdGuidelines_MouseUp(object sender, MouseButtonEventArgs e)
         {
             selectMode = false;
+            if (!IsKeyboardFocusWithin)
+            {
+                SetSelectorFocus(SELECTOR_NONE);
+            }
         }
 
         private void grdGuidelines_MouseMove(object sender, MouseEventArgs e)
@@ -733,16 +822,48 @@ namespace SolidShineUi.Utils
             {
                 // get point from mouse
                 Point p = Mouse.GetPosition(grdSelArea);
-                SelectPoint(p);
+                if (selectorFocus == SELECTOR_1)
+                {
+                    SelectPointSelector1(p);
+                }
+                else
+                {
+                    SelectPointSelector2(p);
+                }
             }
         }
+
         private void grdGuidelines_MouseLeave(object sender, MouseEventArgs e)
         {
             selectMode = false;
+            if (!IsKeyboardFocusWithin)
+            {
+                SetSelectorFocus(SELECTOR_NONE);
+            }
+        }
+
+        private void ellSelect_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            selectMode = true;
+            SetSelectorFocus(SELECTOR_1);
+
+            // get point from mouse
+            Point p = Mouse.GetPosition(grdSelArea);
+            SelectPointSelector1(p);
+        }
+
+        private void ellSelect2_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            selectMode = true;
+            SetSelectorFocus(SELECTOR_2);
+
+            // get point from mouse
+            Point p = Mouse.GetPosition(grdSelArea);
+            SelectPointSelector2(p);
         }
         #endregion
 
-        private void SelectPoint(Point p)
+        private void SelectPointSelector1(Point p)
         {
             // make sure point is in bounds
             if (p.X < 0)
@@ -819,32 +940,94 @@ namespace SolidShineUi.Utils
             SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        #region SelectorPosition Properties
-        private double oWidth = 0.5; // X
-        private double oHeight = 0.5; // Y
-
-        /// <summary>
-        /// Get or set the selected point, on both the X and Y axes.
-        /// This is how far the selector is from the top-left corner of the control, on a relative scale from <c>0.0</c> to <c>1.0</c> in both axes.
-        /// </summary>
-        /// <remarks>
-        /// When setting this property, the event SelectedPositionChanged will fire twice: once after the width (X) is changed, and once after the height (Y) is changed.
-        /// </remarks>
-        public Point SelectedPoint
+        private void SelectPointSelector2(Point p)
         {
-            get { return new Point(oWidth, oHeight); }
-            set
+            // make sure point is in bounds
+            if (p.X < 0)
             {
-                SelectedWidth = value.X;
-                SelectedHeight = value.Y;
+                p.X = 0;
             }
+            else if (p.X > grdSelArea.ActualWidth)
+            {
+                p.X = grdSelArea.ActualWidth;
+            }
+
+            if (p.Y < 0)
+            {
+                p.Y = 0;
+            }
+            else if (p.Y > grdSelArea.ActualHeight)
+            {
+                p.Y = grdSelArea.ActualHeight;
+            }
+
+            double sshalf = SelectorSize / 2;
+
+            // check for snap positions
+            if (SnapToSnapLines)
+            {
+                double widthMin = p.X - SnapDistance;
+                double widthMax = p.X + SnapDistance;
+                double heightMin = p.Y - SnapDistance;
+                double heightMax = p.Y + SnapDistance;
+
+                // check vertical snap points
+#if NETCOREAPP
+                foreach (UIElement? item in canVertical.Children)
+#else
+                foreach (UIElement item in canVertical.Children)
+#endif
+                {
+                    if (item != null && item is Border b)
+                    {
+                        if (b.Margin.Left > widthMin && b.Margin.Left < widthMax)
+                        {
+                            p.X = b.Margin.Left;
+                            //p.X = b.Margin.Left - sshalf;
+                        }
+                    }
+                }
+
+                // check horizontal snap points
+#if NETCOREAPP
+                foreach (UIElement? item in canHorizontal.Children)
+#else
+                foreach (UIElement item in canHorizontal.Children)
+#endif
+                {
+                    if (item != null && item is Border b)
+                    {
+                        if (b.Margin.Top > heightMin && b.Margin.Top < heightMax)
+                        {
+                            p.Y = b.Margin.Top;
+                            //p.Y = b.Margin.Top - sshalf;
+                        }
+                    }
+                }
+            }
+
+            // move selector to this new point
+            //ellSelect.Margin = new Thickness(p.X - sshalf, p.Y - sshalf, 0, 0);
+            Canvas.SetLeft(ellSelect2, p.X - sshalf);
+            Canvas.SetTop(ellSelect2, p.Y - sshalf);
+
+            // update outputs
+            qWidth = p.X / grdSelArea.ActualWidth;
+            qHeight = p.Y / grdSelArea.ActualHeight;
+            SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        private double oWidth = 0.5;
+        private double oHeight = 0.5;
+
+        private double qWidth = 0.5;
+        private double qHeight = 0.5;
 
         /// <summary>
         /// Get or set the selected value on the horizontal (X) axis.
         /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
-        public double SelectedWidth
+        public double SelectedWidth1
         {
             get { return oWidth; }
             set
@@ -872,7 +1055,7 @@ namespace SolidShineUi.Utils
         /// Get or set the selected value on the vertical (Y) axis.
         /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
-        public double SelectedHeight
+        public double SelectedHeight1
         {
             get { return oHeight; }
             set
@@ -896,7 +1079,53 @@ namespace SolidShineUi.Utils
             }
         }
 
-        public double SelectedWidth1 { get; set; }
+        public double SelectedWidth2
+        {
+            get { return qWidth; }
+            set
+            {
+                double val = value;
+                if (val < 0)
+                {
+                    val = 0;
+                }
+                else if (val > 1)
+                {
+                    val = 1;
+                }
+
+                double sshalf = SelectorSize / 2;
+                qWidth = val;
+                //Thickness th = ellSelect.Margin;
+                //ellSelect.Margin = new Thickness((grdSelArea.ActualWidth * val) - sshalf, th.Top, 0, 0);
+                Canvas.SetLeft(ellSelect2, (grdSelArea.ActualWidth * val) - sshalf);
+                SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public double SelectedHeight2
+        {
+            get { return qHeight; }
+            set
+            {
+                double val = value;
+                if (val < 0)
+                {
+                    val = 0;
+                }
+                else if (val > 1)
+                {
+                    val = 1;
+                }
+
+                double sshalf = SelectorSize / 2;
+                qHeight = val;
+                //Thickness th = ellSelect.Margin;
+                //ellSelect.Margin = new Thickness(th.Left, (grdSelArea.ActualHeight * val) - sshalf, 0, 0);
+                Canvas.SetTop(ellSelect2, (grdSelArea.ActualHeight * val) - sshalf);
+                SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         /// <summary>
         /// Raised when either the SelectedHeight or SelectedWidth properties change (i.e., when the selector was moved).
@@ -906,7 +1135,5 @@ namespace SolidShineUi.Utils
 #else
         public event EventHandler SelectedPositionChanged;
 #endif
-        #endregion
-
     }
 }
