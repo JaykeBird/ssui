@@ -62,6 +62,51 @@ namespace SolidShineUi
         {
             return new ImageBrush(new BitmapImage(location));
         }
+
+        /// <summary>
+        /// Create a brush with a checkerboard pattern, where the size and colors of the squares are customizable.
+        /// </summary>
+        /// <param name="squareSize">The size of each square in the pattern. A size of 4 will create a pattern of 4x4 squares, each of alternating colors.</param>
+        /// <param name="color1">The color to use for the first set of squares.</param>
+        /// <param name="color2">The color to use for the second, alternating set of squares.</param>
+        public static DrawingBrush CreateCheckerboardBrush(double squareSize, Color color1, Color color2)
+        {
+            return CreateCheckerboardBrush(squareSize, Create(color1), Create(color2));
+        }
+
+        /// <summary>
+        /// Create a brush with a checkerboard pattern, where the size and colors of the squares are customizable.
+        /// </summary>
+        /// <param name="squareSize">The size of each square in the pattern. A size of 4 will create a pattern of 4x4 squares, each of alternating colors.</param>
+        /// <param name="brush1">The brush to use for the first set of squares.</param>
+        /// <param name="brush2">The brush to use for the second, alternating set of squares.</param>
+        public static DrawingBrush CreateCheckerboardBrush(double squareSize, Brush brush1, Brush brush2)
+        {
+            double fullsize = squareSize * 2;
+            //<DrawingBrush Stretch = "None" TileMode = "Tile" Viewport = "0,0,8,8" ViewportUnits = "Absolute">
+            //    <!-- https://stackoverflow.com/questions/3827561/how-to-create-checker-board-pattern -->
+            //    <DrawingBrush.Drawing>
+            //        <DrawingGroup>
+            //            <GeometryDrawing Geometry = "M0,0 L8,0 8,8 0,8Z" Brush = "White" />
+            //            <GeometryDrawing Geometry = "M0,4 L8,4 8,8 4,8 4,0 0,0Z" Brush = "LightGray" />
+            //        </DrawingGroup>
+            //    </DrawingBrush.Drawing>
+            //</DrawingBrush>
+
+            DrawingBrush cbb = new DrawingBrush();
+            cbb.Stretch = Stretch.None;
+            cbb.TileMode = TileMode.Tile;
+            cbb.Viewport = new System.Windows.Rect(0, 0, fullsize, fullsize);
+            cbb.ViewportUnits = BrushMappingMode.Absolute;
+
+            DrawingGroup cbd = new DrawingGroup();
+            cbd.Children.Add(new GeometryDrawing() { Brush = brush1, Geometry = Geometry.Parse($"M0,0 L{fullsize},0 {fullsize},{fullsize} 0,{fullsize}Z") });
+            cbd.Children.Add(new GeometryDrawing() { Brush = brush2, Geometry = Geometry.Parse($"M0,{squareSize} L{fullsize},{squareSize} {fullsize},{fullsize} {squareSize},{fullsize} {squareSize},0 0,0Z") });
+
+            cbb.Drawing = cbd;
+
+            return cbb;
+        }
     }
 
     ///// <summary>
