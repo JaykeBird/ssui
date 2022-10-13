@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Linq;
+using SolidShineUi.PropertyList.Dialogs;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -326,7 +327,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_propType == typeof(LinearGradientBrush))
             {
-                // need to add gradient editor dialog
+                LinearGradientEditorDialog lged = new LinearGradientEditorDialog();
+                lged.LoadGradient((LinearGradientBrush)_dataValue);
+                lged.ShowDialog();
+
+                if (lged.DialogResult)
+                {
+                    // update info
+                }
             }
             else if (_propType == typeof(RadialGradientBrush))
             {

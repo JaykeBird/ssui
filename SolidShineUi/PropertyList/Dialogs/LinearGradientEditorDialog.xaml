@@ -1,0 +1,31 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SolidShineUi.PropertyList.Dialogs"
+        xmlns:flat="clr-namespace:SolidShineUi"
+        xmlns:Utils="clr-namespace:SolidShineUi.Utils" x:Class="SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog"
+        mc:Ignorable="d"
+        Title="LinearGradientEditorDialog" Height="550" Width="700">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="94*"/>
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="68*"/>
+            <RowDefinition Height="85*"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+
+
+        <!-- dialog buttons -->
+        <flat:FlatButton Content="OK" HorizontalAlignment="Right" Margin="0,0,100,0" Width="80" Grid.Row="5" VerticalAlignment="Center" x:Name="btnOK" Click="btnOK_Click" />
+        <flat:FlatButton Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,0" Width="80" Grid.Row="5" VerticalAlignment="Center" x:Name="btnCancel" Click="btnCancel_Click"/>
+
+        <Utils:GradientBar x:Name="stopBar" />
+        <Utils:TwoPositionsSelect Margin="0,10,0,10" Grid.Row="2" x:Name="edtPoints" SelectedHeight1="0.0" SelectedHeight2="1.0" SelectedWidth1="0.0" SelectedWidth2="1.0" HorizontalAlignment="Center" Width="140" />
+
+    </Grid>
+</Window>
