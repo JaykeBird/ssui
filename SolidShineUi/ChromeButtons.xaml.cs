@@ -8,7 +8,7 @@ namespace SolidShineUi
     /// A control that hosts the caption buttons for a <see cref="FlatWindow"/>.
     /// These buttons are the Minimize, Maximize/Restore, and Close buttons visible at the top corner of most windows.
     /// </summary>
-    public partial class ChromeButtons
+    public partial class ChromeButtons : UserControl
     {
 
 #if NETCOREAPP
