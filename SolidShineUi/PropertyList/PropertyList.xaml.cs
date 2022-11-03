@@ -10,6 +10,7 @@ using System.Globalization;
 using SolidShineUi.PropertyList.PropertyEditors;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using System.Runtime.InteropServices;
 
 namespace SolidShineUi.PropertyList
 {
@@ -568,6 +569,11 @@ namespace SolidShineUi.PropertyList
         /// <remarks>If a different editor is already registered for a certain type, this will replace that registration and the control will use this editor instead.</remarks>
         public void RegisterEditor(Type type, Type editor)
         {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type), "The property type cannot be null.");
+            }
+
             if (!editor.GetInterfaces().Contains(typeof(IPropertyEditor)))
             {
                 throw new ArgumentException("The editor must inherit the IPropertyEditor interface.", nameof(editor));
@@ -630,6 +636,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Point), typeof(PointEditor));
             RegisterEditor(typeof(List<>), typeof(ListEditor));
             RegisterEditor(typeof(IEnumerable<>), typeof(EnumerableEditor));
+            RegisterEditor(typeof(Version), typeof(VersionEditor));
         }
 
         /// <summary>
@@ -643,75 +650,83 @@ namespace SolidShineUi.PropertyList
         public IPropertyEditor CreateEditorForType(Type propType)
 #endif
         {
-            // TODO: add exception handling for Activator.CreateInstance
+            try
+            {
+                if (registeredEditors.ContainsKey(propType))
+                {
+                    object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        return i;
+                    }
+                }
+                else if (propType.IsEnum)
+                {
+                    // load enum editor
+                    object o = Activator.CreateInstance(registeredEditors[typeof(Enum)] ?? typeof(EnumEditor)) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        return i;
+                    }
+                }
+                else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(List<>) && registeredEditors.ContainsKey(typeof(List<>)))
+                {
+                    Type itemType = propType.GetGenericArguments()[0];
+                    object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        return i;
+                    }
+                }
+                else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable<>) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
+                {
+                    Type itemType = propType.GetGenericArguments()[0];
+                    object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        return i;
+                    }
+                }
+                else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
+                {
+                    object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        return i;
+                    }
+                }
+                else if (typeof(IList).IsAssignableFrom(propType))
+                {
+                    object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        return i;
+                    }
+                }
+                else if (typeof(IEnumerable).IsAssignableFrom(propType))
+                {
+                    object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                    if (o is IPropertyEditor i)
+                    {
+                        return i;
+                    }
+                }
+                else
+                {
 
-            if (registeredEditors.ContainsKey(propType))
-            {
-                object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
-                if (o is IPropertyEditor i)
-                {
-                    return i;
+                    //else
+                    //{
+                    return null;
+                    //}
                 }
             }
-            else if (propType.IsEnum)
-            {
-                // load enum editor
-                object o = Activator.CreateInstance(registeredEditors[typeof(Enum)] ?? typeof(EnumEditor)) ?? new object();
-                if (o is IPropertyEditor i)
-                {
-                    return i;
-                }
-            }
-            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(List<>) && registeredEditors.ContainsKey(typeof(List<>)))
-            {
-                Type itemType = propType.GetGenericArguments()[0];
-                object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
-                if (o is IPropertyEditor i)
-                {
-                    return i;
-                }
-            }
-            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable<>) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
-            {
-                Type itemType = propType.GetGenericArguments()[0];
-                object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
-                if (o is IPropertyEditor i)
-                {
-                    return i;
-                }
-            }
-            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
-            {
-                object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
-                if (o is IPropertyEditor i)
-                {
-                    return i;
-                }
-            }
-            else if (typeof(IList).IsAssignableFrom(propType))
-            {
-                object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
-                if (o is IPropertyEditor i)
-                {
-                    return i;
-                }
-            }
-            else if (typeof(IEnumerable).IsAssignableFrom(propType))
-            {
-                object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
-                if (o is IPropertyEditor i)
-                {
-                    return i;
-                }
-            }
-            else
-            {
-
-                //else
-                //{
-                return null;
-                //}
-            }
+            catch (ArgumentException) { return null; } // the editor type added to the list is not a type that can be activated via Reflection (due to the type's limitations)
+            catch (NotSupportedException) { return null; } // the editor type added to the list is not a type that can be activated via Reflection (due to its own reasonable limitations)
+            catch (TargetInvocationException) { return null; } // an exception occurred while trying to activate the editor type
+            catch (MemberAccessException) { return null; } // an abstract class was added in as an editor type, or the parameter-less constructor cannot be accessed
+            catch (COMException) { return null; } // not super sure how we'd run into this one lol
+            catch (InvalidComObjectException) { return null; } // also not sure how we'd get this one lol
+            catch (TypeLoadException) { return null; } // the editor type isn't an actual valid type object
 
             return null;
         }
