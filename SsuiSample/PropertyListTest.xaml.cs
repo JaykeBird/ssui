@@ -1,6 +1,7 @@
 ﻿using SolidShineUi;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace SsuiSample
 {
@@ -101,6 +102,8 @@ namespace SsuiSample
             public double NumberWithDecimal { get; set; } = 3.6;
 
             public decimal NumberWithActualDecimal { get; set; } = (decimal)7.3;
+
+            public Brush TestBrush { get; set; } = BrushFactory.Create(Colors.Green, Colors.Orange, 90.0);
         }
     }
 }

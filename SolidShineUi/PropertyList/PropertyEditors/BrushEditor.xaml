@@ -14,7 +14,7 @@
         <flat:FlatButton x:Name="btnBrush" Click="btnBrush_Click" />
         <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Unknown" Margin="3,0" IsHitTestVisible="False" />
 
-        <flat:FlatButton x:Name="btnMenu" Width="28" MinHeight="20" Grid.Column="1" Margin="3,1,0,1" Click="btnMenu_Click" >
+        <flat:FlatButton x:Name="btnMenu" Width="28" MinHeight="20" Grid.Column="1" Margin="3,1,0,1" Click="btnMenu_Click" TransparentBack="True" >
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <!--<flat:MenuButton.Menu>
                     <flat:ContextMenu>
@@ -47,11 +47,11 @@
                     </Grid>
                     <TextBlock Text="Change to:" Margin="5,3" Grid.Row="1" />
                     <flat:SelectPanel Grid.Row="2" x:Name="selChange" BorderThickness="0,1,0,0" >
-                        <flat:SelectableItem Text="Nothing (null)" />
-                        <flat:SelectableItem Text="Solid Color Brush" />
-                        <flat:SelectableItem Text="Linear Gradient Brush" />
-                        <flat:SelectableItem Text="Radial Gradient Brush" />
-                        <flat:SelectableItem Text="Image Brush" />
+                        <flat:SelectableItem Text="Nothing (null)" x:Name="siNothing" Click="siNothing_Click" />
+                        <flat:SelectableItem Text="Solid Color Brush" x:Name="siSolid" Click="siSolid_Click" />
+                        <flat:SelectableItem Text="Linear Gradient Brush" x:Name="siLinear" Click="siLinear_Click" />
+                        <flat:SelectableItem Text="Radial Gradient Brush" x:Name="siRadial" Click="siRadial_Click" />
+                        <flat:SelectableItem Text="Image Brush" x:Name="siImage" Click="siImage_Click" />
                     </flat:SelectPanel>
                 </Grid>
             </Border>
