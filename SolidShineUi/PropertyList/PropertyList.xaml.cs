@@ -611,8 +611,13 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(string), typeof(StringEditor));
             RegisterEditor(typeof(double), typeof(DoubleEditor));
             RegisterEditor(typeof(float), typeof(DoubleEditor));
+            RegisterEditor(typeof(double?), typeof(DoubleEditor));
+            RegisterEditor(typeof(float?), typeof(DoubleEditor));
+            RegisterEditor(typeof(Nullable<double>), typeof(DoubleEditor));
+            RegisterEditor(typeof(Nullable<float>), typeof(DoubleEditor));
 #if NET5_0_OR_GREATER
             RegisterEditor(typeof(Half), typeof(DoubleEditor));
+            RegisterEditor(typeof(Half?), typeof(DoubleEditor));
 #endif
             RegisterEditor(typeof(int), typeof(IntegerEditor));
             RegisterEditor(typeof(short), typeof(IntegerEditor));
