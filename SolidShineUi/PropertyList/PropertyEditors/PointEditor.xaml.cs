@@ -63,7 +63,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void LoadValue(object? value, Type type)
 #else
         /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
+        public void LoadValue(object value, Type type)
 #endif
         {
             if (type == typeof(Point) || type == typeof(Point?))

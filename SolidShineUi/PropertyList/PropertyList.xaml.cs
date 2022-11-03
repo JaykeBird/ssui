@@ -607,14 +607,11 @@ namespace SolidShineUi.PropertyList
         {
             RegisterEditor(typeof(bool), typeof(BooleanEditor));
             RegisterEditor(typeof(bool?), typeof(BooleanEditor));
-            RegisterEditor(typeof(Nullable<bool>), typeof(BooleanEditor));
             RegisterEditor(typeof(string), typeof(StringEditor));
             RegisterEditor(typeof(double), typeof(DoubleEditor));
             RegisterEditor(typeof(float), typeof(DoubleEditor));
             RegisterEditor(typeof(double?), typeof(DoubleEditor));
             RegisterEditor(typeof(float?), typeof(DoubleEditor));
-            RegisterEditor(typeof(Nullable<double>), typeof(DoubleEditor));
-            RegisterEditor(typeof(Nullable<float>), typeof(DoubleEditor));
 #if NET5_0_OR_GREATER
             RegisterEditor(typeof(Half), typeof(DoubleEditor));
             RegisterEditor(typeof(Half?), typeof(DoubleEditor));
@@ -624,11 +621,11 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(ushort), typeof(IntegerEditor));
             RegisterEditor(typeof(byte), typeof(IntegerEditor));
             RegisterEditor(typeof(sbyte), typeof(IntegerEditor));
-            RegisterEditor(typeof(Nullable<int>), typeof(IntegerEditor));
-            RegisterEditor(typeof(Nullable<short>), typeof(IntegerEditor));
-            RegisterEditor(typeof(Nullable<ushort>), typeof(IntegerEditor));
-            RegisterEditor(typeof(Nullable<byte>), typeof(IntegerEditor));
-            RegisterEditor(typeof(Nullable<sbyte>), typeof(IntegerEditor));
+            RegisterEditor(typeof(int?), typeof(IntegerEditor));
+            RegisterEditor(typeof(short?), typeof(IntegerEditor));
+            RegisterEditor(typeof(ushort?), typeof(IntegerEditor));
+            RegisterEditor(typeof(byte?), typeof(IntegerEditor));
+            RegisterEditor(typeof(sbyte?), typeof(IntegerEditor));
             RegisterEditor(typeof(Enum), typeof(EnumEditor));
             RegisterEditor(typeof(Brush), typeof(BrushEditor));
             RegisterEditor(typeof(SolidColorBrush), typeof(BrushEditor));
@@ -644,6 +641,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Thickness), typeof(ThicknessEditor));
             RegisterEditor(typeof(Size), typeof(SizeEditor));
             RegisterEditor(typeof(Point), typeof(PointEditor));
+            RegisterEditor(typeof(Point?), typeof(PointEditor));
             RegisterEditor(typeof(List<>), typeof(ListEditor));
             RegisterEditor(typeof(IEnumerable<>), typeof(EnumerableEditor));
             RegisterEditor(typeof(Version), typeof(VersionEditor));
