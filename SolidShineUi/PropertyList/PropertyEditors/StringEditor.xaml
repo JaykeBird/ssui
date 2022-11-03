@@ -19,7 +19,8 @@
                 <flat:ContextMenu>
                     <MenuItem Header="Set to Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" />
                     <Separator />
-                    <MenuItem Header="Multiline Editor..." IsEnabled="False" />
+                    <MenuItem Header="Multiline Editor..." x:Name="mnuMultiline" Click="mnuMultiline_Click" />
+                    <MenuItem Header="View as List..." x:Name="mnuOpenAsList" Click="mnuOpenAsList_Click" Visibility="Collapsed" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>

@@ -172,6 +172,8 @@ namespace SolidShineUi.PropertyList.Dialogs
             else
             {
                 brdrShowEnumerable.Visibility = Visibility.Visible;
+                selList.IsEnabled = false;
+                propList.IsEnabled = false;
             }
 
             if (isList)
@@ -338,6 +340,8 @@ namespace SolidShineUi.PropertyList.Dialogs
         private void btnEnumWarning_Click(object sender, RoutedEventArgs e)
         {
             brdrShowEnumerable.Visibility = Visibility.Collapsed;
+            selList.IsEnabled = true;
+            propList.IsEnabled = true;
             EnumerateItems();
         }
 

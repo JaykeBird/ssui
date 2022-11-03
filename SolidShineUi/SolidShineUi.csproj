@@ -137,6 +137,9 @@ See website for more details!</PackageReleaseNotes>
     <Compile Update="ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Utils\MultilineStringInputDialog.xaml.cs">
+      <DependentUpon>MultilineStringInputDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Update="PropertyList\PropertyEditors\GuidEditor.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -190,6 +193,9 @@ See website for more details!</PackageReleaseNotes>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Utils\MultilineStringInputDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="PropertyList\PropertyEditors\GuidEditor.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

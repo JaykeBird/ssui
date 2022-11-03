@@ -42,7 +42,8 @@
         <GridSplitter Grid.Row="2" Grid.Column="1" Width="6" HorizontalAlignment="Left" Cursor="SizeWE"
                       Background="{Binding ElementName=window, Path=ColorScheme.ThirdHighlightColor, Converter={StaticResource ctb}}"/>
 
-        <Border x:Name="brdrShowEnumerable" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="LightBlue" BorderThickness="0,1" Visibility="Collapsed" >
+        <Border x:Name="brdrShowEnumerable" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderThickness="0,1" Visibility="Collapsed"
+                Background="{Binding ElementName=window, Path=ColorScheme.ThirdHighlightColor, Converter={StaticResource ctb},FallbackValue=Orange}" >
             <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0" >
                 <TextBlock Text="{Binding ElementName=window, Path=EnumerableWarningTitleLabel}" Margin="5" HorizontalAlignment="Center" x:Name="enumWarningTitle" />
                 <TextBlock TextWrapping="Wrap" MaxWidth="250" Margin="5" x:Name="enumWarningDesc" Text="{Binding ElementName=window, Path=EnumerableWarningDescriptionLabel}" />
