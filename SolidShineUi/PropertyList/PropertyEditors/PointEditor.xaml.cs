@@ -8,14 +8,18 @@ using static SolidShineUi.Utils.IconLoader;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for SizeEditor.xaml
+    /// A property editor for editing <see cref="Point"/> objects.
     /// </summary>
     public partial class PointEditor : UserControl, IPropertyEditor
     {
-        public List<Type> ValidTypes => new List<Type> { typeof(Point) };
 
+        /// <inheritdoc/>
+        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Nullable<Point>) };
+
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
+        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
             get => nudHeight.IsEnabled;
@@ -27,8 +31,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
@@ -41,17 +47,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <summary>
+        /// Create a PointEditor.
+        /// </summary>
         public PointEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement() { return this; }
 
 #if NETCOREAPP
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else
+        /// <inheritdoc/>
+        public void LoadValue(object? value, Type type)
+#endif
         {
-            if (type == typeof(Point))
+            if (type == typeof(Point) || type == typeof(Point?))
             {
                 if (value != null)
                 {
@@ -70,7 +85,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    // null? treat it as Thickness of value 0
+                    // null
+                    SetAsNull();
                     SetAllToValue(0);
                 }
             }
@@ -81,50 +97,39 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+
+#if NETCOREAPP
+        /// <inheritdoc/>
         public object? GetValue()
         {
-            return new Point(nudWidth.Value, nudHeight.Value);
-        }
-
-        public event EventHandler? ValueChanged;
-#else
-        public void LoadValue(object value, Type type)
-        {
-            if (type == typeof(Point))
+            if (mnuSetNull.IsChecked == true)
             {
-                if (value != null)
-                {
-                    if (value is Point t)
-                    {
-                        _internalAction = true;
-                        nudWidth.Value = t.X;
-                        nudHeight.Value = t.Y;
-                        _internalAction = false;
-                    }
-                    else
-                    {
-                        // uhhh?
-                        SetAllToValue(0);
-                    }
-                }
-                else
-                {
-                    // null? treat it as Thickness of value 0
-                    SetAllToValue(0);
-                }
+                return null;
             }
             else
             {
-                // uhhh?
-                SetAllToValue(0);
+                return new Point(nudWidth.Value, nudHeight.Value);
             }
         }
 
+        /// <inheritdoc/>
+        public event EventHandler? ValueChanged;
+#else
+        
+        /// <inheritdoc/>
         public object GetValue()
         {
-            return new Point(nudWidth.Value, nudHeight.Value);
+            if (mnuSetNull.IsChecked == true)
+            {
+                return null;
+            }
+            else
+            {
+                return new Point(nudWidth.Value, nudHeight.Value);
+            }
         }
-
+        
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
 #endif
 
@@ -158,6 +163,33 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             nudWidth.Value = d;
             nudHeight.Value = d;
             _internalAction = false;
+        }
+
+        void SetAsNull()
+        {
+            mnuSetNull.IsEnabled = true;
+            mnuSetNull.IsChecked = true;
+            nudWidth.IsEnabled = false;
+            nudHeight.IsEnabled = false;
+        }
+
+        void UnsetAsNull()
+        {
+            mnuSetNull.IsChecked = false;
+            nudWidth.IsEnabled = true;
+            nudHeight.IsEnabled = true;
+        }
+
+        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
+        {
+            if (mnuSetNull.IsChecked)
+            {
+                UnsetAsNull();
+            }
+            else
+            {
+                SetAsNull();
+            }
         }
     }
 }
