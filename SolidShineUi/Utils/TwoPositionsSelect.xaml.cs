@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// A control to visually select a value between 0.0 and 1.0 in both the X (width) and Y (height) axes.
+    /// A control to visually select two values between 0.0 and 1.0 in both the X (width) and Y (height) axes.
     /// </summary>
     public partial class TwoPositionsSelect : UserControl
     {
@@ -31,9 +31,15 @@ namespace SolidShineUi.Utils
             PreviewKeyUp += TwoPositionsSelect_PreviewKeyUp;
             KeyDown += TwoPositionsSelect_KeyDown;
             KeyUp += TwoPositionsSelect_KeyUp;
+            IsEnabledChanged += TwoPositionsSelect_IsEnabledChanged;
 
             //KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Continue);
             KeyboardNavigation.SetDirectionalNavigation(this, KeyboardNavigationMode.Contained);
+        }
+
+        private void TwoPositionsSelect_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            // might consider hiding snap lines while control is disabled
         }
 
         #region Color Scheme
@@ -118,8 +124,9 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        #region Brushes
+        #region Brushes / Brush Handling
 
+        #region Brush properties
         /// <summary>
         /// Get or set the brush used for the background of the TwoPositionsSelect's box.
         /// </summary>
@@ -233,6 +240,7 @@ namespace SolidShineUi.Utils
             "KeyboardFocusHighlight", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        #endregion
 
         public static void OnSnapLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -242,6 +250,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Updates the visuals of the snap lines in the control to match the SnapLineBrush property.
+        /// </summary>
         internal protected void UpdateSnapLineBrush()
         {
 #if NETCOREAPP
@@ -586,6 +597,7 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #region Selector Handling (focus setting / visuals)
         static bool? SELECTOR_NONE = null;
         static bool? SELECTOR_1 = false;
         static bool? SELECTOR_2 = true;
@@ -619,8 +631,28 @@ namespace SolidShineUi.Utils
 
         bool? selectorFocus = null;
 
-        #region Keyboard Controls
+        /// <summary>
+        /// Get or set the size of the selector. The larger the selector, the easier it will be to see and also to click and drag, but also harder to visualize a particular value.
+        /// </summary>
+        public double SelectorSize
+        {
+            get { return ellSelect.Width; }
+            set
+            {
+                ellSelect.Width = value;
+                ellSelect.Height = value;
+                ellSelect2.Width = value;
+                ellSelect2.Height = value;
 
+                double sshalf = value / 2;
+                grdSelArea.Margin = new Thickness(sshalf);
+                brdrKeyFocus.BorderThickness = new Thickness(sshalf);
+                grdGuidelines.Margin = new Thickness(sshalf);
+            }
+        }
+        #endregion  
+
+        #region Keyboard Controls
 
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
@@ -775,26 +807,6 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-        /// <summary>
-        /// Get or set the size of the selector. The larger the selector, the easier it will be to see and also to click and drag, but also harder to visualize a particular value.
-        /// </summary>
-        public double SelectorSize
-        {
-            get { return ellSelect.Width; }
-            set
-            {
-                ellSelect.Width = value;
-                ellSelect.Height = value;
-                ellSelect2.Width = value;
-                ellSelect2.Height = value;
-
-                double sshalf = value / 2;
-                grdSelArea.Margin = new Thickness(sshalf);
-                brdrKeyFocus.BorderThickness = new Thickness(sshalf);
-                grdGuidelines.Margin = new Thickness(sshalf);
-            }
-        }
-
         #region Mouse Events
         bool selectMode = false;
 
@@ -863,6 +875,7 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
+        #region Selector Positions
         private void SelectPointSelector1(Point p)
         {
             // make sure point is in bounds
@@ -1024,7 +1037,7 @@ namespace SolidShineUi.Utils
         private double qHeight = 0.5;
 
         /// <summary>
-        /// Get or set the selected value on the horizontal (X) axis.
+        /// Get or set the first selected value on the horizontal (X) axis.
         /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
         public double SelectedWidth1
@@ -1052,7 +1065,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the selected value on the vertical (Y) axis.
+        /// Get or set the first selected value on the vertical (Y) axis.
         /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
         public double SelectedHeight1
@@ -1079,6 +1092,10 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Get or set the second selected value on the horizontal (X) axis.
+        /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
+        /// </summary>
         public double SelectedWidth2
         {
             get { return qWidth; }
@@ -1103,6 +1120,10 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Get or set the second selected value on the vertical (Y) axis.
+        /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
+        /// </summary>
         public double SelectedHeight2
         {
             get { return qHeight; }
@@ -1128,12 +1149,13 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Raised when either the SelectedHeight or SelectedWidth properties change (i.e., when the selector was moved).
+        /// Raised when any of the SelectedHeight or SelectedWidth properties change (i.e., when the selector was moved).
         /// </summary>
 #if NETCOREAPP
         public event EventHandler? SelectedPositionChanged;
 #else
         public event EventHandler SelectedPositionChanged;
 #endif
+        #endregion
     }
 }

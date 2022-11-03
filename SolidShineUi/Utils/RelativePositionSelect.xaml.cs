@@ -33,9 +33,15 @@ namespace SolidShineUi.Utils
             PreviewKeyUp += RelativePositionSelect_PreviewKeyUp;
             KeyDown += RelativePositionSelect_KeyDown;
             KeyUp += RelativePositionSelect_KeyUp;
+            IsEnabledChanged += RelativePositionSelect_IsEnabledChanged;
 
             //KeyboardNavigation.SetTabNavigation(this, KeyboardNavigationMode.Continue);
             KeyboardNavigation.SetDirectionalNavigation(this, KeyboardNavigationMode.Contained);
+        }
+
+        private void RelativePositionSelect_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            // might consider hiding snap lines while control is disabled
         }
 
         #region Color Scheme
@@ -120,8 +126,9 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        #region Brushes
+        #region Brushes / Brush Handling
 
+        #region Brush Properties
         /// <summary>
         /// Get or set the brush used for the background of the RelativePositionSelect's box.
         /// </summary>
@@ -235,6 +242,7 @@ namespace SolidShineUi.Utils
             "KeyboardFocusHighlight", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        #endregion
 
         public static void OnSnapLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -244,6 +252,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Updates the visuals of the snap lines in the control to match the SnapLineBrush property.
+        /// </summary>
         internal protected void UpdateSnapLineBrush()
         {
 #if NETCOREAPP

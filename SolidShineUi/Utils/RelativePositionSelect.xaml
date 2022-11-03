@@ -6,7 +6,19 @@
              xmlns:local="clr-namespace:SolidShineUi.Utils"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400" Focusable="True" IsTabStop="True" >
-    <Border BorderBrush="{Binding ElementName=control, Path=BorderBrush}" Background="{Binding ElementName=control, Path=ControlBackground}" BorderThickness="1">
+    <Border BorderThickness="1">
+        <Border.Style>
+            <Style TargetType="Border" >
+                <Setter Property="BorderBrush" Value="{Binding ElementName=control, Path=BorderBrush}" />
+                <Setter Property="Background" Value="{Binding ElementName=control, Path=ControlBackground}" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="BorderBrush" Value="{Binding ElementName=control, Path=BorderDisabledBrush}" />
+                        <Setter Property="Background" Value="{Binding ElementName=control, Path=BackgroundDisabledBrush}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
         <Grid x:Name="grdOverall" Background="#01FFFFFF"
               MouseDown="grdGuidelines_MouseDown" MouseUp="grdGuidelines_MouseUp" MouseMove="grdGuidelines_MouseMove" MouseLeave="grdGuidelines_MouseLeave" >
             <Border x:Name="brdrKeyFocus" IsHitTestVisible="False" BorderThickness="4.5" BorderBrush="Transparent" />
@@ -15,7 +27,18 @@
                 <Grid x:Name="canHorizontal" />
             </Grid>
             <Canvas x:Name="grdSelArea" Margin="4.5" IsHitTestVisible="False" ClipToBounds="False" >
-                <Ellipse x:Name="ellSelect" Fill="{Binding ElementName=control, Path=SelectorBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="9" Height="9" Canvas.Top="0" Canvas.Left="0" />
+                <Ellipse x:Name="ellSelect" HorizontalAlignment="Left" VerticalAlignment="Top" Width="9" Height="9" Canvas.Top="0" Canvas.Left="0">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse" >
+                            <Setter Property="Fill" Value="{Binding ElementName=control, Path=SelectorBrush}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Fill" Value="{Binding ElementName=control, Path=SelectorDisabledBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
             </Canvas>
         </Grid>
     </Border>
