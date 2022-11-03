@@ -26,7 +26,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NET5_0_OR_GREATER
         public List<Type> ValidTypes => (new[] { typeof(float), typeof(double), typeof(Half), typeof(double?), typeof(float?), typeof(Half?) }).ToList();
 #else
-        public List<Type> ValidTypes => (new[] {typeof(float), typeof(double), typeof(Nullable<double>), typeof(Nullable<float>)}).ToList();
+        public List<Type> ValidTypes => (new[] { typeof(float), typeof(double), typeof(Nullable<double>), typeof(Nullable<float>) }).ToList();
 #endif
 
         /// <inheritdoc/>
@@ -36,7 +36,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { 
+        public ColorScheme ColorScheme
+        {
             set
             {
                 dblSpinner.ColorScheme = value;
@@ -53,7 +54,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
                 }
-            } 
+            }
         }
 
         /// <inheritdoc/>
@@ -139,7 +140,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NET5_0_OR_GREATER
             if (type == typeof(double?) || type == typeof(float?) || type == typeof(Half?))
 #else
-            if (type == typeof(Nullable<double>) || type == typeof(Nullable<float>))
+            if (type == typeof(Nullable<double>) || type == typeof(Nullable<float>) || type == typeof(double?) || type == typeof(float?))
 #endif
             {
                 mnuSetNull.IsEnabled = true;
@@ -150,7 +151,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
 
             _propType = type;
-            dblSpinner.Value = (double)(value ?? 0); // TODO: properly handle null
+            dblSpinner.Value = (double)(value ?? 0);
         }
 #else
         public event EventHandler ValueChanged;
@@ -166,6 +167,28 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 return (float)dblSpinner.Value;
             }
+            else if (_propType == typeof(Nullable<double>))
+            {
+                if (mnuSetNull.IsChecked)
+                {
+                    return null;
+                }
+                else
+                {
+                    return dblSpinner.Value;
+                }
+            }
+            else if (_propType == typeof(Nullable<float>))
+            {
+                if (mnuSetNull.IsChecked)
+                {
+                    return null;
+                }
+                else
+                {
+                    return (float)dblSpinner.Value;
+                }
+            }
             else
             {
                 return dblSpinner.Value;
@@ -175,8 +198,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
+            if (type == typeof(Nullable<double>) || type == typeof(Nullable<float>) || type == typeof(double?) || type == typeof(float?))
+            {
+                mnuSetNull.IsEnabled = true;
+                if (value == null)
+                {
+                    SetAsNull();
+                }
+            }
+
             _propType = type;
-            dblSpinner.Value = (double)(value ?? 0); // TODO: properly handle null
+            dblSpinner.Value = (double)(value ?? 0);
         }
 #endif
 
