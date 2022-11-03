@@ -8,23 +8,31 @@ using SolidShineUi;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for BooleanEditor.xaml
+    /// A property editor for editing <see cref="bool"/> objects.
     /// </summary>
     public partial class BooleanEditor : UserControl, IPropertyEditor
     {
+        /// <summary>
+        /// Create a new BooleanEditor.
+        /// </summary>
         public BooleanEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public List<Type> ValidTypes => (new[] { typeof(bool), typeof(Nullable<bool>) }).ToList();
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
+        /// <inheritdoc/>
         public ColorScheme ColorScheme { set { chkValue.ColorScheme = value; } }
 
+        /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
         {
             return this;
@@ -32,6 +40,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private Type _propType = typeof(bool);
 
+        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
             get => chkValue.IsEnabled;
@@ -40,8 +49,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 
 #if NETCOREAPP
+        /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
+        /// <inheritdoc/>
         public object? GetValue()
         {
             if (_propType == typeof(bool))
@@ -64,6 +75,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
             if (type == typeof(bool))
@@ -95,8 +107,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 #else
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
 
+        /// <inheritdoc/>
         public object GetValue()
         {
             if (_propType == typeof(bool))
@@ -123,6 +137,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
             if (type == typeof(bool))
