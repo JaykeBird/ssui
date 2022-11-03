@@ -5,6 +5,7 @@ using System.Windows;
 using SolidShineUi;
 using System.Windows.Controls;
 using System.Reflection;
+using System.Linq;
 
 namespace SolidShineUi.PropertyList.Dialogs
 {
@@ -36,22 +37,32 @@ namespace SolidShineUi.PropertyList.Dialogs
         bool canEdit = true;
 
 #if NETCOREAPP
+        /// <summary>the type of the items contained in the list (i.e. a <c>List&lt;string&gt;</c> has a baseType <c>string</c>)</summary>
         Type? baseType = null;
 
+        /// <summary>the type of the IPropertyEditor, if there is one, to use with this list</summary>
         Type? editorType = null;
 
+        /// <summary>the parent PropertyList control</summary>
         ExperimentalPropertyList? parentList = null;
 #else
+        /// <summary>the type of the items contained in the list (i.e. a <c>List&lt;string&gt;</c> has a baseType <c>string</c>)</summary>
         Type baseType = null;
 
+        /// <summary>the type of the IPropertyEditor, if there is one, to use with this list</summary>
         Type editorType = null;
 
+        /// <summary>the parent PropertyList control</summary>
         ExperimentalPropertyList parentList = null;
 #endif
 
         int count = -1;
 
-        bool stringListMode = false;
+        int addMode = ADD_CANNOT_ADD;
+        const int ADD_CANNOT_ADD = 0;
+        const int ADD_PRIMITIVE_TYPE = 1;
+        const int ADD_STRING_MODE = 2;
+        const int ADD_STANDARD = 3;
 
         #endregion
 
@@ -72,7 +83,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         public static DependencyProperty EnumerableWarningTitleLabelProperty
             = DependencyProperty.Register("EnumerableWarningTitleLabel", typeof(string), typeof(ListEditorDialog),
-            new FrameworkPropertyMetadata("Full Colletion May Not Be Available"));
+            new FrameworkPropertyMetadata("Full Collection May Not Be Available"));
 
         public static DependencyProperty EnumerableWarningDescriptionLabelProperty
             = DependencyProperty.Register("EnumerableWarningDescriptionLabel", typeof(string), typeof(ListEditorDialog),
@@ -139,20 +150,6 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtAvailableEditor.Visibility = Visibility.Visible;
             }
 
-            if (baseType.GetConstructor(Type.EmptyTypes) == null)
-            {
-                if (baseType == typeof(string))
-                {
-                    // special handling for List<string>, since there is no parameterless constructor for string
-                    stringListMode = true;
-                }
-                else
-                {
-                    btnAdd.IsEnabled = false;
-                    txtCannotAdd.Visibility = Visibility.Visible;
-                }
-            }
-
             // first, let's determine what we're working with here
 
             if (items is ICollection coll)
@@ -176,8 +173,12 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 brdrShowEnumerable.Visibility = Visibility.Visible;
             }
-            
-            if (!isList)
+
+            if (isList)
+            {
+                DetermineIfCanAdd();
+            }
+            else
             {
                 btnAdd.Visibility = Visibility.Collapsed;
             }
@@ -197,6 +198,51 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types
+        private static Type[] basicTypes = new Type[] { typeof(bool), typeof(byte), typeof(double), typeof(float), typeof(int), typeof(uint), typeof(long), typeof(short), typeof(string),
+            typeof(sbyte), typeof(char), typeof(decimal), typeof(ulong), typeof(ushort)};
+
+        private void DetermineIfCanAdd()
+        {
+            // at this point, we've already determined this is a List of items
+            // we should also already have the baseType that we're working from
+
+            if (baseType == null)
+            {
+                CannotAdd();
+            }            
+            else if (baseType.GetConstructor(Type.EmptyTypes) == null)
+            {
+                // does not have a parameterless constructor
+                if (basicTypes.Contains(baseType))
+                {
+                    addMode = ADD_PRIMITIVE_TYPE;
+                }
+                else if (baseType.GetConstructor(new Type[] { typeof(string) }) != null)
+                {
+                    // there is a string-based constructor that we can use
+                    addMode = ADD_STRING_MODE;
+                }
+                else
+                {
+                    CannotAdd();
+                }
+            }
+            else
+            {
+                // has a parameterless constructor
+                addMode = ADD_STANDARD;
+            }
+
+            void CannotAdd()
+            {
+                addMode = ADD_CANNOT_ADD;
+                btnAdd.IsEnabled = false;
+                txtCannotAdd.Visibility = Visibility.Visible;
+            }
+        }
+
+        #region CreateListItem
 #if NETCOREAPP
         ListEditorItem CreateListItem(object? item, int index)
 #else
@@ -265,6 +311,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             return lei;
         }
+        #endregion
 
 #if NETCOREAPP
         void ValueChanged(object? newValue, object? baseItem, PropertyEditorValueChangedEventArgs e)
@@ -320,33 +367,71 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             if (isList && baseType != null)
             {
-                if (stringListMode)
+                switch (addMode)
                 {
-                    string newStr = "";
-                    ListEditorItem lei = CreateListItem(newStr, count);
-                    ((IList)baseObject).Add(newStr);
-                    count++;
-                    selList.Items.Add(lei);
-                }
-                else
-                {
-                    var newItem = Activator.CreateInstance(baseType);
-                    if (newItem != null)
-                    {
-                        ListEditorItem lei = CreateListItem(newItem, count);
-                        ((IList)baseObject).Add(newItem);
-                        count++;
-                        selList.Items.Add(lei);
-                    }
-                    else
-                    {
+                    case ADD_STANDARD:
+                        var newItem = Activator.CreateInstance(baseType);
+                        if (newItem != null)
+                        {
+                            CreateItem(newItem);
+                        }
+                        else
+                        {
+                            btnAdd.IsEnabled = false;
+                        }
+                        break;
+                    case ADD_STRING_MODE:
+                        StringInputDialog sid = new StringInputDialog(ColorScheme, "Add Item", "Enter a string value to use for creating a new item:");
+                        sid.Owner = this;
+                        sid.ShowDialog();
+                        if (sid.DialogResult)
+                        {
+                            var newSItem = Activator.CreateInstance(baseType, new object[] { sid.Value });
+                            if (newSItem != null)
+                            {
+                                CreateItem(newSItem);
+                            }
+                        }
+                        break;
+                    case ADD_PRIMITIVE_TYPE:
+                        // let's go down the list of basic types
+                        // I've tried to sort by what is probably the most common first
+                        if (baseType == typeof(bool)) { CreateItem(false); }
+                        else if (baseType == typeof(string)) { CreateItem(""); }
+                        else if (baseType == typeof(int)) { CreateItem(0); }
+                        else if (baseType == typeof(byte)) { CreateItem((byte)0); }
+                        else if (baseType == typeof(double)) { CreateItem(0.0d); }
+                        else if (baseType == typeof(uint)) { CreateItem(0u); }
+                        else if (baseType == typeof(long)) { CreateItem(0L); }
+                        else if (baseType == typeof(float)) { CreateItem(0.0f); }
+                        else if (baseType == typeof(ulong)) { CreateItem(0UL); }
+                        else if (baseType == typeof(short)) { CreateItem((short)0); }
+                        else if (baseType == typeof(ushort)) { CreateItem((ushort)0); }
+                        else if (baseType == typeof(sbyte)) { CreateItem((sbyte)0); }
+                        else if (baseType == typeof(char)) { CreateItem('A'); }
+                        else if (baseType == typeof(decimal)) { CreateItem(0.0m); }
+                        break;
+                    default:
+                        // cannot add?
                         btnAdd.IsEnabled = false;
-                    }
+                        break;
                 }
             }
             else
             {
                 btnAdd.IsEnabled = false;
+            }
+
+#if NETCOREAPP
+            void CreateItem(object? item)
+#else
+            void CreateItem(object item)
+#endif
+            {
+                ListEditorItem alei = CreateListItem(item, count);
+                ((IList)baseObject).Add(item);
+                count++;
+                selList.Items.Add(alei);
             }
         }
     }
