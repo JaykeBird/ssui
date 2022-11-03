@@ -324,7 +324,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (baseObject is IList icol)
             {
                 int index = icol.IndexOf(baseItem);
-                if (index != -1)
+                if (index == -1)
                 {
                     // this means the base list actually removed this item in the interim
                     // for now, we'll mark this as a failed change
