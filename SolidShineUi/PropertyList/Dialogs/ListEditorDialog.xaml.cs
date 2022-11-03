@@ -302,7 +302,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 if (isList && canEdit)
                 {
-                    ValueChanged(e.NewValue, item, e);
+                    ValueChanged(e.NewValue, e.OldValue, e);
                 }
                 else
                 {

@@ -122,6 +122,8 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public object? ItemValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
 
+        private object? _oldValue = null;
+
         /// <summary>
         /// Get or set the editor control to use to allow editing the value of this property.
         /// </summary>
@@ -152,6 +154,8 @@ namespace SolidShineUi.PropertyList
         /// Get or set the value of the property shown.
         /// </summary>
         public object ItemValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
+
+        private object _oldValue = null;
 
         /// <summary>
         /// Get or set the editor control to use to allow editing the value of this property.
@@ -212,8 +216,9 @@ namespace SolidShineUi.PropertyList
         {
             if (PropertyEditorControl != null)
             {
+                _oldValue = ItemValue;
                 ItemValue = PropertyEditorControl.GetValue();
-                var ev = new PropertyEditorValueChangedEventArgs(ItemValue, "", null);
+                var ev = new PropertyEditorValueChangedEventArgs(_oldValue, ItemValue, "", null);
                 PropertyEditorValueChanged?.Invoke(this, ev);
 
                 if (ev.ChangeFailed)

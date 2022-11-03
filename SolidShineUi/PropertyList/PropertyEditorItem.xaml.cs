@@ -32,6 +32,8 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public object? PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
 
+        private object? _oldValue = null;
+
         /// <summary>
         /// Get or set the editor control to use to allow editing the value of this property.
         /// </summary>
@@ -61,6 +63,8 @@ namespace SolidShineUi.PropertyList
         /// Get or set the value of the property shown.
         /// </summary>
         public object PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
+
+        private object _oldValue = null;
 
         /// <summary>
         /// Get or set the editor control to use to allow editing the value of this property.
@@ -132,8 +136,13 @@ namespace SolidShineUi.PropertyList
         {
             if (PropertyEditorControl != null)
             {
+#if NETCOREAPP
+                object? potentialOldValue = PropertyValue;
+#else
+                object potentialOldValue = PropertyValue;
+#endif
                 PropertyValue = PropertyEditorControl.GetValue();
-                var ev = new PropertyEditorValueChangedEventArgs(PropertyValue, PropertyName, PropertyInfo);
+                var ev = new PropertyEditorValueChangedEventArgs(potentialOldValue, PropertyValue, PropertyName, PropertyInfo);
                 PropertyEditorValueChanged?.Invoke(this, ev);
 
                 if (ev.ChangeFailed)
@@ -144,6 +153,10 @@ namespace SolidShineUi.PropertyList
                     {
                         PropertyEditorControl.LoadValue(PropertyValue, PropertyInfo.PropertyType);
                     }
+                }
+                else
+                {
+                    _oldValue = potentialOldValue;
                 }
             }
         }
@@ -187,6 +200,12 @@ namespace SolidShineUi.PropertyList
         /// Get the new value to apply to this property.
         /// </summary>
         public object? NewValue { get; private set; }
+
+        /// <summary>
+        /// Get the old value of the property. Note that this may not always be set.
+        /// </summary>
+        public object? OldValue { get; private set; }
+
         /// <summary>
         /// Get the name of the property being changed.
         /// </summary>
@@ -209,11 +228,13 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Create a PropertyEditorValueChangedEventArgs.
         /// </summary>
+        /// <param name="oldValue">The old value of the property being changed.</param>
         /// <param name="newValue">The new value of the property being changed.</param>
         /// <param name="propertyName">The name of the property being changed.</param>
         /// <param name="propertyInfo">The PropertyInfo representing the property being changed.</param>
-        public PropertyEditorValueChangedEventArgs(object? newValue, string propertyName, PropertyInfo? propertyInfo)
+        public PropertyEditorValueChangedEventArgs(object? oldValue, object? newValue, string propertyName, PropertyInfo? propertyInfo)
         {
+            OldValue = oldValue;
             NewValue = newValue;
             PropertyName = propertyName;
             PropertyInfo = propertyInfo;
@@ -226,6 +247,10 @@ namespace SolidShineUi.PropertyList
         /// Get the new value to apply to this property.
         /// </summary>
         public object NewValue { get; private set; }
+        /// <summary>
+        /// Get the old value of the property. Note that this may not always be set.
+        /// </summary>
+        public object OldValue { get; private set; }
         /// <summary>
         /// Get the name of the property being changed.
         /// </summary>
@@ -248,11 +273,13 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Create a PropertyEditorValueChangedEventArgs.
         /// </summary>
+        /// <param name="oldValue">The old value of the property being changed.</param>
         /// <param name="newValue">The new value of the property being changed.</param>
         /// <param name="propertyName">The name of the property being changed.</param>
         /// <param name="propertyInfo">The PropertyInfo representing the property being changed.</param>
-        public PropertyEditorValueChangedEventArgs(object newValue, string propertyName, PropertyInfo propertyInfo)
+        public PropertyEditorValueChangedEventArgs(object oldValue, object newValue, string propertyName, PropertyInfo propertyInfo)
         {
+            OldValue = oldValue;
             NewValue = newValue;
             PropertyName = propertyName;
             PropertyInfo = propertyInfo;
