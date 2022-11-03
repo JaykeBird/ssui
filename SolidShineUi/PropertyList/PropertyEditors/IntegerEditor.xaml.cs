@@ -4,6 +4,8 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -31,7 +33,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set => intSpinner.ColorScheme = value; }
+        public ColorScheme ColorScheme
+        {
+            set
+            {
+                intSpinner.ColorScheme = value;
+                btnMenu.ColorScheme = value;
+                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
+                {
+                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
+                }
+                else if (value.BackgroundColor == Colors.White)
+                {
+                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
+                }
+                else
+                {
+                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
