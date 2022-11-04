@@ -52,13 +52,13 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Height="18">
+                        <Grid Height="18" ToolTip="{Binding}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding}" FontFamily="{Binding}" ToolTip="{Binding}" />
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding}" FontFamily="{Binding}" />
                             <!--<TextBlock Grid.Column="1" Margin="3" VerticalAlignment="Center" Text="AaBbCc123!@#$" FontFamily="{Binding}" />-->
 
                         </Grid>
