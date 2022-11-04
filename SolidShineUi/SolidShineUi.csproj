@@ -193,6 +193,9 @@ See website for more details!</PackageReleaseNotes>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="PropertyList\PropertyEditors\FontWeightEditor.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Utils\MultilineStringInputDialog.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

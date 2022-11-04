@@ -636,6 +636,8 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(BitmapCacheBrush), typeof(BrushEditor));
             RegisterEditor(typeof(FontFamily), typeof(FontFamilyEditor));
             RegisterEditor(typeof(FontStyle), typeof(FontStyleEditor));
+            RegisterEditor(typeof(FontWeight), typeof(FontWeightEditor));
+            RegisterEditor(typeof(FontWeight?), typeof(FontWeightEditor));
             RegisterEditor(typeof(Uri), typeof(UriEditor));
             RegisterEditor(typeof(Guid), typeof(GuidEditor));
             RegisterEditor(typeof(Thickness), typeof(ThicknessEditor));
