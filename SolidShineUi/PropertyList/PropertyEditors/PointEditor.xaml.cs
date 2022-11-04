@@ -190,6 +190,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 SetAsNull();
             }
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

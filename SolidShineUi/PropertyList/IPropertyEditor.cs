@@ -41,7 +41,7 @@ namespace SolidShineUi.PropertyList
         /// Set the ColorScheme, to set the visual appearance of the control.
         /// </summary>
         /// <remarks>
-        /// This is a setter-only property in the interface as a getter is never needed. Implementers can implement a getter for this property if needed.
+        /// This is a setter-only property in the interface as a getter is never needed. Implementers can add a getter for this property if needed.
         /// </remarks>
         ColorScheme ColorScheme { set; }
 

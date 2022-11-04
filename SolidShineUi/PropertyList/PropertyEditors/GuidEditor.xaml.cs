@@ -9,23 +9,32 @@ using static SolidShineUi.Utils.IconLoader;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for FontFamilyEditor.xaml
+    /// A property editor for editing <see cref="Guid"/> editors.
     /// </summary>
     public partial class GuidEditor : UserControl, IPropertyEditor
     {
+
+        /// <summary>
+        /// Create a GuidEditor.
+        /// </summary>
         public GuidEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public List<Type> ValidTypes => (new[] { typeof(Guid) }).ToList();
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
+        /// <inheritdoc/>
         public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
 
+        /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
         public ColorScheme ColorScheme { set 
             { 
                 btnMenu.ColorScheme = value;
@@ -53,19 +62,23 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private Guid guid = Guid.Empty;
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
         {
             return this;
         }
 
 #if NETCOREAPP
+        /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
+        /// <inheritdoc/>
         public object? GetValue()
         {
             return guid;
         }
 
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
             if (value == null)
@@ -88,13 +101,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
 #else
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
-
+        
+        /// <inheritdoc/>
         public object GetValue()
         {
             return guid;
         }
-
+        
+        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
             if (value == null)

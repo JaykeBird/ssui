@@ -10,23 +10,31 @@ using static SolidShineUi.Utils.IconLoader;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for FontStyleEditor.xaml
+    /// A property editor for <see cref="FontStyle"/> objects.
     /// </summary>
     public partial class FontStyleEditor : UserControl, IPropertyEditor
     {
+        /// <summary>
+        /// Create a FontStyleEditor.
+        /// </summary>
         public FontStyleEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public List<Type> ValidTypes => (new[] { typeof(FontStyle) }).ToList();
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
+        /// <inheritdoc/>
         public bool IsPropertyWritable { get => cbbStyles.IsEnabled; set => cbbStyles.IsEnabled = value; }
 
+        /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
         public ColorScheme ColorScheme
         { 
             set
@@ -35,6 +43,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
         {
             return this;
@@ -56,8 +65,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
 #if NETCOREAPP
+        /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
+        /// <inheritdoc/>
         public object? GetValue()
         {
             switch (cbbStyles.SelectedIndex)
@@ -73,6 +84,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
             _raiseEvents = false;
@@ -102,8 +114,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _raiseEvents = true;
         }
 #else
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
-
+        
+        /// <inheritdoc/>
         public object GetValue()
         {
             switch (cbbStyles.SelectedIndex)
@@ -118,7 +132,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return FontStyles.Normal;
             }
         }
-
+        
+        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
             _raiseEvents = false;
