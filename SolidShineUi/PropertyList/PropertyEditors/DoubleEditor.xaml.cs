@@ -26,7 +26,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NET5_0_OR_GREATER
         public List<Type> ValidTypes => (new[] { typeof(float), typeof(double), typeof(Half), typeof(double?), typeof(float?), typeof(Half?) }).ToList();
 #else
-        public List<Type> ValidTypes => (new[] { typeof(float), typeof(double), typeof(Nullable<double>), typeof(Nullable<float>) }).ToList();
+        public List<Type> ValidTypes => (new[] { typeof(float), typeof(double), typeof(double?), typeof(float?) }).ToList();
 #endif
 
         /// <inheritdoc/>

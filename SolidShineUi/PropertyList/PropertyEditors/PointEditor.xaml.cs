@@ -14,7 +14,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     {
 
         /// <inheritdoc/>
-        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Nullable<Point>) };
+        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Point?) };
 
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;

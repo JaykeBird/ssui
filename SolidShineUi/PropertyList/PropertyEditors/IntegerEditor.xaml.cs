@@ -24,7 +24,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public List<Type> ValidTypes => (new[] { typeof(int), typeof(short), typeof(ushort), typeof(byte), typeof(sbyte), 
-            typeof(Nullable<int>), typeof(Nullable<short>), typeof(Nullable<ushort>), typeof(Nullable<byte>), typeof(Nullable<sbyte>) }).ToList();
+            typeof(int?), typeof(short?), typeof(ushort?), typeof(byte?), typeof(sbyte?) }).ToList();
 
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
@@ -97,7 +97,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 return (sbyte)intSpinner.Value;
             }
-            else if (_propType == typeof(int?) || _propType == typeof(Nullable<int>))
+            else if (_propType == typeof(int?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -108,7 +108,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return intSpinner.Value;
                 }
             }
-            else if (_propType == typeof(short?) || _propType == typeof(Nullable<short>))
+            else if (_propType == typeof(short?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -119,7 +119,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return (short)intSpinner.Value;
                 }
             }
-            else if (_propType == typeof(ushort?) || _propType == typeof(Nullable<ushort>))
+            else if (_propType == typeof(ushort?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -130,7 +130,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return (ushort)intSpinner.Value;
                 }
             }
-            else if (_propType == typeof(byte?) || _propType == typeof(Nullable<byte>))
+            else if (_propType == typeof(byte?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -141,7 +141,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return (byte)intSpinner.Value;
                 }
             }
-            else if (_propType == typeof(sbyte?) || _propType == typeof(Nullable<sbyte>))
+            else if (_propType == typeof(sbyte?))
             {
                 if (mnuSetNull.IsChecked)
                 {
