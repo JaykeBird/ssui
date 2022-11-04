@@ -640,6 +640,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(FontWeight?), typeof(FontWeightEditor));
             RegisterEditor(typeof(Uri), typeof(UriEditor));
             RegisterEditor(typeof(Guid), typeof(GuidEditor));
+            RegisterEditor(typeof(Guid?), typeof(GuidEditor));
             RegisterEditor(typeof(Thickness), typeof(ThicknessEditor));
             RegisterEditor(typeof(Size), typeof(SizeEditor));
             RegisterEditor(typeof(Point), typeof(PointEditor));

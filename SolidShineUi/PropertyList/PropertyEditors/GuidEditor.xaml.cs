@@ -23,7 +23,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public List<Type> ValidTypes => (new[] { typeof(Guid) }).ToList();
+        public List<Type> ValidTypes => (new[] { typeof(Guid), typeof(Guid?) }).ToList();
 
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
@@ -75,17 +75,28 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object? GetValue()
         {
-            return guid;
+            if (mnuSetNull.IsChecked == true)
+            {
+                return null;
+            }
+            else
+            {
+                return guid;
+            }
         }
 
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
+            if (type == typeof(Guid?))
+            {
+                mnuSetNull.IsEnabled = true;
+            }
+
             if (value == null)
             {
-                // for this editor, I don't really handle null?
                 guid = Guid.Empty;
-                txtFontName.Text = guid.ToString("B");
+                SetAsNull();
             }
             else if (value is Guid g)
             {
@@ -107,7 +118,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object GetValue()
         {
-            return guid;
+            if (mnuSetNull.IsChecked == true)
+            {
+                return null;
+            }
+            else
+            {
+                return guid;
+            }
         }
         
         /// <inheritdoc/>
@@ -115,9 +133,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (value == null)
             {
-                // for this editor, I don't really handle null?
                 guid = Guid.Empty;
-                txtFontName.Text = guid.ToString("B");
+                SetAsNull();
             }
             else if (value is Guid g)
             {
@@ -137,6 +154,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             guid = Guid.NewGuid();
             txtFontName.Text = guid.ToString("B");
+            UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -144,6 +162,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             guid = Guid.Empty;
             txtFontName.Text = guid.ToString("B");
+            UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -165,8 +184,35 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     guid = g;
                     txtFontName.Text = guid.ToString("B");
                     ValueChanged?.Invoke(this, EventArgs.Empty);
+                    UnsetAsNull();
                 }
             }
+        }
+
+        void SetAsNull()
+        {
+            mnuSetNull.IsEnabled = true;
+            mnuSetNull.IsChecked = true;
+            txtFontName.Text = "(null)";
+        }
+
+        void UnsetAsNull()
+        {
+            mnuSetNull.IsChecked = false;
+            txtFontName.Text = guid.ToString("B");
+        }
+
+        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
+        {
+            if (mnuSetNull.IsChecked)
+            {
+                UnsetAsNull();
+            }
+            else
+            {
+                SetAsNull();
+            }
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

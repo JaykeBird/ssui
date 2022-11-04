@@ -27,6 +27,7 @@
                     <Separator />
                     <MenuItem Header="Set Guid..." x:Name="mnuSetGuid" Click="mnuSetGuid_Click" />
                     <MenuItem Header="Set to Empty" x:Name="mnuEmptyGuid" Click="mnuEmptyGuid_Click" />
+                    <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>
