@@ -9,7 +9,7 @@ using static SolidShineUi.Utils.IconLoader;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for ThicknessEditor.xaml
+    /// A property editor for editing <see cref="Thickness"/> objects.
     /// </summary>
     public partial class ThicknessEditor : UserControl, IPropertyEditor
     {

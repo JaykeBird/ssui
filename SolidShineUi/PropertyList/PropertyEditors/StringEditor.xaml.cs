@@ -12,22 +12,26 @@ using SolidShineUi.Utils;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for StringEditor.xaml
+    /// A proeprty editor for editing <see cref="string"/> objects.
     /// </summary>
     public partial class StringEditor : UserControl, IPropertyEditor
     {
+        /// <summary>Create a StringEditor.</summary>
         public StringEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
+        /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
 
         ColorScheme _cs = new ColorScheme();
         ExperimentalPropertyList _parent = new ExperimentalPropertyList();
 
+        /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
@@ -38,10 +42,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
         {
             return this;
         }
+
+        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
             get => btnMenu.IsEnabled;
@@ -55,6 +62,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         bool setAsNull = false;
 
         private Type _itemType = typeof(string);
+
+        /// <inheritdoc/>
         public List<Type> ValidTypes => (new[] { typeof(string) }).ToList();
 
         private void mnuSetNull_Click(object sender, RoutedEventArgs e)
@@ -77,8 +86,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
 #if NETCOREAPP
+        /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
+        /// <inheritdoc/>
         public object? GetValue()
         {
             if (_itemType == typeof(string))
@@ -95,6 +106,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else return null;
         }
 
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
             _itemType = type;
@@ -104,8 +116,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 #else
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
-
+        
+        /// <inheritdoc/>
         public object GetValue()
         {
             if (_itemType == typeof(string))
@@ -121,7 +135,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else return null;
         }
-
+        
+        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
             _itemType = type;
