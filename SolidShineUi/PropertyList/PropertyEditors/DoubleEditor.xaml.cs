@@ -105,7 +105,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return (mnuSetNull.IsChecked ? null : (Half)dblSpinner.Value);
             }
 #else
-            else if (_propType == typeof(Nullable<double>))
+            else if (_propType == typeof(double?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -116,7 +116,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return dblSpinner.Value;
                 }
             }
-            else if (_propType == typeof(Nullable<float>))
+            else if (_propType == typeof(float?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -140,7 +140,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NET5_0_OR_GREATER
             if (type == typeof(double?) || type == typeof(float?) || type == typeof(Half?))
 #else
-            if (type == typeof(Nullable<double>) || type == typeof(Nullable<float>) || type == typeof(double?) || type == typeof(float?))
+            if (type == typeof(double?) || type == typeof(float?))
 #endif
             {
                 mnuSetNull.IsEnabled = true;
@@ -167,7 +167,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 return (float)dblSpinner.Value;
             }
-            else if (_propType == typeof(Nullable<double>))
+            else if (_propType == typeof(double?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -178,7 +178,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return dblSpinner.Value;
                 }
             }
-            else if (_propType == typeof(Nullable<float>))
+            else if (_propType == typeof(float?))
             {
                 if (mnuSetNull.IsChecked)
                 {
@@ -198,7 +198,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
-            if (type == typeof(Nullable<double>) || type == typeof(Nullable<float>) || type == typeof(double?) || type == typeof(float?))
+            if (type == typeof(double?) || type == typeof(float?))
             {
                 mnuSetNull.IsEnabled = true;
                 if (value == null)

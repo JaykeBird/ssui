@@ -68,6 +68,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (type == typeof(Point) || type == typeof(Point?))
             {
+                if (type == typeof(Point?))
+                {
+                    mnuSetNull.IsEnabled = true;
+                }
+
                 if (value != null)
                 {
                     if (value is Point t)
@@ -162,6 +167,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _internalAction = true;
             nudWidth.Value = d;
             nudHeight.Value = d;
+            UnsetAsNull();
             _internalAction = false;
         }
 

@@ -642,7 +642,9 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Guid), typeof(GuidEditor));
             RegisterEditor(typeof(Guid?), typeof(GuidEditor));
             RegisterEditor(typeof(Thickness), typeof(ThicknessEditor));
+            RegisterEditor(typeof(Thickness?), typeof(ThicknessEditor));
             RegisterEditor(typeof(Size), typeof(SizeEditor));
+            RegisterEditor(typeof(Size?), typeof(SizeEditor));
             RegisterEditor(typeof(Point), typeof(PointEditor));
             RegisterEditor(typeof(Point?), typeof(PointEditor));
             RegisterEditor(typeof(List<>), typeof(ListEditor));

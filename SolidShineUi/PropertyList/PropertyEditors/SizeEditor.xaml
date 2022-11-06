@@ -28,6 +28,8 @@
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="Set All to Zero (0)" x:Name="mnuSetZero" Click="mnuSetZero_Click" />
+                    <Separator />
+                    <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>

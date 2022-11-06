@@ -9,14 +9,17 @@ using static SolidShineUi.Utils.IconLoader;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for ThicknessEditor.xaml
+    /// A property editor for editing <see cref="Version"/> objects.
     /// </summary>
     public partial class VersionEditor : UserControl, IPropertyEditor
     {
+        /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(Version) };
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
+        /// <inheritdoc/>
         public bool IsPropertyWritable { get => nudLeft.IsEnabled;
             set
             {
@@ -28,10 +31,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         private ColorScheme _cs = new ColorScheme();
 
+        /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
@@ -58,14 +63,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <summary>
+        /// Create a VersionEditor.
+        /// </summary>
         public VersionEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement() { return this; }
 
 #if NETCOREAPP
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
             if (type == typeof(Version))
@@ -100,13 +110,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public object? GetValue()
         {
             return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
         }
 
+        /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 #else
+        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
             if (type == typeof(Version))
@@ -140,12 +153,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 SetAllToValue(0);
             }
         }
-
+        
+        /// <inheritdoc/>
         public object GetValue()
         {
             return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
         }
-
+        
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
 #endif
 

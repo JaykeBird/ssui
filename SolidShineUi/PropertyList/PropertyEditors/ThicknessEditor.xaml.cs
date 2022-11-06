@@ -13,10 +13,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class ThicknessEditor : UserControl, IPropertyEditor
     {
-        public List<Type> ValidTypes => new List<Type> { typeof(Thickness) };
+        /// <inheritdoc/>
+        public List<Type> ValidTypes => new List<Type> { typeof(Thickness), typeof(Thickness?) };
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
+        /// <inheritdoc/>
         public bool IsPropertyWritable { get => nudLeft.IsEnabled;
             set
             {
@@ -28,8 +31,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
@@ -67,59 +72,29 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
         public ThicknessEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement() { return this; }
-
+        
+        /// <inheritdoc/>
 #if NETCOREAPP
         public void LoadValue(object? value, Type type)
-        {
-            if (type == typeof(Thickness))
-            {
-                if (value != null)
-                {
-                    if (value is Thickness t)
-                    {
-                        _internalAction = true;
-                        nudLeft.Value = t.Left;
-                        nudTop.Value = t.Top;
-                        nudRight.Value = t.Right;
-                        nudBottom.Value = t.Bottom;
-                        _internalAction = false;
-                    }
-                    else
-                    {
-                        // uhhh?
-                        SetAllToValue(0);
-                    }
-                }
-                else
-                {
-                    // null? treat it as Thickness of value 0
-                    SetAllToValue(0);
-                }
-            }
-            else
-            {
-                // uhhh?
-                SetAllToValue(0);
-            }
-        }
-
-        public object? GetValue()
-        {
-            return new Thickness(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
-        }
-
-        public event EventHandler? ValueChanged;
 #else
         public void LoadValue(object value, Type type)
+#endif
         {
-            if (type == typeof(Thickness))
+            if (type == typeof(Thickness) || type == typeof(Thickness?))
             {
+                if (type == typeof(Thickness?))
+                {
+                    mnuSetNull.IsEnabled = true;
+                }
+
                 if (value != null)
                 {
                     if (value is Thickness t)
@@ -139,7 +114,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    // null? treat it as Thickness of value 0
+                    // null
+                    SetAsNull();
                     SetAllToValue(0);
                 }
             }
@@ -150,11 +126,29 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        /// <inheritdoc/>
+#if NETCOREAPP
+        public object? GetValue()
+        {
+            if (mnuSetNull.IsChecked == true)
+            {
+                return null;
+            }
+            else
+            {
+                return new Thickness(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
+            }
+        }
+
+        /// <inheritdoc/>
+        public event EventHandler? ValueChanged;
+#else
         public object GetValue()
         {
             return new Thickness(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
         }
-
+        
+        /// <inheritdoc/>
         public event EventHandler ValueChanged;
 #endif
 
@@ -189,7 +183,40 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             nudTop.Value = d;
             nudRight.Value = d;
             nudBottom.Value = d;
+            UnsetAsNull();
             _internalAction = false;
+        }
+
+        void SetAsNull()
+        {
+            mnuSetNull.IsEnabled = true;
+            mnuSetNull.IsChecked = true;
+            nudLeft.IsEnabled = false;
+            nudTop.IsEnabled = false;
+            nudRight.IsEnabled = false;
+            nudBottom.IsEnabled = false;
+        }
+
+        void UnsetAsNull()
+        {
+            mnuSetNull.IsChecked = false;
+            nudLeft.IsEnabled = true;
+            nudTop.IsEnabled = true;
+            nudRight.IsEnabled = true;
+            nudBottom.IsEnabled = true;
+        }
+
+        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
+        {
+            if (mnuSetNull.IsChecked)
+            {
+                UnsetAsNull();
+            }
+            else
+            {
+                SetAsNull();
+            }
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
