@@ -11,6 +11,7 @@ using SolidShineUi.PropertyList.PropertyEditors;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SolidShineUi.PropertyList
 {
@@ -650,6 +651,12 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(List<>), typeof(ListEditor));
             RegisterEditor(typeof(IEnumerable<>), typeof(EnumerableEditor));
             RegisterEditor(typeof(Version), typeof(VersionEditor));
+            RegisterEditor(typeof(char), typeof(CharEditor));
+            RegisterEditor(typeof(char?), typeof(CharEditor));
+#if NETCOREAPP
+            RegisterEditor(typeof(Rune), typeof(CharEditor));
+            RegisterEditor(typeof(Rune?), typeof(CharEditor));
+#endif
         }
 
         /// <summary>

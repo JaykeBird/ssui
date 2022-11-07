@@ -1,0 +1,32 @@
+﻿<flat:FlatWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:flat="clr-namespace:SolidShineUi"
+        x:Class="SolidShineUi.PropertyList.Dialogs.CharInputDialog" x:Name="window"
+        mc:Ignorable="d"
+        Title="Enter Char as Unicode" Height="260" Width="450" Loaded="FlatWindow_Loaded" CaptionDisplayType="Close" Topmost="True" >
+    <Grid x:Name="grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition Width="149*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="38"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="81"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Enter a Unicode (UTF-32) code point:" VerticalAlignment="Top"/>
+        <flat:FlatButton x:Name="btnOK" Content="OK" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" Grid.Column="1" />
+        <flat:FlatButton x:Name="btnCancel" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" Grid.Column="1" />
+        <flat:ClickSelectTextBox x:Name="txtHex" Height="24" Margin="20,5,10,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" SelectOnFocus="True" Grid.Row="2" TextChanged="txtHex_TextChanged" MaxLength="8" />
+        <flat:IntegerSpinner x:Name="nudDec" Height="23" Margin="10,4,15,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" Grid.Row="2" Grid.Column="1" MinValue="0" ValueChanged="nudDec_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+        <flat:ClickSelectTextBox x:Name="txtPreview" Height="24" IsReadOnly="True" BorderThickness="0" Background="Transparent" Margin="20,40,10,0" VerticalAlignment="Top" SelectOnFocus="True" Grid.Row="3" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="As Hexadecimal (A-Z,0-9):" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" Text="As Decimal:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="Preview:" VerticalAlignment="Top" Grid.Row="3"/>
+    </Grid>
+</flat:FlatWindow>

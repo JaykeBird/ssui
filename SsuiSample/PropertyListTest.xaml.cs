@@ -104,6 +104,11 @@ namespace SsuiSample
             public decimal NumberWithActualDecimal { get; set; } = (decimal)7.3;
 
             public Brush TestBrush { get; set; } = BrushFactory.Create(Colors.Green, Colors.Orange, 90.0);
+
+            public char? CharChar { get; set; } = 'c';
+            public char CharCharY { get; set; } = 'h';
+
+            public Thickness? NullThickness { get; set; } = null;
         }
     }
 }

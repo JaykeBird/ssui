@@ -137,6 +137,9 @@ See website for more details!</PackageReleaseNotes>
     <Compile Update="ChromeButtons.xaml.cs">
       <DependentUpon>ChromeButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Update="PropertyList\Dialogs\CharInputDialog.xaml.cs">
+      <DependentUpon>CharInputDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Utils\MultilineStringInputDialog.xaml.cs">
       <DependentUpon>MultilineStringInputDialog.xaml</DependentUpon>
     </Compile>
@@ -193,7 +196,13 @@ See website for more details!</PackageReleaseNotes>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="PropertyList\Dialogs\CharInputDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="PropertyList\PropertyEditors\FontWeightEditor.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="PropertyList\PropertyEditors\CharEditor.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Utils\MultilineStringInputDialog.xaml">

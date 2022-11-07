@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="SolidShineUi.PropertyList.PropertyEditors.CharEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:flat="clr-namespace:SolidShineUi"
+             xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
+             mc:Ignorable="d" Width="Auto"
+             d:DesignHeight="30" d:DesignWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="28" />
+        </Grid.ColumnDefinitions>
+        <flat:ClickSelectTextBox x:Name="txtText" TextChanged="txtText_TextChanged" MaxLength="15" />
+        <flat:ClickSelectTextBox x:Name="txtValue" Margin="3,0,0,0" Grid.Column="1" IsReadOnly="True" Opacity="0.8" />
+        <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="2" ShowMenuArrow="False" >
+            <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
+            <flat:MenuButton.Menu>
+                <flat:ContextMenu>
+                    <MenuItem Header="Enter in Unicode Value..." x:Name="mnuMultiline" Click="mnuMultiline_Click" />
+                    <Separator />
+                    <MenuItem Header="Set as Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" IsEnabled="False" />
+                </flat:ContextMenu>
+            </flat:MenuButton.Menu>
+        </flat:MenuButton>
+    </Grid>
+</UserControl>
