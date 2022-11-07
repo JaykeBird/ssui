@@ -350,10 +350,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     // update color
                     _dataValue = new SolidColorBrush(cpd.SelectedColor);
 
-                    btnBrush.Background = (SolidColorBrush)_dataValue;
-                    btnBrush.HighlightBrush = (SolidColorBrush)_dataValue;
-                    btnBrush.ClickBrush = (SolidColorBrush)_dataValue;
-                    btnBrush.DisabledBrush = (SolidColorBrush)_dataValue;
+                    UpdateMainPreview((SolidColorBrush)_dataValue);
 
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -368,8 +365,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (lged.DialogResult)
                 {
                     // update info
-                    // _dataValue = new SolidColorBrush(cpd.SelectedColor);
-                    // ValueChanged?.Invoke(this, EventArgs.Empty);
+                    _dataValue = lged.GetGradientBrush();
+
+                    UpdateMainPreview((LinearGradientBrush)_dataValue);
+
+                    ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
             else if (_propType == typeof(RadialGradientBrush))
@@ -391,6 +391,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else
             {
                 // uhhhhhhhhhhhhh
+            }
+
+            void UpdateMainPreview(Brush b)
+            {
+                btnBrush.Background = b;
+                btnBrush.HighlightBrush = b;
+                btnBrush.ClickBrush = b;
+                btnBrush.DisabledBrush = b;
             }
         }
 

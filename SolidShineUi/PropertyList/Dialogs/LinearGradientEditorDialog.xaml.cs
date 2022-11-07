@@ -67,6 +67,10 @@ namespace SolidShineUi.PropertyList.Dialogs
             //});
         }
 
+        /// <summary>
+        /// Load in a <see cref="LinearGradientBrush"/> into this dialog for viewing/editing.
+        /// </summary>
+        /// <param name="lgb">The LinearGradientBrush to load in.</param>
         public void LoadGradient(LinearGradientBrush lgb)
         {
             stopBar.GradientStops = lgb.GradientStops;
@@ -103,6 +107,34 @@ namespace SolidShineUi.PropertyList.Dialogs
             nudOpacity.Value = lgb.Opacity;
         }
 
+        /// <summary>
+        /// Get a <see cref="LinearGradientBrush"/> based upon the options selected in this dialog.
+        /// </summary>
+        public LinearGradientBrush GetGradientBrush()
+        {
+            LinearGradientBrush lgb = new LinearGradientBrush();
+
+            lgb.GradientStops = stopBar.GradientStops;
+            lgb.MappingMode = cbbMappingMode.SelectedEnumValueAsEnum<BrushMappingMode>();
+            lgb.SpreadMethod = cbbSpreadMethod.SelectedEnumValueAsEnum<GradientSpreadMethod>();
+
+            lgb.Opacity = nudOpacity.Value;
+
+            if (lgb.MappingMode == BrushMappingMode.RelativeToBoundingBox)
+            {
+                lgb.StartPoint = new Point(edtPoints.SelectedWidth1, edtPoints.SelectedHeight1);
+                lgb.EndPoint = new Point(edtPoints.SelectedWidth2, edtPoints.SelectedHeight2);
+            }
+            else
+            {
+                lgb.StartPoint = new Point(nudStartAX.Value, nudStartAY.Value);
+                lgb.EndPoint = new Point(nudEndAX.Value, nudEndAY.Value);
+            }
+
+            return lgb;
+        }
+
+        /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK", <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
         public new bool DialogResult { get; set; } = false;
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
