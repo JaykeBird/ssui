@@ -6,7 +6,7 @@
         xmlns:flat="clr-namespace:SolidShineUi"
         x:Class="SolidShineUi.PropertyList.Dialogs.CharInputDialog" x:Name="window"
         mc:Ignorable="d"
-        Title="Enter Char as Unicode" Height="260" Width="450" Loaded="FlatWindow_Loaded" CaptionDisplayType="Close" Topmost="True" >
+        Title="Enter Char as Unicode" Height="260" Width="400" Loaded="FlatWindow_Loaded" CaptionDisplayType="Close" ResizeMode="NoResize" FontSize="12" >
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="151*"/>
@@ -19,7 +19,7 @@
             <RowDefinition Height="81"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Enter a Unicode (UTF-32) code point:" VerticalAlignment="Top"/>
+        <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Enter a Unicode (UTF-32) code point:" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="222"/>
         <flat:FlatButton x:Name="btnOK" Content="OK" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" Grid.Column="1" />
         <flat:FlatButton x:Name="btnCancel" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" Grid.Column="1" />
         <flat:ClickSelectTextBox x:Name="txtHex" Height="24" Margin="20,5,10,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" SelectOnFocus="True" Grid.Row="2" TextChanged="txtHex_TextChanged" MaxLength="8" />
