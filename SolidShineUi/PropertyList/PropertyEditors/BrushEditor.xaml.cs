@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Linq;
 using SolidShineUi.PropertyList.Dialogs;
+using System.Windows.Media.TextFormatting;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -267,7 +268,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.DisabledBrush = (ImageBrush)value;
 
                 txtCurrentBrush.Text = "Image Brush";
-                txtCurrentValue.Text = value.ToString();
+                txtCurrentValue.Text = GetImageDescriptor((ImageBrush)value);
                 btnEditBrush.IsEnabled = true;
                 btnEditBrush.Content = "Edit...";
             }
@@ -330,6 +331,39 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return $"Angle: {angle}º, {brush.GradientStops.Count} stops";
         }
 
+        string GetImageDescriptor(ImageBrush br)
+        {
+            ImageSource isrc = br.ImageSource;
+            if (isrc is BitmapImage bi)
+            {
+                // https://learn.microsoft.com/en-us/dotnet/api/system.windows.media.imaging.bitmapimage.urisource
+                if (bi.UriSource != null)
+                {
+                    return bi.UriSource.ToString();
+                }
+                else
+                {
+                    // stream source
+                    return "(image from stream)";
+                }
+            }
+            else if (isrc is BitmapSource)
+            {
+                // bitmap source
+                return "(image from bitmap source)";
+            }
+            else if (isrc is DrawingImage)
+            {
+                // maybe in the future, I can display some options or settings
+                return "(image from drawing)";
+            }
+            else
+            {
+                // I don't know
+                return "(image from unknown source)";
+            }
+        }
+
 #endregion
         
         private void btnBrush_Click(object sender, RoutedEventArgs e)
@@ -351,6 +385,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     _dataValue = new SolidColorBrush(cpd.SelectedColor);
 
                     UpdateMainPreview((SolidColorBrush)_dataValue);
+                    txtCurrentValue.Text = _dataValue.ToString();
 
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -368,6 +403,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     _dataValue = lged.GetGradientBrush();
 
                     UpdateMainPreview((LinearGradientBrush)_dataValue);
+                    txtCurrentValue.Text = GetGradientDescriptor((LinearGradientBrush)_dataValue);
 
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -378,7 +414,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_propType == typeof(ImageBrush))
             {
-                // need to add image brush editor dialog
+                ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
+                ibre.LoadImage((ImageBrush)_dataValue);
+                ibre.Owner = Window.GetWindow(this);
+                ibre.ShowDialog();
+
+                if (ibre.DialogResult)
+                {
+                    // update info
+                    _dataValue = ibre.GetImageBrush();
+
+                    UpdateMainPreview((ImageBrush)_dataValue);
+                    txtCurrentValue.Text = GetImageDescriptor((ImageBrush)_dataValue);
+
+                    ValueChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
             else if (_propType == typeof(DrawingBrush))
             {
@@ -464,6 +514,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // change to image brush
             // display image brush editor dialog, don't actually immediately change
+            ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
+            ibre.LoadImage(new ImageBrush(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, MessageDialogImageConverter.MessageDialogImageColor.Color)));
+            ibre.Owner = Window.GetWindow(this);
+            ibre.ShowDialog();
+
+            if (ibre.DialogResult)
+            {
+                // update info
+                _dataValue = ibre.GetImageBrush();
+                _propType = typeof(ImageBrush);
+
+                SetUiButtons(typeof(ImageBrush), _dataValue);
+
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

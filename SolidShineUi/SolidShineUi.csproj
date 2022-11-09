@@ -199,6 +199,9 @@ See website for more details!</PackageReleaseNotes>
     <Page Update="PropertyList\Dialogs\CharInputDialog.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+    <Page Update="PropertyList\Dialogs\ImageBrushEditorDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="PropertyList\PropertyEditors\FontWeightEditor.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
