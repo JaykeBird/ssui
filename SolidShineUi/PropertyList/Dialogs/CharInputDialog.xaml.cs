@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using SolidShineUi;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
-using System.Windows.Threading;
 
 namespace SolidShineUi.PropertyList.Dialogs
 {
     /// <summary>
-    /// A dialog for the user to enter in a string (in response to a message or prompt).
+    /// A dialog for the user to select a char or Rune via their Unicode code point. Primarily designed for the <see cref="PropertyEditors.CharEditor"/>, but can be used independently as well.
     /// </summary>
     public partial class CharInputDialog : FlatWindow
     {
@@ -20,7 +15,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         #region Window Actions
 
         /// <summary>
-        /// Create a StringInputDialog with nothing preset.
+        /// Create a CharInputDialog.
         /// </summary>
         public CharInputDialog()
         {
@@ -29,7 +24,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         /// <summary>
-        /// Create a StringInputDialog with a color scheme.
+        /// Create a CharInputDialog with a color scheme.
         /// </summary>
         /// <param name="cs">The color scheme to use for the window.</param>
         public CharInputDialog(ColorScheme cs)
@@ -39,7 +34,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         /// <summary>
-        /// Create a StringInputBox with prefilled values.
+        /// Create a CharInputDialog with prefilled values, with a char being entered in.
         /// </summary>
         /// <param name="cs">The color scheme to use for the window.</param>
         /// <param name="value">The value to preload into this dialog. The user is able to change the value though.</param>
@@ -54,7 +49,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
 #if NETCOREAPP
         /// <summary>
-        /// Create a StringInputBox with prefilled values. If a Rune is entered, then the dialog operates in "Rune mode"; this doesn't affect the appearance, only how the dialog interacts with the user-entered values.
+        /// Create a StringInputBox with prefilled values, with a Run being entered in.
         /// </summary>
         /// <param name="cs">The color scheme to use for the window.</param>
         /// <param name="value">The value to preload into this dialog. The user is able to change the value though.</param>
@@ -73,6 +68,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             nudDec.MinValue = char.MinValue;
             nudDec.MaxValue = char.MaxValue;
+
             txtHex.Focus();
         }
 
@@ -151,8 +147,12 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         /// <summary>
-        /// Get the value entered into this dialog, as a char.
+        /// Get the Unicode character selected in this dialog, as a char.
         /// </summary>
+        /// <remarks>
+        /// Note that chars are explicitly UTF-16. Many code points (especially multilingual, extended, or symbol/emoji characters) cannot be represented as a single UTF-16 char, and instead will require two.
+        /// This dialog only returns one char, but you can check if it is such a char by using <see cref="char.IsSurrogate(char)"/>.
+        /// </remarks>
         public char ValueAsChar
         {
             get
@@ -183,7 +183,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
 #if NETCOREAPP
         /// <summary>
-        /// Get the value entered into this dialog, as a Rune.
+        /// Get the Unicode character selected in this dialog, as a Rune.
         /// </summary>
         public Rune ValueAsRune
         {
@@ -260,11 +260,21 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             try
             {
+#if NETCOREAPP
                 int code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
                 string unicodeString = char.ConvertFromUtf32(code);
                 return unicodeString;
+#else
+                int code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                string unicodeString = char.ConvertFromUtf32(code);
+                return unicodeString;
+#endif
             }
             catch (FormatException)
+            {
+                return "a";
+            }
+            catch (ArgumentOutOfRangeException)
             {
                 return "a";
             }
