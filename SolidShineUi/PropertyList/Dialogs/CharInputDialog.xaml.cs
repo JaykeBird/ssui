@@ -49,10 +49,11 @@ namespace SolidShineUi.PropertyList.Dialogs
 
 #if NETCOREAPP
         /// <summary>
-        /// Create a StringInputBox with prefilled values, with a Run being entered in.
+        /// Create a StringInputBox with prefilled values, with a Rune being entered in.
         /// </summary>
         /// <param name="cs">The color scheme to use for the window.</param>
         /// <param name="value">The value to preload into this dialog. The user is able to change the value though.</param>
+        /// <remarks>Entering in a Rune value will put the dialog into "Rune mode", which can be used to enter in and display characters beyond what a single char can support.</remarks>
         public CharInputDialog(ColorScheme cs, Rune value)
         {
             InitializeComponent();
@@ -60,6 +61,24 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             r = value;
             runeMode = true;
+            nudDec.MaxValue = 1114111; // 10FFFF - max valid Unicode code point
+            EnterValueIntoBoxes();
+        }
+
+        /// <summary>
+        /// Enable rune mode for this dialog, which will allow the display of characters beyond what a single char can support. This is meant to be used in situations where a Rune, not a char, is needed.
+        /// </summary>
+        /// <remarks>
+        /// If you suppled a Rune in the constructor for this dialog, then the dialog is already in Rune mode.
+        /// When using Rune mode, you should get the value entered in via using <see cref="ValueAsRune"/>.
+        /// </remarks>
+        public void EnterIntoRuneMode()
+        {
+            if (runeMode) return;
+
+            r = new Rune(c);
+            runeMode = true;
+            nudDec.MaxValue = 1114111; // 10FFFF - max valid Unicode code point
             EnterValueIntoBoxes();
         }
 #endif
@@ -68,6 +87,11 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             nudDec.MinValue = char.MinValue;
             nudDec.MaxValue = char.MaxValue;
+
+            if (runeMode)
+            {
+                nudDec.MaxValue = 1114111; // 10FFFF - max valid Unicode code point
+            }
 
             txtHex.Focus();
         }
@@ -152,6 +176,8 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// <remarks>
         /// Note that chars are explicitly UTF-16. Many code points (especially multilingual, extended, or symbol/emoji characters) cannot be represented as a single UTF-16 char, and instead will require two.
         /// This dialog only returns one char, but you can check if it is such a char by using <see cref="char.IsSurrogate(char)"/>.
+        /// 
+        /// If using .NET Core or .NET 5 or higher, you can use Runes instead.
         /// </remarks>
         public char ValueAsChar
         {
@@ -260,23 +286,38 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             try
             {
+                int code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
 #if NETCOREAPP
-                int code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-                string unicodeString = char.ConvertFromUtf32(code);
-                return unicodeString;
+                if (Rune.IsValid(code))
+                {
+                    Rune r = new Rune(code);
+                    return r.ToString();
+                }
+                else
+                {
+                    return char.ConvertFromUtf32(0);
+                    //if (runeMode)
+                    //{
+                    //    return char.ConvertFromUtf32(0);
+                    //}
+                    //else
+                    //{
+                    //    string unicodeString = char.ConvertFromUtf32(code);
+                    //    return unicodeString;
+                    //}
+                }
 #else
-                int code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
                 string unicodeString = char.ConvertFromUtf32(code);
                 return unicodeString;
 #endif
             }
             catch (FormatException)
             {
-                return "a";
+                return char.ConvertFromUtf32(0);
             }
             catch (ArgumentOutOfRangeException)
             {
-                return "a";
+                return char.ConvertFromUtf32(0);
             }
         }
 
@@ -299,8 +340,10 @@ namespace SolidShineUi.PropertyList.Dialogs
                 c = value[0];
             }
 
+            _internalAction = true;
             UpdateDecBox();
             UpdatePreview();
+            _internalAction = false;
         }
 
         private void nudDec_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -320,8 +363,10 @@ namespace SolidShineUi.PropertyList.Dialogs
                 c = Convert.ToChar(nudDec.Value);
             }
 
+            _internalAction = true;
             UpdateHexBox();
             UpdatePreview();
+            _internalAction = false;
         }
     }
 }

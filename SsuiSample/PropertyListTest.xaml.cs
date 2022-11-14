@@ -1,4 +1,5 @@
 ﻿using SolidShineUi;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -107,6 +108,11 @@ namespace SsuiSample
 
             public char? CharChar { get; set; } = 'c';
             public char CharCharY { get; set; } = 'h';
+
+#if NETCOREAPP
+            public Rune RuneChar { get; set; } = new Rune('c');
+
+#endif
 
             public Thickness? NullThickness { get; set; } = null;
         }
