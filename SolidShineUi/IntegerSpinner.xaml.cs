@@ -831,16 +831,13 @@ namespace SolidShineUi
             }
 
             _updateBox = false;
-            if (int.TryParse(txtValue.Text, out _))
+            if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out _))
             {
-                if (DisplayAsHex)
-                {
-                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
-                }
-                else
-                {
-                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
-                }
+                Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
+            }
+            else if (DisplayAsHex && int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out _))
+            {
+                Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
             }
             else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text) && !DisplayAsHex)
             {
