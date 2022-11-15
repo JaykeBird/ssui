@@ -60,7 +60,7 @@ namespace SolidShineUi.PropertyList
         /// Load in the value of a property.
         /// </summary>
         /// <param name="value">The value to load.</param>
-        /// <param name="type">The type of the value being loaded.</param>
+        /// <param name="type">The type of the property; this may not exactly match the type of the value itself, but the value's type will always implement this type.</param>
 #if NETCOREAPP
         public void LoadValue(object? value, Type type);
 
