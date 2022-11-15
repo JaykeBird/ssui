@@ -73,6 +73,7 @@ namespace SolidShineUi
             InternalRepeatDelayChanged += IntegerSpinner_InternalRepeatDelayChanged;
             InternalCornerRadiusChanged += IntegerSpinner_InternalCornerRadiusChanged;
             InternalShowArrowsChanged += IntegerSpinner_InternalShowArrowsChanged;
+            InternalDisplayAsHexChanged += IntegerSpinner_InternalDisplayAsHexChanged;
 
             PropertyChanged += (x, y) => ValidateValue();
 
@@ -600,6 +601,7 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>
         /// See the <see cref="ArithmeticParser"/> class for more info about how expressions are parsed.
+        /// Note that AcceptExpressions is ignored (and expressions not accepted) while <see cref="DisplayAsHex"/> is set to true.
         /// </remarks>
         [Category("Common")]
         public bool AcceptExpressions
@@ -658,6 +660,80 @@ namespace SolidShineUi
         {
             get => (bool)GetValue(ShowArrowsProperty);
             set => SetValue(ShowArrowsProperty, value);
+        }
+
+        #endregion
+
+        #region DisplayAsHex
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
+            "DisplayAsHex", typeof(bool), typeof(IntegerSpinner),
+            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalDisplayAsHexChanged)));
+
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
+        protected event DependencyPropertyChangedEventHandler InternalDisplayAsHexChanged;
+
+        public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
+            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// Raised when the DisplayAsHex property is changed.
+        /// </summary>
+        public event RoutedEventHandler DisplayAsHexChanged
+        {
+            add { AddHandler(DisplayAsHexChangedEvent, value); }
+            remove { RemoveHandler(DisplayAsHexChangedEvent, value); }
+        }
+
+        private static void OnInternalDisplayAsHexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is IntegerSpinner s)
+            {
+                s.InternalDisplayAsHexChanged?.Invoke(s, e);
+            }
+        }
+
+        private void IntegerSpinner_InternalDisplayAsHexChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            RoutedEventArgs re = new RoutedEventArgs(DisplayAsHexChangedEvent);
+            RaiseEvent(re);
+
+            UpdateUI();
+            //_raiseChangedEvent = false;
+            //if ((bool)e.NewValue == true)
+            //{
+            //    if (txtValue.Text != Value.ToString("X"))
+            //    {
+            //        if (_updateBox) txtValue.Text = Value.ToString("X");
+            //    }
+            //}
+            //else
+            //{
+            //    if (txtValue.Text != Value.ToString())
+            //    {
+            //        if (_updateBox) txtValue.Text = Value.ToString();
+            //    }
+            //}
+            //_raiseChangedEvent = true;
+        }
+
+        /// <summary>
+        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while DisplayAsHex is set to true, <see cref="AcceptExpressions"/> is ignored.
+        /// </summary>
+        /// <remarks>
+        /// Certain situations, particularly involving computer representations of data or memory, may benefit more with displaying numbers as hexadecimals rather than decimals.
+        /// With hexadecimals, the letters A-F are allowed along with 0-9, and the number "15" in decimal turns into "F" in hexadecimal. Please view online resources like
+        /// Wikipedia for more details.
+        /// </remarks>
+        [Category("Common")]
+        public bool DisplayAsHex
+        {
+            get => (bool)GetValue(DisplayAsHexProperty);
+            set => SetValue(DisplayAsHexProperty, value);
         }
 
         #endregion
@@ -728,10 +804,21 @@ namespace SolidShineUi
                 }
             }
 
-            if (txtValue.Text != Value.ToString())
+            if (DisplayAsHex)
             {
-                if (_updateBox) txtValue.Text = Value.ToString();
+                if (txtValue.Text != Value.ToString("X"))
+                {
+                    if (_updateBox) txtValue.Text = Value.ToString("X");
+                }
             }
+            else
+            {
+                if (txtValue.Text != Value.ToString())
+                {
+                    if (_updateBox) txtValue.Text = Value.ToString();
+                }
+            }
+
         }
 
         #region Textbox
@@ -746,9 +833,16 @@ namespace SolidShineUi
             _updateBox = false;
             if (int.TryParse(txtValue.Text, out _))
             {
-                Value = int.Parse(txtValue.Text);
+                if (DisplayAsHex)
+                {
+                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
+                }
+                else
+                {
+                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
+                }
             }
-            else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
+            else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text) && !DisplayAsHex)
             {
                 try
                 {

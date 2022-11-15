@@ -364,5 +364,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        private void mnuDisplayHex_Click(object sender, RoutedEventArgs e)
+        {
+            if (intSpinner.DisplayAsHex)
+            {
+                intSpinner.DisplayAsHex = false;
+                mnuDisplayHex.IsChecked = false;
+            }
+            else
+            {
+                intSpinner.DisplayAsHex = true;
+                mnuDisplayHex.IsChecked = true;
+            }
+        }
     }
 }

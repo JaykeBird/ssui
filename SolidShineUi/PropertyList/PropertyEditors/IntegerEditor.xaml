@@ -19,6 +19,8 @@
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
+                    <MenuItem Header="Display as Hex" x:Name="mnuDisplayHex" Click="mnuDisplayHex_Click" />
+                    <Separator />
                     <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
