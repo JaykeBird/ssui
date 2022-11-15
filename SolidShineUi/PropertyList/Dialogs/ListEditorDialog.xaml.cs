@@ -212,7 +212,11 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (baseType == null)
             {
                 CannotAdd();
-            }            
+            }
+            else if (baseType.IsAbstract || baseType.IsInterface)
+            {
+                CannotAdd();
+            }
             else if (baseType.GetConstructor(Type.EmptyTypes) == null)
             {
                 // does not have a parameterless constructor
