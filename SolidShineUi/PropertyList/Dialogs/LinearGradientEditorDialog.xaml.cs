@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,6 +60,11 @@ namespace SolidShineUi.PropertyList.Dialogs
             //    nudEndX.Value = edtPoints.SelectedWidth2;
             //    nudEndY.Value = edtPoints.SelectedHeight2;
             //});
+
+            imgDown.Source = IconLoader.LoadIcon("DownArrow", ColorScheme);
+            imgUp.Source = IconLoader.LoadIcon("UpArrow", ColorScheme);
+            imgLeft.Source = IconLoader.LoadIcon("LeftArrow", ColorScheme);
+            imgRight.Source = IconLoader.LoadIcon("RightArrow", ColorScheme);
         }
 
         /// <summary>
@@ -162,6 +168,8 @@ namespace SolidShineUi.PropertyList.Dialogs
 
                 nudEndX.Value = edtPoints.SelectedWidth2;
                 nudEndY.Value = edtPoints.SelectedHeight2;
+
+                nudAngle.Value = Math.Round(GetAngle(), 1);
             });
 
             UpdatePreview();
@@ -173,6 +181,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             RunUpdateAction(() =>
             {
                 edtPoints.SelectedWidth1 = nudStartX.Value;
+                nudAngle.Value = Math.Round(GetAngle(), 1);
             });
         }
 
@@ -181,6 +190,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             RunUpdateAction(() =>
             {
                 edtPoints.SelectedHeight1 = nudStartY.Value;
+                nudAngle.Value = Math.Round(GetAngle(), 1);
             });
         }
 
@@ -189,6 +199,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             RunUpdateAction(() =>
             {
                 edtPoints.SelectedWidth2 = nudEndX.Value;
+                nudAngle.Value = Math.Round(GetAngle(), 1);
             });
         }
 
@@ -197,12 +208,58 @@ namespace SolidShineUi.PropertyList.Dialogs
             RunUpdateAction(() =>
             {
                 edtPoints.SelectedHeight2 = nudEndY.Value;
+                nudAngle.Value = Math.Round(GetAngle(), 1);
             });
         }
 
         private void nudAngle_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            RunUpdateAction(() =>
+            {
+                Point p = EndPointFromAngle(nudAngle.Value);
+                
+                if (p.X < 0.0)
+                {
+                    if (p.Y < 0.0)
+                    {
+                        edtPoints.SelectedHeight2 = 0.0;
+                        edtPoints.SelectedWidth2 = 0.0;
 
+                        edtPoints.SelectedHeight1 = p.Y * -1;
+                        edtPoints.SelectedWidth1 = p.X * -1;
+                    }
+                    else
+                    {
+                        edtPoints.SelectedHeight2 = 1.0;
+                        edtPoints.SelectedWidth2 = 0.0;
+
+                        edtPoints.SelectedHeight1 = 1.0 - p.Y;
+                        edtPoints.SelectedWidth1 = p.X * -1;
+                    }
+                }
+                else if (p.Y < 0.0)
+                {
+                    edtPoints.SelectedHeight1 = 1.0;
+                    edtPoints.SelectedWidth1 = 0.0;
+
+                    edtPoints.SelectedHeight2 = 1.0 - (p.Y * -1);
+                    edtPoints.SelectedWidth2 = p.X;
+                }
+                else
+                {
+                    edtPoints.SelectedHeight1 = 0.0;
+                    edtPoints.SelectedWidth1 = 0.0;
+
+                    edtPoints.SelectedHeight2 = p.Y;
+                    edtPoints.SelectedWidth2 = p.X;
+                }
+
+                nudStartX.Value = edtPoints.SelectedWidth1;
+                nudStartY.Value = edtPoints.SelectedHeight1;
+
+                nudEndX.Value = edtPoints.SelectedWidth2;
+                nudEndY.Value = edtPoints.SelectedHeight2;
+            });
         }
 #pragma warning restore IDE0051 // Remove unused private members
 
@@ -214,6 +271,17 @@ namespace SolidShineUi.PropertyList.Dialogs
             a.Invoke();
 
             updateValues = false;
+        }
+
+        double GetAngle()
+        {
+            // https://stackoverflow.com/a/12892493/2987285
+            Point p1 = new Point(edtPoints.SelectedWidth1, edtPoints.SelectedHeight1);
+            Point p2 = new Point(edtPoints.SelectedWidth2, edtPoints.SelectedHeight2);
+
+            double angle = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X) * 180.0 / Math.PI;
+
+            return angle < 0 ? 360 + angle : angle;
         }
 
         private void cbbMappingMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -281,6 +349,26 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
 
             grdPreview.Background = lgb;
+        }
+
+        private void btnAngleLeft_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 180;
+        }
+
+        private void btnAngleUp_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 270;
+        }
+
+        private void btnAngleRight_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 0;
+        }
+
+        private void btnAngleDown_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 90;
         }
     }
 }

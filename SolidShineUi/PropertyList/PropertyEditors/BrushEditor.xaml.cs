@@ -94,7 +94,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable
         {
             get => btnBrush.IsEnabled;
-            set => btnBrush.IsEnabled = value;
+            set
+            {
+                btnBrush.IsEnabled = value;
+                btnEditBrush.IsEnabled = value;
+                selChange.IsEnabled = value;
+            }
         }
 
         /// <summary>the type of the property itself, to determine what is allowed as brushes</summary>
@@ -317,9 +322,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         string GetGradientDescriptor(LinearGradientBrush brush)
         {
             double height = brush.StartPoint.Y - brush.EndPoint.Y;
-            double width = brush.StartPoint.X - brush.EndPoint.Y;
+            double width = brush.StartPoint.X - brush.EndPoint.X;
 
-            double angleR = Math.Tan(height / width);
+            double angleR = Math.Atan2(height, width);
             // time for some trigonometry! remember that from high school?
             // after converting from radians to degrees, it seems there's some random numbers at the end, so let's round it to XX.X degrees
             double angle = Math.Round(angleR * 180 / Math.PI, 1);
@@ -429,11 +434,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 siLinear.Visibility = Visibility.Visible;
                 siRadial.Visibility = Visibility.Visible;
                 siImage.Visibility = Visibility.Collapsed;
-        }
+            }
         }
 
-#endregion
-        
+        #endregion
+
         #endregion
 
         private void btnBrush_Click(object sender, RoutedEventArgs e)
