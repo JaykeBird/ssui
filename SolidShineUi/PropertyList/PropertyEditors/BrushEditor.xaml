@@ -46,12 +46,12 @@
                         <flat:FlatButton Content="Edit..." x:Name="btnEditBrush" FontSize="12" HorizontalAlignment="Right" Margin="0,3,10,3" Click="btnBrush_Click" Grid.Row="3" />
                     </Grid>
                     <TextBlock Text="Change to:" Margin="5,3" Grid.Row="1" />
-                    <flat:SelectPanel Grid.Row="2" x:Name="selChange" BorderThickness="0,1,0,0" >
-                        <flat:SelectableItem Text="Nothing (null)" x:Name="siNothing" Click="siNothing_Click" />
-                        <flat:SelectableItem Text="Solid Color Brush" x:Name="siSolid" Click="siSolid_Click" />
-                        <flat:SelectableItem Text="Linear Gradient Brush" x:Name="siLinear" Click="siLinear_Click" />
-                        <flat:SelectableItem Text="Radial Gradient Brush" x:Name="siRadial" Click="siRadial_Click" />
-                        <flat:SelectableItem Text="Image Brush" x:Name="siImage" Click="siImage_Click" />
+                    <flat:SelectPanel Grid.Row="2" x:Name="selChange" BorderThickness="0,1,0,0" Padding="3" >
+                        <flat:SelectableItem Text="Nothing (null)" x:Name="siNothing" Click="siNothing_Click" CanSelect="False" Indent="20" />
+                        <flat:SelectableItem Text="Solid Color Brush" x:Name="siSolid" Click="siSolid_Click" CanSelect="False" Indent="20" />
+                        <flat:SelectableItem Text="Linear Gradient Brush" x:Name="siLinear" Click="siLinear_Click" CanSelect="False" Indent="20" />
+                        <flat:SelectableItem Text="Radial Gradient Brush" x:Name="siRadial" Click="siRadial_Click" CanSelect="False" Indent="20" />
+                        <flat:SelectableItem Text="Image Brush" x:Name="siImage" Click="siImage_Click" CanSelect="False" Indent="20" />
                     </flat:SelectPanel>
                 </Grid>
             </Border>
