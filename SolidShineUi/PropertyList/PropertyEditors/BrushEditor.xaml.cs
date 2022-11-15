@@ -97,7 +97,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             set => btnBrush.IsEnabled = value;
         }
 
+        /// <summary>the type of the property itself, to determine what is allowed as brushes</summary>
         Type _propType = typeof(Brush);
+        /// <summary>the type of the actual current value</summary>
+        Type _actualType = typeof(Brush);
+        /// <summary>the actual current value</summary>
 #if NETCOREAPP
         Brush? _dataValue = new SolidColorBrush(Colors.Black);
 #else
@@ -119,6 +123,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
+            // TODO: use type to determine what types of brushes are allowed, and use that to determine what "change to" values are allowed
+
             if (value == null)
             {
                 txtBrushType.Text = "(null)";
@@ -151,15 +157,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             Type brushType = type;
 
-            if (brushType == typeof(Brush))
-            {
-                brushType = value.GetType();
-            }
-
             _propType = brushType;
+            _actualType = value.GetType();
             _dataValue = (Brush)value;
 
-            SetUiButtons(brushType, value);
+            SetUiButtons(value.GetType(), value);
+            SetupAllowedBrushesUI();
         }
 #else
         /// <inheritdoc/>
@@ -206,18 +209,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             Type brushType = type;
 
-            if (brushType == typeof(Brush))
-            {
-                brushType = value.GetType();
-            }
-
             _propType = brushType;
+            _actualType = value.GetType();
             _dataValue = (Brush)value;
 
-            SetUiButtons(brushType, value);
+            SetUiButtons(value.GetType(), value);
+            SetupAllowedBrushesUI();
         }
 #endif
 
+        #region UI Setups
         private void SetUiButtons(Type brushType, object value)
         {
             if (brushType == typeof(SolidColorBrush))
@@ -364,8 +365,77 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        void SetupAllowedBrushesUI()
+        {
+            // sets which brush types can be applied to this property, based upon the property's type
+            // (this prevents SolidColorBrushes being used in a property of type ImageBrush, for example)
+
+            // null will always be available
+            // (in situations with .NET where nullability is on, this might cause problems, but the
+            // Property List control should already be able to handle this via the "property change failed" code)
+            siNothing.Visibility = Visibility.Visible;
+
+            siSolid.Visibility = Visibility.Collapsed;
+            siLinear.Visibility = Visibility.Collapsed;
+            siRadial.Visibility = Visibility.Collapsed;
+            siImage.Visibility = Visibility.Collapsed;
+
+            if (_propType == typeof(Brush))
+            {
+                // all brushes are allowed
+                siSolid.Visibility = Visibility.Visible;
+                siLinear.Visibility = Visibility.Visible;
+                siRadial.Visibility = Visibility.Visible;
+                siImage.Visibility = Visibility.Visible;
+            }
+            else if (_propType == typeof(SolidColorBrush))
+            {
+                siSolid.Visibility = Visibility.Visible;
+                siLinear.Visibility = Visibility.Collapsed;
+                siRadial.Visibility = Visibility.Collapsed;
+                siImage.Visibility = Visibility.Collapsed;
+            }
+            else if (_propType == typeof(LinearGradientBrush))
+            {
+                siSolid.Visibility = Visibility.Collapsed;
+                siLinear.Visibility = Visibility.Visible;
+                siRadial.Visibility = Visibility.Collapsed;
+                siImage.Visibility = Visibility.Collapsed;
+            }
+            else if (_propType == typeof(RadialGradientBrush))
+            {
+                siSolid.Visibility = Visibility.Collapsed;
+                siLinear.Visibility = Visibility.Collapsed;
+                siRadial.Visibility = Visibility.Visible;
+                siImage.Visibility = Visibility.Collapsed;
+            }
+            else if (_propType == typeof(ImageBrush))
+            {
+                siSolid.Visibility = Visibility.Collapsed;
+                siLinear.Visibility = Visibility.Collapsed;
+                siRadial.Visibility = Visibility.Collapsed;
+                siImage.Visibility = Visibility.Visible;
+            }
+            else if (_propType == typeof(TileBrush))
+            {
+                siSolid.Visibility = Visibility.Collapsed;
+                siLinear.Visibility = Visibility.Collapsed;
+                siRadial.Visibility = Visibility.Collapsed;
+                siImage.Visibility = Visibility.Visible;
+            }
+            else if (_propType == typeof(GradientBrush))
+            {
+                siSolid.Visibility = Visibility.Collapsed;
+                siLinear.Visibility = Visibility.Visible;
+                siRadial.Visibility = Visibility.Visible;
+                siImage.Visibility = Visibility.Collapsed;
+        }
+        }
+
 #endregion
         
+        #endregion
+
         private void btnBrush_Click(object sender, RoutedEventArgs e)
         {
             if (_dataValue == null)
@@ -374,7 +444,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return;
             }
 
-            if (_propType == typeof(SolidColorBrush))
+            if (_actualType == typeof(SolidColorBrush))
             {
                 ColorPickerDialog cpd = new ColorPickerDialog(_cs, ((SolidColorBrush)_dataValue).Color);
                 cpd.Owner = Window.GetWindow(this);
@@ -390,7 +460,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
-            else if (_propType == typeof(LinearGradientBrush))
+            else if (_actualType == typeof(LinearGradientBrush))
             {
                 LinearGradientEditorDialog lged = new LinearGradientEditorDialog(_cs, (LinearGradientBrush)_dataValue);
                 //lged.LoadGradient((LinearGradientBrush)_dataValue);
@@ -408,11 +478,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
-            else if (_propType == typeof(RadialGradientBrush))
+            else if (_actualType == typeof(RadialGradientBrush))
             {
                 // need to add gradient editor dialog
             }
-            else if (_propType == typeof(ImageBrush))
+            else if (_actualType == typeof(ImageBrush))
             {
                 ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
                 ibre.LoadImage((ImageBrush)_dataValue);
@@ -430,11 +500,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
-            else if (_propType == typeof(DrawingBrush))
+            else if (_actualType == typeof(DrawingBrush))
             {
                 // need to add drawing brush editor dialog
             }
-            else if (_propType == typeof(BitmapCacheBrush))
+            else if (_actualType == typeof(BitmapCacheBrush))
             {
                 // not supported for editing, just display some info
             }
@@ -465,7 +535,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // change to null
             _dataValue = null;
-            _propType = typeof(Brush);
+            _actualType = typeof(Brush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
             txtBrushType.Text = "(null)";
@@ -484,7 +554,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // change to solid color brush
             _dataValue = new SolidColorBrush(Colors.Red);
-            _propType = typeof(SolidColorBrush);
+            _actualType = typeof(SolidColorBrush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
             SetUiButtons(typeof(SolidColorBrush), _dataValue);
@@ -494,7 +564,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // change to linear gradient brush
             _dataValue = new LinearGradientBrush(Colors.Green, Colors.Orange, 45);
-            _propType = typeof(LinearGradientBrush);
+            _actualType = typeof(LinearGradientBrush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
             SetUiButtons(typeof(LinearGradientBrush), _dataValue);
@@ -504,7 +574,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // change to radial gradient brush
             _dataValue = new RadialGradientBrush(Colors.Green, Colors.Orange);
-            _propType = typeof(RadialGradientBrush);
+            _actualType = typeof(RadialGradientBrush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
             SetUiButtons(typeof(RadialGradientBrush), _dataValue);
@@ -523,7 +593,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 // update info
                 _dataValue = ibre.GetImageBrush();
-                _propType = typeof(ImageBrush);
+                _actualType = typeof(ImageBrush);
 
                 SetUiButtons(typeof(ImageBrush), _dataValue);
 
