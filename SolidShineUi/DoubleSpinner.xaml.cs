@@ -97,6 +97,15 @@ namespace SolidShineUi
         {
             double value = Math.Round(Value, Decimals);
 
+            if (value < MinValue)
+            {
+                value = MinValue;
+            }
+            if (value > MaxValue)
+            {
+                value = MaxValue;
+            }
+
             if (value != Value)
             {
                 Value = value;
