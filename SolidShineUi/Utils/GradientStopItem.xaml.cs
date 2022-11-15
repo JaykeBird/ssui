@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -50,26 +51,66 @@ namespace SolidShineUi.Utils
 
         private void Setup()
         {
-            Click += control_Click;
+            //Click += control_Click;
         }
 
+        /// <summary>
+        /// Get or set the offset value for this gradient stop. The offset determines how far along the gradient this stop occurs.
+        /// </summary>
         public double Offset { get => (double)GetValue(OffsetProperty); set => SetValue(OffsetProperty, value); }
 
         public static DependencyProperty OffsetProperty
             = DependencyProperty.Register("Offset", typeof(double), typeof(GradientStopItem),
             new FrameworkPropertyMetadata(0.0));
 
+        /// <summary>
+        /// Get or set the color for this gradient stop.
+        /// </summary>
         public Color Color { get => (Color)GetValue(ColorProperty); set => SetValue(ColorProperty, value); }
 
         public static DependencyProperty ColorProperty
             = DependencyProperty.Register("Color", typeof(Color), typeof(GradientStopItem),
             new FrameworkPropertyMetadata(Colors.Black));
 
+        /// <summary>
+        /// Get or set whether this gradient stop is selected for editing.
+        /// </summary>
         public bool IsSelected { get => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
 
         public static DependencyProperty IsSelectedProperty
             = DependencyProperty.Register("IsSelected", typeof(bool), typeof(GradientStopItem),
-            new FrameworkPropertyMetadata(false ));
+            new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// Get or set the brush used for the background of the gradient stop glyph.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopFill
+        {
+            get => (Brush)GetValue(StopFillProperty);
+            set => SetValue(StopFillProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the background of the stop glyph while it is selected
+        /// (i.e. the <c>IsSelected</c> property is true).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopSelectedFill
+        {
+            get => (Brush)GetValue(StopSelectedFillProperty);
+            set => SetValue(StopSelectedFillProperty, value);
+        }
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public new static readonly DependencyProperty StopFillProperty = DependencyProperty.Register(
+            "Background", typeof(Brush), typeof(GradientStopItem),
+            new PropertyMetadata(Colors.White.ToBrush()));
+
+        public static readonly DependencyProperty StopSelectedFillProperty = DependencyProperty.Register(
+            "ClickBrush", typeof(Brush), typeof(GradientStopItem),
+            new PropertyMetadata(Colors.Gainsboro.ToBrush()));
+#pragma warning restore CS1591
 
         private void Highlight()
         {
@@ -109,12 +150,6 @@ namespace SolidShineUi.Utils
         private void pathOutline_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             brdrFocus.Visibility = Visibility.Collapsed;
-        }
-
-
-        private void control_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         #region Click Handling

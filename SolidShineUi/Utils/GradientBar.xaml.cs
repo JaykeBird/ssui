@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SolidShineUi.Utils
 {
@@ -34,6 +27,11 @@ namespace SolidShineUi.Utils
         }
 
         private GradientStopCollection _stops = new GradientStopCollection();
+#if NETCOREAPP
+        private GradientStopItem? _selected = null;
+#else
+        private GradientStopItem _selected = null;
+#endif
 
         /// <summary>
         /// Get or set the list of gradient stops to display in this GradientBar.
@@ -67,10 +65,31 @@ namespace SolidShineUi.Utils
                 gsi.Margin = new Thickness(stop.Offset * brdrGradient.ActualWidth, 0, 0, 0);
                 gsi.HorizontalAlignment = HorizontalAlignment.Left;
                 gsi.VerticalAlignment = VerticalAlignment.Center;
+                gsi.Click += gsi_Click;
+                gsi.IsSelected = false;
 
                 // hook up selected, deselected events
                 grdStops.Children.Add(gsi);
             }
+        }
+
+        private void gsi_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender == _selected) return; // this one is already selected
+
+            GradientStopItem gsi = (GradientStopItem)sender;
+            if (gsi == null) return;
+
+            if (_selected != null) _selected.IsSelected = false;
+
+            _selected = gsi;
+            gsi.IsSelected = true;
+            LoadSelectedStop();
+        }
+
+        void LoadSelectedStop()
+        {
+
         }
     }
 }

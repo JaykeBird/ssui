@@ -9,12 +9,22 @@
         <flat:ColorToBrushConverter x:Key="ctb" />
     </UserControl.Resources>
     <Grid>
-        <Path x:Name="pathOutline" Fill="White" Stroke="Black" StrokeThickness="1" Focusable="True"
+        <Path x:Name="pathOutline" Stroke="Black" StrokeThickness="1" Focusable="True"
               MouseEnter="pathOutline_MouseEnter" MouseLeave="pathOutline_MouseLeave" MouseDown="pathOutline_MouseDown" MouseUp="pathOutline_MouseUp"
               TouchEnter="pathOutline_TouchEnter" TouchLeave="pathOutline_TouchLeave" TouchDown="pathOutline_TouchDown" TouchUp="pathOutline_TouchUp"
               StylusEnter="pathOutline_StylusEnter" StylusLeave="pathOutline_StylusLeave" StylusDown="pathOutline_StylusDown" StylusUp="pathOutline_StylusUp"
               GotKeyboardFocus="pathOutline_GotKeyboardFocus" LostKeyboardFocus="pathOutline_LostKeyboardFocus" KeyDown="pathOutline_KeyDown" KeyUp="pathOutline_KeyUp" >
             <Path.Data>M 1,1 L 29,1 L 29,24 15,39 L 1,24 1,1 29,1</Path.Data>
+            <Path.Style>
+                <Style TargetType="Path">
+                    <Setter Property="Fill" Value="{Binding ElementName=gsi,Path=StopFill}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=gsi,Path=IsSelected}" Value="True">
+                            <Setter Property="Fill" Value="{Binding ElementName=gsi,Path=StopSelectedFill}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Path.Style>
         </Path>
         <Rectangle StrokeThickness="1" Stroke="DimGray" Margin="3,2,3,16" x:Name="brdrFocus" StrokeDashArray="3,2" StrokeDashCap="Square" Visibility="Collapsed" IsHitTestVisible="False" />
         <Border BorderBrush="Black" BorderThickness="1" Margin="5,3,5,18" x:Name="brdrColor" IsHitTestVisible="False" >
