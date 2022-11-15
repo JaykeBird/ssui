@@ -115,6 +115,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         #region GetValue / LoadValue
 
+        #region Base GetValue / LoadValue
 #if NETCOREAPP
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
@@ -128,15 +129,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
-            // TODO: use type to determine what types of brushes are allowed, and use that to determine what "change to" values are allowed
-
             if (value == null)
             {
-                txtBrushType.Text = "(null)";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-                btnBrush.DisabledBrush = Colors.Black.ToBrush();
+                UpdatePreviewToNull();
 
                 txtCurrentBrush.Text = "(null brush)";
                 txtCurrentValue.Text = "";
@@ -147,11 +142,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (!(value is Brush))
             {
-                txtBrushType.Text = "Unknown";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-                btnBrush.DisabledBrush = Colors.Black.ToBrush();
+                UpdatePreviewToNull();
+                txtBrushType.Text = "(unknown)";
 
                 txtCurrentBrush.Text = "(unknown)";
                 txtCurrentValue.Text = value.ToString();
@@ -182,13 +174,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
+
             if (value == null)
             {
-                txtBrushType.Text = "(null)";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-                btnBrush.DisabledBrush = Colors.Black.ToBrush();
+                UpdatePreviewToNull();
 
                 txtCurrentBrush.Text = "(null brush)";
                 txtCurrentValue.Text = "";
@@ -199,11 +188,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (!(value is Brush))
             {
-                txtBrushType.Text = "Unknown";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-                btnBrush.DisabledBrush = Colors.Black.ToBrush();
+                UpdatePreviewToNull();
+                txtBrushType.Text = "(unknown)";
 
                 txtCurrentBrush.Text = "(unknown)";
                 txtCurrentValue.Text = value.ToString();
@@ -222,6 +208,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             SetupAllowedBrushesUI();
         }
 #endif
+        #endregion
 
         #region UI Setups
         private void SetUiButtons(Type brushType, object value)
@@ -288,8 +275,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                 txtCurrentBrush.Text = "Bitmap Cache Brush";
                 txtCurrentValue.Text = value.ToString();
-                btnEditBrush.IsEnabled = true;
-                btnEditBrush.Content = "Brush Info...";
+                btnEditBrush.IsEnabled = false;
+                btnEditBrush.Content = "Edit...";
             }
             else if (brushType == typeof(DrawingBrush))
             {
@@ -301,16 +288,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                 txtCurrentBrush.Text = "Drawing Brush";
                 txtCurrentValue.Text = value.ToString();
-                btnEditBrush.IsEnabled = true;
+                btnEditBrush.IsEnabled = false;
                 btnEditBrush.Content = "Edit...";
             }
             else
             {
-                txtBrushType.Text = "Unknown";
-                btnBrush.Background = Colors.Black.ToBrush();
-                btnBrush.HighlightBrush = Colors.Black.ToBrush();
-                btnBrush.ClickBrush = Colors.Black.ToBrush();
-                btnBrush.DisabledBrush = Colors.Black.ToBrush();
+                UpdatePreviewToNull();
+                txtBrushType.Text = "(unknown)";
 
                 txtCurrentBrush.Text = "(unknown)";
                 txtCurrentValue.Text = value.ToString();
@@ -345,7 +329,23 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 // https://learn.microsoft.com/en-us/dotnet/api/system.windows.media.imaging.bitmapimage.urisource
                 if (bi.UriSource != null)
                 {
-                    return bi.UriSource.ToString();
+                    string source = bi.UriSource.ToString();
+
+                    if (source.Length > 45)
+                    {
+                        if (char.IsSurrogate(source[44]))
+                        {
+                            return source.Substring(0, 44) + "...";
+                        }
+                        else
+                        {
+                            return source.Substring(0, 45) + "...";
+                        }
+                    }
+                    else
+                    {
+                        return source;
+                    }
                 }
                 else
                 {
@@ -437,15 +437,27 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        #endregion
+        void UpdatePreviewToNull()
+        {
+            DrawingBrush db = BrushFactory.CreateCheckerboardBrush(6, Colors.Gainsboro.ToBrush(), Colors.Silver.ToBrush());
+
+            txtBrushType.Text = "(null)";
+            btnBrush.Background = db;
+            btnBrush.HighlightBrush = db;
+            btnBrush.ClickBrush = db;
+            btnBrush.DisabledBrush = db;
+        }
 
         #endregion
 
+        #endregion
+
+        #region Edit Current Brush
         private void btnBrush_Click(object sender, RoutedEventArgs e)
         {
             if (_dataValue == null)
             {
-                // how did we reach this?
+                // this is null, so nothing is needed lol
                 return;
             }
 
@@ -468,7 +480,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else if (_actualType == typeof(LinearGradientBrush))
             {
                 LinearGradientEditorDialog lged = new LinearGradientEditorDialog(_cs, (LinearGradientBrush)_dataValue);
-                //lged.LoadGradient((LinearGradientBrush)_dataValue);
                 lged.Owner = Window.GetWindow(this);
                 lged.ShowDialog();
 
@@ -526,6 +537,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.DisabledBrush = b;
             }
         }
+        #endregion
 
         private void btnMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -536,6 +548,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             popBrush.StaysOpen = false;
         }
 
+        #region Change Brush
+
         private void siNothing_Click(object sender, EventArgs e)
         {
             // change to null
@@ -543,11 +557,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _actualType = typeof(Brush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
-            txtBrushType.Text = "(null)";
-            btnBrush.Background = Colors.Black.ToBrush();
-            btnBrush.HighlightBrush = Colors.Black.ToBrush();
-            btnBrush.ClickBrush = Colors.Black.ToBrush();
-            btnBrush.DisabledBrush = Colors.Black.ToBrush();
+            UpdatePreviewToNull();
 
             txtCurrentBrush.Text = "(null brush)";
             txtCurrentValue.Text = "";
@@ -605,5 +615,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+        #endregion
     }
 }

@@ -9,12 +9,12 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="Auto" MinWidth="30"/>
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <flat:FlatButton x:Name="btnBrush" Click="btnBrush_Click" />
         <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Unknown" Margin="3,0" IsHitTestVisible="False" />
 
-        <flat:FlatButton x:Name="btnMenu" Width="28" MinHeight="20" Grid.Column="1" Margin="3,1,0,1" Click="btnMenu_Click" TransparentBack="True" >
+        <flat:FlatButton x:Name="btnMenu" Width="28" MinHeight="20" Grid.Column="1" Click="btnMenu_Click" TransparentBack="True" >
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <!--<flat:MenuButton.Menu>
                     <flat:ContextMenu>
