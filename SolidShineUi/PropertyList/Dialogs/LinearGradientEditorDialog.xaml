@@ -49,16 +49,16 @@
             <TextBlock Text="End point:" Grid.Column="2" Margin="0,0,3,1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" >
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="359.999" Decimals="2" Margin="3,3,8,3" x:Name="nudAngle" Step="1" ValueChanged="nudAngle_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:FlatButton x:Name="btnAngleLeft" Width="24" Height="24" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleLeft_Click" >
+                <flat:FlatButton x:Name="btnAngleLeft" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleLeft_Click" >
                     <Image x:Name="imgLeft" />
                 </flat:FlatButton>
-                <flat:FlatButton x:Name="btnAngleUp" Width="24" Height="24" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleUp_Click" >
+                <flat:FlatButton x:Name="btnAngleUp" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleUp_Click" >
                     <Image x:Name="imgUp" />
                 </flat:FlatButton>
-                <flat:FlatButton x:Name="btnAngleRight" Width="24" Height="24" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleRight_Click" >
+                <flat:FlatButton x:Name="btnAngleRight" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleRight_Click" >
                     <Image x:Name="imgRight" />
                 </flat:FlatButton>
-                <flat:FlatButton x:Name="btnAngleDown" Width="24" Height="24" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleDown_Click" >
+                <flat:FlatButton x:Name="btnAngleDown" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleDown_Click" >
                     <Image x:Name="imgDown" />
                 </flat:FlatButton>
             </StackPanel>
