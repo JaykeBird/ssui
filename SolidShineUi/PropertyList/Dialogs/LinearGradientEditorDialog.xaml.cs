@@ -370,5 +370,10 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             nudAngle.Value = 90;
         }
+
+        private void stopBar_GradientChanged(object sender, EventArgs e)
+        {
+            UpdatePreview();
+        }
     }
 }

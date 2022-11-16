@@ -10,7 +10,7 @@
         mc:Ignorable="d" Height="700" Width="550" Loaded="Window_Loaded" ResizeMode="NoResize" CaptionDisplayType="Close" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="180"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="160"/>
             <RowDefinition Height="118"/>
@@ -18,7 +18,7 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <Utils:GradientBar x:Name="stopBar" />
+        <Utils:GradientBar x:Name="stopBar" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" GradientChanged="stopBar_GradientChanged" />
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="30,5,10,5" Grid.Row="2" Height="150" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
