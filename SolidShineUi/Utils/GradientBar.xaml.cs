@@ -286,12 +286,69 @@ namespace SolidShineUi.Utils
 
         private void btnNextLeft_Click(object sender, RoutedEventArgs e)
         {
-
+            if (_selected == null)
+            {
+                if (_stops.Count > 1)
+                {
+                    foreach (GradientStopItem item in grdStops.Children)
+                    {
+                        if (item.GradientStop == _stops[0])
+                        {
+                            SelectStop(item);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int index = _stops.IndexOf(_selected.GradientStop);
+                if (index > 0)
+                {
+                    // find the next stop to the left
+                    GradientStop gsn = _stops[index - 1];
+                    foreach (GradientStopItem item in grdStops.Children)
+                    {
+                        if (item.GradientStop == gsn)
+                        {
+                            SelectStop(item);
+                        }
+                    }
+                }
+            }
         }
 
         private void btnNextRight_Click(object sender, RoutedEventArgs e)
         {
+            if (_selected == null)
+            {
+                if (_stops.Count > 1)
+                {
+                    foreach (GradientStopItem item in grdStops.Children)
+                    {
+                        if (item.GradientStop == _stops[_stops.Count - 1])
+                        {
+                            SelectStop(item);
+                        }
+                    }
+                }
+            }
+            else
+            {
 
+                int index = _stops.IndexOf(_selected.GradientStop);
+                if (index < _stops.Count - 1)
+                {
+                    // find the next stop to the left
+                    GradientStop gsn = _stops[index + 1];
+                    foreach (GradientStopItem item in grdStops.Children)
+                    {
+                        if (item.GradientStop == gsn)
+                        {
+                            SelectStop(item);
+                        }
+                    }
+                }
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
