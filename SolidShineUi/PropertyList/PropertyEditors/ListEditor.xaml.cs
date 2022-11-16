@@ -276,6 +276,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             OpenListDialog();
+
+            string contentsData = "";
+
+            // anyway, let's set up the UI
+            if (listVal == null)
+            {
+                // null value
+                contentsData = "(null)";
+            }
+            else
+            {
+                contentsData = listVal.Count + " items";
+            }
+
+            txtListData.Text = contentsData + " (" + _listType.Name + ")";
         }
     }
 }

@@ -38,7 +38,7 @@
                     <MenuItem Header="Set All to Zero (0)" x:Name="mnuSetZero" Click="mnuSetZero_Click" />
                     <MenuItem Header="Set All to One (1)" x:Name="mnuSetOne" Click="mnuSetOne_Click" />
                     <Separator />
-                    <MenuItem Header="Set as Null" x:Name="mnuSetNull" IsEnabled="False" />
+                    <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>
