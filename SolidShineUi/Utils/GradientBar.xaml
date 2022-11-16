@@ -33,24 +33,28 @@
         </Border>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" >
-            <flat:FlatButton x:Name="btnNextLeft" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnNextLeft_Click" >
+            <flat:FlatButton x:Name="btnNextLeft" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" 
+                             Click="btnNextLeft_Click" ToolTip="Select Next to Left" >
                 <Image x:Name="imgLeft" Source="/SolidShineUi;component/Images/LeftArrowColor.png" Width="16" />
             </flat:FlatButton>
-            <flat:FlatButton x:Name="btnNextRight" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnNextRight_Click" >
+            <flat:FlatButton x:Name="btnNextRight" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" 
+                             Click="btnNextRight_Click" ToolTip="Select Next to Right" >
                 <Image x:Name="imgRight" Source="/SolidShineUi;component/Images/RightArrowColor.png" Width="16" />
             </flat:FlatButton>
             <TextBlock Margin="5,0" Text="X of X" VerticalAlignment="Center" x:Name="txtCount" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0" >
-            <flat:FlatButton x:Name="btnAddStop" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnAddStop_Click" >
+            <flat:FlatButton x:Name="btnAddStop" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" 
+                             Click="btnAddStop_Click" ToolTip="Add" >
                 <Image x:Name="imgAdd" Source="/SolidShineUi;component/Images/AddColor.png" Width="16" />
             </flat:FlatButton>
-            <flat:FlatButton x:Name="btnDelete" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnDelete_Click" 
-                             IsEnabled="False" >
+            <flat:FlatButton x:Name="btnDelete" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" 
+                             Click="btnDelete_Click" ToolTip="Delete Selected Stop" IsEnabled="False" >
                 <Image x:Name="imgDelete" Source="/SolidShineUi;component/Images/DeleteColor.png" Width="16" />
             </flat:FlatButton>
             <Border Margin="5,0" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="Black" />
-            <flat:FlatButton x:Name="btnSwap" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnSwap_Click">
+            <flat:FlatButton x:Name="btnSwap" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" 
+                             Click="btnSwap_Click" ToolTip="Reverse Order of Stops" >
                 <Image x:Name="imgSwap" Source="/SolidShineUi;component/Images/TransferColor.png" Width="16" />
             </flat:FlatButton>
         </StackPanel>

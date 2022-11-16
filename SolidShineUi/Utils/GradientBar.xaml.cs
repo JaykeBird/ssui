@@ -387,6 +387,10 @@ namespace SolidShineUi.Utils
                         offset = gsp.Offset + ((cur.Offset - gsp.Offset) / 2);
                     }
                 }
+                else if (exIndex == 0 && _selected.Offset > 0.1)
+                {
+                    offset = 0.0;
+                }
             }
 
             GradientStop gs = new GradientStop(color, offset);
