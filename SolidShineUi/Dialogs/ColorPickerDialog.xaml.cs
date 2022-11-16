@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
 using System.Windows.Threading;
 using System.IO;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SolidShineUi.Utils;
+using System.Windows.Navigation;
 
 namespace SolidShineUi
 {
@@ -31,6 +29,7 @@ namespace SolidShineUi
         public ColorPickerDialog()
         {
             InitializeComponent();
+            ColorScheme = new ColorScheme();
 
             UpdateAppearance();
         }
@@ -43,6 +42,7 @@ namespace SolidShineUi
         {
             this.cs = cs;
             InitializeComponent();
+            ColorScheme = cs;
 
             UpdateAppearance();
         }
@@ -56,6 +56,7 @@ namespace SolidShineUi
         {
             this.cs = cs;
             InitializeComponent();
+            ColorScheme = cs;
 
             UpdateAppearance();
             LoadInSelectedColor(color);
@@ -64,15 +65,7 @@ namespace SolidShineUi
         void UpdateAppearance()
         {
             ColorScheme = cs;
-            grid.Background = cs.BackgroundColor.ToBrush();
-            //Background = BrushFactory.Create(cs.MainColor);
-            //grid.Background = BrushFactory.Create(cs.BackgroundColor);
-            //SelectionBrush = BrushFactory.Create(cs.SelectionColor);
-            //CaptionButtonsBrush = BrushFactory.Create(cs.ForegroundColor);
-            //HighlightBrush = BrushFactory.Create(cs.HighlightColor);
-            //BorderBrush = BrushFactory.Create(cs.BorderColor);
-            //Foreground = BrushFactory.Create(cs.ForegroundColor);
-            //InactiveTextBrush = BrushFactory.Create("#505050");
+            //grid.Background = cs.BackgroundColor.ToBrush();
 
             colorList.ApplyColorScheme(cs);
 
@@ -87,6 +80,8 @@ namespace SolidShineUi
             btnInvert.ApplyColorScheme(cs);
             btnLoadPal.ApplyColorScheme(cs);
             btnOpenImage.ApplyColorScheme(cs);
+
+            //nudAlpha.ApplyColorScheme(cs);
 
             btnOK.ApplyColorScheme(cs);
             btnCancel.ApplyColorScheme(cs);
@@ -109,11 +104,17 @@ namespace SolidShineUi
         void LoadInSelectedColor(Color col)
         {
             grdCurColor.Background = BrushFactory.Create(col);
+            nudAlpha.Value = col.A;
             UpdateSelectedColor(col);
         }
 
         void UpdateSelectedColor(Color col, bool includeSliders = true)
         {
+            if (nudAlpha != null)
+            {
+                col.A = (byte)nudAlpha.Value;
+            }
+
             SelectedColor = col;
 
             if (grdSelColor != null)
@@ -129,7 +130,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Tab Visibility
+        #region Tab Visibility / Titles
 
         /// <summary>
         /// Get or set if the Swatches tab is visible in the dialog.
@@ -166,6 +167,27 @@ namespace SolidShineUi
             get => tabPalette.Visibility == Visibility.Visible;
             set => tabPalette.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        /// <summary>
+        /// Get or set the title of the Swatches tab. Default is "Swatches".
+        /// </summary>
+        public string SwatchesTabTitle { get => tabSwatches.Title; set => tabSwatches.Title = value; }
+
+        /// <summary>
+        /// Get or set the title of the Sliders tab. Default is "Sliders".
+        /// </summary>
+        public string SlidersTabTitle { get => tabSliders.Title; set => tabSliders.Title = value; }
+
+        /// <summary>
+        /// Get or set the title of the From Image tab. Default is "From Image".
+        /// </summary>
+        public string ImageTabTitle { get => tabImage.Title; set => tabImage.Title = value; }
+
+        /// <summary>
+        /// Get or set the title of the Palette File tab. Default is "Palette File".
+        /// </summary>
+        public string PaletteFileTabTitle { get => tabPalette.Title; set => tabPalette.Title = value; }
+
 
         #endregion
 
@@ -636,6 +658,91 @@ namespace SolidShineUi
             if (colorList.Items.Count == 0) return;
             UpdateSelectedColor(colorList.Items.OfType<ColorListItem>().First().Color);
         }
+
+        #endregion
+
+        #region Transparency
+
+        /// <summary>
+        /// Get or set if transparency controls should be shown in he dialog. If true, then the user will be able to select and change the transparency (alpha) value of the selected color.
+        /// </summary>
+        public bool ShowTransparencyControls { get => (bool)GetValue(ShowTransparencyControlsProperty); set => SetValue(ShowTransparencyControlsProperty, value); }
+
+        public static DependencyProperty ShowTransparencyControlsProperty
+            = DependencyProperty.Register("ShowTransparencyControls", typeof(bool), typeof(ColorPickerDialog),
+            new FrameworkPropertyMetadata(true));
+
+
+        /// <summary>
+        /// Get or set the label to display next to the Transparency slider. Default is "Transparency:".
+        /// </summary>
+        public string TransparencyLabel { get => (string)GetValue(TransparencyLabelProperty); set => SetValue(TransparencyLabelProperty, value); }
+
+        public static DependencyProperty TransparencyLabelProperty
+            = DependencyProperty.Register("TransparencyLabel", typeof(string), typeof(ColorPickerDialog),
+            new FrameworkPropertyMetadata("Transparency:"));
+
+        bool _internalAlphaChange = false;
+
+        private void nudAlpha_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_internalAlphaChange) return;
+            if (sldAlpha == null) return;
+
+            _internalAlphaChange = true;
+            sldAlpha.Value = Convert.ToDouble(e.NewValue);
+            UpdateSelectedColor(SelectedColor);
+            _internalAlphaChange = false;
+        }
+
+        private void sldAlpha_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_internalAlphaChange) return;
+            if (nudAlpha == null) return;
+
+            _internalAlphaChange = true;
+            nudAlpha.Value = (int)e.NewValue;
+            UpdateSelectedColor(SelectedColor);
+            _internalAlphaChange = false;
+        }
+
+        #endregion
+
+        #region Other Text Labels
+
+        /// <summary>
+        /// Get or set the label to display next to the currently selected color. Default is "Selected Color:".
+        /// </summary>
+        public string SelectedColorLabel { get => (string)GetValue(SelectedColorLabelProperty); set => SetValue(SelectedColorLabelProperty, value); }
+
+        public static DependencyProperty SelectedColorLabelProperty
+            = DependencyProperty.Register("SelectedColorLabel", typeof(string), typeof(ColorPickerDialog),
+            new FrameworkPropertyMetadata("Selected Color:"));
+
+        /// <summary>
+        /// Get or set the label to display next to the current/preset color (as in, the color that the dialog was loaded with). Default is "Current Color:".
+        /// </summary>
+        public string CurrentColorLabel { get => (string)GetValue(CurrentColorLabelProperty); set => SetValue(CurrentColorLabelProperty, value); }
+
+        public static DependencyProperty CurrentColorLabelProperty
+            = DependencyProperty.Register("CurrentColorLabel", typeof(string), typeof(ColorPickerDialog),
+            new FrameworkPropertyMetadata("Current Color:"));
+
+        /// <summary>
+        /// Get or set the label to display on the "Invert" button in the Sliders tab; clicking this button inverts the current color. Default is "Invert".
+        /// </summary>
+        public string InvertButtonLabel { get => btnInvert.Content.ToString() ?? ""; set => btnInvert.Content = value; }
+
+        /// <summary>
+        /// Get or set the label to display on the "Invert" button in the Sliders tab; clicking this button inverts the current color. Default is "Invert".
+        /// </summary>
+        public string OkButtonLabel { get => btnOK.Content.ToString() ?? ""; set => btnOK.Content = value; }
+
+        /// <summary>
+        /// Get or set the label to display on the "Invert" button in the Sliders tab; clicking this button inverts the current color. Default is "Invert".
+        /// </summary>
+        public string CancelButtonLabel { get => btnCancel.Content.ToString() ?? ""; set => btnCancel.Content = value; }
+
 
         #endregion
 

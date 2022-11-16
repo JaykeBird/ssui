@@ -127,6 +127,8 @@ namespace SsuiSample
             cpd.ShowSlidersTab = true;
             cpd.ShowSwatchesTab = true;
 
+            cpd.ShowTransparencyControls = true;
+
             cpd.Owner = Window.GetWindow(this);
             cpd.ShowDialog();
 
