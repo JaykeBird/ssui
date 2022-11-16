@@ -97,7 +97,12 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Get or set the type of the property being shown.
         /// </summary>
-        public string PropertyType { get => txtType.Text; set => txtType.Text = value; }
+        public Type PropertyType { get; set; } = typeof(object);
+
+        /// <summary>
+        /// Get or set the type of the property being shown, in a more user-friendly textual format.
+        /// </summary>
+        public string PropertyTypeText { get => txtType.Text; set => txtType.Text = value; }
 
         /// <summary>
         /// Load in a property to show in this PropertyEditorItem, with (if possible) a IPropertyEditor control to allow editing the property value.
@@ -113,7 +118,8 @@ namespace SolidShineUi.PropertyList
         {
             PropertyInfo = property;
             PropertyName = property.Name;
-            PropertyType = property.PropertyType.ToString();
+            PropertyType = property.PropertyType;
+            PropertyTypeText = PrettifyPropertyType(property.PropertyType.ToString());
             PropertyValue = value;
             if (editor != null)
             {
@@ -186,6 +192,18 @@ namespace SolidShineUi.PropertyList
             colNames.Width = namesCol;
             colType.Width = typesCol;
             colValues.Width = valueCol;
+        }
+
+        string PrettifyPropertyType(string typeString)
+        {
+            if (typeString.StartsWith("System.Nullable"))
+            {
+                return typeString.Replace("System.Nullable`1[", "").TrimEnd(']') + "?";
+            }
+            else
+            {
+                return typeString.Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("[","<").Replace("]",">");
+            }
         }
 
     }
