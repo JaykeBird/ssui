@@ -77,7 +77,7 @@
                 <flat:IntegerSpinner x:Name="nudOpacity" Margin="5,0" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" MinValue="0" MaxValue="255" Value="255" Width="60" Visibility="Collapsed" />
                 <Border Margin="5,0" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="Black" Visibility="Collapsed" />
                 <TextBlock Text="Offset:" VerticalAlignment="Center" Margin="20,0,5,0" />
-                <flat:DoubleSpinner x:Name="nudOffset" Margin="5,0" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" MinValue="0" MaxValue="1" Value="0.5" Step="0.05" Decimals="3" Width="65"
+                <flat:DoubleSpinner x:Name="nudOffset" Margin="5,0" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" MinValue="0" MaxValue="1" Value="0.5" Step="0.05" Decimals="3" Width="75"
                                     ValueChanged="nudOffset_ValueChanged" />
             </StackPanel>
         </Grid>
