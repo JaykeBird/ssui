@@ -214,20 +214,41 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             OpenListDialog();
 
-            string contentsData = "";
-
-            // anyway, let's set up the UI
-            if (listVal == null)
+            Type type = listVal?.GetType() ?? typeof(object);
+            string contentsData = "()";
+            
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
-                // null value
-                contentsData = "(null)";
+                Type listType = type.GenericTypeArguments[0];
+
+                if (listVal == null)
+                {
+                    // null value
+                    contentsData = "(null)";
+                }
+                else
+                {
+                    if (listVal is ICollection icol)
+                    {
+                        contentsData = icol.Count + " items";
+                    }
+                    else
+                    {
+                        contentsData = "collection";
+                    }
+                }
+
+                txtListData.Text = contentsData + " (" + listType.Name + ")";
+            }
+            else if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+
+                txtListData.Text = "collection - " + type.Name;
             }
             else
             {
-                contentsData = listVal.Count + " items";
+                // type is not a IEnumerable
             }
-
-            txtListData.Text = contentsData + " (" + _listType.Name + ")";
         }
     }
 }
