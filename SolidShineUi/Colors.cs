@@ -137,20 +137,24 @@ namespace SolidShineUi
 
         #region Additional Functions
 
-        /// <summary>Blends the specified colors together.</summary>
-        /// <param name="color">Color to blend onto the background color.</param>
-        /// <param name="backColor">Color to blend the other color onto.</param>
-        /// <param name="amount">How much of <paramref name="color"/> to keep,
-        /// “on top of” <paramref name="backColor"/>. Must be between 0 and 1.</param>
-        /// <returns>The blended colors.</returns>
+        /// <summary>Get a color by blending one color onto another color by a specified amount.</summary>
+        /// <param name="color">The color to blend onto the background color.</param>
+        /// <param name="backColor">The color that is the background or base (that is being blended onto).</param>
+        /// <param name="amount">How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
+        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between the two colors, and 1 leaves only the new color (blended in 100%).</param>
+        /// <returns>The color that is the result of blending the two colors together.</returns>
+        /// <remarks>
+        /// The alpha value of the new color will be 255 (opaque). No gamma correction is applied.
+        /// </remarks>
         public static Color Blend(Color color, Color backColor, double amount)
         {
+            // https://stackoverflow.com/a/3722337/2987285
             if (amount < 0) amount = 0;
             else if (amount > 1) amount = 1;
 
-            byte r = (byte)(color.R * amount + backColor.R * (amount));
-            byte g = (byte)(color.G * amount + backColor.G * (amount));
-            byte b = (byte)(color.B * amount + backColor.B * (amount));
+            byte r = (byte)(color.R * amount + backColor.R * amount);
+            byte g = (byte)(color.G * amount + backColor.G * amount);
+            byte b = (byte)(color.B * amount + backColor.B * amount);
             return Color.FromRgb(r, g, b);
         }
 
@@ -176,7 +180,7 @@ namespace SolidShineUi
             return CreateFromHSV(h, s, v);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
         static Color AddSatValue(double h, double s, double v, double addS, double addV)
         {
             if (v + addV < 0)
@@ -460,7 +464,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get a hex triplet string for this color. Does not include the hash symbol.
+        /// Get a hex triplet string for this color. Does not include the hash symbol, nor the alpha value.
         /// </summary>
         public static string GetHexString(this Color c)
         {
