@@ -1005,12 +1005,12 @@ namespace SolidShineUi
                 return null;
             }
 
-            string packuri = "/SolidShineUi;component/DialogImages/";
+            string packuri = "pack://application:,,,/SolidShineUi;component/DialogImages/";
             BitmapImage img;
 
             try
             {
-                img = new BitmapImage(new Uri(packuri + image.ToString("f") + color.ToString("f") + ".png", UriKind.Relative));
+                img = new BitmapImage(new Uri(packuri + image.ToString("f") + color.ToString("f") + ".png", UriKind.Absolute));
             }
             catch (IOException ex)
             {
