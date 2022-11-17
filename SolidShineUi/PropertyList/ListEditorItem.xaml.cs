@@ -87,7 +87,11 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Raised when the VisibleControls property is changed.
         /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? VisibleControlsChanged;
+#else
         public event DependencyPropertyChangedEventHandler VisibleControlsChanged;
+#endif
 
         private void editor_InternalVisibleControlsChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -180,7 +184,7 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public event EventHandler RequestMoveDown;
 #endif
-        #endregion
+#endregion
 
         /// <summary>
         /// Load in a property to show in this PropertyEditorItem, with (if possible) a IPropertyEditor control to allow editing the property value.

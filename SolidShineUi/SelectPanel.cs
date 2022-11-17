@@ -467,6 +467,7 @@ namespace SolidShineUi
         /// </summary>
         public bool UseLighterBorder
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             get
             {
                 return use_lbrdr;
@@ -476,6 +477,7 @@ namespace SolidShineUi
                 use_lbrdr = value;
                 if (runApply) ApplyColorScheme(ColorScheme, value);
             }
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>

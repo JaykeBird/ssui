@@ -122,7 +122,7 @@ namespace SolidShineUi.Utils
         }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public new static readonly DependencyProperty StopFillProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty StopFillProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(GradientStopItem),
             new PropertyMetadata(Colors.White.ToBrush()));
 
