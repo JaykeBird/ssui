@@ -20,6 +20,7 @@
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="Enter in Unicode Value..." x:Name="mnuMultiline" Click="mnuMultiline_Click" />
+                    <MenuItem Header="Open Character Map" x:Name="mnuCharmap" Click="mnuCharmap_Click" />
                     <Separator />
                     <MenuItem Header="Set as Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" IsEnabled="False" />
                 </flat:ContextMenu>

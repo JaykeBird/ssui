@@ -9,6 +9,8 @@ using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi.PropertyList.Dialogs;
 using SolidShineUi.Utils;
 using System.Text;
+using System.IO;
+using System.Diagnostics;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -361,6 +363,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtValue.Text = ((int)c).ToString("X4");
                     _internalAction = false;
                 }
+            }
+        }
+
+        private void mnuCharmap_Click(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists("C:\\WINDOWS\\system32\\charmap.exe"))
+            {
+                Process.Start("C:\\WINDOWS\\system32\\charmap.exe");
             }
         }
     }
