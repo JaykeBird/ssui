@@ -139,6 +139,7 @@
                                Enum="{x:Type AlignmentY}" SelectionChanged="cbbStretch_SelectionChanged" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" />
             </Grid>
             <flat:CheckBox Grid.Row="3" Grid.Column="2" Content="Show Viewbox/Viewport options" IsChecked="False" x:Name="chkViewbox" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+            <TextBlock HorizontalAlignment="Right" Margin="0,5,10,0" Text="-" x:Name="imgSize" VerticalAlignment="Top"/>
         </Grid>
 
         <!-- dialog buttons -->

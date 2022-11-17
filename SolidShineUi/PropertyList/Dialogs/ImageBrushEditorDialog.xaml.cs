@@ -61,6 +61,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         #endregion
 
         #region Image Source box/rendering
+        
         ImageSource _source = new BitmapImage();
         bool _blankSourceOnEnter = false;
         //bool _newSourceSet = false;
@@ -116,20 +117,26 @@ namespace SolidShineUi.PropertyList.Dialogs
                     txtSource.FontStyle = FontStyles.Italic;
                     _blankSourceOnEnter = true;
                 }
+                imgSize.Text = bi.Height.ToString() + " x " + bi.Width.ToString();
+                imgSize.ToolTip = "Device independent size: " + bi.Height.ToString() + " x " + bi.Width.ToString() + "\n" + "Actual pixel size: " + bi.PixelHeight.ToString() + " x " + bi.PixelWidth.ToString();
             }
-            else if (isrc is BitmapSource)
+            else if (isrc is BitmapSource bs)
             {
                 // bitmap source
                 txtSource.Text = "(image from bitmap source, click here to change to a URL or file path)";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
+                imgSize.Text = bs.Height.ToString() + " x " + bs.Width.ToString();
+                imgSize.ToolTip = "Device independent size: " + bs.Height.ToString() + " x " + bs.Width.ToString() + "\n" + "Actual pixel size: " + bs.PixelHeight.ToString() + " x " + bs.PixelWidth.ToString();
             }
-            else if (isrc is DrawingImage)
+            else if (isrc is DrawingImage di)
             {
                 // maybe in the future, I can display some options or settings
                 txtSource.Text = "(image from drawing, click here to change to a URL or file path)";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
+                imgSize.Text = di.Height.ToString() + " x " + di.Width.ToString();
+                imgSize.ToolTip = null;
             }
             else
             {
@@ -137,6 +144,8 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtSource.Text = "(image from unknown source, click here to change to a URL or file path)";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
+                imgSize.Text = "";
+                imgSize.ToolTip = null;
             }
             imgSource.Source = isrc;
             _internalAction = false;
