@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <ProjectGuid>{E45CD1DB-F48D-4B29-B832-52D5B634B145}</ProjectGuid>
-    <TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
     <UseWpf>true</UseWpf>
     <RootNamespace>SolidShineUi</RootNamespace>
     <Platforms>AnyCPU;x86;x64</Platforms>
