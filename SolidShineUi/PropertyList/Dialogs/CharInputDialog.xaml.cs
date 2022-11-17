@@ -62,6 +62,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             r = value;
             runeMode = true;
             nudDec.MaxValue = 1114111; // 10FFFF - max valid Unicode code point
+            txtHex.MaxValue = 1114111;
             EnterValueIntoBoxes();
         }
 
@@ -79,6 +80,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             r = new Rune(c);
             runeMode = true;
             nudDec.MaxValue = 1114111; // 10FFFF - max valid Unicode code point
+            txtHex.MaxValue = 1114111;
             EnterValueIntoBoxes();
         }
 #endif
@@ -88,9 +90,13 @@ namespace SolidShineUi.PropertyList.Dialogs
             nudDec.MinValue = char.MinValue;
             nudDec.MaxValue = char.MaxValue;
 
+            txtHex.MinValue = char.MinValue;
+            txtHex.MaxValue = char.MaxValue;
+
             if (runeMode)
             {
                 nudDec.MaxValue = 1114111; // 10FFFF - max valid Unicode code point
+                txtHex.MaxValue = 1114111;
             }
 
             txtHex.Focus();
@@ -120,14 +126,14 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (runeMode)
             {
 #if NETCOREAPP
-                txtHex.Text = r.Value.ToString("X");
+                txtHex.Value = r.Value;
 #else
-                txtHex.Text = "";
+                txtHex.Value = 0;
 #endif
             }
             else
             {
-                txtHex.Text = ((int)c).ToString("X");
+                txtHex.Value = c;
             }
         }
 
@@ -282,11 +288,11 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
-        private static string UnicodeToChar(string hex)
+        private static string UnicodeToChar(int code)
         {
             try
             {
-                int code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                //int code = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
 #if NETCOREAPP
                 if (Rune.IsValid(code))
                 {
@@ -321,31 +327,6 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
-        private void txtHex_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            if (_internalAction) return;
-
-            string value = UnicodeToChar(txtHex.Text);
-
-            if (runeMode)
-            {
-#if NETCOREAPP
-                r = Rune.GetRuneAt(value, 0);
-#else
-                // shrug?
-#endif
-            }
-            else
-            {
-                c = value[0];
-            }
-
-            _internalAction = true;
-            UpdateDecBox();
-            UpdatePreview();
-            _internalAction = false;
-        }
-
         private void nudDec_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_internalAction) return;
@@ -353,18 +334,95 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (runeMode)
             {
 #if NETCOREAPP
-                r = new Rune(nudDec.Value);
+                if (Rune.IsValid(nudDec.Value))
+                {
+                    r = new Rune(nudDec.Value);
+                }
+                else
+                {
+                    _internalAction = true;
+                    nudDec.Value = 0;
+                    r = new Rune(0);
+                    _internalAction = false;
+                }
 #else
                 // shrug?
 #endif
             }
             else
             {
-                c = Convert.ToChar(nudDec.Value);
+                try
+                {
+                    c = Convert.ToChar(nudDec.Value);
+                }
+                catch (FormatException)
+                {
+                    _internalAction = true;
+                    nudDec.Value = 0;
+                    c = Convert.ToChar(0);
+                    _internalAction = false;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    _internalAction = true;
+                    nudDec.Value = 0;
+                    c = Convert.ToChar(0);
+                    _internalAction = false;
+                }
             }
 
             _internalAction = true;
             UpdateHexBox();
+            UpdatePreview();
+            _internalAction = false;
+        }
+
+        private void txtHex_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_internalAction) return;
+
+            if (runeMode)
+            {
+#if NETCOREAPP
+                if (Rune.IsValid(txtHex.Value))
+                {
+                    r = new Rune(txtHex.Value);
+                }
+                else
+                {
+                    _internalAction = true;
+                    txtHex.Value = 0;
+                    r = new Rune(0);
+                    _internalAction = false;
+                }
+#else
+                // shrug?
+#endif
+            }
+            else
+            {
+                try
+                {
+                    c = Convert.ToChar(txtHex.Value);
+                }
+                catch (FormatException)
+                {
+                    _internalAction = true;
+                    txtHex.Value = 0;
+                    c = Convert.ToChar(0);
+                    _internalAction = false;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    _internalAction = true;
+                    txtHex.Value = 0;
+                    c = Convert.ToChar(0);
+                    _internalAction = false;
+                }
+            }
+
+            _internalAction = true;
+            UpdateDecBox();
             UpdatePreview();
             _internalAction = false;
         }
