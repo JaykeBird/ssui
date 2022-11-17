@@ -287,7 +287,7 @@ namespace SolidShineUi.Utils
 
         void CountStops()
         {
-            if (_stops.Count > 2)
+            if (_stops.Count > 1)
             {
                 btnDelete.IsEnabled = true;
             }
@@ -382,7 +382,7 @@ namespace SolidShineUi.Utils
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (_stops.Count <= 2) return;
+            if (_stops.Count <= 1) return;
 
             if (_selected != null)
             {
@@ -427,6 +427,7 @@ namespace SolidShineUi.Utils
             _stops.Add(gs);
             var gsi = CreateGradientStopItem(gs);
             SortStops();
+            RenderBar();
             SelectStop(gsi);
             CountStops();
             GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
