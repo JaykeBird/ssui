@@ -907,8 +907,6 @@ namespace SolidShineUi.Utils
             }
         }
 
-        public double SelectedWidth1 { get; set; }
-
         /// <summary>
         /// Raised when either the SelectedHeight or SelectedWidth properties change (i.e., when the selector was moved).
         /// </summary>
