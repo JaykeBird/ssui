@@ -248,7 +248,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.DisabledBrush = (RadialGradientBrush)value;
 
                 txtCurrentBrush.Text = "Radial Gradient Brush";
-                txtCurrentValue.Text = value.ToString();
+                txtCurrentValue.Text = GetGradientDescriptor((RadialGradientBrush)value);
                 btnEditBrush.IsEnabled = true;
                 btnEditBrush.Content = "Edit Gradient...";
             }
@@ -319,6 +319,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
 
             return $"Angle: {angle}º, {brush.GradientStops.Count} stops";
+        }
+
+        string GetGradientDescriptor(RadialGradientBrush brush)
+        {
+            if (brush.GradientStops.Count == 2)
+            {
+                return $"Radial, {brush.GradientStops[0].Color.GetHexString()} - {brush.GradientStops[1].Color.GetHexString()}";
+            }
+
+            return $"Radial, {brush.GradientStops.Count} stops";
         }
 
         string GetImageDescriptor(ImageBrush br)
@@ -496,7 +506,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_actualType == typeof(RadialGradientBrush))
             {
-                // need to add gradient editor dialog
+                RadialGradientEditorDialog lged = new RadialGradientEditorDialog(_cs, (RadialGradientBrush)_dataValue);
+                lged.Owner = Window.GetWindow(this);
+                lged.ShowDialog();
+
+                if (lged.DialogResult)
+                {
+                    // update info
+                    _dataValue = lged.GetGradientBrush();
+
+                    UpdateMainPreview((RadialGradientBrush)_dataValue);
+                    txtCurrentValue.Text = GetGradientDescriptor((RadialGradientBrush)_dataValue);
+
+                    ValueChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
             else if (_actualType == typeof(ImageBrush))
             {

@@ -8,7 +8,7 @@ using System.Windows.Media;
 namespace SolidShineUi.PropertyList.Dialogs
 {
     /// <summary>
-    /// Interaction logic for LinearGradientEditorDialog.xaml
+    /// A dialog for creating and editing linear gradients, specifically <see cref="LinearGradientBrush"/> objects.
     /// </summary>
     public partial class LinearGradientEditorDialog : FlatWindow
     {
