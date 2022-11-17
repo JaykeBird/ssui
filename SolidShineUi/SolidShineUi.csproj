@@ -96,6 +96,9 @@ See website for more details!</PackageReleaseNotes>
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows' ">
 	<Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-windows' ">
+	<Nullable>enable</Nullable>
+  </PropertyGroup>
   <PropertyGroup>
     <WarningLevel>4</WarningLevel>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>

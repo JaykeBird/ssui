@@ -31,6 +31,11 @@ namespace SolidShineUi.KeyboardShortcuts
     /// </summary>
     public class KeyRegistry
     {
+        /// <summary>
+        /// A delegate to be used with events regarding keyboard shortcuts.
+        /// </summary>
+        /// <param name="sender">The object where the event was raised.</param>
+        /// <param name="e">The event arguments associated with this event.</param>
         public delegate void KeyboardShortcutEventHandler(object sender, KeyboardShortcutEventArgs e);
 
 #if NETCOREAPP

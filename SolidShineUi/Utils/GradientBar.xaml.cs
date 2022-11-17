@@ -127,6 +127,11 @@ namespace SolidShineUi.Utils
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP
@@ -255,22 +260,22 @@ namespace SolidShineUi.Utils
         public event EventHandler GradientChanged;
 #endif
 
-        void UpdateStopOffset(GradientStop stop, double offset)
-        {
-            foreach (GradientStopItem item in grdStops.Children)
-            {
-                if (item.GradientStop == stop)
-                {
-                    item.Offset = offset;
-                    item.GradientStop.Offset = offset;
-                }
-            }
+        //void UpdateStopOffset(GradientStop stop, double offset)
+        //{
+        //    foreach (GradientStopItem item in grdStops.Children)
+        //    {
+        //        if (item.GradientStop == stop)
+        //        {
+        //            item.Offset = offset;
+        //            item.GradientStop.Offset = offset;
+        //        }
+        //    }
 
-            SortStops();
-            RenderBar();
-            RenderStops();
-            GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
-        }
+        //    SortStops();
+        //    RenderBar();
+        //    RenderStops();
+        //    GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
+        //}
 
         void UpdateStopOffset(GradientStopItem stop, double offset)
         {
@@ -302,8 +307,14 @@ namespace SolidShineUi.Utils
             // somehow the grdStops.Children collection changes while the button is being pressed???
             // I'm not wanting to figure out what's going on, so this is the solution I came up with
             List<GradientStopItem> items = new List<GradientStopItem>();
+#if NETCOREAPP
+            foreach (GradientStopItem? item in grdStops.Children)
+#else
             foreach (GradientStopItem item in grdStops.Children)
+#endif
             {
+                if (item == null) continue;
+
                 items.Add(item);
             }
 
@@ -343,8 +354,14 @@ namespace SolidShineUi.Utils
             // somehow the grdStops.Children collection changes while the button is being pressed???
             // I'm not wanting to figure out what's going on, so this is the solution I came up with
             List<GradientStopItem> items = new List<GradientStopItem>();
+#if NETCOREAPP
+            foreach (GradientStopItem? item in grdStops.Children)
+#else
             foreach (GradientStopItem item in grdStops.Children)
+#endif
             {
+                if (item == null) continue;
+
                 items.Add(item);
             }
 
@@ -451,7 +468,7 @@ namespace SolidShineUi.Utils
             UpdateStopOffset(_selected, nudOffset.Value);
         }
 
-        #endregion
+#endregion
 
         private void btnColorChange_Click(object sender, RoutedEventArgs e)
         {

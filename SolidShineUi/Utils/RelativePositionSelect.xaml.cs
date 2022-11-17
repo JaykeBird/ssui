@@ -61,6 +61,11 @@ namespace SolidShineUi.Utils
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP
@@ -244,6 +249,11 @@ namespace SolidShineUi.Utils
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         #endregion
 
+        /// <summary>
+        /// Perform an action when a property of an object has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         public static void OnSnapLineBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is RelativePositionSelect r)
@@ -281,6 +291,11 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Perform an action when a property of an object has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         public static void OnKeyboardFocusHighlightBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is RelativePositionSelect r)
@@ -289,6 +304,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// An internal method to use for updating the brush when this control has keyboard focus.
+        /// </summary>
         internal protected void UpdateKeyboardFocusHighlightBrush()
         {
             if (IsKeyboardFocused || HasEffectiveKeyboardFocus)

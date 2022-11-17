@@ -49,6 +49,11 @@ namespace SolidShineUi.Utils
         public event TabItemDropEventHandler TabItemDrop;
 #endif
 
+        /// <summary>
+        /// A delegate to be used with events regarding dropping a TabItem into a TabControl.
+        /// </summary>
+        /// <param name="sender">The object where the event was raised.</param>
+        /// <param name="e">The event arguments associated with this event.</param>
         public delegate void TabItemDropEventHandler(object sender, TabItemDropEventArgs e);
 
         /// <summary>
@@ -439,6 +444,11 @@ namespace SolidShineUi.Utils
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP

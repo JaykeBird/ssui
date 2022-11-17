@@ -39,6 +39,12 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public IPropertyEditor? PropertyEditorControl { get; set; }
 
+
+        /// <summary>
+        /// A delegate to be used with events regarding the value of a property editor's property changing.
+        /// </summary>
+        /// <param name="sender">The object where the event was raised.</param>
+        /// <param name="e">The event arguments associated with this event.</param>
         public delegate void PropertyEditorValueChangedEventHandler(object? sender, PropertyEditorValueChangedEventArgs e);
 
         /// <summary>
@@ -70,7 +76,12 @@ namespace SolidShineUi.PropertyList
         /// Get or set the editor control to use to allow editing the value of this property.
         /// </summary>
         public IPropertyEditor PropertyEditorControl { get; set; }
-
+        
+        /// <summary>
+        /// A delegate to be used with events regarding the value of a property editor's property changing.
+        /// </summary>
+        /// <param name="sender">The object where the event was raised.</param>
+        /// <param name="e">The event arguments associated with this event.</param>
         public delegate void PropertyEditorValueChangedEventHandler(object sender, PropertyEditorValueChangedEventArgs e);
 
         /// <summary>

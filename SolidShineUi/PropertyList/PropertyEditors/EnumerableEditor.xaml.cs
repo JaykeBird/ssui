@@ -213,6 +213,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             OpenListDialog();
+            ValueChanged?.Invoke(this, EventArgs.Empty); // not a guarantee that the value actually changed, but at current, I don't have a way to detect if changes actually occurred
 
             Type type = listVal?.GetType() ?? typeof(object);
             string contentsData = "()";

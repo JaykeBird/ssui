@@ -146,6 +146,11 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         public new static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP
