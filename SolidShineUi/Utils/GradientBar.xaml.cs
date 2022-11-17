@@ -59,6 +59,7 @@ namespace SolidShineUi.Utils
 
                 //_stops = gsc;
                 SortStops();
+                CountStops();
                 RenderBar();
                 RenderStops(); 
             }
@@ -284,6 +285,18 @@ namespace SolidShineUi.Utils
             GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
         }
 
+        void CountStops()
+        {
+            if (_stops.Count > 2)
+            {
+                btnDelete.IsEnabled = true;
+            }
+            else
+            {
+                btnDelete.IsEnabled = false;
+            }
+        }
+
         private void btnNextLeft_Click(object sender, RoutedEventArgs e)
         {  
             // somehow the grdStops.Children collection changes while the button is being pressed???
@@ -376,6 +389,7 @@ namespace SolidShineUi.Utils
                 grdStops.Children.Remove(_selected);
                 _stops.Remove(_selected.GradientStop);
                 Deselect();
+                CountStops();
                 GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
             }
         }
@@ -414,6 +428,7 @@ namespace SolidShineUi.Utils
             var gsi = CreateGradientStopItem(gs);
             SortStops();
             SelectStop(gsi);
+            CountStops();
             GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
         }
         private void btnSwap_Click(object sender, RoutedEventArgs e)
@@ -430,6 +445,8 @@ namespace SolidShineUi.Utils
 
         private void nudOffset_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (_selected == null) return;
+
             UpdateStopOffset(_selected, nudOffset.Value);
         }
 
