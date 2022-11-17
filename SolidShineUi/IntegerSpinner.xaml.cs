@@ -831,33 +831,34 @@ namespace SolidShineUi
             }
 
             _updateBox = false;
-            if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out _))
+            if (DisplayAsHex)
             {
-                Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
-            }
-            else if (DisplayAsHex && int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out _))
-            {
-                Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
-            }
-            else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text) && !DisplayAsHex)
-            {
-                try
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out _))
                 {
-                    Value = (int)Math.Round(ArithmeticParser.Evaluate(txtValue.Text), MidpointRounding.AwayFromZero);
-                }
-                catch (FormatException)
-                {
-
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-
+                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
                 }
             }
             else
             {
-                // this is not valid
-                //currently do nothing
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out _))
+                {
+                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
+                }
+                else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
+                {
+                    try
+                    {
+                        Value = (int)Math.Round(ArithmeticParser.Evaluate(txtValue.Text), MidpointRounding.AwayFromZero);
+                    }
+                    catch (FormatException)
+                    {
+
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+
+                    }
+                }
             }
             _updateBox = true;
         }
