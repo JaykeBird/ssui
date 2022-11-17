@@ -64,6 +64,37 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Create a brush based upon an image, with tiling.
+        /// </summary>
+        /// <param name="image">The image to use.</param>
+        /// <param name="tile">The tiling mode to use for tiling this image.</param>
+        /// <returns>An ImageBrush containing this image.</returns>
+        public static ImageBrush CreateFromImage(ImageSource image, TileMode tile)
+        {
+            ImageBrush br = new ImageBrush(image);
+            br.ViewportUnits = BrushMappingMode.Absolute;
+            br.Viewport = new System.Windows.Rect(new System.Windows.Point(0, 0), new System.Windows.Size(image.Width, image.Height));
+            br.TileMode = tile;
+            return new ImageBrush(image);
+        }
+
+        /// <summary>
+        /// Create a brush based upon an image, with tiling.
+        /// </summary>
+        /// <param name="location">The location, such as a web address or file location, of the image to use.</param>
+        /// <param name="tile">The tiling mode to use for tiling this image.</param>
+        /// <returns>An ImageBrush containing this image.</returns>
+        public static ImageBrush CreateFromImage(Uri location, TileMode tile)
+        {
+            ImageSource image = new BitmapImage(location);
+            ImageBrush br = new ImageBrush(image);
+            br.ViewportUnits = BrushMappingMode.Absolute;
+            br.Viewport = new System.Windows.Rect(new System.Windows.Point(0, 0), new System.Windows.Size(image.Width, image.Height));
+            br.TileMode = tile;
+            return new ImageBrush(image);
+        }
+
+        /// <summary>
         /// Create a brush with a checkerboard pattern, where the size and colors of the squares are customizable.
         /// </summary>
         /// <param name="squareSize">The size of each square in the pattern. A size of 4 will create a pattern of 4x4 squares, each of alternating colors.</param>
