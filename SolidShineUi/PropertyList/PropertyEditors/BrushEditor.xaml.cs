@@ -315,7 +315,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (brush.GradientStops.Count == 2)
             {
-                return $"Angle: {angle}º, {brush.GradientStops[0].Color.GetHexString()} - {brush.GradientStops[1].Color.GetHexString()}";
+                return $"Angle: {angle}º, #{brush.GradientStops[0].Color.GetHexString()} - #{brush.GradientStops[1].Color.GetHexString()}";
             }
 
             return $"Angle: {angle}º, {brush.GradientStops.Count} stops";
@@ -325,7 +325,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (brush.GradientStops.Count == 2)
             {
-                return $"Radial, {brush.GradientStops[0].Color.GetHexString()} - {brush.GradientStops[1].Color.GetHexString()}";
+                return $"Radial, #{brush.GradientStops[0].Color.GetHexString()} - #{brush.GradientStops[1].Color.GetHexString()}";
             }
 
             return $"Radial, {brush.GradientStops.Count} stops";
