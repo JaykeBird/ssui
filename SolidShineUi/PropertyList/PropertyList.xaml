@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" ToolTip="Filter" VerticalContentAlignment="Center" TextChanged="txtFilter_TextChanged"
+            <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" ToolTip="Filter (use @ to filter by name only)" VerticalContentAlignment="Center" TextChanged="txtFilter_TextChanged"
                                      Height="28" Visibility="{Binding ElementName=control, Path=ShowFilterBox, Converter={StaticResource btv}}" />
             <flat:FlatButton Grid.Column="3" x:Name="btnRefresh" ToolTip="Reload" ColorScheme="{Binding ColorScheme, ElementName=control}" TransparentBack="True" Click="btnRefresh_Click"
                              Height="28" Width="28" Visibility="{Binding ElementName=control, Path=ShowReloadButton, Converter={StaticResource btv}}" >
