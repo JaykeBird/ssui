@@ -668,6 +668,9 @@ namespace SolidShineUi
         /// </summary>
         public bool ShowTransparencyControls { get => (bool)GetValue(ShowTransparencyControlsProperty); set => SetValue(ShowTransparencyControlsProperty, value); }
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static DependencyProperty ShowTransparencyControlsProperty
             = DependencyProperty.Register("ShowTransparencyControls", typeof(bool), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata(true));
@@ -678,6 +681,9 @@ namespace SolidShineUi
         /// </summary>
         public string TransparencyLabel { get => (string)GetValue(TransparencyLabelProperty); set => SetValue(TransparencyLabelProperty, value); }
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static DependencyProperty TransparencyLabelProperty
             = DependencyProperty.Register("TransparencyLabel", typeof(string), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata("Transparency:"));
@@ -715,6 +721,9 @@ namespace SolidShineUi
         /// </summary>
         public string SelectedColorLabel { get => (string)GetValue(SelectedColorLabelProperty); set => SetValue(SelectedColorLabelProperty, value); }
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static DependencyProperty SelectedColorLabelProperty
             = DependencyProperty.Register("SelectedColorLabel", typeof(string), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata("Selected Color:"));
@@ -724,6 +733,9 @@ namespace SolidShineUi
         /// </summary>
         public string CurrentColorLabel { get => (string)GetValue(CurrentColorLabelProperty); set => SetValue(CurrentColorLabelProperty, value); }
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static DependencyProperty CurrentColorLabelProperty
             = DependencyProperty.Register("CurrentColorLabel", typeof(string), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata("Current Color:"));

@@ -39,10 +39,11 @@ namespace SolidShineUi
 
         #region Title
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabItem),
             new PropertyMetadata("New Tab", new PropertyChangedCallback(OnInternalTitleChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the title of this tab.
@@ -83,10 +84,11 @@ namespace SolidShineUi
 
         #region IsDirty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(TabItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsDirtyChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if the tab is dirty.
@@ -127,10 +129,11 @@ namespace SolidShineUi
 
         #region DisplayDirtyState
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty DisplayDirtyStateProperty = DependencyProperty.Register("DisplayDirtyState", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalDisplayDirtyStateChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if the tab should display the state of its IsDirty property. When set to true, an asterisk (*) will be added to the title when it is dirty.
@@ -171,10 +174,11 @@ namespace SolidShineUi
 
         #region CanClose
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register("CanClose", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalCanCloseChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if this tab can be closed via the UI (i.e. the close button).
@@ -218,10 +222,11 @@ namespace SolidShineUi
 
         #region ShowIcon
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowIconChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set if an icon is shown for this tab. The icon section of the tab will be visible if this is true, even if there is no icon set.
@@ -262,10 +267,11 @@ namespace SolidShineUi
 
         #region CanSelect
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register("CanSelect", typeof(bool), typeof(TabItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnInternalCanSelectChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set whether this tab can be selected via UI.
@@ -306,10 +312,11 @@ namespace SolidShineUi
 
         #region Icon
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalIconChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the icon to display with this tab.

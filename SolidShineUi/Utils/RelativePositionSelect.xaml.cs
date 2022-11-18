@@ -324,6 +324,9 @@ namespace SolidShineUi.Utils
         /// </summary>
         public bool SnapToSnapLines { get => (bool)GetValue(SnapToSnapLinesProperty); set => SetValue(SnapToSnapLinesProperty, value); }
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static DependencyProperty SnapToSnapLinesProperty
             = DependencyProperty.Register("SnapToSnapLines", typeof(bool), typeof(RelativePositionSelect),
             new FrameworkPropertyMetadata(true));
@@ -335,6 +338,9 @@ namespace SolidShineUi.Utils
         /// </summary>
         public double SnapDistance { get => (double)GetValue(SnapDistanceProperty); set => SetValue(SnapDistanceProperty, value); }
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static DependencyProperty SnapDistanceProperty
             = DependencyProperty.Register("SnapDistance", typeof(double), typeof(RelativePositionSelect),
             new FrameworkPropertyMetadata(3.0));
@@ -622,6 +628,9 @@ namespace SolidShineUi.Utils
         /// </summary>
         public double KeyMoveStep { get => (double)GetValue(KeyMoveStepProperty); set => SetValue(KeyMoveStepProperty, value); }
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static DependencyProperty KeyMoveStepProperty
             = DependencyProperty.Register("KeyMoveStep", typeof(double), typeof(RelativePositionSelect),
             new FrameworkPropertyMetadata(0.05));

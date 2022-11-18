@@ -332,7 +332,18 @@ namespace SolidShineUi
 
         #region Basic Properties / Events
 
+        /// <summary>
+        /// A delegate to be used with events regarding the selected TabItem changing in a TabControl.
+        /// </summary>
+        /// <param name="sender">The object where the event was raised.</param>
+        /// <param name="e">The event arguments associated with this event.</param>
         public delegate void TabItemChangeEventHandler(object sender, TabItemChangeEventArgs e);
+
+        /// <summary>
+        /// A delegate to be used with events regarding a TabItem being closed in a TabControl.
+        /// </summary>
+        /// <param name="sender">The object where the event was raised.</param>
+        /// <param name="e">The event arguments associated with this event.</param>
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
 #if NETCOREAPP
