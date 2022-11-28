@@ -1,0 +1,1 @@
+For full documentation, please view the [GitHub wiki](https://github.com/JaykeBird/ssui/wiki/home).

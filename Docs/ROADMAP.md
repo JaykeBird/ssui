@@ -29,20 +29,24 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
     - To help with this, SelectableCollection can be used
   - Add "light theme" and "dark theme" to ColorScheme
   - first pass at PropertyGrid control
+- Versions 1.9.2 and 1.9.3
+  - Further work on PropertyGrid
+  - .NET 7.0 support
+  - Bulk of online documentation set up
 
 ## 2022
 
-- Finish online documentation
-- Continue work on PropertyGrid
+- Add extra documents to describe more things
+- Finish "must-have"s for PropertyGrid
 - Begin testing with AvaloniaUI support
 
-## Early 2023
+## Early/mid 2023
 
+- Ribbon control
+- Toolbar controls
+- Redesigned ColorScheme system (might be renamed SsuiTheme)
+- Work on port to AvaloniaUI (11.0 will be the version I'm targeting)
 - DataTable control
   - use same core bits as PropertyGrid
-- Port to AvaloniaUI (0.10 is out, haven't done any testing or porting yet though)
-- Toolbar controls
-- Ribbon control
-- Redesigned ColorScheme system (might be renamed SsuiTheme)
-- Touch support for ImageColorPicker
-  - (Keyboard support may be hard)
+- Touch/keyboard support for ImageColorPicker
+  - May require yet another rewrite
