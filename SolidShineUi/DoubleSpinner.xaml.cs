@@ -12,7 +12,7 @@ using System.Windows.Media;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control for selecting a number, via typing in a number or using the up and down buttons.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons.
     /// </summary>
     public partial class DoubleSpinner : UserControl
     {

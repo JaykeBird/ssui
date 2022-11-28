@@ -12,7 +12,7 @@ using System.Timers;
 namespace SolidShineUi
 {
     /// <summary>
-    /// Interaction logic for IntegerSpinner.xaml
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed.
     /// </summary>
     public partial class IntegerSpinner : UserControl
     {

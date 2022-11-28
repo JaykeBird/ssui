@@ -11,7 +11,8 @@ using System.Windows.Controls;
 namespace SolidShineUi
 {
     /// <summary>
-    /// Interaction logic for SelectableItem.xaml
+    /// A standard selectable control that can be used with a SelectPanel. This has a number of customization options out of the box,
+    /// including being able to set left-aligned and right-aligned text, an image, and also indent the contents to mimic the appearance of a tree view.
     /// </summary>
     public partial class SelectableItem : SelectableUserControl
     {
