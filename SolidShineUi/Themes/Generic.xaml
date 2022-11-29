@@ -977,6 +977,24 @@
                                         <DataTrigger Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True">
                                             <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
                                         </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}, TargetNullValue=False}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.Setters>
+                                                <Setter Property="BorderBrush" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            </MultiDataTrigger.Setters>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
+                                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
+                                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}, TargetNullValue=False}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                     <!--<Style.Triggers>
                                         <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
@@ -1051,6 +1069,7 @@
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=Self}}" Value="False" />
                                 <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
@@ -1058,6 +1077,7 @@
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=Self}}" Value="False" />
                                 <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
