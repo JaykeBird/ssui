@@ -61,7 +61,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         #endregion
 
         #region Image Source box/rendering
-        
+
         ImageSource _source = new BitmapImage();
         bool _blankSourceOnEnter = false;
         //bool _newSourceSet = false;
@@ -77,12 +77,15 @@ namespace SolidShineUi.PropertyList.Dialogs
                 _blankSourceOnEnter = false;
                 txtSource.FontStyle = FontStyles.Normal;
             }
-            
-            if (Uri.IsWellFormedUriString(System.Net.WebUtility.UrlEncode(txtSource.Text), UriKind.RelativeOrAbsolute))
+
+            if (!string.IsNullOrWhiteSpace(txtSource.Text))
             {
-                //_newSourceSet = true;
-                BitmapImage bi = new BitmapImage(new Uri(txtSource.Text));
-                LoadImageSource(bi);
+                if (Uri.IsWellFormedUriString(System.Net.WebUtility.UrlEncode(txtSource.Text), UriKind.RelativeOrAbsolute))
+                {
+                    //_newSourceSet = true;
+                    BitmapImage bi = new BitmapImage(new Uri(txtSource.Text));
+                    LoadImageSource(bi);
+                }
             }
         }
 
@@ -93,6 +96,8 @@ namespace SolidShineUi.PropertyList.Dialogs
             bool? res = ofd.ShowDialog();
             if (res.GetValueOrDefault(false))
             {
+                _blankSourceOnEnter = false;
+                txtSource.FontStyle = FontStyles.Normal;
                 txtSource.Text = ofd.FileName;
             }
         }
@@ -103,7 +108,16 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             _source = isrc;
             _internalAction = true;
-            if (isrc is BitmapImage bi)
+            if (isrc == null)
+            {
+                // I don't know
+                txtSource.Text = "(image source is null, click here to change to a URL or file path)";
+                txtSource.FontStyle = FontStyles.Italic;
+                _blankSourceOnEnter = true;
+                imgSize.Text = "- x -";
+                imgSize.ToolTip = null;
+            }
+            else if (isrc is BitmapImage bi)
             {
                 // https://learn.microsoft.com/en-us/dotnet/api/system.windows.media.imaging.bitmapimage.urisource
                 if (bi.UriSource != null)
@@ -243,7 +257,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         #endregion
-        
+
         private void cbbStretch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdatePreview();
