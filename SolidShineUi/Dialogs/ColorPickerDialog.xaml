@@ -255,7 +255,20 @@
                     </Grid.ColumnDefinitions>
                     <flat:FlatButton x:Name="btnInvert" HorizontalAlignment="Left" Height="24" Margin="10,84,0,0" VerticalAlignment="Top" Width="60" Click="btnInvert_Click"
                                      ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Content="Invert" />
-                    <Border x:Name="brdrSlColor" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" VerticalAlignment="Top" Width="60"/>
+                    <Border x:Name="brdrSlColor" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" VerticalAlignment="Top" Width="60">
+                        <Border.Background>
+                            <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute" >
+                                <!-- https://stackoverflow.com/questions/3827561/how-to-create-checker-board-pattern -->
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <GeometryDrawing Geometry="M0,0 L8,0 8,8 0,8Z" Brush="White"/>
+                                        <GeometryDrawing Geometry="M0,4 L8,4 8,8 4,8 4,0 0,0Z" Brush="LightGray"/>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Border.Background>
+                        <Grid x:Name="grdSlColor" />
+                    </Border>
                     <!-- RGB -->
                     <TextBlock x:Name="lblRGB" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Text="RGB" VerticalAlignment="Top"/>
                     <!-- R -->

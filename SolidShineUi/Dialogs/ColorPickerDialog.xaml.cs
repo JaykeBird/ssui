@@ -194,6 +194,11 @@ namespace SolidShineUi
         #region Swatches
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {
+            if (SwatchesResetTransparency)
+            {
+                nudAlpha.Value = 255;
+            }
+
 #if NETCOREAPP
             UpdateSelectedColor(((sender as Button)!.Background as SolidColorBrush)!.Color);
 #else
@@ -438,7 +443,7 @@ namespace SolidShineUi
             }
 
             UpdateSelectedColor(col, false);
-            brdrSlColor.Background = BrushFactory.Create(col);
+            grdSlColor.Background = BrushFactory.Create(col);
 
             updating = false;
 
@@ -471,7 +476,7 @@ namespace SolidShineUi
             sldV.Value = v * 1000;
 
             UpdateSelectedColor(col, false);
-            brdrSlColor.Background = BrushFactory.Create(col);
+            grdSlColor.Background = BrushFactory.Create(col);
 
             updating = false;
         }
@@ -664,7 +669,7 @@ namespace SolidShineUi
         #region Transparency
 
         /// <summary>
-        /// Get or set if transparency controls should be shown in he dialog. If true, then the user will be able to select and change the transparency (alpha) value of the selected color.
+        /// Get or set if transparency controls should be shown in the dialog. If true, then the user will be able to select and change the transparency (alpha) value of the selected color.
         /// </summary>
         public bool ShowTransparencyControls { get => (bool)GetValue(ShowTransparencyControlsProperty); set => SetValue(ShowTransparencyControlsProperty, value); }
 
@@ -673,6 +678,18 @@ namespace SolidShineUi
         /// </summary>
         public static DependencyProperty ShowTransparencyControlsProperty
             = DependencyProperty.Register("ShowTransparencyControls", typeof(bool), typeof(ColorPickerDialog),
+            new FrameworkPropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set if clicking on a swatch in the Swatches tab resets the transparency (alpha) value to 255, or totally opaque. If not, the transparency value remains unchanged.
+        /// </summary>
+        public bool SwatchesResetTransparency { get => (bool)GetValue(SwatchesResetTransparencyProperty); set => SetValue(SwatchesResetTransparencyProperty, value); }
+
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
+        public static DependencyProperty SwatchesResetTransparencyProperty
+            = DependencyProperty.Register("SwatchesResetTransparency", typeof(bool), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata(true));
 
 
