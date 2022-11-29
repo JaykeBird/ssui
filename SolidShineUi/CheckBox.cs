@@ -388,11 +388,13 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(CheckBox),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -702,12 +704,28 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets whether the checkbox should cycle through three states (rather than two) when clicked. The third state is the "Indeterminate" state, which can be checked via the IsIndeterminate property.
         /// </summary>
-        public bool TriStateClick { get; set; } = false;
+        public bool TriStateClick { get => (bool)GetValue(TriStateClickProperty); set => SetValue(TriStateClickProperty, value); }
+
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
+        public static DependencyProperty TriStateClickProperty
+            = DependencyProperty.Register("TriStateClick", typeof(bool), typeof(CheckBox),
+            new FrameworkPropertyMetadata(false));
+
 
         /// <summary>
         /// Gets or sets whether clicking should only occur when the checkbox's box is clicked, and not the rest of the control.
         /// </summary>
-        public bool OnlyAllowCheckBoxClick { get; set; } = false;
+        public bool OnlyAllowCheckBoxClick { get => (bool)GetValue(OnlyAllowCheckBoxClickProperty); set => SetValue(OnlyAllowCheckBoxClickProperty, value); }
+
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
+        public static DependencyProperty OnlyAllowCheckBoxClickProperty
+            = DependencyProperty.Register("OnlyAllowCheckBoxClick", typeof(bool), typeof(CheckBox),
+            new FrameworkPropertyMetadata(false));
+
 
         #endregion
 
