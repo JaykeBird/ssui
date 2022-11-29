@@ -699,11 +699,13 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets whether the Click event should be raised when the checkbox is pressed, rather than when it is released.
         /// </summary>
+        [Category("Common")]
         public bool ClickOnPress { get; set; } = false;
 
         /// <summary>
         /// Gets or sets whether the checkbox should cycle through three states (rather than two) when clicked. The third state is the "Indeterminate" state, which can be checked via the IsIndeterminate property.
         /// </summary>
+        [Category("Common")]
         public bool TriStateClick { get => (bool)GetValue(TriStateClickProperty); set => SetValue(TriStateClickProperty, value); }
 
         /// <summary>
@@ -717,6 +719,7 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets whether clicking should only occur when the checkbox's box is clicked, and not the rest of the control.
         /// </summary>
+        [Category("Common")]
         public bool OnlyAllowCheckBoxClick { get => (bool)GetValue(OnlyAllowCheckBoxClickProperty); set => SetValue(OnlyAllowCheckBoxClickProperty, value); }
 
         /// <summary>
