@@ -13,96 +13,8 @@ namespace SolidShineUi.Utils
     /// </summary>
     public partial class TabDisplayItem : UserControl
     {
-#if NETCOREAPP
-        /// <summary>
-        /// Raised when the Close button is clicked, and this tab wants to be closed.
-        /// </summary>
-        public event EventHandler? RequestClose;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler? RightClick;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler? Click;
-        /// <summary>
-        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
-        /// </summary>
-        public event TabItemDropEventHandler? TabItemDrop;
-#else
-        /// <summary>
-        /// Raised when the Close button is clicked, and this tab wants to be closed.
-        /// </summary>
-        public event EventHandler RequestClose;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler RightClick;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler Click;
-        /// <summary>
-        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
-        /// </summary>
-        public event TabItemDropEventHandler TabItemDrop;
-#endif
 
-        /// <summary>
-        /// A delegate to be used with events regarding dropping a TabItem into a TabControl.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void TabItemDropEventHandler(object sender, TabItemDropEventArgs e);
-
-        /// <summary>
-        /// Get or set the brush for the background while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it has keyboard focus).
-        /// </summary>
-        public Brush HighlightBrush { get; set; } = new SolidColorBrush(Colors.LightGray);
-        /// <summary>
-        /// Get or set the brush for the border while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it had keyboard focus).
-        /// </summary>
-        public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
-        /// <summary>
-        /// Get or set the brush for the border of this control.
-        /// </summary>
-        public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
-
-        //public Brush CloseBrush { get; set; } = new SolidColorBrush(Colors.Black);
-
-        //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register(
-            "TabBackground", typeof(Brush), typeof(TabDisplayItem),
-            new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set the brush used for the custom background of this tab. Taken from <see cref="TabItem.TabBackground"/>.
-        /// </summary>
-        public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
-
-        private static void OnInternalTabBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TabDisplayItem s)
-            {
-                s.InternalTabBackgroundChanged?.Invoke(s, e);
-            }
-        }
-        private void tdi_InternalTabBackgroundChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            
-        }
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalTabBackgroundChanged;
-
-        private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
-
+        #region Constructors
         /// <summary>
         /// Create a TabDisplayItem.
         /// </summary>
@@ -156,6 +68,113 @@ namespace SolidShineUi.Utils
             InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
+        private void control_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (ParentTabControl != null)
+            {
+
+            }
+        }
+        #endregion
+
+        #region Events
+#if NETCOREAPP
+        /// <summary>
+        /// Raised when the Close button is clicked, and this tab wants to be closed.
+        /// </summary>
+        public event EventHandler? RequestClose;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
+        public event EventHandler? RightClick;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
+        public event EventHandler? Click;
+        /// <summary>
+        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
+        /// </summary>
+        public event TabItemDropEventHandler? TabItemDrop;
+#else
+        /// <summary>
+        /// Raised when the Close button is clicked, and this tab wants to be closed.
+        /// </summary>
+        public event EventHandler RequestClose;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
+        public event EventHandler RightClick;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
+        public event EventHandler Click;
+        /// <summary>
+        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
+        /// </summary>
+        public event TabItemDropEventHandler TabItemDrop;
+#endif
+
+        /// <summary>
+        /// A delegate to be used with events regarding dropping a TabItem into a TabControl.
+        /// </summary>
+        /// <param name="sender">The object where the event was raised.</param>
+        /// <param name="e">The event arguments associated with this event.</param>
+        public delegate void TabItemDropEventHandler(object sender, TabItemDropEventArgs e);
+        #endregion
+
+        #region Brushes / Border
+        /// <summary>
+        /// Get or set the brush for the background while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it has keyboard focus).
+        /// </summary>
+        public Brush HighlightBrush { get; set; } = new SolidColorBrush(Colors.LightGray);
+        /// <summary>
+        /// Get or set the brush for the border while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it had keyboard focus).
+        /// </summary>
+        public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
+        /// <summary>
+        /// Get or set the brush for the border of this control.
+        /// </summary>
+        public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
+
+        //public Brush CloseBrush { get; set; } = new SolidColorBrush(Colors.Black);
+
+        //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
+
+        #region TabBackground
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
+        public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register(
+            "TabBackground", typeof(Brush), typeof(TabDisplayItem),
+            new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
+
+        /// <summary>
+        /// Get or set the brush used for the custom background of this tab. Taken from <see cref="TabItem.TabBackground"/>.
+        /// </summary>
+        public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
+
+        private static void OnInternalTabBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem s)
+            {
+                s.InternalTabBackgroundChanged?.Invoke(s, e);
+            }
+        }
+        private void tdi_InternalTabBackgroundChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            
+        }
+
+        /// <summary>
+        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// </summary>
+        protected event DependencyPropertyChangedEventHandler InternalTabBackgroundChanged;
+        #endregion
+
+        private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+        #endregion
+
+
 #if NETCOREAPP
         private void tab_IsSelectedChanged(object? sender, EventArgs e)
 #else
@@ -181,10 +200,11 @@ namespace SolidShineUi.Utils
 
         #region CanSelect
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register("CanSelect", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the tab can be selected.
@@ -210,10 +230,11 @@ namespace SolidShineUi.Utils
 
         #region IsDirty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if this tab is dirty. This can be used to visually indicate, for example, unsaved changes in the tab's contents. 
@@ -239,10 +260,11 @@ namespace SolidShineUi.Utils
 
         #region IsSelected
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false, OnIsSelectedChanged));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if this tab is selected. A selected tab will have visual differences to show that it is selected.
@@ -276,10 +298,11 @@ namespace SolidShineUi.Utils
         #region TabItem
 
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty TabItemProperty = DependencyProperty.Register("TabItem", typeof(TabItem), typeof(TabDisplayItem),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalTabItemChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// The TabItem that this TabDisplayItem is representing. It is not advisable to change this property after the control is loaded; instead, just create a new TabDisplayItem.
@@ -338,10 +361,11 @@ namespace SolidShineUi.Utils
 
         #region ShowTabsOnBottom
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the parent tab control has its ShowTabsOnBottom property set.
@@ -400,10 +424,12 @@ namespace SolidShineUi.Utils
 
         #region ParentTabControl
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ParentTabControlProperty = DependencyProperty.Register("ParentTabControl", typeof(TabControl), typeof(TabDisplayItem),
             new PropertyMetadata(null, OnInternalParentChanged));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the parent TabControl item that holds this tab item.
@@ -438,11 +464,12 @@ namespace SolidShineUi.Utils
 
         #region Color Scheme
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -690,14 +717,6 @@ namespace SolidShineUi.Utils
             else
             {
                 brdr_Focus.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void control_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (ParentTabControl != null)
-            {
-
             }
         }
 
@@ -960,6 +979,7 @@ namespace SolidShineUi.Utils
             SourceTabItem = sourceTabItem;
             DroppedTabItem = droppedTabItem;
             Before = before;
+            PlaceBefore = before;
         }
 
         /// <summary>
@@ -973,8 +993,14 @@ namespace SolidShineUi.Utils
         public TabItem DroppedTabItem { get; private set; }
 
         /// <summary>
+        /// Get whether the dropped TabItem should be put before or after the source TabItem. (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in the future.)
+        /// </summary>
+        [Obsolete("Please use the PlaceBefore property instead going forward. This property will be removed in a future version.", false)]
+        public bool Before { get; private set; }
+
+        /// <summary>
         /// Get whether the dropped TabItem should be put before or after the source TabItem.
         /// </summary>
-        public bool Before { get; private set; }
+        public bool PlaceBefore { get; private set; }
     }
 }
