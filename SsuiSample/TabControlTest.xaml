@@ -38,8 +38,21 @@
                 <flat:FlatButton x:Name="btnAdd" Margin="3" Click="btnAdd_Click" MinWidth="80" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add Tab...</flat:FlatButton>
                 <flat:FlatButton x:Name="btnAddNoClose" Margin="3" Click="btnAddNoClose_Click" MinWidth="125" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add No Close Tab...</flat:FlatButton>
                 <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
-                <flat:FlatButton x:Name="btnRename" Margin="3" Click="btnRename_Click" MinWidth="100" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Rename Tab...</flat:FlatButton>
-                <flat:CheckBox x:Name="chkDirty" Margin="3" CheckChanged="chkDirty_CheckChanged" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Set Tab IsDirty</flat:CheckBox>
+                <flat:MenuButton x:Name="btnEditCurrent" Margin="3" MinWidth="130" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Edit Current Tab">
+                    <flat:MenuButton.Menu>
+                        <flat:ContextMenu>
+                            <MenuItem Header="Rename Tab..." x:Name="btnRename" Click="btnRename_Click" />
+                            <MenuItem Header="Show Tab Icon" x:Name="mnuIconShow" Click="mnuIconShow_Click" IsCheckable="True" />
+                            <MenuItem Header="Set Tab Icon..." x:Name="btnSetIcon" Click="btnSetIcon_Click" />
+                            <MenuItem Header="Set Background">
+                                <MenuItem Header="As Solid Color..." x:Name="mnuBackSolidColor" Click="mnuBackSolidColor_Click" />
+                                <MenuItem Header="As Stylized Color..." x:Name="mnuBackSolidGradient" Click="mnuBackSolidGradient_Click" />
+                                <MenuItem Header="As Custom Gradient..." x:Name="mnuBackGradient" Click="mnuBackGradient_Click" />
+                            </MenuItem>
+                            <MenuItem Header="Set Tab IsDirty" x:Name="mnuDirty" Click="mnuDirty_Click" IsCheckable="True" />
+                        </flat:ContextMenu>
+                    </flat:MenuButton.Menu>
+                </flat:MenuButton>
             </StackPanel>
             <ScrollViewer Grid.Row="2" Margin="20,0" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" >

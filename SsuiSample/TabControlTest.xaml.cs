@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using TabItem = SolidShineUi.TabItem;
 
 namespace SsuiSample
@@ -144,20 +145,102 @@ namespace SsuiSample
 
         bool changingTab = false;
 
-        private void chkDirty_CheckChanged(object sender, RoutedEventArgs e)
-        {
-            if (changingTab) return;
-
-            tabControl.SelectedTab.IsDirty = chkDirty.IsChecked;
-        }
-
         private void tabControl_TabChanged(object sender, TabItemChangeEventArgs e)
         {
             if (tabControl.SelectedTab != null)
             {
                 changingTab = true;
-                chkDirty.IsChecked = tabControl.SelectedTab.IsDirty;
+                mnuDirty.IsChecked = tabControl.SelectedTab.IsDirty;
+                mnuIconShow.IsChecked = tabControl.SelectedTab.ShowIcon;
                 changingTab = false;
+            }
+        }
+
+        private void btnSetIcon_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabControl.SelectedTab != null)
+            {
+                TabItem ti = tabControl.SelectedTab;
+                SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog ibe = new SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog(ColorScheme);
+                ibe.LoadImage(new ImageBrush(ti.Icon));
+                ibe.ShowDialog();
+                if (ibe.DialogResult)
+                {
+                    ImageBrush br = ibe.GetImageBrush();
+                    ti.Icon = br.ImageSource;
+                }
+            }
+        }
+
+        private void mnuDirty_Click(object sender, RoutedEventArgs e)
+        {
+            if (changingTab) return;
+
+            tabControl.SelectedTab.IsDirty = mnuDirty.IsChecked;
+        }
+
+        private void mnuIconShow_Click(object sender, RoutedEventArgs e)
+        {
+            if (changingTab) return;
+
+            tabControl.SelectedTab.ShowIcon = mnuIconShow.IsChecked;
+        }
+
+        private void mnuBackSolidColor_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabControl.SelectedTab != null)
+            {
+                TabItem ti = tabControl.SelectedTab;
+                Color precolor = Colors.Transparent;
+                if (ti.TabBackground is SolidColorBrush si)
+                {
+                    precolor = si.Color;
+                }
+                ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
+                cpd.ShowDialog();
+                if (cpd.DialogResult)
+                {
+                    ti.TabBackground = new SolidColorBrush(cpd.SelectedColor);
+                }
+            }
+        }
+
+        private void mnuBackSolidGradient_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabControl.SelectedTab != null)
+            {
+                TabItem ti = tabControl.SelectedTab;
+                Color precolor = Colors.Transparent;
+                if (ti.TabBackground is SolidColorBrush si)
+                {
+                    precolor = si.Color;
+                }
+                ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
+                cpd.ShowDialog();
+                if (cpd.DialogResult)
+                {
+                    ti.TabBackground = new LinearGradientBrush(cpd.SelectedColor, Colors.Transparent, 90);
+                }
+            }
+        }
+
+        private void mnuBackGradient_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabControl.SelectedTab != null)
+            {
+                TabItem ti = tabControl.SelectedTab;
+                LinearGradientBrush lgb = new LinearGradientBrush(Colors.Green, Colors.Transparent, 90);
+                if (ti.TabBackground is LinearGradientBrush lg)
+                {
+                    lgb = lg;
+                }
+                SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog lge = new SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog(ColorScheme);
+                lge.LoadGradient(lgb);
+                lge.ShowDialog();
+                if (lge.DialogResult)
+                {
+                    ti.TabBackground = lge.GetGradientBrush();
+                }
             }
         }
     }
