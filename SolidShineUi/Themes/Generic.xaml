@@ -1298,8 +1298,9 @@
                                             M 1,2 C 1,2 2,4 2,6 C 4,6 4,2 6,0
                                             M 1,2 C 1,2 1.5,2.5 2.5,6.5 C 2.5,6.5 2.5,1.5 6,0
                                             -->
-                                                                            <ContentPresenter x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                          ContentSource="Icon"/>
+                                                                            <!--<ContentPresenter x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                          ContentSource="Icon"/>-->
+                                                                            <Image x:Name="Icon" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{Binding Icon}" />
                                                                         </Grid>
                                                                     </Border>
 
