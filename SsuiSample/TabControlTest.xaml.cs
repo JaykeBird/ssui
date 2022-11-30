@@ -175,6 +175,7 @@ namespace SsuiSample
         private void mnuDirty_Click(object sender, RoutedEventArgs e)
         {
             if (changingTab) return;
+            if (tabControl.SelectedTab == null) return;
 
             tabControl.SelectedTab.IsDirty = mnuDirty.IsChecked;
         }
@@ -182,6 +183,7 @@ namespace SsuiSample
         private void mnuIconShow_Click(object sender, RoutedEventArgs e)
         {
             if (changingTab) return;
+            if (tabControl.SelectedTab == null) return;
 
             tabControl.SelectedTab.ShowIcon = mnuIconShow.IsChecked;
         }

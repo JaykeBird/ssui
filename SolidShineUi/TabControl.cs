@@ -307,6 +307,7 @@ namespace SolidShineUi
             if (_internalAction) return;
             if (e.Item != null)
             {
+                // raise the closing event (to give implementers the chance to cancel)
                 TabItemClosingEventArgs ee = new TabItemClosingEventArgs(e.Item);
                 TabClosing?.Invoke(this, ee);
 
@@ -318,6 +319,7 @@ namespace SolidShineUi
                     return;
                 }
 
+                // if SelectedTabClosedAction is set to SelectTabToLeft or SelectTabToRight, then let's store the current tab's index before it's closed, so that we can use it later
                 if (Items.SelectedItems.Contains(e.Item) && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
                 {
                     closedTabIndex = Items.IndexOf(e.Item);
@@ -379,7 +381,7 @@ namespace SolidShineUi
         /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
         /// </summary>
         [Category("Common")]
-        public TabItem CurrentTab { get; protected set; } = null;
+        public TabItem CurrentTab { get => Items.SelectedItems.FirstOrDefault(); }
         /// <summary>
         /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
         /// </summary>
@@ -800,13 +802,12 @@ namespace SolidShineUi
 
         #region Color Scheme
 
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabControl),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -903,16 +904,25 @@ namespace SolidShineUi
             Items.ClearSelection();
 
             Items.Remove(e.DroppedTabItem);
+            //if (Items.Contains(e.DroppedTabItem))
+            //{
+            //    Items.Remove(e.DroppedTabItem);
+            //}
+            //else
+            //{
+            //    // get source tab control and remove it from there before adding here
+            //}
 
-            int newIndex = e.Before ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
+            int newIndex = e.PlaceBefore ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
 
             if (newIndex == -1)
             {
                 Items.Add(e.DroppedTabItem);
-                return;
             }
-
-            Items.Insert(newIndex, e.DroppedTabItem);
+            else
+            {
+                Items.Insert(newIndex, e.DroppedTabItem);
+            }
 
             if (selItem != null)
             {
