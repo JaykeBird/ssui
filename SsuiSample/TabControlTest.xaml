@@ -58,6 +58,8 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" >
                     <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged"
                                    ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" />
+                    <flat:CheckBox Content="Show tab list menu" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkTlm" CheckChanged="chkTlm_CheckChanged"
+                                   ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" IsChecked="True" />
                     <TextBlock Margin="10,0,5,0" Text="Minimum tab width:" VerticalAlignment="Center" />
                     <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
                     <TextBlock Margin="10,0,5,0" Text="Tab bar height:" VerticalAlignment="Center" />

@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="NewSelectPanelTest.xaml.cs">
+    <Compile Update="SelectPanelTest.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="TwoPositionSelectTest.xaml.cs">
@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="NewSelectPanelTest.xaml">
+    <Page Update="SelectPanelTest.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

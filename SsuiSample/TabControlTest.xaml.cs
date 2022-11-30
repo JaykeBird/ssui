@@ -118,6 +118,12 @@ namespace SsuiSample
             tabControl.ShowTabsOnBottom = chkBottom.IsChecked;
         }
 
+        private void chkTlm_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            if (tabControl == null) return;
+            tabControl.ShowTabListMenu = chkTlm.IsChecked;
+        }
+
         private void cbbSelectTabClose_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             tabControl.SelectedTabClosedAction = cbbSelectTabClose.SelectedEnumValueAsEnum<SelectedTabCloseAction>();
@@ -245,5 +251,6 @@ namespace SsuiSample
                 }
             }
         }
+
     }
 }

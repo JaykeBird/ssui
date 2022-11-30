@@ -10,12 +10,10 @@ using SolidShineUi.Utils;
 
 namespace SsuiSample
 {
-    /// <summary>
-    /// Interaction logic for SelectPanel.xaml
-    /// </summary>
-    public partial class NewSelectPanelTest : UserControl
+
+    public partial class SelectPanelTest : UserControl
     {
-        public NewSelectPanelTest()
+        public SelectPanelTest()
         {
             InitializeComponent();
 
@@ -130,14 +128,14 @@ namespace SsuiSample
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 
         public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewSelectPanelTest),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanelTest),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ColorScheme cs = e.NewValue as ColorScheme;
 
-            if (d is NewSelectPanelTest s)
+            if (d is SelectPanelTest s)
             {
                 s.ColorSchemeChanged?.Invoke(d, e);
                 s.ApplyColorScheme(cs);

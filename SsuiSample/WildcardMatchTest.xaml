@@ -18,7 +18,7 @@
         <TextBox Margin="160,0,210,0" Grid.Row="1" x:Name="txtMatch" VerticalAlignment="Center" Height="24" VerticalContentAlignment="Center" />
         <flat:CheckBox x:Name="chkCase" Content="Ignore case" HorizontalAlignment="Right" Margin="0,0,105,0" Grid.Row="1" VerticalAlignment="Center" 
                        Width="100" Height="24" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-        <flat:FlatButton Content="Match" x:Name="btnMatch" Click="btnMatch_Click" Margin="0,8,10,8" Grid.Row="1" 
+        <flat:FlatButton Content="Run" x:Name="btnMatch" Click="btnMatch_Click" Margin="0,8,10,8" Grid.Row="1" 
                          HorizontalAlignment="Right" Width="90" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
 
         <Grid Grid.Row="3" >
@@ -38,5 +38,6 @@
         </Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" Text="Wildcard text to match:" VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="2" x:Name="txtResults" Text="" VerticalAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,23,10,0" Text="(? for single character, * for 0 to any characters)" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

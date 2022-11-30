@@ -29,7 +29,7 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="65"/>
                     <RowDefinition Height="50"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
                     <RowDefinition Height="58"/>
                     <RowDefinition Height="59"/>
                     <RowDefinition Height="28"/>
