@@ -95,7 +95,7 @@ namespace SsuiSample
 
         private void btnRename_Click(object sender, RoutedEventArgs e)
         {
-            TabItem ti = tabControl.CurrentTab;
+            TabItem ti = tabControl.SelectedTab;
 
             if (ti == null)
             {

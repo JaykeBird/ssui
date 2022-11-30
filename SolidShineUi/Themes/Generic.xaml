@@ -1511,6 +1511,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
+                                <ContentPresenter x:Name="PART_ContentHost" ContentSource="{Binding Path=SelectedTabContent, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}" />
                             </Border>
                         </Grid>
                     </Grid>

@@ -220,10 +220,10 @@ namespace SolidShineUi
                         // from https://stackoverflow.com/a/1876534/2987285
                         ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                         c.ApplyTemplate();
-//#if NETCOREAPP
-//                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-//#else
-//#endif
+                        //#if NETCOREAPP
+                        //                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+                        //#else
+                        //#endif
                         if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
                         {
                             if (tb.TabItem != null && tb.TabItem == newItem)
@@ -238,20 +238,15 @@ namespace SolidShineUi
                     }
                 }
 
-                if (ch != null)
-                {
-                    ch.Child = newItem.Content;
-                }
+                SetupCurrentTab(newItem);
+
                 TabChanged?.Invoke(this, new TabItemChangeEventArgs(newItem));
             }
             else
             {
                 if (Items.SelectedItems.Count == 0)
                 {
-                    if (ch != null)
-                    {
-                        ch.Child = null;
-                    }
+                    SetupCurrentTab(null);
 
                     if (Items.Count > 0)
                     {
@@ -307,30 +302,67 @@ namespace SolidShineUi
             if (_internalAction) return;
             if (e.Item != null)
             {
-                // raise the closing event (to give implementers the chance to cancel)
-                TabItemClosingEventArgs ee = new TabItemClosingEventArgs(e.Item);
-                TabClosing?.Invoke(this, ee);
-
-                if (ee.Cancel)
+                if (PrepareCloseTab(e.Item))
                 {
-                    // don't remove or close anything, just exit
-                    closedTabIndex = -1;
-                    e.Cancel = true;
-                    return;
-                }
-
-                // if SelectedTabClosedAction is set to SelectTabToLeft or SelectTabToRight, then let's store the current tab's index before it's closed, so that we can use it later
-                if (Items.SelectedItems.Contains(e.Item) && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
-                {
-                    closedTabIndex = Items.IndexOf(e.Item);
+                    // good to go, event can continue with closing tab
                 }
                 else
                 {
-                    closedTabIndex = -1;
+                    e.Cancel = true;
                 }
             }
         }
         #endregion
+
+        #region Internal Base Functions
+
+        /// <summary>
+        /// Set up the process to close a tab. This function does not actually close the tab.
+        /// </summary>
+        /// <param name="tab">The tab to close.</param>
+        /// <returns><c>true</c> if the tab is good to be closed (wasn't cancelled); <c>false</c> if it was cancelled.</returns>
+        bool PrepareCloseTab(TabItem tab)
+        {
+            // raise the closing event (to give implementers the chance to cancel)
+            TabItemClosingEventArgs ee = new TabItemClosingEventArgs(tab);
+            TabClosing?.Invoke(this, ee);
+
+            if (ee.Cancel)
+            {
+                // don't remove or close anything, just exit
+                closedTabIndex = -1;
+                return false;
+            }
+
+            // if SelectedTabClosedAction is set to SelectTabToLeft or SelectTabToRight, then let's store the current tab's index before it's closed, so that we can use it later
+            if (Items.SelectedItems.Contains(tab) && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
+            {
+                closedTabIndex = Items.IndexOf(tab);
+            }
+            else
+            {
+                closedTabIndex = -1;
+            }
+            return true;
+        }
+
+#if NETCOREAPP
+        void SetupCurrentTab(TabItem? tab)
+#else
+        void SetupCurrentTab(TabItem tab)
+#endif
+        {
+            //if (ch != null)
+            //{
+            //    ch.Child = tab?.Content;
+            //}
+
+            SelectedTab = tab;
+            SelectedTabContent = tab?.Content;
+        }
+
+        #endregion
+
 
         #region Basic Properties / Events
 
@@ -348,17 +380,38 @@ namespace SolidShineUi
         /// <param name="e">The event arguments associated with this event.</param>
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
+        private static readonly DependencyPropertyKey SelectedTabPropertyKey
+            = DependencyProperty.RegisterReadOnly("CurrentTab", typeof(TabItem), typeof(TabControl), new FrameworkPropertyMetadata(null));
+
+        private static readonly DependencyPropertyKey SelectedTabContentPropertyKey
+            = DependencyProperty.RegisterReadOnly("Content", typeof(UIElement), typeof(TabControl), new FrameworkPropertyMetadata(null));
+
 #if NETCOREAPP
         /// <summary>
         /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
         /// </summary>
         [Category("Common")]
-        public TabItem? CurrentTab { get => Items.SelectedItems.FirstOrDefault(); }
+        public TabItem? SelectedTab { get => (TabItem)GetValue(SelectedTabProperty); private set => SetValue(SelectedTabPropertyKey, value); }
+
+        /// <summary>
+        /// Get the currently shown content in the main part of the control. This is the content of the currently selected tab.
+        /// </summary>
+        public UIElement? SelectedTabContent { get => (UIElement)GetValue(SelectedTabContentProperty); private set => SetValue(SelectedTabContentPropertyKey, value); }
+
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty SelectedTabProperty = SelectedTabPropertyKey!.DependencyProperty;
+
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty SelectedTabContentProperty = SelectedTabContentPropertyKey!.DependencyProperty;
 
         /// <summary>
         /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
         /// </summary>
-        public TabItem? SelectedTab { get => CurrentTab; }
+        public TabItem? CurrentTab { get => SelectedTab; }
 
         /// <summary>
         /// Raised when the tab currently selected is changed.
@@ -381,11 +434,27 @@ namespace SolidShineUi
         /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
         /// </summary>
         [Category("Common")]
-        public TabItem CurrentTab { get => Items.SelectedItems.FirstOrDefault(); }
+        public TabItem SelectedTab { get => (TabItem)GetValue(SelectedTabProperty); private set => SetValue(SelectedTabPropertyKey, value); }
+
+        /// <summary>
+        /// Get the currently shown content in the main part of the control. This is the content of the currently selected tab.
+        /// </summary>
+        public UIElement SelectedTabContent { get => (UIElement)GetValue(SelectedTabContentProperty); private set => SetValue(SelectedTabContentPropertyKey, value); }
+        
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty SelectedTabProperty = SelectedTabPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty SelectedTabContentProperty = SelectedTabContentPropertyKey.DependencyProperty;
+
         /// <summary>
         /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
         /// </summary>
-        public TabItem SelectedTab { get => CurrentTab; }
+        public TabItem CurrentTab { get => SelectedTab; }
 
         /// <summary>
         /// Raised when the tab currently selected is changed.
@@ -404,6 +473,7 @@ namespace SolidShineUi
         /// </summary>
         public event EventHandler TabsCleared;
 #endif
+
         #endregion
 
         #region Base Functions
@@ -414,31 +484,16 @@ namespace SolidShineUi
         /// <param name="tab">The tab to close.</param>
         /// <remarks>
         /// If <paramref name="tab"/> is not in this TabControl, or if the tab closing is cancelled via the TabClosing event, then nothing will happen.
-        /// This does not take the <paramref name="tab"/>'s CanClose property into account; the tab will be closed regardless.
+        /// This does not take the <paramref name="tab"/>'s <c>CanClose</c> property into account; the tab will be closed regardless.
         /// </remarks>
         public void CloseTab(TabItem tab)
         {
-            if (Items.Contains(tab))
+            if (Items.Contains(tab)) // check if that tab is in this TabControl
             {
-                TabItemClosingEventArgs ee = new TabItemClosingEventArgs(tab);
-                TabClosing?.Invoke(this, ee);
-
-                if (ee.Cancel)
+                if (PrepareCloseTab(tab))
                 {
-                    // don't remove or close anything, just exit
-                    closedTabIndex = -1;
-                    return;
+                    Items.Remove(tab);
                 }
-
-                if (Items.IsSelected(tab) && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
-                {
-                    closedTabIndex = Items.IndexOf(tab);
-                }
-                else
-                {
-                    closedTabIndex = -1;
-                }
-                Items.Remove(tab);
             }
         }
 
@@ -455,7 +510,7 @@ namespace SolidShineUi
 
         private void DoCloseCurrentTab(object sender, ExecutedRoutedEventArgs e)
         {
-            var ti = CurrentTab;
+            var ti = SelectedTab;
             if (ti != null)
             {
                 CloseTab(ti);
@@ -495,7 +550,7 @@ namespace SolidShineUi
 
         private void CanExecuteIfAnyTabSelected(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = CurrentTab != null;
+            e.CanExecute = SelectedTab != null;
         }
 
         private void CanExecuteIfTabPresent(object sender, CanExecuteRoutedEventArgs e)
@@ -562,11 +617,11 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty HorizontalTabBarHeightProperty = DependencyProperty.Register("HorizontalTabBarHeight", typeof(double), typeof(TabControl),
-            new PropertyMetadata(24.0, new PropertyChangedCallback(OnInternalHorizontalTabBarHeightChanged)));
+            new FrameworkPropertyMetadata(24.0, new PropertyChangedCallback(OnInternalHorizontalTabBarHeightChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
+        /// Get or set the height of the horizontal tab bar. The default value is 24.
         /// </summary>
         [Category("Common")]
         public double HorizontalTabBarHeight
@@ -606,7 +661,7 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
-            new PropertyMetadata(null));
+            new FrameworkPropertyMetadata(null));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -620,7 +675,7 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty RightTabBarElementProperty = DependencyProperty.Register("RightTabBarElement", typeof(UIElement), typeof(TabControl),
-            new PropertyMetadata(null));
+            new FrameworkPropertyMetadata(null));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -638,11 +693,11 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
+            new FrameworkPropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs. This mimics a similar menu in Visual Studio.
+        /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs. This mimics a similar menu found in Visual Studio.
         /// </summary>
         [Category("Common")]
         public bool ShowTabListMenu
@@ -683,7 +738,7 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TabMinWidthProperty = DependencyProperty.Register("TabMinWidth", typeof(double), typeof(TabControl),
-            new PropertyMetadata(120.0d, new PropertyChangedCallback(OnInternalTabMinWidthChanged)));
+            new FrameworkPropertyMetadata(120.0d, new PropertyChangedCallback(OnInternalTabMinWidthChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -749,6 +804,13 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the action to take when the currently selected tab is closed.
         /// </summary>
+        /// <remarks>
+        /// Clearing the selection (via <c>Items.ClearSelection</c> or other methods) will trigger this action as well, meaning the TabControl will attempt to select another tab if
+        /// this action is not <c>SelectNothing</c>. If you need to clear the selection, you'll need to set this property to <c>SelectNothing</c> first, clear the selection, and then reset
+        /// this to whatever value you had previously (by default, the value is <c>SelectTabToLeft</c>).<para/>
+        /// 
+        /// When a tab that isn't currently the selected tab is closed, that is not affected with this property.
+        /// </remarks>
         public SelectedTabCloseAction SelectedTabClosedAction
         {
             get { return (SelectedTabCloseAction)GetValue(SelectedTabClosedActionProperty); }
@@ -766,6 +828,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if tabs can be dragged and dropped.
         /// </summary>
+        /// <remarks>
+        /// Note that dragging and dropping tabs between TabControls is not currently supported.
+        /// </remarks>
         [Category("Common")]
         public bool AllowTabDragDrop
         {
@@ -938,10 +1003,10 @@ namespace SolidShineUi
                     // from https://stackoverflow.com/a/1876534/2987285
                     ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                     c.ApplyTemplate();
-//#if NETCOREAPP
-//#else
-//                    TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-//#endif
+                    //#if NETCOREAPP
+                    //#else
+                    //                    TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+                    //#endif
                     if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
                     {
                         if (tb.TabItem != null && tb.TabItem == selItem)
@@ -1031,7 +1096,7 @@ namespace SolidShineUi
             get { return (bool)GetValue(ScrollButtonsVisibleProperty); }
             private set { SetValue(ScrollButtonsVisiblePropertyKey, value); }
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// A WPF command that when executed, will scroll the tab control's tab bar to the left or right.
@@ -1102,7 +1167,7 @@ namespace SolidShineUi
             }
         }
 
-#endregion
+        #endregion
     }
 
     /// <summary>
