@@ -1634,7 +1634,7 @@
                                     <TextBlock Text="{TemplateBinding BrowseButtonText}" Margin="0,2" />
                                 </flat:FlatButton>
                             </Grid>
-                            <Grid x:Name="PART_Content" Grid.Row="1" Grid.Column="1" >
+                            <Grid x:Name="PART_Content" Grid.Row="1" Grid.Column="1" Margin="{TemplateBinding FileListPadding}" >
                                 <ScrollViewer
                                       VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" >
                                     <ScrollViewer.Style>

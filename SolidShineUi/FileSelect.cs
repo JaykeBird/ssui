@@ -365,15 +365,19 @@ namespace SolidShineUi
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty BrowseButtonTextProperty = DependencyProperty.Register(
             "BrowseButtonText", typeof(string), typeof(FileSelect),
-            new PropertyMetadata("Browse..."));
+            new FrameworkPropertyMetadata("Browse..."));
 
         public static readonly DependencyProperty NoFilesSelectedMessageProperty = DependencyProperty.Register(
             "NoFilesSelectedMessage", typeof(string), typeof(FileSelect),
-            new PropertyMetadata("(no files selected)"));
+            new FrameworkPropertyMetadata("(no files selected)"));
 
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
             "ShowIcon", typeof(bool), typeof(FileSelect),
-            new PropertyMetadata(true));
+            new FrameworkPropertyMetadata(true));
+
+        public static readonly DependencyProperty FileListPaddingProperty = DependencyProperty.Register(
+            "FileListPadding", typeof(Thickness), typeof(FileSelect),
+            new FrameworkPropertyMetadata(new Thickness(0)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -409,7 +413,7 @@ namespace SolidShineUi
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ButtonPlacementProperty = DependencyProperty.Register(
             "ButtonPlacement", typeof(PlacementDirection), typeof(FileSelect),
-            new PropertyMetadata(PlacementDirection.Right));
+            new FrameworkPropertyMetadata(PlacementDirection.Right));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -425,7 +429,7 @@ namespace SolidShineUi
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty DisplayFilenamesProperty = DependencyProperty.Register(
             "DisplayFilenames", typeof(bool), typeof(FileSelect),
-            new PropertyMetadata(true));
+            new FrameworkPropertyMetadata(true));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -469,6 +473,19 @@ namespace SolidShineUi
         {
             get => (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty);
             set => SetValue(VerticalScrollBarVisibilityProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the padding to put around the file list portion of the control (the portion that actually has the files listed).
+        /// </summary>
+        /// <remarks>
+        /// This can be used to add some space between the Browse button and the list of files, in situations where the two in contact may lead to undesirable results.
+        /// </remarks>
+        [Category("Layout")]
+        public Thickness FileListPadding
+        {
+            get => (Thickness)GetValue(FileListPaddingProperty);
+            set => SetValue(FileListPaddingProperty, value);
         }
 
         #endregion

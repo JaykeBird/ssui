@@ -22,7 +22,7 @@
                             Padding="2" AllowMultipleFiles="True" DisplayFilenames="True" Height="122" ButtonPlacement="Bottom" NoFilesSelectedMessage="(custom no files selected message)" />
         <TextBlock HorizontalAlignment="Left" Margin="320,130,0,0" Text="Select multiple files, show filenames" VerticalAlignment="Top"/>
         <flat:FileSelect x:Name="fsNewSingle_Copy1" HorizontalAlignment="Left" Margin="320,310,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}"
-            Padding="2" AllowMultipleFiles="True" DisplayFilenames="True" Height="70" ButtonPlacement="Right" FileFilter="*.png;*.jpg;*.gif;*.bmp" ShowIcon="False" />
+            Padding="2" AllowMultipleFiles="True" DisplayFilenames="True" Height="70" ButtonPlacement="Left" FileFilter="*.png;*.jpg;*.gif;*.bmp" ShowIcon="False" FileListPadding="3,0" />
         <TextBlock HorizontalAlignment="Left" Margin="320,290,0,0" Text="Select only image files, show filenames" VerticalAlignment="Top"/>
 
     </Grid>
