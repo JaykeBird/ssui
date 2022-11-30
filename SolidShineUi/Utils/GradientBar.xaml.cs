@@ -451,6 +451,14 @@ namespace SolidShineUi.Utils
         }
         private void btnSwap_Click(object sender, RoutedEventArgs e)
         {
+#if NETCOREAPP
+            GradientStop? gsi = null;
+#else
+            GradientStop gsi = null;
+#endif
+            if (_selected != null) gsi = _selected.GradientStop;
+            Deselect();
+
             foreach (GradientStop item in _stops)
             {
                 item.Offset = 1 - item.Offset;
@@ -459,6 +467,26 @@ namespace SolidShineUi.Utils
             SortStops();
             RenderBar();
             RenderStops();
+
+            List<GradientStopItem> items = new List<GradientStopItem>();
+#if NETCOREAPP
+            foreach (GradientStopItem? item in grdStops.Children)
+#else
+            foreach (GradientStopItem item in grdStops.Children)
+#endif
+            {
+                if (item == null) continue;
+
+                items.Add(item);
+            }
+
+            foreach (GradientStopItem item in items)
+            {
+                if (item.GradientStop == gsi)
+                {
+                    SelectStop(item);
+                }
+            }
         }
 
         private void nudOffset_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
