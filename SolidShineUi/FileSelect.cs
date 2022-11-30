@@ -473,7 +473,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Browse Button / Commands
+        #region Context Menu / Commands
 
         #region Commands
 
