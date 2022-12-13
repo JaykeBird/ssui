@@ -46,8 +46,13 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="hex">The hex string. Should have 3, 6, or 8 characters (i.e. "FFF", "FF00FF", or "FF00FF00"). The starting hash is also allowed (such as "#FF00FF").</param>
         /// <exception cref="FormatException">Thrown if the string is not a hex string, or incorrectly formatted (including if the string is not of the length 3, 6, or 8).</exception>
+        /// <remarks>
+        /// Note that the expected format for the strings are RGB for 3-character and 6-character strings, and ARGB (with A first) for 8-character strings.
+        /// RGBA strings will be read incorrectly, so verify the format that another location displays/exports hex strings if you're experiencing unexpected results.
+        /// </remarks>
         public static Color CreateFromHex(string hex)
         {
+            // first, remove the starting # symbol (change #890ABC to 890ABC)
             if (hex.StartsWith("#", StringComparison.Ordinal))
             {
                 hex = hex.Substring(1);
@@ -55,7 +60,7 @@ namespace SolidShineUi
 
             switch (hex.Length)
             {
-                case 6:
+                case 6: // #890ABC
                     try
                     {
                         return Color.FromRgb(
@@ -68,7 +73,7 @@ namespace SolidShineUi
                         throw new FormatException("Hex string is not in a correct format.", ex);
                     }
 
-                case 8:
+                case 8: // #FF890ABC
                     try
                     {
                         return Color.FromArgb(
@@ -82,7 +87,7 @@ namespace SolidShineUi
                         throw new FormatException("Hex string is not in a correct format.", ex);
                     }
 
-                case 3:
+                case 3: // #890 (equivalent to #889900)
                     try
                     {
                         string r = $"{hex.Substring(0, 1)}{hex.Substring(0, 1)}";
@@ -98,6 +103,9 @@ namespace SolidShineUi
                     {
                         throw new FormatException("Hex string is not in a correct format.", ex);
                     }
+
+                    // I don't support the 4-digit case here, as there's some minor ambiguity as to what it may mean
+                    // I can add 2-digit support at some point though (#45 is #454545)
 
                 default:
                     //throw new ArgumentOutOfRangeException(nameof(hex), "The hex value must have a length of 3, 6, or 8, not including the '#' symbol.");
@@ -116,8 +124,7 @@ namespace SolidShineUi
         /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped.
         /// </summary>
         /// <param name="color">The color to convert to a hex string.</param>
-        /// <returns></returns>
-        public static string ToHexString(Color color)
+        public static string ToHexStringLegacy(Color color)
         {
             byte[] bytes = new byte[3];
             bytes[0] = color.R;
@@ -131,6 +138,28 @@ namespace SolidShineUi
                 chars[i * 2 + 1] = hexDigits[b & 0xF];
             }
             return new string(chars);
+        }
+
+        /// <summary>
+        /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)" to keep the A value as well. />.
+        /// </summary>
+        /// <param name="color">The color to convert to a hex string.</param>
+        public static string ToHexString(Color color)
+        {
+            return color.R.ToString("X") + color.G.ToString("X") + color.B.ToString("X");
+        }
+
+        /// <summary>
+        /// Returns an ARGB hex string that corresponds to this color. "A" refers to alpha, or transparency.
+        /// </summary>
+        /// <param name="color">The color to convert to a hex string.</param>
+        /// <remarks>
+        /// Note that this returns ARGB, which is the same format that <see cref="CreateFromHex(string)"/> supports.
+        /// If using this string with another service, please make sure they import strings as ARGB, not RGBA.
+        /// </remarks>
+        public static string ToHexStringWithAlpha(Color color)
+        {
+            return color.A.ToString("X") + color.R.ToString("X") + color.G.ToString("X") + color.B.ToString("X");
         }
 
         #endregion
@@ -456,7 +485,7 @@ namespace SolidShineUi
         #region Color Extensions
 
         /// <summary>
-        /// Get a SolidColorBrush for this color.
+        /// Get a new SolidColorBrush with this color.
         /// </summary>
         public static SolidColorBrush ToBrush(this Color c)
         {
@@ -469,6 +498,14 @@ namespace SolidShineUi
         public static string GetHexString(this Color c)
         {
             return ToHexString(c);
+        }
+
+        /// <summary>
+        /// Get a hex string for this color, including the alpha value, as ARGB. Does not include the hash symbol.
+        /// </summary>
+        public static string GetHexStringWithAlpha(this Color c)
+        {
+            return ToHexStringWithAlpha(c);
         }
 
         /// <summary>
