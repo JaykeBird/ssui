@@ -864,7 +864,7 @@ namespace SolidShineUi
         /// Add an item to this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Add</c>.
         /// </summary>
         /// <param name="item">Item to be added.</param>
-        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
+        [Obsolete("This will be removed in a future version. You can instead use \"Items.Add\".", false)]
         public void AddItem(SelectableUserControl item)
         {
             Items.Add(item);
