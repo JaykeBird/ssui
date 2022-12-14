@@ -3,6 +3,8 @@ using System.Windows.Media;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Drawing;
+using Color = System.Windows.Media.Color;
 
 namespace SolidShineUi
 {
@@ -113,6 +115,18 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Create a color based upon an OLE color value.
+        /// </summary>
+        /// <param name="oleColor">The OLE color value to translate.</param>
+        /// <returns>A color that is the translation of the OLE color value.</returns>
+        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
+        public static Color CreateFromOle(int oleColor)
+        {
+            System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
         //taken from http://www.cambiaresearch.com/articles/1/convert-dotnet-color-to-hex-string
         //written by Steve Lautenschlager
 
@@ -141,7 +155,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)" to keep the A value as well. />.
+        /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)"/> to keep the A value as well..
         /// </summary>
         /// <param name="color">The color to convert to a hex string.</param>
         public static string ToHexString(Color color)
@@ -160,6 +174,17 @@ namespace SolidShineUi
         public static string ToHexStringWithAlpha(Color color)
         {
             return color.A.ToString("X") + color.R.ToString("X") + color.G.ToString("X") + color.B.ToString("X");
+        }
+
+        /// <summary>
+        /// Get the OLE color value that translates to this color.
+        /// </summary>
+        /// <param name="color">The color to translate to an OLE color value.</param>
+        /// <returns>A color that is the translation of the OLE color value.</returns>
+        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
+        public static int ToOleColor(Color color)
+        {
+            return ColorTranslator.ToOle(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
         #endregion
