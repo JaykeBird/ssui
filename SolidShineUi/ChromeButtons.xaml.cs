@@ -99,7 +99,13 @@ namespace SolidShineUi
             /// <summary>
             /// Display only the close and maximize/restore buttons.
             /// </summary>
-            MaximizeClose
+            MaximizeClose,
+            /// <summary>
+            /// Do not display any caption buttons. This option will cause the FlatWindow itself to not show caption buttons, which can be desirable,
+            /// but also provides space for Windows to render caption buttons instead if you enable that.
+            /// (Note that hiding caption buttons alone doesn't prevent users from being able to perform their actions via other methods.)
+            /// </summary>
+            None
         }
 
         /// <summary>
