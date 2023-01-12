@@ -42,6 +42,22 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                            <Image>
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Setter Property="Width" Value="16" />
+                                        <Setter Property="Height" Value="16" />
+                                        <Setter Property="Margin" Value="6,0,0,0" />
+                                        <Setter Property="Visibility" Value="Visible" />
+                                        <Setter Property="Source" Value="{Binding Icon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ShowIcon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
                             <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding TopLeftElement, RelativeSource={RelativeSource TemplatedParent}}"
                                     WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopLeftElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -49,7 +65,7 @@
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Setter Property="FontSize" Value="12"/>
-                                        <Setter Property="Padding" Value="8,0,0,0" />
+                                        <Setter Property="Padding" Value="5,0,0,0" />
                                         <Setter Property="HorizontalAlignment" Value="Left"/>
                                         <Setter Property="Visibility" Value="Visible" />
                                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -60,6 +76,9 @@
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ShowTitle, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
                                                 <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ShowIcon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                <Setter Property="Padding" Value="8,0,0,0" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

@@ -298,6 +298,28 @@ namespace SolidShineUi
         }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
+            "ShowIcon", typeof(bool), typeof(FlatWindow),
+            new PropertyMetadata(false));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// Get or set if the <see cref="Window.Icon"/> should be displayed at the top-left of the window.
+        /// </summary>
+        [Category("Appearance")]
+        public bool ShowIcon
+        {
+            get
+            {
+                return (bool)GetValue(ShowIconProperty);
+            }
+            set
+            {
+                SetValue(ShowIconProperty, value);
+            }
+        }
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
             "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
