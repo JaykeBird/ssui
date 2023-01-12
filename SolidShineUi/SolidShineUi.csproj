@@ -1,68 +1,84 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <PropertyGroup>
-    <ProjectGuid>{E45CD1DB-F48D-4B29-B832-52D5B634B145}</ProjectGuid>
-    <TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
-    <UseWpf>true</UseWpf>
-    <RootNamespace>SolidShineUi</RootNamespace>
-    <Platforms>AnyCPU;x86;x64</Platforms>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyTitle>Ssui</AssemblyTitle>
-    <Company>Jayke R. Huempfner, other contributors</Company>
-    <Product>SolidShineUi</Product>
-    <Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
-    <Copyright>Copyright 2018-2022 Jayke R. Huempfner, other contributors</Copyright>
-    <Version>1.9.4</Version>
-    <AssemblyVersion>1.9.4</AssemblyVersion>
-    <FileVersion>1.9.4</FileVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <Authors>Jayke R. Huempfner, other contributors</Authors>
-    <PackageIconUrl></PackageIconUrl>
-    <PackageId>SolidShineUi</PackageId>
-    <PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
-    <PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown IntegerSpinner FileSelect ColorPicker SSUI Keyboard</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseFile></PackageLicenseFile>
-    <PackageIcon>Icon48.png</PackageIcon>
-    <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Version 1.9.4
-- Fix bugs with ColorPickerDialog, ImageBrushEditorDialog
-- Minor improvements to TabControl and CheckBox
-- Add FileListPadding property to FileSelect control
-		
-Version 1.9.3
-- Add support for .NET 7
-- Add DisplayAsHex setting to IntegerSpinner
-- Add transparency (alpha) slider to ColorPickerDialog
-- Add BrushEditor, CharEditor, more to ExperimentalPropertyList
-- Improvements to RelativePositionSelect control
-- Add CreateCheckerboardBrush method, more CreateFromImage methods to BrushFactory
-		
-Version 1.9.2
-- Added ItemsSource property to SelectPanel
-- Added more properties, features to ExperimentalPropertyList
-- Added SelectableCollectionView to use like a ListCollectionView
-- Bug fixes for CheckBox, IntegerSpinner, DoubleSpinner
+	<PropertyGroup>
+		<ProjectGuid>{E45CD1DB-F48D-4B29-B832-52D5B634B145}</ProjectGuid>
+		<TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
+		<UseWpf>true</UseWpf>
+		<RootNamespace>SolidShineUi</RootNamespace>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AssemblyTitle>Ssui</AssemblyTitle>
+		<Company>Jayke R. Huempfner, other contributors</Company>
+		<Product>SolidShineUi</Product>
+		<Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
+		<Copyright>Copyright 2018-2022 Jayke R. Huempfner, other contributors</Copyright>
+		<Version>1.9.4</Version>
+		<AssemblyVersion>1.9.4</AssemblyVersion>
+		<FileVersion>1.9.4</FileVersion>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<Authors>Jayke R. Huempfner, other contributors</Authors>
+		<PackageIconUrl></PackageIconUrl>
+		<PackageId>SolidShineUi</PackageId>
+		<PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
+		<PackageTags>Flat UI WPF XAML Controls Window NumericUpDown IntegerUpDown IntegerSpinner FileSelect ColorPicker SSUI Keyboard</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageIcon>Icon48.png</PackageIcon>
+		<RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>
+			Version 1.9.4
+			- Fix bugs with ColorPickerDialog, ImageBrushEditorDialog
+			- Minor improvements to TabControl and CheckBox
+			- Add FileListPadding property to FileSelect control
 
-See website for more details!</PackageReleaseNotes>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+			Version 1.9.3
+			- Add support for .NET 7
+			- Add DisplayAsHex setting to IntegerSpinner
+			- Add transparency (alpha) slider to ColorPickerDialog
+			- Add BrushEditor, CharEditor, more to ExperimentalPropertyList
+			- Improvements to RelativePositionSelect control
+			- Add CreateCheckerboardBrush method, more CreateFromImage methods to BrushFactory
+
+			Version 1.9.2
+			- Added ItemsSource property to SelectPanel
+			- Added more properties, features to ExperimentalPropertyList
+			- Added SelectableCollectionView to use like a ListCollectionView
+			- Bug fixes for CheckBox, IntegerSpinner, DoubleSpinner
+
+			See website for more details!
+		</PackageReleaseNotes>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugType>full</DebugType>
+		<!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
+	</PropertyGroup>
+	<!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <DebugType>full</DebugType>
-    <!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <DebugType>full</DebugType>
-    <!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
+    -->
+	<!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
+	<!--
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DebugType>full</DebugType>
-    <!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    -->
+	<!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
+	<!--
+  </PropertyGroup>-->
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>embedded</DebugType>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<NoWarn>1701;1702;1591</NoWarn>
+		<DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
+		<DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
+	</PropertyGroup>
+	<!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <DebugType>embedded</DebugType>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
@@ -85,156 +101,162 @@ See website for more details!</PackageReleaseNotes>
     <NoWarn>1701;1702;1591</NoWarn>
     <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0-windows' ">
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows' ">
-	<Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-windows' ">
-	<Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup>
-    <WarningLevel>4</WarningLevel>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-  </PropertyGroup>
-  <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
+  </PropertyGroup>-->
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0-windows' ">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows' ">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-windows' ">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows10.0.19041.0' ">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-windows10.0.19041.0' ">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup>
+		<WarningLevel>4</WarningLevel>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+	</PropertyGroup>
+	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
   </PropertyGroup>-->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Backup\**" />
-    <Compile Remove="Docs\**" />
-    <Compile Remove="TestBackup\**" />
-    <EmbeddedResource Remove="Backup\**" />
-    <EmbeddedResource Remove="Docs\**" />
-    <EmbeddedResource Remove="TestBackup\**" />
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\Icons\Icon48.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <Page Remove="Backup\**" />
-    <Page Remove="Docs\**" />
-    <Page Remove="TestBackup\**" />
-    <None Remove="Backup\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Images\**" />
-    <None Remove="DialogImages\**" />
-    <None Remove="Docs\**" />
-    <None Remove="TestBackup\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="ChromeButtons.xaml.cs">
-      <DependentUpon>ChromeButtons.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="PropertyList\Dialogs\CharInputDialog.xaml.cs">
-      <DependentUpon>CharInputDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Utils\MultilineStringInputDialog.xaml.cs">
-      <DependentUpon>MultilineStringInputDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="PropertyList\PropertyEditors\GuidEditor.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="PropertyList\PropertyEditors\EnumerableEditor.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="PropertyList\PropertyEditors\UriEditor.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Utils\ColorListItem.xaml.cs">
-      <DependentUpon>ColorListItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Dialogs\ColorPickerDialog.xaml.cs">
-      <DependentUpon>ColorPickerDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="IntegerSpinner.xaml.cs">
-      <DependentUpon>IntegerSpinner.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Dialogs\MessageDialog.xaml.cs">
-      <DependentUpon>MessageDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="SelectableItem.xaml.cs">
-      <DependentUpon>SelectableItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Dialogs\StringInputDialog.xaml.cs">
-      <DependentUpon>StringInputDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Utils\TabDisplayItem.xaml.cs">
-      <DependentUpon>TabDisplayItem.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <!--<ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Backup\**" />
+		<Compile Remove="Docs\**" />
+		<Compile Remove="TestBackup\**" />
+		<EmbeddedResource Remove="Backup\**" />
+		<EmbeddedResource Remove="Docs\**" />
+		<EmbeddedResource Remove="TestBackup\**" />
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="..\Icons\Icon48.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<Page Remove="Backup\**" />
+		<Page Remove="Docs\**" />
+		<Page Remove="TestBackup\**" />
+		<None Remove="Backup\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Images\**" />
+		<None Remove="DialogImages\**" />
+		<None Remove="Docs\**" />
+		<None Remove="TestBackup\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="ChromeButtons.xaml.cs">
+			<DependentUpon>ChromeButtons.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="PropertyList\Dialogs\CharInputDialog.xaml.cs">
+			<DependentUpon>CharInputDialog.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Utils\MultilineStringInputDialog.xaml.cs">
+			<DependentUpon>MultilineStringInputDialog.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="PropertyList\PropertyEditors\GuidEditor.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="PropertyList\PropertyEditors\EnumerableEditor.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="PropertyList\PropertyEditors\UriEditor.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Utils\ColorListItem.xaml.cs">
+			<DependentUpon>ColorListItem.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Dialogs\ColorPickerDialog.xaml.cs">
+			<DependentUpon>ColorPickerDialog.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="IntegerSpinner.xaml.cs">
+			<DependentUpon>IntegerSpinner.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Dialogs\MessageDialog.xaml.cs">
+			<DependentUpon>MessageDialog.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="SelectableItem.xaml.cs">
+			<DependentUpon>SelectableItem.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Dialogs\StringInputDialog.xaml.cs">
+			<DependentUpon>StringInputDialog.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Utils\TabDisplayItem.xaml.cs">
+			<DependentUpon>TabDisplayItem.xaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<!--<ItemGroup>
     <Content Include="lib\Microsoft.Windows.Shell.dll" />
   </ItemGroup>-->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\**" />
-    <Resource Include="DialogImages\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="integrate.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="PropertyList\Dialogs\CharInputDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="PropertyList\Dialogs\ImageBrushEditorDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="PropertyList\PropertyEditors\FontWeightEditor.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="PropertyList\PropertyEditors\CharEditor.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Utils\MultilineStringInputDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="PropertyList\PropertyEditors\GuidEditor.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="PropertyList\PropertyEditors\EnumerableEditor.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="PropertyList\PropertyEditors\VersionEditor.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="PropertyList\PropertyEditors\UriEditor.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Utils\TwoPositionsSelect.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Utils\TabDisplayItem.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-  </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+		<Reference Include="System.Xaml" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Images\**" />
+		<Resource Include="DialogImages\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="integrate.md" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="PropertyList\Dialogs\CharInputDialog.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+		<Page Update="PropertyList\Dialogs\ImageBrushEditorDialog.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+		<Page Update="PropertyList\PropertyEditors\FontWeightEditor.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+		<Page Update="PropertyList\PropertyEditors\CharEditor.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+		<Page Update="Utils\MultilineStringInputDialog.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+		<Page Update="PropertyList\PropertyEditors\GuidEditor.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="PropertyList\PropertyEditors\EnumerableEditor.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="PropertyList\PropertyEditors\VersionEditor.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+		<Page Update="PropertyList\PropertyEditors\UriEditor.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Utils\TwoPositionsSelect.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+		<Page Update="Utils\TabDisplayItem.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
+	</ItemGroup>
 </Project>
