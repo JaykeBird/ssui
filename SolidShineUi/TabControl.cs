@@ -52,6 +52,9 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(CloseCurrentTab, DoCloseCurrentTab, CanExecuteIfAnyTabSelected));
             CommandBindings.Add(new CommandBinding(CloseSpecificTab, DoCloseSpecificTab, CanExecuteIfTabPresent));
             CommandBindings.Add(new CommandBinding(SwitchToTab, DoSwitchToTab, CanExecuteIfTabPresent));
+
+            // add support for WPF generic commands
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, DoCloseCurrentTab, CanExecuteIfAnyTabSelected));
         }
 
         /// <summary>
@@ -543,16 +546,25 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// The command in question is always able to be executed, regardless of the state of the object.
+        /// </summary>
         private void CanExecuteAlways(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        /// <summary>
+        /// The command in question is able to execute, if at least one tab is selected.
+        /// </summary>
         private void CanExecuteIfAnyTabSelected(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = SelectedTab != null;
         }
 
+        /// <summary>
+        /// The command in question is able to execute, if the tab specified in the command parameter is contained in this control.
+        /// </summary>
         private void CanExecuteIfTabPresent(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Parameter != null)
