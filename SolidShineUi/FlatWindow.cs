@@ -5,6 +5,7 @@ using System.Windows.Shell;
 //using Microsoft.Windows.Shell;
 using System.ComponentModel;
 using System;
+using System.Windows.Input;
 
 namespace SolidShineUi
 {
@@ -24,6 +25,10 @@ namespace SolidShineUi
         public FlatWindow()
         {
             //InternalCornerRadiusChanged += flatWindow_InternalCornerRadiusChanged;
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.CloseWindow, OnCloseWindow));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Minimize, OnMinimizeWindow));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow));
         }
 
         #region Color Scheme
@@ -570,6 +575,37 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Command Handling
+
+        private void OnCloseWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void OnMinimizeWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// Maximizes the specified window.
+        /// </summary>
+        private void OnMaximizeWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            WindowState = WindowState.Maximized;
+        }
+
+        /// <summary>
+        /// Restores the specified window.
+        /// </summary>
+        private void OnRestoreWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        #endregion
+
+        #region Disable Actions
         /// <summary>
         /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, 
         /// you'll want to update the CaptionDisplayType to remove the physical button.
@@ -596,5 +632,6 @@ namespace SolidShineUi
         {
             NativeMethods.DisableMinimizeAndMaximizeActions(this);
         }
+        #endregion
     }
 }

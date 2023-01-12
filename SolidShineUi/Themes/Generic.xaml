@@ -42,7 +42,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                            <Image>
+                            <Image WindowChrome.IsHitTestVisibleInChrome="True">
                                 <Image.Style>
                                     <Style TargetType="{x:Type Image}">
                                         <Setter Property="Width" Value="16" />
@@ -57,6 +57,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Image.Style>
+                                <Image.InputBindings>
+                                    <MouseBinding MouseAction="LeftDoubleClick" Command="flat:FlatWindowCommands.CloseWindow" />
+                                </Image.InputBindings>
                             </Image>
                             <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding TopLeftElement, RelativeSource={RelativeSource TemplatedParent}}"
@@ -1515,7 +1518,24 @@
                         </Grid>
 
                         <Grid Margin="0,0,0,0" x:Name="grdVerticalTabs" Grid.Column="0" Grid.Row="1" Visibility="Collapsed" >
-
+                            <ItemsControl x:Name="PART_VerticalTabBar" ItemsSource="{TemplateBinding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ssut:TabDisplayItem x:Name="PART_TabItem"
+                                                                     Visibility="{Binding Visibility}" TabItem="{Binding .}" AllowDataDragDrop="{Binding AllowDrop}" ToolTip="{Binding ToolTip}"
+                                                                     CanSelect="{Binding CanSelect}" TabBackground="{Binding TabBackground}"
+                                                                     ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     ShowTabsOnBottom="{Binding ShowTabsOnBottom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     AllowDragDrop="{Binding AllowTabDragDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     ParentTabControl="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="1" >
