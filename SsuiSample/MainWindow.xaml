@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SsuiSample"
         xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
         mc:Ignorable="d"
-        Title="Solid Shine UI Test/Sample" Height="450" MinHeight="375" Width="800" MinWidth="600" FontSize="12" >
+        Title="Solid Shine UI Test/Sample" Height="450" MinHeight="375" Width="800" MinWidth="600" FontSize="12" Icon="/Resources/Images/ImageColor.png" ShowIcon="True" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
