@@ -29,6 +29,7 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Minimize, OnMinimizeWindow));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu));
         }
 
         #region Color Scheme
@@ -587,25 +588,33 @@ namespace SolidShineUi
             WindowState = WindowState.Minimized;
         }
 
-        /// <summary>
-        /// Maximizes the specified window.
-        /// </summary>
         private void OnMaximizeWindow(object sender, ExecutedRoutedEventArgs e)
         {
             WindowState = WindowState.Maximized;
         }
 
-        /// <summary>
-        /// Restores the specified window.
-        /// </summary>
         private void OnRestoreWindow(object sender, ExecutedRoutedEventArgs e)
         {
             WindowState = WindowState.Normal;
         }
 
+        private void OnShowSystemMenu(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ShowIcon)
+            {
+                Point p = PointToScreen(new Point(6, 26));
+                DisplaySystemMenu(p);
+            }
+            else
+            {
+                Point p = PointToScreen(new Point(8, 26));
+                DisplaySystemMenu(p);
+            }
+        }
+
         #endregion
 
-        #region Disable Actions
+        #region Native Methods interop
         /// <summary>
         /// Calls the native Windows method to disable the Maximize action (via the right-click menu and the like). For <see cref="FlatWindow"/>, 
         /// you'll want to update the CaptionDisplayType to remove the physical button.
@@ -631,6 +640,19 @@ namespace SolidShineUi
         public void DisableMaximizeAndMinimizeActions()
         {
             NativeMethods.DisableMinimizeAndMaximizeActions(this);
+        }
+
+        /// <summary>
+        /// Display the system menu for this window (i.e. the menu containing values like Move, Size, Minimize, and Close), at a specified point on the screen.
+        /// </summary>
+        /// <param name="p">The coordinates of the pixel at which to display this menu (relative to the screen).</param>
+        public void DisplaySystemMenu(Point p)
+        {
+            // from https://stackoverflow.com/a/21830822/2987285
+            IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            IntPtr hmnu = NativeMethods.GetSystemMenu(hwnd, false);
+            int cmd = NativeMethods.TrackPopupMenu(hmnu, 0x100, (int)p.X, (int)p.Y, 0, hwnd, IntPtr.Zero);
+            if (cmd > 0) NativeMethods.SendMessage(hwnd, 0x112, (IntPtr)cmd, IntPtr.Zero);
         }
         #endregion
     }

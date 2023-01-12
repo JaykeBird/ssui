@@ -58,6 +58,8 @@
                                     </Style>
                                 </Image.Style>
                                 <Image.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="flat:FlatWindowCommands.DisplaySystemMenu" />
+                                    <MouseBinding MouseAction="RightClick" Command="flat:FlatWindowCommands.DisplaySystemMenu" />
                                     <MouseBinding MouseAction="LeftDoubleClick" Command="flat:FlatWindowCommands.CloseWindow" />
                                 </Image.InputBindings>
                             </Image>

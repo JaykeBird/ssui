@@ -20,5 +20,8 @@ namespace SolidShineUi
 
         /// <summary>A WPF command that when executed, will restore the window to its state prior to being minimized or maximized.</summary>
         public static RoutedCommand Restore { get; } = new RoutedCommand("Restore", typeof(FlatWindowCommands));
+
+        /// <summary>A WPF command that when executed, will display the window's system menu in the top-left corner of the window.</summary>
+        public static RoutedCommand DisplaySystemMenu { get; } = new RoutedCommand("DisplaySystemMenu", typeof(FlatWindowCommands));
     }
 }

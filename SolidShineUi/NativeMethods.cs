@@ -177,6 +177,7 @@ namespace SolidShineUi
         public static extern IntPtr SHGetFileInfo(string path, uint fattrs, ref SHFILEINFO sfi, uint size, uint flags);
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        #region File Icons
         /// <summary>
         /// Get a handle for a small (16x16) icon associated with a file.
         /// </summary>
@@ -220,6 +221,7 @@ namespace SolidShineUi
         {
             return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(GetLargeIconHandle(path), System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
+        #endregion
 
         /// <summary>
         /// Get a handle to the display context, either for a certain window or for the entire screen. This can be used to directly draw or get visual info for that particular context.
@@ -289,6 +291,49 @@ namespace SolidShineUi
         /// <returns>Returns 0 if successful. If not successful, a different number is returned.</returns>
         [DllImport("user32.dll")]
         static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool redraw);
+
+        /// <summary>
+        /// Send a message to a window.
+        /// </summary>
+        /// <param name="hWnd">The handle of the window to send the message to.</param>
+        /// <param name="msgType">The type of message to send. See https://learn.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues for a list of types.</param>
+        /// <param name="wParam">Data, metadata, or other info to send with the message.</param>
+        /// <param name="lParam">Additional data, metadata, or other info to send with the message.</param>
+        /// <returns>A pointer to a result, the contents of which will depend upon the message being sent.</returns>
+        /// <remarks>If the message could not be sent, then GetLastError will return 5 (Access denied).
+        /// Windows using SendMessage to communicate with each other should first use RegisterWindowMessage to get a unique message ID to use.
+        /// </remarks>
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msgType, IntPtr wParam, IntPtr lParam);
+
+        /// <summary>
+        /// Get the system menu for a particular window (this is the menu that contains the standard window controls, like Maximize, Move, or Close).
+        /// </summary>
+        /// <param name="hWnd">The handle of the window to get the menu for.</param>
+        /// <param name="bRevert">Set whether a brand-new system menu should be created, replacing the one currently used by the window.</param>
+        /// <returns>The handle to the system menu. If a brand-new system menu was created, the handle will be null, and a new menu can instead be created.</returns>
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        /// <summary>
+        /// Display a menu on the screen, and return the index of the item that was selected from the menu.
+        /// </summary>
+        /// <param name="hMenu">The handle of the menu to display.</param>
+        /// <param name="uFlags">Flags to determine how the menu should appear and behave. See https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-trackpopupmenu#parameters</param>
+        /// <param name="x">The x (horizontal) coordinate of the pixel to display the menu at (relative to the screen).</param>
+        /// <param name="y">The y (vertical) coordinate of the pixel to display the menu at (relative to the screen).</param>
+        /// <param name="nReserved">Not currently used, please just enter 0.</param>
+        /// <param name="hWnd">The handle of the window that owns the menu, and will receive updates from the menu.</param>
+        /// <param name="prcRect">Not currently used, please just enter IntPtr.Zero.</param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern int TrackPopupMenu(IntPtr hMenu, uint uFlags, int x, int y,
+           int nReserved, IntPtr hWnd, IntPtr prcRect);
+
+
+        //[DllImport("user32.dll")]
+        //static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+        //struct RECT { public int left, top, right, bottom; }
 
     }
 }
