@@ -48,28 +48,12 @@
 			- Added SelectableCollectionView to use like a ListCollectionView
 			- Bug fixes for CheckBox, IntegerSpinner, DoubleSpinner
 
-			See website for more details!
-		</PackageReleaseNotes>
+			See website for more details!</PackageReleaseNotes>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<DebugType>full</DebugType>
 		<!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
 	</PropertyGroup>
-	<!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <DebugType>full</DebugType>
-    -->
-	<!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
-	<!--
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DebugType>full</DebugType>
-    -->
-	<!--<CodeAnalysisRuleSet>..\CodeAnalysisRules.ruleset</CodeAnalysisRuleSet>-->
-	<!--
-  </PropertyGroup>-->
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>embedded</DebugType>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -78,30 +62,6 @@
 		<DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
 		<DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
 	</PropertyGroup>
-	<!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <DebugType>embedded</DebugType>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
-    <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <DebugType>embedded</DebugType>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
-    <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DebugType>embedded</DebugType>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
-    <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
-  </PropertyGroup>-->
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -159,47 +119,6 @@
 		<None Remove="Docs\**" />
 		<None Remove="TestBackup\**" />
 	</ItemGroup>
-	<ItemGroup>
-		<Compile Update="ChromeButtons.xaml.cs">
-			<DependentUpon>ChromeButtons.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="PropertyList\Dialogs\CharInputDialog.xaml.cs">
-			<DependentUpon>CharInputDialog.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Utils\MultilineStringInputDialog.xaml.cs">
-			<DependentUpon>MultilineStringInputDialog.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="PropertyList\PropertyEditors\GuidEditor.xaml.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Update="PropertyList\PropertyEditors\EnumerableEditor.xaml.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Update="PropertyList\PropertyEditors\UriEditor.xaml.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Update="Utils\ColorListItem.xaml.cs">
-			<DependentUpon>ColorListItem.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Dialogs\ColorPickerDialog.xaml.cs">
-			<DependentUpon>ColorPickerDialog.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="IntegerSpinner.xaml.cs">
-			<DependentUpon>IntegerSpinner.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Dialogs\MessageDialog.xaml.cs">
-			<DependentUpon>MessageDialog.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="SelectableItem.xaml.cs">
-			<DependentUpon>SelectableItem.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Dialogs\StringInputDialog.xaml.cs">
-			<DependentUpon>StringInputDialog.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Utils\TabDisplayItem.xaml.cs">
-			<DependentUpon>TabDisplayItem.xaml</DependentUpon>
-		</Compile>
-	</ItemGroup>
 	<!--<ItemGroup>
     <Content Include="lib\Microsoft.Windows.Shell.dll" />
   </ItemGroup>-->
@@ -213,50 +132,9 @@
 		<Resource Include="DialogImages\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="integrate.md" />
-	</ItemGroup>
-	<ItemGroup>
 		<EmbeddedResource Update="Properties\Resources.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-		<Page Update="PropertyList\Dialogs\CharInputDialog.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="PropertyList\Dialogs\ImageBrushEditorDialog.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="PropertyList\PropertyEditors\FontWeightEditor.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="PropertyList\PropertyEditors\CharEditor.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="Utils\MultilineStringInputDialog.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="PropertyList\PropertyEditors\GuidEditor.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="PropertyList\PropertyEditors\EnumerableEditor.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="PropertyList\PropertyEditors\VersionEditor.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="PropertyList\PropertyEditors\UriEditor.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Utils\TwoPositionsSelect.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="Utils\TabDisplayItem.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
 	</ItemGroup>
 </Project>
