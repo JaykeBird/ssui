@@ -505,11 +505,11 @@ namespace SolidShineUi
         #region Commands
 
         /// <summary>A WPF command that when executed, will close the currently open tab.</summary>
-        public static readonly RoutedCommand CloseCurrentTab = new RoutedCommand();
+        public static readonly RoutedCommand CloseCurrentTab = new RoutedCommand("CloseCurrentTab", typeof(TabControl));
         /// <summary>A WPF command that when executed, will close a specific tab on this TabControl.</summary>
-        public static readonly RoutedCommand CloseSpecificTab = new RoutedCommand();
+        public static readonly RoutedCommand CloseSpecificTab = new RoutedCommand("CloseSpecificTab", typeof(TabControl));
         /// <summary>A WPF command that when executed, will select and display a specific tab on this TabControl.</summary>
-        public static readonly RoutedCommand SwitchToTab = new RoutedCommand();
+        public static readonly RoutedCommand SwitchToTab = new RoutedCommand("SwitchToTab", typeof(TabControl));
 
         private void DoCloseCurrentTab(object sender, ExecutedRoutedEventArgs e)
         {
