@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Docs\ROADMAP.md = Docs\ROADMAP.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsuiWindows11Interop", "SsuiWindows11Interop\SsuiWindows11Interop.csproj", "{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{738CB827-ADE5-4BB5-9919-3A5FE88A7EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{738CB827-ADE5-4BB5-9919-3A5FE88A7EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{738CB827-ADE5-4BB5-9919-3A5FE88A7EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
