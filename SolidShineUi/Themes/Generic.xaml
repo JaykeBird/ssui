@@ -99,7 +99,8 @@
                             <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
                                 SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                 HighlightBrush="{Binding HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True"  FontSize="16" MarginButton="0">
+                                Foreground="{Binding CaptionButtonsBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" MarginButton="0">
                                 <flat:ChromeButtons.Style>
                                     <Style TargetType="flat:ChromeButtons">
                                         <Setter Property="Foreground" Value="{Binding Path=CaptionButtonsBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
