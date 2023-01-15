@@ -17,7 +17,6 @@ namespace SolidShineUi.PropertyList
 {
     /// <summary>
     /// A control that can display the properties and values of a .NET object, with support for live editing of many of them.
-    /// (Note that there are missing features and potential bugs.)
     /// </summary>
     public partial class ExperimentalPropertyList : UserControl
     {
@@ -28,6 +27,8 @@ namespace SolidShineUi.PropertyList
         {
             InitializeComponent();
             PreregisterEditors();
+
+            txtType.Text = NOTHING_LOADED;
 
             var colDescriptor = DependencyPropertyDescriptor.FromProperty(ColumnDefinition.WidthProperty, typeof(ColumnDefinition));
             colDescriptor.AddValueChanged(colNames, ColumnWidthChanged);
@@ -115,7 +116,9 @@ namespace SolidShineUi.PropertyList
 
         #region Basics / Object Loading
 
+        /// <summary>a list of all the properties in the loaded object's type</summary>
         private List<PropertyInfo> properties = new List<PropertyInfo>();
+        /// <summary>the object that's currently loaded</summary>
 #if NETCOREAPP
         private object? _baseObject = null;
 #else
@@ -156,7 +159,7 @@ namespace SolidShineUi.PropertyList
             LoadObject(new object());
             _baseObject = null;
             ObjectDisplayName = "";
-            txtType.Text = "Nothing loaded";
+            txtType.Text = NOTHING_LOADED;
             txtType.ToolTip = "";
 
             btnRefresh.IsEnabled = false;
@@ -166,6 +169,11 @@ namespace SolidShineUi.PropertyList
         /// The string "No name", used for objects that don't have a Name property to get a name from.
         /// </summary>
         public static string NO_NAME = "No name";
+
+        /// <summary>
+        /// The string "Nothing loaded", used when there is not an object loaded into this control.
+        /// </summary>
+        public static string NOTHING_LOADED = "Nothing loaded";
 
         /// <summary>
         /// Set the object to observe. All properties of the observed object will be displayed in the ExperimentalPropertyList, alongside the values of these properties.
@@ -784,12 +792,43 @@ namespace SolidShineUi.PropertyList
             ReloadObject();
         }
 
+        #region Show/Hide Top Labels
+
+        /// <summary>
+        /// Get or set if the name display text is displayed at the top of the PropertyList control.
+        /// </summary>
+        /// <remarks>
+        /// PropertyList tries to load the name of a control by looking at its Name property; otherwise, you can also custom set a name via the <see cref="ObjectDisplayName"/> property.
+        /// </remarks>
+        [Category("Appearance")]
+        public bool ShowNameDisplay { get => (bool)GetValue(ShowNameDisplayProperty); set => SetValue(ShowNameDisplayProperty, value); }
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static DependencyProperty ShowNameDisplayProperty
+            = DependencyProperty.Register("ShowNameDisplay", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// Get or set if the type display text should be visible at the top of the PropertyList control.
+        /// </summary>
+        [Category("Appearance")]
+        public bool ShowTypeDisplay { get => (bool)GetValue(ShowTypeDisplayProperty); set => SetValue(ShowTypeDisplayProperty, value); }
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static DependencyProperty ShowTypeDisplayProperty
+            = DependencyProperty.Register("ShowTypeDisplay", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(true));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        #endregion
 
         #region Show/Hide Toolbar Items (Dependency properties)
 
         /// <summary>
         /// Get or set if the Filter textbox should be visible at the top of the PropertyList control.
         /// </summary>
+        [Category("Appearance")]
         public bool ShowFilterBox { get => (bool)GetValue(ShowFilterBoxProperty); set => SetValue(ShowFilterBoxProperty, value); }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -801,6 +840,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Get or set if the Reload button should be visible at the top of the PropertyList control.
         /// </summary>
+        [Category("Appearance")]
         public bool ShowReloadButton { get => (bool)GetValue(ShowReloadButtonProperty); set => SetValue(ShowReloadButtonProperty, value); }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -812,6 +852,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Get or set if the View and Sort menu button should be visible at the top of the PropertyList control.
         /// </summary>
+        [Category("Appearance")]
         public bool ShowViewMenu { get => (bool)GetValue(ShowViewMenuProperty); set => SetValue(ShowViewMenuProperty, value); }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -823,7 +864,6 @@ namespace SolidShineUi.PropertyList
         #endregion
 
         #endregion
-
 
         private void mnuShowInherited_Click(object sender, RoutedEventArgs e)
         {

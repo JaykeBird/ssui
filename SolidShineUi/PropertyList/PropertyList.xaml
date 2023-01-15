@@ -13,18 +13,19 @@
     </UserControl.Resources>
     <Grid Grid.IsSharedSizeScope="True">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="25"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="5,0,0,0" x:Name="txtName" FontWeight="Bold" VerticalAlignment="Center"
-                   Text="{Binding ElementName=control, Path=ObjectDisplayName}" />
-        <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="Item Type" x:Name="txtType" VerticalAlignment="Center" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="5,2,0,5" x:Name="txtName" FontWeight="Bold" VerticalAlignment="Center"
+                   Text="{Binding ElementName=control, Path=ObjectDisplayName}" Visibility="{Binding ElementName=control, Path=ShowNameDisplay, Converter={StaticResource btv}}" />
+        <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="Item Type" x:Name="txtType" VerticalAlignment="Center" Grid.Row="1" 
+                   Visibility="{Binding ElementName=control, Path=ShowTypeDisplay, Converter={StaticResource btv}}" />
         <Grid Grid.Row="2" x:Name="grdSort">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="Auto" />
