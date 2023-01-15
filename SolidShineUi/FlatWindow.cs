@@ -6,6 +6,8 @@ using System.Windows.Shell;
 using System.ComponentModel;
 using System;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Diagnostics;
 
 namespace SolidShineUi
 {
@@ -30,6 +32,65 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu));
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            HwndSource hwnd = (HwndSource)PresentationSource.FromVisual(this);
+            hwnd.AddHook(WndProc);
+            base.OnSourceInitialized(e);
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            //Window window = (Window)HwndSource.FromHwnd(hwnd).RootVisual;
+
+            // https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-snap-layout-menu#how-do-i-fix-it
+            if (msg == 0x0084) // NCHITTEST (asking what this point is in relation to the window)
+            {
+                
+                Debug.Print("ASKING NCHITTEST");
+                // lParam stores the coordinates the message is asking about, so let's get the coordinates out
+                // https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-nchittest
+                // https://stackoverflow.com/questions/49288552/how-do-i-read-the-win32-wm-move-lparam-x-y-coordinates-in-c
+                uint lparam32 = (uint)lParam.ToInt64(); // We want the bottom unsigned 32-bits
+                Point p = PointFromScreen(new Point(lparam32 & 0xffff, (lparam32 >> 16) & 0xffff));
+
+                if (TestIfPointIsMaximizeButton(p))
+                {
+                    handled = true;
+                    return new IntPtr(9);
+                }
+            }
+
+            return IntPtr.Zero;
+        }
+
+        public bool TestIfPointIsMaximizeButton(Point p)
+        {
+            if (p.Y > CaptionHeight + 3) return false;
+
+            double borderTop = BorderThickness.Top;
+            double borderRight = BorderThickness.Right;
+            // next, let's get the width of a button
+            int captionFontSize = 16; // the caption font size is hardset in the theme, in the future maybe I'll open it to be changed
+            double btnWidth = captionFontSize + CaptionButtonPadding.Left + CaptionButtonPadding.Right;
+            double btnHeight = captionFontSize + CaptionButtonPadding.Top + CaptionButtonPadding.Bottom;
+
+            double maxButtonRightBound = ActualWidth - borderRight - btnWidth; // this is the right edge of the maximize/restore button
+            double maxButtonLeftBound = maxButtonRightBound - btnWidth; // this is the left edge of the maximize/restore button
+            double maxButtonTopBound = borderTop;
+            double maxButtonBottomBound = borderTop + btnHeight;
+
+            if (p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound)
+            {
+                Debug.Print("MAX BUTTON");
+                return true; // MAXIMIZE BUTTON
+            }
+            else
+            {
+                return false; // let the main function handle this
+            }
         }
 
         #region Color Scheme

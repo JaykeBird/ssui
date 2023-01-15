@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -23,6 +24,21 @@ namespace SsuiSample
             InitializeComponent();
             ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
             SetupSidebar();
+            KeyDown += (s, e) =>
+            {
+                if (e.Key == Key.F8)
+                {
+                    Point pos = Mouse.GetPosition(this);
+                    if (TestIfPointIsMaximizeButton(pos))
+                    {
+                    
+                    }
+                    else
+                    {
+                        Debug.Print("NOT MAX BUTTON");
+                    }
+                }
+            };
         }
 
         private void mnuExit_Click(object sender, RoutedEventArgs e)
