@@ -684,16 +684,32 @@ namespace SolidShineUi
 
         private void OnShowSystemMenu(object sender, ExecutedRoutedEventArgs e)
         {
+            Point origPoint;
             if (ShowIcon)
             {
-                Point p = PointToScreen(new Point(6, 26));
-                DisplaySystemMenu(p);
+                if (FlowDirection == FlowDirection.RightToLeft)
+                {
+                    origPoint = new Point(ActualWidth - 6, 26);
+                }
+                else
+                {
+                    origPoint = new Point(6, 26);
+                }
             }
             else
             {
-                Point p = PointToScreen(new Point(8, 26));
-                DisplaySystemMenu(p);
+                if (FlowDirection == FlowDirection.RightToLeft)
+                {
+                    origPoint = new Point(ActualWidth - 8, 26);
+                }
+                else
+                {
+                    origPoint = new Point(8, 26);
+                }
             }
+
+            Point p = PointToScreen(origPoint);
+            DisplaySystemMenu(p);
         }
 
         #endregion
@@ -733,7 +749,7 @@ namespace SolidShineUi
         public void DisplaySystemMenu(Point p)
         {
             // from https://stackoverflow.com/a/21830822/2987285
-            IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            IntPtr hwnd = new WindowInteropHelper(this).Handle;
             IntPtr hmnu = NativeMethods.GetSystemMenu(hwnd, false);
             int cmd = NativeMethods.TrackPopupMenu(hmnu, 0x100, (int)p.X, (int)p.Y, 0, hwnd, IntPtr.Zero);
             if (cmd > 0) NativeMethods.SendMessage(hwnd, 0x112, (IntPtr)cmd, IntPtr.Zero);
