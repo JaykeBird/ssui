@@ -52,6 +52,7 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(CopyFilenames, OnCopyFilenames, CanExecuteIfNotEmpty));
             CommandBindings.Add(new CommandBinding(OpenContainingFolders, OnOpenFilesContainingFolders, CanExecuteIfNotEmpty));
             CommandBindings.Add(new CommandBinding(RemoveSelectedFile, OnRemoveSelectedFile, CanExecuteIfFilePresent));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OnBrowseForFile, CanExecuteAlways));
         }
 
         #region Drag-Drop events
