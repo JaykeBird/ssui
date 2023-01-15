@@ -167,6 +167,13 @@ namespace SolidShineUi.Utils
                 ColorScheme = cs;
                 return;
             }
+
+            imgAdd.Source = IconLoader.LoadIcon("Add", cs);
+            imgDelete.Source = IconLoader.LoadIcon("Delete", cs);
+            imgSwap.Source = IconLoader.LoadIcon("Transfer", cs);
+            imgLeft.Source = IconLoader.LoadIcon("LeftArrow", cs);
+            imgRight.Source = IconLoader.LoadIcon("RightArrow", cs);
+            imgOffset.Source = IconLoader.LoadIcon("LeftRightArrow", cs);
         }
 
         #endregion

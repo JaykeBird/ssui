@@ -61,13 +61,13 @@
 
         <Grid Grid.Row="3" x:Name="grdEdit" Margin="10,0" Height="40" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="105"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <flat:FlatButton HorizontalAlignment="Left" x:Name="brdrCBack" Height="40" Margin="20,0,0,0" Grid.RowSpan="2" BorderThickness="1"
+            <flat:FlatButton HorizontalAlignment="Left" x:Name="brdrCBack" Height="40" Margin="20,0,10,0" Grid.RowSpan="2" BorderThickness="1"
                              VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Click="btnColorChange_Click"
                              BorderBrush="DimGray" BorderHighlightBrush="LightGray" VerticalAlignment="Center" Width="75" Opacity="0.4"
                              Background="{StaticResource check}" HighlightBrush="{StaticResource check}" ClickBrush="{StaticResource check}" >
@@ -78,7 +78,8 @@
                 <TextBlock Text="Opacity:" VerticalAlignment="Center" Margin="20,0,5,0" Visibility="Collapsed" />
                 <flat:IntegerSpinner x:Name="nudOpacity" Margin="5,0" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" MinValue="0" MaxValue="255" Value="255" Width="60" Visibility="Collapsed" />
                 <Border Margin="5,0" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="Black" Visibility="Collapsed" />
-                <TextBlock Text="Offset:" VerticalAlignment="Center" Margin="20,0,5,0" />
+                <Image x:Name="imgOffset" Width="16" Height="16" Margin="20,0,5,0" Source="/SolidShineUi;component/Images/LeftRightArrowColor.png" />
+                <TextBlock Text="Offset:" VerticalAlignment="Center" Margin="0,0,5,0" />
                 <flat:DoubleSpinner x:Name="nudOffset" Margin="5,0" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" MinValue="0" MaxValue="1" Value="0.5" Step="0.05" Decimals="3" Width="75"
                                     ValueChanged="nudOffset_ValueChanged" />
             </StackPanel>
