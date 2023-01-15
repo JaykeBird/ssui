@@ -27,13 +27,16 @@ namespace SolidShineUi
         public FlatWindow()
         {
             //InternalCornerRadiusChanged += flatWindow_InternalCornerRadiusChanged;
-            CommandBindings.Add(new CommandBinding(FlatWindowCommands.CloseWindow, OnCloseWindow));
-            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Minimize, OnMinimizeWindow));
-            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow));
-            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow));
-            CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.CloseWindow, OnCloseWindow, (_, e) => e.CanExecute = true));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Minimize, OnMinimizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Maximized));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow, (_, e) => e.CanExecute = WindowState != WindowState.Normal));
+            CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
         }
 
+        /// <summary>
+        /// Raises the Window.SourceInitialized event.
+        /// </summary>
         protected override void OnSourceInitialized(EventArgs e)
         {
             HwndSource hwnd = (HwndSource)PresentationSource.FromVisual(this);
@@ -41,9 +44,9 @@ namespace SolidShineUi
             base.OnSourceInitialized(e);
         }
 
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            //Window window = (Window)HwndSource.FromHwnd(hwnd).RootVisual;
+            Window window = (Window)HwndSource.FromHwnd(hwnd).RootVisual;
 
             // https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-snap-layout-menu#how-do-i-fix-it
             if (msg == 0x0084) // NCHITTEST (asking what this point is in relation to the window)
@@ -54,12 +57,15 @@ namespace SolidShineUi
                 // https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-nchittest
                 // https://stackoverflow.com/questions/49288552/how-do-i-read-the-win32-wm-move-lparam-x-y-coordinates-in-c
                 uint lparam32 = (uint)lParam.ToInt64(); // We want the bottom unsigned 32-bits
-                Point p = PointFromScreen(new Point(lparam32 & 0xffff, (lparam32 >> 16) & 0xffff));
+                Point p = window.PointFromScreen(new Point(lparam32 & 0xffff, (lparam32 >> 16) & 0xffff));
 
-                if (TestIfPointIsMaximizeButton(p))
+                if (window is FlatWindow fw)
                 {
-                    handled = true;
-                    return new IntPtr(9);
+                    if (fw.TestIfPointIsMaximizeButton(p))
+                    {
+                        handled = true;
+                        return new IntPtr(9);
+                    }
                 }
             }
 
