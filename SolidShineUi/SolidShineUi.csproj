@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 	<PropertyGroup>
 		<ProjectGuid>{E45CD1DB-F48D-4B29-B832-52D5B634B145}</ProjectGuid>
-		<TargetFrameworks>netcoreapp3.1;net471;net48;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
+		<TargetFrameworks>net471;net48;netcoreapp3.1;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
+		<!--<TargetFrameworks>net6.0-windows10.0.19041.0;net7.0-windows10.0.19041.0</TargetFrameworks>-->
 		<UseWpf>true</UseWpf>
 		<RootNamespace>SolidShineUi</RootNamespace>
 	</PropertyGroup>
@@ -14,7 +15,6 @@
 		<Version>1.9.4</Version>
 		<AssemblyVersion>1.9.4</AssemblyVersion>
 		<FileVersion>1.9.4</FileVersion>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<Authors>Jayke R. Huempfner, other contributors</Authors>
 		<PackageIconUrl></PackageIconUrl>
@@ -90,7 +90,8 @@
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
   </PropertyGroup>-->
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="Backup\**" />

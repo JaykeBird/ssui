@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// Extension methods for Streams. Used in color palette file handling. In the future, I may remove this file.
+    /// Extension methods for Streams. This file is not utilized in SolidShineUi at all, and will be removed in a future version.
     /// </summary>
+    [Obsolete("This file is not utilized in SolidShineUi at all, and will be removed in a future version.")]
     public static class StreamExtensions
     {
         #region Static Methods
@@ -20,6 +21,7 @@ namespace SolidShineUi.Utils
         /// <param name="stream">The stream to read the data from.</param>
         /// <param name="length">The number of characters in the string.</param>
         /// <returns>The string read from the stream.</returns>
+        [Obsolete("This function is not utilized in SolidShineUi at all, and will be removed in a future version.")]
         public static string ReadAsciiString(this Stream stream, int length)
         {
             byte[] buffer;
@@ -31,22 +33,22 @@ namespace SolidShineUi.Utils
             return Encoding.ASCII.GetString(buffer);
         }
 
-        /// <summary>
-        /// Reads a 4-byte floating point value from the current stream using big-endian encoding and advances the position of the stream by four bytes.
-        /// </summary>
-        /// <param name="stream">The stream to read the data from.</param>
-        /// <returns>A 4-byte floating point value read from the source stream.</returns>
-        public static float ReadSingleBigEndian(this Stream stream)
-        {
-            unsafe
-            {
-                int value;
+        ///// <summary>
+        ///// Reads a 4-byte floating point value from the current stream using big-endian encoding and advances the position of the stream by four bytes.
+        ///// </summary>
+        ///// <param name="stream">The stream to read the data from.</param>
+        ///// <returns>A 4-byte floating point value read from the source stream.</returns>
+        //public static float ReadSingleBigEndian(this Stream stream)
+        //{
+        //    unsafe
+        //    {
+        //        int value;
 
-                value = stream.ReadUInt32BigEndian();
+        //        value = stream.ReadUInt32BigEndian();
 
-                return *(float*)&value;
-            }
-        }
+        //        return *(float*)&value;
+        //    }
+        //}
 
         /// <summary>
         /// Reads a unicode string of the specified length in big-endian format.
@@ -54,6 +56,7 @@ namespace SolidShineUi.Utils
         /// <param name="stream">The stream to read the data from.</param>
         /// <param name="length">The number of characters in the string.</param>
         /// <returns>The string read from the stream.</returns>
+        [Obsolete("This function is not utilized in SolidShineUi at all, and will be removed in a future version.")]
         public static string ReadStringBigEndian(this Stream stream, int length)
         {
             byte[] buffer;
@@ -70,6 +73,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <param name="stream">The stream to read the data from.</param>
         /// <returns>The string read from the stream.</returns>
+        [Obsolete("This function is not utilized in SolidShineUi at all, and will be removed in a future version.")]
         public static string ReadStringBigEndian(this Stream stream)
         {
             int length;
@@ -89,6 +93,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <param name="stream">The stream to read the data from.</param>
         /// <returns>A 2-byte unsigned integer read from the source stream.</returns>
+        [Obsolete("This function is not utilized in SolidShineUi at all, and will be removed in a future version.")]
         public static int ReadUInt16BigEndian(this Stream stream)
         {
             return (stream.ReadByte() << 8) | stream.ReadByte();
@@ -99,6 +104,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <param name="stream">The stream to read the data from.</param>
         /// <returns>A 4-byte unsigned integer read from the source stream.</returns>
+        [Obsolete("This function is not utilized in SolidShineUi at all, and will be removed in a future version.")]
         public static int ReadUInt32BigEndian(this Stream stream)
         {
             return ((byte)stream.ReadByte() << 24) | ((byte)stream.ReadByte() << 16) | ((byte)stream.ReadByte() << 8) |
