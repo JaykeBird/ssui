@@ -57,7 +57,7 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Template" Value="{StaticResource ChromeButtonControlTemplate}"/>
             <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Visibility" Value="Visible" />
+            <!--<d:Setter Property="Visibility" Value="Visible" />-->
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5"/>
@@ -79,7 +79,7 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Template" Value="{StaticResource ChromeButtonControlTemplate}"/>
             <Setter Property="Visibility" Value="Collapsed"/>
-            <Setter Property="Visibility" Value="Visible" />
+            <!--<d:Setter Property="Visibility" Value="Visible" />-->
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5"/>
