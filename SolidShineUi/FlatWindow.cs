@@ -147,12 +147,19 @@ namespace SolidShineUi
         public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
             "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
             new PropertyMetadata(CaptionType.Full));
+
+        public static readonly DependencyProperty CaptionButtonPaddingProperty = DependencyProperty.Register(
+            "CaptionButtonPadding", typeof(Thickness), typeof(FlatWindow),
+            new PropertyMetadata(new Thickness(9, 7, 9, 7)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the visibility of the caption buttons (close, maximize, minimize). The actions may still be available via other methods even if the buttons are hidden.
         /// </summary>
-        /// <remarks>Use the <c>DisableMinimizeAction</c> and <c>DisableMaximizeAction</c> methods to further prevent the user from being able to minimize or maximize the window. The standard <c>ResizeMode</c> property works as well.</remarks>
+        /// <remarks>
+        /// Use the <c>DisableMinimizeAction</c> and <c>DisableMaximizeAction</c> methods to further prevent the user from being able to minimize or maximize the window.
+        /// The standard <c>ResizeMode</c> property works as well.
+        /// </remarks>
         public CaptionType CaptionDisplayType
         {
             get
@@ -162,6 +169,22 @@ namespace SolidShineUi
             set
             {
                 SetValue(CaptionDisplayTypeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of padding to use with each of the caption buttons. A higher padding will make the buttons larger.
+        /// </summary>
+        /// <remarks>The default value is (9,7,9,7).</remarks>
+        public Thickness CaptionButtonPadding
+        {
+            get
+            {
+                return (Thickness)GetValue(CaptionButtonPaddingProperty);
+            }
+            set
+            {
+                SetValue(CaptionButtonPaddingProperty, value);
             }
         }
 

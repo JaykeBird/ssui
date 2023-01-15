@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SolidShineUi"
              mc:Ignorable="d">
     <UserControl.Resources>
 
@@ -27,7 +28,8 @@
         </ControlTemplate>
 
         <DataTemplate x:Key="MaximizeButtonControlTemplate">
-            <TextBlock x:Name="StateText" TextWrapping="Wrap" Margin="9,7" Text="1" FontFamily="Webdings"               
+            <TextBlock x:Name="StateText" Text="1" FontFamily="Webdings"
+                       Margin="{Binding ButtonPadding, RelativeSource={RelativeSource AncestorType={x:Type local:ChromeButtons}}, FallbackValue='9,7'}"             
                        Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                        FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
             <DataTemplate.Triggers>
@@ -41,36 +43,11 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DefaultButtonControlTemplate">
-            <TextBlock TextWrapping="Wrap" Margin="9,7" Text="{TemplateBinding Content}" FontFamily="Webdings"
+            <TextBlock Text="{TemplateBinding Content}" FontFamily="Webdings"
+                       Margin="{Binding ButtonPadding, RelativeSource={RelativeSource AncestorType={x:Type local:ChromeButtons}}, FallbackValue='9,7'}"
                        Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                       FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
-            </TextBlock>
+                       FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
         </DataTemplate>
-
-        <Storyboard x:Key="OnMouseDownStoryboard">
-            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="{x:Null}">
-                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>-->
-            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.Background)" Storyboard.TargetName="{x:Null}">
-                <EasingColorKeyFrame KeyTime="0" Value="{Binding SelectionBrush, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="OnMouseEnterStoryboard">
-            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="{x:Null}">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0.8"/>
-            </DoubleAnimationUsingKeyFrames>-->
-            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.Background)" Storyboard.TargetName="{x:Null}">
-                <EasingColorKeyFrame KeyTime="0" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="OnMouseLeaveStoryboard">
-            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="{x:Null}">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-            </DoubleAnimationUsingKeyFrames>-->
-            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.Background)" Storyboard.TargetName="{x:Null}">
-                <EasingColorKeyFrame KeyTime="0" Value="#00000000" />
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
 
         <Style x:Key="MinimizeChromeButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="#00000000"/>
@@ -79,8 +56,8 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Template" Value="{StaticResource ChromeButtonControlTemplate}"/>
-            <!--<Setter Property="Opacity" Value="0.5" />-->
             <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5"/>
@@ -101,8 +78,8 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Template" Value="{StaticResource ChromeButtonControlTemplate}"/>
-            <!--<Setter Property="Opacity" Value="0.5" />-->
             <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5"/>
@@ -123,7 +100,6 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Template" Value="{StaticResource ChromeButtonControlTemplate}"/>
-            <!--<Setter Property="Opacity" Value="0.5" />-->
             <Setter Property="Visibility" Value="Visible"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
@@ -135,22 +111,27 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="CaptionButtonStyle" TargetType="{x:Type StackPanel}">
+        <!--<Style x:Key="CaptionButtonStyle" TargetType="{x:Type StackPanel}">
             <Style.Triggers>
-                <!--<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="Maximized">
+                -->
+        <!--<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="Maximized">
                     <Setter Property="Margin" Value="0,10,8,0"/>
                 </DataTrigger>-->
+        <!--
             </Style.Triggers>
-        </Style>
+        </Style>-->
 
     </UserControl.Resources>
 
-    <StackPanel Orientation="Horizontal" Style="{StaticResource CaptionButtonStyle}">
+    <StackPanel Orientation="Horizontal">
         <Button	Style="{StaticResource MinimizeChromeButtonStyle}" Click="MinimizeButtonClick" ContentTemplate="{DynamicResource DefaultButtonControlTemplate}" Content="0"
-                PreviewMouseDown="Button_PreviewMouseDown" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="Minimize" AutomationProperties.Name="Minimize" />
+                PreviewMouseDown="Button_PreviewMouseDown" PreviewMouseUp="Button_PreviewMouseUp" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" 
+                ToolTip="Minimize" AutomationProperties.Name="Minimize" />
         <Button Style="{StaticResource MaximizeChromeButtonStyle}" Click="RestoreButtonClick" ContentTemplate="{DynamicResource MaximizeButtonControlTemplate}"
-                PreviewMouseDown="Button_PreviewMouseDown" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="Maximize/Restore" AutomationProperties.Name="Maximize/Restore" />
+                PreviewMouseDown="Button_PreviewMouseDown" PreviewMouseUp="Button_PreviewMouseUp" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" 
+                ToolTip="Maximize/Restore" AutomationProperties.Name="Maximize/Restore" />
         <Button	Style="{StaticResource CloseChromeButtonStyle}" Click="CloseButtonClick" ContentTemplate="{DynamicResource DefaultButtonControlTemplate}" Content="r"
-                PreviewMouseDown="Button_PreviewMouseDown" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" ToolTip="Close" AutomationProperties.Name="Close" />
+                PreviewMouseDown="Button_PreviewMouseDown" PreviewMouseUp="Button_PreviewMouseUp" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" 
+                ToolTip="Close" AutomationProperties.Name="Close" />
     </StackPanel>
 </UserControl>
