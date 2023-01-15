@@ -13,6 +13,9 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// Image element with the ability to pick out a pixel color value.
     /// </summary>
+    /// <remarks>
+    /// Note that if this is used in a WPF project that isn't DPI-Aware, this control will perform weirdly on screens with a DPI value other than 100%.
+    /// </remarks>
     public class ImageColorPicker : Image
     {
 
