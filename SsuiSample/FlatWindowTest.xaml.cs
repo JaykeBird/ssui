@@ -213,10 +213,7 @@ namespace SsuiSample
 
         private void control_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (fwRunning != null)
-            {
-                fwRunning.Close();
-            }
+            fwRunning?.Close();
         }
     }
 }

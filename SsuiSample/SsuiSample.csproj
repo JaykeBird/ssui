@@ -2,43 +2,18 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net4.8;netcoreapp3.1;net6.0-windows;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net4.8;net6.0-windows;net7.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>..\Icons\Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Images\ImageColor.png" />
-    <None Remove="Resources\Images\SmileyColor.png" />
+    <None Remove="Resources\Images\*.png" />
+	<Resource Include="Resources\Images\*.png" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SolidShineUi\SolidShineUi.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Images\ImageColor.png" />
-    <Resource Include="Resources\Images\SmileyColor.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="SelectPanelTest.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="TwoPositionSelectTest.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="SelectPanelTest.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="TwoPositionSelectTest.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 
 </Project>
