@@ -67,10 +67,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Border HorizontalAlignment="Left" x:Name="brdrCBack" Height="40" Margin="20,0,0,0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1" Background="{StaticResource check}" 
-                    VerticalAlignment="Center" Width="75" Opacity="0.4" >
+            <flat:FlatButton HorizontalAlignment="Left" x:Name="brdrCBack" Height="40" Margin="20,0,0,0" Grid.RowSpan="2" BorderThickness="1"
+                             VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Click="btnColorChange_Click"
+                             BorderBrush="DimGray" BorderHighlightBrush="LightGray" VerticalAlignment="Center" Width="75" Opacity="0.4"
+                             Background="{StaticResource check}" HighlightBrush="{StaticResource check}" ClickBrush="{StaticResource check}" >
                 <Rectangle x:Name="rectColor" />
-            </Border>
+            </flat:FlatButton>
             <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="5,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
                 <flat:FlatButton x:Name="btnColorChange" Content="Change Color..." ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Click="btnColorChange_Click" />
                 <TextBlock Text="Opacity:" VerticalAlignment="Center" Margin="20,0,5,0" Visibility="Collapsed" />
