@@ -81,28 +81,28 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (_propType == typeof(double))
             {
-                return dblSpinner.Value;
+                return mnuSetNan.IsChecked ? double.NaN : dblSpinner.Value;
             }
             else if (_propType == typeof(float))
             {
-                return (float)dblSpinner.Value;
+                return mnuSetNan.IsChecked ? float.NaN : (float)dblSpinner.Value;
             }
 #if NET5_0_OR_GREATER
             else if (_propType == typeof(Half))
             {
-                return (Half)dblSpinner.Value;
+                return mnuSetNan.IsChecked ? double.NaN : (Half)dblSpinner.Value;
             }
             else if (_propType == typeof(double?))
             {
-                return (mnuSetNull.IsChecked ? null : dblSpinner.Value);
+                return mnuSetNull.IsChecked ? null : (mnuSetNan.IsChecked ? double.NaN : dblSpinner.Value);
             }
             else if (_propType == typeof(float?))
             {
-                return (mnuSetNull.IsChecked ? null : (float)dblSpinner.Value);
+                return mnuSetNull.IsChecked ? null : (mnuSetNan.IsChecked ? float.NaN : (float)dblSpinner.Value);
             }
             else if (_propType == typeof(Half?))
             {
-                return (mnuSetNull.IsChecked ? null : (Half)dblSpinner.Value);
+                return mnuSetNull.IsChecked ? null : (mnuSetNan.IsChecked ? double.NaN : (Half)dblSpinner.Value);
             }
 #else
             else if (_propType == typeof(double?))
@@ -110,6 +110,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (mnuSetNull.IsChecked)
                 {
                     return null;
+                }
+                else if (mnuSetNan.IsChecked)
+                {
+                    return double.NaN;
                 }
                 else
                 {
@@ -121,6 +125,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (mnuSetNull.IsChecked)
                 {
                     return null;
+                }
+                else if (mnuSetNan.IsChecked)
+                {
+                    return float.NaN;
                 }
                 else
                 {
@@ -148,6 +156,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     SetAsNull();
                 }
+                else if (double.IsNaN((double)value) || float.IsNaN((float)value))
+                {
+                    SetAsNaN();
+                }
+                else
+                {
+                    UnsetAsNaN();
+                    UnsetAsNull();
+                }
             }
 
             _propType = type;
@@ -161,17 +178,35 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (_propType == typeof(double))
             {
-                return dblSpinner.Value;
+                if (mnuSetNan.IsChecked)
+                {
+                    return double.NaN;
+                }
+                else
+                {
+                    return dblSpinner.Value;
+                }
             }
             else if (_propType == typeof(float))
             {
-                return (float)dblSpinner.Value;
+                if (mnuSetNan.IsChecked)
+                {
+                    return float.NaN;
+                }
+                else
+                {
+                    return (float)dblSpinner.Value;
+                }
             }
             else if (_propType == typeof(double?))
             {
                 if (mnuSetNull.IsChecked)
                 {
                     return null;
+                }
+                else if (mnuSetNan.IsChecked)
+                {
+                    return double.NaN;
                 }
                 else
                 {
@@ -183,6 +218,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (mnuSetNull.IsChecked)
                 {
                     return null;
+                }
+                else if (mnuSetNan.IsChecked)
+                {
+                    return float.NaN;
                 }
                 else
                 {
@@ -205,6 +244,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     SetAsNull();
                 }
+                else if (double.IsNaN((double)value) || float.IsNaN((float)value))
+                {
+                    SetAsNaN();
+                }
+                else
+                {
+                    UnsetAsNaN();
+                    UnsetAsNull();
+                }
             }
 
             _propType = type;
@@ -223,12 +271,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
+            mnuSetNan.IsChecked = false;
             dblSpinner.IsEnabled = false;
         }
 
         void UnsetAsNull()
         {
             mnuSetNull.IsChecked = false;
+            dblSpinner.IsEnabled = true;
+        }
+
+        void SetAsNaN()
+        {
+            mnuSetNan.IsChecked = true;
+            mnuSetNull.IsChecked = false;
+            dblSpinner.IsEnabled = false;
+        }
+
+        void UnsetAsNaN()
+        {
+            mnuSetNan.IsChecked = false;
             dblSpinner.IsEnabled = true;
         }
 
@@ -241,6 +303,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else
             {
                 SetAsNull();
+            }
+            ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void mnuSetNan_Click(object sender, RoutedEventArgs e)
+        {
+            if (mnuSetNan.IsChecked)
+            {
+                UnsetAsNaN();
+            }
+            else
+            {
+                SetAsNaN();
             }
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }

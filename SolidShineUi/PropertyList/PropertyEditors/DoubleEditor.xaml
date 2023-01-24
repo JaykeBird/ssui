@@ -19,6 +19,7 @@
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
+                    <MenuItem Header="Set as NaN" x:Name="mnuSetNan" Click="mnuSetNan_Click" IsEnabled="True" />
                     <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
