@@ -13,7 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SolidShineUi\SolidShineUi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icon.ico" />
   </ItemGroup>
 
 </Project>
