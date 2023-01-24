@@ -13,6 +13,7 @@
     <ssut:FilePathToNameConverter x:Key="FileNameConverter" />
     <!--<ssut:FileSelectSingleTitleConverter x:Key="FileSelectSstConverter" />-->
     <ssut:FilePathToIconConverter x:Key="FileIconConverter" />
+    <ssut:IconSizeConverter x:Key="IconSizeConverter" />
 
     <ControlTemplate x:Key="MainWindowControlTemplate" TargetType="{x:Type flat:FlatWindow}">
         <Border BorderBrush="DarkGray">
@@ -49,7 +50,8 @@
                                         <Setter Property="Height" Value="16" />
                                         <Setter Property="Margin" Value="6,0,0,0" />
                                         <Setter Property="Visibility" Value="Visible" />
-                                        <Setter Property="Source" Value="{Binding Icon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                        <Setter Property="Source" Value="{Binding Icon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}},
+                                            Converter={StaticResource IconSizeConverter},ConverterParameter=16}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ShowIcon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
                                                 <Setter Property="Visibility" Value="Collapsed" />
