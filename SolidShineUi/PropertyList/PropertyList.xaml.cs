@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Runtime.InteropServices;
 using System.Text;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList
 {
@@ -28,13 +29,14 @@ namespace SolidShineUi.PropertyList
             InitializeComponent();
             PreregisterEditors();
 
-            txtType.Text = NOTHING_LOADED;
+            //txtType.Text = NOTHING_LOADED;
 
             var colDescriptor = DependencyPropertyDescriptor.FromProperty(ColumnDefinition.WidthProperty, typeof(ColumnDefinition));
             colDescriptor.AddValueChanged(colNames, ColumnWidthChanged);
             colDescriptor.AddValueChanged(colTypes, ColumnWidthChanged);
             colDescriptor.AddValueChanged(colValues, ColumnWidthChanged);
 
+            // use Clear to initialize the rest of the UI
             Clear();
         }
 
@@ -110,6 +112,10 @@ namespace SolidShineUi.PropertyList
                     }
                 }
             }
+
+            imgSearch.Source = IconLoader.LoadIcon("Search", cs);
+            imgReload.Source = IconLoader.LoadIcon("Reload", cs);
+
         }
 
         #endregion

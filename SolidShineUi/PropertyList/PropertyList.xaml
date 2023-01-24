@@ -25,17 +25,18 @@
                    Visibility="{Binding ElementName=control, Path=ShowTypeDisplay, Converter={StaticResource btv}}" />
         <Grid Grid.Row="2" x:Name="grdSort">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Image Height="16" Source="/SolidShineUi;component/Images/SearchColor.png" x:Name="imgSearch" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" ToolTip="Filter (use @ to filter by name only)" VerticalContentAlignment="Center" TextChanged="txtFilter_TextChanged"
                                      Height="28" Visibility="{Binding ElementName=control, Path=ShowFilterBox, Converter={StaticResource btv}}" />
             <flat:FlatButton Grid.Column="3" x:Name="btnRefresh" ToolTip="Reload" ColorScheme="{Binding ColorScheme, ElementName=control}" TransparentBack="True" Click="btnRefresh_Click"
                              Height="28" Width="28" Visibility="{Binding ElementName=control, Path=ShowReloadButton, Converter={StaticResource btv}}" >
-                <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png"  />
+                <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png" x:Name="imgReload" />
             </flat:FlatButton>
             <flat:MenuButton Grid.Column="4" x:Name="mnuView" Content="Sort" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, ElementName=control}" Height="28"
                              TransparentBack="True" MinWidth="50" Visibility="{Binding ElementName=control, Path=ShowViewMenu, Converter={StaticResource btv}}" >
