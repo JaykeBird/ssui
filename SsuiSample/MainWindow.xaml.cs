@@ -41,6 +41,33 @@ namespace SsuiSample
             };
         }
 
+        private bool TestIfPointIsMaximizeButton(Point p)
+        {
+            if (p.Y > CaptionHeight + 3) return false;
+
+            double borderTop = BorderThickness.Top;
+            double borderRight = BorderThickness.Right;
+            // next, let's get the width of a button
+            int captionFontSize = 16; // the caption font size is hardset in the theme, in the future maybe I'll open it to be changed
+            double btnWidth = captionFontSize + CaptionButtonPadding.Left + CaptionButtonPadding.Right;
+            double btnHeight = captionFontSize + CaptionButtonPadding.Top + CaptionButtonPadding.Bottom;
+
+            double maxButtonRightBound = ActualWidth - borderRight - btnWidth; // this is the right edge of the maximize/restore button
+            double maxButtonLeftBound = maxButtonRightBound - btnWidth; // this is the left edge of the maximize/restore button
+            double maxButtonTopBound = borderTop;
+            double maxButtonBottomBound = borderTop + btnHeight;
+
+            if (p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound)
+            {
+                Debug.Print("MAX BUTTON");
+                return true; // MAXIMIZE BUTTON
+            }
+            else
+            {
+                return false; // let the main function handle this
+            }
+        }
+
         private void mnuExit_Click(object sender, RoutedEventArgs e)
         {
             Close();

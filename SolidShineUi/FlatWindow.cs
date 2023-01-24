@@ -72,7 +72,7 @@ namespace SolidShineUi
             return IntPtr.Zero;
         }
 
-        public bool TestIfPointIsMaximizeButton(Point p)
+        private bool TestIfPointIsMaximizeButton(Point p)
         {
             if (p.Y > CaptionHeight + 3) return false;
 
