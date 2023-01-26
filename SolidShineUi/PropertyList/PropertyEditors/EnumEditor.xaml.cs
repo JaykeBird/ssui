@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using System.Reflection;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -51,6 +52,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (cbbEnums.SelectedIndex == -1)
             {
@@ -62,39 +69,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
-        {
-            cbbEnums.Enum = type;
-            if (value == null)
-            {
-                cbbEnums.SelectedIndex = -1;
-            }
-            else
-            {
-                cbbEnums.SelectedEnumValue = value;
-            }
-        }
 #else
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (cbbEnums.SelectedIndex == -1)
-            {
-                return null;
-            }
-            else
-            {
-                return cbbEnums.SelectedEnumValue;
-            }
-        }
-        
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             cbbEnums.Enum = type;
+            if (type.GetCustomAttribute<FlagsAttribute>() != null)
+            {
+                // this is an enum that supports flags
+                // in the future, I'll need to enable a way to select multiple items
+            }
+
             if (value == null)
             {
                 cbbEnums.SelectedIndex = -1;
@@ -104,7 +93,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 cbbEnums.SelectedEnumValue = value;
             }
         }
-#endif
 
         private void cbbEnums_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
