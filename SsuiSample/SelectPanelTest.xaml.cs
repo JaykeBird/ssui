@@ -160,5 +160,15 @@ namespace SsuiSample
 
         #endregion
 
+        private void chkShowChk_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            foreach (SelectableUserControl item in selPanel.Items)
+            {
+                if (item is SelectableItem si)
+                {
+                    si.ShowCheckbox = chkShowChk.IsChecked;
+                }
+            }
+        }
     }
 }

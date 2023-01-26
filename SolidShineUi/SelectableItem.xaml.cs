@@ -25,18 +25,26 @@ namespace SolidShineUi
             Text = "";
 
             IsEnabledChanged += SelectableItem_IsEnabledChanged;
+            chkSel.CheckChanged += ChkSel_CheckChanged;
+            SelectionChanged += SelectableItem_SelectionChanged;
         }
 
         /// <summary>
         /// Create a SelectableItem to use with a SelectPanel, with the text preset.
         /// </summary>
         /// <param name="text">The text to display in the item.</param>
+#if NETCOREAPP
+        public SelectableItem(string? text)
+#else
         public SelectableItem(string text)
+#endif
         {
             InitializeComponent();
-            Text = text;
+            Text = text ?? "";
 
             IsEnabledChanged += SelectableItem_IsEnabledChanged;
+            chkSel.CheckChanged += ChkSel_CheckChanged;
+            SelectionChanged += SelectableItem_SelectionChanged;
         }
 
         /// <summary>
@@ -46,17 +54,19 @@ namespace SolidShineUi
         /// <param name="image">The image to display in the item. (If the image is wider than 16 pixels, you may need to update the <c>ImageWidth</c> property.) Set to <c>null</c> to not show an image.</param>
         /// <param name="indent">The left indent to apply to the item's content. The indent can be used to make an improvised tree view.</param>
 #if NETCOREAPP
-        public SelectableItem(string text, ImageSource? image, double indent = 0)
+        public SelectableItem(string? text, ImageSource? image, double indent = 0)
 #else
         public SelectableItem(string text, ImageSource image, double indent = 0)
 #endif
         {
             InitializeComponent();
-            Text = text;
+            Text = text ?? "";
             ImageSource = image;
             Indent = indent;
 
             IsEnabledChanged += SelectableItem_IsEnabledChanged;
+            chkSel.CheckChanged += ChkSel_CheckChanged;
+            SelectionChanged += SelectableItem_SelectionChanged;
         }
 
         /// <summary>
@@ -70,25 +80,13 @@ namespace SolidShineUi
             lblText.DisabledBrush = cs.DarkDisabledColor.ToBrush();
             lblText.TextBrush = cs.ForegroundColor.ToBrush();
             lblText.HighlightBrush = cs.ForegroundColor.ToBrush();
+
+            chkSel.ApplyColorScheme(cs);
         }
 
         private void SelectableItem_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             lblText.IsEnabled = IsEnabled;
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
-            "TextChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<string>), typeof(SelectableItem));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Raised when the Text property is changed, either via updating the property or via the the user's text editing view.
-        /// </summary>
-        public event RoutedPropertyChangedEventHandler<string> TextChanged
-        {
-            add { AddHandler(TextChangedEvent, value); }
-            remove { RemoveHandler(TextChangedEvent, value); }
         }
 
         /// <summary>
@@ -106,6 +104,7 @@ namespace SolidShineUi
             }
         }
 
+        #region Checkbox
         /// <summary>
         /// Get or set whether a checkbox should be displayed on the item. Checkboxes can make it easy to select mutliple items.
         /// </summary>
@@ -128,6 +127,65 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the state of the checkbox. The checkbox is only shown if <see cref="ShowCheckbox"/> is set to true.
+        /// </summary>
+        public CheckState CheckboxState
+        {
+            get
+            {
+                return chkSel.CheckState;
+            }
+            set
+            {
+                chkSel.CheckState = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or set if the checkbox is checked. The checkbox is only shown if <see cref="ShowCheckbox"/> is set to true.
+        /// </summary>
+        public bool IsCheckboxChecked
+        {
+            get
+            {
+                return chkSel.IsChecked;
+            }
+            set
+            {
+                chkSel.IsChecked = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or set if the checkbox's value should be changed if this control is selected (and vice-versa). Default is true
+        /// </summary>
+        public bool MatchCheckboxValueToSelect { get; set; } = true;
+
+        bool updatingCheck = false;
+
+        private void ChkSel_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            if (MatchCheckboxValueToSelect && !updatingCheck)
+            {
+                updatingCheck = true;
+                IsSelected = chkSel.IsChecked;
+                updatingCheck = false;
+            }
+        }
+
+        private void SelectableItem_SelectionChanged(object sender, EventArgs e)
+        {
+            if (MatchCheckboxValueToSelect && !updatingCheck)
+            {
+                updatingCheck = true;
+                chkSel.IsChecked = IsSelected;
+                updatingCheck = false;
+            }
+        }
+        #endregion
+
+        #region Image
         double imgWidth = 16;
 
         /// <summary>
@@ -213,7 +271,9 @@ namespace SolidShineUi
         /// Get or set whether the <c>ShowImage</c> property should be updated when the <c>ImageSource</c> property is set. Default is true.
         /// </summary>
         public bool AutoShowImageOnSourceSet { get; set; } = true;
+        #endregion
 
+        #region Text
         /// <summary>
         /// Get or set the text to display within the item. This text can be edited by setting <c>AllowTextEditing</c> to true, or by calling <see cref="DisplayEditText()"/>.
         /// </summary>
@@ -233,6 +293,39 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get or set the width of the main text section of the control.
+        /// This can be used to limit the width of the main text section, or make it as wide as needed for the full text to fit.
+        /// </summary>
+        public GridLength TextColumnWidth
+        {
+            get
+            {
+                return colText.Width;
+            }
+            set
+            {
+                colText.Width = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or set the text trimming behavior to use when the text overflows the visible area.
+        /// </summary>
+        public TextTrimming TextTrimming
+        {
+            get
+            {
+                return lblText.TextTrimming;
+            }
+            set
+            {
+                lblText.TextTrimming = value;
+            }
+        }
+        #endregion
+
+        #region RightText
         /// <summary>
         /// Get or set the text to display on the far-right side of the item. This text cannot be edited directly by the user.
         /// </summary>
@@ -338,38 +431,9 @@ namespace SolidShineUi
                 colRightText.Width = value;
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Get or set the width of the main text section of the control.
-        /// This can be used to limit the width of the main text section, or make it as wide as needed for the full text to fit.
-        /// </summary>
-        public GridLength TextColumnWidth
-        {
-            get
-            {
-                return colText.Width;
-            }
-            set
-            {
-                colText.Width = value;
-            }
-        }
-
-        /// <summary>
-        /// Get or set the text trimming behavior to use when the text overflows the visible area.
-        /// </summary>
-        public TextTrimming TextTrimming
-        {
-            get
-            {
-                return lblText.TextTrimming;
-            }
-            set
-            {
-                lblText.TextTrimming = value;
-            }
-        }
-
+        #region Text Editing
         /// <summary>
         /// Get or set if the text should have an underline effect when the mouse is over the text. This is enabled by default when <c>AllowTextEditing</c> is set to "true", but otherwise is disabled.
         /// </summary>
@@ -383,6 +447,20 @@ namespace SolidShineUi
             {
                 lblText.UnderlineOnHighlight = value;
             }
+        }
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
+            "TextChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<string>), typeof(SelectableItem));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// Raised when the Text property is changed, either via updating the property or via the the user's text editing view.
+        /// </summary>
+        public event RoutedPropertyChangedEventHandler<string> TextChanged
+        {
+            add { AddHandler(TextChangedEvent, value); }
+            remove { RemoveHandler(TextChangedEvent, value); }
         }
 
         /// <summary>
@@ -496,5 +574,6 @@ namespace SolidShineUi
                 CancelEdit();
             }
         }
+        #endregion
     }
 }
