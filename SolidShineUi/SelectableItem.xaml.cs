@@ -169,12 +169,12 @@ namespace SolidShineUi
             if (MatchCheckboxValueToSelect && !updatingCheck)
             {
                 updatingCheck = true;
-                IsSelected = chkSel.IsChecked;
+                SetIsSelectedWithSource(chkSel.IsChecked, SelectionChangeTrigger.CheckBox, this);
                 updatingCheck = false;
             }
         }
 
-        private void SelectableItem_SelectionChanged(object sender, EventArgs e)
+        private void SelectableItem_SelectionChanged(object sender, ItemSelectionChangedEventArgs e)
         {
             if (MatchCheckboxValueToSelect && !updatingCheck)
             {

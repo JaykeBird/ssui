@@ -213,7 +213,7 @@ namespace SolidShineUi
             {
                 foreach (SelectableUserControl item in ItemsSource)
                 {
-                    item.IsSelected = isl.IsSelected(item);
+                    item.SetIsSelectedWithSource(isl.IsSelected(item), SelectionChangeTrigger.Parent, this);
                 }
             }
 
@@ -356,9 +356,9 @@ namespace SolidShineUi
         }
 
 #if NETCOREAPP
-        private void Item_SelectionChanged(object? sender, EventArgs e)
+        private void Item_SelectionChanged(object? sender, ItemSelectionChangedEventArgs e)
 #else
-        private void Item_SelectionChanged(object sender, EventArgs e)
+        private void Item_SelectionChanged(object sender, ItemSelectionChangedEventArgs e)
 #endif
         {
             if (_internalAction) return;
@@ -372,9 +372,16 @@ namespace SolidShineUi
 
                     if (item.IsSelected && !isl.IsSelected(item))
                     {
-                        if (isl is SelectableCollection<SelectableUserControl> isel && isel.CanSelectMultiple && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                        if (isl is SelectableCollection<SelectableUserControl> isel)
                         {
-                            isl.AddToSelection(item);
+                            if (isel.CanSelectMultiple && (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || e.TriggerMethod == SelectionChangeTrigger.CheckBox))
+                            {
+                                isl.AddToSelection(item);
+                            }
+                            else
+                            {
+                                isl.Select(item);
+                            }
                         }
                         else
                         {

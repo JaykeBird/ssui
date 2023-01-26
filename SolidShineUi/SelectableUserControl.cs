@@ -46,72 +46,7 @@ namespace SolidShineUi
 
         //public Guid UniqueIdentifier { get; set; }
 
-        #region Selection Handling
-
-        bool canSel = true;
-
-        /// <summary>
-        /// Get or set if this control can be selected.
-        /// </summary>
-        public bool CanSelect
-        {
-            get
-            {
-                return canSel;
-            }
-            set
-            {
-                bool curVal = canSel;
-
-                canSel = value;
-                if (!value)
-                {
-                    sel = false;
-                    base.Background = Background;
-                }
-
-                if (curVal != canSel)
-                {
-                    CanSelectChanged?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
-
-        bool sel = false;
-
-        /// <summary>
-        /// Get or set if this control is currently selected.
-        /// </summary>
-        public bool IsSelected
-        {
-            get
-            {
-                return sel;
-            }
-            set
-            {
-                if (CanSelect)
-                {
-                    bool curVal = sel;
-
-                    sel = value;
-                    if (sel)
-                    {
-                        base.Background = SelectedBrush;
-                    }
-                    else
-                    {
-                        base.Background = Background;
-                    }
-
-                    if (curVal != sel)
-                    {
-                        SelectionChanged?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-            }
-        }
-
+        #region Brushes
         static Color transparent = Color.FromArgb(1, 0, 0, 0);
 
         /// <summary>
@@ -172,45 +107,6 @@ namespace SolidShineUi
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        bool performingClick = false;
-        bool highlighting = false;
-        bool rightClick = false;
-
-#if NETCOREAPP
-        /// <summary>
-        /// Raised if the IsSelected property is changed.
-        /// </summary>
-        public event EventHandler? SelectionChanged;
-        /// <summary>
-        /// Raised if the CanSelect property is changed.
-        /// </summary>
-        public event EventHandler? CanSelectChanged;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler? Click;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler? RightClick;
-#else
-        /// <summary>
-        /// Raised if the IsSelected property is changed.
-        /// </summary>
-        public event EventHandler SelectionChanged;
-        /// <summary>
-        /// Raised if the CanSelect property is changed.
-        /// </summary>
-        public event EventHandler CanSelectChanged;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler Click;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler RightClick;
-#endif
 
         /// <summary>
         /// Make sure the control's visuals match the set brush properties. Call this if the parent's ColorScheme was changed.
@@ -235,6 +131,8 @@ namespace SolidShineUi
             }
         }
 
+        #endregion
+
         /// <summary>
         /// When overridden by a derived class, this method is automatically called each time the color scheme is updated by the parent SelectPanel. Use this to update child controls.
         /// </summary>
@@ -252,7 +150,130 @@ namespace SolidShineUi
             }
         }
 
-        #region User Inputs
+        #region Selection Handling
+
+        bool canSel = true;
+
+        /// <summary>
+        /// Get or set if this control can be selected.
+        /// </summary>
+        public bool CanSelect
+        {
+            get
+            {
+                return canSel;
+            }
+            set
+            {
+                bool curVal = canSel;
+
+                canSel = value;
+                if (!value)
+                {
+                    sel = false;
+                    base.Background = Background;
+                }
+
+                if (curVal != canSel)
+                {
+                    CanSelectChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        bool sel = false;
+
+        /// <summary>
+        /// Get or set if this control is currently selected.
+        /// </summary>
+        public bool IsSelected
+        {
+            get
+            {
+                return sel;
+            }
+            set
+            {
+                SetIsSelectedWithSource(value, SelectionChangeTrigger.CodeUnknown);
+            }
+        }
+
+        /// <summary>
+        /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
+        /// </summary>
+        /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
+        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="triggerSource">The object that triggered the change.</param>
+#if NETCOREAPP
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
+#else
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
+#endif
+        {
+            if (CanSelect)
+            {
+                bool curVal = sel;
+
+                sel = value;
+                if (sel)
+                {
+                    base.Background = SelectedBrush;
+                }
+                else
+                {
+                    base.Background = Background;
+                }
+
+                if (curVal != sel)
+                {
+                    SelectionChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, triggerMethod, triggerSource));
+                }
+            }
+        }
+
+        bool performingClick = false;
+        bool highlighting = false;
+        bool rightClick = false;
+
+#if NETCOREAPP
+        /// <summary>
+        /// Raised if the IsSelected property is changed.
+        /// </summary>
+        public event ItemSelectionChangedEventHandler? SelectionChanged;
+        /// <summary>
+        /// Raised if the CanSelect property is changed.
+        /// </summary>
+        public event EventHandler? CanSelectChanged;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
+        public event EventHandler? Click;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
+        public event EventHandler? RightClick;
+#else
+        /// <summary>
+        /// Raised if the IsSelected property is changed.
+        /// </summary>
+        public event ItemSelectionChangedEventHandler SelectionChanged;
+        /// <summary>
+        /// Raised if the CanSelect property is changed.
+        /// </summary>
+        public event EventHandler CanSelectChanged;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
+        public event EventHandler Click;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
+        public event EventHandler RightClick;
+#endif
+
+        public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
+
+#region User Inputs
 
         void Highlight()
         {
@@ -292,7 +313,7 @@ namespace SolidShineUi
                 }
                 else
                 {
-                    IsSelected = true;
+                    SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
                     Click?.Invoke(this, EventArgs.Empty);
                 }
 
@@ -300,7 +321,7 @@ namespace SolidShineUi
             }
         }
 
-        #region Base Event Handlers
+#region Base Event Handlers
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -403,7 +424,7 @@ namespace SolidShineUi
             Unhighlight();
         }
 
-        #endregion
+#endregion
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
@@ -420,9 +441,9 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
 //#if NETCOREAPP
 //        public bool Equals([AllowNull] SelectableUserControl other)
@@ -436,5 +457,73 @@ namespace SolidShineUi
 //                return other.UniqueIdentifier == UniqueIdentifier;
 //            }
 //        }
+
+    }
+
+    public class ItemSelectionChangedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Create a new ItemSelectionChangedEventArgs.
+        /// </summary>
+        /// <param name="oldValue">The old IsSelected value.</param>
+        /// <param name="newValue">The new IsSelected value.</param>
+        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+        /// <param name="triggerSource">The source object that updated the value.</param>
+#if NETCOREAPP
+        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null)
+#else
+        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null)
+#endif
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
+            TriggerMethod = trigger;
+            TriggerSource = triggerSource;
+        }
+
+        /// <summary>
+        /// The old value of the IsSelected property.
+        /// </summary>
+        public bool OldValue { get; private set; }
+        /// <summary>
+        /// The new value of the IsSelected property.
+        /// </summary>
+        public bool NewValue { get; private set; }
+        /// <summary>
+        /// The method that was used to update the value.
+        /// </summary>
+        public SelectionChangeTrigger TriggerMethod { get; private set; }
+
+        /// <summary>
+        /// The object that caused the update to occur, if available.
+        /// </summary>
+#if NETCOREAPP
+        public object? TriggerSource { get; private set; }
+#else
+        public object TriggerSource { get; private set; }
+#endif
+    }
+
+    /// <summary>
+    /// Indicates which method or source triggered the change in selection.
+    /// </summary>
+    public enum SelectionChangeTrigger
+    {
+        /// <summary>
+        /// The selection was changed due to the control itself being clicked.
+        /// </summary>
+        ControlClick = 0,
+        /// <summary>
+        /// The selection was changed due to a checkbox in the control being clicked.
+        /// </summary>
+        CheckBox = 1,
+        /// <summary>
+        /// The selection was changed due to an action by the parent object containing the control.
+        /// </summary>
+        Parent = 2,
+        /// <summary>
+        /// The selection was changed via directly setting the value in code, or the method isn't strictly defined here.
+        /// </summary>
+        CodeUnknown = 9,
     }
 }
