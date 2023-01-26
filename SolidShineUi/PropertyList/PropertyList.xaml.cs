@@ -244,16 +244,19 @@ namespace SolidShineUi.PropertyList
 
             foreach (PropertyInfo item in properties)
             {
+                // first, check the property against the DisplayOptions
+                if (!CheckPropertyDisplay(item)) continue;
+
                 PropertyEditorItem pei = new PropertyEditorItem();
 #if NETCOREAPP
                 IPropertyEditor? ipe = null;
 #else
                 IPropertyEditor ipe = null;
 #endif
-                if (!item.CanWrite)
-                {
-                    // readonly property
-                }
+                //if (!item.CanWrite)
+                //{
+                //    // readonly property
+                //}
 
                 if (item.DeclaringType != baseType)
                 {
@@ -273,7 +276,7 @@ namespace SolidShineUi.PropertyList
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
 
-                pei.LoadProperty(item, item.GetValue(_baseObject), ipe);
+                pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject) : null, ipe);
                 pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
                 pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
                 stkProperties.Children.Add(pei);
@@ -323,12 +326,98 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public PropertySortOption SortOption { get => _sort; set { _sort = value; SortList(); } }
 
+        /// <summary>
+        /// Get or set the settings for what properties should be displayed in the PropertyList.
+        /// </summary>
+        /// <remarks>
+        /// When loading in an object, the attributes for each property in that object are looked at. If a property has an attribute that matches what a flag disallows,
+        /// that property is not loaded. If this setting is changed, you will need to reload the object (<see cref="ReloadObject"/>) or load a new object to apply that change.
+        /// </remarks>
+        public PropertyListDisplayFlags DisplayOptions { get; set; } = PropertyListDisplayFlags.HidePropertyListHide;
+
         private bool _showInherited = true;
+        private bool _showReadOnly = true;
 
         /// <summary>
         /// Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.
         /// </summary>
         public bool ShowInheritedProperties { get => _showInherited; set { _showInherited = value; FilterProperties(_filterString); mnuShowInherited.IsChecked = value; } }
+
+        /// <summary>
+        /// Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.
+        /// </summary>
+        public bool ShowReadOnlyProperties { get => _showReadOnly; set { _showReadOnly = value; FilterProperties(_filterString); mnuShowInherited.IsChecked = value; } }
+
+        private static string GetCategoryOfProperty(PropertyInfo pi)
+        {
+            IEnumerable<CategoryAttribute> attributes = pi.GetCustomAttributes<CategoryAttribute>(true);
+
+            if (attributes.Any())
+            {
+                return attributes.First().Category;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Check the property against the flags of <see cref="DisplayOptions"/>, and return if the property should be displayed.
+        /// </summary>
+        /// <param name="pi">The property to check.</param>
+        /// <returns>True if the property should be displayed; false if the property has (or is lacking) the checked attributes and should be hidden.</returns>
+        private bool CheckPropertyDisplay(PropertyInfo pi)
+        {
+            if (DisplayOptions.HasFlag(PropertyListDisplayFlags.ShowAll)) return true;
+            else if (DisplayOptions.HasFlag(PropertyListDisplayFlags.OnlyShowPropertyListShow))
+            {
+                if (pi.GetCustomAttribute<PropertyListShowAttribute>() != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // let's go through the list
+                object[] attributes = pi.GetCustomAttributes(true);
+
+                if (DisplayOptions.HasFlag(PropertyListDisplayFlags.HideObsolete) && attributes.Any(o => o is ObsoleteAttribute))
+                {
+                    return false;
+                }
+                
+                if (DisplayOptions.HasFlag(PropertyListDisplayFlags.HidePropertyListHide) && attributes.Any(h => h is PropertyListHideAttribute))
+                {
+                    return false;
+                }
+
+                if (DisplayOptions.HasFlag(PropertyListDisplayFlags.HideBrowseableFalse) && attributes.Length > 0)
+                {
+                    var elist = attributes.Where(oo => oo is EditorBrowsableAttribute || oo is BrowsableAttribute);
+                    if (elist.Any())
+                    {
+                        foreach (var item in elist)
+                        {
+                            if (item is EditorBrowsableAttribute eb && eb.State == EditorBrowsableState.Never)
+                            {
+                                return false;
+                            }
+                            else if (item is BrowsableAttribute bb && bb.Browsable == false)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -421,6 +510,28 @@ namespace SolidShineUi.PropertyList
                     }
                 }
                 _filterString = filter;
+            }
+
+            if (!_showReadOnly)
+            {
+#if NETCOREAPP
+                foreach (UIElement? item in stkProperties.Children)
+#else
+                foreach (UIElement item in stkProperties.Children)
+#endif
+                {
+                    if (item == null) continue;
+                    if (item is PropertyEditorItem pei)
+                    {
+                        if (pei != null)
+                        {
+                            if (pei.IsReadOnly)
+                            {
+                                pei.Visibility = Visibility.Collapsed;
+                            }
+                        }
+                    }
+                }
             }
 
             if (!_showInherited)
@@ -520,20 +631,6 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        private static string GetCategoryOfProperty(PropertyInfo pi)
-        {
-            IEnumerable<CategoryAttribute> attributes = pi.GetCustomAttributes<CategoryAttribute>(true);
-
-            if (attributes.Any())
-            {
-                return attributes.First().Category;
-            }
-            else
-            {
-                return "";
-            }
-        }
-
         #region Sort and View menu
 
         private void btnName_Click(object sender, RoutedEventArgs e)
@@ -565,6 +662,16 @@ namespace SolidShineUi.PropertyList
                 splTypes.Visibility = Visibility.Visible;
             }
         }
+
+        private void mnuShowInherited_Click(object sender, RoutedEventArgs e)
+        {
+            ShowInheritedProperties = !ShowInheritedProperties;
+        }
+        private void mnuShowReadOnly_Click(object sender, RoutedEventArgs e)
+        {
+            ShowReadOnlyProperties = !ShowReadOnlyProperties;
+        }
+
         #endregion
 
         #region Registered Editors
@@ -865,25 +972,13 @@ namespace SolidShineUi.PropertyList
         public static DependencyProperty ShowViewMenuProperty
             = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(true));
+
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
         #endregion
 
-        private void mnuShowInherited_Click(object sender, RoutedEventArgs e)
-        {
-            if (ShowInheritedProperties)
-            {
-                ShowInheritedProperties = false;
-                //mnuShowInherited.IsChecked = false;
-            }
-            else
-            {
-                ShowInheritedProperties = true;
-                //mnuShowInherited.IsChecked = true;
-            }
-        }
     }
 
     /// <summary>
@@ -899,5 +994,33 @@ namespace SolidShineUi.PropertyList
         /// Sorted by category (as determined by a Category attribute being present)
         /// </summary>
         Category = 1
+    }
+
+    /// <summary>
+    /// Represents what properties should be shown or hidden in a PropertyList, by checking the attributes set with the property.
+    /// </summary>
+    [Flags]
+    public enum PropertyListDisplayFlags
+    {
+        /// <summary>
+        /// Ignore attributes and display all properties in an object. This overrides all other flags.
+        /// </summary>
+        ShowAll = 0,
+        /// <summary>
+        /// Hides properties that have the PropertyListHide attribute (<see cref="PropertyListHideAttribute"/>) set.
+        /// </summary>
+        HidePropertyListHide = 1,
+        /// <summary>
+        /// Hides properties that have the Browseable or EditorBrowseable attributes set (and set to false or Never).
+        /// </summary>
+        HideBrowseableFalse = 2,
+        /// <summary>
+        /// Hides properties that have the Obsolete attribute set.
+        /// </summary>
+        HideObsolete = 4,
+        /// <summary>
+        /// Only properties that have the PropertyListShow attribute (<see cref="PropertyListShowAttribute"/>) will be displayed. This overrides all other flags.
+        /// </summary>
+        OnlyShowPropertyListShow = 8,
     }
 }

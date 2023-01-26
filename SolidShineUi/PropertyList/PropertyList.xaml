@@ -46,6 +46,7 @@
                         <MenuItem Header="Sort by Category" Click="btnCategory_Click" />
                         <Separator />
                         <MenuItem Header="Show Inherited" x:Name="mnuShowInherited" Click="mnuShowInherited_Click" IsChecked="True" />
+                        <MenuItem Header="Show Read Only" x:Name="mnuShowReadOnly" Click="mnuShowReadOnly_Click" IsChecked="True" />
                         <Separator />
                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" Click="mnuTypesCol_Click" />
                     </flat:ContextMenu>
