@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Reflection;
+using System.ComponentModel;
 
 namespace SolidShineUi.PropertyList
 {
@@ -143,6 +144,12 @@ namespace SolidShineUi.PropertyList
             PropertyTypeText = PrettifyPropertyType(property.PropertyType.ToString());
             PropertyValue = value;
             IsReadOnly = !property.CanWrite;
+            //var propVal = property.GetCustomAttribute<DescriptionAttribute>();
+            //if (propVal != null)
+            //{
+            //    ToolTip = propVal.Description;
+            //}
+
             if (editor != null)
             {
                 PropertyEditorControl = editor;
