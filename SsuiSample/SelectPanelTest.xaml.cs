@@ -27,6 +27,7 @@ namespace SsuiSample
             si.Text = "Basic";
             si.TextTrimming = TextTrimming.CharacterEllipsis;
             si.ShowImage = false;
+            si.ShowCheckbox = chkShowChk.IsChecked;
 
             selPanel.Items.Add(si);
         }
@@ -51,6 +52,7 @@ namespace SsuiSample
             si.ShowImage = true;
             si.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/ImageColor.png", UriKind.RelativeOrAbsolute));
             si.ImageWidth = 16;
+            si.ShowCheckbox = chkShowChk.IsChecked;
 
             selPanel.Items.Add(si);
         }
@@ -62,6 +64,7 @@ namespace SsuiSample
             si.AllowTextEditing = true;
             si.TextTrimming = TextTrimming.CharacterEllipsis;
             si.ShowImage = false;
+            si.ShowCheckbox = chkShowChk.IsChecked;
 
             selPanel.Items.Add(si);
         }

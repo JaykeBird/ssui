@@ -9,7 +9,7 @@ using System.Collections;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> is SelectableUserControl.
+    /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> derives from SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
     public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, IEnumerable<T>
@@ -34,7 +34,7 @@ namespace SolidShineUi
         /// Create a SelectableCollectionView, that represents a view of the specified list.
         /// </summary>
         /// <param name="collection">The collection that is represented in this view.</param>
-        /// <exception cref="ArgumentException">Thrown if collection is not a generic IList of type <typeparamref name="T"/> (<c>IList&lt;<typeparamref name="T"/>&gt;</c>).</exception>
+        /// <exception cref="ArgumentException">Thrown if collection is not a generic IList of type <typeparamref name="T"/> (<c>IList&lt;T&gt;</c>).</exception>
         public SelectableCollectionView(IList collection) : base(collection)
         {
             if (collection is IList<T> tcol)
@@ -131,6 +131,8 @@ namespace SolidShineUi
         /// Get a list of currently selected items.
         /// </summary>
         public ReadOnlyCollection<T> SelectedItems => selectedItems.AsReadOnly();
+
+        public bool CanSelectMultiple { get => true; set { throw new NotSupportedException("The CanSelectMultiple value cannot be changed in a SelectableCollectionView."); } }
 
         /// <summary>
         /// Add an item to the existing list of selected items.

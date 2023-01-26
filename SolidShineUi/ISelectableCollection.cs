@@ -61,6 +61,14 @@ namespace SolidShineUi
         void SelectRange(IEnumerable<T> items);
 
         /// <summary>
+        /// Get or set if multiple items can be selected in this collection.
+        /// </summary>
+        /// <remarks>
+        /// Some implementers may not allow this value to be changed via a setter; if so, a <see cref="NotSupportedException"/> will be thrown.
+        /// </remarks>
+        bool CanSelectMultiple { get; set; }
+
+        /// <summary>
         /// Raised when the selection is changed, including additions and removals.
         /// </summary>
 #if NETCOREAPP

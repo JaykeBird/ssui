@@ -372,16 +372,9 @@ namespace SolidShineUi
 
                     if (item.IsSelected && !isl.IsSelected(item))
                     {
-                        if (isl is SelectableCollection<SelectableUserControl> isel)
+                        if (isl.CanSelectMultiple && (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || e.TriggerMethod == SelectionChangeTrigger.CheckBox))
                         {
-                            if (isel.CanSelectMultiple && (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || e.TriggerMethod == SelectionChangeTrigger.CheckBox))
-                            {
-                                isl.AddToSelection(item);
-                            }
-                            else
-                            {
-                                isl.Select(item);
-                            }
+                            isl.AddToSelection(item);
                         }
                         else
                         {
