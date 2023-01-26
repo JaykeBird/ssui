@@ -4,7 +4,7 @@
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <Platforms>x64;x86;ARM64</Platforms>
+	  <RuntimeIdentifiers>win10-x64;win10-x86;win10-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +13,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SolidShineUi\SolidShineUi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="SolidShineUi" />
   </ItemGroup>
 
 </Project>
