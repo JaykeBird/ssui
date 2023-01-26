@@ -66,7 +66,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Get or set the PropertyInfo representing the property shown.
         /// </summary>
-        public PropertyInfo PropertyInfo { get; set; } = null;
+        public PropertyInfo PropertyInfo { get; private set; } = null;
 
         object _value = null;
 
@@ -81,7 +81,12 @@ namespace SolidShineUi.PropertyList
         /// Get or set the editor control to use to allow editing the value of this property.
         /// </summary>
         public IPropertyEditor PropertyEditorControl { get; set; }
-        
+
+        /// <summary>
+        /// Get if this property is read only, meaning it cannot be edited or changed.
+        /// </summary>
+        public bool IsReadOnly { get; private set; }
+
         /// <summary>
         /// A delegate to be used with events regarding the value of a property editor's property changing.
         /// </summary>
