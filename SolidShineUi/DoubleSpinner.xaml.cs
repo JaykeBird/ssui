@@ -757,6 +757,32 @@ namespace SolidShineUi
 
         #endregion
 
+        #region MinimumDigitCount
+
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
+            "MinimumDigitCount", typeof(int), typeof(DoubleSpinner),
+            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Get or set the minimum number of digits to display in the spinner. A value of 0 or lower will display only the minimum needed for the number being displayed.
+        /// </summary>
+        /// <remarks>
+        /// This modifies the number of digits being rendered via <see cref="int.ToString(string)"/>.
+        /// Setting this to <c>4</c> and then setting the Value to <c>16</c> will render the text <c>0016</c> in the display.
+        /// You should generally setting this to numbers larger than 99, as larger numbers are only supported in newer versions of .NET.
+        /// </remarks>
+        [Category("Common")]
+        public int MinimumDigitCount
+        {
+            get => (int)GetValue(MinimumDigitCountProperty);
+            set => SetValue(MinimumDigitCountProperty, value);
+        }
+
+        #endregion
+
         /// <summary>
         /// Validate the value and update the UI if neede.
         /// </summary>
@@ -813,9 +839,13 @@ namespace SolidShineUi
                 btnUp.IsEnabled = true;
             }
 
-            if (txtValue.Text != Value.ToString())
+            string digitDisplay = "";
+            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G"); }
+            string sVal = Value.ToString("G" + digitDisplay);
+
+            if (txtValue.Text != sVal)
             {
-                if (_updateBox) txtValue.Text = Value.ToString();
+                if (_updateBox) txtValue.Text = sVal;
             }
         }
 
