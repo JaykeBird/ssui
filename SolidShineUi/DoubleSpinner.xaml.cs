@@ -840,9 +840,9 @@ namespace SolidShineUi
                 btnUp.IsEnabled = true;
             }
 
-            string digitDisplay = "";
-            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G"); }
-            string sVal = Value.ToString("G" + digitDisplay);
+            string digitDisplay = "G";
+            if (MinimumDigitCount > 0) { digitDisplay = new string('0', MinimumDigitCount) + "." + new string('#', Decimals + 1); }
+            string sVal = Value.ToString(digitDisplay);
 
             if (txtValue.Text != sVal)
             {
