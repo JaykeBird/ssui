@@ -23,7 +23,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public List<Type> ValidTypes => (new[] { typeof(FontStyle) }).ToList();
+        public List<Type> ValidTypes => (new[] { typeof(FontStyle), typeof(FontStyle?) }).ToList();
 
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
@@ -53,6 +53,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void cbbStyles_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (cbbStyles.SelectedIndex == 3 && !canNull)
+            {
+                canNull = true;
+            }
+
             if (_raiseEvents)
             {
                 ValueChanged?.Invoke(this, e);
@@ -79,6 +84,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return FontStyles.Italic;
                 case 2:
                     return FontStyles.Oblique;
+                case 3:
+                    if (canNull) { return null; }
+                    else { return FontStyles.Normal; }
                 default:
                     return FontStyles.Normal;
             }
@@ -90,10 +98,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _raiseEvents = false;
             if (value == null)
             {
-                cbbStyles.SelectedIndex = 0;
+                EnableNull();
+                cbbStyles.SelectedIndex = 3;
             }
             else if (value is FontStyle fs)
             {
+                if (type == typeof(FontStyle?)) EnableNull();
+
                 if (fs == FontStyles.Italic)
                 {
                     cbbStyles.SelectedIndex = 1;
@@ -128,6 +139,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return FontStyles.Italic;
                 case 2:
                     return FontStyles.Oblique;
+                case 3:
+                    if (canNull) { return null; }
+                    else { return FontStyles.Normal; }
                 default:
                     return FontStyles.Normal;
             }
@@ -139,10 +153,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _raiseEvents = false;
             if (value == null)
             {
-                cbbStyles.SelectedIndex = 0;
+                EnableNull();
+                cbbStyles.SelectedIndex = 3;
             }
             else if (value is FontStyle fs)
             {
+                if (type == typeof(FontStyle?)) EnableNull();
+
                 if (fs == FontStyles.Italic)
                 {
                     cbbStyles.SelectedIndex = 1;
@@ -163,5 +180,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _raiseEvents = true;
         }
 #endif
+
+        bool canNull = false;
+
+        void EnableNull()
+        {
+            cbbNull.Visibility = Visibility.Visible;
+            canNull = true;
+        }
     }
 }

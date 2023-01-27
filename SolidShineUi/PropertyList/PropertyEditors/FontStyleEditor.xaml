@@ -16,6 +16,7 @@
             <ComboBoxItem Content="Normal" />
             <ComboBoxItem Content="Italic" />
             <ComboBoxItem Content="Oblique" />
+            <ComboBoxItem Content="(null)" x:Name="cbbNull" Visibility="Collapsed" />
         </ComboBox>
     </Grid>
 </UserControl>
