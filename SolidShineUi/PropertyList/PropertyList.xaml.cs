@@ -148,8 +148,17 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public void ReloadObject()
         {
+            ReloadObject(false);
+        }
+
+        /// <summary>
+        /// Reload the properties and values from the currently observed object, with the option to reset filter and view settings if desired.
+        /// </summary>
+        private void ReloadObject(bool resetViewSettings)
+        {
             if (_baseObject != null)
             {
+                // TODO: preserve filter and view options prior to actual reload
                 LoadObject(_baseObject);
             }
         }
@@ -214,8 +223,10 @@ namespace SolidShineUi.PropertyList
 
             txtFilter.Text = "";
             _filterString = "";
-            ShowInheritedProperties = true;
+            _showInherited = true;
             mnuShowInherited.IsChecked = true;
+            _showReadOnly = true;
+            mnuShowReadOnly.IsChecked = true;
 
             btnRefresh.IsEnabled = true;
         }
@@ -322,8 +333,11 @@ namespace SolidShineUi.PropertyList
         private string _filterString = "";
 
         /// <summary>
-        /// Get or set how the list of properties are sorted in this PropertyList.
+        /// Get or set how the list of properties are sorted in the PropertyList.
         /// </summary>
+        /// <remarks>
+        /// If this setting is changed, you will need to reload the object (<see cref="ReloadObject"/>) or load a new object to apply that change.
+        /// </remarks>
         public PropertySortOption SortOption { get => _sort; set { _sort = value; SortList(); } }
 
         /// <summary>
@@ -346,7 +360,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.
         /// </summary>
-        public bool ShowReadOnlyProperties { get => _showReadOnly; set { _showReadOnly = value; FilterProperties(_filterString); mnuShowInherited.IsChecked = value; } }
+        public bool ShowReadOnlyProperties { get => _showReadOnly; set { _showReadOnly = value; FilterProperties(_filterString); mnuShowReadOnly.IsChecked = value; } }
 
         private static string GetCategoryOfProperty(PropertyInfo pi)
         {
@@ -637,12 +651,14 @@ namespace SolidShineUi.PropertyList
         {
             SortOption = PropertySortOption.Name;
             LoadPropertyList(properties);
+            FilterProperties(_filterString);
         }
 
         private void btnCategory_Click(object sender, RoutedEventArgs e)
         {
             SortOption = PropertySortOption.Category;
             LoadPropertyList(properties);
+            FilterProperties(_filterString);
         }
 
         private void mnuTypesCol_Click(object sender, RoutedEventArgs e)

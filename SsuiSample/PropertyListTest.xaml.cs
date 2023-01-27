@@ -90,6 +90,7 @@ namespace SsuiSample
         private void btnSelObj_Click(object sender, RoutedEventArgs e)
         {
             prop.LoadObject(ptto);
+            prop.ObjectDisplayName = "Internal test object";
         }
 
         PropertyTestTestObject ptto = new PropertyTestTestObject();
@@ -113,6 +114,10 @@ namespace SsuiSample
             public Rune RuneChar { get; set; } = new Rune('c');
 
 #endif
+
+            public Color? ColCol { get; set; } = Colors.Orange;
+
+            public FontStyle? NullStyle { get; set; } = null;
 
             public Thickness? NullThickness { get; set; } = null;
         }

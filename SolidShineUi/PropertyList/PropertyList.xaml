@@ -38,7 +38,7 @@
                              Height="28" Width="28" Visibility="{Binding ElementName=control, Path=ShowReloadButton, Converter={StaticResource btv}}" >
                 <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png" x:Name="imgReload" />
             </flat:FlatButton>
-            <flat:MenuButton Grid.Column="4" x:Name="mnuView" Content="Sort" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, ElementName=control}" Height="28"
+            <flat:MenuButton Grid.Column="4" x:Name="mnuView" Content="View" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, ElementName=control}" Height="28"
                              TransparentBack="True" MinWidth="50" Visibility="{Binding ElementName=control, Path=ShowViewMenu, Converter={StaticResource btv}}" >
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
