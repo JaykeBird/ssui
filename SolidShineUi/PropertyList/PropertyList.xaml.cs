@@ -336,7 +336,7 @@ namespace SolidShineUi.PropertyList
         /// Get or set how the list of properties are sorted in the PropertyList.
         /// </summary>
         /// <remarks>
-        /// If this setting is changed, you will need to reload the object (<see cref="ReloadObject"/>) or load a new object to apply that change.
+        /// If this setting is changed, you will need to reload the object (<see cref="ReloadObject()"/>) or load a new object to apply that change.
         /// </remarks>
         public PropertySortOption SortOption { get => _sort; set { _sort = value; SortList(); } }
 
@@ -345,7 +345,7 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         /// <remarks>
         /// When loading in an object, the attributes for each property in that object are looked at. If a property has an attribute that matches what a flag disallows,
-        /// that property is not loaded. If this setting is changed, you will need to reload the object (<see cref="ReloadObject"/>) or load a new object to apply that change.
+        /// that property is not loaded. If this setting is changed, you will need to reload the object (<see cref="ReloadObject()"/>) or load a new object to apply that change.
         /// </remarks>
         public PropertyListDisplayFlags DisplayOptions { get; set; } = PropertyListDisplayFlags.HidePropertyListHide;
 

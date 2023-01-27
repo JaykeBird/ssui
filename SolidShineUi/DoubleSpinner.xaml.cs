@@ -511,7 +511,7 @@ namespace SolidShineUi
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
-        /// Get or set how many decimal places to display. Values entered with a more precise decimal point will be rounded.
+        /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.
         ///</summary>
         [Category("Common")]
         public int Decimals
@@ -767,12 +767,12 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// Get or set the minimum number of digits to display in the spinner. A value of 0 or lower will display only the minimum needed for the number being displayed.
+        /// Get or set the minimum number of integral digits to display in the spinner. A value of 0 or lower will revert the display to using the standard double display format.
         /// </summary>
         /// <remarks>
-        /// This modifies the number of digits being rendered via <see cref="double.ToString(string)"/> with the G format string.
-        /// Given the limitations of format strings in relation to both integers and doubles, the results of this property may be different between the DoubleSpinner and IntegerSpinner.
-        /// Setting this value will not actually round the stored value, only change what is displayed; instead, you can use the <see cref="Decimals"/> property for actual rounding.
+        /// This modifies the number of digits being rendered via <see cref="double.ToString(string)"/>.
+        /// Setting this to <c>4</c> and then setting the Value to <c>16</c> will render the text <c>0016</c> in the display. The stored value isn't affected.
+        /// This setting only modifies the integral (integer) part of the number; use the <see cref="Decimals"/> property for modifying how many numbers to display after the decimal point.
         /// You should generally avoid setting this to numbers larger than 99, as larger numbers are only supported in newer versions of .NET.
         /// </remarks>
         [Category("Common")]

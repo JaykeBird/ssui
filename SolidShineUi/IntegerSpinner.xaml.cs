@@ -765,7 +765,6 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>
         /// This modifies the number of digits being rendered via <see cref="int.ToString(string)"/>.
-        /// Given the limitations of format strings in relation to both integers and doubles, the results of this property may be different between the DoubleSpinner and IntegerSpinner.
         /// Setting this to <c>4</c> and then setting the Value to <c>16</c> will render the text <c>0016</c> in the display. The stored value isn't affected.
         /// You should generally avoid setting this to numbers larger than 99, as larger numbers are only supported in newer versions of .NET.
         /// </remarks>
