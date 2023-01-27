@@ -799,6 +799,8 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(GridLength?), typeof(GridLengthEditor));
             RegisterEditor(typeof(Color), typeof(ColorEditor));
             RegisterEditor(typeof(Color?), typeof(ColorEditor));
+            RegisterEditor(typeof(CornerRadius), typeof(CornerRadiusEditor));
+            RegisterEditor(typeof(CornerRadius?), typeof(CornerRadiusEditor));
             RegisterEditor(typeof(char), typeof(CharEditor));
             RegisterEditor(typeof(char?), typeof(CharEditor));
 #if NETCOREAPP
