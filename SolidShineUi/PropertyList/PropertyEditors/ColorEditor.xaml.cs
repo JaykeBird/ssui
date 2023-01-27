@@ -146,7 +146,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (type == typeof(Color))
             {
-                col = (Color)value;
+                col = (Color?)value;
             }
             else if (type == typeof(Color?))
             {

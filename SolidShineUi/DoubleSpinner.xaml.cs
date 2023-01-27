@@ -770,9 +770,10 @@ namespace SolidShineUi
         /// Get or set the minimum number of digits to display in the spinner. A value of 0 or lower will display only the minimum needed for the number being displayed.
         /// </summary>
         /// <remarks>
-        /// This modifies the number of digits being rendered via <see cref="int.ToString(string)"/>.
-        /// Setting this to <c>4</c> and then setting the Value to <c>16</c> will render the text <c>0016</c> in the display.
-        /// You should generally setting this to numbers larger than 99, as larger numbers are only supported in newer versions of .NET.
+        /// This modifies the number of digits being rendered via <see cref="double.ToString(string)"/> with the G format string.
+        /// Given the limitations of format strings in relation to both integers and doubles, the results of this property may be different between the DoubleSpinner and IntegerSpinner.
+        /// Setting this value will not actually round the stored value, only change what is displayed; instead, you can use the <see cref="Decimals"/> property for actual rounding.
+        /// You should generally avoid setting this to numbers larger than 99, as larger numbers are only supported in newer versions of .NET.
         /// </remarks>
         [Category("Common")]
         public int MinimumDigitCount

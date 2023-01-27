@@ -132,6 +132,10 @@ namespace SolidShineUi
         /// </summary>
         public ReadOnlyCollection<T> SelectedItems => selectedItems.AsReadOnly();
 
+        /// <summary>
+        /// Get if multiple items can be selected at once. This property cannot be changed or set to; trying to call the setter will raise a <see cref="NotSupportedException"/>.
+        /// </summary>
+        /// <exception cref="NotSupportedException">Raised if the setter for this property is called. This property is implemented as read-only here.</exception>
         public bool CanSelectMultiple { get => true; set { throw new NotSupportedException("The CanSelectMultiple value cannot be changed in a SelectableCollectionView."); } }
 
         /// <summary>

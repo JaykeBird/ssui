@@ -22,11 +22,13 @@ namespace SolidShineUi.Utils
     public class IconSizeConverter : IValueConverter
     {
         /// <inheritdoc/>
-        public virtual object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
 #if NETCOREAPP
+        public virtual object? Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
             Uri? uri = null;
 #else
+        public virtual object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
             Uri uri = null;
 #endif
 
@@ -46,7 +48,7 @@ namespace SolidShineUi.Utils
             }
             else
             {
-                string suri = value?.ToString()?.Trim();
+                string suri = (value?.ToString() ?? "").Trim();
 
                 if (string.IsNullOrWhiteSpace(suri))
                 {
@@ -81,7 +83,7 @@ namespace SolidShineUi.Utils
             return result;
         }
 
-        /// <inheritdoc/>
+        /// <summary>Not implemented, throws a <see cref="NotImplementedException"/>.</summary>
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();

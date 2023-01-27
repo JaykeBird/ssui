@@ -142,7 +142,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (type == typeof(GridLength))
             {
-                gl = (GridLength)value;
+                gl = (GridLength?)value;
             }
             else if (type == typeof(GridLength?))
             {

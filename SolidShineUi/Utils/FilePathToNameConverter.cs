@@ -55,7 +55,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// This is not implemented.
+        /// This is not implemented. Throws a <see cref="NotImplementedException"/>.
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

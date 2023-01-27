@@ -271,6 +271,11 @@ namespace SolidShineUi
         public event EventHandler RightClick;
 #endif
 
+        /// <summary>
+        /// Represents a handler for the SelectionChanged event.
+        /// </summary>
+        /// <param name="sender">The source object of the event.</param>
+        /// <param name="e">The event arguments, containing information on the new IsSelected value and how the selection changed.</param>
         public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
 
 #region User Inputs
@@ -460,6 +465,9 @@ namespace SolidShineUi
 
     }
 
+    /// <summary>
+    /// The event arguments for the SelectionChanged event of the SelectableUserControl.
+    /// </summary>
     public class ItemSelectionChangedEventArgs : EventArgs
     {
         /// <summary>

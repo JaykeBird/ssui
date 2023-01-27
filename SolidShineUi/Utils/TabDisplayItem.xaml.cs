@@ -978,7 +978,9 @@ namespace SolidShineUi.Utils
         {
             SourceTabItem = sourceTabItem;
             DroppedTabItem = droppedTabItem;
+#pragma warning disable CS0618 // Type or member is obsolete
             Before = before;
+#pragma warning restore CS0618 // Type or member is obsolete
             PlaceBefore = before;
         }
 
