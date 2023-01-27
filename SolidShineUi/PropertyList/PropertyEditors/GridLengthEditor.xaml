@@ -9,12 +9,12 @@
              d:DesignHeight="30" d:DesignWidth="400">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" MaxWidth="80" />
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
-        <flat:EnumComboBox x:Name="cbbType" Enum="{x:Type GridUnitType}" VerticalContentAlignment="Center" SelectionChanged="cbbType_SelectionChanged" />
-        <flat:DoubleSpinner x:Name="nudValue" Margin="3,0,0,0" Grid.Column="1" ValueChanged="nudValue_ValueChanged" Step="1" />
+        <flat:DoubleSpinner x:Name="nudValue" ValueChanged="nudValue_ValueChanged" Step="1" />
+        <flat:EnumComboBox x:Name="cbbType" Enum="{x:Type GridUnitType}" Grid.Column="1" Margin="3,0,0,0" VerticalContentAlignment="Center" SelectionChanged="cbbType_SelectionChanged" />
         <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="2" ShowMenuArrow="False" >
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <flat:MenuButton.Menu>
