@@ -845,7 +845,7 @@ namespace SolidShineUi
 
             string digitDisplay = "";
             if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G"); }
-            string sVal = Value.ToString(DisplayAsHex ? "X" : "G" + digitDisplay);
+            string sVal = Value.ToString((DisplayAsHex ? "X" : "D") + digitDisplay);
 
             if (txtValue.Text != sVal)
             {
