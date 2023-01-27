@@ -25,12 +25,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             InitializeComponent();
         }
 
-        private Type _itemType = typeof(GridLength);
-
         /// <inheritdoc/>
         public List<Type> ValidTypes => (new[] { typeof(GridLength), typeof(GridLength?) }).ToList();
-
-        private GridLength _value = GridLength.Auto;
 
         bool _internalAction = false;
 
@@ -140,7 +136,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
         {
             _internalAction = true;
-            _itemType = type;
+            //_itemType = type;
 
             GridLength? gl = null;
 

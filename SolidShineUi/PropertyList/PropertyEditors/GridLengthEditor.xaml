@@ -6,7 +6,7 @@
              xmlns:flat="clr-namespace:SolidShineUi"
              xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
              mc:Ignorable="d" Width="Auto"
-             d:DesignHeight="30" d:DesignWidth="400">
+             d:DesignHeight="24" d:DesignWidth="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
