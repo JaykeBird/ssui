@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Linq;
 using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi;
 using SolidShineUi.PropertyList.Dialogs;
 using SolidShineUi.Utils;
-using System.Text;
-using System.IO;
-using System.Diagnostics;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {

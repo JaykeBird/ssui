@@ -145,7 +145,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #else
         public object GetValue()
         {
-            return new Thickness(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
+            if (mnuSetNull.IsChecked == true)
+            {
+                return null;
+            }
+            else
+            {
+                return new Thickness(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
+            }
         }
         
         /// <inheritdoc/>
