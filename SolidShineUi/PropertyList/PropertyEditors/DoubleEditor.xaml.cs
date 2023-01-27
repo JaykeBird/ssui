@@ -71,6 +71,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         Type _propType = typeof(double);
+        bool _internalAction = false;
 
         /// <inheritdoc/>
 #if NETCOREAPP
@@ -156,16 +157,40 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     SetAsNull();
                 }
-                else if (double.IsNaN((double)value) || float.IsNaN((float)value))
+                else if (value is double d && double.IsNaN(d))
                 {
                     SetAsNaN();
                 }
+                else if (value is float f && float.IsNaN(f))
+                {
+                    SetAsNaN();
+                }
+#if NET5_0_OR_GREATER
+                else if (value is Half h && Half.IsNaN(h))
+                {
+                    SetAsNaN();
+                }
+#endif
                 else
                 {
-                    UnsetAsNaN();
+                    //UnsetAsNaN();
                     UnsetAsNull();
                 }
             }
+            else if (value is double d && double.IsNaN(d))
+            {
+                SetAsNaN();
+            }
+            else if (value is float f && float.IsNaN(f))
+            {
+                SetAsNaN();
+            }
+#if NET5_0_OR_GREATER
+            else if (value is Half h && Half.IsNaN(h))
+            {
+                SetAsNaN();
+            }
+#endif
 
             _propType = type;
             dblSpinner.Value = (double)(value ?? 0);
@@ -244,15 +269,27 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     SetAsNull();
                 }
-                else if (double.IsNaN((double)value) || float.IsNaN((float)value))
+                else if (value is double d && double.IsNaN(d))
+                {
+                    SetAsNaN();
+                }
+                else if (value is float f && float.IsNaN(f))
                 {
                     SetAsNaN();
                 }
                 else
                 {
-                    UnsetAsNaN();
+                    //UnsetAsNaN();
                     UnsetAsNull();
                 }
+            }
+            else if (value is double d && double.IsNaN(d))
+            {
+                SetAsNaN();
+            }
+            else if (value is float f && float.IsNaN(f))
+            {
+                SetAsNaN();
             }
 
             _propType = type;
@@ -264,6 +301,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private void dblSpinner_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (_internalAction) return;
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -285,13 +323,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             mnuSetNan.IsChecked = true;
             mnuSetNull.IsChecked = false;
-            dblSpinner.IsEnabled = false;
+            _internalAction = true;
+            if (!double.IsNaN(dblSpinner.Value)) dblSpinner.Value = double.NaN;
+            _internalAction = false;
+            //dblSpinner.IsEnabled = false;
         }
 
         void UnsetAsNaN()
         {
             mnuSetNan.IsChecked = false;
-            dblSpinner.IsEnabled = true;
+            _internalAction = true;
+            if (double.IsNaN(dblSpinner.Value)) dblSpinner.Value = 0;
+            _internalAction = false;
+            //dblSpinner.IsEnabled = true;
         }
 
         private void mnuSetNull_Click(object sender, RoutedEventArgs e)
