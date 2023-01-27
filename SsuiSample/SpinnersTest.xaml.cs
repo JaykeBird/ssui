@@ -57,8 +57,12 @@ namespace SsuiSample
                 return;
             }
         }
+
         #endregion
 
-
+        private void nud9_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            brdrColor.Background = new SolidColorBrush(ColorsHelper.CreateFromHex(nud9.Value.ToString("X6")));
+        }
     }
 }
