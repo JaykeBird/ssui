@@ -154,12 +154,24 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Reload the properties and values from the currently observed object, with the option to reset filter and view settings if desired.
         /// </summary>
+        /// <param name="resetViewSettings">Set if the filter and view settings should be reset when the object is reloaded.</param>
         private void ReloadObject(bool resetViewSettings)
         {
             if (_baseObject != null)
             {
+                string _oldFilter = _filterString;
+                bool _oldInherits = _showInherited;
+                bool _oldReadOnly = _showReadOnly;
+
                 // TODO: preserve filter and view options prior to actual reload
                 LoadObject(_baseObject);
+
+                if (!resetViewSettings)
+                {
+                    _showReadOnly = _oldReadOnly;
+                    _showInherited = _oldInherits;
+                    FilterProperties(_oldFilter);
+                }
             }
         }
 
