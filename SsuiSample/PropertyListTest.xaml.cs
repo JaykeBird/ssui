@@ -1,4 +1,5 @@
 ﻿using SolidShineUi;
+using SolidShineUi.PropertyList;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,9 @@ namespace SsuiSample
         public PropertyListTest()
         {
             InitializeComponent();
+
+            // set PropertyList properties
+            prop.DisplayOptions = PropertyListDisplayFlags.HidePropertyListHide;
         }
 
         #region ColorScheme
@@ -105,6 +109,7 @@ namespace SsuiSample
 
             public decimal NumberWithActualDecimal { get; set; } = (decimal)7.3;
 
+            [PropertyListHide]
             public Brush TestBrush { get; set; } = BrushFactory.Create(Colors.Green, Colors.Orange, 90.0);
 
             public char? CharChar { get; set; } = 'c';

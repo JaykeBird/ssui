@@ -155,11 +155,12 @@ namespace SolidShineUi.PropertyList
         /// Reload the properties and values from the currently observed object, with the option to reset filter and view settings if desired.
         /// </summary>
         /// <param name="resetViewSettings">Set if the filter and view settings should be reset when the object is reloaded.</param>
-        private void ReloadObject(bool resetViewSettings)
+        public void ReloadObject(bool resetViewSettings)
         {
             if (_baseObject != null)
             {
                 string _oldFilter = _filterString;
+                string _displName = ObjectDisplayName;
                 bool _oldInherits = _showInherited;
                 bool _oldReadOnly = _showReadOnly;
 
@@ -170,6 +171,7 @@ namespace SolidShineUi.PropertyList
                 {
                     _showReadOnly = _oldReadOnly;
                     _showInherited = _oldInherits;
+                    ObjectDisplayName = _displName;
                     FilterProperties(_oldFilter);
                 }
             }
@@ -1040,7 +1042,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Ignore attributes and display all properties in an object. This overrides all other flags.
         /// </summary>
-        ShowAll = 0,
+        ShowAll = 16,
         /// <summary>
         /// Hides properties that have the PropertyListHide attribute (<see cref="PropertyListHideAttribute"/>) set.
         /// </summary>
