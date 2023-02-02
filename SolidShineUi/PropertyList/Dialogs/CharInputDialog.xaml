@@ -25,7 +25,7 @@
         <flat:IntegerSpinner x:Name="txtHex" Height="24" Margin="20,5,10,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" Grid.Row="2" ValueChanged="txtHex_ValueChanged" DisplayAsHex="True" ColorScheme="{Binding ColorScheme, ElementName=window}" />
         <flat:IntegerSpinner x:Name="nudDec" Height="24" Margin="10,5,15,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" Grid.Row="2" ValueChanged="nudDec_ValueChanged" Grid.Column="1" ColorScheme="{Binding ColorScheme, ElementName=window}" />
         <flat:ClickSelectTextBox x:Name="txtPreview" Height="24" IsReadOnly="True" BorderThickness="0" Background="Transparent" Margin="20,40,10,0" VerticalAlignment="Top" SelectOnFocus="True" Grid.Row="3" />
-        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="As Hexadecimal (A-Z,0-9):" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="As Hexadecimal (A-F,0-9):" VerticalAlignment="Top" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" Text="As Decimal:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="Preview:" VerticalAlignment="Top" Grid.Row="3"/>
     </Grid>
