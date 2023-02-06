@@ -58,6 +58,7 @@ namespace SolidShineUi
             CreateAccentPalette(accentColor);
         }
 
+        #region Properties
         /// <summary>
         /// Get or set whether this is a high-contrast color scheme. Some controls will differ their appearnce if this color scheme is a high contrast one.
         /// </summary>
@@ -187,6 +188,7 @@ namespace SolidShineUi
         public bool MenusUseAccent { get; set; } = false;
 
         //public bool PanelUseAccent { get; set; } = false;
+        #endregion
 
         void CreatePalette(Color baseColor)
         {

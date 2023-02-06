@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-// Source: https://github.com/Stopbyte/WPF-Numeric-Spinner-NumericUpDown
+// initial base is https://github.com/Stopbyte/WPF-Numeric-Spinner-NumericUpDown , but has since been heavily modified
 
 namespace SolidShineUi
 {
