@@ -40,13 +40,14 @@ This file will be edited as I make adjustments and changes. Nothing here is set 
 - Finish "must-have"s for PropertyGrid
 - Begin testing with AvaloniaUI support
 
-## Early/mid 2023
+## Mid 2023
 
 - Ribbon control
 - Toolbar controls
 - Redesigned ColorScheme system (might be renamed SsuiTheme)
 - Work on port to AvaloniaUI (11.0 will be the version I'm targeting)
-- DataTable control
-  - use same core bits as PropertyGrid
+- DataTable control, DataInputDialog
+  - use same core bits as PropertyList
+  - will need a static basic list of property editors, rather than it being stored in the PropertyList
 - Touch/keyboard support for ImageColorPicker
   - May require yet another rewrite
