@@ -112,7 +112,7 @@ From here, you should be on your way!
 
 ### Keyboard shortcuts
 
-To get started with keyboard shortcut support, I recommend looking at the [AddKeyboardSupport](Docs/AddKeyboardSupport.md) file for a step-by-step process and other notes and remarks. Note that this is not a complete drop-in replacement for the InputBindings system in WPF's XAML, but its own system with different advantages.
+To get started with keyboard shortcut support, I recommend looking at the [Adding Keyboard Support](https://github.com/JaykeBird/ssui/wiki/KeyboardSupport) file for a step-by-step process and other notes and remarks. Note that this is not a complete drop-in replacement for the InputBindings system in WPF's XAML, but its own system with different advantages.
 
 ## Included
 
