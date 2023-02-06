@@ -15,7 +15,7 @@ The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/
 
 ### Getting set up
 
-In your XAML or C# files, you'll want to start by adding a reference to SolidShineUi. Then, you can start referencing the controls below!
+You'll want to start with downloading/references the packages as linked above. Then in your XAML or C# files, you can add a reference to SolidShineUi. After that, you can start using the controls listed below!
 
 ```XAML
     xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
@@ -25,13 +25,25 @@ In your XAML or C# files, you'll want to start by adding a reference to SolidShi
 using SolidShineUi;
 ```
 
-It's also recommended that you set up a ColorScheme for your app, that all the windows and controls can access. Each window and control class below includes a ColorScheme property, which can also be bound.
+You can use just the one control you needed, or you can rebuild existing UIs or design fully new UIs with the Solid Shine UI controls. You can use these alongside the standard WPF controls with no issues or changes in their behavior.
+
+Each window and control in Solid Shine UI includes a ColorScheme property, but if you don't want to use that, you can modify each control's appearance using the various brush properties. If you want to use the ColorScheme property to make it easy to set a consistent appearance for all these controls at once, continue to the next section.
+
+You can use the SsuiSample app included here as an example to get started with or to see the capabilities of the library.
+
+Documentation is available on [the wiki here on GitHub](https://github.com/JaykeBird/ssui/wiki).
+
+### Adding/using a ColorScheme
+
+It's recommended that you set up a ColorScheme for your app, that all the windows and controls can access. Each window and control class in Solid Shine UI includes a ColorScheme property, which can also be used via WPF binding.
 
 For example, the way I recommend doing so is starting with placing a static ColorScheme class in your App.xaml.cs file:
 
 ```csharp
     public static ColorScheme ColorScheme { get; set; } = new ColorScheme(Colors.Green);
 ```
+
+You can create a ColorScheme based upon any base color you want to use (such as your app's branding color), or you can use `ColorScheme.CreateLightTheme()` or `ColorScheme.CreateDarkTheme()` for more standard light or dark themes. High-contrast color schemes are also built-in. You can create a custom ColorScheme from scratch too.
 
 Then, if you use a FlatWindow (rather than the standard WPF Window), you can set it up with the color scheme as below:
 
@@ -72,11 +84,35 @@ namespace MyApp
 }
 ```
 
+Otherwise, if you want to keep using WPF's standard windows, you can either create your own ColorScheme property for the window that controls can bind to, or just simply set the controls' ColorScheme property in the backend.
+
+Here's how to create your own ColorScheme property that you can add to a standard WPF window (then, you can bind to it just like the above code):
+
+```csharp
+// in your window's .xaml.cs (code-behind) file
+
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
+        public static readonly DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(MyWindowClassName),
+            new FrameworkPropertyMetadata(new ColorScheme()));
+
+        /// <summary>
+        /// Get or set the color scheme used for this control/window. This can be used for binding with the combined <see cref="ColorSchemeProperty"/>.
+        /// </summary>
+        public ColorScheme ColorScheme
+        {
+            get => (ColorScheme)GetValue(ColorSchemeProperty);
+            set => SetValue(ColorSchemeProperty, value);
+        }
+```
+
 From here, you should be on your way!
 
-You can use the included SsuiSample app as an example to get started with.
+### Keyboard shortcuts
 
-Documentation is available on [the wiki here on GitHub](https://github.com/JaykeBird/ssui/wiki).
+To get started with keyboard shortcut support, I recommend looking at the [AddKeyboardSupport](Docs/AddKeyboardSupport.md) file for a step-by-step process and other notes and remarks. Note that this is not a complete drop-in replacement for the InputBindings system in WPF's XAML, but its own system with different advantages.
 
 ## Included
 
@@ -84,9 +120,9 @@ Documentation is available on [the wiki here on GitHub](https://github.com/Jayke
 
 - **FlatWindow** - a basic WPF window with a flat appearance and additional functionality
 - **ColorPickerDialog** - a WPF dialog for selecting colors, either from swatches, using sliders, or from an image or color palette file
+- **FontSelectDialog** - a WPF dialog that allows the user to select a font, as well as other properties like size and style
 - **MessageDialog** - a MessageBox dialog in the FlatWindow/SSUI style, with additional functions and buttons (similar to the Windows TaskDialog)
 - **StringInputDialog** - a WPF dialog to allow users to input a string, similar to the input dialog JOptionPane from Java's Swing library
-- **FontSelectDialog** - a WPF dialog that allows the user to select a font, as well as other properties like size and style
 
 ### Controls
 
@@ -94,11 +130,12 @@ Documentation is available on [the wiki here on GitHub](https://github.com/Jayke
 - **CheckBox** - a box that can be checked; it is larger than the standard WPF CheckBox and offers more customization
 - **ContextMenu** - a context menu with a flat style to match the rest of the library
 - **EnumComboBox** - a ComboBox pre-filled with the values of an enumerator
+- **ExperimentalPropertyList** - view and edit the properties of any WPF control or C# object (despite the name, it is now stable, it will be renamed in 2.0)
 - **FileSelect** - select one or more files, via the Browse button or drag-and-drop
 - **FlatButton** - a flat-styled button with a lot of customization options (including toggle-button functions)
 - **DoubleSpinner** - also known as a NumericUpDown; select a number by typing it in, clicking up or down, or entering in a math expression
 - **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values
-- **LinkTextBlock** - a TextBlock that acts as a static hyperlink
+- **LinkTextBlock** - a TextBlock that acts as a hyperlink
 - **Menu** - a menu bar and menu with a flat, colored style
 - **MenuButton** - a flat-styled button that opens a menu when you click on it
 - **SelectPanel** - a powerful panel to easily manage a list and select items from it
@@ -106,8 +143,8 @@ Documentation is available on [the wiki here on GitHub](https://github.com/Jayke
 
 ### Other Classes
 
-- **ArithmeticParser** - parse math expressions (`"(5+4)/2"`) quickly and easily. Available [separately](https://github.com/JaykeBird/ArithmeticParser) as well
-- **AutoCompleteBehavior** - adds basic auto-complete behavior to text boxes. Available [separately](https://github.com/Nimgoble/WPFTextBoxAutoComplete) as well
+- **ArithmeticParser** - parse math expressions (`"(5+4)/2"`) quickly and easily. [Available separately](https://github.com/JaykeBird/ArithmeticParser) as well
+- **AutoCompleteBehavior** - adds basic auto-complete behavior to text boxes. [Available separately](https://github.com/Nimgoble/WPFTextBoxAutoComplete) as well
 - **BindableChild** - allows you to use WPF binding for a control's Child property (such as the WPF Border control)
 - **BrushFactory** - easy and convenient way to create various brushes
 - **ColorPaletteFileReader** - load a list of colors from various color palette file formats
@@ -127,23 +164,19 @@ Documentation is available on [the wiki here on GitHub](https://github.com/Jayke
 
 ## Coming Soon
 
-More controls (including **PropertyList** and **Toolbar**) are coming soon! View the [roadmap](Docs/ROADMAP.md) for more details.
+More controls (including **Ribbon**) are coming soon! View the [roadmap](Docs/ROADMAP.md) for more details.
 
 ## Building/Testing
 
 To build this library you will need:
 
 - .NET Framework developer tools (4.7.1 and 4.8)
-- .NET Core SDK 3.1 and 5.0
+- latest .NET Core SDK
 - (In the future, I will be adding AvaloniaUI support, so this will become a requirement as well.)
 
-I recommend using Visual Studio 2019 for this library. When opened up, you should be able to just build and run the library without any further action needed.
+I recommend using Visual Studio 2022 (or the latest version) for this library. When opened up, you should be able to just build and run the library without any further action needed.
 
 Included is the SsuiSample program, which is useful for demonstrating the library and its functions. I also use this to test the library and its controls. Feel free to use SsuiSample as a basis for your implementations.
-
-### Keyboard shortcuts
-
-To get started with keyboard shortcut support, I recommend looking at the [AddKeyboardSupport](Docs/AddKeyboardSupport.md) file for a step-by-step process and other notes and remarks. Note that this is not a complete drop-in replacement for the InputBindings system in WPF's XAML, but its own system with different advantages.
 
 ### Notes
 
