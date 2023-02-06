@@ -1046,10 +1046,6 @@ namespace SolidShineUi.PropertyList
     public enum PropertyListDisplayFlags
     {
         /// <summary>
-        /// Ignore attributes and display all properties in an object. This overrides all other flags.
-        /// </summary>
-        ShowAll = 16,
-        /// <summary>
         /// Hides properties that have the PropertyListHide attribute (<see cref="PropertyListHideAttribute"/>) set.
         /// </summary>
         HidePropertyListHide = 1,
@@ -1065,5 +1061,9 @@ namespace SolidShineUi.PropertyList
         /// Only properties that have the PropertyListShow attribute (<see cref="PropertyListShowAttribute"/>) will be displayed. This overrides all other flags.
         /// </summary>
         OnlyShowPropertyListShow = 8,
+        /// <summary>
+        /// Ignore attributes and display all properties in an object. This overrides all other flags.
+        /// </summary>
+        ShowAll = 16,
     }
 }
