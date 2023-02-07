@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SolidShineUi.PropertyList.PropertyEditors.DoubleEditor"
+﻿<UserControl x:Class="SolidShineUi.PropertyList.PropertyEditors.DecimalEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,7 +11,7 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
-        <flat:DoubleSpinner x:Name="dblSpinner" ValueChanged="dblSpinner_ValueChanged" AcceptExpressions="True" Step="0.5" Decimals="15" />
+        <flat:DoubleSpinner x:Name="dblSpinner" ValueChanged="dblSpinner_ValueChanged" AcceptExpressions="True" Step="1" Decimals="15" />
         <!-- Menu -->
         <flat:MenuButton x:Name="btnMenu" Grid.Column="8" ShowMenuArrow="False" TransparentBack="True" >
             <StackPanel Orientation="Horizontal">
@@ -19,7 +19,9 @@
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
-                    <MenuItem Header="Set as NaN" x:Name="mnuSetNan" Click="mnuSetNan_Click" IsEnabled="True" />
+                    <MenuItem Header="Copy Exact Value" x:Name="mnuCopy" Click="mnuCopy_Click" IsEnabled="True" />
+                    <MenuItem Header="Set Exact Value..." x:Name="mnuSetValue" Click="mnuSetValue_Click" IsEnabled="True" />
+                    <Separator />
                     <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>

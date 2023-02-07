@@ -789,6 +789,8 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(long?), typeof(LongEditor));
             RegisterEditor(typeof(uint?), typeof(LongEditor));
             RegisterEditor(typeof(ulong?), typeof(LongEditor));
+            RegisterEditor(typeof(decimal), typeof(DecimalEditor));
+            RegisterEditor(typeof(decimal?), typeof(DecimalEditor));
             RegisterEditor(typeof(Enum), typeof(EnumEditor));
             RegisterEditor(typeof(Brush), typeof(BrushEditor));
             RegisterEditor(typeof(SolidColorBrush), typeof(BrushEditor));

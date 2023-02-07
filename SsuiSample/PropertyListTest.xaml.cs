@@ -105,18 +105,18 @@ namespace SsuiSample
 
             public string TestString { get; set; } = "noodles";
 
-            public double NumberWithDecimal { get; set; } = 3.6;
-
-            public decimal NumberWithActualDecimal { get; set; } = (decimal)7.3;
-
             [PropertyListHide]
+            public double DoubleNumber { get; set; } = 3.6;
+
+            public decimal ActualDecimal { get; set; } = 7.3m;
+
             public Brush TestBrush { get; set; } = BrushFactory.Create(Colors.Green, Colors.Orange, 90.0);
 
             public char? CharChar { get; set; } = 'c';
             public char CharCharY { get; set; } = 'h';
 
 #if NETCOREAPP
-            public Rune RuneChar { get; set; } = new Rune('c');
+            public Rune RuneChar { get; set; } = new Rune('r');
 
 #endif
 
