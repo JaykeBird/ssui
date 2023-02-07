@@ -160,7 +160,7 @@ namespace SolidShineUi
         /// <param name="color">The color to convert to a hex string.</param>
         public static string ToHexString(Color color)
         {
-            return color.R.ToString("X") + color.G.ToString("X") + color.B.ToString("X");
+            return color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace SolidShineUi
         /// </remarks>
         public static string ToHexStringWithAlpha(Color color)
         {
-            return color.A.ToString("X") + color.R.ToString("X") + color.G.ToString("X") + color.B.ToString("X");
+            return color.A.ToString("X2") + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
         /// <summary>
