@@ -513,6 +513,9 @@ namespace SolidShineUi
         ///<summary>
         /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.
         ///</summary>
+        ///<remarks>
+        /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 2.
+        ///</remarks>
         [Category("Common")]
         public int Decimals
         {
@@ -785,7 +788,7 @@ namespace SolidShineUi
         #endregion
 
         /// <summary>
-        /// Validate the value and update the UI if neede.
+        /// Validate the value and update the UI if needed.
         /// </summary>
         private void ValidateValue()
         {
@@ -793,6 +796,8 @@ namespace SolidShineUi
             if (MaxValue < MinValue) MaxValue = MinValue;
             if (Value < MinValue) Value = MinValue;
             if (Value > MaxValue) Value = MaxValue;
+            if (Decimals > 15) Decimals = 15;
+            if (Decimals < 0) Decimals = 0;
 
             Value = Math.Round(Value, Decimals);
 
