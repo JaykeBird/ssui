@@ -165,7 +165,7 @@ namespace SolidShineUi
         /// </summary>
         public static DependencyProperty ValidationFailureStringProperty
             = DependencyProperty.Register("ValidationFailureString", typeof(string), typeof(StringInputDialog),
-            new FrameworkPropertyMetadata("Input does not match expected result"));
+            new FrameworkPropertyMetadata("Input is not valid"));
 
         void CheckValidation()
         {
@@ -185,7 +185,7 @@ namespace SolidShineUi
             }
             else
             {
-                // if validation is disabled, make sure the OK button is good to be used
+                // if validation is disabled, make sure the OK button isn't stuck disabled
                 txtValidation.Text = "";
                 btnOK.IsEnabled = true;
             }
