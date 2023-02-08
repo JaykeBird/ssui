@@ -56,18 +56,6 @@ namespace SolidShineUi
             InitializeComponent();
             Loaded += DoubleSpinner_Loaded;
 
-            //DoubleStringConverter dsc = new DoubleStringConverter();
-
-            //txtValue.SetBinding(TextBox.TextProperty, new Binding("Value")
-            //{
-            //    ElementName = "baseSpinner",
-            //    Mode = BindingMode.TwoWay,
-            //    //Converter = dsc,
-            //    //ConverterParameter = Decimals,
-            //    Delay = 1000,
-            //    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            //});
-
             DependencyPropertyDescriptor.FromProperty(ValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, PropertyChanged);
             //DependencyPropertyDescriptor.FromProperty(ValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, ValueChanged);
             DependencyPropertyDescriptor.FromProperty(DecimalsProperty, typeof(DoubleSpinner)).AddValueChanged(this, PropertyChanged);
@@ -168,12 +156,13 @@ namespace SolidShineUi
 #else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        
+        /// <summary>
+        /// The backing dependency property for the <see cref="ColorScheme"/> property. See that related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(DoubleSpinner),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -260,19 +249,6 @@ namespace SolidShineUi
             HighlightBrush = cs.HighlightColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
         }
-
-        //public void ApplyColorScheme(HighContrastOption hco)
-        //{
-        //    ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
-
-        //    ButtonBackground = cs.BackgroundColor.ToBrush();
-        //    brdr.BorderBrush = cs.BorderColor.ToBrush();
-        //    SelectionBrush = cs.ThirdHighlightColor.ToBrush();
-        //    HighlightBrush = cs.SecondHighlightColor.ToBrush();
-        //    DisabledBrush = cs.LightDisabledColor.ToBrush();
-        //    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-        //    Foreground = cs.ForegroundColor.ToBrush();
-        //}
         #endregion
 
         #region Brushes
@@ -424,58 +400,8 @@ namespace SolidShineUi
             set => SetValue(ValueProperty, value);
         }
 
-        //private double prev_value;
-
-        // comes from here?
-        // https://stackoverflow.com/questions/30318135/wpf-textbox-and-binding-to-double-not-able-to-type-on-it
-
-        //public double Value
-        //{
-        //    get { return (double)GetValue(ValueProperty); }
-        //    set
-        //    {
-        //        if (prev_value != value)
-        //        {
-        //            if (!advanceTimer.Enabled)
-        //            {
-        //                if (value < MinValue) value = MinValue;
-        //                if (value > MaxValue) value = MaxValue;
-
-        //                if (value == MinValue)
-        //                {
-        //                    btnDown.IsEnabled = false;
-        //                    btnDown.Background = DisabledBrush;
-        //                }
-        //                else
-        //                {
-        //                    btnDown.IsEnabled = true;
-        //                    btnDown.Background = ButtonBackground;
-        //                }
-
-        //                if (value == MaxValue)
-        //                {
-        //                    btnUp.IsEnabled = false;
-        //                    btnUp.Background = DisabledBrush;
-        //                }
-        //                else
-        //                {
-        //                    btnUp.IsEnabled = true;
-        //                    btnUp.Background = ButtonBackground;
-        //                }
-        //            }
-
-        //            SetValue(ValueProperty, value);
-        //            prev_value = value;
-        //            ValueChanged?.Invoke(this, EventArgs.Empty);
-        //        }
-
-        //        //txtValue.Text = Math.Round(Value, Decimals).ToString();
-        //    }
-        //}
-
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //int value = (d as IntegerSpinner).Value;
             if (d is DoubleSpinner s)
             {
                 s.InternalValueChanged?.Invoke(s, e);
