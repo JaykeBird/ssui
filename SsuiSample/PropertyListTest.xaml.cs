@@ -1,5 +1,6 @@
 ﻿using SolidShineUi;
 using SolidShineUi.PropertyList;
+using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -125,6 +126,8 @@ namespace SsuiSample
             public FontStyle? NullStyle { get; set; } = null;
 
             public Thickness? NullThickness { get; set; } = null;
+
+            public Version VerVersion { get; set; } = new Version(3, 0, 12);
         }
     }
 }

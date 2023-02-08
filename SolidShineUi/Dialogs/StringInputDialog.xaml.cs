@@ -59,6 +59,7 @@ namespace SolidShineUi
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
             txtValue.Focus();
+            CheckValidation();
         }
 
         #endregion
