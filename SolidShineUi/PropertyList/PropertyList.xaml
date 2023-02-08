@@ -50,6 +50,9 @@
                         <MenuItem Header="Show Read Only" x:Name="mnuShowReadOnly" Click="mnuShowReadOnly_Click" IsChecked="True" />
                         <Separator />
                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" Click="mnuTypesCol_Click" />
+                        <Separator />
+                        <MenuItem Header="Show Gridlines" x:Name="mnuGridlines" Click="mnuGridlines_Click" IsChecked="{Binding ElementName=control,Path=ShowGridlines}" />
+                        <MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click" />
                     </flat:ContextMenu>
                 </flat:MenuButton.Menu>
             </flat:MenuButton>

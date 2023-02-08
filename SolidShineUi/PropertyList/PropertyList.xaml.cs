@@ -36,6 +36,11 @@ namespace SolidShineUi.PropertyList
             colDescriptor.AddValueChanged(colTypes, ColumnWidthChanged);
             colDescriptor.AddValueChanged(colValues, ColumnWidthChanged);
 
+            GridlinePropertyChanged += (x, y) => { UpdateGridlines(); };
+
+            DependencyPropertyDescriptor.FromProperty(ShowGridlinesProperty, typeof(ExperimentalPropertyList)).AddValueChanged(this, GridlinePropertyChanged);
+            DependencyPropertyDescriptor.FromProperty(GridlineBrushProperty, typeof(ExperimentalPropertyList)).AddValueChanged(this, GridlinePropertyChanged);
+
             // use Clear to initialize the rest of the UI
             Clear();
         }
@@ -304,6 +309,8 @@ namespace SolidShineUi.PropertyList
                 pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject) : null, ipe);
                 pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
                 pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
+                pei.ShowGridlines = ShowGridlines;
+                pei.GridlineBrush = GridlineBrush;
                 stkProperties.Children.Add(pei);
             }
         }
@@ -418,7 +425,7 @@ namespace SolidShineUi.PropertyList
                 {
                     return false;
                 }
-                
+
                 if (DisplayOptions.HasFlag(PropertyListDisplayFlags.HidePropertyListHide) && attributes.Any(h => h is PropertyListHideAttribute))
                 {
                     return false;
@@ -1022,8 +1029,60 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
+        #region Brushes / Gridlines
+
+        public bool ShowGridlines { get => (bool)GetValue(ShowGridlinesProperty); set => SetValue(ShowGridlinesProperty, value); }
+
+        public static DependencyProperty ShowGridlinesProperty
+            = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(false));
+
+        public Brush GridlineBrush { get => (Brush)GetValue(GridlineBrushProperty); set => SetValue(GridlineBrushProperty, value); }
+
+        public static DependencyProperty GridlineBrushProperty
+            = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+
+        private event EventHandler GridlinePropertyChanged;
+
+        void UpdateGridlines()
+        {
+#if NETCOREAPP
+            foreach (UIElement? item in stkProperties.Children)
+#else
+            foreach (UIElement item in stkProperties.Children)
+#endif
+            {
+                if (item == null) continue;
+                if (item is PropertyEditorItem pei)
+                {
+                    pei.GridlineBrush = GridlineBrush;
+                    pei.ShowGridlines = ShowGridlines;
+                }
+            }
+        }
+
         #endregion
 
+        #endregion
+
+        private void mnuGridlines_Click(object sender, RoutedEventArgs e)
+        {
+            ShowGridlines = !ShowGridlines;
+        }
+
+        private void mnuGridlineBrush_Click(object sender, RoutedEventArgs e)
+        {
+            Color col = Colors.LightGray;
+            if (GridlineBrush is SolidColorBrush scb) col = scb.Color;
+            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, col);
+            cpd.Owner = Window.GetWindow(this);
+            cpd.ShowDialog();
+            if (cpd.DialogResult)
+            {
+                GridlineBrush = new SolidColorBrush(cpd.SelectedColor);
+            }
+        }
     }
 
     /// <summary>

@@ -3,12 +3,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Reflection;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace SolidShineUi.PropertyList
 {
     /// <summary>
     /// A control hosting a visual representation of an object's property, including the property's name, type, and (where possible) an editor control for editing the property.
-    /// For use with the <see cref="ExperimentalPropertyList"/>, not generally for use directly by itself.
+    /// This is meant for use with the <see cref="ExperimentalPropertyList"/>, not generally for use directly by itself.
     /// </summary>
     public partial class PropertyEditorItem : UserControl
     {
@@ -20,6 +21,7 @@ namespace SolidShineUi.PropertyList
             InitializeComponent();
         }
 
+        #region Property Properties
 #if NETCOREAPP
         /// <summary>
         /// Get or set the PropertyInfo representing the property shown.
@@ -125,6 +127,7 @@ namespace SolidShineUi.PropertyList
         /// Get or set the type of the property being shown, in a more user-friendly textual format.
         /// </summary>
         public string PropertyTypeText { get => txtType.Text; set => txtType.Text = value; }
+        #endregion
 
         /// <summary>
         /// Load in a property to show in this PropertyEditorItem, with (if possible) a IPropertyEditor control to allow editing the property value.
@@ -210,6 +213,19 @@ namespace SolidShineUi.PropertyList
             PropertyInfo.SetValue(targetObject, PropertyValue);
         }
 
+        string PrettifyPropertyType(string typeString)
+        {
+            if (typeString.StartsWith("System.Nullable"))
+            {
+                return typeString.Replace("System.Nullable`1[", "").TrimEnd(']') + "?";
+            }
+            else
+            {
+                return typeString.Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("[", "<").Replace("]", ">");
+            }
+        }
+
+        #region Visuals Settings
         /// <summary>
         /// Update the widths of the internal columns in this control, to match the widths in some other location.
         /// </summary>
@@ -223,18 +239,32 @@ namespace SolidShineUi.PropertyList
             colValues.Width = valueCol;
         }
 
-        string PrettifyPropertyType(string typeString)
-        {
-            if (typeString.StartsWith("System.Nullable"))
-            {
-                return typeString.Replace("System.Nullable`1[", "").TrimEnd(']') + "?";
-            }
-            else
-            {
-                return typeString.Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("[","<").Replace("]",">");
-            }
-        }
+        /// <summary>
+        /// Get or set if gridlines should be displayed in the editor entry. Showing the gridlines will make the editor appear more like the WinForms PropertyGrid control.
+        /// </summary>
+        public bool ShowGridlines { get => (bool)GetValue(ShowGridlinesProperty); set => SetValue(ShowGridlinesProperty, value); }
 
+        /// <summary>
+        /// A depedency property that backs a related property. See the related property for more details.
+        /// </summary>
+        public static DependencyProperty ShowGridlinesProperty
+            = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(PropertyEditorItem),
+            new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// Get or set the brush to use for the gridlines. Use <see cref="ShowGridlines"/> to determine if the gridlines will be visible or not.
+        /// </summary>
+        public Brush GridlineBrush { get => (Brush)GetValue(GridlineBrushProperty); set => SetValue(GridlineBrushProperty, value); }
+
+        /// <summary>
+        /// A depedency property that backs a related property. See the related property for more details.
+        /// </summary>
+        public static DependencyProperty GridlineBrushProperty
+            = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(PropertyEditorItem),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+
+
+        #endregion
     }
 
     /// <summary>
