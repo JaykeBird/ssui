@@ -39,7 +39,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnEdit.ColorScheme = value;
                 _cs = value;
 
-                imgFontEdit.Source = LoadIcon("String", value);
+                imgFontEdit.Source = LoadIcon("Font", value);
             }
         }
 
@@ -129,17 +129,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            FontSelectDialog dlg = new FontSelectDialog();
-            dlg.ColorScheme = _cs;
-            dlg.Owner = Window.GetWindow(this);
+            FontSelectDialog dlg = new FontSelectDialog
+            {
+                ColorScheme = _cs,
+                Owner = Window.GetWindow(this),
 
-            dlg.ShowDecorations = false;
-            dlg.ShowSizes = false;
-            dlg.ShowStyles = false;
-            dlg.ShowWeights = false;
+                ShowDecorations = false,
+                ShowSizes = false,
+                ShowStyles = false,
+                ShowWeights = false,
 
-            dlg.SelectedFontFamily = font ?? new FontFamily("Segoe UI");
-            dlg.SelectedFontSize = 16.0; // used for the preview box
+                SelectedFontFamily = font ?? new FontFamily("Segoe UI"),
+                SelectedFontSize = 16.0 // used for the preview box
+            };
 
             dlg.ShowDialog();
 
