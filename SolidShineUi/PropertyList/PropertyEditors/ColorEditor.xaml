@@ -20,7 +20,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="32" />
+            <ColumnDefinition Width="28" />
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
@@ -29,8 +30,9 @@
                 <Border x:Name="brdrColor" />
             </Grid>
         </flat:FlatButton>
-        <flat:IntegerSpinner x:Name="nudValue" ValueChanged="nudValue_ValueChanged" DisplayAsHex="True" MinimumDigitCount="8" ShowArrows="False" Grid.Column="1" />
-        <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="2" ShowMenuArrow="False" >
+        <TextBlock Text="#" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,2,0" />
+        <flat:IntegerSpinner x:Name="nudValue" ValueChanged="nudValue_ValueChanged" DisplayAsHex="True" MinimumDigitCount="8" ShowArrows="False" Grid.Column="2" />
+        <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="3" ShowMenuArrow="False" >
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>

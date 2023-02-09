@@ -140,6 +140,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             Color? col = null;
 
+            // get the value and store it in a temporary value
             if (type == typeof(Color))
             {
                 col = (Color?)value;
@@ -155,6 +156,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 col = null;
             }
 
+            // now, let's update the UI
             if (col == null)
             {
                 SetAsNull();
@@ -162,8 +164,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else
             {
                 Color ccol = col.Value;
-                
-                nudValue.Value = int.Parse(ccol.GetHexStringWithAlpha(), System.Globalization.NumberStyles.HexNumber);
+
+                string hex = ccol.GetHexStringWithAlpha();
+                nudValue.Value = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                brdrColor.Background = new SolidColorBrush(ccol);
             }
 
             _internalAction = false;
