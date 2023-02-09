@@ -709,6 +709,24 @@ namespace SolidShineUi.PropertyList
             ShowReadOnlyProperties = !ShowReadOnlyProperties;
         }
 
+        private void mnuGridlines_Click(object sender, RoutedEventArgs e)
+        {
+            ShowGridlines = !ShowGridlines;
+        }
+
+        private void mnuGridlineBrush_Click(object sender, RoutedEventArgs e)
+        {
+            Color col = Colors.LightGray;
+            if (GridlineBrush is SolidColorBrush scb) col = scb.Color;
+            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, col);
+            cpd.Owner = Window.GetWindow(this);
+            cpd.ShowDialog();
+            if (cpd.DialogResult)
+            {
+                GridlineBrush = new SolidColorBrush(cpd.SelectedColor);
+            }
+        }
+
         #endregion
 
         #region Registered Editors
@@ -1029,7 +1047,7 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        #region Brushes / Gridlines
+        #region Gridlines
 
         public bool ShowGridlines { get => (bool)GetValue(ShowGridlinesProperty); set => SetValue(ShowGridlinesProperty, value); }
 
@@ -1047,6 +1065,8 @@ namespace SolidShineUi.PropertyList
 
         void UpdateGridlines()
         {
+            mnuGridlines.IsChecked = ShowGridlines;
+
 #if NETCOREAPP
             foreach (UIElement? item in stkProperties.Children)
 #else
@@ -1064,25 +1084,11 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
+        #region Brushes
+
         #endregion
 
-        private void mnuGridlines_Click(object sender, RoutedEventArgs e)
-        {
-            ShowGridlines = !ShowGridlines;
-        }
-
-        private void mnuGridlineBrush_Click(object sender, RoutedEventArgs e)
-        {
-            Color col = Colors.LightGray;
-            if (GridlineBrush is SolidColorBrush scb) col = scb.Color;
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, col);
-            cpd.Owner = Window.GetWindow(this);
-            cpd.ShowDialog();
-            if (cpd.DialogResult)
-            {
-                GridlineBrush = new SolidColorBrush(cpd.SelectedColor);
-            }
-        }
+        #endregion
     }
 
     /// <summary>

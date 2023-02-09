@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Reflection;
 using System.ComponentModel;
 using System.Windows.Media;
+using System.Linq;
 
 namespace SolidShineUi.PropertyList
 {
@@ -144,7 +145,8 @@ namespace SolidShineUi.PropertyList
             PropertyInfo = property;
             PropertyName = property.Name;
             PropertyType = property.PropertyType;
-            PropertyTypeText = PrettifyPropertyType(property.PropertyType.ToString());
+            PropertyTypeText = PrettifyPropertyType(property.PropertyType);
+            txtType.ToolTip = PrettifyPropertyType(property.PropertyType, true);
             PropertyValue = value;
             IsReadOnly = !property.CanWrite;
             //var propVal = property.GetCustomAttribute<DescriptionAttribute>();
@@ -213,15 +215,34 @@ namespace SolidShineUi.PropertyList
             PropertyInfo.SetValue(targetObject, PropertyValue);
         }
 
-        string PrettifyPropertyType(string typeString)
+        string PrettifyPropertyType(Type type, bool fullName = false)
         {
-            if (typeString.StartsWith("System.Nullable"))
+            string typeString = type.FullName;
+            string baseName = type.Name;
+
+            if (type.IsGenericType)
             {
-                return typeString.Replace("System.Nullable`1[", "").TrimEnd(']') + "?";
+                var generics = type.GetGenericArguments();
+
+                if (typeString.StartsWith("System.Nullable"))
+                {
+                    return (fullName ? generics[0].FullName : generics[0].Name) + "?";
+                }
+
+                string basebase = (fullName ? type.GetGenericTypeDefinition().FullName : baseName).Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("`4", "").Replace("`5", "");
+
+                if (generics.Length == 1)
+                {
+                    return basebase + "<" + (fullName ? generics[0].FullName : generics[0].Name) + ">";
+                }
+                else
+                {
+                    return basebase + "<" + string.Join(",", generics.Select(x => fullName ? x.FullName : x.Name)) + ">";
+                }
             }
             else
             {
-                return typeString.Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("[", "<").Replace("]", ">");
+                return fullName ? typeString : baseName;
             }
         }
 

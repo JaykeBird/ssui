@@ -29,5 +29,7 @@
                 BorderBrush="{Binding GridlineBrush, ElementName=control}" BorderThickness="1" Grid.Row="1" />
         <Border Width="1" HorizontalAlignment="Right" x:Name="brdrVertDivider" Visibility="{Binding ShowGridlines, ElementName=control, Converter={StaticResource btv}}"
                 BorderBrush="{Binding GridlineBrush, ElementName=control}" BorderThickness="1" />
+        <Border Width="1" HorizontalAlignment="Right" x:Name="brdrVertDivider2" Visibility="{Binding ShowGridlines, ElementName=control, Converter={StaticResource btv}}"
+                BorderBrush="{Binding GridlineBrush, ElementName=control}" BorderThickness="1" Grid.Column="1" />
     </Grid>
 </UserControl>

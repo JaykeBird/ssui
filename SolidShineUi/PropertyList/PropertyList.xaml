@@ -51,7 +51,7 @@
                         <Separator />
                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" Click="mnuTypesCol_Click" />
                         <Separator />
-                        <MenuItem Header="Show Gridlines" x:Name="mnuGridlines" Click="mnuGridlines_Click" IsChecked="{Binding ElementName=control,Path=ShowGridlines}" />
+                        <MenuItem Header="Show Gridlines" x:Name="mnuGridlines" Click="mnuGridlines_Click" />
                         <MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click" />
                     </flat:ContextMenu>
                 </flat:MenuButton.Menu>
