@@ -17,10 +17,10 @@
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
-                    <MenuItem Header="Set to Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" />
-                    <Separator />
                     <MenuItem Header="Multiline Editor..." x:Name="mnuMultiline" Click="mnuMultiline_Click" />
-                    <MenuItem Header="View as List..." x:Name="mnuOpenAsList" Click="mnuOpenAsList_Click" Visibility="Collapsed" />
+                    <!--<MenuItem Header="View as List..." x:Name="mnuOpenAsList" Click="mnuOpenAsList_Click" />-->
+                    <Separator />
+                    <MenuItem Header="Set to Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>
