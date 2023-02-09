@@ -63,12 +63,7 @@ namespace SolidShineUi.PropertyList
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ExperimentalPropertyList w)
             {
@@ -76,7 +71,7 @@ namespace SolidShineUi.PropertyList
 #if NETCOREAPP
                 w.ApplyColorScheme((e.NewValue as ColorScheme)!);
 #else
-                w.ApplyColorScheme((e.NewValue as ColorScheme));
+                w.ApplyColorScheme(e.NewValue as ColorScheme);
 #endif
             }
         }
@@ -1085,6 +1080,50 @@ namespace SolidShineUi.PropertyList
         #endregion
 
         #region Brushes
+
+        [Category("Brushes")]
+        public Brush HeaderBackground { get => (Brush)GetValue(HeaderBackgroundProperty); set => SetValue(HeaderBackgroundProperty, value); }
+
+        public static DependencyProperty HeaderBackgroundProperty
+            = DependencyProperty.Register("HeaderBackground", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+
+        [Category("Brushes")]
+        public Brush HeaderForeground { get => (Brush)GetValue(HeaderForegroundProperty); set => SetValue(HeaderForegroundProperty, value); }
+
+        public static DependencyProperty HeaderForegroundProperty
+            = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
+
+        public Brush ToolbarBackground { get => (Brush)GetValue(ToolbarBackgroundProperty); set => SetValue(ToolbarBackgroundProperty, value); }
+
+        public static DependencyProperty ToolbarBackgroundProperty
+            = DependencyProperty.Register("ToolbarBackground", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
+
+        public Brush ButtonHighlightBrush { get => (Brush)GetValue(ButtonHighlightBrushProperty); set => SetValue(ButtonHighlightBrushProperty, value); }
+
+        public static DependencyProperty ButtonHighlightBrushProperty
+            = DependencyProperty.Register("ButtonHighlightBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Gray)));
+
+        public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
+
+        public static DependencyProperty ButtonClickBrushProperty
+            = DependencyProperty.Register("ButtonClickBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DimGray)));
+
+        public Brush TopPanelBackground { get => (Brush)GetValue(TopPanelBackgroundProperty); set => SetValue(TopPanelBackgroundProperty, value); }
+
+        public static DependencyProperty TopPanelBackgroundProperty
+            = DependencyProperty.Register("TopPanelBackground", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
+
+        public Brush TopPanelForeground { get => (Brush)GetValue(TopPanelForegroundProperty); set => SetValue(TopPanelForegroundProperty, value); }
+
+        public static DependencyProperty TopPanelForegroundProperty
+            = DependencyProperty.Register("TopPanelForeground", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         #endregion
 
