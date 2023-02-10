@@ -19,11 +19,17 @@
             <RowDefinition Height="25"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="5,2,0,5" x:Name="txtName" FontWeight="Bold" VerticalAlignment="Center"
+        <Grid Background="{Binding ElementName=control, Path=TopPanelBackground}">
+            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,5" x:Name="txtName" FontWeight="Bold" VerticalAlignment="Center"
+                   Foreground="{Binding ElementName=control, Path=TopPanelForeground}"
                    Text="{Binding ElementName=control, Path=ObjectDisplayName}" Visibility="{Binding ElementName=control, Path=ShowNameDisplay, Converter={StaticResource btv}}" />
-        <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="Item Type" x:Name="txtType" VerticalAlignment="Center" Grid.Row="1" 
+        </Grid>
+        <Grid Background="{Binding ElementName=control, Path=TopPanelBackground}" Grid.Row="1">
+            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="Item Type" x:Name="txtType" VerticalAlignment="Center" 
+                   Foreground="{Binding ElementName=control, Path=TopPanelForeground}"
                    Visibility="{Binding ElementName=control, Path=ShowTypeDisplay, Converter={StaticResource btv}}" />
-        <Grid Grid.Row="2" x:Name="grdSort">
+        </Grid>
+        <Grid Grid.Row="2" x:Name="grdToolbar" Background="{Binding ElementName=control, Path=ToolbarBackground}" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="1*" />
@@ -36,11 +42,15 @@
             <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" ToolTip="Filter (use @ to filter by name only)" VerticalContentAlignment="Center" TextChanged="txtFilter_TextChanged"
                                      Height="28" Visibility="{Binding ElementName=control, Path=ShowFilterBox, Converter={StaticResource btv}}" />
             <flat:FlatButton Grid.Column="3" x:Name="btnRefresh" ToolTip="Reload" ColorScheme="{Binding ColorScheme, ElementName=control}" TransparentBack="True" Click="btnRefresh_Click"
-                             Height="28" Width="28" Visibility="{Binding ElementName=control, Path=ShowReloadButton, Converter={StaticResource btv}}" >
+                             Height="28" Width="28" Visibility="{Binding ElementName=control, Path=ShowReloadButton, Converter={StaticResource btv}}"
+                             HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}"
+                             BorderHighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBorderBrush}" >
                 <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png" x:Name="imgReload" />
             </flat:FlatButton>
             <flat:MenuButton Grid.Column="4" x:Name="mnuView" Content="View" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, ElementName=control}" Height="28"
-                             TransparentBack="True" MinWidth="50" Visibility="{Binding ElementName=control, Path=ShowViewMenu, Converter={StaticResource btv}}" >
+                             TransparentBack="True" MinWidth="50" Visibility="{Binding ElementName=control, Path=ShowViewMenu, Converter={StaticResource btv}}"
+                             HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}"
+                             BorderHighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBorderBrush}" >
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Sort by Name" Click="btnName_Click" />
@@ -52,25 +62,28 @@
                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" Click="mnuTypesCol_Click" />
                         <Separator />
                         <MenuItem Header="Show Gridlines" x:Name="mnuGridlines" Click="mnuGridlines_Click" />
-                        <MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click" />
+                        <!--<MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click" />-->
                     </flat:ContextMenu>
                 </flat:MenuButton.Menu>
             </flat:MenuButton>
         </Grid>
-        <Grid Grid.Row="3" x:Name="grdHeader" Background="{Binding ElementName=control, Path=ColorScheme.ThirdHighlightColor, Converter={StaticResource ctb}}" >
+        <Grid Grid.Row="3" x:Name="grdHeader" Background="{Binding ElementName=control, Path=HeaderBackground}" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" MinWidth="50" x:Name="colNames" />
                 <ColumnDefinition Width="0" x:Name="colTypes" />
                 <ColumnDefinition Width="1*" x:Name="colValues" />
                 <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Name" x:Name="lblName" />
+            <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Name" x:Name="lblName"
+                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" />
             <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" 
-                          Background="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}" />
-            <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Type" x:Name="lblType" />
+                          Background="{Binding ElementName=control, Path=HeaderDividerBrush}" />
+            <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Type" x:Name="lblType"
+                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" />
             <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Collapsed"
-                          Background="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}" x:Name="splTypes" />
-            <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Value" />
+                          Background="{Binding ElementName=control, Path=HeaderDividerBrush}" x:Name="splTypes" />
+            <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Value" x:Name="lblValue"
+                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" />
         </Grid>
         <Grid x:Name="grdProperties" Grid.Row="4" >
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" >

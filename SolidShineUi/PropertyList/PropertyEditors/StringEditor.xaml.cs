@@ -174,6 +174,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// </summary>
         public void OpenAsList()
         {
+            // I was hopeful this feature could be used to, say, allow users to edit a string character by character
+            // however, my current ListEditorDialog has limitations when loading an IEnumerable (and not an IList), which a string is
+            // thus, it doesn't really seem worth it for me to enable this feature
+
             if (txtText.Text != null)
             {
 #if NETCOREAPP

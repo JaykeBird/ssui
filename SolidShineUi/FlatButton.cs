@@ -435,11 +435,11 @@ namespace SolidShineUi
                 if (UseAccentColors || useAccentColors)
                 {
                     HighlightBrush = cs.AccentSecondHighlightColor.ToBrush();
-                    DisabledBrush = cs.LightDisabledColor.ToBrush();
-                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
                     SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
                     BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
                     BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
+                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                    DisabledBrush = cs.LightDisabledColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
 

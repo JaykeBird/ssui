@@ -29,6 +29,10 @@ namespace SolidShineUi.PropertyList
             InitializeComponent();
             PreregisterEditors();
 
+            // by default, let's set these foreground values to the base foreground
+            TopPanelForeground = Foreground;
+            HeaderForeground = Foreground;
+
             //txtType.Text = NOTHING_LOADED;
 
             var colDescriptor = DependencyPropertyDescriptor.FromProperty(ColumnDefinition.WidthProperty, typeof(ColumnDefinition));
@@ -45,6 +49,14 @@ namespace SolidShineUi.PropertyList
             Clear();
         }
 
+        /// <summary>
+        /// Get the internal contents of this PropertyList control.
+        /// </summary>
+        /// <remarks>
+        /// To load in an object into the PropertyList, please use the <see cref="LoadObject(object)"/> function instead.
+        /// It is highly unrecommended to access and modify the internal contents of the PropertyList control in this way, but it is possible.
+        /// </remarks>
+        public new object Content { get => base.Content; set { } }
 
         #region ColorScheme
 
@@ -113,6 +125,21 @@ namespace SolidShineUi.PropertyList
                 }
             }
 
+            // set up brushes
+            Background = cs.LightBackgroundColor.ToBrush();
+            HeaderBackground = cs.ThirdHighlightColor.ToBrush();
+            HeaderDividerBrush = cs.BorderColor.ToBrush();
+            HeaderForeground = cs.ForegroundColor.ToBrush();
+            TopPanelBackground = cs.BackgroundColor.ToBrush();
+            TopPanelForeground = cs.ForegroundColor.ToBrush();
+            ToolbarBackground = cs.BackgroundColor.ToBrush();
+            ButtonHighlightBrush = cs.HighlightColor.ToBrush();
+            ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
+
+            btnRefresh.ColorScheme = cs;
+            mnuView.ColorScheme = cs;
+
+            // set up icons
             imgSearch.Source = IconLoader.LoadIcon("Search", cs);
             imgReload.Source = IconLoader.LoadIcon("Reload", cs);
 
@@ -1044,12 +1071,18 @@ namespace SolidShineUi.PropertyList
 
         #region Gridlines
 
+        /// <summary>
+        /// Get or set if gridlines are visible between the properties in the control.
+        /// </summary>
         public bool ShowGridlines { get => (bool)GetValue(ShowGridlinesProperty); set => SetValue(ShowGridlinesProperty, value); }
 
         public static DependencyProperty ShowGridlinesProperty
             = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(false));
 
+        /// <summary>
+        /// Get or set the brush of the gridlines in the control. Use <see cref="ShowGridlines"/> to actually display the gridlines.
+        /// </summary>
         public Brush GridlineBrush { get => (Brush)GetValue(GridlineBrushProperty); set => SetValue(GridlineBrushProperty, value); }
 
         public static DependencyProperty GridlineBrushProperty
@@ -1081,6 +1114,9 @@ namespace SolidShineUi.PropertyList
 
         #region Brushes
 
+        /// <summary>
+        /// Get or set the brush for the background of the column headers.
+        /// </summary>
         [Category("Brushes")]
         public Brush HeaderBackground { get => (Brush)GetValue(HeaderBackgroundProperty); set => SetValue(HeaderBackgroundProperty, value); }
 
@@ -1088,6 +1124,9 @@ namespace SolidShineUi.PropertyList
             = DependencyProperty.Register("HeaderBackground", typeof(Brush), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>
+        /// Get or set the brush for the foreground of the column headers.
+        /// </summary>
         [Category("Brushes")]
         public Brush HeaderForeground { get => (Brush)GetValue(HeaderForegroundProperty); set => SetValue(HeaderForegroundProperty, value); }
 
@@ -1095,35 +1134,75 @@ namespace SolidShineUi.PropertyList
             = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>
+        /// Get or set the brush for the background of the toolbar near the top of the control.
+        /// </summary>
+        [Category("Brushes")]
         public Brush ToolbarBackground { get => (Brush)GetValue(ToolbarBackgroundProperty); set => SetValue(ToolbarBackgroundProperty, value); }
 
         public static DependencyProperty ToolbarBackgroundProperty
             = DependencyProperty.Register("ToolbarBackground", typeof(Brush), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
 
+        /// <summary>
+        /// Get or set the brush for the buttons on the toolbar when they are highlighted (i.e. mouse over or keyboard focus).
+        /// </summary>
+        [Category("Brushes")]
         public Brush ButtonHighlightBrush { get => (Brush)GetValue(ButtonHighlightBrushProperty); set => SetValue(ButtonHighlightBrushProperty, value); }
 
         public static DependencyProperty ButtonHighlightBrushProperty
             = DependencyProperty.Register("ButtonHighlightBrush", typeof(Brush), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// Get or set the brush for the buttons on the toolbar when they are being clicked.
+        /// </summary>
+        [Category("Brushes")]
         public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
 
         public static DependencyProperty ButtonClickBrushProperty
             = DependencyProperty.Register("ButtonClickBrush", typeof(Brush), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>
+        /// Get or set the brush for the borders of the buttons on the toolbar, when the buttons are being highlighted or clicked. (The buttons display no border when not focused.)
+        /// </summary>
+        [Category("Brushes")]
+        public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
+
+        public static DependencyProperty ButtonHighlightBorderBrushProperty
+            = DependencyProperty.Register("ButtonHighlightBorderBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
+
+        /// <summary>
+        /// Get or set the brush for the background of the top panel of the control (where the name and type are displayed).
+        /// </summary>
+        [Category("Brushes")]
         public Brush TopPanelBackground { get => (Brush)GetValue(TopPanelBackgroundProperty); set => SetValue(TopPanelBackgroundProperty, value); }
 
         public static DependencyProperty TopPanelBackgroundProperty
             = DependencyProperty.Register("TopPanelBackground", typeof(Brush), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
 
+        /// <summary>
+        /// Get or set the brush for the foreground of the top panel of the control (where the name and type are displayed).
+        /// </summary>
+        [Category("Brushes")]
         public Brush TopPanelForeground { get => (Brush)GetValue(TopPanelForegroundProperty); set => SetValue(TopPanelForegroundProperty, value); }
 
         public static DependencyProperty TopPanelForegroundProperty
             = DependencyProperty.Register("TopPanelForeground", typeof(Brush), typeof(ExperimentalPropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
+
+        /// <summary>
+        /// Get or set the brush for the dividers between the column headers.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HeaderDividerBrush { get => (Brush)GetValue(HeaderDividerBrushProperty); set => SetValue(HeaderDividerBrushProperty, value); }
+
+        public static DependencyProperty HeaderDividerBrushProperty
+            = DependencyProperty.Register("HeaderDividerBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         #endregion
 
