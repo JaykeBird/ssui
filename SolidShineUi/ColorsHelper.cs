@@ -127,32 +127,34 @@ namespace SolidShineUi
             return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
+        // TODO: perform benchmark to see if ToHexString or ToHexStringLegacy is faster
+
         //taken from http://www.cambiaresearch.com/articles/1/convert-dotnet-color-to-hex-string
         //written by Steve Lautenschlager
 
-        private static readonly char[] hexDigits = {
-         '0', '1', '2', '3', '4', '5', '6', '7',
-         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+        //private static readonly char[] hexDigits = {
+        // '0', '1', '2', '3', '4', '5', '6', '7',
+        // '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
-        /// <summary>
-        /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped.
-        /// </summary>
-        /// <param name="color">The color to convert to a hex string.</param>
-        public static string ToHexStringLegacy(Color color)
-        {
-            byte[] bytes = new byte[3];
-            bytes[0] = color.R;
-            bytes[1] = color.G;
-            bytes[2] = color.B;
-            char[] chars = new char[bytes.Length * 2];
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                int b = bytes[i];
-                chars[i * 2] = hexDigits[b >> 4];
-                chars[i * 2 + 1] = hexDigits[b & 0xF];
-            }
-            return new string(chars);
-        }
+        ///// <summary>
+        ///// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped.
+        ///// </summary>
+        ///// <param name="color">The color to convert to a hex string.</param>
+        //public static string ToHexStringLegacy(Color color)
+        //{
+        //    byte[] bytes = new byte[3];
+        //    bytes[0] = color.R;
+        //    bytes[1] = color.G;
+        //    bytes[2] = color.B;
+        //    char[] chars = new char[bytes.Length * 2];
+        //    for (int i = 0; i < bytes.Length; i++)
+        //    {
+        //        int b = bytes[i];
+        //        chars[i * 2] = hexDigits[b >> 4];
+        //        chars[i * 2 + 1] = hexDigits[b & 0xF];
+        //    }
+        //    return new string(chars);
+        //}
 
         /// <summary>
         /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)"/> to keep the A value as well..
