@@ -93,11 +93,11 @@ namespace SolidShineUi
         /// <summary>
         /// The color used for when certain elements have focus or have the mouse over them; this is a lighter color than the main color, and is generally used by many UI elements.
         /// </summary>
-        public Color SecondHighlightColor { get; set; } = Gray;
+        public Color SecondHighlightColor { get; set; } = Colors.DarkGray;
         /// <summary>
         /// The color used for when certain elements are being clicked on; this is a lighter color than the main color, and is generally used by many UI elements.
         /// </summary>
-        public Color ThirdHighlightColor { get; set; } = DarkGray;
+        public Color ThirdHighlightColor { get; set; } = Colors.Silver;
         /// <summary>
         /// The color used for the background of certain elements. This background color is lighter than the main background color.
         /// </summary>
