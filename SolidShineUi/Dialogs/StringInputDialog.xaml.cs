@@ -132,6 +132,8 @@ namespace SolidShineUi
 
         #region Data Validation
 
+        bool _validationPass = true;
+
         /// <summary>
         /// Get or set the data validation function that should be used to make sure the inputted string matches an expected format.
         /// </summary>
@@ -181,11 +183,13 @@ namespace SolidShineUi
                 {
                     txtValidation.Text = ValidationSuccessString;
                     btnOK.IsEnabled = true;
+                    _validationPass = true;
                 }
                 else
                 {
                     txtValidation.Text = ValidationFailureString;
                     btnOK.IsEnabled = false;
+                    _validationPass = false;
                 }
             }
             else
@@ -193,6 +197,7 @@ namespace SolidShineUi
                 // if validation is disabled, make sure the OK button isn't stuck disabled
                 txtValidation.Text = "";
                 btnOK.IsEnabled = true;
+                _validationPass = true;
             }
         }
 
@@ -200,6 +205,7 @@ namespace SolidShineUi
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            if (!_validationPass) return;
             DialogResult = true;
             Close();
         }
