@@ -12,9 +12,9 @@
 		<Product>SolidShineUi</Product>
 		<Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
 		<Copyright>Copyright 2018-2022 Jayke R. Huempfner, other contributors</Copyright>
-		<Version>1.9.4</Version>
-		<AssemblyVersion>1.9.4</AssemblyVersion>
-		<FileVersion>1.9.4</FileVersion>
+		<Version>1.9.5</Version>
+		<AssemblyVersion>1.9.5</AssemblyVersion>
+		<FileVersion>1.9.5</FileVersion>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<Authors>Jayke R. Huempfner, other contributors</Authors>
 		<PackageIconUrl></PackageIconUrl>
@@ -28,7 +28,13 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReleaseNotes>
+		<PackageReleaseNotes>Version 1.9.5
+			- Add ShowIcon property, command support to FlatWindow
+			- Add many properties and options to PropertyList control
+			- Add validation check feature to StringInputDialog
+			- New control: LongSpinner - like an IntegerSpinner, but with longs
+			- Improvements to SelectableItem, IntegerSpinner/DoubleSpinner, ColorsHelper
+			
 			Version 1.9.4
 			- Fix bugs with ColorPickerDialog, ImageBrushEditorDialog
 			- Minor improvements to TabControl and CheckBox
@@ -41,12 +47,6 @@
 			- Add BrushEditor, CharEditor, more to ExperimentalPropertyList
 			- Improvements to RelativePositionSelect control
 			- Add CreateCheckerboardBrush method, more CreateFromImage methods to BrushFactory
-
-			Version 1.9.2
-			- Added ItemsSource property to SelectPanel
-			- Added more properties, features to ExperimentalPropertyList
-			- Added SelectableCollectionView to use like a ListCollectionView
-			- Bug fixes for CheckBox, IntegerSpinner, DoubleSpinner
 
 			See website for more details!</PackageReleaseNotes>
 	</PropertyGroup>
