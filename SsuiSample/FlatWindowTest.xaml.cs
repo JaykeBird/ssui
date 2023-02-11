@@ -97,6 +97,16 @@ namespace SsuiSample
                 //CornerRadius = new CornerRadius(nudCornerRadius.Value)
             };
 
+            if (btnSetIcon.SelectedFiles.Count > 0)
+            {
+                fw.Icon = new BitmapImage(new Uri(btnSetIcon.SelectedFiles[0]));
+                fw.ShowIcon = true;
+            }
+            else
+            {
+                fw.ShowIcon = false;
+            }
+
             fw.SourceInitialized += fw_SourceInitialized;
             fw.Closed += Fw_Closed;
 
@@ -214,6 +224,18 @@ namespace SsuiSample
         private void control_Unloaded(object sender, RoutedEventArgs e)
         {
             fwRunning?.Close();
+        }
+
+        private void btnSetIcon_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if (btnSetIcon.SelectedFiles.Count > 0)
+            {
+                imgIcon.Source = new BitmapImage(new Uri(btnSetIcon.SelectedFiles[0]));
+            }
+            else
+            {
+                imgIcon.Source = null;
+            }
         }
     }
 }

@@ -32,7 +32,7 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="58"/>
                     <RowDefinition Height="59"/>
-                    <RowDefinition Height="28"/>
+                    <RowDefinition Height="60"/>
                     <RowDefinition Height="80"/>
                 </Grid.RowDefinitions>
                 <TextBlock HorizontalAlignment="Left" Margin="40,20,0,0" Text="Window Title Bar:" VerticalAlignment="Top"/>
@@ -54,8 +54,10 @@
                 <flat:IntegerSpinner x:Name="nudWidth" Margin="110,29,0,0" Width="70" HorizontalAlignment="Left" Height="24" MinValue="200" Value="400" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Row="5" />
                 <TextBlock HorizontalAlignment="Left" Margin="195,33,0,0" Text="Height:" VerticalAlignment="Top" Grid.Row="5"/>
                 <flat:IntegerSpinner x:Name="nudHeight" Margin="240,29,0,0" Width="70" HorizontalAlignment="Left" Height="24" MinValue="200" Value="400" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Row="5" />
-                <TextBlock HorizontalAlignment="Left" Margin="40,8,0,0" Text="Corner radius (rounded corners):" VerticalAlignment="Top" Visibility="Collapsed" Grid.Row="6" />
-                <flat:DoubleSpinner x:Name="nudCornerRadius" Margin="70,6,0,0" Width="80" HorizontalAlignment="Left" Height="24" MinValue="0" Value="0" MaxValue="50" Decimals="2" Step="1" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Visibility="Collapsed" Grid.Row="7" />
+                <TextBlock HorizontalAlignment="Left" Margin="40,2,0,0" Text="Icon:" VerticalAlignment="Top" Grid.Row="6"/>
+                <flat:FileSelect x:Name="btnSetIcon" HorizontalAlignment="Left" Margin="70,22,0,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Row="6" MinWidth="220" 
+                                 FileFilter="*.png;*.ico" AllowMultipleFiles="False" SelectionChanged="btnSetIcon_SelectionChanged" DisplayFilenames="True" />
+                <Image Margin="300,30,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="6" Width="16" Height="16" x:Name="imgIcon" />
                 <TextBlock HorizontalAlignment="Left" Margin="40,6,0,0" Text="Color Scheme:" VerticalAlignment="Top" Grid.Row="7"/>
                 <RadioButton x:Name="rdoCurrentColor" GroupName="rdoColor" Content="Use current color scheme" HorizontalAlignment="Left" Margin="70,30,0,0" VerticalAlignment="Top" IsChecked="True"
                              Foreground="{Binding ColorScheme.ForegroundColor, Converter={StaticResource ctb}, ElementName=control}" Grid.Row="7" />
