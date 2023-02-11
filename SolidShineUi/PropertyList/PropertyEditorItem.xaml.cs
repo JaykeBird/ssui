@@ -145,8 +145,8 @@ namespace SolidShineUi.PropertyList
             PropertyInfo = property;
             PropertyName = property.Name;
             PropertyType = property.PropertyType;
-            PropertyTypeText = PrettifyPropertyType(property.PropertyType);
-            txtType.ToolTip = PrettifyPropertyType(property.PropertyType, true);
+            PropertyTypeText = ExperimentalPropertyList.PrettifyPropertyType(property.PropertyType);
+            txtType.ToolTip = ExperimentalPropertyList.PrettifyPropertyType(property.PropertyType, true);
             PropertyValue = value;
             IsReadOnly = !property.CanWrite;
             //var propVal = property.GetCustomAttribute<DescriptionAttribute>();
@@ -215,36 +215,36 @@ namespace SolidShineUi.PropertyList
             PropertyInfo.SetValue(targetObject, PropertyValue);
         }
 
-        string PrettifyPropertyType(Type type, bool fullName = false)
-        {
-            string typeString = type.FullName;
-            string baseName = type.Name;
+        //string PrettifyPropertyType(Type type, bool fullName = false)
+        //{
+        //    string typeString = type.FullName ?? "(no type name)";
+        //    string baseName = type.Name;
 
-            if (type.IsGenericType)
-            {
-                var generics = type.GetGenericArguments();
+        //    if (type.IsGenericType)
+        //    {
+        //        var generics = type.GetGenericArguments();
 
-                if (typeString.StartsWith("System.Nullable"))
-                {
-                    return (fullName ? generics[0].FullName : generics[0].Name) + "?";
-                }
+        //        if (typeString.StartsWith("System.Nullable"))
+        //        {
+        //            return (fullName ? generics[0].FullName : generics[0].Name) + "?";
+        //        }
 
-                string basebase = (fullName ? type.GetGenericTypeDefinition().FullName : baseName).Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("`4", "").Replace("`5", "");
+        //        string basebase = (fullName ? (type.GetGenericTypeDefinition().FullName ?? "System.Object") : baseName).Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("`4", "").Replace("`5", "");
 
-                if (generics.Length == 1)
-                {
-                    return basebase + "<" + (fullName ? generics[0].FullName : generics[0].Name) + ">";
-                }
-                else
-                {
-                    return basebase + "<" + string.Join(",", generics.Select(x => fullName ? x.FullName : x.Name)) + ">";
-                }
-            }
-            else
-            {
-                return fullName ? typeString : baseName;
-            }
-        }
+        //        if (generics.Length == 1)
+        //        {
+        //            return basebase + "<" + (fullName ? generics[0].FullName : generics[0].Name) + ">";
+        //        }
+        //        else
+        //        {
+        //            return basebase + "<" + string.Join(",", generics.Select(x => fullName ? x.FullName : x.Name)) + ">";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return fullName ? typeString : baseName;
+        //    }
+        //}
 
         #region Visuals Settings
         /// <summary>
@@ -288,100 +288,4 @@ namespace SolidShineUi.PropertyList
         #endregion
     }
 
-    /// <summary>
-    /// The event arguments for the PropertyEditorValueChanged event, which takes place when the value of a property is changed using a property editor control.
-    /// </summary>
-#if NETCOREAPP
-    public class PropertyEditorValueChangedEventArgs
-    {
-        /// <summary>
-        /// Get the new value to apply to this property.
-        /// </summary>
-        public object? NewValue { get; private set; }
-
-        /// <summary>
-        /// Get the old value of the property. Note that this may not always be set.
-        /// </summary>
-        public object? OldValue { get; private set; }
-
-        /// <summary>
-        /// Get the name of the property being changed.
-        /// </summary>
-        public string PropertyName { get; private set; }
-        /// <summary>
-        /// Get the PropertyInfo representing the property being changed.
-        /// </summary>
-        public PropertyInfo? PropertyInfo { get; private set; }
-
-        /// <summary>
-        /// Get or set if the change to the property's value has failed. In cases where an exception occurred while attempting to set the value or something else unexpected happened and
-        /// the new value could not be set, then set this value to <c>true</c> and then set the <see cref="FailedChangePropertyValue"/> to what the updated value actually is.
-        /// </summary>
-        public bool ChangeFailed { get; set; } = false;
-        /// <summary>
-        /// Get or set what the value of the property is after a failure to change the property to the new value above.
-        /// </summary>
-        public object? FailedChangePropertyValue { get; set; } = null;
-
-        /// <summary>
-        /// Create a PropertyEditorValueChangedEventArgs.
-        /// </summary>
-        /// <param name="oldValue">The old value of the property being changed.</param>
-        /// <param name="newValue">The new value of the property being changed.</param>
-        /// <param name="propertyName">The name of the property being changed.</param>
-        /// <param name="propertyInfo">The PropertyInfo representing the property being changed.</param>
-        public PropertyEditorValueChangedEventArgs(object? oldValue, object? newValue, string propertyName, PropertyInfo? propertyInfo)
-        {
-            OldValue = oldValue;
-            NewValue = newValue;
-            PropertyName = propertyName;
-            PropertyInfo = propertyInfo;
-        }
-    }
-#else
-    public class PropertyEditorValueChangedEventArgs
-    {
-        /// <summary>
-        /// Get the new value to apply to this property.
-        /// </summary>
-        public object NewValue { get; private set; }
-        /// <summary>
-        /// Get the old value of the property. Note that this may not always be set.
-        /// </summary>
-        public object OldValue { get; private set; }
-        /// <summary>
-        /// Get the name of the property being changed.
-        /// </summary>
-        public string PropertyName { get; private set; }
-        /// <summary>
-        /// Get the PropertyInfo representing the property being changed.
-        /// </summary>
-        public PropertyInfo PropertyInfo { get; private set; }
-
-        /// <summary>
-        /// Get or set if the change to the property's value has failed. In cases where an exception occurred while attempting to set the value or something else unexpected happened and
-        /// the new value could not be set, then set this value to <c>true</c> and then set the <see cref="FailedChangePropertyValue"/> to what the updated value actually is.
-        /// </summary>
-        public bool ChangeFailed { get; set; } = false;
-        /// <summary>
-        /// Get or set what the value of the property is after a failure to change the property to the new value above.
-        /// </summary>
-        public object FailedChangePropertyValue { get; set; } = null;
-
-        /// <summary>
-        /// Create a PropertyEditorValueChangedEventArgs.
-        /// </summary>
-        /// <param name="oldValue">The old value of the property being changed.</param>
-        /// <param name="newValue">The new value of the property being changed.</param>
-        /// <param name="propertyName">The name of the property being changed.</param>
-        /// <param name="propertyInfo">The PropertyInfo representing the property being changed.</param>
-        public PropertyEditorValueChangedEventArgs(object oldValue, object newValue, string propertyName, PropertyInfo propertyInfo)
-        {
-            OldValue = oldValue;
-            NewValue = newValue;
-            PropertyName = propertyName;
-            PropertyInfo = propertyInfo;
-        }
-    }
-#endif
 }

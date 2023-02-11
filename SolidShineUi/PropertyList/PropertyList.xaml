@@ -25,7 +25,7 @@
                    Text="{Binding ElementName=control, Path=ObjectDisplayName}" Visibility="{Binding ElementName=control, Path=ShowNameDisplay, Converter={StaticResource btv}}" />
         </Grid>
         <Grid Background="{Binding ElementName=control, Path=TopPanelBackground}" Grid.Row="1">
-            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="Item Type" x:Name="txtType" VerticalAlignment="Center" 
+            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="{x:Static local:ExperimentalPropertyList.NOTHING_LOADED}" x:Name="txtType" VerticalAlignment="Center" 
                    Foreground="{Binding ElementName=control, Path=TopPanelForeground}"
                    Visibility="{Binding ElementName=control, Path=ShowTypeDisplay, Converter={StaticResource btv}}" />
         </Grid>
@@ -39,18 +39,22 @@
             </Grid.ColumnDefinitions>
             <Image Height="16" Source="/SolidShineUi;component/Images/SearchColor.png" x:Name="imgSearch" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
                     Visibility="{Binding ElementName=control, Path=ShowFilterBox, Converter={StaticResource btv}}" />
-            <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" ToolTip="Filter (use @ to filter by name only)" VerticalContentAlignment="Center" TextChanged="txtFilter_TextChanged"
-                                     Height="28" Visibility="{Binding ElementName=control, Path=ShowFilterBox, Converter={StaticResource btv}}" />
+            <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" VerticalContentAlignment="Center" TextChanged="txtFilter_TextChanged" Height="28" 
+                                     ToolTip="{Binding ElementName=control,Path=FilterBoxToolTip,FallbackValue='Filter (use @ to filter by name only)'}" 
+                                     Visibility="{Binding ElementName=control, Path=ShowFilterBox, Converter={StaticResource btv}}" />
             <flat:FlatButton Grid.Column="3" x:Name="btnRefresh" ToolTip="Reload" ColorScheme="{Binding ColorScheme, ElementName=control}" TransparentBack="True" Click="btnRefresh_Click"
                              Height="28" Width="28" Visibility="{Binding ElementName=control, Path=ShowReloadButton, Converter={StaticResource btv}}"
                              HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}"
                              BorderHighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBorderBrush}" >
                 <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png" x:Name="imgReload" />
             </flat:FlatButton>
-            <flat:MenuButton Grid.Column="4" x:Name="mnuView" Content="View" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, ElementName=control}" Height="28"
+            <flat:MenuButton Grid.Column="4" x:Name="mnuView" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, ElementName=control}" Height="28"
                              TransparentBack="True" MinWidth="50" Visibility="{Binding ElementName=control, Path=ShowViewMenu, Converter={StaticResource btv}}"
                              HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}"
                              BorderHighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBorderBrush}" >
+                <flat:MenuButton.Content>
+                    <TextBlock Text="{Binding ElementName=control, Path=ViewMenuLabel, FallbackValue='View'}" />
+                </flat:MenuButton.Content>
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Sort by Name" Click="btnName_Click" />
@@ -74,16 +78,16 @@
                 <ColumnDefinition Width="1*" x:Name="colValues" />
                 <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Name" x:Name="lblName"
-                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" />
+            <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblName"
+                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" Text="{Binding ElementName=control, Path=NameHeaderLabel, FallbackValue='Name'}" />
             <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" 
                           Background="{Binding ElementName=control, Path=HeaderDividerBrush}" />
-            <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Type" x:Name="lblType"
-                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" />
+            <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblType"
+                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" Text="{Binding ElementName=control, Path=TypeHeaderLabel, FallbackValue='Type'}" />
             <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Collapsed"
                           Background="{Binding ElementName=control, Path=HeaderDividerBrush}" x:Name="splTypes" />
-            <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Value" x:Name="lblValue"
-                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" />
+            <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblValue"
+                       Foreground="{Binding ElementName=control, Path=HeaderForeground}" Text="{Binding ElementName=control, Path=ValueHeaderLabel, FallbackValue='Value'}" />
         </Grid>
         <Grid x:Name="grdProperties" Grid.Row="4" >
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
