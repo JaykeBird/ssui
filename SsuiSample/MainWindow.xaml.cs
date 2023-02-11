@@ -109,6 +109,11 @@ namespace SsuiSample
             ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.BlackOnWhite);
         }
 
+        private void mnuDefaultCs_Click(object sender, RoutedEventArgs e)
+        {
+            ColorScheme = new ColorScheme();
+        }
+
         void SetupSidebar()
         {
             foreach (UserControl item in grdTests.Children)
@@ -163,5 +168,6 @@ namespace SsuiSample
         }
 #pragma warning restore IDE0017 // Simplify object initialization
         #endregion
+
     }
 }

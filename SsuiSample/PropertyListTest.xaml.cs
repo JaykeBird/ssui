@@ -127,7 +127,7 @@ namespace SsuiSample
 
             public Thickness? NullThickness { get; set; } = null;
 
-            public Version VerVersion { get; set; } = new Version(3, 0, 12);
+            public Version VerVersion { get; set; } = new Version(1, 9, 5);
         }
     }
 }
