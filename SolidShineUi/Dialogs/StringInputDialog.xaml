@@ -17,7 +17,8 @@
         <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,15,0,0" Text="{Binding ElementName=window, Path=Description, FallbackValue='Enter a value:'}" VerticalAlignment="Top"/>
         <flat:FlatButton x:Name="btnOK" Content="OK" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="3" />
         <flat:FlatButton x:Name="btnCancel" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="3" />
-        <flat:ClickSelectTextBox x:Name="txtValue" Margin="20,3,20,3" KeyDown="txtValue_KeyDown" TextChanged="txtValue_TextChanged" SelectOnFocus="True" Grid.Row="1" />
+        <flat:ClickSelectTextBox x:Name="txtValue" Margin="20,3,20,3" KeyDown="txtValue_KeyDown" TextChanged="txtValue_TextChanged" Grid.Row="1"
+                                 SelectOnFocus="{Binding SelectTextOnFocus, ElementName=window, FallbackValue=true}" />
         <TextBlock x:Name="txtValidation" HorizontalAlignment="Left" Margin="20,5,0,0" Text="" VerticalAlignment="Top" Grid.Row="2"/>
     </Grid>
 </flat:FlatWindow>

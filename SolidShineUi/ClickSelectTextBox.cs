@@ -32,7 +32,15 @@ namespace SolidShineUi
         /// Get or set whether all text will be selected when the text box receives focus.
         /// </summary>
         [Category("Common")]
-        public bool SelectOnFocus { get; set; } = true;
+        public bool SelectOnFocus { get => (bool)GetValue(SelectOnFocusProperty); set => SetValue(SelectOnFocusProperty, value); }
+
+        /// <summary>
+        /// The dependency property backing its related property. See <see cref="SelectOnFocus"/> for more details.
+        /// </summary>
+        public static DependencyProperty SelectOnFocusProperty
+            = DependencyProperty.Register("SelectOnFocus", typeof(bool), typeof(ClickSelectTextBox),
+            new FrameworkPropertyMetadata(true));
+
 
         /// <summary>
         /// Handler for when the left mouse button is pressed.

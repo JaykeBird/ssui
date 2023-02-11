@@ -17,7 +17,7 @@ namespace SolidShineUi
     public partial class StringInputDialog : FlatWindow
     {
 
-        #region Window Actions
+        #region Constructors / Window Loaded
 
         /// <summary>
         /// Create a StringInputDialog with nothing preset.
@@ -74,6 +74,21 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Get or set the description text to display above the text box. This text should describe what the user should enter into the text box.
+        /// </summary>
+        /// <remarks>Try to keep the description to about a sentence long. If you do have a lengthier description, you may need to resize the window to make it fit properly.
+        /// Ideally, the overall design of the program should make it apparent what the user should enter into the text box without reading the description.
+        /// However, the description is helpful to remind the user what is being asked of them here, and also to potentially clarify the types of values that are valid or invalid.</remarks>
+        public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. See <see cref="Description"/> for details.
+        /// </summary>
+        public static DependencyProperty DescriptionProperty
+            = DependencyProperty.Register("Description", typeof(string), typeof(StringInputDialog),
+            new FrameworkPropertyMetadata("Enter a value:"));
+
+        /// <summary>
         /// Get the result of the dialog when it is closed. "False" refers to the user cancelling the operation, while "True" refers to the user confirming, by clicking "OK" or pressing the Enter key.
         /// </summary>
         public new bool DialogResult { get; private set; } = false;
@@ -105,26 +120,15 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set whether all of the text in the text box should be selected when the text box receives focus.
         /// </summary>
-        public bool SelectTextOnFocus
-        {
-            get => txtValue.SelectOnFocus;
-            set => txtValue.SelectOnFocus = value;
-        }
+        public bool SelectTextOnFocus { get => (bool)GetValue(SelectTextOnFocusProperty); set => SetValue(SelectTextOnFocusProperty, value); }
 
         /// <summary>
-        /// Get or set the description text to display above the text box. This text should describe what the user should enter into the text box.
+        /// A dependency proeprty backing the related property. Please see <see cref="SelectTextOnFocus"/> for details.
         /// </summary>
-        /// <remarks>Try to keep the description to about a sentence long. If you do have a lengthier description, you may need to resize the window to make it fit properly.
-        /// Ideally, the overall design of the program should make it apparent what the user should enter into the text box without reading the description.
-        /// However, the description is helpful to remind the user what is being asked of them here, and also to potentially clarify the types of values that are valid or invalid.</remarks>
-        public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+        public static DependencyProperty SelectTextOnFocusProperty
+            = DependencyProperty.Register("SelectTextOnFocus", typeof(bool), typeof(StringInputDialog),
+            new FrameworkPropertyMetadata(true));
 
-        /// <summary>
-        /// A dependency property backing the related property. See <see cref="Description"/> for details.
-        /// </summary>
-        public static DependencyProperty DescriptionProperty
-            = DependencyProperty.Register("Description", typeof(string), typeof(StringInputDialog),
-            new FrameworkPropertyMetadata("Enter a value:"));
 
         #region Data Validation
 
