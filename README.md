@@ -15,7 +15,7 @@ The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/
 
 ### Getting set up
 
-You'll want to start with downloading/references the packages as linked above. Then in your XAML or C# files, you can add a reference to SolidShineUi. After that, you can start using the controls listed below!
+You'll want to start with downloading the above package or getting it from NuGet. Then in your XAML or C# files, you can add a reference to SolidShineUi.
 
 ```XAML
     xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
@@ -25,9 +25,11 @@ You'll want to start with downloading/references the packages as linked above. T
 using SolidShineUi;
 ```
 
-You can use just the one control you needed, or you can rebuild existing UIs or design fully new UIs with the Solid Shine UI controls. You can use these alongside the standard WPF controls with no issues or changes in their behavior.
+After that, you can start using the controls listed below!
 
-Each window and control in Solid Shine UI includes a ColorScheme property, but if you don't want to use that, you can modify each control's appearance using the various brush properties. If you want to use the ColorScheme property to make it easy to set a consistent appearance for all these controls at once, continue to the next section.
+You can use just the one control you need, or you can rebuild existing UIs or design all-new UIs with the Solid Shine UI controls. You can use these alongside the standard WPF controls with no issues or changes in their behavior.
+
+Each window and control in Solid Shine UI includes a `ColorScheme` property, but if you don't want to use that, you can modify each control's appearance using the various brush properties. If you want to use the `ColorScheme` property to make it easy to set a consistent appearance for all these controls at once, continue to the next section.
 
 You can use the SsuiSample app included here as an example to get started with or to see the capabilities of the library.
 
@@ -136,6 +138,7 @@ To get started with keyboard shortcut support, I recommend looking at the [Addin
 - **DoubleSpinner** - also known as a NumericUpDown; select a number by typing it in, clicking up or down, or entering in a math expression
 - **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values
 - **LinkTextBlock** - a TextBlock that acts as a hyperlink
+- **LongSpinner** - the same as the IntegerSpinner, but stores numbers as `long`s (for larger values)
 - **Menu** - a menu bar and menu with a flat, colored style
 - **MenuButton** - a flat-styled button that opens a menu when you click on it
 - **SelectPanel** - a powerful panel to easily manage a list and select items from it
@@ -161,10 +164,13 @@ To get started with keyboard shortcut support, I recommend looking at the [Addin
 - **SelectableItem** - a type of SelectableUserControl; a basic but powerful control to use to display items in SelectPanel
 - **SelectableUserControl** - the base class from which you can create your own controls to use with a SelectPanel
 - **TabItem** - a tab to use with the TabControl
+- **WildcardMatch** - match file names/paths (or any text) using wildcard characters like `*` and `?`. [Available separately](https://bitbucket.org/hasullivan/fast-wildcard-matching/) as well
 
 ## Coming Soon
 
-More controls (including **Ribbon**) are coming soon! View the [roadmap](Docs/ROADMAP.md) for more details.
+Version 2.0 will be coming later this year! Don't be surprised if don't see much activity on the Main branch for some periods of time, as I'll be using sub-branches to develop various features, including an upcoming **Ribbon** control!
+
+View the [roadmap](Docs/ROADMAP.md) for more details on my plans.
 
 ## Building/Testing
 
@@ -180,7 +186,7 @@ Included is the SsuiSample program, which is useful for demonstrating the librar
 
 ### Notes
 
-If you recieve this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start button, or you can access it via Build > Configuration Manager... and set the active configuration there).
+If you receive this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start button, or you can access it via Build > Configuration Manager... and set the active configuration there).
 
 ## Credits/Usage
 
