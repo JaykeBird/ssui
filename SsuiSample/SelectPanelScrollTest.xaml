@@ -8,27 +8,39 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="60,30,0,30" Width="350">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Select Panel Scroll Test" FontSize="16" VerticalAlignment="Top" />
+
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="60,10,0,30" Width="350" Grid.Row="1">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock Margin="10,30" Text="Buffer text" />
                     <TextBlock Margin="10,30" Text="Buffer text 2" />
                     <TextBlock Margin="10,30" Text="Buffer text 3" />
                     <TextBlock Margin="10,30" Text="Buffer text, even more" />
-                    <flat:SelectPanel Margin="15,0" AllowParentScrolling="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" >
-                        <flat:SelectableItem Text="What is up???" Margin="0,20" />
-                        <flat:SelectableItem Text="What's shaking???" Margin="0,20" />
-                        <flat:SelectableItem Text="How's it hanging???" Margin="0,20" />
-                        <flat:SelectableItem Text="It do be how it is." Margin="0,20" />
+                    <flat:SelectPanel Margin="15,0" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
+                                      AllowParentScrolling="{Binding ElementName=chkParentScroll, Path=IsChecked}" >
+                        <flat:SelectableItem Text="What is up???" Height="50" />
+                        <flat:SelectableItem Text="What's shaking???" Height="50" />
+                        <flat:SelectableItem Text="How's it hanging???" Height="50" />
+                        <flat:SelectableItem Text="It do be how it is." Height="50" />
+                        <flat:SelectableItem Text="For real, for real" Height="50" />
+                        <flat:SelectableItem Text="Life is a highway" Height="50" />
+                        <flat:SelectableItem Text="But is it well-paved?" Height="50" />
                     </flat:SelectPanel>
                     <TextBlock Margin="10,30" Text="Buffer text 4" />
                     <TextBlock Margin="10,30" Text="Buffer text 6" />
                     <TextBlock Margin="10,30" Text="Buffer text 5, heh" />
                     <TextBlock Margin="10,30" Text="Buffer text 7" />
                     <TextBlock Margin="10,30" Text="Buffer text 8" />
-                </StackPanel>           
+                </StackPanel>
             </ScrollViewer>
         </Border>
+        <flat:CheckBox Content="Allow Parent Scrolling" x:Name="chkParentScroll" HorizontalAlignment="Left" Margin="267,20,0,0" VerticalAlignment="Top" IsChecked="True" />
 
     </Grid>
 </UserControl>
