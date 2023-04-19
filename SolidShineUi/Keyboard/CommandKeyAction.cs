@@ -128,11 +128,11 @@ namespace SolidShineUi.KeyboardShortcuts
         /// </remarks>
         /// <returns>A list of CommandKeyActions, one for each static command property in this class.</returns>
 #if NETCOREAPP
-        public static KeyActionList LoadFromCommandsClass(Type commandsClass, object? commandParameter = null, IInputElement? commandTarget = null)
+        public static KeyActionList LoadFromType(Type commandsClass, object? commandParameter = null, IInputElement? commandTarget = null)
 #else
-        public static KeyActionList LoadFromCommandsClass(Type commandsClass, object commandParameter = null, IInputElement commandTarget = null)
+        public static KeyActionList LoadFromType(Type commandsClass, object commandParameter = null, IInputElement commandTarget = null)
 #endif
-        {
+        { 
             KeyActionList kal = new KeyActionList();
 
             var props = commandsClass.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
