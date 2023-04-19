@@ -426,6 +426,9 @@ namespace SolidShineUi.PropertyList
                 // first, check the property against the DisplayOptions
                 if (!CheckPropertyDisplay(item)) continue;
 
+                // skip any set-only properties
+                if (!item.CanRead) continue;
+
                 PropertyEditorItem pei = new PropertyEditorItem();
 #if NETCOREAPP
                 IPropertyEditor? ipe = null;
