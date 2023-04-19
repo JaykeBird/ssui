@@ -37,6 +37,19 @@
                     <TextBlock Margin="10,30" Text="Buffer text 5, heh" />
                     <TextBlock Margin="10,30" Text="Buffer text 7" />
                     <TextBlock Margin="10,30" Text="Buffer text 8" />
+                    <Grid Margin="0,10">
+                        <flat:SelectPanel Margin="15,0" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
+                                      AllowParentScrolling="{Binding ElementName=chkParentScroll, Path=IsChecked}" >
+                            <flat:SelectableItem Text="What is up???" Height="50" />
+                            <flat:SelectableItem Text="What's shaking???" Height="50" />
+                            <flat:SelectableItem Text="How's it hanging???" Height="50" />
+                            <flat:SelectableItem Text="It do be how it is." Height="50" />
+                            <flat:SelectableItem Text="For real, for real" Height="50" />
+                            <flat:SelectableItem Text="Life is a highway" Height="50" />
+                            <flat:SelectableItem Text="But is it well-paved?" Height="50" />
+                        </flat:SelectPanel>
+                    </Grid>
+                    <TextBlock Margin="10,30" Text="Buffer text 9" />
                 </StackPanel>
             </ScrollViewer>
         </Border>

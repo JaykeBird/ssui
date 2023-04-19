@@ -30,7 +30,6 @@ namespace SolidShineUi
         /// </summary>
         public SelectPanel()
         {
-            Loaded += SelectPanel_Loaded;
             SetValue(ItemsPropertyKey, new SelectableCollection<SelectableUserControl>());
             SetValue(ItemsSourceProperty, Items);
             //Items = new SelectableCollection<SelectableUserControl>();
@@ -39,8 +38,12 @@ namespace SolidShineUi
             //Items.SelectionChanged += Items_SelectionChanged;
         }
 
-        private void SelectPanel_Loaded(object sender, RoutedEventArgs e)
+        #region Template Handling
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
         {
+            base.OnApplyTemplate();
+
             LoadTemplateItems();
             if (itemsLoaded && sv != null)
             {
@@ -72,6 +75,7 @@ namespace SolidShineUi
                 }
             }
         }
+        #endregion
 
         #region ItemsSource
 
