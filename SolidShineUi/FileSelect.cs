@@ -701,6 +701,14 @@ namespace SolidShineUi
 
         #region Connections to Control Template
 
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            LoadTemplateItems();
+        }
+
         bool itemsLoaded = false;
 
 #if NETCOREAPP
@@ -713,7 +721,6 @@ namespace SolidShineUi
         Grid ch = null;
 #endif
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         void LoadTemplateItems()
         {
             if (!itemsLoaded)

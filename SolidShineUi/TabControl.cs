@@ -62,6 +62,15 @@ namespace SolidShineUi
         /// </summary>
         public bool SelectFirstTabOnLoad { get; set; } = true;
 
+        #region Template IO
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            LoadTemplateItems();
+        }
+
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (Items.Count > 0 && SelectFirstTabOnLoad)
@@ -100,6 +109,7 @@ namespace SolidShineUi
                 }
             }
         }
+        #endregion
 
         #region SelectableCollection handling
 
@@ -201,13 +211,13 @@ namespace SolidShineUi
             }
 #endif
 
-            LoadTemplateItems();
+            //LoadTemplateItems();
             CheckScrolling();
         }
 
         private void items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
-            LoadTemplateItems();
+            //LoadTemplateItems();
             if (_internalAction) return;
 
             if (((SelectionChangedEventArgs<TabItem>)e).AddedItems.Count > 0)
