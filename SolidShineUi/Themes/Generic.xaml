@@ -5,6 +5,10 @@
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
+    
+    <!--<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/SolidShineUi;component/TabControlStyle.xaml" />
+        <ResourceDictionary>-->
 
     <flat:ColorToBrushConverter x:Key="ColorConverter" />
     <BooleanToVisibilityConverter x:Key="VisConverter" />
@@ -14,125 +18,6 @@
     <!--<ssut:FileSelectSingleTitleConverter x:Key="FileSelectSstConverter" />-->
     <ssut:FilePathToIconConverter x:Key="FileIconConverter" />
     <ssut:IconSizeConverter x:Key="IconSizeConverter" />
-
-    <ControlTemplate x:Key="MainWindowControlTemplate" TargetType="{x:Type flat:FlatWindow}">
-        <Border BorderBrush="DarkGray">
-            <Border.Style>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <!--<Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />-->
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding WindowState, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="Maximized">
-                            <!--<Setter Property="BorderThickness" Value="{Binding Source={x:Static shell:SystemParameters2.Current}, Path=WindowResizeBorderThickness}"/>-->
-                            <Setter Property="BorderThickness" Value="7"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            <AdornerDecorator>
-                <!-- CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" -->
-                <Border Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"
-                    
-                    BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                    BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}">
-                    <Grid Tag="WindowGrid">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <!--<RowDefinition Height="1" />-->
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                            <Image WindowChrome.IsHitTestVisibleInChrome="True">
-                                <Image.Style>
-                                    <Style TargetType="{x:Type Image}">
-                                        <Setter Property="Width" Value="16" />
-                                        <Setter Property="Height" Value="16" />
-                                        <Setter Property="Margin" Value="6,0,0,0" />
-                                        <Setter Property="Visibility" Value="Visible" />
-                                        <Setter Property="Source" Value="{Binding Icon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}},
-                                            Converter={StaticResource IconSizeConverter},ConverterParameter=16}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowIcon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                                <Image.InputBindings>
-                                    <MouseBinding MouseAction="LeftClick" Command="flat:FlatWindowCommands.DisplaySystemMenu" />
-                                    <MouseBinding MouseAction="RightClick" Command="flat:FlatWindowCommands.DisplaySystemMenu" />
-                                    <MouseBinding MouseAction="LeftDoubleClick" Command="flat:FlatWindowCommands.CloseWindow" />
-                                </Image.InputBindings>
-                            </Image>
-                            <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
-                                    Tag="{Binding TopLeftElement, RelativeSource={RelativeSource TemplatedParent}}"
-                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopLeftElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <TextBlock Grid.Row="0" Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="FontSize" Value="12"/>
-                                        <Setter Property="Padding" Value="5,0,0,0" />
-                                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                                        <Setter Property="Visibility" Value="Visible" />
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                        <Setter Property="Foreground" Value="{Binding Path=CaptionTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
-                                                <Setter Property="Foreground" Value="{Binding Path=InactiveTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ShowTitle, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ShowIcon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
-                                                <Setter Property="Padding" Value="8,0,0,0" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </StackPanel>
-
-                        <!-- Captions Buttons to control the window borderless-->
-                        <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" >
-                            <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
-                                    Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}"
-                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
-                                SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                                HighlightBrush="{Binding HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                                ButtonPadding="{Binding CaptionButtonPadding, RelativeSource={RelativeSource TemplatedParent}}"
-                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" MarginButton="0">
-                                <flat:ChromeButtons.Style>
-                                    <Style TargetType="flat:ChromeButtons">
-                                        <Setter Property="Foreground" Value="{Binding Path=CaptionButtonsBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
-                                                <Setter Property="Foreground" Value="{Binding Path=InactiveTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </flat:ChromeButtons.Style>
-                            </flat:ChromeButtons>
-                        </StackPanel>
-
-                        <Grid Grid.Row="1" Background="{Binding Path=ContentBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" >
-                            <ContentPresenter Content="{TemplateBinding Content}" />
-                        </Grid>
-                    </Grid>
-                    <Border.Style>
-                        <Style TargetType="{x:Type Border}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
-                                    <Setter Property="Background" Value="{Binding Path=InactiveBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                </Border>
-            </AdornerDecorator>
-        </Border>
-    </ControlTemplate>
 
     <Style TargetType="{x:Type flat:FlatWindow}">
         <!--<Setter Property="WindowStyle" Value="None" />
@@ -148,7 +33,127 @@
                         GlassFrameThickness="0,0,0,1"/>
             </Setter.Value>
         </Setter>
-        <Setter Property="Template" Value="{StaticResource MainWindowControlTemplate}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:FlatWindow}">
+                    <Border BorderBrush="DarkGray">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <!--<Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />-->
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding WindowState, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="Maximized">
+                                        <!--<Setter Property="BorderThickness" Value="{Binding Source={x:Static shell:SystemParameters2.Current}, Path=WindowResizeBorderThickness}"/>-->
+                                        <Setter Property="BorderThickness" Value="7"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <AdornerDecorator>
+                            <!-- CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" -->
+                            <Border Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"
+                    BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                    BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Grid Tag="WindowGrid">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <!--<RowDefinition Height="1" />-->
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <Image WindowChrome.IsHitTestVisibleInChrome="True">
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Setter Property="Width" Value="16" />
+                                                    <Setter Property="Height" Value="16" />
+                                                    <Setter Property="Margin" Value="6,0,0,0" />
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="Source" Value="{Binding Icon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}},
+                                            Converter={StaticResource IconSizeConverter},ConverterParameter=16}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ShowIcon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                            <Image.InputBindings>
+                                                <MouseBinding MouseAction="LeftClick" Command="flat:FlatWindowCommands.DisplaySystemMenu" />
+                                                <MouseBinding MouseAction="RightClick" Command="flat:FlatWindowCommands.DisplaySystemMenu" />
+                                                <MouseBinding MouseAction="LeftDoubleClick" Command="flat:FlatWindowCommands.CloseWindow" />
+                                            </Image.InputBindings>
+                                        </Image>
+                                        <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding TopLeftElement, RelativeSource={RelativeSource TemplatedParent}}"
+                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopLeftElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <TextBlock Grid.Row="0" Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="FontSize" Value="12"/>
+                                                    <Setter Property="Padding" Value="5,0,0,0" />
+                                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                                    <Setter Property="Foreground" Value="{Binding Path=CaptionTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                            <Setter Property="Foreground" Value="{Binding Path=InactiveTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ShowTitle, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ShowIcon, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                            <Setter Property="Padding" Value="8,0,0,0" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <!-- Captions Buttons to control the window borderless-->
+                                    <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" >
+                                        <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}"
+                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
+                                SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                HighlightBrush="{Binding HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                ButtonPadding="{Binding CaptionButtonPadding, RelativeSource={RelativeSource TemplatedParent}}"
+                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" MarginButton="0">
+                                            <flat:ChromeButtons.Style>
+                                                <Style TargetType="flat:ChromeButtons">
+                                                    <Setter Property="Foreground" Value="{Binding Path=CaptionButtonsBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                            <Setter Property="Foreground" Value="{Binding Path=InactiveTextBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </flat:ChromeButtons.Style>
+                                        </flat:ChromeButtons>
+                                    </StackPanel>
+
+                                    <Grid Grid.Row="1" Background="{Binding Path=ContentBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" >
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </Grid>
+                                </Grid>
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" Value="False">
+                                                <Setter Property="Background" Value="{Binding Path=InactiveBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </AdornerDecorator>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <!--<Style.Triggers>
             <Trigger Property="WindowState" Value="Maximized">
                 <Trigger.Setters>
@@ -1790,5 +1795,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!--</ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>-->
 
 </ResourceDictionary>
