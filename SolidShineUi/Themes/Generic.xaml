@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:flat="clr-namespace:SolidShineUi"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
+    xmlns:ribbon="clr-namespace:SolidShineUi.Toolbars.Ribbon"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
     
@@ -1791,6 +1792,44 @@
                             </Grid>
                         </Grid>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ribbon:Ribbon}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ribbon:Ribbon}">
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ribbon:RibbonGroup}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="AllowDrop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ribbon:RibbonGroup}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1" x:Name="rowBorder" />
+                            <RowDefinition Height="Auto" MinHeight="8" />
+                        </Grid.RowDefinitions>
+
+                        <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel IsItemsHost="True" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
