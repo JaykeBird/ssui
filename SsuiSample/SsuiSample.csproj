@@ -10,6 +10,8 @@
   <ItemGroup>
     <None Remove="Resources\Images\*.png" />
 	<Resource Include="Resources\Images\*.png" />
+	  <None Remove="Resources\Images\32\*.png" />
+	  <Resource Include="Resources\Images\32\*.png" />
   </ItemGroup>
 
   <ItemGroup>
