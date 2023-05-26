@@ -8,14 +8,16 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace SolidShineUi.Toolbars.Ribbon
 {
+    [ContentProperty("Items")]
     public class RibbonGroup : Control
     {
         static RibbonGroup()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Ribbon), new FrameworkPropertyMetadata(typeof(RibbonGroup)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(RibbonGroup), new FrameworkPropertyMetadata(typeof(RibbonGroup)));
         }
 
         public RibbonGroup()
@@ -23,12 +25,25 @@ namespace SolidShineUi.Toolbars.Ribbon
             SetValue(ItemsPropertyKey, new ObservableCollection<IRibbonItem>());
         }
 
+        /// <summary>
+        /// Get or set the title to display at the bottom of the group. Use a title name that succinctly describes the commands that are contained in this group.
+        /// </summary>
         [Category("Common")]
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         public static DependencyProperty TitleProperty
             = DependencyProperty.Register("Title", typeof(string), typeof(RibbonGroup),
             new FrameworkPropertyMetadata("Group"));
+
+        /// <summary>
+        /// Get or set if the header (which contains the group's title and launcher icon) is displayed at the bottom of the group or not.
+        /// </summary>
+        [Category("Common")]
+        public bool ShowGroupHeader { get => (bool)GetValue(ShowGroupHeaderProperty); set => SetValue(ShowGroupHeaderProperty, value); }
+
+        public static DependencyProperty ShowGroupHeaderProperty
+            = DependencyProperty.Register("ShowGroupHeader", typeof(bool), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(true));
 
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -66,6 +81,73 @@ namespace SolidShineUi.Toolbars.Ribbon
             get { return (ObservableCollection<IRibbonItem>)GetValue(ExpandedItemsProperty); }
             private set { SetValue(ExpandedItemsPropertyKey, value); }
         }
+
+        #region Color Scheme
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
+
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
+        public static readonly DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+
+        /// <summary>
+        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
+        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+#if NETCOREAPP
+            ColorScheme cs = (e.NewValue as ColorScheme)!;
+#else
+            ColorScheme cs = e.NewValue as ColorScheme;
+#endif
+
+            if (d is RibbonGroup c)
+            {
+                c.ColorSchemeChanged?.Invoke(d, e);
+                c.ApplyColorScheme(cs);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
+        public ColorScheme ColorScheme
+        {
+            get => (ColorScheme)GetValue(ColorSchemeProperty);
+            set => SetValue(ColorSchemeProperty, value);
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs == null)
+            {
+                return;
+            }
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            Foreground = cs.ForegroundColor.ToBrush();
+        }
+        #endregion
 
         #region Resizing
 

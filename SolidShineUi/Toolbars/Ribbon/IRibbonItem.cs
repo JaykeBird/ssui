@@ -9,6 +9,8 @@ namespace SolidShineUi.Toolbars.Ribbon
     public interface IRibbonItem : IToolbarItem
     {
 
+        bool IsCompacted { get; set; }
+
         RibbonElementSize StandardSize { get; set; }
 
         RibbonElementSize CompactSize { get; set; }

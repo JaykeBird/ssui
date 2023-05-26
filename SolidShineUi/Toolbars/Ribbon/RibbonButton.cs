@@ -52,6 +52,12 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(RibbonButton),
             new FrameworkPropertyMetadata(null));
 
+        public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
+
+        public static DependencyProperty IsCompactedProperty
+            = DependencyProperty.Register("IsCompacted", typeof(bool), typeof(RibbonButton),
+            new FrameworkPropertyMetadata(false));
+
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
         public static DependencyProperty CompactOrderProperty

@@ -23,5 +23,7 @@ namespace SolidShineUi.Toolbars
         int CompactOrder { get; set; }
 
         object ToolTip { get; set; }
+
+        ColorScheme ColorScheme { get; set; }
     }
 }
