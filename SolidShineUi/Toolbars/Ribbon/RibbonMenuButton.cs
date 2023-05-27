@@ -5,10 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace SolidShineUi.Toolbars.Ribbon
 {
+    /// <summary>
+    /// A button to display on a <see cref="Ribbon"/> (generally within a <see cref="RibbonGroup"/> on a <see cref="RibbonTab"/>), which displays a menu when clicked.
+    /// </summary>
+    [ContentProperty("Menu")]
     public class RibbonMenuButton : MenuButton, IRibbonItem
     {
         static RibbonMenuButton()
