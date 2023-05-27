@@ -8,29 +8,47 @@
              xmlns:local="clr-namespace:SsuiSample"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="GroupColorScheme" TargetType="{x:Type ribbon:RibbonGroup}">
+            <Setter Property="ColorScheme" Value="{Binding ElementName=control, Path=ColorScheme}" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Top"/>
 
-        <ribbon:RibbonGroup Height="96" Margin="60,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Title="Editing" ShowLauncher="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" >
-            <ribbon:RibbonButton Title="AutoSum" StandardSize="Small" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png" />
-            <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
-                <ribbon:RibbonMenuButton.Menu>
+        <StackPanel Orientation="Horizontal" Margin="60,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ribbon:RibbonGroup Title="Editing" ShowLauncher="True" Style="{StaticResource GroupColorScheme}" >
+                <ribbon:RibbonButton Title="AutoSum" StandardSize="Small" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png" />
+                <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
+                    <ribbon:RibbonMenuButton.Menu>
+                        <flat:ContextMenu>
+                            <MenuItem Header="Item 1" />
+                            <MenuItem Header="Item 2" />
+                        </flat:ContextMenu>
+                    </ribbon:RibbonMenuButton.Menu>
+                </ribbon:RibbonMenuButton>
+                <ribbon:RibbonButton Title="Clear" StandardSize="Small" LargeIcon="Resources/Images/32/DownloadColor.png" SmallIcon="Resources/Images/DownloadColor.png" />
+                <ribbon:RibbonMenuButton Title="Sort &amp; Filter" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png">
+                    <ribbon:RibbonMenuButton.Menu>
+                        <flat:ContextMenu>
+                            <MenuItem Header="Item 1" />
+                            <MenuItem Header="Item 2" />
+                        </flat:ContextMenu>
+                    </ribbon:RibbonMenuButton.Menu>
+                </ribbon:RibbonMenuButton>
+                <ribbon:RibbonButton Title="Find &amp; Select" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" />
+            </ribbon:RibbonGroup>
+            <ribbon:RibbonGroup Title="Test 2" Style="{StaticResource GroupColorScheme}" >
+                <ribbon:RibbonButton Title="Button 1" StandardSize="Small" />
+            </ribbon:RibbonGroup>
+            <ribbon:RibbonGroup Title="Empty" Style="{StaticResource GroupColorScheme}" />
+            <ribbon:RibbonGroup Title="SM" Style="{StaticResource GroupColorScheme}" ShowLauncher="True" >
+                <ribbon:RibbonMenuButton Title="Solo Menu" StandardSize="Large" LargeIcon="Resources/Images/32/CopyColor.png" SmallIcon="Resources/Images/CopyColor.png">
                     <flat:ContextMenu>
                         <MenuItem Header="Item 1" />
-                        <MenuItem Header="Item 2" />
                     </flat:ContextMenu>
-                </ribbon:RibbonMenuButton.Menu>
-            </ribbon:RibbonMenuButton>
-            <ribbon:RibbonButton Title="Clear" StandardSize="Small" LargeIcon="Resources/Images/32/DownloadColor.png" SmallIcon="Resources/Images/DownloadColor.png" />
-            <ribbon:RibbonMenuButton Title="Sort &amp; Filter" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png">
-                <ribbon:RibbonMenuButton.Menu>
-                    <flat:ContextMenu>
-                        <MenuItem Header="Item 1" />
-                        <MenuItem Header="Item 2" />
-                    </flat:ContextMenu>
-                </ribbon:RibbonMenuButton.Menu>
-            </ribbon:RibbonMenuButton>
-            <ribbon:RibbonButton Title="Find &amp; Select" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" />
-        </ribbon:RibbonGroup>
+                </ribbon:RibbonMenuButton>
+            </ribbon:RibbonGroup>
+        </StackPanel>
     </Grid>
 </UserControl>

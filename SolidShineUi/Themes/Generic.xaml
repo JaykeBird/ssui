@@ -1860,7 +1860,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="{TemplateBinding Title}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    <TextBlock Grid.Column="0" Text="{TemplateBinding Title}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="3,0" />
                                     <flat:FlatButton TransparentBack="True" Grid.Column="1" ColorScheme="{TemplateBinding ColorScheme}" MinHeight="16" Padding="1" >
                                         <flat:FlatButton.Style>
                                             <Style TargetType="{x:Type flat:FlatButton}">
