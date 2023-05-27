@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace SolidShineUi.Toolbars.Ribbon
 {
@@ -82,6 +83,29 @@ namespace SolidShineUi.Toolbars.Ribbon
             private set { SetValue(ExpandedItemsPropertyKey, value); }
         }
 
+        #region Right Separator
+
+        public bool ShowGroupSeparator { get => (bool)GetValue(ShowGroupSeparatorProperty); set => SetValue(ShowGroupSeparatorProperty, value); }
+
+        public static DependencyProperty ShowGroupSeparatorProperty
+            = DependencyProperty.Register("ShowGroupSeparator", typeof(bool), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(true));
+
+        public Brush GroupSeparatorBrush { get => (Brush)GetValue(GroupSeparatorBrushProperty); set => SetValue(GroupSeparatorBrushProperty, value); }
+
+        public static DependencyProperty GroupSeparatorBrushProperty
+            = DependencyProperty.Register("GroupSeparatorBrush", typeof(Brush), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        public double GroupSeparatorWidth { get => (double)GetValue(GroupSeparatorWidthProperty); set => SetValue(GroupSeparatorWidthProperty, value); }
+
+        public static DependencyProperty GroupSeparatorWidthProperty
+            = DependencyProperty.Register("GroupSeparatorWidth", typeof(double), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(1.0));
+
+
+        #endregion
+
         #region Color Scheme
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -146,6 +170,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             }
 
             Foreground = cs.ForegroundColor.ToBrush();
+            GroupSeparatorBrush = cs.BorderColor.ToBrush();
         }
         #endregion
 

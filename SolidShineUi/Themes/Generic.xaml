@@ -1816,6 +1816,15 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:RibbonGroup}">
                     <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="1" BorderBrush="{TemplateBinding GroupSeparatorBrush}" BorderThickness="1" Width="{TemplateBinding GroupSeparatorWidth}"
+                                Visibility="{TemplateBinding ShowGroupSeparator, Converter={StaticResource VisConverter}}" Margin="0,3" />
+
+                        <Grid Margin="{TemplateBinding Padding}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
                             <RowDefinition x:Name="rowGroupHeader">
