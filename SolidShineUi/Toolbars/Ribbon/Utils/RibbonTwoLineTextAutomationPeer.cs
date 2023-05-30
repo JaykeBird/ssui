@@ -7,7 +7,7 @@ using System.Windows.Automation.Peers;
 // https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/System.Windows.Controls.Ribbon/Microsoft/Windows/Automation/Peers/RibbonTwoLineTextAutomationPeer.cs
 // This is licensed under the MIT license and thus is free for me to reuse.
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Toolbars.Ribbon.Utils
 {
     /// <summary>
     ///   An automation peer class which automates the RibbonTwoLineText control.

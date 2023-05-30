@@ -28,7 +28,7 @@ using System.Windows.Shapes;
 // end user, that's another reason for using the existing and established code. Also, this code isn't complex enough that I
 // don't understand it if I need to come in and tweak it, and it's relatively easy to integrate into my own system here.
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Toolbars.Ribbon.Utils
 {
     /// <summary>
     ///   A specialized label that can lay itself out on at most two lines, and
@@ -302,7 +302,7 @@ namespace SolidShineUi.Toolbars.Ribbon
                     _textBlock1.Visibility = Visibility.Collapsed;
 
                     // All text shown in second line
-                    _textBlock2.Text = this.Text;
+                    _textBlock2.Text = Text;
                     _textBlock2.Visibility = Visibility.Visible;
 
                     // Mark measure dirty all UIElements in the visual tree from _textBlock2 upto RibbonTwoLineText
@@ -348,7 +348,7 @@ namespace SolidShineUi.Toolbars.Ribbon
                     else
                     {
                         // Text is small enough to be displayed in first line alone
-                        _textBlock1.Text = this.Text;
+                        _textBlock1.Text = Text;
                         _textBlock1.Visibility = Visibility.Visible;
 
                         // Collapse second line
@@ -374,7 +374,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             //Debug.Assert(_textBlock1 != null && _textBlock2 != null);
 
             // Temporarily assign _textBlock1.Text to measure the length it would require
-            _textBlock1.Text = this.Text;
+            _textBlock1.Text = Text;
             _textBlock1.TextWrapping = TextWrapping.WrapWithOverflow;
             _textBlock1.Visibility = Visibility.Visible;
 
@@ -414,7 +414,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             secondLinePointer = null;
 
             // Temporarily assign _textBlock1.Text to measure the length it would require
-            _textBlock1.Text = this.Text;
+            _textBlock1.Text = Text;
             _textBlock1.TextWrapping = TextWrapping.WrapWithOverflow;
             _textBlock1.Visibility = Visibility.Visible;
 
@@ -468,13 +468,13 @@ namespace SolidShineUi.Toolbars.Ribbon
                 secondLinePointer = _textBlock1.ContentStart.GetLineStartPosition(1);
 
                 // Clear the temporarily assigned values
-                _textBlock1.ClearValue(TextBlock.WidthProperty);
+                _textBlock1.ClearValue(WidthProperty);
             }
 
             _textBlock1.ClearValue(TextBlock.TextWrappingProperty);
         }
 
-#endregion
+        #endregion
 
         #region TreeHelper functions
         // from https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/System.Windows.Controls.Ribbon/Microsoft/Windows/Controls/Generated/TreeHelper.cs
@@ -508,7 +508,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             bool includeContentElements = true;
             while (pathStart != null)
             {
-                bool isEndType = (pathStart is PathEndType);
+                bool isEndType = pathStart is PathEndType;
                 if (!includePathEnd && isEndType)
                 {
                     return;
@@ -531,7 +531,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         /// <inheritdoc/>
         protected override AutomationPeer OnCreateAutomationPeer()
         {
-            return new SolidShineUi.Toolbars.Ribbon.RibbonTwoLineTextAutomationPeer(this);
+            return new RibbonTwoLineTextAutomationPeer(this);
         }
     }
 }
