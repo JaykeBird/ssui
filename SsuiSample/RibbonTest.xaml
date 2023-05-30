@@ -15,8 +15,11 @@
     </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Top"/>
-
-        <StackPanel Orientation="Horizontal" Margin="60,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <ribbon:Ribbon Height="30" Margin="60,60,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" >
+            <ribbon:RibbonTab Title="Home" />
+        </ribbon:Ribbon>
+        <Border Margin="60,90,20,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="1,0,1,1">
+            <StackPanel Orientation="Horizontal">
             <ribbon:RibbonGroup Title="Editing" ShowLauncher="True" Style="{StaticResource GroupColorScheme}" >
                 <ribbon:RibbonButton Title="AutoSum" StandardSize="Small" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png" />
                 <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
@@ -50,5 +53,6 @@
                 </ribbon:RibbonMenuButton>
             </ribbon:RibbonGroup>
         </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

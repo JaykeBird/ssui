@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="SolidShineUi.Toolbars.Ribbon.Utils.RibbonTabDisplayItem" x:Name="control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SolidShineUi.Toolbars.Ribbon.Utils"
+             xmlns:utils="clr-namespace:SolidShineUi.Utils"
+             xmlns:flat="clr-namespace:SolidShineUi"
+             mc:Ignorable="d" 
+             d:DesignHeight="24"
+             MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp"
+             StylusDown="UserControl_StylusDown" StylusUp="UserControl_StylusUp" TouchDown="UserControl_TouchDown" TouchUp="UserControl_TouchUp"
+             GotKeyboardFocus="UserControl_GotKeyboardFocus" LostKeyboardFocus="UserControl_LostKeyboardFocus" KeyDown="UserControl_KeyDown" KeyUp="UserControl_KeyUp"
+             GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
+             DragEnter="control_DragEnter" DragOver="control_DragOver" DragLeave="control_DragLeave" 
+             PreviewDragEnter="control_PreviewDragEnter" PreviewDragOver="control_PreviewDragOver" PreviewDragLeave="control_PreviewDragLeave"
+             Drop="control_Drop" PreviewDrop="control_PreviewDrop" QueryContinueDrag="control_QueryContinueDrag" PreviewQueryContinueDrag="control_PreviewQueryContinueDrag"
+             GiveFeedback="control_GiveFeedback" PreviewGiveFeedback="control_PreviewGiveFeedback" MouseMove="control_MouseMove" >
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="btv" />
+        <flat:ColorToBrushConverter x:Key="ctb" />
+        <flat:BindableChildConverter x:Key="BindableChildConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Border BorderThickness="1,1,1,0" BorderBrush="Black" x:Name="border" Focusable="{Binding ElementName=control, Path=TabItem.CanSelect}" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
+            <!--<Border BorderThickness="0" x:Name="brdrInnerColor" Background="{Binding ElementName=control, Path=TabBackground}" />-->
+        </Border>
+        <Border BorderThickness="1">
+            <!--<Border.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True" >
+                <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+            </Trigger>
+        </Border.Triggers>-->
+            <Grid>
+                <Grid Grid.Column="0" Margin="{Binding ElementName=control, Path=TabItem.Padding, FallbackValue='4,0'}" >
+                    <TextBlock x:Name="lblTitle" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title, FallbackValue='Unnamed Tab'}" />
+                </Grid>
+                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
+            </Grid>
+        </Border>
+        <Grid x:Name="grdDrag" Visibility="Collapsed" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragLeft" BorderBrush="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}"
+                    AllowDrop="True" Drop="brdrDragLeft_Drop" DragEnter="brdrDragLeft_DragEnter" DragLeave="brdrDragLeft_DragLeave" />
+            <Border Grid.Column="1" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragRght" BorderBrush="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}"
+                    AllowDrop="True" Drop="brdrDragRght_Drop" DragEnter="brdrDragRght_DragEnter" DragLeave="brdrDragRght_DragLeave" />
+        </Grid>
+
+    </Grid>
+</UserControl>
