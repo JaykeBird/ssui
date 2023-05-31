@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace SolidShineUi.Toolbars.Ribbon
             SetValue(ItemsPropertyKey, new ObservableCollection<RibbonGroup>());
 
             InternalPaddingChanged += tabItem_InternalPaddingChanged;
+
+            Items.CollectionChanged += Items_CollectionChanged;
         }
 
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
@@ -43,6 +46,8 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RibbonTab),
             new FrameworkPropertyMetadata(Visibility.Visible));
 
+        #region Items
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<RibbonGroup>), typeof(RibbonTab),
@@ -60,6 +65,21 @@ namespace SolidShineUi.Toolbars.Ribbon
             get { return (ObservableCollection<RibbonGroup>)GetValue(ItemsProperty); }
             private set { SetValue(ItemsPropertyKey, value); }
         }
+
+        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
+            //{
+            //    foreach (var item in e.NewItems)
+            //    {
+            //        if (item is RibbonGroup group)
+            //        {
+                        
+            //        }
+            //    }
+            //}
+        }
+        #endregion
 
         #region Padding
 
@@ -105,71 +125,6 @@ namespace SolidShineUi.Toolbars.Ribbon
             PaddingChanged?.Invoke(this, e);
         }
 
-        #endregion
-
-        #region Color Scheme
-        /// <summary>
-        /// Raised when the ColorScheme property is changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-#endif
-
-
-        /// <summary>
-        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
-        /// </summary>
-        public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RibbonTab),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-
-            if (d is RibbonTab c)
-            {
-                c.ColorSchemeChanged?.Invoke(d, e);
-                c.ApplyColorScheme(cs);
-            }
-        }
-
-        /// <summary>
-        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
-        /// </summary>
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply.</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs == null)
-            {
-                return;
-            }
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
         #endregion
 
         #region Contextual Tab
