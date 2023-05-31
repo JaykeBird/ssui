@@ -376,7 +376,6 @@ namespace SolidShineUi
 
         #endregion
 
-
         #region Basic Properties / Events
 
         /// <summary>
@@ -394,7 +393,7 @@ namespace SolidShineUi
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
         private static readonly DependencyPropertyKey SelectedTabPropertyKey
-            = DependencyProperty.RegisterReadOnly("CurrentTab", typeof(TabItem), typeof(TabControl), new FrameworkPropertyMetadata(null));
+            = DependencyProperty.RegisterReadOnly("SelectedTab", typeof(TabItem), typeof(TabControl), new FrameworkPropertyMetadata(null));
 
         private static readonly DependencyPropertyKey SelectedTabContentPropertyKey
             = DependencyProperty.RegisterReadOnly("Content", typeof(UIElement), typeof(TabControl), new FrameworkPropertyMetadata(null));
