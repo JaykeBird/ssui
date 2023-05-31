@@ -22,7 +22,7 @@
         <flat:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>
-        <Border BorderThickness="1,1,1,0" BorderBrush="Black" x:Name="border" Focusable="{Binding ElementName=control, Path=TabItem.CanSelect}" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
+        <Border BorderThickness="0,0,0,1" BorderBrush="Black" x:Name="border" Focusable="True" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
             <!--<Border BorderThickness="0" x:Name="brdrInnerColor" Background="{Binding ElementName=control, Path=TabBackground}" />-->
         </Border>
         <Border BorderThickness="1">
@@ -32,7 +32,7 @@
             </Trigger>
         </Border.Triggers>-->
             <Grid>
-                <Grid Grid.Column="0" Margin="{Binding ElementName=control, Path=TabItem.Padding, FallbackValue='4,0'}" >
+                <Grid Grid.Column="0" Margin="{Binding ElementName=control, Path=TabItem.Padding, FallbackValue='8,0'}" >
                     <TextBlock x:Name="lblTitle" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title, FallbackValue='Unnamed Tab'}" />
                 </Grid>
                 <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />

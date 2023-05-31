@@ -67,7 +67,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(RibbonTab),
-            new PropertyMetadata(new Thickness(4, 0, 4, 0), new PropertyChangedCallback(OnInternalPaddingChanged)));
+            new PropertyMetadata(new Thickness(8, 0, 8, 0), new PropertyChangedCallback(OnInternalPaddingChanged)));
 
         ///<summary>
         /// Get or set the padding (or space) applied around the tab's title and icon. (This does not set the padding for the content.)

@@ -24,6 +24,14 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
 
             InternalParentChanged += tdi_InternalParentChanged;
             InternalTabItemChanged += tdi_InternalTabItemChanged;
+
+            Click += (s, e) => 
+            {
+                if (!IsSelected)
+                {
+                    RequestSelect?.Invoke(this, e);
+                }
+            };
         }
 
         public RibbonTabDisplayItem(RibbonTab tab)
@@ -34,7 +42,50 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             InternalTabItemChanged += tdi_InternalTabItemChanged;
 
             TabItem = tab;
+
+            Click += (s, e) =>
+            {
+                if (!IsSelected)
+                {
+                    RequestSelect?.Invoke(this, e);
+                }
+            };
         }
+
+
+        #region Selection
+
+        public bool IsSelected { get => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
+
+        public static DependencyProperty IsSelectedProperty
+            = DependencyProperty.Register("IsSelected", typeof(bool), typeof(RibbonTabDisplayItem),
+            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
+
+        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is RibbonTabDisplayItem r)
+            {
+                r.InternalIsSelectedChanged();
+            }
+        }
+
+        protected void InternalIsSelectedChanged()
+        {
+            if (IsSelected)
+            {
+                border.BorderThickness = TabBorderThickSelected;
+                border.Background = Background;
+            }
+            else
+            {
+                border.BorderThickness = IsMouseOver ? TabBorderThickSelected : TabBorderThickStandard;
+                border.Background = (IsMouseOver || IsKeyboardFocused) ? HighlightBrush : NearTransparent;
+            }
+        }
+
+        public event EventHandler RequestSelect;
+
+        #endregion
 
         #region Events
 #if NETCOREAPP
@@ -234,7 +285,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             }
             else
             {
-                border.Background = Background;
+                border.Background = IsSelected ? Background : NearTransparent;
                 border.BorderBrush = BorderBrush;
             }
         }
@@ -345,13 +396,14 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
+                border.BorderThickness = TabBorderThickSelected;
                 highlighting = true;
             }
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            border.Background = Background;
+            border.Background = IsSelected ? Background : NearTransparent;
             border.BorderBrush = BorderBrush;
             highlighting = false;
 
@@ -360,7 +412,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
 
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            border.Background = Background;
+            border.Background = IsSelected ? Background : NearTransparent;
             border.BorderBrush = BorderBrush;
             highlighting = false;
 
@@ -371,8 +423,9 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         {
             if (!IsKeyboardFocused)
             {
-                border.Background = Background;
+                border.Background = IsSelected ? Background : NearTransparent;
                 border.BorderBrush = BorderBrush;
+                border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
                 highlighting = false;
             }
 
@@ -398,7 +451,9 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         /// </summary>
         public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
 
-        private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+        private static Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+        private static Thickness TabBorderThickStandard = new Thickness(0, 0, 0, 1);
+        private static Brush NearTransparent = Color.FromArgb(1, 1, 1, 1).ToBrush();
 
         private void border_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -412,7 +467,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             }
         }
         #endregion
-        
+
         #region Drag and Drop
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
