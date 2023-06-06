@@ -1,0 +1,90 @@
+﻿<flat:FlatWindow x:Class="SolidShineUi.PropertyList.Dialogs.TransformEditDialog" x:Name="window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SolidShineUi.PropertyList.Dialogs"
+        xmlns:flat="clr-namespace:SolidShineUi"
+        mc:Ignorable="d"
+        Title="TransformEditDialog" Height="450" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1" Grid.Row="1" Margin="0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <flat:MenuButton ColorScheme="{Binding ElementName=window, Path=ColorScheme}">
+                <flat:MenuButton.Menu>
+                    <flat:ContextMenu>
+                        <MenuItem Header="Rotate" />
+                        <MenuItem Header="Skew" />
+                        <MenuItem Header="Scale (Size)" />
+                        <MenuItem Header="Translate (Move)" />
+                        <Separator />
+                        <MenuItem Header="Matrix (Custom)" />
+                    </flat:ContextMenu>
+                </flat:MenuButton.Menu>
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" Width="16" x:Name="imgAdd" />
+                    <TextBlock Margin="2,0" Text="Add" />
+                </StackPanel>
+            </flat:MenuButton>
+
+            <flat:FlatButton Grid.Column="2" x:Name="btnDelete" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+                <Image Width="16" Height="16" x:Name="imgDelete" />
+            </flat:FlatButton>
+        </Grid>
+        <TextBlock VerticalAlignment="Center" Margin="5,0" Grid.Row="1" Grid.Column="3" Text="Edit selected transform:" />
+
+        <flat:SelectPanel Grid.Column="1" Grid.Row="2" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:Name="selTransformList" />
+        <Border Grid.Column="3" Grid.Row="2" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush, FallbackValue=DarkGray}">
+            <Grid x:Name="grdHolder">
+                <Grid x:Name="grdRotate">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="24" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Rotate:" Margin="5" />
+                    <TextBlock Grid.Row="1" Text="Angle:" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="3" Text="Rotation point:" Margin="10,0" VerticalAlignment="Center" />
+
+                    <flat:DoubleSpinner Grid.Column="1" Height="24" Margin="5,0" Grid.Row="1" MinValue="0" MaxValue="359.999" Decimals="2" />
+                    <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="30,5,0,8" Height="24" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <flat:DoubleSpinner Grid.Column="0" Margin="5,0" Grid.Row="1" />
+                        <flat:DoubleSpinner Grid.Column="1" Margin="5,0" Grid.Row="1" />
+                    </Grid>
+                    <flat:FlatButton Margin="5,0" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Content="Set to 0,0 (Center)" MinWidth="125" />
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</flat:FlatWindow>
