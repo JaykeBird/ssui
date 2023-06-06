@@ -242,8 +242,7 @@ namespace SsuiSample
                 {
                     lgb = lg;
                 }
-                SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog lge = new SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog(ColorScheme);
-                lge.LoadGradient(lgb);
+                SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog lge = new SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog(ColorScheme, lgb);
                 lge.ShowDialog();
                 if (lge.DialogResult)
                 {

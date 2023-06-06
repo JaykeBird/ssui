@@ -12,6 +12,9 @@ namespace SolidShineUi.PropertyList.Dialogs
     /// </summary>
     public partial class LinearGradientEditorDialog : FlatWindow
     {
+
+        #region Constructors / Window Events
+
         /// <summary>
         /// Create a LinearGradientEditorDialog.
         /// </summary>
@@ -66,6 +69,24 @@ namespace SolidShineUi.PropertyList.Dialogs
             imgLeft.Source = IconLoader.LoadIcon("LeftArrow", ColorScheme);
             imgRight.Source = IconLoader.LoadIcon("RightArrow", ColorScheme);
         }
+
+        /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK". <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
+        public new bool DialogResult { get; set; } = false;
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
+        }
+
+        #endregion
+
+        #region Gradient IO
 
         /// <summary>
         /// Load in a <see cref="LinearGradientBrush"/> into this dialog for viewing/editing.
@@ -134,25 +155,25 @@ namespace SolidShineUi.PropertyList.Dialogs
             return lgb;
         }
 
-        /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK", <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
-        public new bool DialogResult { get; set; } = false;
+        #endregion
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void btnOK_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Close();
-        }
-
+        #region Gradient Direction Handling
         // taken from WPF source code
         private Point EndPointFromAngle(double angle)
         {
             angle = angle * 0.0055555555555555558 * Math.PI;
             return new Point(Math.Cos(angle), Math.Sin(angle));
+        }
+
+        double GetAngle()
+        {
+            // https://stackoverflow.com/a/12892493/2987285
+            Point p1 = new Point(edtPoints.SelectedWidth1, edtPoints.SelectedHeight1);
+            Point p2 = new Point(edtPoints.SelectedWidth2, edtPoints.SelectedHeight2);
+
+            double angle = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X) * 180.0 / Math.PI;
+
+            return angle < 0 ? 360 + angle : angle;
         }
 
         bool updateValues = false;
@@ -263,6 +284,26 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 #pragma warning restore IDE0051 // Remove unused private members
 
+        private void btnAngleLeft_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 180;
+        }
+
+        private void btnAngleUp_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 270;
+        }
+
+        private void btnAngleRight_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 0;
+        }
+
+        private void btnAngleDown_Click(object sender, RoutedEventArgs e)
+        {
+            nudAngle.Value = 90;
+        }
+
         void RunUpdateAction(Action a)
         {
             if (updateValues) return;
@@ -272,18 +313,9 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             updateValues = false;
         }
+        #endregion
 
-        double GetAngle()
-        {
-            // https://stackoverflow.com/a/12892493/2987285
-            Point p1 = new Point(edtPoints.SelectedWidth1, edtPoints.SelectedHeight1);
-            Point p2 = new Point(edtPoints.SelectedWidth2, edtPoints.SelectedHeight2);
-
-            double angle = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X) * 180.0 / Math.PI;
-
-            return angle < 0 ? 360 + angle : angle;
-        }
-
+        #region Other Options
         private void cbbMappingMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbbMappingMode.SelectedEnumValueAsEnum<BrushMappingMode>() == BrushMappingMode.Absolute)
@@ -322,10 +354,15 @@ namespace SolidShineUi.PropertyList.Dialogs
             UpdatePreview();
         }
 
+
+#pragma warning disable IDE0051 // Remove unused private members
         private void nudOpacity_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdatePreview();
         }
+#pragma warning restore IDE0051 // Remove unused private members
+
+        #endregion
 
         void UpdatePreview()
         {
@@ -349,26 +386,6 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
 
             grdPreview.Background = lgb;
-        }
-
-        private void btnAngleLeft_Click(object sender, RoutedEventArgs e)
-        {
-            nudAngle.Value = 180;
-        }
-
-        private void btnAngleUp_Click(object sender, RoutedEventArgs e)
-        {
-            nudAngle.Value = 270;
-        }
-
-        private void btnAngleRight_Click(object sender, RoutedEventArgs e)
-        {
-            nudAngle.Value = 0;
-        }
-
-        private void btnAngleDown_Click(object sender, RoutedEventArgs e)
-        {
-            nudAngle.Value = 90;
         }
 
         private void stopBar_GradientChanged(object sender, EventArgs e)
