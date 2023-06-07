@@ -6,6 +6,34 @@ using System.Collections.Specialized;
 
 namespace SolidShineUi
 {
+    public interface ISelectableCollectionSource
+    {
+        ICollection SelectedItems { get; }
+
+        void AddToSelection(object item);
+
+        void Select(object item);
+
+        void Deselect(object item);
+
+        void SelectAll();
+
+        void ClearSelection();
+
+        bool IsSelected(object item);
+
+        bool CanSelectMultiple { get; set; }
+
+        /// <summary>
+        /// Raised when the selection is changed, including additions and removals.
+        /// </summary>
+#if NETCOREAPP
+        event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler? SelectionChanged;
+#else
+        event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler SelectionChanged;
+#endif
+    }
+
     /// <summary>
     /// Defines a generic interface for a collection where items within it can be selected.
     /// </summary>
@@ -50,7 +78,7 @@ namespace SolidShineUi
         /// collection, and is currently selected; otherwise, this always returns false.
         /// </summary>
         /// <param name="item">The item to check.</param>
-        /// <returns>True if the item is in this colelction and is selected; otherwise, false.</returns>
+        /// <returns>True if the item is in this collection and is selected; otherwise, false.</returns>
         bool IsSelected(T item);
 
         /// <summary>

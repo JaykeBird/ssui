@@ -213,11 +213,14 @@ namespace SolidShineUi
         {
             _internalAction = true;
 
-            if (ItemsSource is ISelectableCollectionSource<SelectableUserControl> isl)
+            if (ItemsSource is ISelectableCollectionSource isl)
             {
-                foreach (SelectableUserControl item in ItemsSource)
+                foreach (var item in ItemsSource)
                 {
-                    item.SetIsSelectedWithSource(isl.IsSelected(item), SelectionChangeTrigger.Parent, this);
+                    if (item is SelectableUserControl suc)
+                    {
+                        item.SetIsSelectedWithSource(isl.IsSelected(item), SelectionChangeTrigger.Parent, this);
+                    }
                 }
             }
 
@@ -371,7 +374,7 @@ namespace SolidShineUi
             {
                 _internalAction = true;
 
-                if (ItemsSource is ISelectableCollectionSource<SelectableUserControl> isl)
+                if (ItemsSource is ISelectableCollectionSource isl)
                 {
 
                     if (item.IsSelected && !isl.IsSelected(item))

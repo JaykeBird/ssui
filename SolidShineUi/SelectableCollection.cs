@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace SolidShineUi
     /// This is ideal for scenarios where you're working with a list or collection of objects, and want the ability to only affect any arbitrary subset of these objects.
     /// </summary>
     /// <typeparam name="T">The type of elements in the collection.</typeparam>
-    public class SelectableCollection<T> : ObservableCollection<T>, ISelectableCollectionSource<T>
+    public class SelectableCollection<T> : ObservableCollection<T>, ISelectableCollectionSource<T>, ISelectableCollectionSource
     {
         /// <summary>
         /// Initializes a new SelectableCollection.
@@ -406,6 +407,46 @@ namespace SolidShineUi
         {
             SelectRange(Items);
         }
+
+        #region Non-generic ISelectableCollectionSource handling
+        ICollection ISelectableCollectionSource.SelectedItems => SelectedItems;
+
+        void ISelectableCollectionSource.AddToSelection(object item)
+        {
+            if (item is T)
+            {
+                AddToSelection((T)item);
+            }
+        }
+
+        void ISelectableCollectionSource.Select(object item)
+        {
+            if (item is T)
+            {
+                Select((T)item);
+            }
+        }
+
+        void ISelectableCollectionSource.Deselect(object item)
+        {
+            if (item is T)
+            {
+                Deselect((T)item);
+            }
+        }
+
+        bool ISelectableCollectionSource.IsSelected(object item)
+        {
+            if (item is T)
+            {
+                return IsSelected((T)item);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Raised when the selection is changed in any way, including additions, removals, and the selection being cleared.

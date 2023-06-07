@@ -12,7 +12,7 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> derives from SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, IEnumerable<T>
+    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, IEnumerable<T>, ISelectableCollectionSource
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
@@ -301,6 +301,47 @@ namespace SolidShineUi
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return baseEnumerator.OfType<T>().GetEnumerator();
+        }
+        #endregion
+
+        #region non-generic ISelectableCollectionSource implementations
+
+        ICollection ISelectableCollectionSource.SelectedItems => SelectedItems;
+
+        void ISelectableCollectionSource.AddToSelection(object item)
+        {
+            if (item is T)
+            {
+                AddToSelection((T)item);
+            }
+        }
+
+        void ISelectableCollectionSource.Select(object item)
+        {
+            if (item is T)
+            {
+                Select((T)item);
+            }
+        }
+
+        void ISelectableCollectionSource.Deselect(object item)
+        {
+            if (item is T)
+            {
+                Deselect((T)item);
+            }
+        }
+
+        bool ISelectableCollectionSource.IsSelected(object item)
+        {
+            if (item is T)
+            {
+                return IsSelected((T)item);
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
     }
