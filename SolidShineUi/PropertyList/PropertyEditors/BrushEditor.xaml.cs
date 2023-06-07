@@ -48,6 +48,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 brdrPop.BorderBrush = value.BorderColor.ToBrush();
                 brdrPop.Background = value.ThirdHighlightColor.ToBrush();
 
+                brdrTransform.BorderBrush = value.BorderColor.ToBrush();
+                btnEditTransform.ColorScheme = value;
+                btnEditRelativeTransform.ColorScheme = value;
+
                 if (value.IsHighContrast)
                 {
                     btnBrush.BorderBrush = value.BorderColor.ToBrush();
@@ -639,5 +643,47 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
         #endregion
+
+        private void btnEditTransform_Click(object sender, RoutedEventArgs e)
+        {
+            if (_dataValue == null)
+            {
+                // this is null, so nothing is needed lol
+                return;
+            }
+            else
+            {
+                Transform t = _dataValue.Transform;
+                TransformEditDialog ted = new TransformEditDialog();
+                ted.ColorScheme = _cs;
+                ted.ShowDialog();
+
+                if (ted.DialogResult == true)
+                {
+                    //_dataValue.Transform = t;
+                }
+            }
+        }
+
+        private void btnEditRelativeTransform_Click(object sender, RoutedEventArgs e)
+        {
+            if (_dataValue == null)
+            {
+                // this is null, so nothing is needed lol
+                return;
+            }
+            else
+            {
+                Transform t = _dataValue.RelativeTransform;
+                TransformEditDialog ted = new TransformEditDialog();
+                ted.ColorScheme = _cs;
+                ted.ShowDialog();
+
+                if (ted.DialogResult == true)
+                {
+                    //_dataValue.RelativeTransform = t;
+                }
+            }
+        }
     }
 }
