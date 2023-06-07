@@ -7,6 +7,9 @@
         xmlns:flat="clr-namespace:SolidShineUi"
         mc:Ignorable="d"
         Title="TransformEditDialog" Height="450" Width="600">
+    <flat:FlatWindow.Resources>
+        <flat:ColorToBrushConverter x:Key="ctb" />
+    </flat:FlatWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -29,33 +32,38 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <flat:MenuButton ColorScheme="{Binding ElementName=window, Path=ColorScheme}">
+            <flat:MenuButton ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Padding="5,2,1,2" >
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
-                        <MenuItem Header="Rotate" />
-                        <MenuItem Header="Skew" />
-                        <MenuItem Header="Scale (Size)" />
-                        <MenuItem Header="Translate (Move)" />
+                        <MenuItem Header="Rotate" Click="mnuRotateAdd_Click" />
+                        <MenuItem Header="Skew" Click="mnuSkewAdd_Click" />
+                        <MenuItem Header="Scale (Size)" Click="mnuScaleAdd_Click" />
+                        <MenuItem Header="Translate (Move)" Click="mnuTranslateAdd_Click" />
                         <Separator />
-                        <MenuItem Header="Matrix (Custom)" />
+                        <MenuItem Header="Matrix (Custom)" Click="mnuMatrixAdd_Click" />
                     </flat:ContextMenu>
                 </flat:MenuButton.Menu>
                 <StackPanel Orientation="Horizontal">
                     <Image Height="16" Width="16" x:Name="imgAdd" />
-                    <TextBlock Margin="2,0" Text="Add" />
+                    <TextBlock Margin="2,0,0,0" Text="Add" />
                 </StackPanel>
             </flat:MenuButton>
 
-            <flat:FlatButton Grid.Column="2" x:Name="btnDelete" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+            <flat:FlatButton Grid.Column="2" x:Name="btnDelete" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnDelete_Click" IsEnabled="False"
+                             ToolTip="Delete Selected Transform" >
                 <Image Width="16" Height="16" x:Name="imgDelete" />
             </flat:FlatButton>
         </Grid>
         <TextBlock VerticalAlignment="Center" Margin="5,0" Grid.Row="1" Grid.Column="3" Text="Edit selected transform:" />
 
-        <flat:SelectPanel Grid.Column="1" Grid.Row="2" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:Name="selTransformList" />
-        <Border Grid.Column="3" Grid.Row="2" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush, FallbackValue=DarkGray}">
+        <flat:SelectPanel Grid.Column="1" Grid.Row="2" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:Name="selTransformList" 
+                          ItemsSource="{Binding ElementName=window, Path=TransformList}" MultiSelect="False" />
+        <Border Grid.Column="3" Grid.Row="2" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush, FallbackValue=DarkGray}" 
+                Background="{Binding ElementName=window, Path=ColorScheme.LightBackgroundColor, Converter={StaticResource ctb}}">
             <Grid x:Name="grdHolder">
-                <Grid x:Name="grdRotate">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Select (or add) a transform on the left to edit it here." TextWrapping="Wrap" 
+                           TextAlignment="Center" Margin="20,0" x:Name="txtGridEmpty" />
+                <Grid x:Name="grdRotate" Visibility="Collapsed" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="24" />
                         <RowDefinition Height="32" />
@@ -84,7 +92,100 @@
                     </Grid>
                     <flat:FlatButton Margin="5,0" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Content="Set to 0,0 (Center)" MinWidth="125" />
                 </Grid>
+                <Grid x:Name="grdScale" Visibility="Collapsed" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="24" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Scale:" Margin="5" />
+                    <TextBlock Grid.Row="1" Text="Scale X (Horizontal):" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="3" Text="Scale Y (Vertical):" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="4" Text="Scale Center Point:" Margin="10,14,10,0" VerticalAlignment="Top" />
+
+                    <flat:DoubleSpinner Grid.Column="1" Height="24" Margin="5,0" Grid.Row="1" Value="1" MinValue="-99999" MaxValue="99999" Decimals="2" />
+                    <flat:DoubleSpinner Grid.Column="1" Height="24" Margin="5,0" Grid.Row="3" Value="1" MinValue="-99999" MaxValue="99999" Decimals="2" />
+                    <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="30,5,0,8" Height="24" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <flat:DoubleSpinner Grid.Column="0" Margin="5,0" Grid.Row="1" />
+                        <flat:DoubleSpinner Grid.Column="1" Margin="5,0" Grid.Row="1" />
+                    </Grid>
+                    <flat:FlatButton Margin="0,0,20,0" Grid.Row="6" HorizontalAlignment="Right" Content="Set to 0,0 (Center)" MinWidth="125" Grid.ColumnSpan="2" Width="96" />
+                </Grid>
+                <Grid x:Name="grdSkew" Visibility="Collapsed" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="24" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Skew:" Margin="5" />
+                    <TextBlock Grid.Row="1" Text="X-axis skew:" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="3" Text="Y-axis skew:" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="4" Text="Skew Center Point:" Margin="10,14,10,0" VerticalAlignment="Top" />
+
+                    <flat:DoubleSpinner Grid.Column="1" Height="24" Margin="5,0" Grid.Row="1" Value="1" MinValue="-99999" MaxValue="99999" Decimals="2" />
+                    <flat:DoubleSpinner Grid.Column="1" Height="24" Margin="5,0" Grid.Row="3" Value="1" MinValue="-99999" MaxValue="99999" Decimals="2" />
+                    <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="30,5,0,8" Height="24" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <flat:DoubleSpinner Grid.Column="0" Margin="5,0" Grid.Row="1" />
+                        <flat:DoubleSpinner Grid.Column="1" Margin="5,0" Grid.Row="1" />
+                    </Grid>
+                    <flat:FlatButton Margin="0,0,20,0" Grid.Row="6" HorizontalAlignment="Right" Content="Set to 0,0 (Center)" MinWidth="125" Grid.ColumnSpan="2" Width="96" />
+                </Grid>
+                <Grid x:Name="grdTranslate" Visibility="Collapsed" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="39" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Translate (move):" Margin="5" />
+                    <TextBlock Grid.Row="1" Text="X Translation (horizontal):" Margin="10,0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Row="3" Text="Y Translation (vertical):" Margin="10,0" VerticalAlignment="Center" />
+
+                    <flat:DoubleSpinner Grid.Column="1" Height="24" Margin="5,0" Grid.Row="1" Value="1" MinValue="-99999" MaxValue="99999" Decimals="2" />
+                    <flat:DoubleSpinner Grid.Column="1" Height="24" Margin="5,0" Grid.Row="3" Value="1" MinValue="-99999" MaxValue="99999" Decimals="2" />
+                    <flat:FlatButton Margin="0,15,20,0" Grid.Row="5" HorizontalAlignment="Right" Content="Reset to 0" MinWidth="85" Grid.ColumnSpan="2" />
+                </Grid>
             </Grid>
         </Border>
+
+
+        <!-- dialog buttons -->
+        <flat:FlatButton Content="OK" HorizontalAlignment="Right" Margin="0,0,100,0" Width="80" Grid.Row="4" Grid.Column="3" VerticalAlignment="Center" 
+                         x:Name="btnOK" Click="btnOK_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <flat:FlatButton Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,0" Width="80" Grid.Row="4" Grid.Column="3" VerticalAlignment="Center" 
+                         x:Name="btnCancel" Click="btnCancel_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
     </Grid>
 </flat:FlatWindow>
