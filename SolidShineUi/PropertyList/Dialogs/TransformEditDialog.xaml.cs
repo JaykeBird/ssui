@@ -11,10 +11,13 @@ using System.Windows.Shapes;
 namespace SolidShineUi.PropertyList.Dialogs
 {
     /// <summary>
-    /// Interaction logic for TransformEditDialog.xaml
+    /// A dialog to edit <see cref="Transform"/> objects. Many WPF objects/elements have properties that can use transforms to affect how they appear on screen.
     /// </summary>
     public partial class TransformEditDialog : FlatWindow
     {
+        /// <summary>
+        /// Create a TransformEditDialog.
+        /// </summary>
         public TransformEditDialog()
         {
             InitializeComponent();
@@ -26,6 +29,8 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             imgAdd.Source = IconLoader.LoadIcon("Add", ColorScheme);
             imgDelete.Source = IconLoader.LoadIcon("Delete", ColorScheme);
+            imgMoveDown.Source = IconLoader.LoadIcon("Down", ColorScheme);
+            imgMoveUp.Source = IconLoader.LoadIcon("Up", ColorScheme);
         }
 
         void SetupWindow()
@@ -35,6 +40,9 @@ namespace SolidShineUi.PropertyList.Dialogs
             TransformList.CanSelectMultiple = false;
         }
 
+        /// <summary>
+        /// Get or set the list of controls that represents each transform to display in the dialog. This is generally used internally, but this can also be used as a reference of what's currently in the dialog.
+        /// </summary>
         public SelectableCollection<TransformSelectableControl> TransformList { 
             get => (SelectableCollection<TransformSelectableControl>)GetValue(TransformListProperty); set => SetValue(TransformListProperty, value); }
 
@@ -45,6 +53,9 @@ namespace SolidShineUi.PropertyList.Dialogs
         private void TransformList_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
             btnDelete.IsEnabled = TransformList.SelectedItems.Count > 0;
+            btnMoveDown.IsEnabled = TransformList.SelectedItems.Count > 0;
+            btnMoveUp.IsEnabled = TransformList.SelectedItems.Count > 0;
+
             LoadSelectedTransform();
         }
 
@@ -86,7 +97,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 else if (selTransform is MatrixTransform m)
                 {
                     // load matrix controls
-                    DisplayTransformControl(null);
+                    DisplayTransformControl(grdMatrix);
                 }
                 else if (selTransform is TransformGroup g)
                 {
@@ -110,6 +121,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 grdScale.Visibility = Visibility.Collapsed;
                 grdTranslate.Visibility = Visibility.Collapsed;
                 grdSkew.Visibility = Visibility.Collapsed;
+                grdMatrix.Visibility = Visibility.Collapsed;
 
                 txtGridEmpty.Visibility = Visibility.Visible;
             }
@@ -119,13 +131,18 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else
             {
+                foreach (UIElement item in grdHolder.Children)
+                {
+                    item.Visibility = item == transformControl ? Visibility.Visible : Visibility.Collapsed;
+                }
                 // LET'S DO IT
-                grdRotate.Visibility = (transformControl == grdRotate) ? Visibility.Visible : Visibility.Collapsed;
-                grdScale.Visibility = (transformControl == grdScale) ? Visibility.Visible : Visibility.Collapsed;
-                grdSkew.Visibility = (transformControl == grdSkew) ? Visibility.Visible : Visibility.Collapsed;
-                grdTranslate.Visibility = (transformControl == grdTranslate) ? Visibility.Visible : Visibility.Collapsed;
+                //grdRotate.Visibility = (transformControl == grdRotate) ? Visibility.Visible : Visibility.Collapsed;
+                //grdScale.Visibility = (transformControl == grdScale) ? Visibility.Visible : Visibility.Collapsed;
+                //grdSkew.Visibility = (transformControl == grdSkew) ? Visibility.Visible : Visibility.Collapsed;
+                //grdTranslate.Visibility = (transformControl == grdTranslate) ? Visibility.Visible : Visibility.Collapsed;
+                //grdMatrix.Visibility = (transformControl == grdMatrix) ? Visibility.Visible : Visibility.Collapsed;
 
-                txtGridEmpty.Visibility = Visibility.Collapsed;
+                //txtGridEmpty.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -155,6 +172,16 @@ namespace SolidShineUi.PropertyList.Dialogs
             AddTransform(new MatrixTransform(Matrix.Identity));
         }
         #endregion
+
+        private void btnMoveUp_Click(object sender, RoutedEventArgs e)
+        {
+            selTransformList.MoveItemUp(TransformList.IndexOf(TransformList.SelectedItems[0]));
+        }
+
+        private void btnMoveDown_Click(object sender, RoutedEventArgs e)
+        {
+            selTransformList.MoveItemDown(TransformList.IndexOf(TransformList.SelectedItems[0]));
+        }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -202,7 +229,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else if (transform is MatrixTransform m)
             {
-                Text = "Custom (Matrix)";
+                Text = "Matrix";
             }
             else if (transform is TransformGroup g)
             {
