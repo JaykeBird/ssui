@@ -96,7 +96,7 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<SelectableUserControl>), typeof(SelectPanel), 
+            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<SelectableUserControl>), typeof(SelectPanel),
                 new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -137,7 +137,7 @@ namespace SolidShineUi
                 {
                     oldSc.SelectionChanged -= Items_SelectionChanged;
                 }
-                
+
                 // Add handler for newValue.CollectionChanged (if possible)
                 if (newValue is INotifyCollectionChanged newColl)
                 {
@@ -1089,8 +1089,12 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Move the currently selected items up by one in the list.
+        /// Move all of the currently selected items up by one in the list.
         /// </summary>
+        /// <remarks>
+        /// This will not function if you've set the ItemsSource property (and thus not using the Items property).
+        /// If you've set ItemsSource property to another collection, please use <see cref="MoveItemUp(int)"/>.
+        /// </remarks>
         public void MoveSelectedItemsUp()
         {
             if (Items.SelectedItems.Count == 0 || ItemsSource != Items) return;
@@ -1147,10 +1151,11 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Move the currently selected items down by one in the list.
+        /// Move all of the currently selected items down by one in the list.
         /// </summary>
         /// <remarks>
-        /// This function does not operate if the ItemsSource is set to a different collection.
+        /// This will not function if you've set the ItemsSource property (and thus not using the Items property).
+        /// If you've set ItemsSource property to another collection, please use <see cref="MoveItemDown(int)"/>.
         /// </remarks>
         public void MoveSelectedItemsDown()
         {
@@ -1209,26 +1214,55 @@ namespace SolidShineUi
         /// <param name="index">The index of the item to move.</param>
         /// <remarks>
         /// If the index passed in is 0, then nothing is moved, as it's already at the top of the list.
-        /// This function does not operate if the ItemsSource is set to a different collection.
+        /// This function does not work if ItemsSource is not an <see cref="IList"/>.
         /// </remarks>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the index passed in is beyond the number of items in the collection.</exception>
         public void MoveItemUp(int index)
         {
-            if (ItemsSource != Items) return;
-
-            SelectableUserControl suc = Items[index];
-
-            int moveIndex = index - 1;//IndexOf(suc) - 1;
-            if (moveIndex < 0)
+            if (ItemsSource != Items)
             {
-                moveIndex = 0;
+                if (ItemsSource is IList isl)
+                {
+                    var suc = isl[index];
+                    if (suc == null) return;
+
+                    int moveIndex = index - 1;//IndexOf(suc) - 1;
+                    if (moveIndex < 0)
+                    {
+                        moveIndex = 0;
+                    }
+
+                    if (ItemsSource is ISelectableCollectionSource isc)
+                    {
+                        bool resel = isc.IsSelected(suc);
+                        isl.Remove(suc);
+                        isl.Insert(moveIndex, suc);
+                        if (resel) isc.Select(suc);
+                    }
+                    else
+                    {
+                        isl.Remove(suc);
+                        isl.Insert(moveIndex, suc);
+                    }
+                }
+                else return;
             }
+            else
+            {
+                SelectableUserControl suc = Items[index];
 
-            bool resel = Items.IsSelected(suc);
+                int moveIndex = index - 1;//IndexOf(suc) - 1;
+                if (moveIndex < 0)
+                {
+                    moveIndex = 0;
+                }
 
-            Items.Remove(suc);
-            Items.Insert(moveIndex, suc);
-            if (resel) Items.AddToOrReplaceSelection(suc);
+                bool resel = Items.IsSelected(suc);
+
+                Items.Remove(suc);
+                Items.Insert(moveIndex, suc);
+                if (resel) Items.AddToOrReplaceSelection(suc);
+            }
 
             RefreshVisualSelection();
         }
@@ -1239,26 +1273,55 @@ namespace SolidShineUi
         /// <param name="index">The index of the item to move.</param>
         /// <remarks>
         /// If the index passed in is the last index in the collection, then nothing is moved, as it's already at the bottom of the list.
-        /// This function does not operate if the ItemsSource is set to a different collection.
+        /// This function does not work if ItemsSource is not an <see cref="IList"/>.
         /// </remarks>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the index passed in is beyond the number of items in the collection.</exception>
         public void MoveItemDown(int index)
         {
-            if (ItemsSource != Items) return;
-
-            SelectableUserControl suc = Items[index];
-
-            int moveIndex = index + 1; //IndexOf(suc) + 1;
-            if (moveIndex > (Items.Count - 1))
+            if (ItemsSource != Items)
             {
-                moveIndex = (Items.Count - 1);
+                if (ItemsSource is IList isl)
+                {
+                    var suc = isl[index];
+                    if (suc == null) return;
+
+                    int moveIndex = index + 1; //IndexOf(suc) + 1;
+                    if (moveIndex > (isl.Count - 1))
+                    {
+                        moveIndex = (isl.Count - 1);
+                    }
+
+                    if (ItemsSource is ISelectableCollectionSource isc)
+                    {
+                        bool resel = isc.IsSelected(suc);
+                        isl.Remove(suc);
+                        isl.Insert(moveIndex, suc);
+                        if (resel) isc.Select(suc);
+                    }
+                    else
+                    {
+                        isl.Remove(suc);
+                        isl.Insert(moveIndex, suc);
+                    }
+                }
+                else return;
             }
+            else
+            {
+                SelectableUserControl suc = Items[index];
 
-            bool resel = Items.IsSelected(suc);
+                int moveIndex = index + 1; //IndexOf(suc) + 1;
+                if (moveIndex > (Items.Count - 1))
+                {
+                    moveIndex = (Items.Count - 1);
+                }
 
-            Items.Remove(suc);
-            Items.Insert(moveIndex, suc);
-            if (resel) Items.AddToOrReplaceSelection(suc);
+                bool resel = Items.IsSelected(suc);
+
+                Items.Remove(suc);
+                Items.Insert(moveIndex, suc);
+                if (resel) Items.AddToOrReplaceSelection(suc);
+            }
 
             RefreshVisualSelection();
         }
