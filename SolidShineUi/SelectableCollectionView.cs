@@ -12,7 +12,7 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> derives from SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, IEnumerable<T>, ISelectableCollectionSource
+    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollection<T>, ICollection<T>, ISelectableCollection
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
@@ -64,7 +64,7 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Add:
                     return;
                 case NotifyCollectionChangedAction.Remove:
-                    List<T> removedItems = new List<T>();
+                    Collection<T> removedItems = new Collection<T>();
                     if (e.OldItems != null)
                     {
                         foreach (T item in e.OldItems)
@@ -79,10 +79,10 @@ namespace SolidShineUi
                             }
                         }
                     }
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItems, new List<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItems, new Collection<T>()));
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    List<T> removedItemsR = new List<T>();
+                    Collection<T> removedItemsR = new Collection<T>();
                     if (e.OldItems != null)
                     {
                         foreach (T item in e.OldItems)
@@ -97,7 +97,7 @@ namespace SolidShineUi
                             }
                         }
                     }
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItemsR, new List<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItemsR, new Collection<T>()));
                     break;
                 case NotifyCollectionChangedAction.Move:
                     return;
@@ -147,7 +147,7 @@ namespace SolidShineUi
             if (baseCollection.Contains(item))
             {
                 selectedItems.Add(item);
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(), new Collection<T> { item }));
             }
         }
 
@@ -161,8 +161,8 @@ namespace SolidShineUi
             {
                 List<T> oldSel = selectedItems;
 
-                selectedItems = new List<T>(){ item };
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(oldSel, new List<T> { item }));
+                selectedItems = new List<T>() { item };
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(oldSel), new Collection<T> { item }));
             }
         }
 
@@ -175,7 +175,7 @@ namespace SolidShineUi
             if (selectedItems.Contains(item))
             {
                 selectedItems.Remove(item);
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T> { item }, new List<T>()));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T> { item }, new Collection<T>()));
             }
         }
 
@@ -194,7 +194,7 @@ namespace SolidShineUi
         {
             List<T> old = selectedItems;
             selectedItems = new List<T>();
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, selectedItems));
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(old), new Collection<T>(selectedItems)));
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace SolidShineUi
 
             selectedItems = newSel;
 
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(oldSel, newSel));
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(oldSel), new Collection<T>(newSel)));
         }
 
         #region IList implementations
@@ -259,16 +259,6 @@ namespace SolidShineUi
             //return baseCollection.IndexOf(item);
         }
 
-        //void ICollection<T>.Add(T item)
-        //{
-        //    throw new NotSupportedException("Not supported in a ListCollectionView.");
-        //}
-
-        //void ICollection<T>.Clear()
-        //{
-        //    throw new NotSupportedException("Not supported in a ListCollectionView.");
-        //}
-
         /// <summary>
         /// Returns if this collection currently contains the specified item.
         /// </summary>
@@ -293,9 +283,11 @@ namespace SolidShineUi
         /// Remove an item from this collection.
         /// </summary>
         /// <param name="item">The item to remove.</param>
-        public void Remove(T item)
+        public bool Remove(T item)
         {
+            if (!Contains(item)) return false;
             base.Remove(item);
+            return true;
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -306,9 +298,11 @@ namespace SolidShineUi
 
         #region non-generic ISelectableCollectionSource implementations
 
-        ICollection ISelectableCollectionSource.SelectedItems => SelectedItems;
+        ICollection ISelectableCollection.SelectedItems => SelectedItems;
 
-        void ISelectableCollectionSource.AddToSelection(object item)
+        public bool IsReadOnly => true;
+
+        void ISelectableCollection.AddToSelection(object item)
         {
             if (item is T)
             {
@@ -316,7 +310,7 @@ namespace SolidShineUi
             }
         }
 
-        void ISelectableCollectionSource.Select(object item)
+        void ISelectableCollection.Select(object item)
         {
             if (item is T)
             {
@@ -324,7 +318,7 @@ namespace SolidShineUi
             }
         }
 
-        void ISelectableCollectionSource.Deselect(object item)
+        void ISelectableCollection.Deselect(object item)
         {
             if (item is T)
             {
@@ -332,7 +326,7 @@ namespace SolidShineUi
             }
         }
 
-        bool ISelectableCollectionSource.IsSelected(object item)
+        bool ISelectableCollection.IsSelected(object item)
         {
             if (item is T)
             {
@@ -342,6 +336,52 @@ namespace SolidShineUi
             {
                 return false;
             }
+        }
+
+        public void CopyTo(T[] array, int index)
+        {
+            if (array.Length - index < Count)
+            {
+                throw new ArgumentException("The inputted array is not large enough to fit all of the elements in this collection.");
+            }
+            else
+            {
+                for (int i = 0; i < Count; i++)
+                {
+                    array[index + i] = this[i];
+                }
+            }
+        }
+
+        void CopyTo(Array array, int index)
+        {
+            if (array is T[] a)
+            {
+                CopyTo(a, index);
+            }
+            else
+            {
+                throw new ArgumentException("The inputted Array is not an array of type \"" + typeof(T).Name + "\".");
+            }
+        }
+
+        public void Add(T item)
+        {
+            if (CanAddNewItem)
+            {
+                AddNewItem(item);
+                CommitNew();
+            }
+            else
+            {
+                throw new NotSupportedException("Adding in new entries isn't directly supported. Please edit the base collection this wraps around instead.");
+            }
+            //throw new NotSupportedException("This object does not support directly adding in new entries. Please consider using AddNew, or edit the base collection this wraps around instead.");
+        }
+
+        public void Clear()
+        {
+            throw new NotSupportedException("This object does not support this function. Please edit the base collection this wraps around instead.");
         }
         #endregion
     }

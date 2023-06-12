@@ -133,7 +133,7 @@ namespace SolidShineUi
                     oldColl.CollectionChanged -= Items_CollectionChanged;
                 }
 
-                if (oldValue is ISelectableCollectionSource<SelectableUserControl> oldSc)
+                if (oldValue is ISelectableCollection<SelectableUserControl> oldSc)
                 {
                     oldSc.SelectionChanged -= Items_SelectionChanged;
                 }
@@ -144,7 +144,7 @@ namespace SolidShineUi
                     newColl.CollectionChanged += Items_CollectionChanged;
                 }
 
-                if (newValue is ISelectableCollectionSource<SelectableUserControl> newSc)
+                if (newValue is ISelectableCollection<SelectableUserControl> newSc)
                 {
                     newSc.SelectionChanged += Items_SelectionChanged;
                     RefreshVisualSelection();
@@ -213,7 +213,7 @@ namespace SolidShineUi
         {
             _internalAction = true;
 
-            if (ItemsSource is ISelectableCollectionSource isl)
+            if (ItemsSource is ISelectableCollection isl)
             {
                 foreach (var item in ItemsSource)
                 {
@@ -374,7 +374,7 @@ namespace SolidShineUi
             {
                 _internalAction = true;
 
-                if (ItemsSource is ISelectableCollectionSource isl)
+                if (ItemsSource is ISelectableCollection isl)
                 {
 
                     if (item.IsSelected && !isl.IsSelected(item))
@@ -1232,7 +1232,7 @@ namespace SolidShineUi
                         moveIndex = 0;
                     }
 
-                    if (ItemsSource is ISelectableCollectionSource isc)
+                    if (ItemsSource is ISelectableCollection isc)
                     {
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
@@ -1291,7 +1291,7 @@ namespace SolidShineUi
                         moveIndex = (isl.Count - 1);
                     }
 
-                    if (ItemsSource is ISelectableCollectionSource isc)
+                    if (ItemsSource is ISelectableCollection isc)
                     {
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
