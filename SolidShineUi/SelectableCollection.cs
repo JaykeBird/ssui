@@ -176,7 +176,7 @@ namespace SolidShineUi
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                     return;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    Collection<T> removedItems = new Collection<T>();
+                    List<T> removedItems = new List<T>();
                     if (e.OldItems != null)
                     {
                         foreach (T item in e.OldItems)
@@ -191,10 +191,10 @@ namespace SolidShineUi
                             }
                         }
                     }
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItems, new Collection<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItems, new List<T>()));
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    Collection<T> removedItemsR = new Collection<T>();
+                    List<T> removedItemsR = new List<T>();
                     if (e.OldItems != null)
                     {
                         foreach (T item in e.OldItems)
@@ -209,7 +209,7 @@ namespace SolidShineUi
                             }
                         }
                     }
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItemsR, new Collection<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItemsR, new List<T>()));
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
                     return;
@@ -243,7 +243,7 @@ namespace SolidShineUi
             {
                 List<T> old = selectedItems;
                 selectedItems = new List<T>() { item };
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(old), new Collection<T>(selectedItems)));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
             }
         }
 
@@ -262,7 +262,7 @@ namespace SolidShineUi
                 if (!selectedItems.Contains(item))
                 {
                     selectedItems.Add(item);
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(), new Collection<T> { item }));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
                 }
             }
             else
@@ -289,7 +289,7 @@ namespace SolidShineUi
                 if (!selectedItems.Contains(item))
                 {
                     selectedItems.Add(item);
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(), new Collection<T> { item }));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
                 }
             }
             else
@@ -307,7 +307,7 @@ namespace SolidShineUi
             if (selectedItems.Contains(item))
             {
                 selectedItems.Remove(item);
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T> { item }, new Collection<T>()));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T> { item }, new List<T>()));
             }
         }
 
@@ -318,7 +318,7 @@ namespace SolidShineUi
         {
             List<T> old = selectedItems;
             selectedItems = new List<T>();
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(old), new Collection<T>(selectedItems)));
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace SolidShineUi
 
                     selectedItems = new List<T>() { item };
 
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(old), new Collection<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>()));
                 }
             }
         }
@@ -379,7 +379,7 @@ namespace SolidShineUi
                 {
                     List<T> old = selectedItems;
                     selectedItems = new List<T>() { items.First() };
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(old), new Collection<T>(selectedItems)));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
                     return;
                 }
             }
@@ -396,7 +396,7 @@ namespace SolidShineUi
             {
                 List<T> old = selectedItems;
                 selectedItems = sel;
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(old), new Collection<T>(selectedItems)));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
             }
         }
 
@@ -522,7 +522,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="removedItems">A list of items being removed.</param>
         /// <param name="addedItems">A list of item being added.</param>
-        public SelectionChangedEventArgs(Collection<T> removedItems, Collection<T> addedItems) : base(removedItems, addedItems)
+        public SelectionChangedEventArgs(List<T> removedItems, List<T> addedItems) : base(removedItems, addedItems)
         {
             AddedItems = addedItems;
             RemovedItems = removedItems;
@@ -531,10 +531,10 @@ namespace SolidShineUi
         /// <summary>
         /// The list of items being added to the selection ("selected").
         /// </summary>
-        public new Collection<T> AddedItems { get; private set; }
+        public new List<T> AddedItems { get; private set; }
         /// <summary>
         /// The list of items being removed from the selection ("deselected").
         /// </summary>
-        public new Collection<T> RemovedItems { get; private set; }
+        public new List<T> RemovedItems { get; private set; }
     }
 }

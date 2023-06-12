@@ -64,7 +64,7 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Add:
                     return;
                 case NotifyCollectionChangedAction.Remove:
-                    Collection<T> removedItems = new Collection<T>();
+                    List<T> removedItems = new List<T>();
                     if (e.OldItems != null)
                     {
                         foreach (T item in e.OldItems)
@@ -79,10 +79,10 @@ namespace SolidShineUi
                             }
                         }
                     }
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItems, new Collection<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItems, new List<T>()));
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    Collection<T> removedItemsR = new Collection<T>();
+                    List<T> removedItemsR = new List<T>();
                     if (e.OldItems != null)
                     {
                         foreach (T item in e.OldItems)
@@ -97,7 +97,7 @@ namespace SolidShineUi
                             }
                         }
                     }
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItemsR, new Collection<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(removedItemsR, new List<T>()));
                     break;
                 case NotifyCollectionChangedAction.Move:
                     return;
@@ -147,7 +147,7 @@ namespace SolidShineUi
             if (baseCollection.Contains(item))
             {
                 selectedItems.Add(item);
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(), new Collection<T> { item }));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
             }
         }
 
@@ -162,7 +162,7 @@ namespace SolidShineUi
                 List<T> oldSel = selectedItems;
 
                 selectedItems = new List<T>() { item };
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(oldSel), new Collection<T> { item }));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(oldSel), new List<T> { item }));
             }
         }
 
@@ -175,7 +175,7 @@ namespace SolidShineUi
             if (selectedItems.Contains(item))
             {
                 selectedItems.Remove(item);
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T> { item }, new Collection<T>()));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T> { item }, new List<T>()));
             }
         }
 
@@ -194,7 +194,7 @@ namespace SolidShineUi
         {
             List<T> old = selectedItems;
             selectedItems = new List<T>();
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(old), new Collection<T>(selectedItems)));
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace SolidShineUi
 
             selectedItems = newSel;
 
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new Collection<T>(oldSel), new Collection<T>(newSel)));
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(oldSel), new List<T>(newSel)));
         }
 
         #region IList implementations
@@ -365,6 +365,7 @@ namespace SolidShineUi
             }
         }
 
+        /// <inheritdoc/>
         public void Add(T item)
         {
             if (CanAddNewItem)
@@ -379,6 +380,10 @@ namespace SolidShineUi
             //throw new NotSupportedException("This object does not support directly adding in new entries. Please consider using AddNew, or edit the base collection this wraps around instead.");
         }
 
+        /// <summary>
+        /// This function is not supported in this context.
+        /// </summary>
+        /// <exception cref="NotSupportedException">This function is not supported in this context.</exception>
         public void Clear()
         {
             throw new NotSupportedException("This object does not support this function. Please edit the base collection this wraps around instead.");
