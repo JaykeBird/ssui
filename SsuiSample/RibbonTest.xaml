@@ -14,7 +14,7 @@
         </Style>
     </UserControl.Resources>-->
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Top" />
         <ribbon:Ribbon Margin="60,60,20,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" >
             <ribbon:RibbonTab Title="Home">
                 <ribbon:RibbonGroup Title="Editing" ShowLauncher="True" >
@@ -54,6 +54,10 @@
                 <ribbon:RibbonGroup Title="Empty 1" />
                 <ribbon:RibbonGroup Title="Testy">
                     <ribbon:RibbonButton Title="Button" StandardSize="Large" CompactSize="Large"  />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Title="Small Boys">
+                    <ribbon:RibbonButton Title="Button 2" StandardSize="Small" CompactSize="Small"  />
+                    <ribbon:RibbonCheckBox Title="Check me!" StandardSize="Small" CompactSize="Small" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
