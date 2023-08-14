@@ -62,6 +62,42 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             LoadSelectedTransform();
         }
+        
+        public void ImportTransforms(TransformCollection transforms)
+        {
+            foreach (Transform item in transforms)
+            {
+                if (item is TransformGroup tg)
+                {
+                    ImportTransforms(tg);
+                }
+                AddTransform(item);
+            }
+        }
+
+        public void ImportTransforms(TransformGroup transforms)
+        {
+            foreach (Transform item in transforms.Children)
+            {
+                if (item is TransformGroup tg)
+                {
+                    ImportTransforms(tg);
+                }
+                AddTransform(item);
+            }
+        }
+
+        public void ImportTransforms(IEnumerable<Transform> transforms)
+        {
+            foreach (Transform item in transforms)
+            {
+                if (item is TransformGroup tg)
+                {
+                    ImportTransforms(tg);
+                }
+                AddTransform(item);
+            }
+        }
 
         void AddTransform(Transform t)
         {
