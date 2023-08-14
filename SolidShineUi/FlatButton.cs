@@ -799,7 +799,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Perform a click programattically. The button responds the same way as if it was clicked by the user.
+        /// Perform a click programmatically. The button responds the same way as if it was clicked by the user.
         /// </summary>
         public void DoClick()
         {
@@ -928,7 +928,7 @@ namespace SolidShineUi
                 if ((bool)e.NewValue)
                 {
                     AccessKeyManager.Register("\x000D", b);
-                    b.UpdateIsDefaulted(System.Windows.Input.Keyboard.FocusedElement);
+                    b.UpdateIsDefaulted(Keyboard.FocusedElement);
                 }
                 else
                 {
@@ -960,7 +960,7 @@ namespace SolidShineUi
 
         private void OnFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
         {
-            UpdateIsDefaulted(System.Windows.Input.Keyboard.FocusedElement);
+            UpdateIsDefaulted(Keyboard.FocusedElement);
         }
 
 #if NETCOREAPP

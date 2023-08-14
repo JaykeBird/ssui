@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace SolidShineUi
     /// This is ideal for scenarios where you're working with a list or collection of objects, and want the ability to only affect any arbitrary subset of these objects.
     /// </summary>
     /// <typeparam name="T">The type of elements in the collection.</typeparam>
-    public class SelectableCollection<T> : ObservableCollection<T>, ISelectableCollectionSource<T>
+    public class SelectableCollection<T> : ObservableCollection<T>, ISelectableCollection<T>, ISelectableCollection
     {
         /// <summary>
         /// Initializes a new SelectableCollection.
@@ -242,7 +243,7 @@ namespace SolidShineUi
             {
                 List<T> old = selectedItems;
                 selectedItems = new List<T>() { item };
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, selectedItems));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
             }
         }
 
@@ -317,7 +318,7 @@ namespace SolidShineUi
         {
             List<T> old = selectedItems;
             selectedItems = new List<T>();
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, selectedItems));
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
         }
 
         /// <summary>
@@ -348,9 +349,9 @@ namespace SolidShineUi
                     T item = selectedItems[0];
                     old.RemoveAt(0);
 
-                    selectedItems = new List<T>(1) { item };
+                    selectedItems = new List<T>() { item };
 
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, new List<T>()));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>()));
                 }
             }
         }
@@ -378,7 +379,7 @@ namespace SolidShineUi
                 {
                     List<T> old = selectedItems;
                     selectedItems = new List<T>() { items.First() };
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, selectedItems));
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
                     return;
                 }
             }
@@ -395,7 +396,7 @@ namespace SolidShineUi
             {
                 List<T> old = selectedItems;
                 selectedItems = sel;
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(old, selectedItems));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
             }
         }
 
@@ -406,6 +407,46 @@ namespace SolidShineUi
         {
             SelectRange(Items);
         }
+
+        #region Non-generic ISelectableCollectionSource handling
+        ICollection ISelectableCollection.SelectedItems => SelectedItems;
+
+        void ISelectableCollection.AddToSelection(object item)
+        {
+            if (item is T)
+            {
+                AddToSelection((T)item);
+            }
+        }
+
+        void ISelectableCollection.Select(object item)
+        {
+            if (item is T)
+            {
+                Select((T)item);
+            }
+        }
+
+        void ISelectableCollection.Deselect(object item)
+        {
+            if (item is T)
+            {
+                Deselect((T)item);
+            }
+        }
+
+        bool ISelectableCollection.IsSelected(object item)
+        {
+            if (item is T)
+            {
+                return IsSelected((T)item);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Raised when the selection is changed in any way, including additions, removals, and the selection being cleared.
@@ -481,7 +522,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="removedItems">A list of items being removed.</param>
         /// <param name="addedItems">A list of item being added.</param>
-        public SelectionChangedEventArgs(IList<T> removedItems, IList<T> addedItems) : base(removedItems, addedItems)
+        public SelectionChangedEventArgs(List<T> removedItems, List<T> addedItems) : base(removedItems, addedItems)
         {
             AddedItems = addedItems;
             RemovedItems = removedItems;
@@ -490,10 +531,10 @@ namespace SolidShineUi
         /// <summary>
         /// The list of items being added to the selection ("selected").
         /// </summary>
-        public new IList<T> AddedItems { get; private set; }
+        public new List<T> AddedItems { get; private set; }
         /// <summary>
         /// The list of items being removed from the selection ("deselected").
         /// </summary>
-        public new IList<T> RemovedItems { get; private set; }
+        public new List<T> RemovedItems { get; private set; }
     }
 }

@@ -184,7 +184,6 @@ namespace SolidShineUi.Utils
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
         }
 
-
         //#region Icon
 
         //public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabDisplayItem),

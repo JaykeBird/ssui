@@ -12,11 +12,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="180"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="160"/>
-            <RowDefinition Height="118"/>
+            <RowDefinition Height="125"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="20,10,0,0" Text="Gradient stops:" VerticalAlignment="Top"/>
         <Utils:GradientBar x:Name="stopBar" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" GradientChanged="stopBar_GradientChanged" Grid.Row="1" />
@@ -81,7 +81,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,5,10,5" Grid.Row="4" >
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,10,10,5" Grid.Row="4" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="28" />
                 <RowDefinition Height="26" />
@@ -89,25 +89,25 @@
                 <RowDefinition Height="26" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock HorizontalAlignment="Left" Margin="0,5,0,0" Text="Other options:" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="0,5,0,0" Text="Other options:" VerticalAlignment="Top" Grid.Column="0" Grid.ColumnSpan="2" />
+            <TextBlock HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" Text="Mapping mode:" Grid.Column="1"/>
+            <TextBlock HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Text="Spread method:" Grid.Column="1"/>
+            <TextBlock HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" Text="Opacity:" Grid.Column="1"/>
 
-            <TextBlock HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" Text="Mapping mode:"/>
-            <TextBlock HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Text="Spread method:"/>
-            <TextBlock HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" Text="Opacity:"/>
-
-            <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" x:Name="cbbMappingMode" Width="160"
+            <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" x:Name="cbbMappingMode" Width="160"
                                Enum="{x:Type BrushMappingMode}" SelectionChanged="cbbMappingMode_SelectionChanged" />
-            <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="cbbSpreadMethod" Width="70"
+            <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" x:Name="cbbSpreadMethod" Width="70"
                                Enum="{x:Type GradientSpreadMethod}" SelectionChanged="cbbSpreadMethod_SelectionChanged" />
-            <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2" x:Name="nudOpacity" Width="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+            <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" x:Name="nudOpacity" Width="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                 MinValue="0.0" MaxValue="1.0" Value="1.0" Decimals="2" Step="0.05" ValueChanged="nudOpacity_ValueChanged" />
         </Grid>
 
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,5,10,5" Grid.Row="5" >
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="30,5,20,5" Grid.Row="5" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="25" />
                 <RowDefinition Height="1*" />
@@ -130,9 +130,9 @@
         </Grid>
 
         <!-- dialog buttons -->
-        <flat:FlatButton Content="OK" HorizontalAlignment="Right" Margin="0,0,100,0" Width="80" Grid.Row="6" VerticalAlignment="Center" 
+        <flat:FlatButton Content="OK" HorizontalAlignment="Right" Margin="0,0,110,0" Width="80" Grid.Row="6" VerticalAlignment="Center" 
                          x:Name="btnOK" Click="btnOK_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-        <flat:FlatButton Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,0" Width="80" Grid.Row="6" VerticalAlignment="Center" 
+        <flat:FlatButton Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,0" Width="80" Grid.Row="6" VerticalAlignment="Center" 
                          x:Name="btnCancel" Click="btnCancel_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
     </Grid>
 </flat:FlatWindow>
