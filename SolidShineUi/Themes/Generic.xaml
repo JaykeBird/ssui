@@ -2010,13 +2010,20 @@
                         <Border Grid.Column="1" Grid.RowSpan="2" BorderBrush="{TemplateBinding GroupSeparatorBrush}" BorderThickness="1" Width="{TemplateBinding GroupSeparatorWidth}"
                                 Visibility="{TemplateBinding ShowGroupSeparator, Converter={StaticResource VisConverter}}" Margin="0,3" />
 
-                        <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}" Margin="2,3,2,1" Focusable="False" >
-                            <ItemsControl.ItemsPanel>
+                        <ributils:RibbonGroupItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}" Margin="2,3,2,1" Focusable="False" >
+                            <ributils:RibbonGroupItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel IsItemsHost="True" Orientation="Vertical" />
                                 </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                            </ributils:RibbonGroupItemsControl.ItemsPanel>
+                            <ributils:RibbonGroupItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border>
+                                        <ContentPresenter Content="{Binding .}" HorizontalAlignment="Left" Width="Auto" />
+                                    </Border>
+                                </DataTemplate>
+                            </ributils:RibbonGroupItemsControl.ItemTemplate>
+                        </ributils:RibbonGroupItemsControl>
 
                         <Border Grid.Row="1" >
                             <Grid x:Name="PART_Header" >
