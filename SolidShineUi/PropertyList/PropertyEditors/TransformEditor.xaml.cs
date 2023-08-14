@@ -82,7 +82,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object GetValue()
         {
-            return listVal;
+            return _setNull ? null : _transform;
         }
 #endif
 
@@ -120,7 +120,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool OpenTransformDialog()
         {
             TransformEditDialog ted = new TransformEditDialog();
-            ted.ImportTransformList(new List<Transform>() { _transform });
+            ted.ImportTransforms(new List<Transform>() { _transform });
             ted.ShowDialog();
 
             return ted.DialogResult ?? false;
