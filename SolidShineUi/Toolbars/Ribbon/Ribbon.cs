@@ -245,17 +245,19 @@ namespace SolidShineUi.Toolbars.Ribbon
         {
             _internalIndexSet = true;
 
-            if (SelectedIndex != -1)
+            if (SelectedIndex == -1) // nothing should be selected
             {
                 // deselect all tabs
                 DeselectAllTabs();
             }
-            else if (SelectedIndex >= Items.Count)
+            else if (SelectedIndex >= Items.Count) // make sure the new value is within the valid number of indexes
             {
                 SelectedIndex = -1;
+                // should deselect all tabs automatically by running this function again
             }
             else
             {
+                // select the specific tab that has this index
                 try
                 {
                     SelectTabInternal(Items[SelectedIndex]);
@@ -264,6 +266,7 @@ namespace SolidShineUi.Toolbars.Ribbon
                 {
                     // entered an index that isn't valid
                     SelectedIndex = -1;
+                    // should deselect all tabs automatically by running this function again
                 }
             }
 
