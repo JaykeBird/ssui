@@ -37,6 +37,12 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("Title", typeof(string), typeof(RibbonCustomControl),
             new FrameworkPropertyMetadata("Item"));
 
+        public bool ShowTitle { get => (bool)GetValue(ShowTitleProperty); set => SetValue(ShowTitleProperty, value); }
+
+        public static DependencyProperty ShowTitleProperty
+            = DependencyProperty.Register("ShowTitle", typeof(bool), typeof(RibbonCustomControl),
+            new FrameworkPropertyMetadata(true));
+
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
 
         public static DependencyProperty LargeIconProperty

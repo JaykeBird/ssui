@@ -2711,6 +2711,53 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type ribbon:RibbonCustomControl}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ribbon:RibbonCustomControl" >
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="3" x:Name="colLeftSpace"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="0" x:Name="colContentLeftSpace" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="{TemplateBinding SmallIcon}" Width="16" Height="16" VerticalAlignment="Center" />
+                        <TextBlock x:Name="txtTitle" VerticalAlignment="Center" Grid.Column="2">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}" >
+                                    <Setter Property="Opacity" Value="1.0" />
+                                    <Setter Property="Visibility" Value="{Binding Path=ShowTitle, Converter={StaticResource VisConverter}, 
+                                        RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCustomControl}}}" />
+                                    <Setter Property="Text" Value="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCustomControl}}}" />
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="4">
+                            <ContentPresenter.Style>
+                                <Style TargetType="{x:Type ContentPresenter}" >
+                                    <Setter Property="Opacity" Value="1.0" />
+                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCustomControl}}}" />
+                                    
+                                </Style>
+                            </ContentPresenter.Style>
+                        </ContentPresenter>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--<Style.Triggers>
+            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
+
+            </DataTrigger>
+        </Style.Triggers>-->
+    </Style>
+
     <!--</ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>-->
 
