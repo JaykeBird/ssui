@@ -55,6 +55,13 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         private void TransformList_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
+            foreach (var item in e.RemovedItems)
+            {
+                if (item is TransformSelectableControl tsc)
+                {
+                    StoreDataToTransformItem(tsc);
+                }
+            }
 
             btnDelete.IsEnabled = TransformList.SelectedItems.Count > 0;
             btnMoveDown.IsEnabled = TransformList.SelectedItems.Count > 0;
@@ -97,6 +104,18 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
                 AddTransform(item);
             }
+        }
+
+        public TransformCollection ExportTransforms()
+        {
+            TransformCollection transforms = new TransformCollection();
+            StoreDataToSelectedTransform();
+            foreach (TransformSelectableControl item in TransformList)
+            {
+                transforms.Add(item.ObjectTransform);
+            }
+
+            return transforms;
         }
 
         void AddTransform(Transform t)
@@ -151,6 +170,51 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
             }
             
+        }
+
+        void StoreDataToSelectedTransform()
+        {
+            if (TransformList.SelectedItems.Count > 0)
+            {
+                var selControl = TransformList.SelectedItems[0];
+                Transform value = GetValuesFromActiveTransform();
+                if (selControl.ObjectTransform.GetType() == value.GetType())
+                {
+                    // this is the same type of transform, so let's replace it
+                    selControl.ObjectTransform = value;
+                }
+                else
+                {
+                    // the two types differ for some reason... is there a mismatch?
+                    // let's not store anything right now
+                }
+            }
+            else
+            {
+                // nothing is selected, so nothing will be stored
+            }
+        }
+
+        void StoreDataToTransformItem(TransformSelectableControl tsc)
+        {
+            if (TransformList.SelectedItems.Count > 0)
+            {
+                Transform value = GetValuesFromActiveTransform();
+                if (tsc.ObjectTransform.GetType() == value.GetType())
+                {
+                    // this is the same type of transform, so let's replace it
+                    tsc.ObjectTransform = value;
+                }
+                else
+                {
+                    // the two types differ for some reason... is there a mismatch?
+                    // let's not store anything right now
+                }
+            }
+            else
+            {
+                // nothing is selected, so nothing will be stored
+            }
         }
 
         #region Transform Editors
