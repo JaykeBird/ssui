@@ -16,28 +16,26 @@ namespace SolidShineUi.PropertyList.Dialogs
     public partial class TransformEditDialog : FlatWindow
     {
         /// <summary>
-        /// Create a TransformEditDialog.
+        /// Create a new TransformEditDialog.
         /// </summary>
         public TransformEditDialog()
         {
             InitializeComponent();
-            Loaded += TransformEditDialog_Loaded;
             SetupWindow();
         }
 
-        private void TransformEditDialog_Loaded(object sender, RoutedEventArgs e)
-        {
-            imgAdd.Source = IconLoader.LoadIcon("Add", ColorScheme);
-            imgDelete.Source = IconLoader.LoadIcon("Delete", ColorScheme);
-            imgMoveDown.Source = IconLoader.LoadIcon("Down", ColorScheme);
-            imgMoveUp.Source = IconLoader.LoadIcon("Up", ColorScheme);
-        }
+        bool singleEditMode = false;
 
         void SetupWindow()
         {
             SetValue(TransformListProperty, new SelectableCollection<TransformSelectableControl>());
             TransformList.SelectionChanged += TransformList_SelectionChanged;
             TransformList.CanSelectMultiple = false;
+
+            imgAdd.Source = IconLoader.LoadIcon("Add", ColorScheme);
+            imgDelete.Source = IconLoader.LoadIcon("Delete", ColorScheme);
+            imgMoveDown.Source = IconLoader.LoadIcon("Down", ColorScheme);
+            imgMoveUp.Source = IconLoader.LoadIcon("Up", ColorScheme);
         }
 
         /// <summary>
@@ -70,6 +68,13 @@ namespace SolidShineUi.PropertyList.Dialogs
             LoadSelectedTransform();
         }
         
+        /// <summary>
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="transforms">The transforms to import into the dialog.</param>
+        /// <remarks>
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransforms"/> or <see cref="TransformList"/>.
+        /// </remarks>
         public void ImportTransforms(TransformCollection transforms)
         {
             foreach (Transform item in transforms)
@@ -82,6 +87,13 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        /// <summary>
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="transforms">The transforms to import into the dialog.</param>
+        /// <remarks>
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransforms"/> or <see cref="TransformList"/>.
+        /// </remarks>
         public void ImportTransforms(TransformGroup transforms)
         {
             foreach (Transform item in transforms.Children)
@@ -94,6 +106,13 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        /// <summary>
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="transforms">The transforms to import into the dialog.</param>
+        /// <remarks>
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransforms"/> or <see cref="TransformList"/>.
+        /// </remarks>
         public void ImportTransforms(IEnumerable<Transform> transforms)
         {
             foreach (Transform item in transforms)
@@ -106,22 +125,69 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        /// <summary>
+        /// Import a single transform for editing; this activates Single Edit Mode for the TransformEditDialog, which only allows this transform to be edited; no adding or deleting.
+        /// This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="t">The one transform to edit.</param>
+        /// <remarks>If the Transform <paramref name="t"/> is a <see cref="TransformGroup"/>, use <see cref="ImportTransforms(TransformGroup)"/> instead.</remarks>
+        public void ImportSingleTransform(Transform t)
+        {
+            if (t is TransformGroup tg)
+            {
+                // this singlie transform is actually a TransformGroup
+                // which can hold multiple transforms
+                // thus, the standard format should apply instead
+                ImportTransforms(tg);
+            }
+            else
+            {
+                var tsc = AddTransform(t);
+                singleEditMode = true;
+                btnAdd.Visibility = Visibility.Collapsed;
+                btnDelete.Visibility = Visibility.Collapsed;
+                btnMoveDown.Visibility = Visibility.Collapsed;
+                btnMoveUp.Visibility = Visibility.Collapsed;
+                tsc.IsSelected = true;
+            }
+        }
+
         public TransformCollection ExportTransforms()
         {
             TransformCollection transforms = new TransformCollection();
             StoreDataToSelectedTransform();
             foreach (TransformSelectableControl item in TransformList)
             {
-                transforms.Add(item.ObjectTransform);
+                transforms.Add(item.TransformValue);
             }
 
             return transforms;
         }
 
-        void AddTransform(Transform t)
+        public Transform ExportSingleTransform()
+        {
+            if (!singleEditMode)
+            {
+                return new TransformGroup() { Children = ExportTransforms() };
+            }
+            else
+            {
+                if (TransformList.Count >= 1)
+                {
+                    return TransformList[0].TransformValue;
+                }
+                else
+                {
+                    return new TransformGroup();
+                }
+            }
+        }
+
+        TransformSelectableControl AddTransform(Transform t)
         {
             TransformSelectableControl control = new TransformSelectableControl(t);
             TransformList.Add(control);
+            return control;
         }
 
         void LoadSelectedTransform()
@@ -131,7 +197,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 var selItem = selItems[0];
 
-                Transform selTransform = selItem.ObjectTransform;
+                Transform selTransform = selItem.TransformValue;
 
                 if (selTransform is RotateTransform r)
                 {
@@ -178,10 +244,10 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 var selControl = TransformList.SelectedItems[0];
                 Transform value = GetValuesFromActiveTransform();
-                if (selControl.ObjectTransform.GetType() == value.GetType())
+                if (selControl.TransformValue.GetType() == value.GetType())
                 {
                     // this is the same type of transform, so let's replace it
-                    selControl.ObjectTransform = value;
+                    selControl.TransformValue = value;
                 }
                 else
                 {
@@ -200,10 +266,10 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (TransformList.SelectedItems.Count > 0)
             {
                 Transform value = GetValuesFromActiveTransform();
-                if (tsc.ObjectTransform.GetType() == value.GetType())
+                if (tsc.TransformValue.GetType() == value.GetType())
                 {
                     // this is the same type of transform, so let's replace it
-                    tsc.ObjectTransform = value;
+                    tsc.TransformValue = value;
                 }
                 else
                 {
@@ -389,6 +455,8 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        public new bool DialogResult { get; set; } = false;
+
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
@@ -428,32 +496,69 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         private void mnuMatrixRotateAppend_Click(object sender, RoutedEventArgs e)
         {
-
+            RunMatrixModify<RotateTransform>((v, mt) =>
+            {
+                mt.Matrix.RotateAt(v.Angle, v.CenterX, v.CenterY);
+            });
         }
 
         private void mnuMatrixScaleAppend_Click(object sender, RoutedEventArgs e)
         {
-
+            RunMatrixModify<ScaleTransform>((v, mt) =>
+            {
+                mt.Matrix.ScaleAt(v.ScaleX, v.ScaleY, v.CenterX, v.CenterY);
+            });
         }
 
         private void mnuMatrixTranslateAppend_Click(object sender, RoutedEventArgs e)
         {
-
+            RunMatrixModify<TranslateTransform>((v, mt) =>
+            {
+                mt.Matrix.Translate(v.X, v.Y);
+            });
         }
 
         private void mnuMatrixRotatePrepend_Click(object sender, RoutedEventArgs e)
         {
-
+            RunMatrixModify<RotateTransform>((v, mt) =>
+            {
+                mt.Matrix.RotateAtPrepend(v.Angle, v.CenterX, v.CenterY);
+            });
         }
 
         private void mnuMatrixScalePrepend_Click(object sender, RoutedEventArgs e)
         {
-
+            RunMatrixModify<ScaleTransform>((v, mt) =>
+            {
+                mt.Matrix.ScaleAtPrepend(v.ScaleX, v.ScaleY, v.CenterX, v.CenterY);
+            });
         }
 
         private void mnuMatrixTranslatePrepend_Click(object sender, RoutedEventArgs e)
         {
+            RunMatrixModify<TranslateTransform>((v, mt) =>
+            {
+                mt.Matrix.TranslatePrepend(v.X, v.Y);
+            });
 
+        }
+
+        void RunMatrixModify<T>(Action<T, MatrixTransform> applyToMatrix) where T : Transform, new()
+        {
+            T t = new T();
+            TransformEditDialog lted = new TransformEditDialog();
+            lted.ImportSingleTransform(t);
+            lted.ShowDialog();
+            if (lted.DialogResult)
+            {
+                Transform st = lted.ExportSingleTransform();
+                if (st is T stt)
+                {
+                    MatrixTransform mt = GetValuesMatrixTransform();
+                    applyToMatrix(stt, mt);
+                    LoadInMatrixTransform(mt);
+                }
+            }
         }
 
         private void btnMatrixReset_Click(object sender, RoutedEventArgs e)
@@ -470,39 +575,49 @@ namespace SolidShineUi.PropertyList.Dialogs
         #endregion
     }
 
+    /// <summary>
+    /// A SelectableUserControl that is used for storing an arbitrary <see cref="Transform"/> value, for use in a <see cref="TransformEditDialog"/>.
+    /// </summary>
     public class TransformSelectableControl : SelectableItem
     {
+        /// <summary>
+        /// Create a TransformSelectableControl.
+        /// </summary>
+        /// <param name="transform">The transform value to store in this control.</param>
         public TransformSelectableControl(Transform transform) : base()
         {
-            ObjectTransform = transform;
+            TransformValue = transform;
 
-            if (transform is RotateTransform r)
+            if (transform is RotateTransform)
             {
                 Text = "Rotate";
             }
-            else if (transform is ScaleTransform s)
+            else if (transform is ScaleTransform)
             {
                 Text = "Scale";
             }
-            else if (transform is TranslateTransform u)
+            else if (transform is TranslateTransform)
             {
                 Text = "Translate";
             }
-            else if (transform is SkewTransform k)
+            else if (transform is SkewTransform)
             {
                 Text = "Skew";
             }
-            else if (transform is MatrixTransform m)
+            else if (transform is MatrixTransform)
             {
                 Text = "Matrix";
             }
-            else if (transform is TransformGroup g)
+            else if (transform is TransformGroup)
             {
                 Text = "Transform Group";
             }
         }
 
-        public Transform ObjectTransform { get; set; } = new MatrixTransform(Matrix.Identity);
+        /// <summary>
+        /// Get or set the Transform value stored in this TransformSelectableControl.
+        /// </summary>
+        public Transform TransformValue { get; set; } = new MatrixTransform(Matrix.Identity);
 
     }
 }
