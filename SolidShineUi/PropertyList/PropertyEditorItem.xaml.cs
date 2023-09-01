@@ -159,6 +159,7 @@ namespace SolidShineUi.PropertyList
             {
                 PropertyEditorControl = editor;
                 editor.LoadValue(value, property.PropertyType);
+
                 txtValue.Visibility = Visibility.Collapsed;
                 FrameworkElement uie = PropertyEditorControl.GetFrameworkElement();
                 PropertyEditorControl.ValueChanged += PropertyEditorControl_ValueChanged;
