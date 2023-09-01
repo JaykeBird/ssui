@@ -220,7 +220,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Reload the properties and values from the currently observed object, with the option to reset filter and view settings if desired.
         /// </summary>
-        /// <param name="resetViewSettings">Set if the filter and view settings should be reset when the object is reloaded.</param>
+        /// <param name="resetViewSettings">set if the filter and view settings should be reset when the object is reloaded</param>
         public void ReloadObject(bool resetViewSettings)
         {
             if (_baseObject != null)
@@ -521,6 +521,7 @@ namespace SolidShineUi.PropertyList
         /// <remarks>
         /// When loading in an object, the attributes for each property in that object are looked at. If a property has an attribute that matches what a flag disallows,
         /// that property is not loaded. If this setting is changed, you will need to reload the object (<see cref="ReloadObject()"/>) or load a new object to apply that change.
+        /// Note that set-only properties are not supported by PropertyList and thus won't be displayed, regardless of this setting.
         /// </remarks>
         [Category("Common")]
         public PropertyListDisplayFlags DisplayOptions { get; set; } = PropertyListDisplayFlags.HidePropertyListHide;
@@ -535,11 +536,16 @@ namespace SolidShineUi.PropertyList
         public bool ShowInheritedProperties { get => _showInherited; set { _showInherited = value; FilterProperties(_filterString); mnuShowInherited.IsChecked = value; } }
 
         /// <summary>
-        /// Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.
+        /// Get or set if read-only properties (properties that only have a <c>get</c> section, and cannot be set/changed) are visible in the PropertyList.
         /// </summary>
         [Category("Common")]
         public bool ShowReadOnlyProperties { get => _showReadOnly; set { _showReadOnly = value; FilterProperties(_filterString); mnuShowReadOnly.IsChecked = value; } }
 
+        /// <summary>
+        /// Get the category that this property is said to be a part of (if this property has a <see cref="CategoryAttribute"/> attached to it).
+        /// </summary>
+        /// <param name="pi">The property to look up the category for.</param>
+        /// <returns>The name of the category that this property is added to, or an empty string if there was no <see cref="CategoryAttribute"/> found.</returns>
         private static string GetCategoryOfProperty(PropertyInfo pi)
         {
             IEnumerable<CategoryAttribute> attributes = pi.GetCustomAttributes<CategoryAttribute>(true);
