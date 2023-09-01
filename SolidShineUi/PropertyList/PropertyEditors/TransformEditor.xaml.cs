@@ -57,6 +57,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         Type _dataType = typeof(TransformGroup);
+        bool _specificType = false;
 
         Transform _transform = new TransformGroup();
 
@@ -112,6 +113,47 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     Children = (TransformCollection)value ?? new TransformCollection(),
                 };
             }
+            else if (type == typeof(TransformGroup))
+            {
+                _transform = (TransformGroup)value;
+            }
+            else if (type == typeof(Transform))
+            {
+                _transform = (Transform)value;
+            }
+            // okay, beyond these, the property is looking for a specific type
+            else if (type == typeof(MatrixTransform))
+            {
+                _transform = (MatrixTransform)value;
+                _specificType = true;
+            }
+            else if (type == typeof(RotateTransform))
+            {
+                _transform = (RotateTransform)value;
+                _specificType = true;
+            }
+            else if (type == typeof(SkewTransform))
+            {
+                _transform = (SkewTransform)value;
+                _specificType = true;
+            }
+            else if (type == typeof(ScaleTransform))
+            {
+                _transform = (ScaleTransform)value;
+                _specificType = true;
+            }
+            else if (type == typeof(TranslateTransform))
+            {
+                _transform = (TranslateTransform)value;
+                _specificType = true;
+            }
+            else
+            {
+                //... uhhhhh...
+                _transform = (Transform)value;
+            }
+
+            UpdateText();
         }
 
         /// <summary>
@@ -123,12 +165,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ted.ImportTransforms(new List<Transform>() { _transform });
             ted.ShowDialog();
 
-            return ted.DialogResult ?? false;
-        }
+            if (ted.DialogResult)
+            {
+                TransformCollection tc = ted.ExportTransforms();
+                if (tc.Count == 0)
+                {
+                    // no transforms
+                    _transform = new TransformGroup();
+                }
+                else if (tc.Count == 1)
+                {
+                    // one transform
+                    _transform = tc[0];
+                }
+                else
+                {
+                    _transform = new TransformGroup() { Children = tc };
+                }
+            }
 
-        private void mnuEmptyList_Click(object sender, RoutedEventArgs e)
-        {
-
+            return ted.DialogResult;
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -140,6 +196,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
 
             // update appearance
+            UpdateText();
         }
 
         private void mnuSetToNull_Click(object sender, RoutedEventArgs e)
@@ -154,6 +211,61 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 mnuSetToNull.IsChecked = true;
                 _setNull = true;
             }
+
+            UpdateText();
         }
+
+        void UpdateText()
+        {
+            Type tt = _transform.GetType();
+            if (_setNull)
+            {
+                txtData.Text = "(null)";
+            }
+            else if (tt == typeof(TransformGroup))
+            {
+                TransformGroup tg = (TransformGroup)_transform;
+                if (tg.Children.Count > 0)
+                {
+                    txtData.Text = $"{GROUP}: {tg.Children.Count} items";
+                }
+                else
+                {
+                    txtData.Text = $"{GROUP}: no transforms";
+                }
+            }
+            else if (tt == typeof(RotateTransform))
+            {
+                txtData.Text = $"{ROTATE}: {((RotateTransform)_transform).Angle}";
+            }
+            else if (tt == typeof(SkewTransform))
+            {
+                txtData.Text = $"{SKEW}: X {((SkewTransform)_transform).AngleX}, Y {((SkewTransform)_transform).AngleY}";
+            }
+            else if (tt == typeof(ScaleTransform))
+            {
+                txtData.Text = $"{SCALE}: {((ScaleTransform)_transform).ScaleX} by {((ScaleTransform)_transform).ScaleY}";
+            }
+            else if (tt == typeof(TranslateTransform))
+            {
+                txtData.Text = $"{TRANSLATE}: {((TranslateTransform)_transform).X}, {((TranslateTransform)_transform).Y}";
+            }
+            else if (tt == typeof(MatrixTransform))
+            {
+                txtData.Text = $"{MATRIX}";
+            }
+            else
+            {
+                txtData.Text = _transform.Value.ToString();
+            }
+        }
+
+        // eventually, once I figure out a localization solution, these will be moved to that spot
+        public const string GROUP = "group";
+        public const string ROTATE = "rotate";
+        public const string SKEW = "skew";
+        public const string SCALE = "scale";
+        public const string TRANSLATE = "translate";
+        public const string MATRIX = "matrix";
     }
 }

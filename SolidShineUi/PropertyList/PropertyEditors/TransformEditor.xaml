@@ -10,7 +10,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" MinWidth="80" />
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="txtData" VerticalAlignment="Center" Margin="3,0,0,0" TextTrimming="CharacterEllipsis" />
+        <TextBlock x:Name="txtData" VerticalAlignment="Center" Margin="1,0,2,0" TextTrimming="CharacterEllipsis" />
         <flat:MenuButton x:Name="btnMenu" Grid.Column="1" ShowMenuArrow="True" >
             <StackPanel Orientation="Horizontal">
                 <Image Height="16" Width="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
