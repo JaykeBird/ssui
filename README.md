@@ -136,9 +136,9 @@ To get started with keyboard shortcut support, I recommend looking at the [Addin
 - **FileSelect** - select one or more files, via the Browse button or drag-and-drop
 - **FlatButton** - a flat-styled button with a lot of customization options (including toggle-button functions)
 - **DoubleSpinner** - also known as a NumericUpDown; select a number by typing it in, clicking up or down, or entering in a math expression
-- **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values
+- **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values (and can display hex numbers)
 - **LinkTextBlock** - a TextBlock that acts as a hyperlink
-- **LongSpinner** - the same as the IntegerSpinner, but stores numbers as `long`s (for larger values)
+- **LongSpinner** - the same as the IntegerSpinner, but stores numbers as a `long` (for larger values)
 - **Menu** - a menu bar and menu with a flat, colored style
 - **MenuButton** - a flat-styled button that opens a menu when you click on it
 - **SelectPanel** - a powerful panel to easily manage a list and select items from it
