@@ -102,7 +102,6 @@ namespace SolidShineUi.Toolbars.Ribbon
         }
         #endregion
 
-
         #region Tabs
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -336,17 +335,38 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         #endregion
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
-            "TopRightElement", typeof(UIElement), typeof(Ribbon),
-            new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
         public double MainBarHeight { get => (double)GetValue(MainBarHeightProperty); set => SetValue(MainBarHeightProperty, value); }
 
         public static DependencyProperty MainBarHeightProperty
             = DependencyProperty.Register("MainBarHeight", typeof(double), typeof(Ribbon),
             new FrameworkPropertyMetadata(96.0));
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly DependencyProperty FileMenuProperty = DependencyProperty.Register(
+            "FileMenu", typeof(UIElement), typeof(Ribbon),
+            new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// Gets or sets the UI element to place in the top-left of the control, where the File menu usually is. Recommended to use a <see cref="RibbonFileMenu"/>.
+        /// </summary>
+        public UIElement FileMenu
+        {
+            get
+            {
+                return (UIElement)GetValue(FileMenuProperty);
+            }
+            set
+            {
+                SetValue(FileMenuProperty, value);
+            }
+        }
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
+            "TopRightElement", typeof(UIElement), typeof(Ribbon),
+            new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the UI element to place in the top-right of the control.
