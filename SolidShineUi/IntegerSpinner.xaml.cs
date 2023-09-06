@@ -37,9 +37,6 @@ namespace SolidShineUi
 
             PropertyChanged += (x, y) => ValidateValue();
 
-            keyDownTimer.AutoReset = false;
-            advanceTimer.AutoReset = true;
-
             keyDownTimer.Elapsed += KeyDownTimer_Elapsed;
             advanceTimer.Elapsed += AdvanceTimer_Elapsed;
         }

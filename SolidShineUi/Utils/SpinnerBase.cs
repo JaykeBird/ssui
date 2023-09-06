@@ -73,7 +73,8 @@ namespace SolidShineUi.Utils
         /// </summary>
         public SpinnerBase()
         {
-
+            keyDownTimer.AutoReset = false;
+            advanceTimer.AutoReset = true;
         }
 
 
