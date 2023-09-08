@@ -27,10 +27,10 @@ namespace SolidShineUi
             Loaded += DoubleSpinner_Loaded;
 
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            SetupPropertyChangedListener(ValueProperty, typeof(DoubleSpinner));
-            SetupPropertyChangedListener(DecimalsProperty, typeof(DoubleSpinner));
-            SetupPropertyChangedListener(MinValueProperty, typeof(DoubleSpinner));
-            SetupPropertyChangedListener(MaxValueProperty, typeof(DoubleSpinner));
+            AddValueChangedProperty(ValueProperty, typeof(DoubleSpinner));
+            AddValueChangedProperty(DecimalsProperty, typeof(DoubleSpinner));
+            AddValueChangedProperty(MinValueProperty, typeof(DoubleSpinner));
+            AddValueChangedProperty(MaxValueProperty, typeof(DoubleSpinner));
 
             InternalValueChanged += DoubleSpinner_InternalValueChanged;
 

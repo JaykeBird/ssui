@@ -13,7 +13,8 @@ using SolidShineUi.Utils;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only Long values are allowed.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed, 
+    /// but larger numbers than what <see cref="IntegerSpinner"/> supports are allowed here (since numbers are stored as a <c>long</c>).
     /// </summary>
     public partial class LongSpinner : SpinnerBase
     {
@@ -28,9 +29,9 @@ namespace SolidShineUi
             Loaded += LongSpinner_Loaded;
 
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            SetupPropertyChangedListener(ValueProperty, typeof(LongSpinner));
-            SetupPropertyChangedListener(MinValueProperty, typeof(LongSpinner));
-            SetupPropertyChangedListener(MaxValueProperty, typeof(LongSpinner));
+            AddValueChangedProperty(ValueProperty, typeof(LongSpinner));
+            AddValueChangedProperty(MinValueProperty, typeof(LongSpinner));
+            AddValueChangedProperty(MaxValueProperty, typeof(LongSpinner));
             //DependencyPropertyDescriptor.FromProperty(RepeatDelayProperty, typeof(LongSpinner)).AddValueChanged(this, PropertyChanged);
 
             internalValueChanged += LongSpinner_internalValueChanged;

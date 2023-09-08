@@ -12,19 +12,29 @@ using System.Windows.Media;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// The base code that my spinner controls (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>) are all based out of.
+    /// The base class for Solid Shine UI's spinner controls (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
     /// </summary>
     public class SpinnerBase : UserControl
     {
 
         #region Internal Values
 
-        protected bool _updateBox = true; // set if the text box's text should be changed when the value is changed
-        protected bool _raiseChangedEvent = true; // set if the ValueChanged event should be raised
+        /// <summary>
+        /// determine the text box's text should be changed when <c>Value</c> is updated
+        /// </summary>
+        protected bool _updateBox = true;
+        /// <summary>
+        /// determine if the <see cref="ValueChanged"/> event should be raised
+        /// </summary>
+        protected bool _raiseChangedEvent = true;
 
 
         protected Timer keyDownTimer = new Timer(300);
         protected Timer advanceTimer = new Timer(50);
+
+        /// <summary>
+        /// determine whether to increase or decrease the <c>Value</c> while the control is stepping; false for decrease, true for increase
+        /// </summary>
         protected bool advanceStepUp = false;
 
         #endregion
@@ -53,17 +63,31 @@ namespace SolidShineUi.Utils
         public event EventHandler ValueValidated;
 #endif
 
+        /// <summary>
+        /// Raise the <see cref="ValueChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Extra event data to provide to any event listeners.</param>
         protected void RaiseValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_raiseChangedEvent) ValueChanged?.Invoke(sender, e);
         }
 
+        /// <summary>
+        /// Raise the <see cref="ValueValidated"/> event.
+        /// </summary>
+        /// <param name="sender">The soruce of the event.</param>
         protected void RaiseValueValidated(object sender)
         {
             ValueValidated?.Invoke(sender, EventArgs.Empty);
         }
 
-        protected void SetupPropertyChangedListener(DependencyProperty property, Type targetType)
+        /// <summary>
+        /// Add a dependency property to trigger the <see cref="PropertyChanged"/> event when its value changes.
+        /// </summary>
+        /// <param name="property">The dependency property to monitor changes to.</param>
+        /// <param name="targetType">The type which contains the dependency property.</param>
+        protected void AddValueChangedProperty(DependencyProperty property, Type targetType)
         {
             DependencyPropertyDescriptor.FromProperty(property, targetType).AddValueChanged(this, PropertyChanged);
         }
