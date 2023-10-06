@@ -87,7 +87,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <param name="property">The dependency property to monitor changes to.</param>
         /// <param name="targetType">The type which contains the dependency property.</param>
-        protected void AddValueChangedProperty(DependencyProperty property, Type targetType)
+        protected void AddPropertyChangedTrigger(DependencyProperty property, Type targetType)
         {
             DependencyPropertyDescriptor.FromProperty(property, targetType).AddValueChanged(this, PropertyChanged);
         }

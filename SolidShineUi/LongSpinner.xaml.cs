@@ -29,9 +29,9 @@ namespace SolidShineUi
             Loaded += LongSpinner_Loaded;
 
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            AddValueChangedProperty(ValueProperty, typeof(LongSpinner));
-            AddValueChangedProperty(MinValueProperty, typeof(LongSpinner));
-            AddValueChangedProperty(MaxValueProperty, typeof(LongSpinner));
+            AddPropertyChangedTrigger(ValueProperty, typeof(LongSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(LongSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(LongSpinner));
             //DependencyPropertyDescriptor.FromProperty(RepeatDelayProperty, typeof(LongSpinner)).AddValueChanged(this, PropertyChanged);
 
             internalValueChanged += LongSpinner_internalValueChanged;
