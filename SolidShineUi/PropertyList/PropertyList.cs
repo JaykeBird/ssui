@@ -1,52 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Reflection;
-using System.Linq;
-using System.ComponentModel;
 using System.Collections;
-using System.Globalization;
-using SolidShineUi.PropertyList.PropertyEditors;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using SolidShineUi.Utils;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using SolidShineUi.PropertyList.PropertyEditors;
 
 namespace SolidShineUi.PropertyList
 {
+
     /// <summary>
-    /// A control that can display the properties and values of a .NET object, with support for live editing of many of them.
+    /// A control that can display the properties and values of a .NET object, with support for live editing of many property types.
     /// </summary>
-    public partial class ExperimentalPropertyList : UserControl
+    public class PropertyList : Control
     {
+
+        static PropertyList()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PropertyList), new FrameworkPropertyMetadata(typeof(PropertyList)));
+        }
+
         /// <summary>
         /// Create a PropertyList.
         /// </summary>
-        public ExperimentalPropertyList()
+        public PropertyList()
         {
-            InitializeComponent();
-            PreregisterEditors();
+            DependencyPropertyDescriptor.FromProperty(ShowInheritedPropertiesProperty, typeof(PropertyList)).AddValueChanged(this, ShowInheritedPropertiesChanged);
+            DependencyPropertyDescriptor.FromProperty(ShowReadOnlyPropertiesProperty, typeof(PropertyList)).AddValueChanged(this, ShowReadOnlyPropertiesChanged);
+            DependencyPropertyDescriptor.FromProperty(FilterTextProperty, typeof(PropertyList)).AddValueChanged(this, FilterTextChanged);
 
-            // by default, let's set these foreground values to the base foreground
+            ShowInheritedPropertiesChanged += (s, e) => { FilterProperties(_filterString); };
+            ShowReadOnlyPropertiesChanged += (s, e) => { FilterProperties(_filterString); };
+            FilterTextChanged += (s, e) => { FilterProperties(FilterText); };
+
+            SortOptionChanged += (s, e) => { SortList(); };
+
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.LoadObject, DoLoadObject, CanExecuteAlways));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.SortByCategory, DoSortByCategory, CanExecuteIfObjectLoaded));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.SortByName, DoSortByName, CanExecuteIfObjectLoaded));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleGridlines, DoToggleGridlines, CanExecuteAlways));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleInheritedProperties, DoToggleInheritedProperties, CanExecuteIfObjectLoaded));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleReadOnlyProperties, DoToggleReadOnlyProperties, CanExecuteIfObjectLoaded));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.ChangeGridlineBrush, DoEditGridlineBrush, CanExecuteAlways));
+
             TopPanelForeground = Foreground;
             HeaderForeground = Foreground;
-
-            //txtType.Text = NOTHING_LOADED;
-
-            var colDescriptor = DependencyPropertyDescriptor.FromProperty(ColumnDefinition.WidthProperty, typeof(ColumnDefinition));
-            colDescriptor.AddValueChanged(colNames, ColumnWidthChanged);
-            colDescriptor.AddValueChanged(colTypes, ColumnWidthChanged);
-            colDescriptor.AddValueChanged(colValues, ColumnWidthChanged);
-
-            GridlinePropertyChanged += (x, y) => { UpdateGridlines(); };
-
-            DependencyPropertyDescriptor.FromProperty(ShowGridlinesProperty, typeof(ExperimentalPropertyList)).AddValueChanged(this, GridlinePropertyChanged);
-            DependencyPropertyDescriptor.FromProperty(GridlineBrushProperty, typeof(ExperimentalPropertyList)).AddValueChanged(this, GridlinePropertyChanged);
-
-            // use Clear to initialize the rest of the UI
-            Clear();
         }
 
         #region Events
@@ -84,16 +90,77 @@ namespace SolidShineUi.PropertyList
 #else
         public event PropertyListObjectEventHandler LoadedObjectChanged;
 #endif
-        #endregion
 
         /// <summary>
-        /// Get the internal contents of this PropertyList control.
+        /// Raised when the <see cref="ShowInheritedProperties"/> property is changed.
         /// </summary>
-        /// <remarks>
-        /// To load in an object into the PropertyList, please use the <see cref="LoadObject(object)"/> function instead.
-        /// It is highly unrecommended to access and modify the internal contents of the PropertyList control in this way, but it is possible.
-        /// </remarks>
-        public new object Content { get => base.Content; set { } }
+#if NETCOREAPP
+        public event EventHandler? ShowInheritedPropertiesChanged;
+#else
+        public event EventHandler ShowInheritedPropertiesChanged;
+#endif
+
+        /// <summary>
+        /// Raised when the <see cref="ShowReadOnlyProperties"/> property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event EventHandler? ShowReadOnlyPropertiesChanged;
+#else
+        public event EventHandler ShowReadOnlyPropertiesChanged;
+#endif
+
+        /// <summary>
+        /// Raised when the <see cref="FilterText"/> property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event EventHandler? FilterTextChanged;
+#else
+        public event EventHandler FilterTextChanged;
+#endif
+
+        /// <summary>
+        /// Raised when the <see cref="SortOption"/> property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event EventHandler? SortOptionChanged;
+#else
+        public event EventHandler SortOptionChanged;
+#endif
+
+        #endregion
+
+        #region Template IO
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            LoadTemplateItems();
+        }
+
+        bool itemsLoaded = false;
+
+        bool _internalAction = false;
+
+#if NETCOREAPP
+        StackPanel? stkProperties = null;
+#else
+        StackPanel stkProperties = null;
+#endif
+
+        void LoadTemplateItems()
+        {
+            if (!itemsLoaded)
+            {
+                stkProperties = (StackPanel)GetTemplateChild("PART_PropList");
+
+                if (stkProperties != null)
+                {
+                    itemsLoaded = true;
+                }
+            }
+        }
+        #endregion
 
         #region ColorScheme
 
@@ -108,13 +175,13 @@ namespace SolidShineUi.PropertyList
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(PropertyList),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ExperimentalPropertyList w)
+            if (d is PropertyList w)
             {
                 w.ColorSchemeChanged?.Invoke(d, e);
 #if NETCOREAPP
@@ -146,21 +213,21 @@ namespace SolidShineUi.PropertyList
                 return;
             }
 
-#if NETCOREAPP
-            foreach (UIElement? item in stkProperties.Children)
-#else
-            foreach (UIElement item in stkProperties.Children)
-#endif
-            {
-                if (item == null) continue;
-                if (item is PropertyEditorItem pei)
-                {
-                    if (pei.PropertyEditorControl != null)
-                    {
-                        pei.PropertyEditorControl.ColorScheme = cs;
-                    }
-                }
-            }
+//#if NETCOREAPP
+//            foreach (UIElement? item in stkProperties.Children)
+//#else
+//            foreach (UIElement item in stkProperties.Children)
+//#endif
+//            {
+//                if (item == null) continue;
+//                if (item is PropertyEditorItem pei)
+//                {
+//                    if (pei.PropertyEditorControl != null)
+//                    {
+//                        pei.PropertyEditorControl.ColorScheme = cs;
+//                    }
+//                }
+//            }
 
             // set up brushes
             Background = cs.LightBackgroundColor.ToBrush();
@@ -173,18 +240,33 @@ namespace SolidShineUi.PropertyList
             ButtonHighlightBrush = cs.HighlightColor.ToBrush();
             ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
 
-            btnRefresh.ColorScheme = cs;
-            mnuView.ColorScheme = cs;
+            //btnRefresh.ColorScheme = cs;
+            //mnuView.ColorScheme = cs;
 
-            // set up icons
-            imgSearch.Source = IconLoader.LoadIcon("Search", cs);
-            imgReload.Source = IconLoader.LoadIcon("Reload", cs);
+            //// set up icons
+            //imgSearch.Source = IconLoader.LoadIcon("Search", cs);
+            //imgReload.Source = IconLoader.LoadIcon("Reload", cs);
 
         }
 
         #endregion
 
         #region Basics / Object Loading
+
+        /// <summary>
+        /// Get if this <see cref="PropertyList"/> has an object loaded. If <c>true</c>, then you can see what object is currently loaded by using <see cref="GetCurrentlyLoadedObject"/>.
+        /// </summary>
+        /// <remarks>
+        /// To load in an object, please use <see cref="LoadObject(object)"/>.
+        /// </remarks>
+        public bool HasObjectLoaded { get => (bool)GetValue(HasObjectLoadedProperty); private set => SetValue(HasObjectLoadedPropertyKey, value); }
+
+        private static readonly DependencyPropertyKey HasObjectLoadedPropertyKey
+            = DependencyProperty.RegisterReadOnly("HasObjectLoaded", typeof(bool), typeof(PropertyList),
+            new FrameworkPropertyMetadata(false));
+
+        /// <summary>The backing dependency property for <see cref="HasObjectLoaded"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HasObjectLoadedProperty = HasObjectLoadedPropertyKey.DependencyProperty;
 
         /// <summary>a list of all the properties in the loaded object's type</summary>
         private List<PropertyInfo> properties = new List<PropertyInfo>();
@@ -245,6 +327,8 @@ namespace SolidShineUi.PropertyList
             }
         }
 
+        bool _clearing = false;
+
         /// <summary>
         /// Unload the currently observed object, so that nothing is observed.
         /// </summary>
@@ -253,13 +337,18 @@ namespace SolidShineUi.PropertyList
         /// </remarks>
         public void Clear()
         {
+            _clearing = true;
             LoadObject(new object());
             _baseObject = null;
-            ObjectDisplayName = "";
-            txtType.Text = NOTHING_LOADED;
-            txtType.ToolTip = "";
+            HasObjectLoaded = false;
 
-            btnRefresh.IsEnabled = false;
+            ObjectDisplayName = "";
+            _clearing = false;
+
+            //txtType.Text = NOTHING_LOADED;
+            //txtType.ToolTip = "";
+
+            //btnRefresh.IsEnabled = false;
         }
 
         /// <summary>
@@ -273,12 +362,13 @@ namespace SolidShineUi.PropertyList
         public static string NOTHING_LOADED = "Nothing loaded";
 
         /// <summary>
-        /// Set the object to observe. All properties of the observed object will be displayed in the ExperimentalPropertyList, alongside the values of these properties.
+        /// Set the object to observe. All properties of the observed object will be displayed in the PropertyList, alongside the values of these properties.
         /// </summary>
         /// <param name="o">The object to load and observe.</param>
         /// <remarks>
-        /// Note that if the object has a property called "Name", that name will be displayed at the top of the ExperimentalPropertyList control.
+        /// Note that if the object has a property called "Name", that name will be displayed at the top of the PropertyList control.
         /// If this object doesn't have a Name property, or you want to set a different name, please use the <see cref="ObjectDisplayName"/> property.
+        /// Properties that are set-only (i.e. has no public <c>get</c> portion) will not be displayed.
         /// </remarks>
         public void LoadObject(object o)
         {
@@ -294,8 +384,8 @@ namespace SolidShineUi.PropertyList
             {
                 ObjectDisplayName = NO_NAME;
             }
-            txtType.Text = TypeLabel + PrettifyPropertyType(type); // name of the type (not the object)
-            txtType.ToolTip = PrettifyPropertyType(type, true);
+            //txtType.Text = TypeLabel + PrettifyPropertyType(type); // name of the type (not the object)
+            //txtType.ToolTip = PrettifyPropertyType(type, true);
 
             // load all properties
             properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
@@ -303,15 +393,16 @@ namespace SolidShineUi.PropertyList
 
             LoadPropertyList(properties);
 
-            txtFilter.Text = "";
+            //txtFilter.Text = "";
             _filterString = "";
             _showInherited = true;
-            mnuShowInherited.IsChecked = true;
+            //mnuShowInherited.IsChecked = true;
             _showReadOnly = true;
-            mnuShowReadOnly.IsChecked = true;
+            //mnuShowReadOnly.IsChecked = true;
 
-            btnRefresh.IsEnabled = true;
+            //btnRefresh.IsEnabled = true;
 
+            HasObjectLoaded = !_clearing;
             LoadedObjectChanged?.Invoke(this, new PropertyListObjectEventArgs(_baseObject, type, _isReloading));
         }
 
@@ -327,7 +418,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ObjectDisplayNameProperty
-            = DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("No name"));
 
         /// <summary>
@@ -343,7 +434,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty TypeLabelProperty
-            = DependencyProperty.Register("TypeLabel", typeof(string), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("TypeLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Type: "));
 
         /// <summary>
@@ -356,7 +447,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ViewMenuLabelProperty
-            = DependencyProperty.Register("ViewMenuLabel", typeof(string), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ViewMenuLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("View"));
 
         /// <summary>
@@ -369,7 +460,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty NameHeaderLabelProperty
-            = DependencyProperty.Register("NameHeaderLabel", typeof(string), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("NameHeaderLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Name"));
 
         /// <summary>
@@ -382,7 +473,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty TypeHeaderLabelProperty
-            = DependencyProperty.Register("TypeHeaderLabel", typeof(string), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("TypeHeaderLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Type"));
 
         /// <summary>
@@ -395,7 +486,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ValueHeaderLabelProperty
-            = DependencyProperty.Register("ValueHeaderLabel", typeof(string), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ValueHeaderLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Value"));
 
         /// <summary>
@@ -408,16 +499,15 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty FilterBoxToolTipProperty
-            = DependencyProperty.Register("FilterBoxToolTip", typeof(string), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("FilterBoxToolTip", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Filter (use @ to filter by name only)"));
 
 
         #endregion
 
-
         void LoadPropertyList(IEnumerable<PropertyInfo> properties)
         {
-            stkProperties.Children.Clear();
+            //stkProperties.Children.Clear();
 
             Type baseType = _baseObject?.GetType() ?? typeof(object);
 
@@ -454,13 +544,13 @@ namespace SolidShineUi.PropertyList
                 if (ipe != null)
                 {
                     ipe.ColorScheme = ColorScheme;
-                    ipe.ParentPropertyList = this;
+                    //ipe.ParentPropertyList = this;
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
 
                 pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject) : null, ipe);
                 pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
-                pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
+                //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
                 pei.ShowGridlines = ShowGridlines;
                 pei.GridlineBrush = GridlineBrush;
                 stkProperties.Children.Add(pei);
@@ -502,8 +592,7 @@ namespace SolidShineUi.PropertyList
 
         #region Sort and Filter
 
-        private PropertySortOption _sort = PropertySortOption.Name;
-
+        /// <summary>the internally stored version of <see cref="FilterText"/>. only to be used internally</summary>
         private string _filterString = "";
 
         /// <summary>
@@ -513,7 +602,12 @@ namespace SolidShineUi.PropertyList
         /// If this setting is changed, you will need to reload the object (<see cref="ReloadObject()"/>) or load a new object to apply that change.
         /// </remarks>
         [Category("Common")]
-        public PropertySortOption SortOption { get => _sort; set { _sort = value; SortList(); } }
+        public PropertySortOption SortOption { get => (PropertySortOption)GetValue(SortOptionProperty); set => SetValue(SortOptionProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SortOption"/>. See the related property for details.</summary>
+        public static DependencyProperty SortOptionProperty
+            = DependencyProperty.Register("SortOption", typeof(PropertySortOption), typeof(PropertyList),
+            new FrameworkPropertyMetadata(PropertySortOption.Name));
 
         /// <summary>
         /// Get or set the settings for what properties should be displayed in the PropertyList.
@@ -533,13 +627,39 @@ namespace SolidShineUi.PropertyList
         /// Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.
         /// </summary>
         [Category("Common")]
-        public bool ShowInheritedProperties { get => _showInherited; set { _showInherited = value; FilterProperties(_filterString); mnuShowInherited.IsChecked = value; } }
+        public bool ShowInheritedProperties { get => (bool)GetValue(ShowInheritedPropertiesProperty); set => SetValue(ShowInheritedPropertiesProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowInheritedProperties"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowInheritedPropertiesProperty
+            = DependencyProperty.Register("ShowInheritedProperties", typeof(bool), typeof(PropertyList),
+            new FrameworkPropertyMetadata(true));
+
 
         /// <summary>
         /// Get or set if read-only properties (properties that only have a <c>get</c> section, and cannot be set/changed) are visible in the PropertyList.
         /// </summary>
         [Category("Common")]
-        public bool ShowReadOnlyProperties { get => _showReadOnly; set { _showReadOnly = value; FilterProperties(_filterString); mnuShowReadOnly.IsChecked = value; } }
+        public bool ShowReadOnlyProperties { get => (bool)GetValue(ShowReadOnlyPropertiesProperty); set => SetValue(ShowReadOnlyPropertiesProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowReadOnlyProperties"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowReadOnlyPropertiesProperty
+            = DependencyProperty.Register("ShowReadOnlyProperties", typeof(bool), typeof(PropertyList),
+            new FrameworkPropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set the string to use for filtering the properties. Only properties that match this filter text will be displayed, 
+        /// or use <c>null</c> or an empty string for no filtering.
+        /// </summary>
+        /// <remarks>
+        /// If the first character is <c>@</c>, then only the property names will be matched. Otherwise, the property names or types may be matched.
+        /// </remarks>
+        public string FilterText { get => (string)GetValue(FilterTextProperty); set => SetValue(FilterTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="FilterText"/>. See the related property for details.</summary>
+        public static DependencyProperty FilterTextProperty
+            = DependencyProperty.Register("FilterText", typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata(""));
+
 
         /// <summary>
         /// Get the category that this property is said to be a part of (if this property has a <see cref="CategoryAttribute"/> attached to it).
@@ -619,11 +739,11 @@ namespace SolidShineUi.PropertyList
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            FilterProperties(txtFilter.Text);
+            FilterProperties(FilterText);
         }
 
-        #region Sort, Filter, Compare functions
-        void SortList()
+        #region Internal Sort, Filter, Compare functions
+        private void SortList()
         {
             switch (SortOption)
             {
@@ -646,9 +766,9 @@ namespace SolidShineUi.PropertyList
         /// The filter text to apply. Use <c>null</c> or an empty string to not apply a filter. Start the string with "@" to only filter by property name only (not name or type).
         /// </param>
 #if NETCOREAPP
-        public void FilterProperties(string? filter)
+        private void FilterProperties(string? filter)
 #else
-        public void FilterProperties(string filter)
+        private void FilterProperties(string filter)
 #endif
         {
             if (stkProperties == null) return;
@@ -829,55 +949,67 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        #region Sort and View menu
+        #region Commands (Sort and View menu)
 
-        private void btnName_Click(object sender, RoutedEventArgs e)
+        private void DoLoadObject(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter == null)
+            {
+                Clear();
+            }
+            else
+            {
+                LoadObject(e.Parameter);
+            }
+        }
+
+        private void DoSortByName(object sender, ExecutedRoutedEventArgs e)
         {
             SortOption = PropertySortOption.Name;
             LoadPropertyList(properties);
             FilterProperties(_filterString);
         }
 
-        private void btnCategory_Click(object sender, RoutedEventArgs e)
+        private void DoSortByCategory(object sender, ExecutedRoutedEventArgs e)
         {
             SortOption = PropertySortOption.Category;
             LoadPropertyList(properties);
             FilterProperties(_filterString);
         }
 
-        private void mnuTypesCol_Click(object sender, RoutedEventArgs e)
-        {
-            if (mnuTypesCol.IsChecked)
-            {
-                // hide column
-                colTypes.Width = new GridLength(0, GridUnitType.Pixel);
-                mnuTypesCol.IsChecked = false;
-                splTypes.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                // show column
-                colTypes.Width = new GridLength(40, GridUnitType.Pixel);
-                mnuTypesCol.IsChecked = true;
-                splTypes.Visibility = Visibility.Visible;
-            }
-        }
+        //private void mnuTypesCol_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (mnuTypesCol.IsChecked)
+        //    {
+        //        // hide column
+        //        colTypes.Width = new GridLength(0, GridUnitType.Pixel);
+        //        mnuTypesCol.IsChecked = false;
+        //        splTypes.Visibility = Visibility.Collapsed;
+        //    }
+        //    else
+        //    {
+        //        // show column
+        //        colTypes.Width = new GridLength(40, GridUnitType.Pixel);
+        //        mnuTypesCol.IsChecked = true;
+        //        splTypes.Visibility = Visibility.Visible;
+        //    }
+        //}
 
-        private void mnuShowInherited_Click(object sender, RoutedEventArgs e)
+        private void DoToggleInheritedProperties(object sender, ExecutedRoutedEventArgs e)
         {
             ShowInheritedProperties = !ShowInheritedProperties;
         }
-        private void mnuShowReadOnly_Click(object sender, RoutedEventArgs e)
+        private void DoToggleReadOnlyProperties(object sender, ExecutedRoutedEventArgs e)
         {
             ShowReadOnlyProperties = !ShowReadOnlyProperties;
         }
 
-        private void mnuGridlines_Click(object sender, RoutedEventArgs e)
+        private void DoToggleGridlines(object sender, ExecutedRoutedEventArgs e)
         {
             ShowGridlines = !ShowGridlines;
         }
 
-        private void mnuGridlineBrush_Click(object sender, RoutedEventArgs e)
+        private void DoEditGridlineBrush(object sender, ExecutedRoutedEventArgs e)
         {
             Color col = Colors.LightGray;
             if (GridlineBrush is SolidColorBrush scb) col = scb.Color;
@@ -888,6 +1020,22 @@ namespace SolidShineUi.PropertyList
             {
                 GridlineBrush = new SolidColorBrush(cpd.SelectedColor);
             }
+        }
+
+        /// <summary>
+        /// The command in question is always able to be executed, regardless of the state of the object.
+        /// </summary>
+        private void CanExecuteAlways(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /// <summary>
+        /// The command in question is able to execute, if at least one tab is selected.
+        /// </summary>
+        private void CanExecuteIfObjectLoaded(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = HasObjectLoaded;
         }
 
         #endregion
@@ -1122,13 +1270,13 @@ namespace SolidShineUi.PropertyList
             {
 #else
         private void ColumnWidthChanged(object sender, EventArgs e)
-                {
+        {
             foreach (UIElement item in stkProperties.Children)
             {
 #endif
                 if (item is PropertyEditorItem pei)
                 {
-                    pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
+                    //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
                 }
             }
         }
@@ -1153,7 +1301,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ShowNameDisplayProperty
-            = DependencyProperty.Register("ShowNameDisplay", typeof(bool), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ShowNameDisplay", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -1166,7 +1314,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ShowTypeDisplayProperty
-            = DependencyProperty.Register("ShowTypeDisplay", typeof(bool), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ShowTypeDisplay", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
         #endregion
@@ -1183,7 +1331,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ShowFilterBoxProperty
-            = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -1196,7 +1344,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ShowReloadButtonProperty
-            = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -1209,7 +1357,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ShowViewMenuProperty
-            = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
         #endregion
@@ -1226,7 +1374,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ShowGridlinesProperty
-            = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(false));
 
         /// <summary>
@@ -1239,28 +1387,28 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty GridlineBrushProperty
-            = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         private event EventHandler GridlinePropertyChanged;
 
         void UpdateGridlines()
         {
-            mnuGridlines.IsChecked = ShowGridlines;
+            //mnuGridlines.IsChecked = ShowGridlines;
 
-#if NETCOREAPP
-            foreach (UIElement? item in stkProperties.Children)
-#else
-            foreach (UIElement item in stkProperties.Children)
-#endif
-            {
-                if (item == null) continue;
-                if (item is PropertyEditorItem pei)
-                {
-                    pei.GridlineBrush = GridlineBrush;
-                    pei.ShowGridlines = ShowGridlines;
-                }
-            }
+//#if NETCOREAPP
+//            foreach (UIElement? item in stkProperties.Children)
+//#else
+//            foreach (UIElement item in stkProperties.Children)
+//#endif
+//            {
+//                if (item == null) continue;
+//                if (item is PropertyEditorItem pei)
+//                {
+//                    pei.GridlineBrush = GridlineBrush;
+//                    pei.ShowGridlines = ShowGridlines;
+//                }
+//            }
         }
 
         #endregion
@@ -1277,7 +1425,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty HeaderBackgroundProperty
-            = DependencyProperty.Register("HeaderBackground", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("HeaderBackground", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         /// <summary>
@@ -1290,7 +1438,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty HeaderForegroundProperty
-            = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         /// <summary>
@@ -1303,7 +1451,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ToolbarBackgroundProperty
-            = DependencyProperty.Register("ToolbarBackground", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ToolbarBackground", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
 
         /// <summary>
@@ -1316,7 +1464,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ButtonHighlightBrushProperty
-            = DependencyProperty.Register("ButtonHighlightBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ButtonHighlightBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         /// <summary>
@@ -1329,7 +1477,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ButtonClickBrushProperty
-            = DependencyProperty.Register("ButtonClickBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ButtonClickBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         /// <summary>
@@ -1342,7 +1490,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty ButtonHighlightBorderBrushProperty
-            = DependencyProperty.Register("ButtonHighlightBorderBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("ButtonHighlightBorderBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         /// <summary>
@@ -1355,7 +1503,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty TopPanelBackgroundProperty
-            = DependencyProperty.Register("TopPanelBackground", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("TopPanelBackground", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
 
         /// <summary>
@@ -1368,7 +1516,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty TopPanelForegroundProperty
-            = DependencyProperty.Register("TopPanelForeground", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("TopPanelForeground", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         /// <summary>
@@ -1381,7 +1529,7 @@ namespace SolidShineUi.PropertyList
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static DependencyProperty HeaderDividerBrushProperty
-            = DependencyProperty.Register("HeaderDividerBrush", typeof(Brush), typeof(ExperimentalPropertyList),
+            = DependencyProperty.Register("HeaderDividerBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         #endregion

@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:flat="clr-namespace:SolidShineUi"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
+    xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
     
@@ -1791,6 +1792,111 @@
                             </Grid>
                         </Grid>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type pl:PropertyList}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type pl:PropertyList}">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Background="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=TopPanelBackground}">
+                            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,5" x:Name="txtName" FontWeight="Bold" VerticalAlignment="Center"
+                   Foreground="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=TopPanelForeground}"
+                   Text="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ObjectDisplayName}" Visibility="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ShowNameDisplay, Converter={StaticResource VisConverter}}" />
+                        </Grid>
+                        <Grid Background="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=TopPanelBackground}" Grid.Row="1">
+                            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="{x:Static pl:PropertyList.NOTHING_LOADED}" x:Name="txtType" VerticalAlignment="Center" 
+                   Foreground="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=TopPanelForeground}"
+                   Visibility="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ShowTypeDisplay, Converter={StaticResource VisConverter}}" />
+                        </Grid>
+                        <Grid Grid.Row="2" x:Name="grdToolbar" Background="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ToolbarBackground}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image Height="16" Source="/SolidShineUi;component/Images/SearchColor.png" x:Name="imgSearch" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                    Visibility="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ShowFilterBox, Converter={StaticResource VisConverter}}" />
+                            <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtFilter" VerticalContentAlignment="Center" Height="28"
+                                     Text="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=FilterText}"
+                                     ToolTip="{Binding Source={RelativeSource AncestorType=pl:PropertyList},Path=FilterBoxToolTip,FallbackValue='Filter (use @ to filter by name only)'}" 
+                                     Visibility="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ShowFilterBox, Converter={StaticResource VisConverter}}" />
+                            <flat:FlatButton Grid.Column="3" x:Name="btnRefresh" ToolTip="Reload" ColorScheme="{Binding ColorScheme, ElementName=control}" TransparentBack="True"
+                             Height="28" Width="28" Visibility="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ShowReloadButton, Converter={StaticResource VisConverter}}"
+                             HighlightBrush="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ButtonHighlightBrush}" ClickBrush="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ButtonClickBrush}"
+                             BorderHighlightBrush="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ButtonHighlightBorderBrush}" >
+                                <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png" x:Name="imgReload" />
+                            </flat:FlatButton>
+                            <flat:MenuButton Grid.Column="4" x:Name="mnuView" ToolTip="Sort and View" ColorScheme="{Binding ColorScheme, Source={RelativeSource AncestorType=pl:PropertyList}}" Height="28"
+                             TransparentBack="True" MinWidth="50" Visibility="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ShowViewMenu, Converter={StaticResource VisConverter}}"
+                             HighlightBrush="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ButtonHighlightBrush}" 
+                             ClickBrush="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ButtonClickBrush}"
+                             BorderHighlightBrush="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ButtonHighlightBorderBrush}" >
+                                <flat:MenuButton.Content>
+                                    <TextBlock Text="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ViewMenuLabel, FallbackValue='View'}" />
+                                </flat:MenuButton.Content>
+                                <flat:MenuButton.Menu>
+                                    <flat:ContextMenu>
+                                        <MenuItem Header="Sort by Name" 
+                                                  Command="{x:Static pl:PropertyListCommands.SortByName}" />
+                                        <MenuItem Header="Sort by Category" 
+                                                  Command="{x:Static pl:PropertyListCommands.SortByCategory}" />
+                                        <Separator />
+                                        <MenuItem Header="Show Inherited" x:Name="mnuShowInherited" IsChecked="{TemplateBinding ShowInheritedProperties}"
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleInheritedProperties}" />
+                                        <MenuItem Header="Show Read Only" x:Name="mnuShowReadOnly" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleReadOnlyProperties}" />
+                                        <Separator />
+                                        <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" IsEnabled="False" />
+                                        <Separator />
+                                        <MenuItem Header="Show Gridlines" x:Name="mnuGridlines" IsChecked="{TemplateBinding ShowGridlines}" 
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />
+                                        <!--<MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click"
+                                                  Command="{x:Static pl:PropertyListCommands.ChangeGridlineBrush}" />-->
+                                    </flat:ContextMenu>
+                                </flat:MenuButton.Menu>
+                            </flat:MenuButton>
+                        </Grid>
+                        <Grid Grid.Row="3" x:Name="grdHeader" Background="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=HeaderBackground}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" MinWidth="50" x:Name="colNames" SharedSizeGroup="plNames" />
+                                <ColumnDefinition Width="0" x:Name="colTypes" SharedSizeGroup="plTypes" />
+                                <ColumnDefinition Width="1*" x:Name="colValues" />
+                                <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblName"
+                       Foreground="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=HeaderForeground}" 
+                                       Text="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=NameHeaderLabel, FallbackValue='Name'}" />
+                            <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" 
+                          Background="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=HeaderDividerBrush}" />
+                            <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblType"
+                       Foreground="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=HeaderForeground}" 
+                                       Text="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=TypeHeaderLabel, FallbackValue='Type'}" />
+                            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Collapsed"
+                          Background="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=HeaderDividerBrush}" x:Name="splTypes" />
+                            <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblValue"
+                       Foreground="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=HeaderForeground}" 
+                                       Text="{Binding Source={RelativeSource AncestorType=pl:PropertyList}, Path=ValueHeaderLabel, FallbackValue='Value'}" />
+                        </Grid>
+                        <Grid Grid.Row="4" >
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
+                                <StackPanel Orientation="Vertical" x:Name="PART_PropList" />
+                            </ScrollViewer>
+                        </Grid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
