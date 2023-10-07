@@ -41,8 +41,10 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// <summary>
         /// Get or set the list of controls that represents each transform to display in the dialog. This is generally used internally, but this can also be used as a reference of what's currently in the dialog.
         /// </summary>
-        public SelectableCollection<TransformSelectableControl> TransformList { 
-            get => (SelectableCollection<TransformSelectableControl>)GetValue(TransformListProperty); set => SetValue(TransformListProperty, value); }
+        public SelectableCollection<TransformSelectableControl> TransformList
+        {
+            get => (SelectableCollection<TransformSelectableControl>)GetValue(TransformListProperty); set => SetValue(TransformListProperty, value);
+        }
 
         /// <summary>
         /// The backing dependency property object for <see cref="TransformList"/>. See the related property for more details.
@@ -67,7 +69,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             LoadSelectedTransform();
         }
-        
+
         /// <summary>
         /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
         /// </summary>
@@ -152,6 +154,10 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        /// <summary>
+        /// Get all of the transforms listed in this dialog, combined together into a collection.
+        /// </summary>
+        /// <returns>A TransformCollection that contains each transform listed in this dialog.</returns>
         public TransformCollection ExportTransforms()
         {
             TransformCollection transforms = new TransformCollection();
@@ -164,6 +170,13 @@ namespace SolidShineUi.PropertyList.Dialogs
             return transforms;
         }
 
+        /// <summary>
+        /// Get the value of the transform object being edited in this dialog.
+        /// </summary>
+        /// <remarks>
+        /// If this dialog is in Single Edit Mode, the transform object returned should match the type of the object passed in before via <see cref="ImportSingleTransform(Transform)"/>.
+        /// Otherwise, this will return a <see cref="TransformGroup"/> that contains all listed transforms in the dialog.
+        /// </remarks>
         public Transform ExportSingleTransform()
         {
             if (!singleEditMode)
@@ -235,7 +248,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     DisplayTransformControl(null);
                 }
             }
-            
+
         }
 
         void StoreDataToSelectedTransform()
@@ -307,8 +320,13 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else
             {
+#if NETCOREAPP
+                foreach (UIElement? item in grdHolder.Children)
+#else
                 foreach (UIElement item in grdHolder.Children)
+#endif
                 {
+                    if (item == null) continue;
                     item.Visibility = item == transformControl ? Visibility.Visible : Visibility.Collapsed;
                 }
                 // LET'S DO IT
@@ -325,8 +343,13 @@ namespace SolidShineUi.PropertyList.Dialogs
         Transform GetValuesFromActiveTransform()
         {
             UIElement visibleElement = txtGridEmpty;
+#if NETCOREAPP
+            foreach (UIElement? item in grdHolder.Children)
+#else
             foreach (UIElement item in grdHolder.Children)
+#endif
             {
+                if (item == null) continue;
                 if (item.Visibility == Visibility.Visible)
                 {
                     visibleElement = item;
@@ -455,6 +478,9 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        /// <summary>
+        /// Get or set the result state of the dialog - <c>true</c> if OK (and good to utilize updated variables), or <c>false</c> to cancel and discard changes.
+        /// </summary>
         public new bool DialogResult { get; set; } = false;
 
         private void btnOK_Click(object sender, RoutedEventArgs e)

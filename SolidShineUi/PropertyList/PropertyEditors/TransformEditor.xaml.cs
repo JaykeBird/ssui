@@ -261,11 +261,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         // eventually, once I figure out a localization solution, these will be moved to that spot
+        /// <summary>UI text for "group"</summary>
         public const string GROUP = "group";
+        /// <summary>UI text for "rotate"</summary>
         public const string ROTATE = "rotate";
+        /// <summary>UI text for "skew"</summary>
         public const string SKEW = "skew";
+        /// <summary>UI text for "scale"</summary>
         public const string SCALE = "scale";
+        /// <summary>UI text for "translate"</summary>
         public const string TRANSLATE = "translate";
+        /// <summary>UI text for "matrix"</summary>
         public const string MATRIX = "matrix";
     }
 }
