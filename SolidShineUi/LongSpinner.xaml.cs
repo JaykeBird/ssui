@@ -325,34 +325,13 @@ namespace SolidShineUi
 
         #endregion
 
-        #region AcceptExpressionsProperty
-
-        /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
-        /// </summary>
-        public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(LongSpinner),  new PropertyMetadata(true));
-
-        /// <summary>
-        /// Get or set if the spinner should evaluate arithmetic expressions (such as "2+5") to accept as a value.
-        /// </summary>
-        /// <remarks>
-        /// See the <see cref="ArithmeticParser"/> class for more info about how expressions are parsed.
-        /// Note that AcceptExpressions is ignored (and expressions not accepted) while <see cref="DisplayAsHex"/> is set to true.
-        /// </remarks>
-        [Category("Common")]
-        public bool AcceptExpressions
-        {
-            get => (bool)GetValue(AcceptExpressionsProperty);
-            set =>  SetValue(AcceptExpressionsProperty, value);
-        }
-
-        #endregion
-
         #region ShowArrows/CornerRadius
 
         // properties defined in SpinnerBase
 
+        /// <summary>
+        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.CornerRadius"/>.
+        /// </summary>
         protected override void OnCornerRadiusChanged()
         {
             brdrVisualEffect.CornerRadius = new CornerRadius(CornerRadius.TopLeft + 0.5, CornerRadius.TopRight + 0.5, CornerRadius.BottomRight + 0.5, CornerRadius.BottomLeft + 0.5);
@@ -361,6 +340,9 @@ namespace SolidShineUi
             base.OnCornerRadiusChanged();
         }
 
+        /// <summary>
+        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.ShowArrows"/>.
+        /// </summary>
         protected override void OnShowArrowsChanged()
         {
             colArrows.Width = ShowArrows ? new GridLength(20) : new GridLength(0);
@@ -427,7 +409,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while DisplayAsHex is set to true, <see cref="AcceptExpressions"/> is ignored.
+        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while DisplayAsHex is set to true, <see cref="SpinnerBase.AcceptExpressions"/> is ignored.
         /// </summary>
         /// <remarks>
         /// Certain situations, particularly involving computer representations of data or memory, may benefit more with displaying numbers as hexadecimals rather than decimals.
@@ -457,6 +439,9 @@ namespace SolidShineUi
             RaiseValueValidated(this);
         }
 
+        /// <summary>
+        /// Update this control's UI to reflect the changes in its <see cref="Value"/> or visual properties.
+        /// </summary>
         protected override void UpdateUI()
         {
             if (!IsEnabled)

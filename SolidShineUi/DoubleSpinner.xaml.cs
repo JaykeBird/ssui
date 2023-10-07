@@ -346,6 +346,9 @@ namespace SolidShineUi
 
         // properties defined in SpinnerBase
 
+        /// <summary>
+        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.CornerRadius"/>.
+        /// </summary>
         protected override void OnCornerRadiusChanged()
         {
             brdrVisualEffect.CornerRadius = new CornerRadius(CornerRadius.TopLeft + 0.5, CornerRadius.TopRight + 0.5, CornerRadius.BottomRight + 0.5, CornerRadius.BottomLeft + 0.5);
@@ -354,6 +357,9 @@ namespace SolidShineUi
             base.OnCornerRadiusChanged();
         }
 
+        /// <summary>
+        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.ShowArrows"/>.
+        /// </summary>
         protected override void OnShowArrowsChanged()
         {
             colArrows.Width = ShowArrows ? new GridLength(20) : new GridLength(0);
@@ -380,6 +386,9 @@ namespace SolidShineUi
             RaiseValueValidated(this);
         }
 
+        /// <summary>
+        /// Update this control's UI to reflect the changes in its <see cref="Value"/> or visual properties.
+        /// </summary>
         protected override void UpdateUI()
         {
             if (!IsEnabled)

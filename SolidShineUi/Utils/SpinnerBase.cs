@@ -28,8 +28,14 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected bool _raiseChangedEvent = true;
 
-
+        /// <summary>
+        /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
+        /// </summary>
         protected Timer keyDownTimer = new Timer(300);
+
+        /// <summary>
+        /// the timer to set the interval at which the value is changed while the user is holding down an arrow button
+        /// </summary>
         protected Timer advanceTimer = new Timer(50);
 
         /// <summary>
@@ -42,7 +48,11 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Raised when the Value, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
         /// </summary>
+#if NETCOREAPP
+        public event EventHandler? PropertyChanged;
+#else
         public event EventHandler PropertyChanged;
+#endif
 
         /// <summary>
         /// Raised when the Value property is changed.
@@ -258,6 +268,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Update internal values based upon a change in the <see cref="RepeatDelay"/> property.
+        /// </summary>
         protected virtual void OnRepeatDelayChanged()
         {
             keyDownTimer.Interval = RepeatDelay;
@@ -307,6 +320,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Update internal values based upon a change in the <see cref="CornerRadius"/> property.
+        /// </summary>
         protected virtual void OnCornerRadiusChanged()
         {
             RoutedEventArgs re = new RoutedEventArgs(CornerRadiusChangedEvent);
@@ -378,6 +394,9 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Update internal values based upon a change in the <see cref="ShowArrows"/> property.
+        /// </summary>
         protected virtual void OnShowArrowsChanged()
         {
             RoutedEventArgs re = new RoutedEventArgs(ShowArrowsChangedEvent);
@@ -424,8 +443,11 @@ namespace SolidShineUi.Utils
         }
 
         #endregion
-            
 
+
+        /// <summary>
+        /// Update internal values based upon visual or other changes. In SpinnerBase, this currently does nothing.
+        /// </summary>
         protected virtual void UpdateUI()
         {
 
