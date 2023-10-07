@@ -11,6 +11,9 @@ namespace SolidShineUi.PropertyList
         /// <remarks>See <see cref="PropertyList.LoadObject(object)"/> for more details.</remarks>
         public static RoutedCommand LoadObject { get; } = new RoutedCommand("LoadObject", typeof(PropertyListCommands));
 
+        /// <summary>A WPF command that when executed, will prompt the PropertyList to reload the currently loaded object</summary>
+        public static RoutedCommand Reload { get; } = new RoutedCommand("Reload", typeof(PropertyListCommands));
+
 
         /// <summary>A WPF command that when executed, will sort a PropertyList by name.</summary>
         /// <remarks>See also <see cref="PropertyList.SortOption"/> property.</remarks>

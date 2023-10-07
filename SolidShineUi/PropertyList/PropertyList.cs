@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
+using System.Text; // this is needed to support the Rune class in modern .NET
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,9 +33,12 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public PropertyList()
         {
+            PreregisterEditors();
+
             DependencyPropertyDescriptor.FromProperty(ShowInheritedPropertiesProperty, typeof(PropertyList)).AddValueChanged(this, ShowInheritedPropertiesChanged);
             DependencyPropertyDescriptor.FromProperty(ShowReadOnlyPropertiesProperty, typeof(PropertyList)).AddValueChanged(this, ShowReadOnlyPropertiesChanged);
             DependencyPropertyDescriptor.FromProperty(FilterTextProperty, typeof(PropertyList)).AddValueChanged(this, FilterTextChanged);
+            DependencyPropertyDescriptor.FromProperty(SortOptionProperty, typeof(PropertyList)).AddValueChanged(this, SortOptionChanged);
 
             ShowInheritedPropertiesChanged += (s, e) => { FilterProperties(_filterString); };
             ShowReadOnlyPropertiesChanged += (s, e) => { FilterProperties(_filterString); };
@@ -44,6 +47,7 @@ namespace SolidShineUi.PropertyList
             SortOptionChanged += (s, e) => { SortList(); };
 
             CommandBindings.Add(new CommandBinding(PropertyListCommands.LoadObject, DoLoadObject, CanExecuteAlways));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.Reload, DoReload, CanExecuteIfObjectLoaded));
             CommandBindings.Add(new CommandBinding(PropertyListCommands.SortByCategory, DoSortByCategory, CanExecuteIfObjectLoaded));
             CommandBindings.Add(new CommandBinding(PropertyListCommands.SortByName, DoSortByName, CanExecuteIfObjectLoaded));
             CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleGridlines, DoToggleGridlines, CanExecuteAlways));
@@ -140,7 +144,7 @@ namespace SolidShineUi.PropertyList
 
         bool itemsLoaded = false;
 
-        bool _internalAction = false;
+        //bool _internalAction = false;
 
 #if NETCOREAPP
         StackPanel? stkProperties = null;
@@ -406,7 +410,7 @@ namespace SolidShineUi.PropertyList
             LoadedObjectChanged?.Invoke(this, new PropertyListObjectEventArgs(_baseObject, type, _isReloading));
         }
 
-        #region Display Name / Labels
+        #region Display Name
         /// <summary>
         /// Get or set the string used to name the object being observed. The PropertyList will try to set this automatically via looking at the Name property,
         /// or otherwise you can set a custom name to display.
@@ -421,93 +425,12 @@ namespace SolidShineUi.PropertyList
             = DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("No name"));
 
-        /// <summary>
-        /// Get or set the label to display next to the object's type at the top of the control.
-        /// </summary>
-        /// <remarks>
-        /// You can hide the entire type label and display by setting <see cref="ShowTypeDisplay"/> to false.
-        /// </remarks>
-        [Category("Text Labels")]
-        public string TypeLabel { get => (string)GetValue(TypeLabelProperty); set => SetValue(TypeLabelProperty, value); }
-
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty TypeLabelProperty
-            = DependencyProperty.Register("TypeLabel", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("Type: "));
-
-        /// <summary>
-        /// Get or set the label to display in the View menu in the toolbar.
-        /// </summary>
-        [Category("Text Labels")]
-        public string ViewMenuLabel { get => (string)GetValue(ViewMenuLabelProperty); set => SetValue(ViewMenuLabelProperty, value); }
-
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty ViewMenuLabelProperty
-            = DependencyProperty.Register("ViewMenuLabel", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("View"));
-
-        /// <summary>
-        /// Get or set the label to display in the column header for the Name column.
-        /// </summary>
-        [Category("Text Labels")]
-        public string NameHeaderLabel { get => (string)GetValue(NameHeaderLabelProperty); set => SetValue(NameHeaderLabelProperty, value); }
-
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty NameHeaderLabelProperty
-            = DependencyProperty.Register("NameHeaderLabel", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("Name"));
-
-        /// <summary>
-        /// Get or set the label to display in the column header for the Type column.
-        /// </summary>
-        [Category("Text Labels")]
-        public string TypeHeaderLabel { get => (string)GetValue(TypeHeaderLabelProperty); set => SetValue(TypeHeaderLabelProperty, value); }
-
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty TypeHeaderLabelProperty
-            = DependencyProperty.Register("TypeHeaderLabel", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("Type"));
-
-        /// <summary>
-        /// Get or set the label to display in the column header for the Value column.
-        /// </summary>
-        [Category("Text Labels")]
-        public string ValueHeaderLabel { get => (string)GetValue(ValueHeaderLabelProperty); set => SetValue(ValueHeaderLabelProperty, value); }
-
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty ValueHeaderLabelProperty
-            = DependencyProperty.Register("ValueHeaderLabel", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("Value"));
-
-        /// <summary>
-        /// Get or set the label to display in a tool-tip when the Filter text box has focus or mouse over.
-        /// </summary>
-        [Category("Text Labels")]
-        public string FilterBoxToolTip { get => (string)GetValue(FilterBoxToolTipProperty); set => SetValue(FilterBoxToolTipProperty, value); }
-
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty FilterBoxToolTipProperty
-            = DependencyProperty.Register("FilterBoxToolTip", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("Filter (use @ to filter by name only)"));
-
-
         #endregion
 
         void LoadPropertyList(IEnumerable<PropertyInfo> properties)
         {
-            //stkProperties.Children.Clear();
+            if (stkProperties == null) return; // kinda need that if I'm gonna actually do anything
+            stkProperties.Children.Clear();
 
             Type baseType = _baseObject?.GetType() ?? typeof(object);
 
@@ -553,6 +476,7 @@ namespace SolidShineUi.PropertyList
                 //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
                 pei.ShowGridlines = ShowGridlines;
                 pei.GridlineBrush = GridlineBrush;
+
                 stkProperties.Children.Add(pei);
             }
         }
@@ -949,7 +873,7 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        #region Commands (Sort and View menu)
+        #region Commands (Toolbar / Sort and View menu)
 
         private void DoLoadObject(object sender, ExecutedRoutedEventArgs e)
         {
@@ -961,6 +885,11 @@ namespace SolidShineUi.PropertyList
             {
                 LoadObject(e.Parameter);
             }
+        }
+
+        private void DoReload(object sender, ExecutedRoutedEventArgs e)
+        {
+            ReloadObject();
         }
 
         private void DoSortByName(object sender, ExecutedRoutedEventArgs e)
@@ -1266,11 +1195,15 @@ namespace SolidShineUi.PropertyList
 #if NETCOREAPP
         private void ColumnWidthChanged(object? sender, EventArgs e)
         {
+            if (stkProperties == null) return;
+
             foreach (UIElement? item in stkProperties.Children)
             {
 #else
         private void ColumnWidthChanged(object sender, EventArgs e)
         {
+            if (stkProperties == null) return;
+
             foreach (UIElement item in stkProperties.Children)
             {
 #endif
@@ -1285,6 +1218,91 @@ namespace SolidShineUi.PropertyList
         {
             ReloadObject();
         }
+
+        #region UI Object Text
+
+        /// <summary>
+        /// Get or set the label to display next to the object's type at the top of the control.
+        /// </summary>
+        /// <remarks>
+        /// You can hide the entire type label and display by setting <see cref="ShowTypeDisplay"/> to false.
+        /// </remarks>
+        [Category("Text Labels")]
+        public string TypeLabel { get => (string)GetValue(TypeLabelProperty); set => SetValue(TypeLabelProperty, value); }
+
+        /// <summary>
+        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// </summary>
+        public static DependencyProperty TypeLabelProperty
+            = DependencyProperty.Register("TypeLabel", typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Type: "));
+
+        /// <summary>
+        /// Get or set the label to display in the View menu in the toolbar.
+        /// </summary>
+        [Category("Text Labels")]
+        public string ViewMenuLabel { get => (string)GetValue(ViewMenuLabelProperty); set => SetValue(ViewMenuLabelProperty, value); }
+
+        /// <summary>
+        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// </summary>
+        public static DependencyProperty ViewMenuLabelProperty
+            = DependencyProperty.Register("ViewMenuLabel", typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("View"));
+
+        /// <summary>
+        /// Get or set the label to display in the column header for the Name column.
+        /// </summary>
+        [Category("Text Labels")]
+        public string NameHeaderLabel { get => (string)GetValue(NameHeaderLabelProperty); set => SetValue(NameHeaderLabelProperty, value); }
+
+        /// <summary>
+        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// </summary>
+        public static DependencyProperty NameHeaderLabelProperty
+            = DependencyProperty.Register("NameHeaderLabel", typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Name"));
+
+        /// <summary>
+        /// Get or set the label to display in the column header for the Type column.
+        /// </summary>
+        [Category("Text Labels")]
+        public string TypeHeaderLabel { get => (string)GetValue(TypeHeaderLabelProperty); set => SetValue(TypeHeaderLabelProperty, value); }
+
+        /// <summary>
+        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// </summary>
+        public static DependencyProperty TypeHeaderLabelProperty
+            = DependencyProperty.Register("TypeHeaderLabel", typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Type"));
+
+        /// <summary>
+        /// Get or set the label to display in the column header for the Value column.
+        /// </summary>
+        [Category("Text Labels")]
+        public string ValueHeaderLabel { get => (string)GetValue(ValueHeaderLabelProperty); set => SetValue(ValueHeaderLabelProperty, value); }
+
+        /// <summary>
+        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// </summary>
+        public static DependencyProperty ValueHeaderLabelProperty
+            = DependencyProperty.Register("ValueHeaderLabel", typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Value"));
+
+        /// <summary>
+        /// Get or set the label to display in a tool-tip when the Filter text box has focus or mouse over.
+        /// </summary>
+        [Category("Text Labels")]
+        public string FilterBoxToolTip { get => (string)GetValue(FilterBoxToolTipProperty); set => SetValue(FilterBoxToolTipProperty, value); }
+
+        /// <summary>
+        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// </summary>
+        public static DependencyProperty FilterBoxToolTipProperty
+            = DependencyProperty.Register("FilterBoxToolTip", typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Filter (use @ to filter by name only)"));
+
+        #endregion
 
         #region Show/Hide Top Labels
 
@@ -1390,7 +1408,7 @@ namespace SolidShineUi.PropertyList
             = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
-        private event EventHandler GridlinePropertyChanged;
+        //private event EventHandler GridlinePropertyChanged;
 
         void UpdateGridlines()
         {
