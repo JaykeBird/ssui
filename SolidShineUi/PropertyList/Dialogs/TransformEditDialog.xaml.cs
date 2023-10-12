@@ -193,25 +193,14 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// <summary>
         /// Get the value of the transform object being edited in this dialog.
         /// </summary>
+        /// <param name="returnIdentityIfBlank">If no transforms, set if an identity matrix transform should be returned, or an empty TransformGroup</param>
         /// <remarks>
         /// If this dialog is in Single Edit Mode, the transform object returned should match the type of the object passed in before via <see cref="ImportSingleTransform(Transform)"/>.
         /// Otherwise, this will return a <see cref="TransformGroup"/> that contains all listed transforms in the dialog (or if only a single transform is in the dialog, just that transform).
         /// </remarks>
-        public Transform ExportSingleTransform()
+        public Transform ExportSingleTransform(bool returnIdentityIfBlank = true)
         {
-            if (!singleEditMode)
-            {
-                if (TransformList.Count == 1)
-                {
-                    StoreDataToSelectedTransform();
-                    return TransformList[0].TransformValue;
-                }
-                else
-                {
-                    return new TransformGroup() { Children = ExportTransformCollection() };
-                }
-            }
-            else
+            if (singleEditMode)
             {
                 if (TransformList.Count >= 1)
                 {
@@ -220,7 +209,23 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
                 else
                 {
-                    return new TransformGroup();
+                    return returnIdentityIfBlank ? (Transform)new MatrixTransform(Matrix.Identity) : new TransformGroup();
+                }
+            }
+            else
+            {
+                if (TransformList.Count == 1)
+                {
+                    StoreDataToSelectedTransform();
+                    return TransformList[0].TransformValue;
+                }
+                else if (TransformList.Count == 0)
+                {
+                    return returnIdentityIfBlank ? (Transform)new MatrixTransform(Matrix.Identity) : new TransformGroup();
+                }
+                else
+                {
+                    return new TransformGroup() { Children = ExportTransformCollection() };
                 }
             }
         }
