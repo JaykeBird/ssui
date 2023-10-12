@@ -83,7 +83,8 @@ namespace SolidShineUi
         /// Gets or sets a collection used to generate the content of this SelectPanel.
         /// </summary>
         /// <remarks>
-        /// It is recommended to set this property to an <see cref="ObservableCollection{T}"/>, <see cref="SelectableCollection{T}"/>, or <see cref="SelectableCollectionView{T}"/>.
+        /// It is recommended to set this property to an <see cref="ObservableCollection{SelectableUserControl}"/>, <see cref="SelectableCollection{SelectableUserControl}"/>, 
+        /// or <see cref="SelectableCollectionView{SelectableUserControl}"/>.
         /// If you use other IEnumerable types that do not also implement <see cref="INotifyCollectionChanged"/>, then this control's contents will not update automatically.
         /// If you do not use a SelectableCollection or SelectableCollectionView, you may also need to implement your own code for handling the selection state of the items
         /// in your collection.
@@ -192,6 +193,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
         /// </summary>
+        /// <remarks>
+        /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead handle adding, removing, and selecting items through that property's value.
+        /// </remarks>
         [Category("Common")]
         public SelectableCollection<SelectableUserControl> Items
         {
@@ -824,214 +828,229 @@ namespace SolidShineUi
 
         #region Convenience Methods (to remove later)
 
-        /// <summary>
-        /// Gets the number of items in this SelectPanel.
-        /// Note that this function will be removed in a future version. Please instead use <c>Items.Count</c>.
-        /// </summary>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.Count\".", false)]
-        public int Count { get => Items.Count; }
+        ///// <summary>
+        ///// Gets the number of items in this SelectPanel.
+        ///// Note that this function will be removed in a future version. Please instead use <c>Items.Count</c>.
+        ///// </summary>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.Count\".", false)]
+        //public int Count { get => Items.Count; }
 
-        /// <summary>
-        /// Gets the number of items that are currently selected.
-        /// Note that this function will be removed in a future version. Please instead use <c>Items.SelectedItems.Count</c>.
-        /// </summary>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.SelectedItems.Count\".", false)]
-        public int SelectionCount { get => Items.SelectedItems.Count; }
+        ///// <summary>
+        ///// Gets the number of items that are currently selected.
+        ///// Note that this function will be removed in a future version. Please instead use <c>Items.SelectedItems.Count</c>.
+        ///// </summary>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.SelectedItems.Count\".", false)]
+        //public int SelectionCount { get => Items.SelectedItems.Count; }
 
-        /// <summary>
-        /// Get a collection of items that have been selected, returned as a certain type (that inherits from SelectableUserControl).
-        /// Note that this function will be removed in a future version. Please instead use <c>Items.SelectedItems.OfType</c> (Linq).
-        /// </summary>
-        /// <typeparam name="T">The type to return the selected items as. It must inherit from SelectableUserControl.</typeparam>
-        [Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.SelectedItems.OfType<>\".", false)]
-        public IEnumerable<T> GetSelectedItemsOfType<T>() where T : SelectableUserControl
-        {
-            return Items.SelectedItems.OfType<T>();
-        }
+        ///// <summary>
+        ///// Get a collection of items that have been selected, returned as a certain type (that inherits from SelectableUserControl).
+        ///// Note that this function will be removed in a future version. Please instead use <c>Items.SelectedItems.OfType</c> (Linq).
+        ///// </summary>
+        ///// <typeparam name="T">The type to return the selected items as. It must inherit from SelectableUserControl.</typeparam>
+        //[Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.SelectedItems.OfType<>\".", false)]
+        //public IEnumerable<T> GetSelectedItemsOfType<T>() where T : SelectableUserControl
+        //{
+        //    return Items.SelectedItems.OfType<T>();
+        //}
 
-        /// <summary>
-        /// Select all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.SelectAll</c>.
-        /// </summary>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.SelectAll\".", false)]
-        public void SelectAll()
-        {
-            Items.SelectAll();
-        }
+        ///// <summary>
+        ///// Select all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.SelectAll</c>.
+        ///// </summary>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.SelectAll\".", false)]
+        //public void SelectAll()
+        //{
+        //    Items.SelectAll();
+        //}
 
-        /// <summary>
-        /// Deselect all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.ClearSelection</c>.
-        /// </summary>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.ClearSelection\".", false)]
-        public void DeselectAll()
-        {
-            Items.ClearSelection();
-        }
+        ///// <summary>
+        ///// Deselect all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.ClearSelection</c>.
+        ///// </summary>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.ClearSelection\".", false)]
+        //public void DeselectAll()
+        //{
+        //    Items.ClearSelection();
+        //}
 
-        /// <summary>
-        /// Add an item to this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Add</c>.
-        /// </summary>
-        /// <param name="item">Item to be added.</param>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.Add\".", false)]
-        public void AddItem(SelectableUserControl item)
-        {
-            Items.Add(item);
-            //RaiseItemsAddedEvent(items.ToList());
-        }
+        ///// <summary>
+        ///// Add an item to this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Add</c>.
+        ///// </summary>
+        ///// <param name="item">Item to be added.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.Add\".", false)]
+        //public void AddItem(SelectableUserControl item)
+        //{
+        //    Items.Add(item);
+        //    //RaiseItemsAddedEvent(items.ToList());
+        //}
 
-        /// <summary>
-        /// Add a collection of items to this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Add</c>.
-        /// </summary>
-        /// <param name="items">The items to be added.</param>
-        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
-        public void AddItems(IEnumerable<SelectableUserControl> items)
-        {
-            foreach (SelectableUserControl item in items)
-            {
-                Items.Add(item);
-            }
-            //RaiseItemsAddedEvent(items.ToList());
-        }
+        ///// <summary>
+        ///// Add a collection of items to this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Add</c>.
+        ///// </summary>
+        ///// <param name="items">The items to be added.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
+        //public void AddItems(IEnumerable<SelectableUserControl> items)
+        //{
+        //    foreach (SelectableUserControl item in items)
+        //    {
+        //        Items.Add(item);
+        //    }
+        //    //RaiseItemsAddedEvent(items.ToList());
+        //}
 
-        /// <summary>
-        /// Insert an item into this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Insert</c>.
-        /// </summary>
-        /// <param name="index">The index to insert the item at.</param>
-        /// <param name="item">The item to insert.</param>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.Insert\".", false)]
-        public void InsertItem(int index, SelectableUserControl item)
-        {
-            Items.Insert(index, item);
-            //RaiseItemsAddedEvent(new List<SelectableUserControl>() { item });
-        }
+        ///// <summary>
+        ///// Insert an item into this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Insert</c>.
+        ///// </summary>
+        ///// <param name="index">The index to insert the item at.</param>
+        ///// <param name="item">The item to insert.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.Insert\".", false)]
+        //public void InsertItem(int index, SelectableUserControl item)
+        //{
+        //    Items.Insert(index, item);
+        //    //RaiseItemsAddedEvent(new List<SelectableUserControl>() { item });
+        //}
 
-        /// <summary>
-        /// Insert a collection of items into this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Insert</c>.
-        /// </summary>
-        /// <param name="index">The index to insert the items at.</param>
-        /// <param name="items">The items to insert.</param>
-        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Insert\".", false)]
-        public void InsertItems(int index, IEnumerable<SelectableUserControl> items)
-        {
-            List<SelectableUserControl> litems = items.ToList();
-            litems.Reverse();
+        ///// <summary>
+        ///// Insert a collection of items into this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Insert</c>.
+        ///// </summary>
+        ///// <param name="index">The index to insert the items at.</param>
+        ///// <param name="items">The items to insert.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Insert\".", false)]
+        //public void InsertItems(int index, IEnumerable<SelectableUserControl> items)
+        //{
+        //    List<SelectableUserControl> litems = items.ToList();
+        //    litems.Reverse();
 
-            foreach (SelectableUserControl item in litems)
-            {
-                Items.Insert(index, item);
-            }
+        //    foreach (SelectableUserControl item in litems)
+        //    {
+        //        Items.Insert(index, item);
+        //    }
 
-            //RaiseItemsAddedEvent(litems);
-        }
+        //    //RaiseItemsAddedEvent(litems);
+        //}
 
-        /// <summary>
-        /// Get all items in the SelectPanel that match the specified type. Note that this function will be removed in a future version. Please instead use <c>Items.OfType</c> (Linq).
-        /// </summary>
-        /// <typeparam name="T">The type to filter the SelectPanel items for.</typeparam>
-        /// <returns></returns>
-        [Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.OfType<>\".", false)]
-        public IEnumerable<T> GetItemsAsType<T>() where T : SelectableUserControl
-        {
-            return Items.OfType<T>();
-            //foreach (SelectableUserControl item in Items)
-            //{
-            //    if (item is T t)
-            //    {
-            //        yield return t;
-            //    }
-            //}
-        }
+        ///// <summary>
+        ///// Get all items in the SelectPanel that match the specified type. Note that this function will be removed in a future version. Please instead use <c>Items.OfType</c> (Linq).
+        ///// </summary>
+        ///// <typeparam name="T">The type to filter the SelectPanel items for.</typeparam>
+        ///// <returns></returns>
+        //[Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.OfType<>\".", false)]
+        //public IEnumerable<T> GetItemsAsType<T>() where T : SelectableUserControl
+        //{
+        //    return Items.OfType<T>();
+        //    //foreach (SelectableUserControl item in Items)
+        //    //{
+        //    //    if (item is T t)
+        //    //    {
+        //    //        yield return t;
+        //    //    }
+        //    //}
+        //}
 
-        /// <summary>
-        /// Remove an item from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Remove</c>.
-        /// </summary>
-        /// <param name="item">The item to be removed.</param>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.Remove\".", false)]
-        public void RemoveItem(SelectableUserControl item)
-        {
-            Items.Remove(item);
-        }
+        ///// <summary>
+        ///// Remove an item from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Remove</c>.
+        ///// </summary>
+        ///// <param name="item">The item to be removed.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.Remove\".", false)]
+        //public void RemoveItem(SelectableUserControl item)
+        //{
+        //    Items.Remove(item);
+        //}
 
-        /// <summary>
-        /// Remove multiple items from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Remove</c>.
-        /// </summary>
-        /// <param name="items">The items to be removed.</param>
-        [Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Remove\".", false)]
-        public void RemoveItems(IEnumerable<SelectableUserControl> items)
-        {
-            foreach (var item in items)
-            {
-                Items.Remove(item);
-            }
+        ///// <summary>
+        ///// Remove multiple items from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Remove</c>.
+        ///// </summary>
+        ///// <param name="items">The items to be removed.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Remove\".", false)]
+        //public void RemoveItems(IEnumerable<SelectableUserControl> items)
+        //{
+        //    foreach (var item in items)
+        //    {
+        //        Items.Remove(item);
+        //    }
 
-            //RaiseItemsRemovedEvent(items.ToList());
-        }
+        //    //RaiseItemsRemovedEvent(items.ToList());
+        //}
 
-        /// <summary>
-        /// Remove an item at a specified index from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.RemoveAt</c>.
-        /// </summary>
-        /// <param name="index">The index of the item to be removed.</param>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.RemoveAt\".", false)]
-        public void RemoveAt(int index)
-        {
-            Items.RemoveAt(index);
-        }
+        ///// <summary>
+        ///// Remove an item at a specified index from this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.RemoveAt</c>.
+        ///// </summary>
+        ///// <param name="index">The index of the item to be removed.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.RemoveAt\".", false)]
+        //public void RemoveAt(int index)
+        //{
+        //    Items.RemoveAt(index);
+        //}
 
         /// <summary>
         /// Remove the currently selected items from the list.
         /// </summary>
         /// <remarks>
-        /// Note: unlike many other functions, this one is not being removed in a near future version.
+        /// If you are using <see cref="ItemsSource"/> to set this control's items, then this function will only work if the ItemsSource is a
+        /// <see cref="ISelectableCollection{SelectableUserControl}"/>.
         /// </remarks>
         public void RemoveSelectedItems()
         {
-            var items = new List<SelectableUserControl>(Items.SelectedItems);
-            foreach (var item in items)
+            if (ItemsSource != Items)
             {
-                Items.Remove(item);
+                if (ItemsSource is ISelectableCollection<SelectableUserControl> isc)
+                {
+                    var items = new List<SelectableUserControl>(isc.SelectedItems);
+                    foreach (var item in items)
+                    {
+                        isc.Remove(item);
+                    }
+                }
+            }
+            else
+            {
+                var items = new List<SelectableUserControl>(Items.SelectedItems);
+                foreach (var item in items)
+                {
+                    Items.Remove(item);
+                }
             }
         }
 
-        /// <summary>
-        /// Get the index of an item in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.IndexOf</c>.
-        /// </summary>
-        /// <param name="item">The item to get the index of.</param>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.IndexOf\".", false)]
-        public int IndexOf(SelectableUserControl item)
-        {
-            return Items.IndexOf(item);
-        }
+        ///// <summary>
+        ///// Get the index of an item in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.IndexOf</c>.
+        ///// </summary>
+        ///// <param name="item">The item to get the index of.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.IndexOf\".", false)]
+        //public int IndexOf(SelectableUserControl item)
+        //{
+        //    return Items.IndexOf(item);
+        //}
 
-        /// <summary>
-        /// Get an item at a specified index in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items[]</c>.
-        /// </summary>
-        /// <param name="index">The index of the item to be removed.</param>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
-        public SelectableUserControl Get(int index)
-        {
-            return Items[index];
-        }
+        ///// <summary>
+        ///// Get an item at a specified index in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items[]</c>.
+        ///// </summary>
+        ///// <param name="index">The index of the item to be removed.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
+        //public SelectableUserControl Get(int index)
+        //{
+        //    return Items[index];
+        //}
 
-        /// <summary>
-        /// Get an item at a specified index in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items[]</c>.
-        /// </summary>
-        /// <param name="index">The index of the item to be removed.</param>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
-        public SelectableUserControl this[int index]
-        {
-            get
-            {
-                return Items[index];
-            }
-        }
+        ///// <summary>
+        ///// Get an item at a specified index in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items[]</c>.
+        ///// </summary>
+        ///// <param name="index">The index of the item to be removed.</param>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
+        //public SelectableUserControl this[int index]
+        //{
+        //    get
+        //    {
+        //        return Items[index];
+        //    }
+        //}
 
-        /// <summary>
-        /// Clear all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Clear</c>.
-        /// </summary>
-        [Obsolete("This will be removed in a future version. You can instead use \"Items.Clear\".", false)]
-        public void Clear()
-        {
-            Items.Clear();
-        }
+        ///// <summary>
+        ///// Clear all items in this SelectPanel. Note that this function will be removed in a future version. Please instead use <c>Items.Clear</c>.
+        ///// </summary>
+        //[Obsolete("This will be removed in a future version. You can instead use \"Items.Clear\".", false)]
+        //public void Clear()
+        //{
+        //    Items.Clear();
+        //}
 
         #endregion
 
