@@ -14,6 +14,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class TransformEditor : UserControl, IPropertyEditor
     {
+
+        // CloneCurrentValue is used a lot to make sure that the internal variable that I have, _
+
         /// <summary>
         /// Create an TransformEditor.
         /// </summary>
@@ -59,7 +62,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         Type _dataType = typeof(TransformGroup);
         bool _specificType = false;
 
-        Transform _transform = new TransformGroup();
+        Transform _transform = new MatrixTransform(Matrix.Identity);
 
         bool _setNull = false;
 
@@ -68,24 +71,37 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
-
-        /// <inheritdoc/>
-        public object? GetValue()
-        {
-            return _setNull ? null : _transform;
-        }
 #else
         ExperimentalPropertyList _parent = null;
         
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            return _setNull ? null : _transform;
-        }
 #endif
+
+        /// <inheritdoc/>
+#if NETCOREAPP
+        public object? GetValue()
+#else
+        public object GetValue()
+#endif
+        {
+            if (_dataType == typeof(TransformCollection))
+            {
+                if (_setNull) return null;
+                else if (_transform is TransformGroup tg)
+                {
+                    return tg.CloneCurrentValue().Children;
+                }
+                else
+                {
+                    return new TransformCollection() { _transform.CloneCurrentValue() };
+                }
+            }
+            else
+            {
+                return _setNull ? null : _transform.CloneCurrentValue();
+            }
+        }
 
         /// <inheritdoc/>
 #if NETCOREAPP
@@ -97,60 +113,30 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             // first, let's assign the property type needed based upon the dataType
             _dataType = type;
 
-            // let's check if this is null
+            // next, we're going to assign the value
             if (value == null)
             {
                 _transform = new TransformGroup();
                 _setNull = true;
                 mnuSetToNull.IsChecked = true;
-                return;
             }
-
-            if (type == typeof(TransformCollection))
+            if (value is Transform tt)
+            {
+                _transform = tt.CloneCurrentValue();
+            }
+            else if (value is TransformCollection tc)
             {
                 _transform = new TransformGroup()
                 {
-                    Children = (TransformCollection)value ?? new TransformCollection(),
+                    Children = tc.CloneCurrentValue(),
                 };
             }
-            else if (type == typeof(TransformGroup))
+
+            // check if we're only looking for a specific transform type
+            if (type == typeof(MatrixTransform) || type == typeof(RotateTransform) || type == typeof(SkewTransform) 
+                || type == typeof(ScaleTransform) || type == typeof(TranslateTransform))
             {
-                _transform = (TransformGroup)value;
-            }
-            else if (type == typeof(Transform))
-            {
-                _transform = (Transform)value;
-            }
-            // okay, beyond these, the property is looking for a specific type
-            else if (type == typeof(MatrixTransform))
-            {
-                _transform = (MatrixTransform)value;
                 _specificType = true;
-            }
-            else if (type == typeof(RotateTransform))
-            {
-                _transform = (RotateTransform)value;
-                _specificType = true;
-            }
-            else if (type == typeof(SkewTransform))
-            {
-                _transform = (SkewTransform)value;
-                _specificType = true;
-            }
-            else if (type == typeof(ScaleTransform))
-            {
-                _transform = (ScaleTransform)value;
-                _specificType = true;
-            }
-            else if (type == typeof(TranslateTransform))
-            {
-                _transform = (TranslateTransform)value;
-                _specificType = true;
-            }
-            else
-            {
-                //... uhhhhh...
-                _transform = (Transform)value;
             }
 
             UpdateText();
@@ -162,25 +148,40 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool OpenTransformDialog()
         {
             TransformEditDialog ted = new TransformEditDialog();
-            ted.ImportTransforms(new List<Transform>() { _transform });
+            ted.ColorScheme = _cs;
+            if (_specificType)
+            {
+                ted.ImportSingleTransform(_transform);
+            }
+            else
+            {
+                ted.ImportTransforms(new List<Transform>() { _transform });
+            }
             ted.ShowDialog();
 
             if (ted.DialogResult)
             {
-                TransformCollection tc = ted.ExportTransformCollection();
-                if (tc.Count == 0)
+                if (_specificType)
                 {
-                    // no transforms
-                    _transform = new TransformGroup();
-                }
-                else if (tc.Count == 1)
-                {
-                    // one transform
-                    _transform = tc[0];
+                    _transform = ted.ExportSingleTransform(false);
                 }
                 else
                 {
-                    _transform = new TransformGroup() { Children = tc };
+                    TransformCollection tc = ted.ExportTransformCollection();
+                    if (tc.Count == 0)
+                    {
+                        // no transforms
+                        _transform = new MatrixTransform(Matrix.Identity);
+                    }
+                    else if (tc.Count == 1)
+                    {
+                        // one transform
+                        _transform = tc[0];
+                    }
+                    else
+                    {
+                        _transform = new TransformGroup() { Children = tc };
+                    }
                 }
             }
 
@@ -193,10 +194,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (res)
             {
                 ValueChanged?.Invoke(this, EventArgs.Empty);
+                // update appearance
+                UpdateText();
             }
-
-            // update appearance
-            UpdateText();
         }
 
         private void mnuSetToNull_Click(object sender, RoutedEventArgs e)
@@ -212,6 +212,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 _setNull = true;
             }
 
+            ValueChanged?.Invoke(this, EventArgs.Empty);
             UpdateText();
         }
 
@@ -244,7 +245,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (tt == typeof(ScaleTransform))
             {
-                txtData.Text = $"{SCALE}: {((ScaleTransform)_transform).ScaleX} by {((ScaleTransform)_transform).ScaleY}";
+                txtData.Text = $"{SCALE}: {((ScaleTransform)_transform).ScaleX} x {((ScaleTransform)_transform).ScaleY}";
             }
             else if (tt == typeof(TranslateTransform))
             {
@@ -252,7 +253,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (tt == typeof(MatrixTransform))
             {
-                txtData.Text = $"{MATRIX}";
+                if (((MatrixTransform)_transform).Value.IsIdentity)
+                {
+                    txtData.Text = $"{IDENTITY}";
+                }
+                else
+                {
+                    txtData.Text = $"{MATRIX}";
+                }
             }
             else
             {
@@ -262,16 +270,52 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         // eventually, once I figure out a localization solution, these will be moved to that spot
         /// <summary>UI text for "group"</summary>
-        public const string GROUP = "group";
+        public static string GROUP = "group";
         /// <summary>UI text for "rotate"</summary>
-        public const string ROTATE = "rotate";
+        public static string ROTATE = "rotate";
         /// <summary>UI text for "skew"</summary>
-        public const string SKEW = "skew";
+        public static string SKEW = "skew";
         /// <summary>UI text for "scale"</summary>
-        public const string SCALE = "scale";
+        public static string SCALE = "scale";
         /// <summary>UI text for "translate"</summary>
-        public const string TRANSLATE = "translate";
+        public static string TRANSLATE = "translate";
         /// <summary>UI text for "matrix"</summary>
-        public const string MATRIX = "matrix";
+        public static string MATRIX = "matrix";
+        /// <summary>UI text for "default (identity matrix)"</summary>
+        public static string IDENTITY = "default (identity matrix)";
+
+        private void mnuReset_Click(object sender, RoutedEventArgs e)
+        {
+            if (_specificType)
+            {
+                if (_dataType == typeof(RotateTransform))
+                {
+                    _transform = new RotateTransform(0);
+                }
+                else if (_dataType == typeof(TranslateTransform))
+                {
+                    _transform = new TranslateTransform(0, 0);
+                }
+                else if (_dataType == typeof(SkewTransform))
+                {
+                    _transform = new SkewTransform();
+                }
+                else if (_dataType == typeof(ScaleTransform))
+                {
+                    _transform = new ScaleTransform();
+                }
+                else if (_dataType == typeof(MatrixTransform))
+                {
+                    _transform = new MatrixTransform(Matrix.Identity);
+                }
+            }
+            else
+            {
+                _transform = new MatrixTransform(Matrix.Identity);
+            }
+
+            ValueChanged?.Invoke(this, EventArgs.Empty);
+            UpdateText();
+        }
     }
 }
