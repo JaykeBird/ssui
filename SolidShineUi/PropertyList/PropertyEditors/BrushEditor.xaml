@@ -54,10 +54,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform" BorderBrush="Black" />
-                        <TextBlock Text="Transform:" FontSize="12" Margin="8,2" x:Name="txtTransform" Grid.Row="0" />
-                        <TextBlock Text="Relative Transform:" FontSize="12" Margin="8,2" x:Name="txtRelative" Grid.Row="2" />
-                        <flat:FlatButton Content="Edit..." x:Name="btnEditTransform" FontSize="12" HorizontalAlignment="Right" Margin="0,1,10,1" Click="btnEditTransform_Click" Grid.Row="1" />
-                        <flat:FlatButton Content="Edit..." x:Name="btnEditRelativeTransform" FontSize="12" HorizontalAlignment="Right" Margin="0,1,10,1" Click="btnEditRelativeTransform_Click" Grid.Row="3" />
+                        <flat:LinkTextBlock Text="Edit Transform..." FontSize="12" Margin="8,2" x:Name="txtTransform" Click="btnEditTransform_Click" Grid.Row="0" />
+                        <flat:LinkTextBlock Text="Edit Relative Transform..." FontSize="12" Margin="8,2" x:Name="txtRelative" Click="btnEditRelativeTransform_Click" Grid.Row="2" />
+                        <!--<flat:FlatButton Content="Edit..." x:Name="btnEditTransform" FontSize="12" HorizontalAlignment="Right" Margin="0,1,10,1" Click="btnEditTransform_Click" Grid.Row="1" />
+                        <flat:FlatButton Content="Edit..." x:Name="btnEditRelativeTransform" FontSize="12" HorizontalAlignment="Right" Margin="0,1,10,1" Click="btnEditRelativeTransform_Click" Grid.Row="3" />-->
                     </Grid>
                     <TextBlock Text="Change to:" Margin="5,3" Grid.Row="2" />
                     <flat:SelectPanel Grid.Row="3" x:Name="selChange" BorderThickness="0,1,0,0" Padding="3" >

@@ -48,7 +48,142 @@ namespace SolidShineUi.PropertyList.Dialogs
             LoadSelectedTransform();
         }
 
-        void AddTransform(Transform t)
+        /// <summary>
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="transforms">The transforms to import into the dialog.</param>
+        /// <remarks>
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
+        /// </remarks>
+        public void ImportTransforms(TransformCollection transforms)
+        {
+            foreach (Transform item in transforms)
+            {
+                if (item is TransformGroup tg)
+                {
+                    ImportTransforms(tg);
+                }
+                AddTransform(item);
+            }
+        }
+
+        /// <summary>
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="transforms">The transforms to import into the dialog.</param>
+        /// <remarks>
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
+        /// </remarks>
+        public void ImportTransforms(TransformGroup transforms)
+        {
+            foreach (Transform item in transforms.Children)
+            {
+                if (item is TransformGroup tg)
+                {
+                    ImportTransforms(tg);
+                }
+                AddTransform(item);
+            }
+        }
+
+        /// <summary>
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="transforms">The transforms to import into the dialog.</param>
+        /// <remarks>
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
+        /// </remarks>
+        public void ImportTransforms(IEnumerable<Transform> transforms)
+        {
+            foreach (Transform item in transforms)
+            {
+                if (item is TransformGroup tg)
+                {
+                    ImportTransforms(tg);
+                }
+                AddTransform(item);
+            }
+        }
+
+        /// <summary>
+        /// Import a single transform for editing; this activates Single Edit Mode for the TransformEditDialog, which only allows this transform to be edited; no adding or deleting.
+        /// This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// </summary>
+        /// <param name="t">The one transform to edit.</param>
+        /// <remarks>If the Transform <paramref name="t"/> is a <see cref="TransformGroup"/>, use <see cref="ImportTransforms(TransformGroup)"/> instead.</remarks>
+        public void ImportSingleTransform(Transform t)
+        {
+            if (t is TransformGroup tg)
+            {
+                // this singlie transform is actually a TransformGroup
+                // which can hold multiple transforms
+                // thus, the standard format should apply instead
+                ImportTransforms(tg);
+            }
+            else
+            {
+                var tsc = AddTransform(t);
+                singleEditMode = true;
+                btnAdd.Visibility = Visibility.Collapsed;
+                btnDelete.Visibility = Visibility.Collapsed;
+                btnMoveDown.Visibility = Visibility.Collapsed;
+                btnMoveUp.Visibility = Visibility.Collapsed;
+                tsc.IsSelected = true;
+            }
+        }
+
+        /// <summary>
+        /// Get all of the transforms listed in this dialog, combined together into a collection.
+        /// </summary>
+        /// <returns>A TransformCollection that contains each transform listed in this dialog.</returns>
+        public TransformCollection ExportTransformCollection()
+        {
+            TransformCollection transforms = new TransformCollection();
+            StoreDataToSelectedTransform();
+            foreach (TransformSelectableControl item in TransformList)
+            {
+                transforms.Add(item.TransformValue);
+            }
+
+            return transforms;
+        }
+
+        /// <summary>
+        /// Get the value of the transform object being edited in this dialog.
+        /// </summary>
+        /// <remarks>
+        /// If this dialog is in Single Edit Mode, the transform object returned should match the type of the object passed in before via <see cref="ImportSingleTransform(Transform)"/>.
+        /// Otherwise, this will return a <see cref="TransformGroup"/> that contains all listed transforms in the dialog (or if only a single transform is in the dialog, just that transform).
+        /// </remarks>
+        public Transform ExportSingleTransform()
+        {
+            if (!singleEditMode)
+            {
+                if (TransformList.Count == 1)
+                {
+                    StoreDataToSelectedTransform();
+                    return TransformList[0].TransformValue;
+                }
+                else
+                {
+                    return new TransformGroup() { Children = ExportTransformCollection() };
+                }
+            }
+            else
+            {
+                if (TransformList.Count >= 1)
+                {
+                    StoreDataToSelectedTransform();
+                    return TransformList[0].TransformValue;
+                }
+                else
+                {
+                    return new TransformGroup();
+                }
+            }
+        }
+
+        TransformSelectableControl AddTransform(Transform t)
         {
             TransformSelectableControl control = new TransformSelectableControl(t);
             TransformList.Add(control);
@@ -132,27 +267,32 @@ namespace SolidShineUi.PropertyList.Dialogs
         #region Add menu
         private void mnuRotateAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new RotateTransform());
+            TransformSelectableControl tsc = AddTransform(new RotateTransform());
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuSkewAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new SkewTransform());
+            TransformSelectableControl tsc = AddTransform(new SkewTransform());
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuScaleAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new ScaleTransform(1, 1));
+            TransformSelectableControl tsc = AddTransform(new ScaleTransform(1, 1));
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuTranslateAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new TranslateTransform());
+            TransformSelectableControl tsc = AddTransform(new TranslateTransform());
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuMatrixAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new MatrixTransform(Matrix.Identity));
+            TransformSelectableControl tsc = AddTransform(new MatrixTransform(Matrix.Identity));
+            selTransformList.Items.Select(tsc);
         }
         #endregion
 
