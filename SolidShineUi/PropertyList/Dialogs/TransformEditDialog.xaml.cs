@@ -71,11 +71,29 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         /// <summary>
-        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// Import a transform to edit in this TransformEditDialog. This should be called prior to showing the dialog, but additional calls will not reset the dialog.
+        /// </summary>
+        /// <param name="transform">The transform to import into the dialog.</param>
+        /// <remarks>
+        /// To only edit one transform in Single Edit Mode (where adding more transforms isn't allowed), use <see cref="ImportSingleTransform(Transform)"/>. 
+        /// To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
+        /// </remarks>
+        public void ImportTransforms(Transform transform)
+        {
+            if (transform is TransformGroup tg)
+            {
+                ImportTransforms(tg);
+            }
+            AddTransform(transform);
+        }
+
+        /// <summary>
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but additional calls will not reset the dialog.
         /// </summary>
         /// <param name="transforms">The transforms to import into the dialog.</param>
         /// <remarks>
-        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
+        /// To only edit one transform in Single Edit Mode (where adding more transforms isn't allowed), use <see cref="ImportSingleTransform(Transform)"/>. 
+        /// To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
         /// </remarks>
         public void ImportTransforms(TransformCollection transforms)
         {
@@ -90,11 +108,12 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         /// <summary>
-        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but additional calls will not reset the dialog.
         /// </summary>
         /// <param name="transforms">The transforms to import into the dialog.</param>
         /// <remarks>
-        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
+        /// To only edit one transform in Single Edit Mode (where adding more transforms isn't allowed), use <see cref="ImportSingleTransform(Transform)"/>. 
+        /// To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
         /// </remarks>
         public void ImportTransforms(TransformGroup transforms)
         {
@@ -109,11 +128,12 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         /// <summary>
-        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// Import a collection of transforms to edit in this TransformEditDialog. This should be called prior to showing the dialog, but additional calls will not reset the dialog.
         /// </summary>
         /// <param name="transforms">The transforms to import into the dialog.</param>
         /// <remarks>
-        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
+        /// To only edit one transform in Single Edit Mode (where adding more transforms isn't allowed), use <see cref="ImportSingleTransform(Transform)"/>. 
+        /// To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
         /// </remarks>
         public void ImportTransforms(IEnumerable<Transform> transforms)
         {
@@ -129,7 +149,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         /// <summary>
         /// Import a single transform for editing; this activates Single Edit Mode for the TransformEditDialog, which only allows this transform to be edited; no adding or deleting.
-        /// This should be called prior to showing the dialog, but multiple calls will not remove existing values.
+        /// This should be called prior to showing the dialog, but additional calls will not reset the dialog.
         /// </summary>
         /// <param name="t">The one transform to edit.</param>
         /// <remarks>If the Transform <paramref name="t"/> is a <see cref="TransformGroup"/>, use <see cref="ImportTransforms(TransformGroup)"/> instead.</remarks>
