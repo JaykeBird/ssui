@@ -37,12 +37,6 @@ namespace SolidShineUi.PropertyList
         {
             PreregisterEditors();
 
-            //DependencyPropertyDescriptor.FromProperty(ShowInheritedPropertiesProperty, typeof(PropertyList)).AddValueChanged(this, ShowInheritedPropertiesChanged);
-            //DependencyPropertyDescriptor.FromProperty(ShowReadOnlyPropertiesProperty, typeof(PropertyList)).AddValueChanged(this, ShowReadOnlyPropertiesChanged);
-            //DependencyPropertyDescriptor.FromProperty(FilterTextProperty, typeof(PropertyList)).AddValueChanged(this, FilterTextChanged);
-            //DependencyPropertyDescriptor.FromProperty(SortOptionProperty, typeof(PropertyList)).AddValueChanged(this, SortOptionChanged);
-            //DependencyPropertyDescriptor.FromProperty(ShowGridlinesProperty, typeof(PropertyList)).AddValueChanged(this, ShowGridlinesChanged);
-
             ShowInheritedPropertiesChanged += (s, e) => { FilterProperties(); };
             ShowReadOnlyPropertiesChanged += (s, e) => { FilterProperties(); };
             FilterTextChanged += (s, e) => { FilterProperties(); };
@@ -232,21 +226,21 @@ namespace SolidShineUi.PropertyList
                 return;
             }
 
-//#if NETCOREAPP
-//            foreach (UIElement? item in stkProperties.Children)
-//#else
-//            foreach (UIElement item in stkProperties.Children)
-//#endif
-//            {
-//                if (item == null) continue;
-//                if (item is PropertyEditorItem pei)
-//                {
-//                    if (pei.PropertyEditorControl != null)
-//                    {
-//                        pei.PropertyEditorControl.ColorScheme = cs;
-//                    }
-//                }
-//            }
+            //#if NETCOREAPP
+            //            foreach (UIElement? item in stkProperties.Children)
+            //#else
+            //            foreach (UIElement item in stkProperties.Children)
+            //#endif
+            //            {
+            //                if (item == null) continue;
+            //                if (item is PropertyEditorItem pei)
+            //                {
+            //                    if (pei.PropertyEditorControl != null)
+            //                    {
+            //                        pei.PropertyEditorControl.ColorScheme = cs;
+            //                    }
+            //                }
+            //            }
 
             // set up brushes
             Background = cs.LightBackgroundColor.ToBrush();
@@ -272,6 +266,33 @@ namespace SolidShineUi.PropertyList
 
         #region Basics / Object Loading
 
+        /// <summary>a list of all the properties in the loaded object's type</summary>
+        private List<PropertyInfo> properties = new List<PropertyInfo>();
+
+        private bool _isReloading = false;
+        private bool _clearing = false;
+
+        /// <summary>the object that's currently loaded</summary>
+#if NETCOREAPP
+        private object? _baseObject = null;
+#else
+        private object _baseObject = null;
+#endif
+
+        #region HasObjectLoaded / GetCurrentlyLoadedObject
+
+        /// <summary>
+        /// Get the object that is currently being observed in this PropertyList.
+        /// </summary>
+#if NETCOREAPP
+        public object? GetCurrentlyLoadedObject()
+#else
+        public object GetCurrentlyLoadedObject()
+#endif
+        {
+            return _baseObject;
+        }
+
         /// <summary>
         /// Get if this <see cref="PropertyList"/> has an object loaded. If <c>true</c>, then you can see what object is currently loaded by using <see cref="GetCurrentlyLoadedObject"/>.
         /// </summary>
@@ -287,27 +308,81 @@ namespace SolidShineUi.PropertyList
         /// <summary>The backing dependency property for <see cref="HasObjectLoaded"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HasObjectLoadedProperty = HasObjectLoadedPropertyKey.DependencyProperty;
 
-        /// <summary>a list of all the properties in the loaded object's type</summary>
-        private List<PropertyInfo> properties = new List<PropertyInfo>();
-        /// <summary>the object that's currently loaded</summary>
-#if NETCOREAPP
-        private object? _baseObject = null;
-#else
-        private object _baseObject = null;
-#endif
-
-        private bool _isReloading = false;
+        #endregion
 
         /// <summary>
-        /// Get the object that is currently being observed in this PropertyList.
+        /// The string "No name", used for objects that don't have a Name property to get a name from.
         /// </summary>
-#if NETCOREAPP
-        public object? GetCurrentlyLoadedObject()
-#else
-        public object GetCurrentlyLoadedObject()
-#endif
+        public static string NO_NAME = "No name";
+
+        /// <summary>
+        /// The string "Nothing loaded", used when there is not an object loaded into this control.
+        /// </summary>
+        public static string NOTHING_LOADED = "Nothing loaded";
+
+        #region Public Object Loading Functions
+        /// <summary>
+        /// Set the object to observe. All properties of the observed object will be displayed in the PropertyList, alongside the values of these properties.
+        /// </summary>
+        /// <param name="o">The object to load and observe.</param>
+        /// <remarks>
+        /// Note that if the object has a property called "Name", that name will be displayed at the top of the PropertyList control.
+        /// If this object doesn't have a Name property, or you want to set a different name, please use the <see cref="ObjectDisplayName"/> property.
+        /// Properties that are set-only (i.e. has no public <c>get</c> portion) will not be displayed.
+        /// </remarks>
+        public void LoadObject(object o)
         {
-            return _baseObject;
+            _baseObject = o;
+            Type type = o.GetType();
+            var nameProp = type.GetProperty("Name");
+
+            if (nameProp != null)
+            {
+                ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
+            }
+            else
+            {
+                ObjectDisplayName = NO_NAME;
+            }
+            if (txtType != null)
+            {
+                txtType.Text = TypeLabel + PrettifyPropertyType(type); // name of the type (not the object)
+                txtType.ToolTip = PrettifyPropertyType(type, true);
+            }
+
+            // load all properties
+            properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
+            SortList();
+
+            GeneratePropertyEditors(properties);
+
+            // set default values
+            FilterText = "";
+            ShowInheritedProperties = true;
+            ShowReadOnlyProperties = true;
+
+            HasObjectLoaded = !_clearing;
+            LoadedObjectChanged?.Invoke(this, new PropertyListObjectEventArgs(_baseObject, type, _isReloading));
+        }
+
+        /// <summary>
+        /// Unload the currently observed object, so that nothing is observed.
+        /// </summary>
+        /// <remarks>
+        /// This clears out the UI and resets internal properties; however, this does not need to be run before loading in another object.
+        /// </remarks>
+        public void Clear()
+        {
+            _clearing = true;
+            LoadObject(new object());
+            _baseObject = null;
+            HasObjectLoaded = false;
+
+            ObjectDisplayName = "";
+            _clearing = false;
+
+            txtType.Text = NOTHING_LOADED;
+            txtType.ToolTip = "";
         }
 
         /// <summary>
@@ -347,83 +422,9 @@ namespace SolidShineUi.PropertyList
                 _isReloading = false;
             }
         }
+        #endregion
 
-        bool _clearing = false;
-
-        /// <summary>
-        /// Unload the currently observed object, so that nothing is observed.
-        /// </summary>
-        /// <remarks>
-        /// This clears out the UI and resets internal properties; however, this does not need to be run before loading in another object.
-        /// </remarks>
-        public void Clear()
-        {
-            _clearing = true;
-            LoadObject(new object());
-            _baseObject = null;
-            HasObjectLoaded = false;
-
-            ObjectDisplayName = "";
-            _clearing = false;
-
-            txtType.Text = NOTHING_LOADED;
-            txtType.ToolTip = "";
-        }
-
-        /// <summary>
-        /// The string "No name", used for objects that don't have a Name property to get a name from.
-        /// </summary>
-        public static string NO_NAME = "No name";
-
-        /// <summary>
-        /// The string "Nothing loaded", used when there is not an object loaded into this control.
-        /// </summary>
-        public static string NOTHING_LOADED = "Nothing loaded";
-
-        /// <summary>
-        /// Set the object to observe. All properties of the observed object will be displayed in the PropertyList, alongside the values of these properties.
-        /// </summary>
-        /// <param name="o">The object to load and observe.</param>
-        /// <remarks>
-        /// Note that if the object has a property called "Name", that name will be displayed at the top of the PropertyList control.
-        /// If this object doesn't have a Name property, or you want to set a different name, please use the <see cref="ObjectDisplayName"/> property.
-        /// Properties that are set-only (i.e. has no public <c>get</c> portion) will not be displayed.
-        /// </remarks>
-        public void LoadObject(object o)
-        {
-            _baseObject = o;
-            Type type = o.GetType();
-            var nameProp = type.GetProperty("Name");
-
-            if (nameProp != null)
-            {
-                ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
-            }
-            else
-            {
-                ObjectDisplayName = NO_NAME;
-            }
-            if (txtType != null)
-            {
-                txtType.Text = TypeLabel + PrettifyPropertyType(type); // name of the type (not the object)
-                txtType.ToolTip = PrettifyPropertyType(type, true);
-            }
-
-            // load all properties
-            properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
-            SortList();
-
-            LoadPropertyList(properties);
-
-            FilterText = "";
-            ShowInheritedProperties = true;
-            ShowReadOnlyProperties = true;
-
-            HasObjectLoaded = !_clearing;
-            LoadedObjectChanged?.Invoke(this, new PropertyListObjectEventArgs(_baseObject, type, _isReloading));
-        }
-
-        #region Display Name
+        #region Object Display Name
         /// <summary>
         /// Get or set the string used to name the object being observed. The PropertyList will try to set this automatically via looking at the Name property,
         /// or otherwise you can set a custom name to display.
@@ -440,95 +441,11 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        void LoadPropertyList(IEnumerable<PropertyInfo> properties)
-        {
-            if (stkProperties == null) return; // kinda need that if I'm gonna actually do anything
-            stkProperties.Children.Clear();
-
-            Type baseType = _baseObject?.GetType() ?? typeof(object);
-
-            foreach (PropertyInfo item in properties)
-            {
-                // first, check the property against the DisplayOptions
-                if (!CheckPropertyDisplay(item)) continue;
-
-                // skip any set-only properties
-                if (!item.CanRead) continue;
-
-                PropertyEditorItem pei = new PropertyEditorItem();
-#if NETCOREAPP
-                IPropertyEditor? ipe = null;
-#else
-                IPropertyEditor ipe = null;
-#endif
-                //if (!item.CanWrite)
-                //{
-                //    // readonly property
-                //}
-
-                if (item.DeclaringType != baseType)
-                {
-                    // item was inherited
-                    pei.IsInherited = true;
-                }
-                pei.DeclaringType = item.DeclaringType;
-
-                Type propType = item.PropertyType;
-                // let's do some tests on the properties
-                ipe = CreateEditorForType(propType);
-
-                if (ipe != null)
-                {
-                    ipe.ColorScheme = ColorScheme;
-                    //ipe.ParentPropertyList = this;
-                    ipe.IsPropertyWritable = item.CanWrite;
-                }
-
-                pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject) : null, ipe);
-                pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
-                //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
-                pei.ShowGridlines = ShowGridlines;
-                pei.GridlineBrush = GridlineBrush;
-
-                stkProperties.Children.Add(pei);
-            }
-        }
-
-#if NETCOREAPP
-        private void editor_PropertyEditorValueChanged(object? sender, PropertyEditorValueChangedEventArgs e)
-#else
-        private void editor_PropertyEditorValueChanged(object sender, PropertyEditorValueChangedEventArgs e)
-#endif
-        {
-            if (e.PropertyInfo != null)
-            {
-                try
-                {
-                    e.PropertyInfo.SetValue(_baseObject, e.NewValue);
-                    PropertyValueChanged?.Invoke(this, new PropertyValueChangedEventArgs(e));
-                }
-                catch (ArgumentException)
-                {
-                    // property doesn't have a setter, probably
-
-                    e.ChangeFailed = true;
-                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
-                }
-                catch (TargetInvocationException)
-                {
-                    // tried to set property, but some exception occurred
-                    // use the InnerException to learn more as to what the issue was
-
-                    e.ChangeFailed = true;
-                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
-                }
-            }
-        }
-
         #endregion
 
-        #region Sort and Filter
+        #region Sort, Filter, DisplayOptions
 
+        #region Properties
         /// <summary>
         /// Get or set how the list of properties are sorted in the PropertyList.
         /// </summary>
@@ -593,6 +510,11 @@ namespace SolidShineUi.PropertyList
             = DependencyProperty.Register("FilterText", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("", new PropertyChangedCallback((o, e) => o.AsThis<PropertyList>((p) => p.FilterTextChanged?.Invoke(p, e)))));
 
+        #endregion
+
+        #region Internal Functions
+
+        #region Property Check
 
         /// <summary>
         /// Get the category that this property is said to be a part of (if this property has a <see cref="CategoryAttribute"/> attached to it).
@@ -669,6 +591,8 @@ namespace SolidShineUi.PropertyList
 
             return true;
         }
+
+        #endregion
 
         #region Internal Sort, Filter, Compare functions
         private void SortList()
@@ -880,6 +804,8 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
+        #endregion
+
         #region Commands (Toolbar / Sort and View menu)
 
         private void DoLoadObject(object sender, ExecutedRoutedEventArgs e)
@@ -902,14 +828,14 @@ namespace SolidShineUi.PropertyList
         private void DoSortByName(object sender, ExecutedRoutedEventArgs e)
         {
             SortOption = PropertySortOption.Name;
-            LoadPropertyList(properties);
+            GeneratePropertyEditors(properties);
             FilterProperties();
         }
 
         private void DoSortByCategory(object sender, ExecutedRoutedEventArgs e)
         {
             SortOption = PropertySortOption.Category;
-            LoadPropertyList(properties);
+            GeneratePropertyEditors(properties);
             FilterProperties();
         }
 
@@ -976,8 +902,9 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        #region Registered Editors
+        #region Property Editors
 
+        #region Registration
 
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
@@ -1031,6 +958,8 @@ namespace SolidShineUi.PropertyList
             }
             else return false;
         }
+
+        #endregion
 
         private void PreregisterEditors()
         {
@@ -1103,6 +1032,99 @@ namespace SolidShineUi.PropertyList
 #endif
         }
 
+        #region Generator Property Editors / Editor Value Changed
+
+        /// <summary>
+        /// Populate the property list UI, by generating property editors (where possible) for each property from a list.
+        /// </summary>
+        /// <param name="properties">The list of properties to use for generation and population.</param>
+        void GeneratePropertyEditors(IEnumerable<PropertyInfo> properties)
+        {
+            if (stkProperties == null) return; // kinda need that if I'm gonna actually do anything
+            stkProperties.Children.Clear();
+
+            Type baseType = _baseObject?.GetType() ?? typeof(object);
+
+            foreach (PropertyInfo item in properties)
+            {
+                // first, check the property against the DisplayOptions
+                if (!CheckPropertyDisplay(item)) continue;
+
+                // skip any set-only properties
+                if (!item.CanRead) continue;
+
+                PropertyEditorItem pei = new PropertyEditorItem();
+#if NETCOREAPP
+                IPropertyEditor? ipe = null;
+#else
+                IPropertyEditor ipe = null;
+#endif
+                //if (!item.CanWrite)
+                //{
+                //    // readonly property
+                //}
+
+                if (item.DeclaringType != baseType)
+                {
+                    // item was inherited
+                    pei.IsInherited = true;
+                }
+                pei.DeclaringType = item.DeclaringType;
+
+                Type propType = item.PropertyType;
+                // let's do some tests on the properties
+                ipe = CreateEditorForType(propType);
+
+                if (ipe != null)
+                {
+                    ipe.ColorScheme = ColorScheme;
+                    //ipe.ParentPropertyList = this;
+                    ipe.IsPropertyWritable = item.CanWrite;
+                }
+
+                pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject) : null, ipe);
+                pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
+                //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
+                pei.ShowGridlines = ShowGridlines;
+                pei.GridlineBrush = GridlineBrush;
+
+                stkProperties.Children.Add(pei);
+            }
+        }
+
+#if NETCOREAPP
+        private void editor_PropertyEditorValueChanged(object? sender, PropertyEditorValueChangedEventArgs e)
+#else
+        private void editor_PropertyEditorValueChanged(object sender, PropertyEditorValueChangedEventArgs e)
+#endif
+        {
+            if (e.PropertyInfo != null)
+            {
+                try
+                {
+                    e.PropertyInfo.SetValue(_baseObject, e.NewValue);
+                    PropertyValueChanged?.Invoke(this, new PropertyValueChangedEventArgs(e));
+                }
+                catch (ArgumentException)
+                {
+                    // property doesn't have a setter, probably
+
+                    e.ChangeFailed = true;
+                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
+                }
+                catch (TargetInvocationException)
+                {
+                    // tried to set property, but some exception occurred
+                    // use the InnerException to learn more as to what the issue was
+
+                    e.ChangeFailed = true;
+                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
+                }
+            }
+        }
+        #endregion
+
+        #region CreateEditorForType
         /// <summary>
         /// Create a new IPropertyEditor object appropriate for the passed-in type. This is based upon what types are registered in this PropertyList control.
         /// </summary>
@@ -1194,6 +1216,8 @@ namespace SolidShineUi.PropertyList
 
             return null;
         }
+
+        #endregion
 
         #endregion
 
