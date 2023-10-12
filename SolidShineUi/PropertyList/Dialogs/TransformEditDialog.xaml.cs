@@ -445,31 +445,31 @@ namespace SolidShineUi.PropertyList.Dialogs
         private void mnuRotateAdd_Click(object sender, RoutedEventArgs e)
         {
             TransformSelectableControl tsc = AddTransform(new RotateTransform());
-            selTransformList.Items.Select(tsc);
+            TransformList.Select(tsc);
         }
 
         private void mnuSkewAdd_Click(object sender, RoutedEventArgs e)
         {
             TransformSelectableControl tsc = AddTransform(new SkewTransform());
-            selTransformList.Items.Select(tsc);
+            TransformList.Select(tsc);
         }
 
         private void mnuScaleAdd_Click(object sender, RoutedEventArgs e)
         {
             TransformSelectableControl tsc = AddTransform(new ScaleTransform(1, 1));
-            selTransformList.Items.Select(tsc);
+            TransformList.Select(tsc);
         }
 
         private void mnuTranslateAdd_Click(object sender, RoutedEventArgs e)
         {
             TransformSelectableControl tsc = AddTransform(new TranslateTransform());
-            selTransformList.Items.Select(tsc);
+            TransformList.Select(tsc);
         }
 
         private void mnuMatrixAdd_Click(object sender, RoutedEventArgs e)
         {
             TransformSelectableControl tsc = AddTransform(new MatrixTransform(Matrix.Identity));
-            selTransformList.Items.Select(tsc);
+            TransformList.Select(tsc);
         }
         #endregion
 

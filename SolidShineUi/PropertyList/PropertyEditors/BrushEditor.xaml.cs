@@ -127,7 +127,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object? GetValue()
         {
-            return CopyBrushToExport();
+            return CopyBrush();
         }
 #else
         /// <inheritdoc/>
@@ -136,7 +136,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object GetValue()
         {
-            return CopyBrushToExport();
+            return CopyBrush();
         }
 #endif
 
@@ -181,9 +181,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
 #if NETCOREAPP
-        private Brush? CopyBrushToExport(bool includeTransforms = true)
+        private Brush? CopyBrush(bool includeTransforms = true)
 #else
-        private Brush CopyBrushToExport(bool includeTransforms = true)
+        private Brush CopyBrush(bool includeTransforms = true)
 #endif
         {
             if (_dataValue == null) return null;
@@ -229,6 +229,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     ViewboxUnits = i.ViewboxUnits,
                     Viewport = i.Viewport,
                     ViewportUnits = i.ViewportUnits
+                };
+            }
+            else if (_dataValue is DrawingBrush db)
+            {
+                b = new DrawingBrush(db.Drawing)
+                {
+                    AlignmentX = db.AlignmentX,
+                    AlignmentY = db.AlignmentY,
+                    Stretch = db.Stretch,
+                    TileMode = db.TileMode,
+                    Viewbox = db.Viewbox,
+                    ViewboxUnits = db.ViewboxUnits,
+                    Viewport = db.Viewport,
+                    ViewportUnits = db.ViewportUnits
                 };
             }
             else
@@ -591,10 +605,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 _dataValue = b;
 
-                btnBrush.Background = CopyBrushToExport(false);
-                btnBrush.HighlightBrush = CopyBrushToExport(false);
-                btnBrush.ClickBrush = CopyBrushToExport(false);
-                btnBrush.DisabledBrush = CopyBrushToExport(false);
+                btnBrush.Background = CopyBrush(false);
+                btnBrush.HighlightBrush = CopyBrush(false);
+                btnBrush.ClickBrush = CopyBrush(false);
+                btnBrush.DisabledBrush = CopyBrush(false);
 
                 if (b is GradientBrush gb)
                 {
@@ -711,7 +725,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     if (_dataValue.IsFrozen)
                     {
                         // just create a new brush
-                        _dataValue = CopyBrushToExport(true);
+                        _dataValue = CopyBrush(true);
                     }
                     _dataValue.Transform = ted.ExportSingleTransform();
                     ValueChanged?.Invoke(this, EventArgs.Empty);
@@ -738,7 +752,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     if (_dataValue.IsFrozen)
                     {
                         // just create a new brush
-                        _dataValue = CopyBrushToExport(true);
+                        _dataValue = CopyBrush(true);
                     }
                     _dataValue.RelativeTransform = ted.ExportSingleTransform();
                     ValueChanged?.Invoke(this, EventArgs.Empty);
