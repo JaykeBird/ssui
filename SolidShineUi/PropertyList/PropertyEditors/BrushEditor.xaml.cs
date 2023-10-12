@@ -181,70 +181,86 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
 #if NETCOREAPP
-        private Brush? CopyBrushToExport(bool includeTransforms = true)
+        private Brush? CopyBrush()
 #else
-        private Brush CopyBrushToExport(bool includeTransforms = true)
+        private Brush CopyBrush()
 #endif
         {
             if (_dataValue == null) return null;
 
-            // this copying is needed to avoid WPF freezing the internal brush value that I actually use for editing
-            // and can also prevent some unintentional updates or issues, such as if some other function elsewhere updates the object's brush
-            Brush b = new SolidColorBrush(Colors.Black);
+            return _dataValue.CloneCurrentValue();
 
-            if (_dataValue is SolidColorBrush s)
-            {
-                b = new SolidColorBrush(s.Color);
-            }
-            else if (_dataValue is LinearGradientBrush lgb)
-            {
-                b = new LinearGradientBrush(lgb.GradientStops, lgb.StartPoint, lgb.EndPoint)
-                {
-                    ColorInterpolationMode = lgb.ColorInterpolationMode,
-                    MappingMode = lgb.MappingMode,
-                    SpreadMethod = lgb.SpreadMethod
-                };
-            }
-            else if (_dataValue is RadialGradientBrush rgb)
-            {
-                b = new RadialGradientBrush(rgb.GradientStops)
-                {
-                    GradientOrigin = rgb.GradientOrigin,
-                    RadiusX = rgb.RadiusX,
-                    RadiusY = rgb.RadiusY,
-                    ColorInterpolationMode = rgb.ColorInterpolationMode,
-                    SpreadMethod = rgb.SpreadMethod,
-                    MappingMode = rgb.MappingMode
-                };
-            }
-            else if (_dataValue is ImageBrush i)
-            {
-                b = new ImageBrush(i.ImageSource)
-                {
-                    AlignmentX = i.AlignmentX,
-                    AlignmentY = i.AlignmentY,
-                    Stretch = i.Stretch,
-                    TileMode = i.TileMode,
-                    Viewbox = i.Viewbox,
-                    ViewboxUnits = i.ViewboxUnits,
-                    Viewport = i.Viewport,
-                    ViewportUnits = i.ViewportUnits
-                };
-            }
-            else
-            {
-                // right now, we don't support editing this
-                b = _dataValue;
-            }
+            //// this copying is needed to avoid WPF freezing the internal brush value that I actually use for editing
+            //// and can also prevent some unintentional updates or issues, such as if some other function elsewhere updates the object's brush
+            //Brush b = new SolidColorBrush(Colors.Black);
 
-            if (includeTransforms)
-            {
-                b.Transform = _dataValue.Transform;
-                b.RelativeTransform = _dataValue.RelativeTransform;
-                b.Opacity = _dataValue.Opacity;
-            }
+            //if (_dataValue is SolidColorBrush s)
+            //{
+            //    b = new SolidColorBrush(s.Color);
+            //}
+            //else if (_dataValue is LinearGradientBrush lgb)
+            //{
+            //    b = new LinearGradientBrush(lgb.GradientStops, lgb.StartPoint, lgb.EndPoint)
+            //    {
+            //        ColorInterpolationMode = lgb.ColorInterpolationMode,
+            //        MappingMode = lgb.MappingMode,
+            //        SpreadMethod = lgb.SpreadMethod
+            //    };
+            //}
+            //else if (_dataValue is RadialGradientBrush rgb)
+            //{
+            //    b = new RadialGradientBrush(rgb.GradientStops)
+            //    {
+            //        GradientOrigin = rgb.GradientOrigin,
+            //        RadiusX = rgb.RadiusX,
+            //        RadiusY = rgb.RadiusY,
+            //        ColorInterpolationMode = rgb.ColorInterpolationMode,
+            //        SpreadMethod = rgb.SpreadMethod,
+            //        MappingMode = rgb.MappingMode
+            //    };
+            //}
+            //else if (_dataValue is ImageBrush i)
+            //{
+            //    b = new ImageBrush(i.ImageSource)
+            //    {
+            //        AlignmentX = i.AlignmentX,
+            //        AlignmentY = i.AlignmentY,
+            //        Stretch = i.Stretch,
+            //        TileMode = i.TileMode,
+            //        Viewbox = i.Viewbox,
+            //        ViewboxUnits = i.ViewboxUnits,
+            //        Viewport = i.Viewport,
+            //        ViewportUnits = i.ViewportUnits
+            //    };
+            //}
+            //else if (_dataValue is DrawingBrush db)
+            //{
+            //    b = new DrawingBrush(db.Drawing)
+            //    {
+            //        AlignmentX = db.AlignmentX,
+            //        AlignmentY = db.AlignmentY,
+            //        Stretch = db.Stretch,
+            //        TileMode = db.TileMode,
+            //        Viewbox = db.Viewbox,
+            //        ViewboxUnits = db.ViewboxUnits,
+            //        Viewport = db.Viewport,
+            //        ViewportUnits = db.ViewportUnits
+            //    };
+            //}
+            //else
+            //{
+            //    // right now, we don't support editing this
+            //    b = _dataValue;
+            //}
 
-            return b;
+            //if (includeTransforms)
+            //{
+            //    b.Transform = _dataValue.Transform;
+            //    b.RelativeTransform = _dataValue.RelativeTransform;
+            //    b.Opacity = _dataValue.Opacity;
+            //}
+
+            //return b;
         }
 
         #endregion
@@ -591,10 +607,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 _dataValue = b;
 
-                btnBrush.Background = CopyBrushToExport(false);
-                btnBrush.HighlightBrush = CopyBrushToExport(false);
-                btnBrush.ClickBrush = CopyBrushToExport(false);
-                btnBrush.DisabledBrush = CopyBrushToExport(false);
+                btnBrush.Background = CopyBrush();
+                btnBrush.HighlightBrush = CopyBrush();
+                btnBrush.ClickBrush = CopyBrush();
+                btnBrush.DisabledBrush = CopyBrush();
 
                 if (b is GradientBrush gb)
                 {
@@ -711,7 +727,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     if (_dataValue.IsFrozen)
                     {
                         // just create a new brush
-                        _dataValue = CopyBrushToExport(true);
+                        _dataValue = CopyBrush();
                     }
                     _dataValue.Transform = ted.ExportSingleTransform();
                     ValueChanged?.Invoke(this, EventArgs.Empty);
@@ -738,7 +754,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     if (_dataValue.IsFrozen)
                     {
                         // just create a new brush
-                        _dataValue = CopyBrushToExport(true);
+                        _dataValue = CopyBrush();
                     }
                     _dataValue.RelativeTransform = ted.ExportSingleTransform();
                     ValueChanged?.Invoke(this, EventArgs.Empty);
