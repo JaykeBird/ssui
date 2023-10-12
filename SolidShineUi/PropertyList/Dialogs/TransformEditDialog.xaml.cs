@@ -75,7 +75,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// </summary>
         /// <param name="transforms">The transforms to import into the dialog.</param>
         /// <remarks>
-        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransforms"/> or <see cref="TransformList"/>.
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
         /// </remarks>
         public void ImportTransforms(TransformCollection transforms)
         {
@@ -94,7 +94,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// </summary>
         /// <param name="transforms">The transforms to import into the dialog.</param>
         /// <remarks>
-        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransforms"/> or <see cref="TransformList"/>.
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
         /// </remarks>
         public void ImportTransforms(TransformGroup transforms)
         {
@@ -113,7 +113,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// </summary>
         /// <param name="transforms">The transforms to import into the dialog.</param>
         /// <remarks>
-        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransforms"/> or <see cref="TransformList"/>.
+        /// To only edit one transform in Single Edit Mode, use <see cref="ImportSingleTransform(Transform)"/>. To get the list of transforms in the dialog, use <see cref="ExportTransformCollection"/> or <see cref="TransformList"/>.
         /// </remarks>
         public void ImportTransforms(IEnumerable<Transform> transforms)
         {
@@ -158,7 +158,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// Get all of the transforms listed in this dialog, combined together into a collection.
         /// </summary>
         /// <returns>A TransformCollection that contains each transform listed in this dialog.</returns>
-        public TransformCollection ExportTransforms()
+        public TransformCollection ExportTransformCollection()
         {
             TransformCollection transforms = new TransformCollection();
             StoreDataToSelectedTransform();
@@ -175,18 +175,27 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// </summary>
         /// <remarks>
         /// If this dialog is in Single Edit Mode, the transform object returned should match the type of the object passed in before via <see cref="ImportSingleTransform(Transform)"/>.
-        /// Otherwise, this will return a <see cref="TransformGroup"/> that contains all listed transforms in the dialog.
+        /// Otherwise, this will return a <see cref="TransformGroup"/> that contains all listed transforms in the dialog (or if only a single transform is in the dialog, just that transform).
         /// </remarks>
         public Transform ExportSingleTransform()
         {
             if (!singleEditMode)
             {
-                return new TransformGroup() { Children = ExportTransforms() };
+                if (TransformList.Count == 1)
+                {
+                    StoreDataToSelectedTransform();
+                    return TransformList[0].TransformValue;
+                }
+                else
+                {
+                    return new TransformGroup() { Children = ExportTransformCollection() };
+                }
             }
             else
             {
                 if (TransformList.Count >= 1)
                 {
+                    StoreDataToSelectedTransform();
                     return TransformList[0].TransformValue;
                 }
                 else
@@ -435,27 +444,32 @@ namespace SolidShineUi.PropertyList.Dialogs
         #region Add menu
         private void mnuRotateAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new RotateTransform());
+            TransformSelectableControl tsc = AddTransform(new RotateTransform());
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuSkewAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new SkewTransform());
+            TransformSelectableControl tsc = AddTransform(new SkewTransform());
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuScaleAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new ScaleTransform(1, 1));
+            TransformSelectableControl tsc = AddTransform(new ScaleTransform(1, 1));
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuTranslateAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new TranslateTransform());
+            TransformSelectableControl tsc = AddTransform(new TranslateTransform());
+            selTransformList.Items.Select(tsc);
         }
 
         private void mnuMatrixAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddTransform(new MatrixTransform(Matrix.Identity));
+            TransformSelectableControl tsc = AddTransform(new MatrixTransform(Matrix.Identity));
+            selTransformList.Items.Select(tsc);
         }
         #endregion
 

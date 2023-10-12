@@ -167,7 +167,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (ted.DialogResult)
             {
-                TransformCollection tc = ted.ExportTransforms();
+                TransformCollection tc = ted.ExportTransformCollection();
                 if (tc.Count == 0)
                 {
                     // no transforms
