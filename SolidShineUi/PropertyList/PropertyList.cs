@@ -1024,6 +1024,13 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Color?), typeof(ColorEditor));
             RegisterEditor(typeof(CornerRadius), typeof(CornerRadiusEditor));
             RegisterEditor(typeof(CornerRadius?), typeof(CornerRadiusEditor));
+            RegisterEditor(typeof(Transform), typeof(TransformEditor));
+            RegisterEditor(typeof(MatrixTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(RotateTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(ScaleTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(SkewTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(TranslateTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(TransformCollection), typeof(TransformEditor));
             RegisterEditor(typeof(char), typeof(CharEditor));
             RegisterEditor(typeof(char?), typeof(CharEditor));
 #if NETCOREAPP
@@ -1138,6 +1145,13 @@ namespace SolidShineUi.PropertyList
         {
             try
             {
+                // editors are decided in this order:
+                // 1. check if the specific type is listed in registeredEditors
+                // 2. check if it's an enum (if so, use the included EnumEditor)
+                // 3. check if it's a generic List (if so, use the included ListEditor)
+                // 4. check if it's a generic IEnumerable (if so, use the included EnumerableEditor)
+                // 5. check if it's a non-generic IEnumerable (if so, use the included EnumerableEditor)
+
                 if (registeredEditors.ContainsKey(propType))
                 {
                     object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
@@ -1149,7 +1163,7 @@ namespace SolidShineUi.PropertyList
                 else if (propType.IsEnum)
                 {
                     // load enum editor
-                    object o = Activator.CreateInstance(registeredEditors[typeof(Enum)] ?? typeof(EnumEditor)) ?? new object();
+                    object o = Activator.CreateInstance(registeredEditors.GetValueOrNull(propType) ?? typeof(EnumEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;
@@ -1158,7 +1172,7 @@ namespace SolidShineUi.PropertyList
                 else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(List<>) && registeredEditors.ContainsKey(typeof(List<>)))
                 {
                     Type itemType = propType.GetGenericArguments()[0];
-                    object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
+                    object o = Activator.CreateInstance(registeredEditors.GetValueOrNull(typeof(List<>)) ?? typeof(ListEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;
@@ -1167,7 +1181,7 @@ namespace SolidShineUi.PropertyList
                 else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable<>) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
                 {
                     Type itemType = propType.GetGenericArguments()[0];
-                    object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                    object o = Activator.CreateInstance(registeredEditors.GetValueOrNull(typeof(IEnumerable<>)) ?? typeof(EnumerableEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;
@@ -1175,7 +1189,7 @@ namespace SolidShineUi.PropertyList
                 }
                 else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(IEnumerable) && registeredEditors.ContainsKey(typeof(IEnumerable<>)))
                 {
-                    object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                    object o = Activator.CreateInstance(registeredEditors.GetValueOrNull(typeof(IEnumerable<>)) ?? typeof(EnumerableEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;
@@ -1183,7 +1197,7 @@ namespace SolidShineUi.PropertyList
                 }
                 else if (typeof(IList).IsAssignableFrom(propType))
                 {
-                    object o = Activator.CreateInstance(registeredEditors[typeof(List<>)]) ?? new object();
+                    object o = Activator.CreateInstance(registeredEditors.GetValueOrNull(typeof(List<>)) ?? typeof(ListEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;
@@ -1191,7 +1205,7 @@ namespace SolidShineUi.PropertyList
                 }
                 else if (typeof(IEnumerable).IsAssignableFrom(propType))
                 {
-                    object o = Activator.CreateInstance(registeredEditors[typeof(IEnumerable<>)]) ?? new object();
+                    object o = Activator.CreateInstance(registeredEditors.GetValueOrNull(typeof(IEnumerable<>)) ?? typeof(EnumerableEditor)) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;
@@ -1199,11 +1213,7 @@ namespace SolidShineUi.PropertyList
                 }
                 else
                 {
-
-                    //else
-                    //{
                     return null;
-                    //}
                 }
             }
             catch (ArgumentException) { return null; } // the editor type added to the list is not a type that can be activated via Reflection (due to the type's limitations)
