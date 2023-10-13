@@ -48,7 +48,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 brdrPop.BorderBrush = value.BorderColor.ToBrush();
                 brdrPop.Background = value.ThirdHighlightColor.ToBrush();
 
-                brdrTransform.BorderBrush = value.BorderColor.ToBrush();
+                //brdrTransform.BorderBrush = value.BorderColor.ToBrush();
                 //btnEditTransform.ColorScheme = value;
                 //btnEditRelativeTransform.ColorScheme = value;
 
