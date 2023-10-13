@@ -97,6 +97,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     return new TransformCollection() { _transform.CloneCurrentValue() };
                 }
             }
+            else if (_dataType == typeof(TransformGroup))
+            {
+                if (_setNull) return null;
+                else if (_transform is TransformGroup tg)
+                {
+                    return tg.CloneCurrentValue();
+                }
+                else
+                {
+                    return new TransformGroup() { Children = new TransformCollection() { _transform.CloneCurrentValue() } };
+                }
+            }
             else
             {
                 return _setNull ? null : _transform.CloneCurrentValue();

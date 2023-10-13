@@ -1031,6 +1031,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(SkewTransform), typeof(TransformEditor));
             RegisterEditor(typeof(TranslateTransform), typeof(TransformEditor));
             RegisterEditor(typeof(TransformCollection), typeof(TransformEditor));
+            RegisterEditor(typeof(TransformGroup), typeof(TransformEditor));
             RegisterEditor(typeof(char), typeof(CharEditor));
             RegisterEditor(typeof(char?), typeof(CharEditor));
 #if NETCOREAPP
