@@ -10,7 +10,7 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// Extension methods for various WPF or C# objects. (While newer .NET may have some of these methods included, these are not available on .NET Framework).
     /// </summary>
-    public static class DependencyObjectExtensions
+    public static class BaseExtensions
 
     {
 
@@ -21,6 +21,8 @@ namespace SolidShineUi.Utils
         /// This is designed to work alongside the WPF dependency property system, since dependency property changed events only
         /// pass in a DependencyObject object. This method acts as an alternative to direct casting, allowing you to access your
         /// object's methods and events, in a manner that also satisfies .NET's nullability feature.
+        /// <para/>
+        /// If the DependencyObject is null or isn't of type <typeparamref name="T"/>, then the action does not run.
         /// </remarks>
         /// <typeparam name="T">The type of the object to cast to.</typeparam>
         /// <param name="dp">The dependency object to cast from.</param>
