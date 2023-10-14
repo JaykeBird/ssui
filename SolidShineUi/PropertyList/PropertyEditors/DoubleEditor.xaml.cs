@@ -35,25 +35,34 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            dblSpinner.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+            if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
+            }
+            else if (value.BackgroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
+            }
+            else
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
+            }
+        }
+
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                dblSpinner.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-                }
-                else
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-                }
+                ApplyColorScheme(value);
             }
         }
 
@@ -67,7 +76,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable
         {
             get => dblSpinner.IsEnabled;
-            set => dblSpinner.IsEnabled = value;
+            set { dblSpinner.IsEnabled = value; mnuSetNan.IsEnabled = value; }
         }
 
         Type _propType = typeof(double);

@@ -176,6 +176,11 @@ namespace SolidShineUi.PropertyList.Dialogs
                     StoreDataToSelectedTransform();
                     return TransformList[0].TransformValue;
                 }
+                else if (TransformList.Count == 0)
+                {
+                    // this "unnecessary cast" is needed for .NET Framework
+                    return returnIdentityIfBlank ? (Transform)new MatrixTransform(Matrix.Identity) : new TransformGroup();
+                }
                 else
                 {
                     return new TransformGroup();

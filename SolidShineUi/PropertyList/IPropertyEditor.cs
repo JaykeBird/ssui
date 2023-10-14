@@ -24,7 +24,7 @@ namespace SolidShineUi.PropertyList
         bool EditorAllowsModifying { get; }
 
         /// <summary>
-        /// Get or set if the property being loaded can actually be edited (writeable).
+        /// Get or set if the property being loaded can actually be edited (writeable). Read-only (get-only) properties will return <c>false</c>.
         /// </summary>
         bool IsPropertyWritable { get; set; }
 

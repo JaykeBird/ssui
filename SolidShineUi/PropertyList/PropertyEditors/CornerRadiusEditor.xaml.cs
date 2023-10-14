@@ -34,41 +34,50 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="cs">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            nudUpLeft.ColorScheme = cs;
+            nudUpRight.ColorScheme = cs;
+            nudDownLeft.ColorScheme = cs;
+            nudDownRight.ColorScheme = cs;
+            btnMenu.ColorScheme = cs;
+
+            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
+            {
+                imgLeft.Source = LoadIcon("UpLeftArrow", ICON_WHITE);
+                imgTop.Source = LoadIcon("UpRightArrow", ICON_WHITE);
+                imgRight.Source = LoadIcon("DownRightArrow", ICON_WHITE);
+                imgBottom.Source = LoadIcon("DownLeftArrow", ICON_WHITE);
+                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
+            }
+            else if (cs.BackgroundColor == Colors.White)
+            {
+                imgLeft.Source = LoadIcon("UpLeftArrow", ICON_BLACK);
+                imgTop.Source = LoadIcon("UpRightArrow", ICON_BLACK);
+                imgRight.Source = LoadIcon("DownRightArrow", ICON_BLACK);
+                imgBottom.Source = LoadIcon("DownLeftArrow", ICON_BLACK);
+                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
+            }
+            else
+            {
+                imgLeft.Source = LoadIcon("UpLeftArrow", ICON_COLOR);
+                imgTop.Source = LoadIcon("UpRightArrow", ICON_COLOR);
+                imgRight.Source = LoadIcon("DownRightArrow", ICON_COLOR);
+                imgBottom.Source = LoadIcon("DownLeftArrow", ICON_COLOR);
+                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
+            }
+        }
+
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                nudUpLeft.ColorScheme = value;
-                nudUpRight.ColorScheme = value;
-                nudDownLeft.ColorScheme = value;
-                nudDownRight.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgLeft.Source = LoadIcon("UpLeftArrow", ICON_WHITE);
-                    imgTop.Source = LoadIcon("UpRightArrow", ICON_WHITE);
-                    imgRight.Source = LoadIcon("DownRightArrow", ICON_WHITE);
-                    imgBottom.Source = LoadIcon("DownLeftArrow", ICON_WHITE);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgLeft.Source = LoadIcon("UpLeftArrow", ICON_BLACK);
-                    imgTop.Source = LoadIcon("UpRightArrow", ICON_BLACK);
-                    imgRight.Source = LoadIcon("DownRightArrow", ICON_BLACK);
-                    imgBottom.Source = LoadIcon("DownLeftArrow", ICON_BLACK);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
-                }
-                else
-                {
-                    imgLeft.Source = LoadIcon("UpLeftArrow", ICON_COLOR);
-                    imgTop.Source = LoadIcon("UpRightArrow", ICON_COLOR);
-                    imgRight.Source = LoadIcon("DownRightArrow", ICON_COLOR);
-                    imgBottom.Source = LoadIcon("DownLeftArrow", ICON_COLOR);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
-                }
+                ApplyColorScheme(value);
             }
         }
 
@@ -224,6 +233,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 SetAsNull();
             }
             ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private const double ARROW_MIN_WIDTH = 280;
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (ActualWidth <= ARROW_MIN_WIDTH)
+            {
+                nudDownLeft.ShowArrows = false;
+                nudDownRight.ShowArrows = false;
+                nudUpLeft.ShowArrows = false;
+                nudUpRight.ShowArrows = false;
+            }
+            else
+            {
+                nudDownLeft.ShowArrows = true;
+                nudDownRight.ShowArrows = true;
+                nudUpLeft.ShowArrows = true;
+                nudUpRight.ShowArrows = true;
+            }
         }
     }
 }

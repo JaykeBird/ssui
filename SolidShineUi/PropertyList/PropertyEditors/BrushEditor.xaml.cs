@@ -36,55 +36,64 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private ColorScheme _cs = new ColorScheme();
 
+        /// <summary>
+        /// Set the visual apperance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="cs">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            _cs = cs;
+            btnMenu.ColorScheme = cs;
+            btnEditBrush.ColorScheme = cs;
+            selChange.ColorScheme = cs;
+            brdrPop.BorderBrush = cs.BorderColor.ToBrush();
+            brdrPop.Background = cs.ThirdHighlightColor.ToBrush();
+
+            //brdrTransform.BorderBrush = value.BorderColor.ToBrush();
+            //btnEditTransform.ColorScheme = value;
+            //btnEditRelativeTransform.ColorScheme = value;
+
+            if (cs.IsHighContrast)
+            {
+                btnBrush.BorderBrush = cs.BorderColor.ToBrush();
+                btnBrush.BorderHighlightBrush = cs.BorderColor.ToBrush();
+                btnBrush.BorderSelectedBrush = cs.BorderColor.ToBrush();
+                btnBrush.BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                //btnBrush.DisabledBrush = value.BackgroundColor.ToBrush();
+                btnBrush.Foreground = cs.ForegroundColor.ToBrush();
+                btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            }
+            else
+            {
+                btnBrush.BorderBrush = cs.BorderColor.ToBrush();
+                btnBrush.BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                btnBrush.SelectedBrush = cs.ThirdHighlightColor.ToBrush();
+                btnBrush.BorderHighlightBrush = cs.HighlightColor.ToBrush();
+                btnBrush.BorderSelectedBrush = cs.SelectionColor.ToBrush();
+                btnBrush.Foreground = cs.ForegroundColor.ToBrush();
+                btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            }
+
+            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
+            }
+            else if (cs.BackgroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
+            }
+            else
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
+            }
+        }
+
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                _cs = value;
-                btnMenu.ColorScheme = value;
-                btnEditBrush.ColorScheme = value;
-                selChange.ColorScheme = value;
-                brdrPop.BorderBrush = value.BorderColor.ToBrush();
-                brdrPop.Background = value.ThirdHighlightColor.ToBrush();
-
-                //brdrTransform.BorderBrush = value.BorderColor.ToBrush();
-                //btnEditTransform.ColorScheme = value;
-                //btnEditRelativeTransform.ColorScheme = value;
-
-                if (value.IsHighContrast)
-                {
-                    btnBrush.BorderBrush = value.BorderColor.ToBrush();
-                    btnBrush.BorderHighlightBrush = value.BorderColor.ToBrush();
-                    btnBrush.BorderSelectedBrush = value.BorderColor.ToBrush();
-                    btnBrush.BorderDisabledBrush = value.DarkDisabledColor.ToBrush();
-                    //btnBrush.DisabledBrush = value.BackgroundColor.ToBrush();
-                    btnBrush.Foreground = value.ForegroundColor.ToBrush();
-                    btnBrush.ClickBrush = value.ThirdHighlightColor.ToBrush();
-                }
-                else
-                {
-                    btnBrush.BorderBrush = value.BorderColor.ToBrush();
-                    btnBrush.BorderDisabledBrush = value.DarkDisabledColor.ToBrush();
-                    btnBrush.SelectedBrush = value.ThirdHighlightColor.ToBrush();
-                    btnBrush.BorderHighlightBrush = value.HighlightColor.ToBrush();
-                    btnBrush.BorderSelectedBrush = value.SelectionColor.ToBrush();
-                    btnBrush.Foreground = value.ForegroundColor.ToBrush();
-                    btnBrush.ClickBrush = value.ThirdHighlightColor.ToBrush();
-                }
-
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-                }
-                else
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-                }
+                ApplyColorScheme(value);
             }
         }
 
