@@ -226,21 +226,24 @@ namespace SolidShineUi.PropertyList
                 return;
             }
 
-            //#if NETCOREAPP
-            //            foreach (UIElement? item in stkProperties.Children)
-            //#else
-            //            foreach (UIElement item in stkProperties.Children)
-            //#endif
-            //            {
-            //                if (item == null) continue;
-            //                if (item is PropertyEditorItem pei)
-            //                {
-            //                    if (pei.PropertyEditorControl != null)
-            //                    {
-            //                        pei.PropertyEditorControl.ColorScheme = cs;
-            //                    }
-            //                }
-            //            }
+            if (stkProperties != null)
+            {
+#if NETCOREAPP
+                foreach (UIElement? item in stkProperties.Children)
+#else
+                foreach (UIElement item in stkProperties.Children)
+#endif
+                {
+                    if (item == null) continue;
+                    if (item is PropertyEditorItem pei)
+                    {
+                        if (pei.PropertyEditorControl != null)
+                        {
+                            pei.PropertyEditorControl.ColorScheme = cs;
+                        }
+                    }
+                }
+            }
 
             // set up brushes
             Background = cs.LightBackgroundColor.ToBrush();
@@ -257,6 +260,7 @@ namespace SolidShineUi.PropertyList
             //mnuView.ColorScheme = cs;
 
             //// set up icons
+            // TODO: update control template to change icon colors based upon SsuiTheme
             //imgSearch.Source = IconLoader.LoadIcon("Search", cs);
             //imgReload.Source = IconLoader.LoadIcon("Reload", cs);
 

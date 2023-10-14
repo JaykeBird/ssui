@@ -1859,13 +1859,13 @@
                                         <Separator />
                                         <MenuItem Header="Show Inherited" IsChecked="{TemplateBinding ShowInheritedProperties}"
                                                   Command="{x:Static pl:PropertyListCommands.ToggleInheritedProperties}" />
-                                        <MenuItem Header="Show Read Only" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
+                                        <MenuItem Header="Show Read-only Values" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
                                                   Command="{x:Static pl:PropertyListCommands.ToggleReadOnlyProperties}" />
                                         <Separator />
                                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" IsEnabled="False" />
-                                        <Separator />
+                                        <!--<Separator />
                                         <MenuItem Header="Show Gridlines" IsChecked="{TemplateBinding ShowGridlines}" 
-                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />-->
                                         <!--<MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click"
                                                   Command="{x:Static pl:PropertyListCommands.ChangeGridlineBrush}" />-->
                                     </flat:ContextMenu>
