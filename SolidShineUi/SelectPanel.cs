@@ -18,6 +18,8 @@ namespace SolidShineUi
     /// A ListBox-like control that can be used to select and interact with multiple items, with extra functionality and a visual style that matches the rest of the Solid Shine UI controls.
     /// </summary>
     [ContentProperty("Items")]
+    [DefaultEvent(nameof(SelectionChanged))]
+    [Localizability(LocalizationCategory.ListBox)]
     public class SelectPanel : Control
     {
         static SelectPanel()

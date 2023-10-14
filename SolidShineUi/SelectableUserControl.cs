@@ -11,6 +11,8 @@ namespace SolidShineUi
     /// <summary>
     /// The basic control that can be added into a SelectPanel. Extend this class to create your own UI elements to use with the SelectPanel.
     /// </summary>
+    [Localizability(LocalizationCategory.ListBox)]
+    [DefaultEvent(nameof(SelectionChanged))]
     public class SelectableUserControl : System.Windows.Controls.UserControl //, IEquatable<SelectableUserControl>
     {
         /// <summary>

@@ -12,6 +12,7 @@ namespace SolidShineUi.PropertyList
     /// <summary>
     /// An entry in a list or collection, for display in the <see cref="Dialogs.ListEditorDialog"/>, and use in a <see cref="SelectPanel"/>.
     /// </summary>
+    [Localizability(LocalizationCategory.ListBox)]
     public partial class ListEditorItem : SelectableUserControl
     {
         /// <summary>

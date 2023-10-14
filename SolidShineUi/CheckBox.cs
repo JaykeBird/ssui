@@ -16,6 +16,7 @@ namespace SolidShineUi
     /// A CheckBox control with more customization over the appearance, and a larger box for a more touch-friendly UI.
     /// </summary>
     [DefaultEvent(nameof(CheckChanged))]
+    [Localizability(LocalizationCategory.CheckBox)]
     public class CheckBox : ContentControl
     {
         static CheckBox()

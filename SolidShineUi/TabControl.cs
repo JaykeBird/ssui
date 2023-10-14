@@ -18,6 +18,8 @@ namespace SolidShineUi
     /// A control that can house multiple controls under a number of tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
     /// </summary>
     [ContentProperty("Items")]
+    [DefaultEvent(nameof(TabChanged))]
+    [Localizability(LocalizationCategory.None)]
     public class TabControl : Control
     {
 
