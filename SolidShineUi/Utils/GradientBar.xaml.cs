@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,8 +9,10 @@ using System.Windows.Media;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// Interaction logic for GradientBar.xaml
+    /// A control that displays (and allows editing of) the stops of a gradient.
+    /// Used with the <see cref="PropertyList.Dialogs.LinearGradientEditorDialog"/> and <see cref="PropertyList.Dialogs.RadialGradientEditorDialog"/>.
     /// </summary>
+    [Localizability(LocalizationCategory.None), DefaultEvent(nameof(GradientChanged))]
     public partial class GradientBar : UserControl
     {
         /// <summary>
@@ -39,6 +42,10 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the list of gradient stops to display in this GradientBar.
         /// </summary>
+        /// <remarks>
+        /// When setting a list of gradient stops, a deep-copy clone of all the stops are actually made, to avoid situations where 
+        /// edits are applied when not wanted or if the inputted collection is frozen.
+        /// </remarks>
         public GradientStopCollection GradientStops
         {
             get
@@ -51,17 +58,11 @@ namespace SolidShineUi.Utils
                 // to prevent changes still applying even if the user hits "Cancel"
                 _stops = value.CloneCurrentValue();
 
-                //GradientStopCollection gsc = new GradientStopCollection();
-                //foreach (GradientStop item in value)
-                //{
-                //    gsc.Add(new GradientStop(item.Color, item.Offset));
-                //}
-
-                //_stops = gsc;
+                // now let's arrange them and get them on the UI
                 SortStops();
                 CountStops();
                 RenderBar();
-                RenderStops(); 
+                RenderStops();
             }
         }
 
@@ -83,7 +84,7 @@ namespace SolidShineUi.Utils
             {
                 selStop = _selected.GradientStop;
             }
-            // TODO: maintain selected status
+
             grdStops.Children.Clear();
             foreach (GradientStop stop in _stops)
             {
@@ -219,7 +220,7 @@ namespace SolidShineUi.Utils
             SelectionChanged?.Invoke(this, EventArgs.Empty);
 
             int index = _stops.IndexOf(_selected.GradientStop);
-            txtCount.Text = (index + 1) + " of " + _stops.Count;
+            txtCount.Text = index + 1 + " of " + _stops.Count;
 
             brdrCBack.Opacity = 1.0;
             rectColor.Fill = _selected.Color.ToBrush();
@@ -241,6 +242,58 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
+        /// Select a gradient stop for editing.
+        /// </summary>
+        /// <param name="gs">the gradient stop to edit</param>
+        /// <exception cref="ArgumentException">thrown if this gradient stop isn't in this gradient bar</exception>
+        /// <remarks>Use <see cref="GradientStops"/> to get a list of the stops currently in this gradient bar</remarks>
+        public void SelectStop(GradientStop gs)
+        {
+            if (_stops.Contains(gs))
+            {
+                foreach (GradientStopItem gsi in grdStops.Children)
+                {
+                    if (gsi.GradientStop == gs)
+                    {
+                        if (gsi == _selected) return; // this one is already selected
+                        if (_selected != null) _selected.IsSelected = false;
+                        SelectStop(gsi);
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentException("This stop is not in this gradient editor. Use the GradientStops property to get the current stops in the editor.", nameof(gs));
+            }
+        }
+
+        /// <summary>
+        /// Select a gradient stop for editing.
+        /// </summary>
+        /// <param name="index">the index of the gradient stop to edit</param>
+        /// <exception cref="ArgumentOutOfRangeException">thrown if the index is less than 0 OR if the index is above the number of gradient stops in the editor</exception>
+        /// <remarks>Use <see cref="GradientStops"/> to get a list of the stops currently in this gradient bar</remarks>
+        public void SelectStop(int index)
+        {
+            if (index >= _stops.Count || index < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "The index is outside the number of stops in this editor");
+            }
+
+            GradientStop gradientStop = _stops[index];
+
+            foreach (GradientStopItem gsi in grdStops.Children)
+            {
+                if (gsi.GradientStop == gradientStop)
+                {
+                    if (gsi == _selected) return; // this one is already selected
+                    if (_selected != null) _selected.IsSelected = false;
+                    SelectStop(gsi);
+                }
+            }
+        }
+
+        /// <summary>
         /// Get the gradient stop that is currently selected, or returns <c>null</c> if no gradient stop is selected.
         /// </summary>
 #if NETCOREAPP
@@ -256,8 +309,23 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
+        #region ShowControls
+
+        /// <summary>
+        /// Get or set if editing and navigation controls should be visible in the gradient bar. If not, then only the bar and stops are shown.
+        /// </summary>
+        public bool ShowControls { get => (bool)GetValue(ShowControlsProperty); set => SetValue(ShowControlsProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowControls"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowControlsProperty
+            = DependencyProperty.Register("ShowControls", typeof(bool), typeof(GradientBar),
+            new FrameworkPropertyMetadata(true));
+
+
+        #endregion
+
         #region Editor
-        
+
         /// <summary>
         /// Raised when the SelectedGradientStop is changed.
         /// </summary>
