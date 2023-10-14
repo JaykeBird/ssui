@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:flat="clr-namespace:SolidShineUi"
              xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
-             mc:Ignorable="d" d:DesignHeight="24" d:DesignWidth="400">
+             mc:Ignorable="d" d:DesignHeight="24" d:DesignWidth="300" SizeChanged="UserControl_SizeChanged" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" MinWidth="20" MaxWidth="24" />
@@ -37,6 +37,9 @@
                 <flat:ContextMenu>
                     <MenuItem Header="Set All to Zero (0)" x:Name="mnuSetZero" Click="mnuSetZero_Click" />
                     <MenuItem Header="Set All to One (1)" x:Name="mnuSetOne" Click="mnuSetOne_Click" />
+                    <Separator />
+                    <MenuItem Header="Increase All by One (+1)" x:Name="mnuAddOne" Click="mnuAddOne_Click" />
+                    <MenuItem Header="Decrease All by One (-1)" x:Name="mnuSubtractOne" Click="mnuSubtractOne_Click" />
                     <Separator />
                     <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>

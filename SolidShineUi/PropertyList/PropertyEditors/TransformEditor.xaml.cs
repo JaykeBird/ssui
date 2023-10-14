@@ -35,21 +35,30 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         bool _writable = true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => _writable; set => _writable = value; }
+        public bool IsPropertyWritable { get => _writable; set { _writable = value; btnMenu.IsEnabled = value; } }
 
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
 
         ColorScheme _cs = new ColorScheme();
 
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            _cs = value;
+            btnMenu.ColorScheme = value;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", value);
+        }
+
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                _cs = value;
-                btnMenu.ColorScheme = value;
-                imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", value);
+                ApplyColorScheme(value);
             }
         }
 

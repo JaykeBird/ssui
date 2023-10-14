@@ -34,41 +34,50 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="cs">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            nudLeft.ColorScheme = cs;
+            nudTop.ColorScheme = cs;
+            nudRight.ColorScheme = cs;
+            nudBottom.ColorScheme = cs;
+            btnMenu.ColorScheme = cs;
+
+            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
+            {
+                imgLeft.Source = LoadIcon("LeftArrow", ICON_WHITE);
+                imgRight.Source = LoadIcon("RightArrow", ICON_WHITE);
+                imgTop.Source = LoadIcon("UpArrow", ICON_WHITE);
+                imgBottom.Source = LoadIcon("DownArrow", ICON_WHITE);
+                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
+            }
+            else if (cs.BackgroundColor == Colors.White)
+            {
+                imgLeft.Source = LoadIcon("LeftArrow", ICON_BLACK);
+                imgRight.Source = LoadIcon("RightArrow", ICON_BLACK);
+                imgTop.Source = LoadIcon("UpArrow", ICON_BLACK);
+                imgBottom.Source = LoadIcon("DownArrow", ICON_BLACK);
+                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
+            }
+            else
+            {
+                imgLeft.Source = LoadIcon("LeftArrow", ICON_COLOR);
+                imgRight.Source = LoadIcon("RightArrow", ICON_COLOR);
+                imgTop.Source = LoadIcon("UpArrow", ICON_COLOR);
+                imgBottom.Source = LoadIcon("DownArrow", ICON_COLOR);
+                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
+            }
+        }
+
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                nudLeft.ColorScheme = value;
-                nudTop.ColorScheme = value;
-                nudRight.ColorScheme = value;
-                nudBottom.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgLeft.Source = LoadIcon("LeftArrow", ICON_WHITE);
-                    imgRight.Source = LoadIcon("RightArrow", ICON_WHITE);
-                    imgTop.Source = LoadIcon("UpArrow", ICON_WHITE);
-                    imgBottom.Source = LoadIcon("DownArrow", ICON_WHITE);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgLeft.Source = LoadIcon("LeftArrow", ICON_BLACK);
-                    imgRight.Source = LoadIcon("RightArrow", ICON_BLACK);
-                    imgTop.Source = LoadIcon("UpArrow", ICON_BLACK);
-                    imgBottom.Source = LoadIcon("DownArrow", ICON_BLACK);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
-                }
-                else
-                {
-                    imgLeft.Source = LoadIcon("LeftArrow", ICON_COLOR);
-                    imgRight.Source = LoadIcon("RightArrow", ICON_COLOR);
-                    imgTop.Source = LoadIcon("UpArrow", ICON_COLOR);
-                    imgBottom.Source = LoadIcon("DownArrow", ICON_COLOR);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
-                }
+                ApplyColorScheme(value);
             }
         }
 
@@ -224,6 +233,42 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 SetAsNull();
             }
             ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private const double ARROW_MIN_WIDTH = 280;
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (ActualWidth <= ARROW_MIN_WIDTH)
+            {
+                nudBottom.ShowArrows = false;
+                nudLeft.ShowArrows = false;
+                nudRight.ShowArrows = false;
+                nudTop.ShowArrows = false;
+            }
+            else
+            {
+                nudBottom.ShowArrows = true;
+                nudLeft.ShowArrows = true;
+                nudRight.ShowArrows = true;
+                nudTop.ShowArrows = true;
+            }
+        }
+
+        private void mnuAddOne_Click(object sender, RoutedEventArgs e)
+        {
+            nudBottom.Value += 1;
+            nudLeft.Value += 1;
+            nudRight.Value += 1;
+            nudTop.Value += 1;
+        }
+
+        private void mnuSubtractOne_Click(object sender, RoutedEventArgs e)
+        {
+            if (nudBottom.Value > 0) { nudBottom.Value -= 1; }
+            if (nudLeft.Value > 0) { nudLeft.Value -= 1; }
+            if (nudRight.Value > 0) { nudRight.Value -= 1; }
+            if (nudTop.Value > 0) { nudTop.Value -= 1; }
         }
     }
 }

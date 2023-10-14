@@ -41,16 +41,25 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
         Color _col = Colors.White;
 
+        /// <summary>
+        /// Set the visual appearance of this control via the ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            _cs = value;
+            nudValue.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+            btnColor.ColorScheme = value;
+            imgMenu.Source = LoadIcon("ThreeDots", value);
+        }
+
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                _cs = value;
-                nudValue.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-                btnColor.ColorScheme = value;
-                imgMenu.Source = LoadIcon("ThreeDots", value);
+                ApplyColorScheme(value);
             }
         }
 
