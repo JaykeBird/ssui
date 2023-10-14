@@ -11,6 +11,7 @@ namespace SolidShineUi
     /// <summary>
     /// A flat-styled button that displays a menu when it is clicked.
     /// </summary>
+    [Localizability(LocalizationCategory.Button)]
     public class MenuButton : FlatButton
     {
 

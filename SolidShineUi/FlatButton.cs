@@ -15,6 +15,7 @@ namespace SolidShineUi
     /// A button with a custom, flat style and additional funcionality. Use <c>SelectOnClick</c> to have the button act like a toggle button.
     /// </summary>
     [DefaultEvent("Click")]
+    [Localizability(LocalizationCategory.Button)]
     public class FlatButton : ButtonBase
     {
         static FlatButton()

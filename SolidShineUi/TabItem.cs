@@ -13,6 +13,7 @@ namespace SolidShineUi
     /// A tab that can be added onto a <see cref="TabControl"/>. Each tab has a title, icon, and close button by default.
     /// </summary>
     [ContentProperty("Content")]
+    [Localizability(LocalizationCategory.Title)]
     public class TabItem : DependencyObject
     {
         /// <summary>

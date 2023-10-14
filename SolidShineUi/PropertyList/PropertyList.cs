@@ -22,6 +22,9 @@ namespace SolidShineUi.PropertyList
     /// <summary>
     /// A control that can display the properties and values of a .NET object, with support for live editing of many property types.
     /// </summary>
+    /// 
+    [DefaultEvent(nameof(LoadedObjectChanged))]
+    [Localizability(LocalizationCategory.ListBox)]
     public class PropertyList : Control
     {
 

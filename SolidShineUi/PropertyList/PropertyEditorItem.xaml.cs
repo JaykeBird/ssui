@@ -12,6 +12,7 @@ namespace SolidShineUi.PropertyList
     /// A control hosting a visual representation of an object's property, including the property's name, type, and (where possible) an editor control for editing the property.
     /// This is meant for use with the <see cref="ExperimentalPropertyList"/>, not generally for use directly by itself.
     /// </summary>
+    [Localizability(LocalizationCategory.ListBox)]
     public partial class PropertyEditorItem : UserControl
     {
         /// <summary>

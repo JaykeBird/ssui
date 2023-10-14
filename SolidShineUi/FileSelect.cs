@@ -19,7 +19,8 @@ namespace SolidShineUi
     /// <summary>
     /// A control that provides a responsive and customizable UI for users to select files on their computer, similar to the "<c>input type="file"</c>" element in HTML.
     /// </summary>
-    [DefaultEvent("SelectionChanged"), ContentProperty("SelectedFiles")]
+    [DefaultEvent(nameof(SelectionChanged)), ContentProperty(nameof(SelectedFiles))]
+    [Localizability(LocalizationCategory.ListBox)]
     public class FileSelect : Control
     {
         static FileSelect()
