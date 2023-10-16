@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Linq;
 using SolidShineUi.PropertyList.Dialogs;
+using SolidShineUi.Utils;
 using System.Windows.Media.TextFormatting;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -700,7 +701,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             // change to image brush
             // display image brush editor dialog, don't actually immediately change
             ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
-            ibre.LoadImage(new ImageBrush(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, MessageDialogImageConverter.MessageDialogImageColor.Color)));
+            ibre.LoadImage(new ImageBrush(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, IconVariation.Color)));
             ibre.Owner = Window.GetWindow(this);
             ibre.ShowDialog();
 
