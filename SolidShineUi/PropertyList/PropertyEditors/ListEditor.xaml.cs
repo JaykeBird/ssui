@@ -72,82 +72,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return listVal;
         }
-
-        /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
-        {
-            string contentsData = "";
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
-            {
-                Type listType = type.GenericTypeArguments[0];
-                _listType = listType;
-
-                listVal = (IList?)value;
-                if (listVal == null)
-                {
-                    // null value
-                    contentsData = "(null)";
-                }
-                else
-                {
-                    contentsData = listVal.Count + " items";
-                }
-
-                txtListData.Text = contentsData + " (" + listType.Name + ")";
-            }
-            else if (typeof(IList).IsAssignableFrom(type))
-            {
-                // this is an IList, but isn't a generic type (i.e. not List<T>)
-                listVal = (IList?)value;
-
-                // let's try to determine the list type by finding the Add method
-
-                MethodInfo? addmi = null;
-
-                try
-                {
-                    addmi = type.GetMethod("Add");
-                }
-                catch (AmbiguousMatchException)
-                {
-                    // there is more than one Add method
-                    // let's try to find the one that only has 1 parameter
-                    addmi = type.GetMethods().Where((mi) => mi.Name == "Add" && mi.GetParameters().Length == 1).FirstOrDefault();
-                }
-
-                if (addmi != null)
-                {
-                    var pi = addmi.GetParameters();
-                    if (pi.Length == 1)
-                    {
-                        _listType = pi[0].ParameterType;
-                    }
-                }
-                else
-                {
-                    // type is a List, but doesn't have a proper Add method
-                    // how does that happen? lol
-                }
-
-                // anyway, let's set up the UI
-                if (listVal == null)
-                {
-                    // null value
-                    contentsData = "(null)";
-                }
-                else
-                {
-                    contentsData = listVal.Count + " items";
-                }
-
-                txtListData.Text = contentsData + " (" + _listType.Name + ")";
-            }
-            else
-            {
-                // type is not a List
-            }
-        }
 #else
         IList listVal;
         
@@ -161,37 +85,44 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return listVal;
         }
-        
+
+#endif
+
         /// <inheritdoc/>
+#if NETCOREAPP
+        public void LoadValue(object? value, Type type)
+#else
         public void LoadValue(object value, Type type)
+#endif
         {
-            string contentsData = "";
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
                 Type listType = type.GenericTypeArguments[0];
-                
-                listVal = (IList)value;
-                if (listVal == null)
-                {
-                    // null value
-                    contentsData = "(null)";
-                }
-                else
-                {
-                    contentsData = listVal.Count + "items";
-                }
+                _listType = listType;
 
-                txtListData.Text = contentsData + " (" + type.GenericTypeArguments[0].Name + ")";
+#if NETCOREAPP
+                listVal = (IList?)value;
+#else
+                listVal = (IList)value;
+#endif
+                RenderListDataText();
             }
             else if (typeof(IList).IsAssignableFrom(type))
             {
                 // this is an IList, but isn't a generic type (i.e. not List<T>)
+
+#if NETCOREAPP
+                listVal = (IList?)value;
+
+                // let's try to determine the list type by finding the Add method
+                MethodInfo? addmi = null;
+#else
                 listVal = (IList)value;
 
                 // let's try to determine the list type by finding the Add method
-
                 MethodInfo addmi = null;
+#endif
 
                 try
                 {
@@ -218,18 +149,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     // how does that happen? lol
                 }
 
-                // anyway, let's set up the UI
-                if (listVal == null)
-                {
-                    // null value
-                    contentsData = "(null)";
-                }
-                else
-                {
-                    contentsData = listVal.Count + " items";
-                }
 
-                txtListData.Text = contentsData + " (" + _listType.Name + ")";
+                // anyway, let's set up the UI
+                RenderListDataText();
+
             }
             else
             {
@@ -237,7 +160,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-#endif
+        void RenderListDataText()
+        {
+            string contentsData;
+
+            if (listVal == null)
+            {
+                // null value
+                contentsData = "(null)";
+            }
+            else
+            {
+                contentsData = listVal.Count + " items";
+            }
+
+            txtListData.Text = contentsData + " (" + _listType.Name + ")";
+        }
 
         /// <summary>
         /// Open the ListEditorDialog, with the contents being the list of this property.
@@ -278,20 +216,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             OpenListDialog();
             ValueChanged?.Invoke(this, EventArgs.Empty); // not a guarantee that the value actually changed, but at current, I don't have a way to detect if changes actually occurred
 
-            string contentsData = "";
-
             // anyway, let's set up the UI
-            if (listVal == null)
-            {
-                // null value
-                contentsData = "(null)";
-            }
-            else
-            {
-                contentsData = listVal.Count + " items";
-            }
-
-            txtListData.Text = contentsData + " (" + _listType.Name + ")";
+            RenderListDataText();
         }
     }
 }

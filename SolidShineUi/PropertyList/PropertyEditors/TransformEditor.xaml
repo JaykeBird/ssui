@@ -10,7 +10,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" MinWidth="80" />
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="txtData" VerticalAlignment="Center" Margin="3,0,0,0" TextTrimming="CharacterEllipsis" />
+        <TextBlock x:Name="txtData" VerticalAlignment="Center" Margin="1,0,2,0" TextTrimming="CharacterEllipsis" />
         <flat:MenuButton x:Name="btnMenu" Grid.Column="1" ShowMenuArrow="True" >
             <StackPanel Orientation="Horizontal">
                 <Image Height="16" Width="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
@@ -19,6 +19,7 @@
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="Edit..." x:Name="mnuEdit" Click="btnEdit_Click" />
+                    <MenuItem Header="Reset" x:Name="mnuReset" Click="mnuReset_Click" />
                     <Separator />
                     <MenuItem Header="Set as Null" x:Name="mnuSetToNull" Click="mnuSetToNull_Click" IsChecked="False" />
                 </flat:ContextMenu>

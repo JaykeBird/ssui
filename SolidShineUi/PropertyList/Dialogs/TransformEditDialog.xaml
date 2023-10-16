@@ -34,7 +34,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <flat:MenuButton ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Padding="5,2,1,2" >
+            <flat:MenuButton ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Padding="5,2,1,2" x:Name="btnAdd" >
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Rotate" Click="mnuRotateAdd_Click" />

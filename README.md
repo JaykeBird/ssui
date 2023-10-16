@@ -1,9 +1,9 @@
 SolidShineUi UI Library
 =======================
 
-This is a library containing controls and windows for WPF .NET programs. This library also contains helper classes and functions to customize the UI and provide additional functionality. I use this for all of my modern software projects, and hopefully it will be of use to you as well! This library is created and maintained by JaykeBird (Jayke R. Huempfner).
+This is a library containing controls and windows for WPF .NET programs (many new, some a replacement of built-in controls). This library also contains helper classes and functions to customize the UI and provide other various bits of additional functionality. I use this for all of my modern software projects, and hopefully it will be of use to you as well!
 
-While a majority of the code and functionality was built by me, a number of controls or functions were originally created by others. Please see the credits on my website for more details (linked below).
+This library is created and maintained by JaykeBird (Jayke R. Huempfner). While a majority of the code and functionality was built by me, a portion of it was originally created by others. Please see the credits on my website for more details (linked below).
 
 The entire library is available under the MIT License.
 
@@ -11,11 +11,11 @@ View more details about this library at [my website, jaykebird.com](https://jayk
 
 ## Use it now
 
-The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries [directly from here](https://github.com/JaykeBird/ssui/releases/latest).
+The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries [directly from here on GitHub](https://github.com/JaykeBird/ssui/releases/latest).
 
 ### Getting set up
 
-You'll want to start with downloading the above package or getting it from NuGet. Then in your XAML or C# files, you can add a reference to SolidShineUi.
+After you get the library from a location listed above, you can add a reference to SolidShineUi in your C# and XAML files.
 
 ```XAML
     xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
@@ -27,9 +27,9 @@ using SolidShineUi;
 
 After that, you can start using the controls listed below!
 
-You can use just the one control you need, or you can rebuild existing UIs or design all-new UIs with the Solid Shine UI controls. You can use these alongside the standard WPF controls with no issues or changes in their behavior.
+You can use just the one or two controls you need, or you can rebuild existing UIs or design all-new UIs with the Solid Shine UI controls. You can use these alongside the standard WPF controls with no issues or changes in their behavior.
 
-Each window and control in Solid Shine UI includes a `ColorScheme` property, but if you don't want to use that, you can modify each control's appearance using the various brush properties. If you want to use the `ColorScheme` property to make it easy to set a consistent appearance for all these controls at once, continue to the next section.
+Each window and control in Solid Shine UI includes a `ColorScheme` property, but if you don't want to use that, you can modify each control's appearance using the various brush properties (like any other WPF control). The `ColorScheme` property is useful if you're using multiple controls or windows from my library, and you want them all to share a similar appearance. For more details, continue to the next section.
 
 You can use the SsuiSample app included here as an example to get started with or to see the capabilities of the library.
 
@@ -37,17 +37,17 @@ Documentation is available on [the wiki here on GitHub](https://github.com/Jayke
 
 ### Adding/using a ColorScheme
 
-It's recommended that you set up a ColorScheme for your app, that all the windows and controls can access. Each window and control class in Solid Shine UI includes a ColorScheme property, which can also be used via WPF binding.
+If you're building your application's UI with many of my controls/windows (or almost entirely from these controls/windows), it's recommended that you set up a `ColorScheme` that all the windows and controls can access. Each window and control class in Solid Shine UI includes a ColorScheme property, which you can use with WPF's binding features.
 
-For example, the way I recommend doing so is starting with placing a static ColorScheme class in your App.xaml.cs file:
+There could be a number of ways to set this up, but here's the way that I personally use and I recommend to others. You start with placing a static ColorScheme class in your App.xaml.cs file:
 
 ```csharp
     public static ColorScheme ColorScheme { get; set; } = new ColorScheme(Colors.Green);
 ```
 
-You can create a ColorScheme based upon any base color you want to use (such as your app's branding color), or you can use `ColorScheme.CreateLightTheme()` or `ColorScheme.CreateDarkTheme()` for more standard light or dark themes. High-contrast color schemes are also built-in. You can create a custom ColorScheme from scratch too.
+You can create a ColorScheme based upon any base color you want to use (such as your app's branding color), or you can use `ColorScheme.CreateLightTheme()` or `ColorScheme.CreateDarkTheme()` for more standard light or dark themes. High-contrast color schemes are also built-in. You can also start from scratch and set each value individually if you'd like, too.
 
-Then, if you use a FlatWindow (rather than the standard WPF Window), you can set it up with the color scheme as below:
+From there, you can use a `FlatWindow` (drop-in replacement of the standard WPF window), which contains a `ColorScheme` property that all the child Solid Shine UI controls can bind to. Set up the UI and binding in the XAML side:
 
 ```XAML
 <flat:FlatWindow x:Class="MyApp.MyWindow" x:Name="window"
@@ -62,6 +62,8 @@ Then, if you use a FlatWindow (rather than the standard WPF Window), you can set
    <!-- for all SolidShineUi controls, you can bind the ColorScheme to the FlatWindow's ColorScheme property if you're using a FlatWindow -->
 </flat:FlatWindow>
 ```
+
+And in the C# side, set the window's `ColorScheme` property, and it'll set it for all the binded controls too.
 
 ```csharp
 using System;
@@ -86,12 +88,12 @@ namespace MyApp
 }
 ```
 
-Otherwise, if you want to keep using WPF's standard windows, you can either create your own ColorScheme property for the window that controls can bind to, or just simply set the controls' ColorScheme property in the backend.
+If you want to keep using WPF's standard windows, that's fine too! You'll probably want to create your own ColorScheme property for the window then, which controls can bind to. (Of course, you can also just directly set or change each control's ColorScheme in C# as well.)
 
-Here's how to create your own ColorScheme property that you can add to a standard WPF window (then, you can bind to it just like the above code):
+Here's how to create your own ColorScheme property that you can add to a standard WPF window (then, you can bind to it just like in the XAML code above):
 
 ```csharp
-// in your window's .xaml.cs (code-behind) file
+        // in your window's .xaml.cs (code-behind) file
 
         /// <summary>
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
@@ -110,11 +112,17 @@ Here's how to create your own ColorScheme property that you can add to a standar
         }
 ```
 
+Some controls (like the `FlatButton`, `MenuButton`, and `Menu`) will also utilize an accent color, if you set that in the `ColorScheme`. Use this to highlight or bring focus to particular buttons. Be sure to set `UseAccentColors` on the buttons you want to use the accent color on, and `MenusUseAccent` in the `ColorScheme` if you want it with any `Menu` controls in your UI.
+
 From here, you should be on your way!
 
 ### Keyboard shortcuts
 
-To get started with keyboard shortcut support, I recommend looking at the [Adding Keyboard Support](https://github.com/JaykeBird/ssui/wiki/KeyboardSupport) file for a step-by-step process and other notes and remarks. Note that this is not a complete drop-in replacement for the InputBindings system in WPF's XAML, but its own system with different advantages.
+One part of Solid Shine UI is a keyboard shortcut handling system that I built.
+
+While WPF has its own method of handling keyboard shortcuts (via InputBindings), my system is a bit more flexible and customizable, and these customizations can also be saved to/loaded from a XML file. However, my system is not an easy drop-in replacement, and has the drawback that it mostly needs to be set up in C# (with or without a XML file), rather than being doable in XAML.
+
+To get started with my keyboard shortcut handling system, I recommend looking at the [Adding Keyboard Support](https://github.com/JaykeBird/ssui/wiki/KeyboardSupport) file for a step-by-step process and other notes and remarks.
 
 ## Included
 
@@ -136,9 +144,9 @@ To get started with keyboard shortcut support, I recommend looking at the [Addin
 - **FileSelect** - select one or more files, via the Browse button or drag-and-drop
 - **FlatButton** - a flat-styled button with a lot of customization options (including toggle-button functions)
 - **DoubleSpinner** - also known as a NumericUpDown; select a number by typing it in, clicking up or down, or entering in a math expression
-- **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values
+- **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values (and can display hex numbers)
 - **LinkTextBlock** - a TextBlock that acts as a hyperlink
-- **LongSpinner** - the same as the IntegerSpinner, but stores numbers as `long`s (for larger values)
+- **LongSpinner** - the same as the IntegerSpinner, but stores numbers as a `long` (for larger values)
 - **Menu** - a menu bar and menu with a flat, colored style
 - **MenuButton** - a flat-styled button that opens a menu when you click on it
 - **SelectPanel** - a powerful panel to easily manage a list and select items from it
@@ -180,13 +188,15 @@ To build this library you will need:
 - latest .NET Core SDK
 - (In the future, I will be adding AvaloniaUI support, so this will become a requirement as well.)
 
+If in Visual Studio 2019 or 2022, you can select the ".NET desktop development" workload, and then add on the individual components ".NET Framework 4.7.1 targeting pack" and ".NET Framework 4.8 targeting pack".
+
 I recommend using Visual Studio 2022 (or the latest version) for this library. When opened up, you should be able to just build and run the library without any further action needed.
 
 Included is the SsuiSample program, which is useful for demonstrating the library and its functions. I also use this to test the library and its controls. Feel free to use SsuiSample as a basis for your implementations.
 
 ### Notes
 
-If you receive this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start button, or you can access it via Build > Configuration Manager... and set the active configuration there).
+If you receive this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start button, or you can access it via `Build > Configuration Manager...` and set the active configuration there).
 
 ## Credits/Usage
 

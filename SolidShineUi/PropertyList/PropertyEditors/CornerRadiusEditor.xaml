@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:flat="clr-namespace:SolidShineUi"
              xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
-             mc:Ignorable="d" d:DesignHeight="24" d:DesignWidth="400">
+             mc:Ignorable="d" d:DesignHeight="24" d:DesignWidth="400" SizeChanged="UserControl_SizeChanged" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" MinWidth="20" MaxWidth="24" />

@@ -74,44 +74,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
-            string contentsData = "";
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
             {
                 Type listType = type.GenericTypeArguments[0];
                 _listType = listType;
 
                 listVal = (IEnumerable?)value;
-                if (listVal == null)
-                {
-                    // null value
-                    contentsData = "(null)";
-                }
-                else
-                {
-                    if (listVal is ICollection icol)
-                    {
-                        contentsData = icol.Count + " items";
-                    }
-                    else
-                    {
-                        contentsData = "collection";
-                    }
-                }
-
-                txtListData.Text = contentsData + " (" + listType.Name + ")";
             }
             else if (typeof(IEnumerable).IsAssignableFrom(type))
             {
+                _listType = typeof(object);
+
                 // this is an IEnumerable, just not a generic type (IEnumerable<T>)
                 listVal = (IEnumerable?)value;
-
-                txtListData.Text = "collection - " + type.Name;
             }
             else
             {
                 // type is not a IEnumerable
             }
+
+            RenderListDataText(listVal, type);
         }
 #else
         IEnumerable listVal;
@@ -130,43 +112,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
         {
-            string contentsData = "";
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+            if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
             {
                 Type listType = type.GenericTypeArguments[0];
+                _listType = listType;
 
                 listVal = (IEnumerable)value;
-                if (listVal == null)
-                {
-                    // null value
-                    contentsData = "(null)";
-                }
-                else
-                {
-                    if (listVal is ICollection icol)
-                    {
-                        contentsData = icol.Count + " items";
-                    }
-                    else
-                    {
-                        contentsData = "collection";
-                    }
-                }
-
-                txtListData.Text = contentsData + " (" + type.GenericTypeArguments[0].Name + ")";
             }
             else if (typeof(IEnumerable).IsAssignableFrom(type))
             {
+                _listType = typeof(object);
+
                 // this is an IEnumerable, just not a generic type (IEnumerable<T>)
                 listVal = (IEnumerable)value;
-
-                txtListData.Text = "collection - " + type.Name;
             }
             else
             {
-                // type is not a List
+                // type is not a IEnumerable
             }
+
+            RenderListDataText(listVal, type);
         }
 
 #endif
@@ -223,13 +188,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, EventArgs.Empty); // not a guarantee that the value actually changed, but at current, I don't have a way to detect if changes actually occurred
 
             Type type = listVal?.GetType() ?? typeof(object);
-            string contentsData = "()";
-            
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-            {
-                Type listType = type.GenericTypeArguments[0];
+            RenderListDataText(listVal, type);
+        }
 
-                if (listVal == null)
+#if NETCOREAPP
+        void RenderListDataText(object? value, Type type)
+#else
+        void RenderListDataText(object value, Type type)
+#endif
+        {
+            string contentsData = "()";
+
+            if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                if (value == null)
                 {
                     // null value
                     contentsData = "(null)";
@@ -246,12 +218,23 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     }
                 }
 
-                txtListData.Text = contentsData + " (" + listType.Name + ")";
+                txtListData.Text = contentsData + " (" + _listType.Name + ")";
+            }
+            else if (typeof(ICollection).IsAssignableFrom(type))
+            {
+                if (value == null)
+                {
+                    txtListData.Text = "(null)";
+                }
+                else
+                {
+                    txtListData.Text = (((ICollection)value)?.Count ?? 0) + " items in " + type.Name;
+                }
             }
             else if (typeof(IEnumerable).IsAssignableFrom(type))
             {
-
-                txtListData.Text = "collection - " + type.Name;
+                // this is an IEnumerable, just not a generic type (IEnumerable<T>)
+                txtListData.Text = "collection in " + type.Name;
             }
             else
             {

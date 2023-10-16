@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SolidShineUi.PropertyList.PropertyEditors.BrushEditor"
+﻿<UserControl x:Class="SolidShineUi.PropertyList.PropertyEditors.BrushEditor" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -16,12 +16,6 @@
 
         <flat:FlatButton x:Name="btnMenu" Width="28" MinHeight="20" Grid.Column="1" Click="btnMenu_Click" TransparentBack="True" >
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
-            <!--<flat:MenuButton.Menu>
-                    <flat:ContextMenu>
-                        <MenuItem Header="Bitmap Cache Brush Info..." IsEnabled="False" x:Name="mnuBitmapCacheInfo" />
-                        <MenuItem Header="Drawing Brush Info..." IsEnabled="False" x:Name="mnuDrawingInfo" />
-                    </flat:ContextMenu>
-                </flat:MenuButton.Menu>-->
         </flat:FlatButton>
 
         <Popup x:Name="popBrush">
@@ -44,20 +38,23 @@
                         <TextBlock Text="Currently set to:" FontWeight="Bold" Margin="8,10,0,0" FontSize="12" Grid.Row="0" />
                         <TextBlock Text="(unknown)" FontSize="16" Margin="8,3" x:Name="txtCurrentBrush" Grid.Row="1" />
                         <TextBlock Text="(value unset)" FontSize="12" Margin="8,3" x:Name="txtCurrentValue" Grid.Row="2" />
-                        <flat:FlatButton Content="Edit..." x:Name="btnEditBrush" FontSize="12" HorizontalAlignment="Right" Margin="0,3,10,3" Click="btnBrush_Click" Grid.Row="3" />
+                        <flat:FlatButton Content="Edit..." x:Name="btnEditBrush" FontSize="12" HorizontalAlignment="Right" Margin="0,3,10,2" Click="btnBrush_Click" Grid.Row="3" />
                     </Grid>
-                    <Grid Grid.Row="1" x:Name="grdTransform" MinWidth="250" >
+                    <Grid Grid.Row="1" x:Name="grdTransform" >
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="1" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="4" />
                         </Grid.RowDefinitions>
-                        <Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform" BorderBrush="Black" />
-                        <TextBlock Text="Transform:" FontSize="12" Margin="8,2" x:Name="txtTransform" Grid.Row="0" />
-                        <TextBlock Text="Relative Transform:" FontSize="12" Margin="8,2" x:Name="txtRelative" Grid.Row="2" />
-                        <flat:FlatButton Content="Edit..." x:Name="btnEditTransform" FontSize="12" HorizontalAlignment="Right" Margin="0,1,10,1" Click="btnEditTransform_Click" Grid.Row="1" />
-                        <flat:FlatButton Content="Edit..." x:Name="btnEditRelativeTransform" FontSize="12" HorizontalAlignment="Right" Margin="0,1,10,1" Click="btnEditRelativeTransform_Click" Grid.Row="3" />
+                        <!--<Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform" 
+                                            BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
+                        <flat:LinkTextBlock Text="Edit Transform..." FontSize="12" Margin="8,2" x:Name="txtTransform" Click="btnEditTransform_Click" Grid.Row="1" 
+                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Right" />
+                        <flat:LinkTextBlock Text="Edit Relative Transform..." FontSize="12" Margin="8,2" x:Name="txtRelative" Click="btnEditRelativeTransform_Click" Grid.Row="2" 
+                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Right" />
+                        <!--<Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform2" Grid.Row="3" 
+                                            BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
                     </Grid>
                     <TextBlock Text="Change to:" Margin="5,3" Grid.Row="2" />
                     <flat:SelectPanel Grid.Row="3" x:Name="selChange" BorderThickness="0,1,0,0" Padding="3" >

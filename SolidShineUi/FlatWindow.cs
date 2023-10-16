@@ -14,6 +14,7 @@ namespace SolidShineUi
     /// <summary>
     /// A WPF window that has a custom, flat style and additional functionality.
     /// </summary>
+    [Localizability(LocalizationCategory.None)]
     public class FlatWindow : Window
     {
         static FlatWindow()

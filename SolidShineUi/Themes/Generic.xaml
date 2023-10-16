@@ -5,6 +5,7 @@
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
     xmlns:ribbon="clr-namespace:SolidShineUi.Toolbars.Ribbon"
     xmlns:ributils="clr-namespace:SolidShineUi.Toolbars.Ribbon.Utils"
+    xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
 
@@ -2918,6 +2919,110 @@
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />-->
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type pl:PropertyList}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type pl:PropertyList}">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Background="{TemplateBinding TopPanelBackground}">
+                            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,5" x:Name="txtName" FontWeight="Bold" VerticalAlignment="Center"
+                                Foreground="{TemplateBinding TopPanelForeground}"
+                                Text="{TemplateBinding ObjectDisplayName}" Visibility="{TemplateBinding ShowNameDisplay, Converter={StaticResource VisConverter}}" />
+                        </Grid>
+                        <Grid Background="{TemplateBinding TopPanelBackground}" Grid.Row="1">
+                            <TextBlock HorizontalAlignment="Left" Margin="5,2,0,4" Text="{x:Static pl:PropertyList.NOTHING_LOADED}" x:Name="PART_TypeLabel" VerticalAlignment="Center" 
+                                Foreground="{TemplateBinding TopPanelForeground}" Visibility="{TemplateBinding ShowTypeDisplay, Converter={StaticResource VisConverter}}" />
+                        </Grid>
+                        <Grid Grid.Row="2" x:Name="grdToolbar" Background="{TemplateBinding ToolbarBackground}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Visibility="{TemplateBinding ShowFilterBox, Converter={StaticResource VisConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="10" />
+                                </Grid.ColumnDefinitions>
+                                <Image Height="16" Source="/SolidShineUi;component/Images/SearchColor.png" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                <flat:ClickSelectTextBox Grid.Column="1" VerticalContentAlignment="Center" Height="28"
+                                    ToolTip="{TemplateBinding FilterBoxToolTip}" 
+                                    Text="{Binding FilterText, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                            <flat:FlatButton Grid.Column="1" ColorScheme="{TemplateBinding ColorScheme}"
+                             Height="28" Width="28" ToolTip="Reload" TransparentBack="True" Command="{x:Static pl:PropertyListCommands.Reload}"
+                             Visibility="{TemplateBinding ShowReloadButton, Converter={StaticResource VisConverter}}"
+                             HighlightBrush="{TemplateBinding ButtonHighlightBrush}"
+                             ClickBrush="{TemplateBinding ButtonClickBrush}"
+                             BorderHighlightBrush="{TemplateBinding ButtonHighlightBorderBrush}" >
+                                <Image Height="16" Source="/SolidShineUi;component/Images/ReloadColor.png" />
+                            </flat:FlatButton>
+                            <flat:MenuButton Grid.Column="2" ColorScheme="{TemplateBinding ColorScheme}" Height="28" MinWidth="50"
+                             TransparentBack="True" Visibility="{TemplateBinding ShowViewMenu, Converter={StaticResource VisConverter}}"
+                             HighlightBrush="{TemplateBinding ButtonHighlightBrush}" 
+                             ClickBrush="{TemplateBinding ButtonClickBrush}"
+                             BorderHighlightBrush="{TemplateBinding ButtonHighlightBorderBrush}" >
+                                <flat:MenuButton.Content>
+                                    <TextBlock Text="{TemplateBinding ViewMenuLabel}" />
+                                </flat:MenuButton.Content>
+                                <flat:MenuButton.Menu>
+                                    <flat:ContextMenu>
+                                        <MenuItem Header="Sort by Name" Command="{x:Static pl:PropertyListCommands.SortByName}" />
+                                        <MenuItem Header="Sort by Category" Command="{x:Static pl:PropertyListCommands.SortByCategory}" />
+                                        <Separator />
+                                        <MenuItem Header="Show Inherited" IsChecked="{TemplateBinding ShowInheritedProperties}"
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleInheritedProperties}" />
+                                        <MenuItem Header="Show Read-only Values" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleReadOnlyProperties}" />
+                                        <Separator />
+                                        <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" IsEnabled="False" />
+                                        <!--<Separator />
+                                        <MenuItem Header="Show Gridlines" IsChecked="{TemplateBinding ShowGridlines}" 
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />-->
+                                        <!--<MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click"
+                                                  Command="{x:Static pl:PropertyListCommands.ChangeGridlineBrush}" />-->
+                                    </flat:ContextMenu>
+                                </flat:MenuButton.Menu>
+                            </flat:MenuButton>
+                        </Grid>
+                        <Grid Grid.Row="3" x:Name="grdHeader" Background="{TemplateBinding HeaderBackground}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" MinWidth="50" x:Name="colNames" SharedSizeGroup="plNames" />
+                                <ColumnDefinition Width="0" x:Name="colTypes" SharedSizeGroup="plTypes" />
+                                <ColumnDefinition Width="1*" x:Name="colValues" />
+                                <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblName"
+                                    Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding NameHeaderLabel}" />
+                            <GridSplitter Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" 
+                                    Background="{TemplateBinding HeaderDividerBrush}" />
+                            <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblType"
+                                    Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding TypeHeaderLabel}" />
+                            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Collapsed"
+                                    Background="{TemplateBinding HeaderDividerBrush}" x:Name="splTypes" />
+                            <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblValue"
+                                    Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding ValueHeaderLabel}" />
+                        </Grid>
+                        <Grid Grid.Row="4" >
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
+                                <StackPanel Orientation="Vertical" x:Name="PART_PropList" />
+                            </ScrollViewer>
+                        </Grid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

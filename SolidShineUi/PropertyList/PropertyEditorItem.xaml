@@ -11,8 +11,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" x:Name="colNames" />
-            <ColumnDefinition Width="0" x:Name="colType" />
+            <ColumnDefinition Width="100" x:Name="colNames" SharedSizeGroup="plNames" />
+            <ColumnDefinition Width="0" x:Name="colType" SharedSizeGroup="plType" />
             <ColumnDefinition Width="1*" x:Name="colValues" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

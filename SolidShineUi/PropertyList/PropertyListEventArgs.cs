@@ -9,7 +9,7 @@ namespace SolidShineUi.PropertyList
 {
 
     /// <summary>
-    /// The event arguments for the PropertyEditorValueChanged event, which takes place when the value of a property is changed using a property editor control.
+    /// The event arguments for the PropertyEditorValueChanged event, which is raised when the value of a property is changed using a property editor control.
     /// </summary>
 #if NETCOREAPP
     public class PropertyEditorValueChangedEventArgs : PropertyValueChangedEventArgs
@@ -59,7 +59,7 @@ namespace SolidShineUi.PropertyList
 
 
     /// <summary>
-    /// The event arguments for the PropertyValueChanged event, which takes place when the value of a property is changed in a PropertyList.
+    /// The event arguments for the PropertyValueChanged event, which is raised when the value of a property is changed in a PropertyList.
     /// </summary>
 #if NETCOREAPP
     public class PropertyValueChangedEventArgs : EventArgs

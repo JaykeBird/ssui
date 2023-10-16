@@ -12,6 +12,7 @@ namespace SolidShineUi
     /// <summary>
     /// A popup menu that can display items specific to the context it's invoked by, with a visual style that matches the rest of the Solid Shine UI controls.
     /// </summary>
+    [Localizability(LocalizationCategory.Menu)]
     public class ContextMenu : System.Windows.Controls.ContextMenu
     {
 

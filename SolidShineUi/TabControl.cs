@@ -18,6 +18,8 @@ namespace SolidShineUi
     /// A control that can house multiple controls under a number of tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
     /// </summary>
     [ContentProperty("Items")]
+    [DefaultEvent(nameof(TabChanged))]
+    [Localizability(LocalizationCategory.None)]
     public class TabControl : Control
     {
 
@@ -491,12 +493,16 @@ namespace SolidShineUi
         #region Base Functions
 
         /// <summary>
-        /// Close a specific tab in this TabControl.
+        /// Close a specific tab in this TabControl. This will close the tab even if <c>CanClose</c> is false.
+        /// This triggers the <see cref="TabClosing"/> event, which can cancel closing this tab.
         /// </summary>
         /// <param name="tab">The tab to close.</param>
         /// <remarks>
         /// If <paramref name="tab"/> is not in this TabControl, or if the tab closing is cancelled via the TabClosing event, then nothing will happen.
-        /// This does not take the <paramref name="tab"/>'s <c>CanClose</c> property into account; the tab will be closed regardless.
+        /// <para/>
+        /// This does not take the <paramref name="tab"/>'s <see cref="TabItem.CanClose"/> property into account; if you want to ensure you don't close a tab where <c>CanClose</c> is false,
+        /// make sure you check that value before running this function. This can be used to circumvent <c>CanClose</c>, in situations where you need to close a tab
+        /// which an end user would normally not be able to do.
         /// </remarks>
         public void CloseTab(TabItem tab)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Timers;
@@ -14,39 +15,8 @@ namespace SolidShineUi
     /// <summary>
     /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons.
     /// </summary>
-    public partial class DoubleSpinner : UserControl
+    public partial class DoubleSpinner : SpinnerBase
     {
-
-        #region Internal Values
-
-        bool _updateBox = true; // set if the text box's text should be changed when the value is changed
-        bool _raiseChangedEvent = true; // set if the ValueChanged event should be raised
-
-        #endregion
-
-        /// <summary>
-        /// Raised when the Value, Decimals, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
-        /// </summary>
-        public event EventHandler PropertyChanged;
-
-        /// <summary>
-        /// Raised when the Value property is changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ValueChanged;
-
-        /// <summary>
-        /// Raised when the Value property is validated, and changed to a valid value if needed.
-        /// </summary>
-        public event EventHandler? ValueValidated;
-#else
-        public event DependencyPropertyChangedEventHandler ValueChanged;
-
-        /// <summary>
-        /// Raised when the Value property is validated, and changed to a valid value if needed.
-        /// </summary>
-        public event EventHandler ValueValidated;
-#endif
 
         /// <summary>
         /// Create a DoubleSpinner.
@@ -56,21 +26,15 @@ namespace SolidShineUi
             InitializeComponent();
             Loaded += DoubleSpinner_Loaded;
 
-            DependencyPropertyDescriptor.FromProperty(ValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, PropertyChanged);
-            //DependencyPropertyDescriptor.FromProperty(ValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, ValueChanged);
-            DependencyPropertyDescriptor.FromProperty(DecimalsProperty, typeof(DoubleSpinner)).AddValueChanged(this, PropertyChanged);
-            DependencyPropertyDescriptor.FromProperty(MinValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, PropertyChanged);
-            DependencyPropertyDescriptor.FromProperty(MaxValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, PropertyChanged);
+            // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
+            AddPropertyChangedTrigger(ValueProperty, typeof(DoubleSpinner));
+            AddPropertyChangedTrigger(DecimalsProperty, typeof(DoubleSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(DoubleSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(DoubleSpinner));
 
             InternalValueChanged += DoubleSpinner_InternalValueChanged;
-            InternalRepeatDelayChanged += DoubleSpinner_InternalRepeatDelayChanged;
-            InternalCornerRadiusChanged += DoubleSpinner_InternalCornerRadiusChanged;
-            InternalShowArrowsChanged += DoubleSpinner_InternalShowArrowsChanged;
 
             PropertyChanged += (x, y) => ValidateValue();
-
-            keyDownTimer.AutoReset = false;
-            advanceTimer.AutoReset = true;
 
             keyDownTimer.Elapsed += KeyDownTimer_Elapsed;
             advanceTimer.Elapsed += AdvanceTimer_Elapsed;
@@ -83,6 +47,9 @@ namespace SolidShineUi
 
         private void DoubleSpinner_InternalValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            // this little section at the top prevents a stack overflow from occurring
+            // when rounding occurs and causes the value to round up beyond the MaxValue
+            // here, it is clamped back down to within MinValue and MaxValue
             double value = Math.Round(Value, Decimals);
 
             if (value < MinValue)
@@ -143,7 +110,7 @@ namespace SolidShineUi
             }
 
             UpdateUI();
-            if (_raiseChangedEvent) ValueChanged?.Invoke(this, e);
+            RaiseValueChanged(this, e);
         }
 
         #region ColorScheme
@@ -251,132 +218,6 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region Brushes
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
-            "ButtonBackground", typeof(Brush), typeof(DoubleSpinner),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
-
-        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(DoubleSpinner),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
-
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(DoubleSpinner),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
-
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(DoubleSpinner),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
-
-        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(DoubleSpinner),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
-
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(DoubleSpinner),
-            new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set the brush used for the background of the buttons of the spinner.
-        /// </summary>
-        [Category("Brushes")]
-        public Brush ButtonBackground
-        {
-            get
-            {
-                return (Brush)GetValue(ButtonBackgroundProperty);
-            }
-            set
-            {
-                SetValue(ButtonBackgroundProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the background of the buttons when the control is disabled.
-        /// </summary>
-        [Category("Brushes")]
-        public Brush DisabledBrush
-        {
-            get
-            {
-                return (Brush)GetValue(DisabledBrushProperty);
-            }
-            set
-            {
-                SetValue(DisabledBrushProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Get or set the brush of the border around the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get
-            {
-                return (Brush)GetValue(BorderBrushProperty);
-            }
-            set
-            {
-                SetValue(BorderBrushProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Get or set the brush used when a button is highlighted (i.e. has a mouse over it or keyboard focus).
-        /// </summary>
-        [Category("Brushes")]
-        public Brush HighlightBrush
-        {
-            get
-            {
-                return (Brush)GetValue(HighlightBrushProperty);
-            }
-            set
-            {
-                SetValue(HighlightBrushProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Get or set the brush used when a button is being clicked.
-        /// </summary>
-        [Category("Brushes")]
-        public Brush ClickBrush
-        {
-            get
-            {
-                return (Brush)GetValue(ClickBrushProperty);
-            }
-            set
-            {
-                SetValue(ClickBrushProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the border around the control, while the control is disabled.
-        /// </summary>
-        [Category("Brushes")]
-        public Brush BorderDisabledBrush
-        {
-            get
-            {
-                return (Brush)GetValue(BorderDisabledBrushProperty);
-            }
-            set
-            {
-                SetValue(BorderDisabledBrushProperty, value);
-            }
-        }
-
-        #endregion
-
         #region ValueProperty
 
         /// <summary>
@@ -384,11 +225,12 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalValueChanged;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(double), typeof(DoubleSpinner),
             new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnValueChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the value of the spinner.
@@ -412,10 +254,11 @@ namespace SolidShineUi
 
         #region StepProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(0.1d));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set how much to change the value by when you press the up or down button.
@@ -453,10 +296,11 @@ namespace SolidShineUi
 
         #region MinValueProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(double.MinValue));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the minimum value allowed for this spinner (inclusive).
@@ -476,10 +320,11 @@ namespace SolidShineUi
 
         #region MaxValueProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing a related property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(double.MaxValue));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         ///<summary>
         /// Get or set the maximum value allowed for this spinner (inclusive).
@@ -497,218 +342,28 @@ namespace SolidShineUi
 
         #endregion
 
-        #region RepeatDelayProperty
+        #region ShowArrows/CornerRadius
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
-            "RepeatDelay", typeof(double), typeof(DoubleSpinner),
-            new PropertyMetadata(300d, new PropertyChangedCallback(OnInternalRepeatDelayChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
+        // properties defined in SpinnerBase
 
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.CornerRadius"/>.
         /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalRepeatDelayChanged;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
-            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DoubleSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Raised when the RepeatDelay property is changed.
-        /// </summary>
-        public event RoutedEventHandler RepeatDelayChanged
-        {
-            add { AddHandler(RepeatDelayChangedEvent, value); }
-            remove { RemoveHandler(RepeatDelayChangedEvent, value); }
-        }
-
-        private static void OnInternalRepeatDelayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is DoubleSpinner s)
-            {
-                s.InternalRepeatDelayChanged?.Invoke(s, e);
-            }
-        }
-
-        private void DoubleSpinner_InternalRepeatDelayChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            keyDownTimer.Interval = RepeatDelay;
-            RoutedEventArgs re = new RoutedEventArgs(RepeatDelayChangedEvent);
-            RaiseEvent(re);
-        }
-
-        /// <summary>
-        /// Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.
-        /// </summary>
-        [Category("Common")]
-        public double RepeatDelay
-        {
-            get => (double)GetValue(RepeatDelayProperty);
-            set => SetValue(RepeatDelayProperty, value);
-        }
-
-        #endregion
-
-        #region CornerRadiusProperty
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(DoubleSpinner),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DoubleSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Raised when the CornerRadius property is changed.
-        /// </summary>
-        public event RoutedEventHandler CornerRadiusChanged
-        {
-            add { AddHandler(CornerRadiusChangedEvent, value); }
-            remove { RemoveHandler(CornerRadiusChangedEvent, value); }
-        }
-
-        private static void OnInternalCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is DoubleSpinner s)
-            {
-                s.InternalCornerRadiusChanged?.Invoke(s, e);
-            }
-        }
-
-        private void DoubleSpinner_InternalCornerRadiusChanged(object sender, DependencyPropertyChangedEventArgs e)
+        protected override void OnCornerRadiusChanged()
         {
             brdrVisualEffect.CornerRadius = new CornerRadius(CornerRadius.TopLeft + 0.5, CornerRadius.TopRight + 0.5, CornerRadius.BottomRight + 0.5, CornerRadius.BottomLeft + 0.5);
             visBorder.CornerRadius = CornerRadius;
 
-            RoutedEventArgs re = new RoutedEventArgs(CornerRadiusChangedEvent);
-            RaiseEvent(re);
+            base.OnCornerRadiusChanged();
         }
 
         /// <summary>
-        /// Get or set the corner radius to use around the corners of this control. Setting the corner radius to a value other than 0 displays rounded corners.
+        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.ShowArrows"/>.
         /// </summary>
-        [Category("Appearance")]
-        public CornerRadius CornerRadius
-        {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
-        }
-
-        #endregion
-
-        #region AcceptExpressionsProperty
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(DoubleSpinner),
-            new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set if the spinner should evaluate arithmetic expressions (such as "2+5") to accept as a value.
-        /// </summary>
-        /// <remarks>
-        /// See the <see cref="ArithmeticParser"/> class for more info about how expressions are parsed.
-        /// </remarks>
-        [Category("Common")]
-        public bool AcceptExpressions
-        {
-            get => (bool)GetValue(AcceptExpressionsProperty);
-            set => SetValue(AcceptExpressionsProperty, value);
-        }
-
-        #endregion
-
-        #region ShowArrowsProperty
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
-            "ShowArrows", typeof(bool), typeof(DoubleSpinner),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowArrowsChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalShowArrowsChanged;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
-            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DoubleSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Raised when the ShowArrows property is changed.
-        /// </summary>
-        public event RoutedEventHandler ShowArrowsChanged
-        {
-            add { AddHandler(ShowArrowsChangedEvent, value); }
-            remove { RemoveHandler(ShowArrowsChangedEvent, value); }
-        }
-
-        private static void OnInternalShowArrowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is DoubleSpinner s)
-            {
-                s.InternalShowArrowsChanged?.Invoke(s, e);
-            }
-        }
-
-        private void DoubleSpinner_InternalShowArrowsChanged(object sender, DependencyPropertyChangedEventArgs e)
+        protected override void OnShowArrowsChanged()
         {
             colArrows.Width = ShowArrows ? new GridLength(20) : new GridLength(0);
-            RoutedEventArgs re = new RoutedEventArgs(ShowArrowsChangedEvent);
-            RaiseEvent(re);
-        }
-
-        /// <summary>
-        /// Get or set whether the up and down arrow buttons are shown.
-        /// </summary>
-        [Category("Common")]
-        public bool ShowArrows
-        {
-            get => (bool)GetValue(ShowArrowsProperty);
-            set => SetValue(ShowArrowsProperty, value);
-        }
-
-        #endregion
-
-        #region MinimumDigitCount
-
-        /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
-        /// </summary>
-        public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
-            "MinimumDigitCount", typeof(int), typeof(DoubleSpinner),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-        /// <summary>
-        /// Get or set the minimum number of integral digits to display in the spinner. A value of 0 or lower will revert the display to using the standard double display format.
-        /// </summary>
-        /// <remarks>
-        /// This modifies the number of digits being rendered via <see cref="double.ToString(string)"/>.
-        /// Setting this to <c>4</c> and then setting the Value to <c>16</c> will render the text <c>0016</c> in the display. The stored value isn't affected.
-        /// This setting only modifies the integral (integer) part of the number; use the <see cref="Decimals"/> property for modifying how many numbers to display after the decimal point.
-        /// You should generally avoid setting this to numbers larger than 99, as larger numbers are only supported in newer versions of .NET.
-        /// </remarks>
-        [Category("Common")]
-        public int MinimumDigitCount
-        {
-            get => (int)GetValue(MinimumDigitCountProperty);
-            set => SetValue(MinimumDigitCountProperty, value);
+            base.OnShowArrowsChanged();
         }
 
         #endregion
@@ -728,47 +383,62 @@ namespace SolidShineUi
             Value = Math.Round(Value, Decimals);
 
             UpdateUI();
-            ValueValidated?.Invoke(this, EventArgs.Empty);
+            RaiseValueValidated(this);
         }
 
-        void UpdateUI()
+        /// <summary>
+        /// Update this control's UI to reflect the changes in its <see cref="Value"/> or visual properties.
+        /// </summary>
+        protected override void UpdateUI()
         {
-            if (Value == MinValue)
+            if (!IsEnabled)
             {
-                btnDown.IsEnabled = false;
-                btnDown.Background = DisabledBrush;
-                advanceTimer.Stop();
-            }
-            else
-            {
-                if (advanceTimer.Enabled && !advanceStepUp)
-                {
-                    btnDown.Background = ClickBrush;
-                }
-                else
-                {
-                    btnDown.Background = ButtonBackground;
-                }
-                btnDown.IsEnabled = true;
-            }
-
-            if (Value == MaxValue)
-            {
-                btnUp.IsEnabled = false;
+                brdr.BorderBrush = BorderDisabledBrush;
+                visBorder.BorderBrush = BorderDisabledBrush;
                 btnUp.Background = DisabledBrush;
+                btnDown.Background = DisabledBrush;
+
                 advanceTimer.Stop();
             }
             else
             {
-                if (advanceTimer.Enabled && advanceStepUp)
+                if (Value == MinValue)
                 {
-                    btnUp.Background = ClickBrush;
+                    btnDown.IsEnabled = false;
+                    btnDown.Background = DisabledBrush;
+                    advanceTimer.Stop();
                 }
                 else
                 {
-                    btnUp.Background = ButtonBackground;
+                    if (advanceTimer.Enabled && !advanceStepUp)
+                    {
+                        btnDown.Background = ClickBrush;
+                    }
+                    else
+                    {
+                        btnDown.Background = ButtonBackground;
+                    }
+                    btnDown.IsEnabled = true;
                 }
-                btnUp.IsEnabled = true;
+
+                if (Value == MaxValue)
+                {
+                    btnUp.IsEnabled = false;
+                    btnUp.Background = DisabledBrush;
+                    advanceTimer.Stop();
+                }
+                else
+                {
+                    if (advanceTimer.Enabled && advanceStepUp)
+                    {
+                        btnUp.Background = ClickBrush;
+                    }
+                    else
+                    {
+                        btnUp.Background = ButtonBackground;
+                    }
+                    btnUp.IsEnabled = true;
+                }
             }
 
             string digitDisplay = "G";
@@ -874,14 +544,11 @@ namespace SolidShineUi
 
         private void baseSpinner_Loaded(object sender, RoutedEventArgs e)
         {
+            // doesn't work in constructor, apparently
             _raiseChangedEvent = false;
             ValidateValue();
             _raiseChangedEvent = true;
         }
-
-        Timer keyDownTimer = new Timer(300);
-        Timer advanceTimer = new Timer(50);
-        bool advanceStepUp = false;
 
         private void btnUp_MouseDown(object sender, MouseButtonEventArgs e)
         {

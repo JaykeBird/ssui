@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="SolidShineUi.LongSpinner"
+﻿<utils:SpinnerBase x:Class="SolidShineUi.LongSpinner"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SolidShineUi"
+             xmlns:utils="clr-namespace:SolidShineUi.Utils"
              mc:Ignorable="d" x:Name="baseSpinner" MinHeight="24"
              d:DesignWidth="80" Loaded="baseSpinner_Loaded" IsEnabledChanged="BaseSpinner_IsEnabledChanged" >
     <!--<UserControl.Resources>
@@ -73,5 +74,5 @@
                     Grid.ColumnSpan="3" Padding="0" Margin="0" d:IsHidden="True" />
         </Grid>
     </Border>
-</UserControl>
+</utils:SpinnerBase>
 

@@ -32,25 +32,34 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="cs">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            intSpinner.ColorScheme = cs;
+            btnMenu.ColorScheme = cs;
+            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
+            }
+            else if (cs.BackgroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
+            }
+            else
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
+            }
+        }
+
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                intSpinner.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-                }
-                else
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-                }
+                ApplyColorScheme(value);
             }
         }
 
@@ -199,33 +208,33 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (_propType == typeof(long))
             {
-                SetMaxMin(long.MaxValue, long.MinValue);
+                SetMinMax(long.MinValue, long.MaxValue);
             }
             else if (_propType == typeof(uint))
             {
-                SetMaxMin(uint.MaxValue, uint.MinValue);
+                SetMinMax(uint.MinValue, uint.MaxValue);
             }
             else if (_propType == typeof(ulong))
             {
-                SetMaxMin(long.MaxValue, 0);
+                SetMinMax(0, long.MaxValue);
             }
             else if (_propType == typeof(long?))
             {
-                SetMaxMin(long.MaxValue, long.MinValue);
+                SetMinMax(long.MinValue, long.MaxValue);
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(uint?))
             {
-                SetMaxMin(uint.MaxValue, uint.MinValue);
+                SetMinMax(uint.MinValue, uint.MaxValue);
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(ulong?))
             {
-                SetMaxMin(long.MaxValue, 0);
+                SetMinMax(0, long.MaxValue);
                 mnuSetNull.IsEnabled = true;
             }
 
-            void SetMaxMin(long max, long min)
+            void SetMinMax(long min, long max)
             {
                 intSpinner.MaxValue = max;
                 intSpinner.MinValue = min;

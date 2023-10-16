@@ -13,6 +13,7 @@ namespace SolidShineUi
     /// <summary>
     /// A menu control that can display and organize commands within various drop-down elements. This differs from the WPF menu with a visual style that matches other Solid Shine UI controls.
     /// </summary>
+    [Localizability(LocalizationCategory.Menu)]
     public class Menu : System.Windows.Controls.Menu
     {
 
