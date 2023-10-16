@@ -10,6 +10,8 @@ The entire library is available under the MIT License.
 View more details about this library at [my website, jaykebird.com](https://jaykebird.com/software/ssui).
 
 ## Use it now
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_shield)
+
 
 The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries [directly from here](https://github.com/JaykeBird/ssui/releases/latest).
 
@@ -210,3 +212,7 @@ For credits/attribution for when you use the library, please use one of the vers
 > Licensed under MIT License. See website for more details.
 
 The full credits is available on [the Credits page on my website](https://jaykebird.com/software/ssui/credits).
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_large)
