@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -23,8 +24,6 @@ namespace SolidShineUi.Toolbars.Ribbon
         {
             SetValue(ItemsPropertyKey, new ObservableCollection<RibbonGroup>());
 
-            InternalPaddingChanged += tabItem_InternalPaddingChanged;
-
             Items.CollectionChanged += Items_CollectionChanged;
         }
 
@@ -44,7 +43,17 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         public static DependencyProperty VisibilityProperty
             = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RibbonTab),
-            new FrameworkPropertyMetadata(Visibility.Visible));
+            new FrameworkPropertyMetadata(Visibility.Visible, 
+                new PropertyChangedCallback((o, e) => o.AsThis<RibbonTab>((t) => t.VisibilityChanged?.Invoke(t, e)))));
+
+        /// <summary>
+        /// Raised when the <see cref="Visibility"/> value has changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? VisibilityChanged;
+#else
+        public event DependencyPropertyChangedEventHandler VisibilityChanged;
+#endif
 
         #region Items
 
@@ -87,7 +96,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(RibbonTab),
-            new PropertyMetadata(new Thickness(8, 0, 8, 0), new PropertyChangedCallback(OnInternalPaddingChanged)));
+            new PropertyMetadata(new Thickness(12, 0, 12, 0), new PropertyChangedCallback((o, e) => o.AsThis<RibbonTab>((t) => t.PaddingChanged?.Invoke(t, e)))));
 
         ///<summary>
         /// Get or set the padding (or space) applied around the tab's title and icon. (This does not set the padding for the content.)
@@ -100,11 +109,6 @@ namespace SolidShineUi.Toolbars.Ribbon
         }
 
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalPaddingChanged;
-
-        /// <summary>
         /// Raised when the Padding property is changed.
         /// </summary>
 #if NETCOREAPP
@@ -112,18 +116,6 @@ namespace SolidShineUi.Toolbars.Ribbon
 #else
         public event DependencyPropertyChangedEventHandler PaddingChanged;
 #endif
-
-        private static void OnInternalPaddingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is RibbonTab s)
-            {
-                s.InternalPaddingChanged?.Invoke(s, e);
-            }
-        }
-        private void tabItem_InternalPaddingChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            PaddingChanged?.Invoke(this, e);
-        }
 
         #endregion
 

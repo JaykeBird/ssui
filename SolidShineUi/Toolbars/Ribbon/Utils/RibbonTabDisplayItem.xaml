@@ -15,7 +15,7 @@
              DragEnter="control_DragEnter" DragOver="control_DragOver" DragLeave="control_DragLeave" 
              PreviewDragEnter="control_PreviewDragEnter" PreviewDragOver="control_PreviewDragOver" PreviewDragLeave="control_PreviewDragLeave"
              Drop="control_Drop" PreviewDrop="control_PreviewDrop" QueryContinueDrag="control_QueryContinueDrag" PreviewQueryContinueDrag="control_PreviewQueryContinueDrag"
-             GiveFeedback="control_GiveFeedback" PreviewGiveFeedback="control_PreviewGiveFeedback" MouseMove="control_MouseMove" >
+             GiveFeedback="control_GiveFeedback" PreviewGiveFeedback="control_PreviewGiveFeedback" MouseMove="control_MouseMove" Foreground="Black" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
         <flat:ColorToBrushConverter x:Key="ctb" />
@@ -32,8 +32,19 @@
             </Trigger>
         </Border.Triggers>-->
             <Grid>
-                <Grid Grid.Column="0" Margin="{Binding ElementName=control, Path=TabItem.Padding, FallbackValue='8,0'}" >
-                    <TextBlock x:Name="lblTitle" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title, FallbackValue='Unnamed Tab'}" />
+                <Grid Grid.Column="0" Margin="{Binding ElementName=control, Path=TabItem.Padding, FallbackValue='12,0'}" >
+                    <TextBlock x:Name="lblTitle" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title, FallbackValue='Unnamed Tab'}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{Binding ElementName=control, Path=Foreground, FallbackValue=Black}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=control, Path=TabItem.IsContextual}" Value="True">
+                                        <Setter Property="Foreground" Value="{Binding ElementName=control, Path=TabItem.ContextualColor, Converter={StaticResource ctb}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </Grid>
                 <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
             </Grid>

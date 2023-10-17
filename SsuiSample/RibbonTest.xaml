@@ -8,14 +8,22 @@
              xmlns:local="clr-namespace:SsuiSample"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <!--<UserControl.Resources>
-        <Style x:Key="GroupColorScheme" TargetType="{x:Type ribbon:RibbonGroup}">
+    <UserControl.Resources>
+        <flat:ColorToBrushConverter x:Key="ctb" />
+        <BooleanToVisibilityConverter x:Key="btv" />
+        <!--<Style x:Key="GroupColorScheme" TargetType="{x:Type ribbon:RibbonGroup}">
             <Setter Property="ColorScheme" Value="{Binding RelativeSource={RelativeSource AncestorType=ribbon:Ribbon,AncestorLevel=15, Mode=FindAncestor}, Path=ColorScheme}" />
-        </Style>
-    </UserControl.Resources>-->
+        </Style>-->
+    </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Top" />
-        <ribbon:Ribbon Margin="60,60,20,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" >
+        <ribbon:Ribbon Margin="0,0,0,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Row="1" x:Name="ribbon" >
             <ribbon:Ribbon.FileMenu>
                 <ribbon:RibbonFileMenu>
                     <ribbon:RibbonButton StandardSize="Small" SmallIcon="Resources/Images/SaveColor.png" Title="Save" />
@@ -66,6 +74,66 @@
                     <ribbon:RibbonCheckBox Title="Check me!" StandardSize="Small" CompactSize="Small" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
+            <ribbon:RibbonTab Title="View">
+                <!-- Sheet View -->
+                <ribbon:RibbonGroup Title="Workbook Views">
+                    <ribbon:RibbonButton Title="Normal" StandardSize="Large" CompactSize="Small" SelectOnClick="True" IsSelected="True" />
+                    <ribbon:RibbonButton Title="Page Break Preview" StandardSize="Large" CompactSize="Small" SelectOnClick="True" />
+                    <ribbon:RibbonButton Title="Page Layout" StandardSize="Large" CompactSize="Small" SelectOnClick="True" x:Name="btnPageLayout" IsSelected="False" />
+                    <ribbon:RibbonButton Title="Custom Views" StandardSize="Large" CompactSize="Small" SelectOnClick="True" IsEnabled="False" />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Title="Show">
+                    <ribbon:RibbonButton Title="Navigation" StandardSize="Large" CompactSize="Small" SelectOnClick="True" />
+                    <ribbon:RibbonCheckBox Title="Ruler" IsEnabled="{Binding ElementName=btnPageLayout, Path=IsSelected}" />
+                    <ribbon:RibbonCheckBox Title="Gridlines" />
+                    <ribbon:RibbonCheckBox Title="Formula Bar" />
+                    <ribbon:RibbonCheckBox Title="Headings" />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Title="Zoom">
+                    <ribbon:RibbonButton Title="Zoom" StandardSize="Large" CompactSize="Small" />
+                    <ribbon:RibbonButton Title="100%" StandardSize="Large" CompactSize="Small" />
+                    <ribbon:RibbonButton Title="Zoom to Selection" StandardSize="Large" CompactSize="Small" />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Title="Window">
+                    <ribbon:RibbonButton Title="New Window" StandardSize="Large" CompactSize="Small" />
+                    <ribbon:RibbonButton Title="Arrange All" StandardSize="Large" CompactSize="Small" />
+                    <ribbon:RibbonMenuButton Title="Freeze Panes" StandardSize="Large" CompactSize="Small">
+                        <ribbon:RibbonMenuButton.Menu>
+                            <flat:ContextMenu>
+                                <MenuItem Header="Freeze Panes" />
+                                <MenuItem Header="Freeze Top Row" />
+                                <MenuItem Header="Freeze First Column" />
+                            </flat:ContextMenu>
+                        </ribbon:RibbonMenuButton.Menu>
+                    </ribbon:RibbonMenuButton>
+                    <ribbon:RibbonButton Title="Split" StandardSize="Small" CompactSize="Small" />
+                    <ribbon:RibbonButton Title="Hide" StandardSize="Small" CompactSize="Small" />
+                    <ribbon:RibbonButton Title="Unhide" StandardSize="Small" CompactSize="Small" />
+                    <ribbon:RibbonButton Title="View Side by Side" StandardSize="Small" CompactSize="Small" IsEnabled="False" />
+                    <ribbon:RibbonButton Title="Synchronous Scrolling" StandardSize="Small" CompactSize="Small" IsEnabled="False" />
+                    <ribbon:RibbonButton Title="Reset Window Position" StandardSize="Small" CompactSize="Small" IsEnabled="False" />
+                    <ribbon:RibbonButton Title="Switch Windows" StandardSize="Large" CompactSize="Small" />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup>
+                    <ribbon:RibbonMenuButton Title="Macros" StandardSize="Large" CompactSize="Small" />
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Title="Shape Format" IsContextual="True" ContextualColor="DarkOrange" Visibility="Collapsed" x:Name="tabContextual" >
+                <!-- Visibility="{Binding ElementName=chkContextual, Path=IsChecked, Converter={StaticResource btv}}" -->
+                <ribbon:RibbonGroup>
+                    <ribbon:RibbonButton Title="Button" StandardSize="Large" CompactSize="Small" />
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
         </ribbon:Ribbon>
+        <ScrollViewer Grid.Row="2" MinHeight="24" Margin="5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
+            <StackPanel Orientation="Horizontal" Height="24" >
+                <flat:CheckBox x:Name="chkContextual" Margin="5,0" Content="Show Contextual Tab" IsChecked="False" CheckChanged="chkContextual_CheckChanged" 
+                               ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+                <flat:CheckBox Content="Show Only Tabs" Margin="5,0" IsChecked="{Binding ElementName=ribbon, Path=ShowOnlyTabs, Mode=TwoWay}" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+                <Border Margin="5,0" Width="1" BorderThickness="1" BorderBrush="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}, FallbackValue=Black}" />
+                <TextBlock Margin="5,0" Text="Main Bar Height:" VerticalAlignment="Center" />
+                <flat:DoubleSpinner x:Name="nudBarHeight" Value="{Binding ElementName=ribbon, Path=MainBarHeight}" MinWidth="50" Step="1" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

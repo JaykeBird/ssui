@@ -74,11 +74,11 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             if (IsSelected)
             {
                 border.BorderThickness = TabBorderThickSelected;
-                border.Background = Background;
+                border.Background = SelectedBrush;
             }
             else
             {
-                border.BorderThickness = IsMouseOver ? TabBorderThickSelected : TabBorderThickStandard;
+                border.BorderThickness = IsMouseOver ? TabBorderThickHighlite : TabBorderThickStandard;
                 border.Background = (IsMouseOver || IsKeyboardFocused) ? HighlightBrush : NearTransparent;
             }
         }
@@ -269,13 +269,15 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
                 BorderBrush = cs.BorderColor.ToBrush();
                 HighlightBrush = cs.HighlightColor.ToBrush();
                 BorderHighlightBrush = cs.BorderColor.ToBrush();
+                SelectedBrush = cs.BackgroundColor.ToBrush();
             }
             else
             {
-                Background = cs.ThirdHighlightColor.ToBrush();
+                Background = NearTransparent;
                 BorderBrush = cs.BorderColor.ToBrush();
                 HighlightBrush = cs.SecondHighlightColor.ToBrush();
                 BorderHighlightBrush = cs.HighlightColor.ToBrush();
+                SelectedBrush = cs.LightBackgroundColor.ToBrush();
             }
 
             if (highlighting)
@@ -285,7 +287,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             }
             else
             {
-                border.Background = IsSelected ? Background : NearTransparent;
+                border.Background = IsSelected ? SelectedBrush : NearTransparent;
                 border.BorderBrush = BorderBrush;
             }
         }
@@ -396,14 +398,14 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             {
                 border.Background = HighlightBrush;
                 border.BorderBrush = BorderHighlightBrush;
-                border.BorderThickness = TabBorderThickSelected;
+                border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickHighlite;
                 highlighting = true;
             }
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            border.Background = IsSelected ? Background : NearTransparent;
+            border.Background = IsSelected ? SelectedBrush : NearTransparent;
             border.BorderBrush = BorderBrush;
             highlighting = false;
 
@@ -412,8 +414,9 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
 
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            border.Background = IsSelected ? Background : NearTransparent;
+            border.Background = IsSelected ? SelectedBrush : NearTransparent;
             border.BorderBrush = BorderBrush;
+            border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
             highlighting = false;
 
             initiatingClick = false;
@@ -423,7 +426,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         {
             if (!IsKeyboardFocused)
             {
-                border.Background = IsSelected ? Background : NearTransparent;
+                border.Background = IsSelected ? SelectedBrush : NearTransparent;
                 border.BorderBrush = BorderBrush;
                 border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
                 highlighting = false;
@@ -435,6 +438,11 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         #endregion
 
         #region Brushes / Border
+
+        /// <summary>
+        /// Get or set the brush for the background while this TabDisplayItem is selected (i.e. <see cref="IsSelected"/> is true).
+        /// </summary>
+        public Brush SelectedBrush { get; set; } = new SolidColorBrush(Colors.Gainsboro);
 
         /// <summary>
         /// Get or set the brush for the background while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it has keyboard focus).
@@ -452,6 +460,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
 
         private static Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+        private static Thickness TabBorderThickHighlite = new Thickness(1, 1, 1, 1);
         private static Thickness TabBorderThickStandard = new Thickness(0, 0, 0, 1);
         private static Brush NearTransparent = Color.FromArgb(1, 1, 1, 1).ToBrush();
 

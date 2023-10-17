@@ -498,7 +498,7 @@ namespace SolidShineUi
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(TabItem),
-            new PropertyMetadata(System.Windows.Visibility.Visible, new PropertyChangedCallback(OnInternalVisibilityChanged)));
+            new PropertyMetadata(Visibility.Visible, new PropertyChangedCallback(OnInternalVisibilityChanged)));
 
         ///<summary>
         /// Get or set if this tab is visually displayed in the UI.

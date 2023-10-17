@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace SolidShineUi.Toolbars.Ribbon
 {
@@ -34,7 +35,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         {
             SetValue(ItemsPropertyKey, new ObservableCollection<RibbonTab>());
 
-            InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
+            //InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
 
             Loaded += Ribbon_Loaded;
 
@@ -124,12 +125,15 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
+            // TODO: does e.Action == Reset list all removed items in e.OldItems? if not, how can we get them???
+            if (e.NewItems != null)
             {
                 foreach (var item in e.NewItems)
                 {
                     if (item is RibbonTab tab)
                     {
+                        tab.VisibilityChanged += tab_VisibilityChanged;
+
                         foreach (RibbonGroup group in tab.Items)
                         {
                             group.ColorScheme = ColorScheme;
@@ -142,6 +146,30 @@ namespace SolidShineUi.Toolbars.Ribbon
                     }
                 }
             }
+
+            if (e.OldItems != null)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    if (item is RibbonTab tab)
+                    {
+                        tab.VisibilityChanged -= tab_VisibilityChanged;
+                    }
+                }
+            }
+        }
+
+        private void tab_VisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is RibbonTab tab)
+            {
+                if (tab.IsContextual && SelectedTab == tab && tab.Visibility == Visibility.Collapsed)
+                {
+                    Dispatcher.Invoke(() => { SelectFirstVisibleTab(); });
+                    // move to first visible tab
+                }
+            }
+            //throw new NotImplementedException();
         }
 
         #region Selection
@@ -152,7 +180,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         {
             if (ic == null) return false;
 
-            if (Items.Contains(tab))
+            if (Items.Contains(tab) && tab.Visibility == Visibility.Visible)
             {
                 SelectedTab = tab;
 
@@ -197,9 +225,28 @@ namespace SolidShineUi.Toolbars.Ribbon
             return true;
         }
 
+        /// <summary>
+        /// Select a specific tab on the Ribbon. This tab needs to be visible (i.e. <see cref="RibbonTab.Visibility"/> is set to <c>Visible</c>) before it can be selected.
+        /// </summary>
+        /// <param name="tab"></param>
+        /// <returns></returns>
         public bool SelectTab(RibbonTab tab)
         {
             return SelectTabInternal(tab);
+        }
+
+        void SelectFirstVisibleTab()
+        {
+            if (Items.Count == 0) return;
+            for (int i = 0; Items.Count > 0; i++)
+            {
+                RibbonTab tab = Items[i];
+                if (tab.Visibility == Visibility.Visible)
+                {
+                    SelectTab(tab);
+                    return;
+                }
+            }
         }
 
         private void DeselectAllTabs()
@@ -447,6 +494,33 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("AllowControlReordering", typeof(bool), typeof(Ribbon),
             new FrameworkPropertyMetadata(true));
 
+        #region Brushes
+
+        public Brush MainBarBackground { get => (Brush)GetValue(MainBarBackgroundProperty); set => SetValue(MainBarBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MainBarBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty MainBarBackgroundProperty
+            = DependencyProperty.Register("MainBarBackground", typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+
+        public Brush TabBarBackground { get => (Brush)GetValue(TabBarBackgroundProperty); set => SetValue(TabBarBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabBarBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty TabBarBackgroundProperty
+            = DependencyProperty.Register("TabBarBackground", typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        public new Brush BorderBrush { get => (Brush)GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
+        public new static DependencyProperty BorderBrushProperty
+            = DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
+
+
+        #endregion
+
         #region Color Scheme
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -508,6 +582,10 @@ namespace SolidShineUi.Toolbars.Ribbon
                 ColorScheme = cs;
                 return;
             }
+
+            MainBarBackground = cs.LightBackgroundColor.ToBrush();
+            BorderBrush = cs.BorderColor.ToBrush();
+            TabBarBackground = cs.BackgroundColor.ToBrush();
 
             foreach (RibbonTab tab in Items)
             {

@@ -91,5 +91,10 @@ namespace SsuiSample
             }
         }
         #endregion
+
+        private void chkContextual_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            tabContextual.Visibility = chkContextual.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }
