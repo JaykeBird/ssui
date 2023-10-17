@@ -1810,6 +1810,18 @@
                     <Grid Margin="{TemplateBinding Padding}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
+                            <!--<RowDefinition>
+                                <RowDefinition.Style>
+                                    <Style TargetType="{x:Type RowDefinition}">
+                                        <Setter Property="Height" Value="1*" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                                <Setter Property="Height" Value="Auto" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RowDefinition.Style>
+                            </RowDefinition>-->
                             <RowDefinition MaxHeight="97">
                                 <RowDefinition.Style>
                                     <Style TargetType="{x:Type RowDefinition}">
@@ -1822,6 +1834,18 @@
                                     </Style>
                                 </RowDefinition.Style>
                             </RowDefinition>
+                            <!--<RowDefinition>
+                                <RowDefinition.Style>
+                                    <Style TargetType="{x:Type RowDefinition}">
+                                        <Setter Property="Height" Value="Auto" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                                <Setter Property="Height" Value="1*" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </RowDefinition.Style>
+                            </RowDefinition>-->
                         </Grid.RowDefinitions>
 
                         <Grid Margin="0,0,0,0" x:Name="grdTabs" Grid.Column="1" MinHeight="24" >
@@ -1864,12 +1888,12 @@
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
                                         <Setter Property="VerticalAlignment" Value="Bottom" />
-                                        <Style.Triggers>
+                                        <!--<Style.Triggers>
                                             <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
                                                 <Setter Property="BorderThickness" Value="0,0,0,1" />
                                                 <Setter Property="VerticalAlignment" Value="Top" />
                                             </DataTrigger>
-                                        </Style.Triggers>
+                                        </Style.Triggers>-->
                                     </Style>
                                 </Border.Style>
                             </Border>
@@ -1910,12 +1934,12 @@
                                             <Style TargetType="Border">
                                                 <Setter Property="BorderThickness" Value="0,1,0,0"  />
                                                 <Setter Property="VerticalAlignment" Value="Bottom" />
-                                                <Style.Triggers>
+                                                <!--<Style.Triggers>
                                                     <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
                                                         <Setter Property="BorderThickness" Value="0,0,0,1" />
                                                         <Setter Property="VerticalAlignment" Value="Top" />
                                                     </DataTrigger>
-                                                </Style.Triggers>
+                                                </Style.Triggers>-->
                                             </Style>
                                         </Border.Style>
                                     </Border>
@@ -1927,12 +1951,12 @@
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
                                         <Setter Property="VerticalAlignment" Value="Bottom" />
-                                        <Style.Triggers>
+                                        <!--<Style.Triggers>
                                             <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
                                                 <Setter Property="BorderThickness" Value="0,0,0,1" />
                                                 <Setter Property="VerticalAlignment" Value="Top" />
                                             </DataTrigger>
-                                        </Style.Triggers>
+                                        </Style.Triggers>-->
                                     </Style>
                                 </Border.Style>
                             </Border>
@@ -1955,11 +1979,11 @@
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="1,0,1,1"  />
-                                        <Style.Triggers>
+                                        <!--<Style.Triggers>
                                             <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
                                                 <Setter Property="BorderThickness" Value="1,1,1,0" />
                                             </DataTrigger>
-                                        </Style.Triggers>
+                                        </Style.Triggers>-->
                                     </Style>
                                 </Border.Style>
                                 <ItemsControl Margin="1,0" Focusable="False" Height="{TemplateBinding MainBarHeight}" 

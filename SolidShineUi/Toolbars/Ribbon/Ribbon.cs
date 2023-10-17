@@ -335,11 +335,61 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         #endregion
 
+        #region Main Bar
+
         public double MainBarHeight { get => (double)GetValue(MainBarHeightProperty); set => SetValue(MainBarHeightProperty, value); }
 
         public static DependencyProperty MainBarHeightProperty
             = DependencyProperty.Register("MainBarHeight", typeof(double), typeof(Ribbon),
             new FrameworkPropertyMetadata(96.0));
+
+        #endregion
+
+        #region Tab Bar
+
+//        #region ShowTabsOnBottom
+
+//#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+//        public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(Ribbon),
+//            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
+//#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+//        /// <summary>
+//        /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
+//        /// </summary>
+//        [Category("Common")]
+//        public bool ShowTabsOnBottom
+//        {
+//            get { return (bool)GetValue(ShowTabsOnBottomProperty); }
+//            set { SetValue(ShowTabsOnBottomProperty, value); }
+//        }
+
+//        /// <summary>
+//        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+//        /// </summary>
+//        protected event DependencyPropertyChangedEventHandler InternalShowTabsOnBottomChanged;
+
+//        /// <summary>
+//        /// Raised when the ShowTabsOnBottom property is changed.
+//        /// </summary>
+//#if NETCOREAPP
+//        public event DependencyPropertyChangedEventHandler? ShowTabsOnBottomChanged;
+//#else
+//        public event DependencyPropertyChangedEventHandler ShowTabsOnBottomChanged;
+//#endif
+
+//        private static void OnInternalShowTabsOnBottomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+//        {
+//            if (d is Ribbon s)
+//            {
+//                s.InternalShowTabsOnBottomChanged?.Invoke(s, e);
+//            }
+//        }
+//        private void tabControl_InternalShowTabsOnBottomChanged(object sender, DependencyPropertyChangedEventArgs e)
+//        {
+//            ShowTabsOnBottomChanged?.Invoke(this, e);
+//        }
+//        #endregion
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty FileMenuProperty = DependencyProperty.Register(
@@ -388,6 +438,8 @@ namespace SolidShineUi.Toolbars.Ribbon
         public static DependencyProperty ShowOnlyTabsProperty
             = DependencyProperty.Register("ShowOnlyTabs", typeof(bool), typeof(Ribbon),
             new FrameworkPropertyMetadata(false));
+
+        #endregion
 
         public bool AllowControlReordering { get => (bool)GetValue(AllowControlReorderingProperty); set => SetValue(AllowControlReorderingProperty, value); }
 
@@ -469,50 +521,6 @@ namespace SolidShineUi.Toolbars.Ribbon
                     }
                 }
             }
-        }
-        #endregion
-
-        #region ShowTabsOnBottom
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(Ribbon),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
-        /// </summary>
-        [Category("Common")]
-        public bool ShowTabsOnBottom
-        {
-            get { return (bool)GetValue(ShowTabsOnBottomProperty); }
-            set { SetValue(ShowTabsOnBottomProperty, value); }
-        }
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalShowTabsOnBottomChanged;
-
-        /// <summary>
-        /// Raised when the ShowTabsOnBottom property is changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ShowTabsOnBottomChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ShowTabsOnBottomChanged;
-#endif
-
-        private static void OnInternalShowTabsOnBottomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is Ribbon s)
-            {
-                s.InternalShowTabsOnBottomChanged?.Invoke(s, e);
-            }
-        }
-        private void tabControl_InternalShowTabsOnBottomChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            ShowTabsOnBottomChanged?.Invoke(this, e);
         }
         #endregion
 
