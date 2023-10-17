@@ -163,7 +163,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         {
             if (sender is RibbonTab tab)
             {
-                if (tab.IsContextual && SelectedTab == tab && tab.Visibility == Visibility.Collapsed)
+                if (SelectedTab == tab && tab.Visibility == Visibility.Collapsed)
                 {
                     Dispatcher.Invoke(() => { SelectFirstVisibleTab(); });
                     // move to first visible tab
