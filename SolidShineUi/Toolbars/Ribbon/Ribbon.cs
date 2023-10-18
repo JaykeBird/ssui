@@ -132,6 +132,7 @@ namespace SolidShineUi.Toolbars.Ribbon
                 {
                     if (item is RibbonTab tab)
                     {
+                        tab.InternalBringIntoViewRequested += tab_InternalBringIntoViewRequested;
                         tab.VisibilityChanged += tab_VisibilityChanged;
 
                         foreach (RibbonGroup group in tab.Items)
@@ -154,6 +155,35 @@ namespace SolidShineUi.Toolbars.Ribbon
                     if (item is RibbonTab tab)
                     {
                         tab.VisibilityChanged -= tab_VisibilityChanged;
+                        tab.InternalBringIntoViewRequested -= tab_InternalBringIntoViewRequested;
+                    }
+                }
+            }
+        }
+
+        private void tab_InternalBringIntoViewRequested(object sender, EventArgs e)
+        {
+            if (sender is RibbonTab tab)
+            {
+                if (Items.Contains(tab) && tab.Visibility == Visibility.Visible)
+                {
+                    SelectedTab = tab;
+
+                    for (int i = 0; i < ic.Items.Count; i++)
+                    {
+                        // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
+                        // from https://stackoverflow.com/a/1876534/2987285
+                        ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+                        if (c == null) return;
+                        c.ApplyTemplate();
+
+                        if (c.ContentTemplate.FindName("PART_TabItem", c) is RibbonTabDisplayItem tb)
+                        {
+                            if (tb.TabItem != null && tb.TabItem == tab)
+                            {
+                                tb.BringIntoView();
+                            }
+                        }
                     }
                 }
             }
@@ -169,7 +199,6 @@ namespace SolidShineUi.Toolbars.Ribbon
                     // move to first visible tab
                 }
             }
-            //throw new NotImplementedException();
         }
 
         #region Selection
@@ -490,9 +519,10 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         public bool AllowControlReordering { get => (bool)GetValue(AllowControlReorderingProperty); set => SetValue(AllowControlReorderingProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="AllowControlReordering"/>. See the related property for details.</summary>
         public static DependencyProperty AllowControlReorderingProperty
             = DependencyProperty.Register("AllowControlReordering", typeof(bool), typeof(Ribbon),
-            new FrameworkPropertyMetadata(true));
+            new FrameworkPropertyMetadata(false));
 
         #region Brushes
 
@@ -614,7 +644,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             tdi.Click += tdi_Click;
             tdi.RightClick += tdi_RightClick;
             tdi.RequestSelect += tdi_RequestSelect;
-            //tdi.TabItemDrop += tdi_TabItemDrop;
+            tdi.TabItemDrop += tdi_TabItemDrop;
 
             //CheckScrolling();
         }
@@ -651,16 +681,15 @@ namespace SolidShineUi.Toolbars.Ribbon
             if (!Items.Contains(e.DroppedTabItem)) return;
 
             _internalAction = true;
-//#if NETCOREAPP
-//            TabItem? selItem = null;
-//#else
-//            TabItem selItem = null;
-//#endif
-            //if (Items.SelectedItems.Count != 0)
-            //{
-            //    selItem = Items.SelectedItems.First();
-            //}
-            //Items.ClearSelection();
+#if NETCOREAPP
+            RibbonTab? selItem = SelectedTab;
+#else
+            RibbonTab selItem = SelectedTab;
+#endif
+            if (e.DroppedTabItem == selItem)
+            {
+                DeselectAllTabs();
+            }
 
             Items.Remove(e.DroppedTabItem);
             //if (Items.Contains(e.DroppedTabItem))
@@ -683,10 +712,10 @@ namespace SolidShineUi.Toolbars.Ribbon
                 Items.Insert(newIndex, e.DroppedTabItem);
             }
 
-            //if (selItem != null)
-            //{
-            //    Items.Select(selItem);
-            //}
+            if (selItem != null)
+            {
+                SelectTab(selItem);
+            }
 
             // fix to make sure the correct tab has the IsSelected state
             //if (ic != null)

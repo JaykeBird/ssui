@@ -1801,7 +1801,7 @@
 
     <Style TargetType="{x:Type ribbon:Ribbon}">
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="AllowDrop" Value="False" />
         <Setter Property="Padding" Value="0,3,0,0" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Template">

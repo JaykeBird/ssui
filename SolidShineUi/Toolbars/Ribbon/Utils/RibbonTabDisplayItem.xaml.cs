@@ -481,7 +481,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(RibbonTabDisplayItem),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
+            new PropertyMetadata(false, new PropertyChangedCallback(OnAllowDragDropChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -495,7 +495,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty AllowDataDragDropProperty = DependencyProperty.Register("AllowDataDragDrop", typeof(bool), typeof(RibbonTabDisplayItem),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
+            new PropertyMetadata(false, new PropertyChangedCallback(OnAllowDragDropChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
