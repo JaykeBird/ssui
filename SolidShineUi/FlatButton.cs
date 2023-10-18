@@ -217,8 +217,6 @@ namespace SolidShineUi
 
         #region ColorScheme/TransparentBack/UseAccentColors
 
-        //DispatcherTimer invalidTimer = new DispatcherTimer();
-
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -236,9 +234,6 @@ namespace SolidShineUi
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        //bool use_transp = false;
-        //bool use_accent = false;
-
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
         /// </summary>
@@ -254,14 +249,6 @@ namespace SolidShineUi
                     f.ColorSchemeChanged?.Invoke(d, e);
                 }
             }
-
-//#if NETCOREAPP
-//            ColorScheme cs = (e.NewValue as ColorScheme)!;
-//#else
-//            ColorScheme cs = e.NewValue as ColorScheme;
-//#endif
-
-
         }
 
         /// <summary>
@@ -340,38 +327,6 @@ namespace SolidShineUi
             }
         }
 
-        ///// <summary>
-        ///// Get or set whether the button should have a transparent background when the button is not focused.
-        ///// </summary>
-        //public bool TransparentBack
-        //{
-        //    get
-        //    {
-        //        return use_transp;
-        //    }
-        //    set
-        //    {
-        //        use_transp = value;
-        //        if (runApply) ApplyColorScheme(ColorScheme, value, use_accent);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
-        ///// </summary>
-        //public bool UseAccentColors
-        //{
-        //    get
-        //    {
-        //        return use_accent;
-        //    }
-        //    set
-        //    {
-        //        use_accent = value;
-        //        if (runApply) ApplyColorScheme(ColorScheme, TransparentBack, value);
-        //    }
-        //}
-
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
         /// </summary>
@@ -401,8 +356,6 @@ namespace SolidShineUi
                 ColorScheme = cs;
                 return;
             }
-
-            //colScheme = cs;
 
             runApply = false;
 
@@ -494,98 +447,11 @@ namespace SolidShineUi
 
             runApply = true;
 
-            //InvalidateMeasure();
-            //InvalidateVisual();
-            //invalidTimer.Start();
-
             if (Template == null)
             {
                 return;
             }
-
-            // //** why is this section here?
-            //Border border = (Border)Template.FindName("btn_Border", this);
-            //if (border != null)
-            //{
-            //    if (IsSelected)
-            //    {
-            //        border.Background = SelectedBrush;
-            //        border.BorderBrush = BorderSelectedBrush;
-            //        border.BorderThickness = BorderSelectionThickness;
-            //    }
-            //    else
-            //    {
-            //        border.Background = Background;
-            //        border.BorderBrush = BorderBrush;
-            //        border.BorderThickness = BorderThickness;
-            //    }
-            //}
-
-
-            //GetBindingExpression(ColorSchemeProperty).UpdateTarget();
-            //fBtn_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="hco">The high-contrast color scheme to apply.</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
-        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
-            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
-        public void ApplyColorScheme(HighContrastOption hco, bool transparentBack = false)
-        {
-            ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
-            ApplyColorScheme(cs, transparentBack, false);
-            //if (cs != ColorScheme)
-            //{
-            //    ColorScheme = cs;
-            //    TransparentBack = transparentBack;
-            //    return;
-            //}
-
-            //if (transparentBack || TransparentBack)
-            //{
-            //    Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
-            //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-            //    HighlightBrush = cs.HighlightColor.ToBrush();
-            //    DisabledBrush = cs.LightDisabledColor.ToBrush();
-            //    BorderDisabledBrush = cs.BorderColor.ToBrush();
-            //    SelectedBrush = cs.HighlightColor.ToBrush();
-            //    BorderHighlightBrush = cs.BorderColor.ToBrush();
-            //    BorderSelectedBrush = cs.BorderColor.ToBrush();
-            //    Foreground = cs.ForegroundColor.ToBrush();
-            //    TransparentBack = true;
-            //}
-            //else
-            //{
-            //    Background = cs.BackgroundColor.ToBrush();
-            //    BorderBrush = cs.BorderColor.ToBrush();
-            //    HighlightBrush = cs.HighlightColor.ToBrush();
-            //    DisabledBrush = cs.LightDisabledColor.ToBrush();
-            //    BorderDisabledBrush = cs.BorderColor.ToBrush();
-            //    SelectedBrush = cs.HighlightColor.ToBrush();
-            //    BorderHighlightBrush = cs.BorderColor.ToBrush();
-            //    BorderSelectedBrush = cs.BorderColor.ToBrush();
-            //    Foreground = cs.ForegroundColor.ToBrush();
-            //}
-
-            ////fBtn_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
-        }
-
-        //private void InvalidTimer_Tick(object sender, EventArgs e)
-        //{
-        //    if (Application.Current != null)
-        //    {
-        //        Dispatcher.Invoke(() =>
-        //        {
-        //            InvalidateMeasure();
-        //            InvalidateVisual();
-        //        }, DispatcherPriority.Render);
-        //    }
-
-        //    invalidTimer.IsEnabled = false;
-        //}
 
         #endregion
 
