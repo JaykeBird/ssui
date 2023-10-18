@@ -615,11 +615,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             void UpdateValue(Brush b)
             {
                 _dataValue = b;
+                Brush brushCopy = b.CloneCurrentValue();
 
-                btnBrush.Background = CopyBrush();
-                btnBrush.HighlightBrush = CopyBrush();
-                btnBrush.ClickBrush = CopyBrush();
-                btnBrush.DisabledBrush = CopyBrush();
+                btnBrush.Background = brushCopy;
+                btnBrush.HighlightBrush = brushCopy;
+                btnBrush.ClickBrush = brushCopy;
+                btnBrush.DisabledBrush = brushCopy;
 
                 if (b is GradientBrush gb)
                 {
@@ -736,7 +737,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     if (_dataValue.IsFrozen)
                     {
                         // just create a new brush
-                        _dataValue = CopyBrush();
+                        _dataValue = _dataValue.CloneCurrentValue();
                     }
                     _dataValue.Transform = ted.ExportSingleTransform();
                     ValueChanged?.Invoke(this, EventArgs.Empty);
@@ -763,7 +764,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     if (_dataValue.IsFrozen)
                     {
                         // just create a new brush
-                        _dataValue = CopyBrush();
+                        _dataValue = _dataValue.CloneCurrentValue();
                     }
                     _dataValue.RelativeTransform = ted.ExportSingleTransform();
                     ValueChanged?.Invoke(this, EventArgs.Empty);

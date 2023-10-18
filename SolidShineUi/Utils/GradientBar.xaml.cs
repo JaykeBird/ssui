@@ -253,6 +253,7 @@ namespace SolidShineUi.Utils
             {
                 foreach (GradientStopItem gsi in grdStops.Children)
                 {
+                    if (gsi == null) continue;
                     if (gsi.GradientStop == gs)
                     {
                         if (gsi == _selected) return; // this one is already selected
@@ -284,6 +285,8 @@ namespace SolidShineUi.Utils
 
             foreach (GradientStopItem gsi in grdStops.Children)
             {
+                if (gsi == null) continue;
+
                 if (gsi.GradientStop == gradientStop)
                 {
                     if (gsi == _selected) return; // this one is already selected
