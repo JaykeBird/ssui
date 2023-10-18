@@ -517,10 +517,13 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         #endregion
 
-        public bool AllowControlReordering { get => (bool)GetValue(AllowControlReorderingProperty); set => SetValue(AllowControlReorderingProperty, value); }
+        /// <summary>
+        /// Get or set if tabs, groups, and controls are able to be re-arranged on this Ribbon. (Note that for 2.0, this does not work, and will be iterated upon further in later releases.)
+        /// </summary>
+        private bool AllowControlReordering { get => (bool)GetValue(AllowControlReorderingProperty); set => SetValue(AllowControlReorderingProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="AllowControlReordering"/>. See the related property for details.</summary>
-        public static DependencyProperty AllowControlReorderingProperty
+        private static DependencyProperty AllowControlReorderingProperty
             = DependencyProperty.Register("AllowControlReordering", typeof(bool), typeof(Ribbon),
             new FrameworkPropertyMetadata(false));
 
