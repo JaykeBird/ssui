@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace SolidShineUi
 {
@@ -81,16 +82,45 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Placement
 
         /// <summary>
         /// Get or set the placement mode for the MenuButton's menu.
         /// </summary>
-        public System.Windows.Controls.Primitives.PlacementMode MenuPlacement { get; set; } = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+        public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementProperty
+            = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(MenuButton),
+            new FrameworkPropertyMetadata(PlacementMode.Bottom));
+
+
+        /// <summary>
+        /// Get or set the placement target for the MenuButton's menu. Set to <c>null</c> to set the target to this MenuButton.
+        /// </summary>
+#if NETCOREAPP
+        public UIElement? MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
+#else
+        public UIElement MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
+#endif
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementTargetProperty
+            = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(MenuButton),
+            new FrameworkPropertyMetadata(null));
+
 
         /// <summary>
         /// Get or set the placement rectangle for the MenuButton's menu. This sets the area relative to the button that the menu is positioned.
         /// </summary>
-        public Rect MenuPlacementRectangle { get; set; } = Rect.Empty;
+        public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementRectangleProperty
+            = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(MenuButton),
+            new FrameworkPropertyMetadata(Rect.Empty));
+
+        #endregion
 
         /// <summary>
         /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
@@ -176,7 +206,7 @@ namespace SolidShineUi
             if (Menu != null)
             {
                 Menu.Placement = MenuPlacement;
-                Menu.PlacementTarget = this;
+                Menu.PlacementTarget = MenuPlacementTarget ?? this;
                 Menu.PlacementRectangle = MenuPlacementRectangle;
                 Menu.HorizontalOffset = 0;
                 Menu.VerticalOffset = -1;
