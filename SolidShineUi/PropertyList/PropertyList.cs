@@ -388,8 +388,11 @@ namespace SolidShineUi.PropertyList
             ObjectDisplayName = "";
             _clearing = false;
 
-            txtType.Text = NOTHING_LOADED;
-            txtType.ToolTip = "";
+            if (txtType != null)
+            {
+                txtType.Text = NOTHING_LOADED;
+                txtType.ToolTip = "";
+            }
         }
 
         /// <summary>
@@ -1462,7 +1465,7 @@ namespace SolidShineUi.PropertyList
 
         void UpdateGridlines()
         {
-            //mnuGridlines.IsChecked = ShowGridlines;
+            if (stkProperties == null) return;
 
 #if NETCOREAPP
             foreach (UIElement? item in stkProperties.Children)
