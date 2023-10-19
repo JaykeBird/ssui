@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Diagnostics;
 using System.Windows.Threading;
 using System.Windows.Controls.Primitives;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -264,9 +265,10 @@ namespace SolidShineUi
         bool runApply = true;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TransparentBackProperty 
-            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton), 
-            new PropertyMetadata(false, new PropertyChangedCallback(OnTransparentBackChanged)));
+        public static readonly DependencyProperty TransparentBackProperty
+            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton),
+            new PropertyMetadata(false, 
+                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, v, f.UseAccentColors); }))));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -279,26 +281,11 @@ namespace SolidShineUi
             set => SetValue(TransparentBackProperty, value);
         }
 
-        /// <summary>
-        /// Perform an action when a property of an object has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnTransparentBackChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool tb)
-            {
-                if (d is FlatButton f)
-                {
-                    f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
-                }
-            }
-        }
-
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty UseAccentColorsProperty
             = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnUseAccentColorsChanged)));
+            new PropertyMetadata(false,
+                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, v); }))));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -309,22 +296,6 @@ namespace SolidShineUi
         {
             get => (bool)GetValue(UseAccentColorsProperty);
             set => SetValue(UseAccentColorsProperty, value);
-        }
-
-        /// <summary>
-        /// Perform an action when a property of an object has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnUseAccentColorsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool ua)
-            {
-                if (d is FlatButton f)
-                {
-                    f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, ua);
-                }
-            }
         }
 
         /// <summary>

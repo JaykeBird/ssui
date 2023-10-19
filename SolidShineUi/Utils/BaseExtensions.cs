@@ -27,12 +27,38 @@ namespace SolidShineUi.Utils
         /// <typeparam name="T">The type of the object to cast to.</typeparam>
         /// <param name="dp">The dependency object to cast from.</param>
         /// <param name="action">The action to take on the casted object.</param>
-        public static void AsThis<T>(this DependencyObject dp, Action<T> action)
+        public static void PerformAs<T>(this DependencyObject dp, Action<T> action)
         {
             if (dp is null) return;
             if (dp is T o)
             {
                 action.Invoke(o);
+            }
+        }
+
+        /// <summary>
+        /// Perform an action on an object that inherits from DependencyObject, with an extra check on the value's type. This includes a null and type check on the DependencyObject,
+        /// and a type check on the value.
+        /// </summary>
+        /// <remarks>
+        /// This is designed to work alongside the WPF dependency property system, since dependency property changed events only
+        /// pass in a DependencyObject object, and the DependencyPropertyChangedEventArgs only provides an object as the newValue. 
+        /// This method acts as an alternative to direct casting for both of those, allowing you to access your
+        /// object's methods and events, in a manner that also satisfies .NET's nullability feature.
+        /// <para/>
+        /// If the DependencyObject is null or isn't of type <typeparamref name="T"/>, or if <paramref name="newValue"/> isn't of type <typeparamref name="TValue"/>, then the action does not run.
+        /// </remarks>
+        /// <typeparam name="T">The type of the object to cast to.</typeparam>
+        /// <typeparam name="TValue">The type of the value object to cast to.</typeparam>
+        /// <param name="dp">The dependency object to cast from.</param>
+        /// <param name="action">The action to take on the casted object.</param>
+        /// <param name="newValue">The new value of the property that has changed</param>
+        public static void PerformAs<T, TValue>(this DependencyObject dp, object newValue, Action<T, TValue> action)
+        {
+            if (dp is null) return;
+            if (newValue is TValue v && dp is T o)
+            {
+                action.Invoke(o, v);
             }
         }
 
