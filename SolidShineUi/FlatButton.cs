@@ -858,26 +858,20 @@ namespace SolidShineUi
 
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //e.Handled = false;
             if (e.ChangedButton == MouseButton.Right)
             {
                 PressRightClick();
             }
             SetIsMouseDown(this, true);
-            //IsPressed = true;
-            //base.OnPreviewMouseDown(e);
         }
 
         private void UserControl_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            //e.Handled = false;
             if (e.ChangedButton == MouseButton.Right)
             {
                 PerformRightClick();
             }
             SetIsMouseDown(this, false);
-            //IsPressed = false;
-            //base.OnPreviewMouseUp(e);
         }
 
 
@@ -907,6 +901,22 @@ namespace SolidShineUi
         // OnDefault code adapted from .NET Core WPF repository
         // https://github.com/dotnet/wpf/blob/master/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Button.cs
 
+        // unfortunately, I'm unable to actually achieve the "IsDefault" functionality as is present in WPF
+        // the reason is that the WPF button accesses properties and methods marked as "internal" - which means it only works within that library
+        // the biggest culprits are the KeyboardNavigation instance in FrameworkElement, and the FocusChanged event in KeybaordNavigation
+        // if those two were accessible, then I would be able to mirror the code exactly and set up my buttons as capable of being a "default" button
+        // but now, that's a feature that's only exclusive to WPF's own Buttons, which really sucks
+        // there's a 0% chance Microsoft will change how .NET Framework's WPF acts, and I find it unlikely they'll entertain a PR to make those values public
+        // (since there's probably concerns they have about malicious/imcompetent coders misusing or abusing the KeyboardNavigation instance)
+        // so I'd be left with just creating my own instance of a Button and hijacking it, but I'm concerned that might not work either
+        // well, I'm trying now anyway...
+
+//#if NETCOREAPP
+//        private KeyboardFocusChangedEventHandler? FocusChangedHandler = null;
+//#else
+//        private KeyboardFocusChangedEventHandler FocusChangedHandler = null;
+//#endif
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsDefaultProperty
             = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
@@ -926,16 +936,24 @@ namespace SolidShineUi
         {
             if (d is FlatButton b)
             {
-                if ((bool)e.NewValue)
-                {
-                    AccessKeyManager.Register("\x000D", b);
-                    b.UpdateIsDefaulted(System.Windows.Input.Keyboard.FocusedElement);
-                }
-                else
-                {
-                    AccessKeyManager.Unregister("\x000D", b);
-                    b.UpdateIsDefaulted(null);
-                }
+                //if (b.FocusChangedHandler == null)
+                //{
+                //    b.FocusChangedHandler = new KeyboardFocusChangedEventHandler(b.OnFocusChanged);
+                //}
+
+
+                //if ((bool)e.NewValue)
+                //{
+                //    AccessKeyManager.Register("\x000D", b);
+                //    KeyboardNavigation.FocusChanged += b.FocusChangedHandler;
+                //    b.UpdateIsDefaulted(Keyboard.FocusedElement);
+                //}
+                //else
+                //{
+                //    AccessKeyManager.Unregister("\x000D", b);
+                //    KeyboardNavigation.FocusChanged -= b.FocusChangedHandler;
+                //    b.UpdateIsDefaulted(null);
+                //}
             }
         }
 
@@ -1010,6 +1028,6 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+#endregion
     }
 }
