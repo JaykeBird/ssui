@@ -5,7 +5,7 @@
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
-    
+
     <!--<ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/SolidShineUi;component/TabControlStyle.xaml" />
         <ResourceDictionary>-->
@@ -1524,7 +1524,8 @@
                                         </flat:ContextMenu.ItemContainerStyle>
                                     </flat:ContextMenu>
                                 </flat:MenuButton.Menu>
-                                <Path Data="M0,0 L8,0 4,4 z" Fill="Black" Stroke="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Height="5" Width="8" Margin="0" Stretch="Fill" />
+                                <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      Height="5" Width="8" Margin="0" Stretch="Fill" />
                             </flat:MenuButton>
                         </Grid>
 
