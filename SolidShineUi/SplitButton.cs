@@ -1,86 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Diagnostics;
-using System.Windows.Threading;
 using System.Windows.Controls.Primitives;
-using SolidShineUi.Utils;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SolidShineUi
 {
     /// <summary>
-    /// A button with a custom, flat style and additional funcionality. Use <c>SelectOnClick</c> to have the button act like a toggle button.
+    /// A control that displays two buttons: a main button on the left which activates like a normal button, 
+    /// and a secondary button on the right that displays a menu of additional options.
     /// </summary>
-    [DefaultEvent("Click")]
-    [Localizability(LocalizationCategory.Button)]
-    public class FlatButton : ButtonBase
+    public class SplitButton : ContentControl
     {
-        static FlatButton()
+        static SplitButton()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(FlatButton), new FrameworkPropertyMetadata(typeof(FlatButton)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitButton), new FrameworkPropertyMetadata(typeof(SplitButton)));
         }
 
         /// <summary>
-        /// Create a new FlatButton.
+        /// Create a new SplitButton.
         /// </summary>
-        public FlatButton()
+        public SplitButton()
         {
-            MouseDown += UserControl_MouseDown;
-            MouseUp += UserControl_MouseUp;
-            //MouseEnter += UserControl_MouseEnter;
-            MouseLeave += UserControl_MouseLeave;
-            //TouchDown += UserControl_TouchDown;
-            //TouchUp += UserControl_TouchUp;
-            //StylusDown += UserControl_StylusDown;
-            //StylusUp += UserControl_StylusUp;
 
-            PreviewMouseDown += UserControl_PreviewMouseDown;
-            PreviewMouseUp += UserControl_PreviewMouseUp;
-
-            //GotFocus += UserControl_GotFocus;
-            //GotKeyboardFocus += UserControl_GotKeyboardFocus;
-            LostFocus += UserControl_LostFocus;
-            LostKeyboardFocus += UserControl_LostKeyboardFocus;
-
-            KeyDown += UserControl_KeyDown;
-            KeyUp += UserControl_KeyUp;
-
-            //IsEnabledChanged += fBtn_IsEnabledChanged;
-
-            Focusable = true;
-            KeyboardNavigation.SetIsTabStop(this, true);
-
-            HorizontalContentAlignment = HorizontalAlignment.Center;
-            VerticalContentAlignment = VerticalAlignment.Center;
-
-            Padding = new Thickness(5, 0, 5, 0);
-
-            //invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
-            //invalidTimer.Tick += InvalidTimer_Tick;
         }
-
-#if NETCOREAPP
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
-#else
-        ///// <summary>
-        ///// Raised when the user clicks on the button. Please use the new Click event instead.
-        ///// </summary>
-        //[Obsolete("Please transition to the new Click event, which is a routed event. This will be removed in a later version.", false)]
-        //public event EventHandler UnroutedClick;
-
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
-#endif
-
 
         #region Brushes
 
@@ -178,45 +127,47 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(FlatButton),
+            "Background", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.White.ToBrush()));
 
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(FlatButton),
+            "ClickBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(FlatButton),
+            "SelectedBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(FlatButton),
+            "HighlightBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(FlatButton),
+            "DisabledBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(FlatButton),
+            "BorderDisabledBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(FlatButton),
+            "BorderBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(FlatButton),
+            "BorderHighlightBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(FlatButton),
+            "BorderSelectedBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
         #region ColorScheme/TransparentBack/UseAccentColors
+
+        //DispatcherTimer invalidTimer = new DispatcherTimer();
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -230,10 +181,13 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatButton),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SplitButton),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        //bool use_transp = false;
+        //bool use_accent = false;
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -244,12 +198,20 @@ namespace SolidShineUi
         {
             if (e.NewValue is ColorScheme cs)
             {
-                if (d is FlatButton f)
+                if (d is SplitButton f)
                 {
                     f.ApplyColorScheme(cs, f.TransparentBack, f.UseAccentColors);
                     f.ColorSchemeChanged?.Invoke(d, e);
                 }
             }
+
+            //#if NETCOREAPP
+            //            ColorScheme cs = (e.NewValue as ColorScheme)!;
+            //#else
+            //            ColorScheme cs = e.NewValue as ColorScheme;
+            //#endif
+
+
         }
 
         /// <summary>
@@ -266,9 +228,8 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty TransparentBackProperty
-            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false, 
-                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, v, f.UseAccentColors); }))));
+            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(SplitButton),
+            new PropertyMetadata(false, new PropertyChangedCallback(OnTransparentBackChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -281,11 +242,26 @@ namespace SolidShineUi
             set => SetValue(TransparentBackProperty, value);
         }
 
+        /// <summary>
+        /// Perform an action when a property of an object has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
+        public static void OnTransparentBackChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool tb)
+            {
+                if (d is SplitButton f)
+                {
+                    f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
+                }
+            }
+        }
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty UseAccentColorsProperty
-            = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false,
-                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, v); }))));
+            = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(SplitButton),
+            new PropertyMetadata(false, new PropertyChangedCallback(OnUseAccentColorsChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -297,6 +273,54 @@ namespace SolidShineUi
             get => (bool)GetValue(UseAccentColorsProperty);
             set => SetValue(UseAccentColorsProperty, value);
         }
+
+        /// <summary>
+        /// Perform an action when a property of an object has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
+        public static void OnUseAccentColorsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool ua)
+            {
+                if (d is SplitButton f)
+                {
+                    f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, ua);
+                }
+            }
+        }
+
+        ///// <summary>
+        ///// Get or set whether the button should have a transparent background when the button is not focused.
+        ///// </summary>
+        //public bool TransparentBack
+        //{
+        //    get
+        //    {
+        //        return use_transp;
+        //    }
+        //    set
+        //    {
+        //        use_transp = value;
+        //        if (runApply) ApplyColorScheme(ColorScheme, value, use_accent);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
+        ///// </summary>
+        //public bool UseAccentColors
+        //{
+        //    get
+        //    {
+        //        return use_accent;
+        //    }
+        //    set
+        //    {
+        //        use_accent = value;
+        //        if (runApply) ApplyColorScheme(ColorScheme, TransparentBack, value);
+        //    }
+        //}
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
@@ -327,6 +351,8 @@ namespace SolidShineUi
                 ColorScheme = cs;
                 return;
             }
+
+            //colScheme = cs;
 
             runApply = false;
 
@@ -418,10 +444,36 @@ namespace SolidShineUi
 
             runApply = true;
 
+            //InvalidateMeasure();
+            //InvalidateVisual();
+            //invalidTimer.Start();
+
             if (Template == null)
             {
                 return;
             }
+
+            // //** why is this section here?
+            //Border border = (Border)Template.FindName("btn_Border", this);
+            //if (border != null)
+            //{
+            //    if (IsSelected)
+            //    {
+            //        border.Background = SelectedBrush;
+            //        border.BorderBrush = BorderSelectedBrush;
+            //        border.BorderThickness = BorderSelectionThickness;
+            //    }
+            //    else
+            //    {
+            //        border.Background = Background;
+            //        border.BorderBrush = BorderBrush;
+            //        border.BorderThickness = BorderThickness;
+            //    }
+            //}
+
+
+            //GetBindingExpression(ColorSchemeProperty).UpdateTarget();
+            //fBtn_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
         #endregion
@@ -430,15 +482,15 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(FlatButton),
+            "BorderThickness", typeof(Thickness), typeof(SplitButton),
             new PropertyMetadata(new Thickness(1)));
 
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
-            "BorderSelectionThickness", typeof(Thickness), typeof(FlatButton),
+            "BorderSelectionThickness", typeof(Thickness), typeof(SplitButton),
             new PropertyMetadata(new Thickness(2)));
 
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
+            "CornerRadius", typeof(CornerRadius), typeof(SplitButton),
             new PropertyMetadata(new CornerRadius(0)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -474,15 +526,143 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Menu
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(SplitButton),
+            new PropertyMetadata(null));
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+#if NETCOREAPP
+        /// <summary>
+        /// Get or set the menu that appears when the button is clicked.
+        /// </summary>
+        [Category("Common")]
+        public ContextMenu? Menu
+        {
+            get { return (ContextMenu)GetValue(MenuProperty); }
+            set { SetValue(MenuProperty, value); }
+        }
+
+        /// <summary>
+        /// This event is raised when this SplitButtons's menu is closed.
+        /// </summary>
+        public EventHandler? MenuClosed;
+#else
+        /// <summary>
+        /// Get or set the menu that appears when the button is clicked.
+        /// </summary>
+        [Category("Common")]
+        public ContextMenu Menu
+        {
+            get { return (ContextMenu)GetValue(MenuProperty); }
+            set { SetValue(MenuProperty, value); }
+        }
+
+        /// <summary>
+        /// This event is raised when this SplitButtons's menu is closed.
+        /// </summary>
+        public EventHandler MenuClosed;
+#endif
+
+        /// <summary>
+        /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
+        /// </summary>
+        [Category("Common")]
+        public bool StaysOpen
+        {
+            get
+            {
+                if (Menu != null) return Menu.StaysOpen;
+                else return false;
+            }
+            set
+            {
+                if (Menu != null) Menu.StaysOpen = value;
+            }
+        }
+
+        #endregion
+
+        #region Placement
+
+        /// <summary>
+        /// Get or set the placement mode for the SplitButton's menu.
+        /// </summary>
+        public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementProperty
+            = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(SplitButton),
+            new FrameworkPropertyMetadata(PlacementMode.Bottom));
+
+
+        /// <summary>
+        /// Get or set the placement target for the SplitButton's menu. Set to <c>null</c> to set the target to this SplitButton.
+        /// </summary>
+#if NETCOREAPP
+        public UIElement? MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
+#else
+        public UIElement MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
+#endif
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementTargetProperty
+            = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(SplitButton),
+            new FrameworkPropertyMetadata(null));
+
+
+        /// <summary>
+        /// Get or set the placement rectangle for the SplitButton's menu. This sets the area relative to the button that the menu is positioned.
+        /// </summary>
+        public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementRectangleProperty
+            = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(SplitButton),
+            new FrameworkPropertyMetadata(Rect.Empty));
+
+        #endregion
+
         #region Click Handling
 
         #region Routed Events
 
         /// <summary>
+        /// The backing value for the <see cref="Click"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
+            "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SplitButton));
+
+        /// <summary>
+        /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler Click
+        {
+            add { AddHandler(ClickEvent, value); }
+            remove { RemoveHandler(ClickEvent, value); }
+        }
+
+        /// <summary>
+        /// The backing value for the <see cref="MenuClick"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent MenuClickEvent = EventManager.RegisterRoutedEvent(
+            "MenuClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SplitButton));
+
+        /// <summary>
+        /// Raised when the user clicks on the menu button (not the main button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler MenuClick
+        {
+            add { AddHandler(MenuClickEvent, value); }
+            remove { RemoveHandler(MenuClickEvent, value); }
+        }
+
+        /// <summary>
         /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
-            "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
+            "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SplitButton));
 
         /// <summary>
         /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
@@ -501,7 +681,7 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsMouseDown",
-            typeof(bool), typeof(FlatButton), new FrameworkPropertyMetadata(false));
+            typeof(bool), typeof(SplitButton), new FrameworkPropertyMetadata(false));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
@@ -510,9 +690,9 @@ namespace SolidShineUi
         public static readonly DependencyProperty IsMouseDownProperty = IsMouseDownPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Set the IsMouseDown property for a FlatButton.
+        /// Set the IsMouseDown property for a SplitButton.
         /// </summary>
-        /// <param name="obj">The FlatButton to apply the property change to.</param>
+        /// <param name="obj">The SplitButton to apply the property change to.</param>
         /// <param name="value">The new value to set for the property.</param>
         protected static void SetIsMouseDown(DependencyObject obj, bool value)
         {
@@ -520,9 +700,9 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get the IsMouseDown property for a FlatButton.
+        /// Get the IsMouseDown property for a SplitButton.
         /// </summary>
-        /// <param name="obj">The Flatbutton to get the property value from.</param>
+        /// <param name="obj">The SplitButton to get the property value from.</param>
         public static bool GetIsMouseDown(DependencyObject obj)
         {
             return (bool)obj.GetValue(IsMouseDownProperty);
@@ -531,13 +711,12 @@ namespace SolidShineUi
         #endregion
 
         #region Variables/Properties
-        bool initiatingClick = false;
 
         //bool sel = false;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-            "IsSelected", typeof(bool), typeof(FlatButton),
+            "IsSelected", typeof(bool), typeof(SplitButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -550,7 +729,7 @@ namespace SolidShineUi
         {
             if (e.NewValue is bool se)
             {
-                if (d is FlatButton f)
+                if (d is SplitButton f)
                 {
                     f.IsSelectedChanged?.Invoke(d, e);
                     //f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
@@ -599,7 +778,7 @@ namespace SolidShineUi
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            "SelectOnClick", typeof(bool), typeof(FlatButton),
+            "SelectOnClick", typeof(bool), typeof(SplitButton),
             new PropertyMetadata(false));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -621,24 +800,15 @@ namespace SolidShineUi
 
         #endregion
 
-        // Sets up the button to be clicked. This must be run before PerformClick.
-        void PressRightClick()
-        {
-            initiatingClick = true;
-        }
-
         // If the button is prepared by PerformPress, perform the Click actions, including raising the Click event.
         void PerformRightClick()
         {
-            if (initiatingClick)
-            {
-                RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
-                RaiseEvent(rre);
-            }
+            RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
+            RaiseEvent(rre);
         }
 
         /// <summary>
-        /// Perform a click programmatically. The button responds the same way as if it was clicked by the user.
+        /// Perform a click pn the main button programmatically. The button responds the same way as if it was clicked by the user.
         /// </summary>
         public void DoClick()
         {
@@ -648,224 +818,117 @@ namespace SolidShineUi
         /// <summary>
         /// Defines the actions the button performs when it is clicked.
         /// </summary>
-        protected override void OnClick()
+        protected void OnClick()
         {
             if (SelectOnClick)
             {
                 IsSelected = !IsSelected;
             }
 
-            base.OnClick();
+            RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
+            RaiseEvent(rre);
         }
-
-        #region Event handlers
-
-        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PressRightClick();
-            }
-        }
-
-        private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PerformRightClick();
-            }
-        }
-
-        private void UserControl_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (ClickMode == ClickMode.Press && e.Key == Key.Apps)
-            {
-                PressRightClick();
-                PerformRightClick();
-            }
-        }
-
-        private void UserControl_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (ClickMode != ClickMode.Press && e.Key == Key.Apps)
-            {
-                PressRightClick();
-                PerformRightClick();
-            }
-        }
-
-        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PressRightClick();
-            }
-            SetIsMouseDown(this, true);
-        }
-
-        private void UserControl_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PerformRightClick();
-            }
-            SetIsMouseDown(this, false);
-        }
-
-
-        private void UserControl_LostFocus(object sender, RoutedEventArgs e)
-        {
-            initiatingClick = false;
-        }
-
-        private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            initiatingClick = false;
-        }
-
-        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SetIsMouseDown(this, false);
-            initiatingClick = false;
-        }
-
 
         #endregion
 
-        #endregion
-
-        #region IsDefault
-
-        // OnDefault code adapted from .NET Core WPF repository
-        // https://github.com/dotnet/wpf/blob/master/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Button.cs
-
-        // unfortunately, I'm unable to actually achieve the "IsDefault" functionality as is present in WPF
-        // the reason is that the WPF button accesses properties and methods marked as "internal" - which means it only works within that library
-        // the biggest culprits are the KeyboardNavigation instance in FrameworkElement, and the FocusChanged event in KeyboardNavigation
-        // if those two were accessible, then I would be able to mirror the code exactly and set up my buttons as capable of being a "default" button
-        // but now, that's a feature that's only exclusive to WPF's own Buttons, which really sucks
-        // there's a 0% chance Microsoft will change how .NET Framework's WPF acts, and I find it unlikely they'll entertain a PR to make those values public
-        // (since there's probably concerns they have about malicious/imcompetent coders misusing or abusing the KeyboardNavigation instance)
-        // I'd say the best solution is to make access to that specific event available via a protected method in ButtonBase (imo)
-        // anyway, I'd be left with just creating my own instance of a Button and hijacking it, but I'm concerned that might not work either
-
-//#if NETCOREAPP
-//        private KeyboardFocusChangedEventHandler? FocusChangedHandler = null;
-//#else
-//        private KeyboardFocusChangedEventHandler FocusChangedHandler = null;
-//#endif
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty IsDefaultProperty
-            = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
-            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsDefaultChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set if this button is the default button in the dialog or window it is located in. May not currently function correctly.
-        /// </summary>
-        public bool IsDefault
+        #region Template IO
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
         {
-            get => (bool)GetValue(IsDefaultProperty);
-            set => SetValue(IsDefaultProperty, value);
-        }
+            base.OnApplyTemplate();
 
-        private static void OnIsDefaultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is FlatButton b)
+            LoadTemplateItems();
+
+            if (itemsLoaded)
             {
-                //if (b.FocusChangedHandler == null)
-                //{
-                //    b.FocusChangedHandler = new KeyboardFocusChangedEventHandler(b.OnFocusChanged);
-                //}
+                btnMain.Click += btnMain_Click;
+                btnMenu.Click += btnMenu_Click;
 
-
-                if ((bool)e.NewValue)
-                {
-                    AccessKeyManager.Register("\x000D", b);
-                    //KeyboardNavigation.FocusChanged += b.FocusChangedHandler;
-                    b.UpdateIsDefaulted(Keyboard.FocusedElement);
-                }
-                else
-                {
-                    AccessKeyManager.Unregister("\x000D", b);
-                    //KeyboardNavigation.FocusChanged -= b.FocusChangedHandler;
-                    b.UpdateIsDefaulted(null);
-                }
+                btnMain.RightClick += btnMain_RightClick;
+                btnMenu.RightClick += btnMenu_RightClick;
             }
         }
 
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        private static readonly DependencyPropertyKey IsDefaultedPropertyKey
-            = DependencyProperty.RegisterReadOnly("IsDefaulted", typeof(bool), typeof(FlatButton),
-            new FrameworkPropertyMetadata(false));
-
-        public static readonly DependencyProperty IsDefaultedProperty = IsDefaultedPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Specifies whether or not this button is the button that would be invoked when Enter is pressed.
-        /// </summary>
-        public bool IsDefaulted
+        private void btnMenu_RightClick(object sender, RoutedEventArgs e)
         {
-            get
+            PerformRightClick();
+        }
+
+        private void btnMain_RightClick(object sender, RoutedEventArgs e)
+        {
+            PerformRightClick();
+        }
+
+        private void btnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (Menu != null)
             {
-                return (bool)GetValue(IsDefaultedProperty);
+                Menu.Placement = MenuPlacement;
+                Menu.PlacementTarget = MenuPlacementTarget ?? this;
+                Menu.PlacementRectangle = MenuPlacementRectangle;
+                Menu.HorizontalOffset = 0;
+                Menu.VerticalOffset = -1;
+                Menu.IsOpen = true;
+                Menu.Closed += Menu_Closed;
             }
+
+            RoutedEventArgs rre = new RoutedEventArgs(MenuClickEvent);
+            RaiseEvent(rre);
         }
 
-        private void OnFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
+        private void btnMain_Click(object sender, RoutedEventArgs e)
         {
-            UpdateIsDefaulted(Keyboard.FocusedElement);
+            OnClick();
         }
+
+        bool itemsLoaded = false;
+
+        //bool _internalAction = false;
 
 #if NETCOREAPP
-        private void UpdateIsDefaulted(IInputElement? focus)
+        FlatButton? btnMain = null;
+        FlatButton? btnMenu = null;
 #else
-        private void UpdateIsDefaulted(IInputElement focus)
+        FlatButton btnMain = null;
+        FlatButton btnMenu = null;
 #endif
+
+        void LoadTemplateItems()
         {
-            // If it's not a default button, or nothing is focused, or it's disabled then it's not defaulted.
-            if (!IsDefault || focus == null || !IsEnabled)
+            if (!itemsLoaded)
             {
-                SetValue(IsDefaultedPropertyKey, false);
-                return;
-            }
+                btnMain = (FlatButton)GetTemplateChild("PART_Main");
+                btnMenu = (FlatButton)GetTemplateChild("PART_Menu");
 
-            if (focus is DependencyObject focusDO)
-            {
-                object thisScope, focusScope;
-
-                // If the focused thing is not in this scope then IsDefaulted = false
-                AccessKeyPressedEventArgs e;
-
-                object isDefaulted = false;
-                try
+                if (btnMain != null && btnMenu != null)
                 {
-                    // Step 1: Determine the AccessKey scope from currently focused element
-                    e = new AccessKeyPressedEventArgs();
-                    focus.RaiseEvent(e);
-                    focusScope = e.Scope;
-
-                    // Step 2: Determine the AccessKey scope from this button
-                    e = new AccessKeyPressedEventArgs();
-                    this.RaiseEvent(e);
-                    thisScope = e.Scope;
-
-                    // Step 3: Compare scopes
-                    if (thisScope == focusScope && (focusDO == null || (bool)focusDO.GetValue(KeyboardNavigation.AcceptsReturnProperty) == false))
-                    {
-                        isDefaulted = true;
-                    }
-                }
-                finally
-                {
-                    SetValue(IsDefaultedPropertyKey, isDefaulted);
+                    itemsLoaded = true;
                 }
             }
         }
+        #endregion
 
-#endregion
+#if NETCOREAPP
+        /// <summary>
+        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
+#else
+        ///// <summary>
+        ///// Raised when the user clicks on the button. Please use the new Click event instead.
+        ///// </summary>
+        //[Obsolete("Please transition to the new Click event, which is a routed event. This will be removed in a later version.", false)]
+        //public event EventHandler UnroutedClick;
+
+        /// <summary>
+        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
+#endif
+
+        private void Menu_Closed(object sender, RoutedEventArgs e)
+        {
+            MenuClosed?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

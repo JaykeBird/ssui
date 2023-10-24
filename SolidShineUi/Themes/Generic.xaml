@@ -19,6 +19,7 @@
     <!--<ssut:FileSelectSingleTitleConverter x:Key="FileSelectSstConverter" />-->
     <ssut:FilePathToIconConverter x:Key="FileIconConverter" />
     <ssut:IconSizeConverter x:Key="IconSizeConverter" />
+    <ssut:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
 
     <Style TargetType="{x:Type flat:FlatWindow}">
         <!--<Setter Property="WindowStyle" Value="None" />
@@ -1792,6 +1793,77 @@
                             </Grid>
                         </Grid>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type flat:SplitButton}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:SplitButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <flat:FlatButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1" 
+                                         BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
+                                         BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
+                                         ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                         SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
+                                         BorderThickness="{TemplateBinding BorderThickness}" BorderSelectionThickness="{TemplateBinding BorderSelectionThickness}"
+                                         IsSelected="{TemplateBinding IsSelected}">
+                            <flat:FlatButton.Style>
+                                <Style TargetType="flat:FlatButton">
+                                    <Setter Property="Grid.Row" Value="1" />
+                                    <Setter Property="Grid.Column" Value="1" />
+                                    <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:SplitButton}}, 
+                                        Converter={StaticResource PartialCrConverter}, ConverterParameter='TLBL'}" />
+                                </Style>
+                            </flat:FlatButton.Style>
+                            <ContentPresenter ContentSource="Content" />
+                        </flat:FlatButton>
+                        <flat:FlatButton x:Name="PART_Menu" Padding="0"
+                                         BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
+                                         BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
+                                         ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                         SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
+                                         BorderThickness="{TemplateBinding BorderThickness}" BorderSelectionThickness="{TemplateBinding BorderSelectionThickness}" 
+                                         IsSelected="{TemplateBinding IsSelected}">
+                            <flat:FlatButton.Style>
+                                <Style TargetType="flat:FlatButton">
+                                    <Setter Property="Grid.Row" Value="1" />
+                                    <Setter Property="Grid.Column" Value="2" />
+                                    <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:SplitButton}}, 
+                                        Converter={StaticResource PartialCrConverter}, ConverterParameter='TRBR'}" />
+                                </Style>
+                            </flat:FlatButton.Style>
+                            <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      Height="5" Width="8" Margin="0" Stretch="Fill" />
+                        </flat:FlatButton>
+                    </Grid>
+                    <!--<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}"
+                    Background="{TemplateBinding Background}" >
+                        <ScrollViewer x:Name="PART_Sv" Margin="{TemplateBinding Padding}"
+                              VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" >
+                            <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding ItemsSource}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

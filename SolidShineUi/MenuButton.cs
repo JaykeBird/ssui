@@ -81,6 +81,23 @@ namespace SolidShineUi
         public EventHandler MenuClosed;
 #endif
 
+        /// <summary>
+        /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
+        /// </summary>
+        [Category("Common")]
+        public bool StaysOpen
+        {
+            get
+            {
+                if (Menu != null) return Menu.StaysOpen;
+                else return false;
+            }
+            set
+            {
+                if (Menu != null) Menu.StaysOpen = value;
+            }
+        }
+
         #endregion
 
         #region Placement
@@ -123,22 +140,6 @@ namespace SolidShineUi
 
         #endregion
 
-        /// <summary>
-        /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
-        /// </summary>
-        [Category("Common")]
-        public bool StaysOpen
-        {
-            get
-            {
-                if (Menu != null) return Menu.StaysOpen;
-                else return false;
-            }
-            set
-            {
-                if (Menu != null) Menu.StaysOpen = value;
-            }
-        }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
