@@ -65,30 +65,30 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get a specific value from the dictionary, or return <c>null</c> if a value isn't present with that key.
         /// </summary>
-        /// <typeparam name="T1">the key type of the dictionary</typeparam>
-        /// <typeparam name="T2">the value type of the dictionary</typeparam>
+        /// <typeparam name="TKey">the key type of the dictionary</typeparam>
+        /// <typeparam name="TValue">the value type of the dictionary</typeparam>
         /// <param name="dictionary">the dictionary to pull from</param>
         /// <param name="key">the key value to look up</param>
         /// <returns>the value of <paramref name="key"/> in the <paramref name="dictionary"/>, or <c>null</c> if that key is not present</returns>
 #if NETCOREAPP
-        public static T2? GetValueOrNull<T1, T2>(this Dictionary<T1, T2> dictionary, T1 key) where T1 : notnull where T2 : class
+        public static TValue? GetValueOrNull<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key) where TKey : notnull where TValue : class
         {
             if (dictionary == null)
             {
                 throw new ArgumentNullException(nameof(dictionary));
             }
 
-            return dictionary.TryGetValue(key, out T2? value) ? value : null;
+            return dictionary.TryGetValue(key, out TValue? value) ? value : null;
         }
 #else
-        public static T2 GetValueOrNull<T1, T2>(this Dictionary<T1, T2> dictionary, T1 key) where T2 : class
+        public static TValue GetValueOrNull<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key) where TValue : class
         {
             if (dictionary == null)
             {
                 throw new ArgumentNullException(nameof(dictionary));
             }
 
-            return dictionary.TryGetValue(key, out T2 value) ? value : null;
+            return dictionary.TryGetValue(key, out TValue value) ? value : null;
         }
 #endif
     }
