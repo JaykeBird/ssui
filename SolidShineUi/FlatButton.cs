@@ -417,11 +417,6 @@ namespace SolidShineUi
             }
 
             runApply = true;
-
-            if (Template == null)
-            {
-                return;
-            }
         }
 
         #endregion

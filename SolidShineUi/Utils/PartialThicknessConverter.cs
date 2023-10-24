@@ -12,127 +12,127 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// A helper method for WPF controls, to only selectively apply a <see cref="CornerRadius"/> value to only some corners.
     /// </summary>
-    public class PartialCornerRadiusConverter : IValueConverter
+    public class PartialThicknessConverter : IValueConverter
     {
 
         /// <summary>
         /// Convert a double into a string, with rounding possible by setting the <paramref name="parameter"/> value.
         /// </summary>
-        /// <param name="value">The <see cref="CornerRadius"/> object to read from</param>
-        /// <param name="targetType">Not used, returned type will always be a <see cref="CornerRadius"/></param>
+        /// <param name="value">The <see cref="Thickness"/> object to read from</param>
+        /// <param name="targetType">Not used, returned type will always be a <see cref="Thickness"/></param>
         /// <param name="parameter">The corners to apply to the result; one or more of <c>TL,TR,BL,BR</c></param>
         /// <param name="culture">Not used</param>
-        /// <returns>A <see cref="CornerRadius"/> that only has a portion of its values set </returns>
+        /// <returns>A <see cref="Thickness"/> that only has a portion of its values set </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is double d)
             {
-                CornerRadius cr = new CornerRadius(d);
+                Thickness th = new Thickness(d);
                 if (parameter is string s)
                 {
-                    CornerRadius cr2 = new CornerRadius(0.0);
+                    Thickness th2 = new Thickness(0.0);
 
-                    if (s.Contains("TL"))
+                    if (s.Contains("T"))
                     {
-                        cr2.TopLeft = cr.TopLeft;
+                        th2.Top = th.Top;
                     }
-                    if (s.Contains("TR"))
+                    if (s.Contains("L"))
                     {
-                        cr2.TopRight = cr.TopRight;
+                        th2.Left = th.Left;
                     }
-                    if (s.Contains("BL"))
+                    if (s.Contains("R"))
                     {
-                        cr2.BottomLeft = cr.BottomLeft;
+                        th2.Right = th.Right;
                     }
-                    if (s.Contains("BR"))
+                    if (s.Contains("B"))
                     {
-                        cr2.BottomRight = cr.BottomRight;
+                        th2.Bottom = th.Bottom;
                     }
 
-                    return cr2;
+                    return th2;
                 }
                 else if (parameter is byte b)
                 {
-                    CornerRadius cr2 = new CornerRadius(0.0);
+                    Thickness th2 = new Thickness(0.0);
 
                     if (b % 2 == 0)
                     {
-                        cr2.TopLeft = cr.TopLeft;
+                        th2.Top = th.Top;
                     }
                     if (b % 3 == 0)
                     {
-                        cr2.TopRight = cr.TopRight;
+                        th2.Left = th.Left;
                     }
                     if (b % 5 == 0)
                     {
-                        cr2.BottomLeft = cr.BottomLeft;
+                        th2.Right = th.Right;
                     }
                     if (b % 7 == 0)
                     {
-                        cr2.BottomRight = cr.BottomRight;
+                        th2.Bottom = th.Bottom;
                     }
 
-                    return cr2;
+                    return th2;
                 }
                 else
                 {
-                    return cr;
+                    return th;
                 }
             }
-            else if (value is CornerRadius cr)
+            else if (value is Thickness th)
             {
                 if (parameter is string s)
                 {
-                    CornerRadius cr2 = new CornerRadius(0.0);
+                    Thickness th2 = new Thickness(0.0);
 
-                    if (s.Contains("TL"))
+                    if (s.Contains("T"))
                     {
-                        cr2.TopLeft = cr.TopLeft;
+                        th2.Top = th.Top;
                     }
-                    if (s.Contains("TR"))
+                    if (s.Contains("L"))
                     {
-                        cr2.TopRight = cr.TopRight;
+                        th2.Left = th.Left;
                     }
-                    if (s.Contains("BL"))
+                    if (s.Contains("R"))
                     {
-                        cr2.BottomLeft = cr.BottomLeft;
+                        th2.Right = th.Right;
                     }
-                    if (s.Contains("BR"))
+                    if (s.Contains("B"))
                     {
-                        cr2.BottomRight = cr.BottomRight;
+                        th2.Bottom = th.Bottom;
                     }
 
-                    return cr2;
+                    return th2;
                 }
                 else if (parameter is byte b)
                 {
-                    CornerRadius cr2 = new CornerRadius(0.0);
+                    Thickness th2 = new Thickness(0.0);
 
                     if (b % 2 == 0)
                     {
-                        cr2.TopLeft = cr.TopLeft;
+                        th2.Top = th.Top;
                     }
                     if (b % 3 == 0)
                     {
-                        cr2.TopRight = cr.TopRight;
+                        th2.Left = th.Left;
                     }
                     if (b % 5 == 0)
                     {
-                        cr2.BottomLeft = cr.BottomLeft;
+                        th2.Right = th.Right;
                     }
                     if (b % 7 == 0)
                     {
-                        cr2.BottomRight = cr.BottomRight;
+                        th2.Bottom = th.Bottom;
                     }
 
-                    return cr2;
+                    return th2;
                 }
                 else
                 {
-                    return cr;
+                    return th;
                 }
             }
-            else { return new CornerRadius(); }
+            else { return new Thickness(); }
         }
 
         /// <summary>

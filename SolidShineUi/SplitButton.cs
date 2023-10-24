@@ -352,8 +352,6 @@ namespace SolidShineUi
                 return;
             }
 
-            //colScheme = cs;
-
             runApply = false;
 
             if (cs.IsHighContrast)
@@ -364,6 +362,7 @@ namespace SolidShineUi
                 BorderHighlightBrush = cs.BorderColor.ToBrush();
                 BorderSelectedBrush = cs.BorderColor.ToBrush();
                 BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                SeparatorBrush = cs.BorderColor.ToBrush();
                 DisabledBrush = cs.BackgroundColor.ToBrush();
                 Foreground = cs.ForegroundColor.ToBrush();
                 ClickBrush = cs.ThirdHighlightColor.ToBrush();
@@ -390,6 +389,7 @@ namespace SolidShineUi
                     BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
                     BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
                     BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                    SeparatorBrush = cs.AccentBorderColor.ToBrush();
                     DisabledBrush = cs.LightDisabledColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
@@ -404,6 +404,7 @@ namespace SolidShineUi
                     SelectedBrush = cs.ThirdHighlightColor.ToBrush();
                     BorderHighlightBrush = cs.HighlightColor.ToBrush();
                     BorderSelectedBrush = cs.SelectionColor.ToBrush();
+                    SeparatorBrush = cs.BorderColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.ThirdHighlightColor.ToBrush();
                 }
@@ -422,6 +423,7 @@ namespace SolidShineUi
                     SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
                     BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
                     BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
+                    SeparatorBrush = cs.AccentBorderColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
 
@@ -437,43 +439,13 @@ namespace SolidShineUi
                     SelectedBrush = cs.ThirdHighlightColor.ToBrush();
                     BorderHighlightBrush = cs.HighlightColor.ToBrush();
                     BorderSelectedBrush = cs.SelectionColor.ToBrush();
+                    SeparatorBrush = cs.BorderColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.ThirdHighlightColor.ToBrush();
                 }
             }
 
             runApply = true;
-
-            //InvalidateMeasure();
-            //InvalidateVisual();
-            //invalidTimer.Start();
-
-            if (Template == null)
-            {
-                return;
-            }
-
-            // //** why is this section here?
-            //Border border = (Border)Template.FindName("btn_Border", this);
-            //if (border != null)
-            //{
-            //    if (IsSelected)
-            //    {
-            //        border.Background = SelectedBrush;
-            //        border.BorderBrush = BorderSelectedBrush;
-            //        border.BorderThickness = BorderSelectionThickness;
-            //    }
-            //    else
-            //    {
-            //        border.Background = Background;
-            //        border.BorderBrush = BorderBrush;
-            //        border.BorderThickness = BorderThickness;
-            //    }
-            //}
-
-
-            //GetBindingExpression(ColorSchemeProperty).UpdateTarget();
-            //fBtn_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
 
         #endregion
@@ -523,6 +495,54 @@ namespace SolidShineUi
             get => (CornerRadius)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
+
+        #region Separator Border
+
+        /// <summary>
+        /// Get or set if a separator bar should be shown between the main and menu buttons. Without the separator bar, the buttons look more connected, 
+        /// but they can be hard to discern as two separate clickable buttons without mousing over them.
+        /// </summary>
+        public bool ShowSeparator { get => (bool)GetValue(ShowSeparatorProperty); set => SetValue(ShowSeparatorProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowSeparator"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowSeparatorProperty
+            = DependencyProperty.Register("ShowSeparator", typeof(bool), typeof(SplitButton),
+            new FrameworkPropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set the brush to use for the separator bar between the main and menu buttons.
+        /// </summary>
+        public Brush SeparatorBrush { get => (Brush)GetValue(SeparatorBrushProperty); set => SetValue(SeparatorBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SeparatorBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty SeparatorBrushProperty
+            = DependencyProperty.Register("SeparatorBrush", typeof(Brush), typeof(SplitButton),
+            new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
+
+        /// <summary>
+        /// Get or set how distant the separator bar should be from the edges of the button. The higher the number, the bigger the space between
+        /// the edges of the button and the ends of the separator bar. A value of 0 will bring the separator bar right up to the edges.
+        /// </summary>
+        public double SeparatorEdgeMargin { get => (double)GetValue(SeparatorEdgeMarginProperty); set => SetValue(SeparatorEdgeMarginProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SeparatorEdgeMargin"/>. See the related property for details.</summary>
+        public static DependencyProperty SeparatorEdgeMarginProperty
+            = DependencyProperty.Register("SeparatorEdgeMargin", typeof(double), typeof(SplitButton),
+            new FrameworkPropertyMetadata(4.0));
+
+        /// <summary>
+        /// Get or set how wide the separator bar should be. A value of 0 will make it invisible.
+        /// </summary>
+        public double SeparatorThickness { get => (double)GetValue(SeparatorThicknessProperty); set => SetValue(SeparatorThicknessProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SeparatorThickness"/>. See the related property for details.</summary>
+        public static DependencyProperty SeparatorThicknessProperty
+            = DependencyProperty.Register("SeparatorThickness", typeof(double), typeof(SplitButton),
+            new FrameworkPropertyMetadata(1.0));
+
+        // TODO: fix by also linking width/height to this value as well
+
+        #endregion
 
         #endregion
 
@@ -623,6 +643,13 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Rect.Empty));
 
         #endregion
+
+        public PlacementDirection MenuButtonPlacement { get => (PlacementDirection)GetValue(MenuButtonPlacementProperty); set => SetValue(MenuButtonPlacementProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuButtonPlacement"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuButtonPlacementProperty
+            = DependencyProperty.Register("MenuButtonPlacement", typeof(PlacementDirection), typeof(SplitButton),
+            new FrameworkPropertyMetadata(PlacementDirection.Right));
 
         #region Click Handling
 
