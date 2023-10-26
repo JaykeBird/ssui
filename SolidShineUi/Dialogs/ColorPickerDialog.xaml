@@ -67,6 +67,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="colorPickerButton" TargetType="{x:Type ssut:ColorSwatchButton}">
+            <Setter Property="MinHeight" Value="22" />
+            <Setter Property="AlwaysHexTooltips" Value="False" />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="ColorScheme" Value="{Binding RelativeSource={RelativeSource AncestorType=flat:FlatWindow}, Path=ColorScheme}" />
+        </Style>
     </flat:FlatWindow.Resources>
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
@@ -81,8 +88,8 @@
                     <Border BorderBrush="Black" BorderThickness="0" Margin="8,3" >
                         <StackPanel Orientation="Horizontal" >
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSteelBlue" ToolTip="LightSteelBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BlueViolet" ToolTip="BlueViolet"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightSteelBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="BlueViolet" />
                                 <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumPurple" ToolTip="MediumPurple"/>
                                 <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSlateBlue" ToolTip="MediumSlateBlue"/>
                                 <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SlateBlue" ToolTip="SlateBlue"/>

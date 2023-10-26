@@ -199,6 +199,12 @@ namespace SolidShineUi
                 nudAlpha.Value = 255;
             }
 
+            if (sender is ColorSwatchButton csb)
+            {
+                UpdateSelectedColor(csb.Color);
+                return;
+            }
+
 #if NETCOREAPP
             UpdateSelectedColor(((sender as Button)!.Background as SolidColorBrush)!.Color);
 #else

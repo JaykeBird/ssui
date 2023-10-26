@@ -552,8 +552,6 @@ namespace SolidShineUi
             = DependencyProperty.Register("SeparatorThickness", typeof(double), typeof(SplitButton),
             new FrameworkPropertyMetadata(1.0));
 
-        // TODO: fix by also linking width/height to this value as well
-
         #endregion
 
         #endregion
