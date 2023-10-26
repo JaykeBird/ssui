@@ -20,6 +20,7 @@ namespace SolidShineUi.Utils
         public ColorSwatchButton()
         {
             Color = Colors.White;
+            UpdateBrushes();
             ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
         }
 
@@ -30,12 +31,14 @@ namespace SolidShineUi.Utils
         public ColorSwatchButton(Color c)
         {
             Color = c;
+            UpdateBrushes();
             ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
         }
 
         private void ColorSwatchButton_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            UpdateColor();
+            UpdateBrushes();
+            //UpdateColor();
         }
 
         /// <summary>
@@ -71,13 +74,34 @@ namespace SolidShineUi.Utils
             = DependencyProperty.Register("SetToolTip", typeof(bool), typeof(ColorSwatchButton),
             new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<ColorSwatchButton>((b) => b.UpdateColor()))));
 
+        #region Button Brushes
+
+        static Brush mainBrush = BrushFactory.CreateCheckerboardBrush(4, Colors.White.ToBrush(), Colors.LightGray.ToBrush());
+        static Brush highBrush = BrushFactory.CreateCheckerboardBrush(4, Colors.White.ToBrush(), Colors.Gainsboro.ToBrush());
+        static Brush clikBrush = BrushFactory.CreateCheckerboardBrush(4, Colors.White.ToBrush(), Colors.Gray.ToBrush());
+        static Brush seleBrush = BrushFactory.CreateCheckerboardBrush(4, Colors.White.ToBrush(), Colors.LightGray.ToBrush());
+
+        void UpdateBrushes()
+        {
+            Background = mainBrush;
+            HighlightBrush = highBrush;
+            ClickBrush = clikBrush;
+            SelectedBrush = seleBrush;
+        }
+
+        #endregion
 
         void UpdateColor()
         {
-            Background = Color.ToBrush();
-            HighlightBrush = Color.ToBrush();
-            ClickBrush = Color.ToBrush();
-            SelectedBrush = Color.ToBrush();
+            var b = new System.Windows.Controls.Border();
+            b.Background = Color.ToBrush();
+            b.HorizontalAlignment = HorizontalAlignment.Stretch;
+            b.VerticalAlignment = VerticalAlignment.Stretch;
+            Content = b;
+            Padding = new Thickness(0);
+            HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            VerticalContentAlignment = VerticalAlignment.Stretch;
+
             if (SetToolTip)
             {
                 if (AlwaysHexTooltips)
