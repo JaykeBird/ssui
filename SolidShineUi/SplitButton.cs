@@ -29,6 +29,18 @@ namespace SolidShineUi
         public SplitButton()
         {
 
+            ColorSchemeChanged += OnColorSchemeChanged;
+        }
+
+        private void OnColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+#if NETCOREAPP
+            ColorScheme cs = (e.NewValue as ColorScheme)!;
+#else
+            ColorScheme cs = e.NewValue as ColorScheme;
+#endif
+
+            if (Menu != null) Menu.ApplyColorScheme(cs);
         }
 
         #region Brushes
@@ -644,6 +656,9 @@ namespace SolidShineUi
 
         #endregion
 
+        /// <summary>
+        /// Get or set where the menu button should be placed in relation to the main button. Default is <c>Right</c>.
+        /// </summary>
         public PlacementDirection MenuButtonPlacement { get => (PlacementDirection)GetValue(MenuButtonPlacementProperty); set => SetValue(MenuButtonPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuButtonPlacement"/>. See the related property for details.</summary>
