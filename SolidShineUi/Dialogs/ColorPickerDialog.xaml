@@ -8,6 +8,7 @@
     mc:Ignorable="d" Title="Pick a Color" Height="535" Width="410"
     ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" CaptionDisplayType="Close" >
     <flat:FlatWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="btv" />
         <Style x:Key="colorPickerButton" TargetType="{x:Type ssut:ColorSwatchButton}">
             <Setter Property="MinHeight" Value="23" />
             <Setter Property="SetToolTip" Value="False" />
