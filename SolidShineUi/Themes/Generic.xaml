@@ -1813,6 +1813,7 @@
 
     <Style TargetType="{x:Type flat:SplitButton}">
         <Setter Property="Focusable" Value="True" />
+        <Setter Property="MinHeight" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:SplitButton}">
@@ -1845,6 +1846,7 @@
                                         Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLeftTh}}" />
                                     <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
                                         Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteLeftCR}}" />
+                                    <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </flat:FlatButton.Style>
                             <ContentPresenter ContentSource="Content" />
@@ -1867,6 +1869,8 @@
                                         Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteRightTh}}" />
                                     <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
                                         Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteRightCR}}" />
+                                    <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinHeight}" />
+                                    <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonSize}" />
                                 </Style>
                             </flat:FlatButton.Style>
                             <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -1892,13 +1896,17 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonPlacement}" Value="{x:Static flat:PlacementDirection.Right}">
+                        <Trigger Property="MenuButtonPlacement" Value="Right">
                             <Setter TargetName="PART_Menu" Property="Grid.Row" Value="1" />
                             <Setter TargetName="PART_Menu" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_Menu" Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinHeight}" />
+                            <Setter TargetName="PART_Menu" Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonSize}" />
                             <Setter TargetName="PART_Sep" Property="Grid.Row" Value="1" />
                             <Setter TargetName="PART_Sep" Property="Grid.Column" Value="2" />
-                            <Setter TargetName="PART_Sep" Property="HorizontalAlignment" Value="LEft" />
+                            <Setter TargetName="PART_Sep" Property="HorizontalAlignment" Value="Left" />
                             <Setter TargetName="PART_Sep" Property="VerticalAlignment" Value="Stretch" />
+                            <Setter TargetName="PART_Sep" Property="Width" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="PART_Sep" Property="Height" Value="NaN" />
                             <Setter TargetName="PART_Sep" Property="Margin" Value="{Binding SeparatorEdgeMargin, 
                             RelativeSource={RelativeSource Mode=TemplatedParent},
 Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteTbTh}}" />
@@ -1920,16 +1928,18 @@ Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResourc
                             <Setter TargetName="PART_Main" Property="CornerRadius" 
                             Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
 Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteLeftCR}}" />
-                        </DataTrigger>-->
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonPlacement}" Value="{x:Static flat:PlacementDirection.Bottom}">
+                        </Trigger>
+                        <Trigger Property="MenuButtonPlacement" Value="Bottom">
                             <Setter TargetName="PART_Menu" Property="Grid.Row" Value="2" />
                             <Setter TargetName="PART_Menu" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_Menu" Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonSize}" />
+                            <Setter TargetName="PART_Menu" Property="Width" Value="NaN" />
                             <Setter TargetName="PART_Sep" Property="Grid.Row" Value="2" />
                             <Setter TargetName="PART_Sep" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_Sep" Property="HorizontalAlignment" Value="Stretch" />
                             <Setter TargetName="PART_Sep" Property="VerticalAlignment" Value="Top" />
-                            <Setter Property="Width" Value="NaN" />
-                            <Setter Property="Height" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="PART_Sep" Property="Width" Value="NaN" />
+                            <Setter TargetName="PART_Sep" Property="Height" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter TargetName="PART_Sep" Property="Margin" Value="{Binding SeparatorEdgeMargin, 
                                 RelativeSource={RelativeSource Mode=TemplatedParent},
     Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLrTh}}" />
@@ -1951,16 +1961,18 @@ Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResourc
                             <Setter TargetName="PART_Main" Property="CornerRadius" 
                                 Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
     Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteTopCR}}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonPlacement}" Value="{x:Static flat:PlacementDirection.Top}">
+                        </Trigger>
+                        <Trigger Property="MenuButtonPlacement" Value="Top">
                             <Setter TargetName="PART_Menu" Property="Grid.Row" Value="0" />
                             <Setter TargetName="PART_Menu" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_Menu" Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonSize}" />
+                            <Setter TargetName="PART_Menu" Property="Width" Value="NaN" />
                             <Setter TargetName="PART_Sep" Property="Grid.Row" Value="0" />
                             <Setter TargetName="PART_Sep" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_Sep" Property="HorizontalAlignment" Value="Stretch" />
                             <Setter TargetName="PART_Sep" Property="VerticalAlignment" Value="Bottom" />
-                            <Setter Property="Width" Value="NaN" />
-                            <Setter Property="Height" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="PART_Sep" Property="Width" Value="NaN" />
+                            <Setter TargetName="PART_Sep" Property="Height" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter TargetName="PART_Sep" Property="Margin" Value="{Binding SeparatorEdgeMargin, 
                                 RelativeSource={RelativeSource Mode=TemplatedParent},
     Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLrTh}}" />
@@ -1982,16 +1994,18 @@ Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResourc
                             <Setter TargetName="PART_Main" Property="CornerRadius" 
                                 Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
     Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteBottomCR}}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonPlacement}" Value="{x:Static flat:PlacementDirection.Left}">
+                        </Trigger>
+                        <Trigger Property="MenuButtonPlacement" Value="Left">
                             <Setter TargetName="PART_Menu" Property="Grid.Row" Value="1" />
                             <Setter TargetName="PART_Menu" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_Menu" Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinHeight}" />
+                            <Setter TargetName="PART_Menu" Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonSize}" />
                             <Setter TargetName="PART_Sep" Property="Grid.Row" Value="1" />
                             <Setter TargetName="PART_Sep" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_Sep" Property="HorizontalAlignment" Value="Right" />
                             <Setter TargetName="PART_Sep" Property="VerticalAlignment" Value="Stretch" />
-                            <Setter Property="Width" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="Height" Value="NaN" />
+                            <Setter TargetName="PART_Sep" Property="Width" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter TargetName="PART_Sep" Property="Height" Value="NaN" />
                             <Setter TargetName="PART_Sep" Property="Margin" Value="{Binding SeparatorEdgeMargin, 
                                 RelativeSource={RelativeSource Mode=TemplatedParent},
     Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteTbTh}}" />
@@ -2013,14 +2027,17 @@ Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResourc
                             <Setter TargetName="PART_Main" Property="CornerRadius" 
                                 Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
     Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteRightCR}}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonPlacement}" Value="{x:Static flat:PlacementDirection.Hidden}">
+                        </Trigger>
+                        <Trigger Property="MenuButtonPlacement" Value="Hidden">
                             <Setter TargetName="PART_Menu" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_Sep" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_Main" Property="CornerRadius" 
                                 Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
     Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteAll}}" />
-                        </DataTrigger>
+                            <Setter TargetName="PART_Main" Property="BorderThickness"
+                                Value="{Binding BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}, 
+Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteAll}}" />       
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

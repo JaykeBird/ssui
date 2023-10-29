@@ -657,12 +657,31 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set where the menu button should be placed in relation to the main button. Default is <c>Right</c>.
         /// </summary>
+        /// <remarks>
+        /// If you want to set this value to <c>Top</c> or <c>Bottom</c>, also consider increasing the height of the button or decreasing the value of <see cref="MenuButtonSize"/>.
+        /// If you set this value to <c>Hidden</c>, the menu button is entirely hidden (and no longer accessible via the mouse).
+        /// </remarks>
         public PlacementDirection MenuButtonPlacement { get => (PlacementDirection)GetValue(MenuButtonPlacementProperty); set => SetValue(MenuButtonPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuButtonPlacement"/>. See the related property for details.</summary>
         public static DependencyProperty MenuButtonPlacementProperty
             = DependencyProperty.Register("MenuButtonPlacement", typeof(PlacementDirection), typeof(SplitButton),
             new FrameworkPropertyMetadata(PlacementDirection.Right));
+
+        /// <summary>
+        /// Get or set the width or height of the menu button. Larger values make the button wider or taller, and takes up a larger portion of the overall control. Default is <c>20</c>.
+        /// </summary>
+        /// <remarks>
+        /// When <see cref="MenuButtonPlacement"/> is set to <c>Left</c> or <c>Right</c>, this affects the width of the menu button.
+        /// When it is set to <c>Top</c> or <c>Bottom</c>, this affects the height of the menu button. When it is set to <c>Hidden</c>, this has no effect.
+        /// </remarks>
+        public double MenuButtonSize { get => (double)GetValue(MenuButtonSizeProperty); set => SetValue(MenuButtonSizeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuButtonSize"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuButtonSizeProperty
+            = DependencyProperty.Register("MenuButtonSize", typeof(double), typeof(SplitButton),
+            new FrameworkPropertyMetadata(20.0));
+
 
         #region Click Handling
 
