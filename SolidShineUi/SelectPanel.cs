@@ -161,7 +161,7 @@ namespace SolidShineUi
                 if (oldValue == null) return;
                 foreach (SelectableUserControl item in oldValue)
                 {
-                    item.SelectionChanged -= Item_SelectionChanged;
+                    item.IsSelectedChanged -= Item_SelectionChanged;
                 }
             }
 
@@ -258,7 +258,7 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                item.SelectionChanged -= Item_SelectionChanged;
+                                item.IsSelectedChanged -= Item_SelectionChanged;
                             }
                         }
                         RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
@@ -297,7 +297,7 @@ namespace SolidShineUi
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // update .NET Core section first, copy into here
-           switch (e.Action)
+            switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     if (e.NewItems != null)
@@ -319,7 +319,7 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                item.SelectionChanged -= Item_SelectionChanged;
+                                item.IsSelectedChanged -= Item_SelectionChanged;
                             }
                         }
                         RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
@@ -349,14 +349,12 @@ namespace SolidShineUi
                     {
                         RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
                     }
-                    //TabsCleared?.Invoke(this, EventArgs.Empty);
                     break;
                 default:
                     break;
             }
 #endif
 
-            //LoadTemplateItems();
         }
 
         void AddItemInternal(SelectableUserControl item)
@@ -364,7 +362,7 @@ namespace SolidShineUi
             item.SelectedBrush = SelectedBrush;
             item.HighlightBrush = HighlightBrush;
             item.ClickBrush = ClickBrush;
-            item.SelectionChanged += Item_SelectionChanged;
+            item.IsSelectedChanged += Item_SelectionChanged;
             item.ApplyColorScheme(ColorScheme);
         }
 
@@ -408,12 +406,10 @@ namespace SolidShineUi
 
                 _internalAction = false;
             }
-            //throw new NotImplementedException();
         }
 
         private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
-            //LoadTemplateItems();
             if (_internalAction) return;
 
             RefreshVisualSelection();
