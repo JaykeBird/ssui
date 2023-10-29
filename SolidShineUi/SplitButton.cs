@@ -40,7 +40,7 @@ namespace SolidShineUi
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
 
-            if (Menu != null) Menu.ApplyColorScheme(cs);
+            Menu?.ApplyColorScheme(cs);
         }
 
         #region Brushes
@@ -558,14 +558,15 @@ namespace SolidShineUi
 
         #region Menu
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="Menu"/>. Please see the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(SplitButton),
             new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 #if NETCOREAPP
         /// <summary>
-        /// Get or set the menu that appears when the button is clicked.
+        /// Get or set the menu that appears when the menu button is clicked.
         /// </summary>
         [Category("Common")]
         public ContextMenu? Menu
@@ -575,12 +576,12 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// This event is raised when this SplitButtons's menu is closed.
+        /// This event is raised when this SplitButton's menu is closed.
         /// </summary>
         public EventHandler? MenuClosed;
 #else
         /// <summary>
-        /// Get or set the menu that appears when the button is clicked.
+        /// Get or set the menu that appears when the menu button is clicked.
         /// </summary>
         [Category("Common")]
         public ContextMenu Menu
@@ -590,7 +591,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// This event is raised when this SplitButtons's menu is closed.
+        /// This event is raised when this SplitButton's menu is closed.
         /// </summary>
         public EventHandler MenuClosed;
 #endif
@@ -612,12 +613,15 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+        private void Menu_Closed(object sender, RoutedEventArgs e)
+        {
+            MenuClosed?.Invoke(this, EventArgs.Empty);
+        }
 
         #region Placement
 
         /// <summary>
-        /// Get or set the placement mode for the SplitButton's menu.
+        /// Get or set the placement mode for the SplitButton's menu. Default is <c>Bottom</c>.
         /// </summary>
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
@@ -628,7 +632,7 @@ namespace SolidShineUi
 
 
         /// <summary>
-        /// Get or set the placement target for the SplitButton's menu. Set to <c>null</c> to set the target to this SplitButton.
+        /// Get or set the placement target for the SplitButton's menu. Set to <c>null</c> to set the target to this SplitButton. Default is <c>null</c>.
         /// </summary>
 #if NETCOREAPP
         public UIElement? MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
@@ -654,6 +658,9 @@ namespace SolidShineUi
 
         #endregion
 
+        #endregion
+
+        #region Menu Button
         /// <summary>
         /// Get or set where the menu button should be placed in relation to the main button. Default is <c>Right</c>.
         /// </summary>
@@ -681,7 +688,7 @@ namespace SolidShineUi
         public static DependencyProperty MenuButtonSizeProperty
             = DependencyProperty.Register("MenuButtonSize", typeof(double), typeof(SplitButton),
             new FrameworkPropertyMetadata(20.0));
-
+        #endregion
 
         #region Click Handling
 
@@ -771,27 +778,20 @@ namespace SolidShineUi
 
         #region Variables/Properties
 
-        //bool sel = false;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="IsSelected"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(SplitButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        /// <summary>
-        /// Perform an action when a property of an object has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is bool se)
             {
                 if (d is SplitButton f)
                 {
                     f.IsSelectedChanged?.Invoke(d, e);
-                    //f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
                 }
             }
         }
@@ -812,34 +812,16 @@ namespace SolidShineUi
             }
             set
             {
-                //bool sel = value;
                 SetValue(IsSelectedProperty, value);
-
-                //if (Template != null)
-                //{
-                //    Border border = (Border)Template.FindName("btn_Border", this);
-                //    if (border != null)
-                //    {
-                //        if (sel)
-                //        {
-                //            border.Background = SelectedBrush;
-                //        }
-                //        else
-                //        {
-                //            border.Background = Background;
-                //        }
-                //    }
-                //}
-
-                //SelectionChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
             "SelectOnClick", typeof(bool), typeof(SplitButton),
             new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
@@ -856,6 +838,15 @@ namespace SolidShineUi
             get => (bool)GetValue(SelectOnClickProperty);
             set => SetValue(SelectOnClickProperty, value);
         }
+
+        /// <summary>
+        /// Raised if the button's IsSelected value is changed. This can be used to monitor the button's selected state, and is recommended to use this rather than the <see cref="Click"/> event.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
+#else
+        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
+#endif
 
         #endregion
 
@@ -967,27 +958,5 @@ namespace SolidShineUi
         }
         #endregion
 
-#if NETCOREAPP
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
-#else
-        ///// <summary>
-        ///// Raised when the user clicks on the button. Please use the new Click event instead.
-        ///// </summary>
-        //[Obsolete("Please transition to the new Click event, which is a routed event. This will be removed in a later version.", false)]
-        //public event EventHandler UnroutedClick;
-
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
-#endif
-
-        private void Menu_Closed(object sender, RoutedEventArgs e)
-        {
-            MenuClosed?.Invoke(this, EventArgs.Empty);
-        }
     }
 }

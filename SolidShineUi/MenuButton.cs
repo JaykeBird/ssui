@@ -38,16 +38,16 @@ namespace SolidShineUi
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
 
-            if (Menu != null) Menu.ApplyColorScheme(cs);
+            Menu?.ApplyColorScheme(cs);
         }
-
 
         #region Menu
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="Menu"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(MenuButton),
             new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 #if NETCOREAPP
         /// <summary>
@@ -98,7 +98,10 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+        private void Menu_Closed(object sender, RoutedEventArgs e)
+        {
+            MenuClosed?.Invoke(this, EventArgs.Empty);
+        }
 
         #region Placement
 
@@ -140,12 +143,14 @@ namespace SolidShineUi
 
         #endregion
 
+        #endregion
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="ShowMenuArrow"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
             "ShowMenuArrow", typeof(bool), typeof(MenuButton),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
@@ -157,14 +162,16 @@ namespace SolidShineUi
             set => SetValue(ShowMenuArrowProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="KeepMenuArrowOnRight"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty KeepMenuArrowOnRightProperty = DependencyProperty.Register(
             "KeepMenuArrowOnRight", typeof(bool), typeof(MenuButton),
             new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned.
+        /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 
+        /// (via <see cref="System.Windows.Controls.Control.HorizontalContentAlignment"/>).
         /// </summary>
         [Category("Common")]
         public bool KeepMenuArrowOnRight
@@ -173,19 +180,19 @@ namespace SolidShineUi
             set => SetValue(KeepMenuArrowOnRightProperty, value);
         }
 
-        /// <summary>
-        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
-        /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
-        /// This can also be achieved with the <c>UseAccentColors</c> property.
-        /// </param>
-        public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
-        {
-            base.ApplyColorScheme(cs, transparentBack, useAccentColors);
-            if (Menu != null) Menu.ApplyColorScheme(cs);
-        }
+        ///// <summary>
+        ///// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        ///// </summary>
+        ///// <param name="cs">The color scheme to apply</param>
+        ///// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
+        ///// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
+        ///// This can also be achieved with the <c>UseAccentColors</c> property.
+        ///// </param>
+        //public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
+        //{
+        //    base.ApplyColorScheme(cs, transparentBack, useAccentColors);
+        //    Menu?.ApplyColorScheme(cs);
+        //}
 
         /// <summary>
         /// Internal method for opening up the menu when the button is clicked
@@ -202,11 +209,6 @@ namespace SolidShineUi
                 Menu.IsOpen = true;
                 Menu.Closed += Menu_Closed;
             }
-        }
-
-        private void Menu_Closed(object sender, RoutedEventArgs e)
-        {
-            MenuClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 }
