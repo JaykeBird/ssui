@@ -660,6 +660,40 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Button Handling
+
+        private void btnMenu_RightClick(object sender, RoutedEventArgs e)
+        {
+            PerformRightClick();
+        }
+
+        private void btnMain_RightClick(object sender, RoutedEventArgs e)
+        {
+            PerformRightClick();
+        }
+
+        private void btnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (Menu != null)
+            {
+                Menu.Placement = MenuPlacement;
+                Menu.PlacementTarget = MenuPlacementTarget ?? this;
+                Menu.PlacementRectangle = MenuPlacementRectangle;
+                Menu.HorizontalOffset = 0;
+                Menu.VerticalOffset = -1;
+                Menu.IsOpen = true;
+                Menu.Closed += Menu_Closed;
+            }
+
+            RoutedEventArgs rre = new RoutedEventArgs(MenuClickEvent);
+            RaiseEvent(rre);
+        }
+
+        private void btnMain_Click(object sender, RoutedEventArgs e)
+        {
+            OnClick();
+        }
+
         #region Menu Button
         /// <summary>
         /// Get or set where the menu button should be placed in relation to the main button. Default is <c>Right</c>.
@@ -688,6 +722,8 @@ namespace SolidShineUi
         public static DependencyProperty MenuButtonSizeProperty
             = DependencyProperty.Register("MenuButtonSize", typeof(double), typeof(SplitButton),
             new FrameworkPropertyMetadata(20.0));
+
+        #endregion
         #endregion
 
         #region Click Handling
@@ -891,49 +927,24 @@ namespace SolidShineUi
 
             if (itemsLoaded)
             {
+                // the itemsLoaded value will only be true if both controls are not null
+#if NETCOREAPP
+                btnMain!.Click += btnMain_Click;
+                btnMenu!.Click += btnMenu_Click;
+
+                btnMain.RightClick += btnMain_RightClick;
+                btnMenu.RightClick += btnMenu_RightClick;
+#else
                 btnMain.Click += btnMain_Click;
                 btnMenu.Click += btnMenu_Click;
 
                 btnMain.RightClick += btnMain_RightClick;
                 btnMenu.RightClick += btnMenu_RightClick;
+#endif
             }
-        }
-
-        private void btnMenu_RightClick(object sender, RoutedEventArgs e)
-        {
-            PerformRightClick();
-        }
-
-        private void btnMain_RightClick(object sender, RoutedEventArgs e)
-        {
-            PerformRightClick();
-        }
-
-        private void btnMenu_Click(object sender, RoutedEventArgs e)
-        {
-            if (Menu != null)
-            {
-                Menu.Placement = MenuPlacement;
-                Menu.PlacementTarget = MenuPlacementTarget ?? this;
-                Menu.PlacementRectangle = MenuPlacementRectangle;
-                Menu.HorizontalOffset = 0;
-                Menu.VerticalOffset = -1;
-                Menu.IsOpen = true;
-                Menu.Closed += Menu_Closed;
-            }
-
-            RoutedEventArgs rre = new RoutedEventArgs(MenuClickEvent);
-            RaiseEvent(rre);
-        }
-
-        private void btnMain_Click(object sender, RoutedEventArgs e)
-        {
-            OnClick();
         }
 
         bool itemsLoaded = false;
-
-        //bool _internalAction = false;
 
 #if NETCOREAPP
         FlatButton? btnMain = null;
@@ -956,7 +967,7 @@ namespace SolidShineUi
                 }
             }
         }
-        #endregion
+#endregion
 
     }
 }

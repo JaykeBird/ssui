@@ -544,7 +544,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to monitor the button's selected state, and is recommended to use this rather than the <see cref="Click"/> event.
+        /// Raised if the button's IsSelected value is changed. This can be used to monitor the button's selected state, and is recommended to use this rather than the <see cref="ButtonBase.Click"/> event.
         /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
