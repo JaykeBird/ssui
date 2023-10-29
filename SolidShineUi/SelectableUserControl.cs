@@ -12,7 +12,7 @@ namespace SolidShineUi
     /// The basic control that can be added into a SelectPanel. Extend this class to create your own UI elements to use with the SelectPanel.
     /// </summary>
     [Localizability(LocalizationCategory.ListBox)]
-    [DefaultEvent(nameof(SelectionChanged))]
+    [DefaultEvent(nameof(IsSelectedChanged))]
     public class SelectableUserControl : System.Windows.Controls.UserControl //, IEquatable<SelectableUserControl>
     {
         /// <summary>
@@ -228,7 +228,7 @@ namespace SolidShineUi
 
                 if (curVal != sel)
                 {
-                    SelectionChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, triggerMethod, triggerSource));
+                    IsSelectedChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, triggerMethod, triggerSource));
                 }
             }
         }
@@ -241,7 +241,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised if the IsSelected property is changed.
         /// </summary>
-        public event ItemSelectionChangedEventHandler? SelectionChanged;
+        public event ItemSelectionChangedEventHandler? IsSelectedChanged;
         /// <summary>
         /// Raised if the CanSelect property is changed.
         /// </summary>
@@ -258,7 +258,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised if the IsSelected property is changed.
         /// </summary>
-        public event ItemSelectionChangedEventHandler SelectionChanged;
+        public event ItemSelectionChangedEventHandler IsSelectedChanged;
         /// <summary>
         /// Raised if the CanSelect property is changed.
         /// </summary>
@@ -274,7 +274,7 @@ namespace SolidShineUi
 #endif
 
         /// <summary>
-        /// Represents a handler for the SelectionChanged event.
+        /// Represents a handler for the <see cref="IsSelectedChanged"/> event.
         /// </summary>
         /// <param name="sender">The source object of the event.</param>
         /// <param name="e">The event arguments, containing information on the new IsSelected value and how the selection changed.</param>
@@ -468,7 +468,7 @@ namespace SolidShineUi
     }
 
     /// <summary>
-    /// The event arguments for the SelectionChanged event of the SelectableUserControl.
+    /// The event arguments for the IsSelectedChanged event of the SelectableUserControl.
     /// </summary>
     public class ItemSelectionChangedEventArgs : EventArgs
     {
@@ -478,7 +478,7 @@ namespace SolidShineUi
         /// <param name="oldValue">The old IsSelected value.</param>
         /// <param name="newValue">The new IsSelected value.</param>
         /// <param name="trigger">The trigger method that caused the value to be updated.</param>
-        /// <param name="triggerSource">The source object that updated the value.</param>
+        /// <param name="triggerSource">The source object that updated the value (if available).</param>
 #if NETCOREAPP
         public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null)
 #else
@@ -532,7 +532,7 @@ namespace SolidShineUi
         /// </summary>
         Parent = 2,
         /// <summary>
-        /// The selection was changed via directly setting the value in code, or the method isn't strictly defined here.
+        /// The selection was changed via directly setting the value in code, or via a different undefined method.
         /// </summary>
         CodeUnknown = 9,
     }
