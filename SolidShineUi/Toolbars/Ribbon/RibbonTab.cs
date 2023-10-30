@@ -20,6 +20,9 @@ namespace SolidShineUi.Toolbars.Ribbon
     [ContentProperty("Items")]
     public class RibbonTab : DependencyObject
     {
+        /// <summary>
+        /// Create a RibbonTab.
+        /// </summary>
         public RibbonTab()
         {
             SetValue(ItemsPropertyKey, new ObservableCollection<RibbonGroup>());
@@ -27,6 +30,16 @@ namespace SolidShineUi.Toolbars.Ribbon
             Items.CollectionChanged += Items_CollectionChanged;
         }
 
+        /// <summary>
+        /// Get or set the Title for this tab. This is displayed on the Ribbon UI for users to select.
+        /// </summary>
+        /// <remarks>
+        /// The title should succinctly explain the commands that will be found on this tab. Similar commands should be grouped together on one tab,
+        /// and the title can identify all these commands in a general sense. For example, a title of "View" could be used for a tab that houses commands
+        /// that are related to changing the view, zoom, or other aspects of displaying your application's content.
+        /// <para/>
+        /// Common convention is to use the title "Home" for the first tab on your Ribbon, which will contain your application's most commonly used commands.
+        /// </remarks>
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         public static DependencyProperty TitleProperty
@@ -39,12 +52,15 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("FitContentsToWidth", typeof(bool), typeof(RibbonTab),
             new FrameworkPropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set the visibility for this RibbonTab. A value of <c>Collapsed</c> will cause this RibbonTab to not appear on the Ribbon.
+        /// </summary>
         public Visibility Visibility { get => (Visibility)GetValue(VisibilityProperty); set => SetValue(VisibilityProperty, value); }
 
         public static DependencyProperty VisibilityProperty
             = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RibbonTab),
             new FrameworkPropertyMetadata(Visibility.Visible, 
-                new PropertyChangedCallback((o, e) => o.AsThis<RibbonTab>((t) => t.VisibilityChanged?.Invoke(t, e)))));
+                new PropertyChangedCallback((o, e) => o.PerformAs<RibbonTab>((t) => t.VisibilityChanged?.Invoke(t, e)))));
 
         /// <summary>
         /// Raised when the <see cref="Visibility"/> value has changed.
@@ -66,7 +82,7 @@ namespace SolidShineUi.Toolbars.Ribbon
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set the list of items in this RibbonGroup. This Items property can be used to add and remove items.
+        /// Get or set the list of groups in this RibbonTab. This Items property can be used to add and remove items.
         /// </summary>
         [Category("Common")]
         public ObservableCollection<RibbonGroup> Items
@@ -96,7 +112,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(RibbonTab),
-            new PropertyMetadata(new Thickness(12, 0, 12, 0), new PropertyChangedCallback((o, e) => o.AsThis<RibbonTab>((t) => t.PaddingChanged?.Invoke(t, e)))));
+            new PropertyMetadata(new Thickness(12, 0, 12, 0), new PropertyChangedCallback((o, e) => o.PerformAs<RibbonTab>((t) => t.PaddingChanged?.Invoke(t, e)))));
 
         ///<summary>
         /// Get or set the padding (or space) applied around the tab's title and icon. (This does not set the padding for the content.)

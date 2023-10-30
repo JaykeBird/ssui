@@ -1935,8 +1935,8 @@
                                                                      Visibility="{Binding Visibility}" TabItem="{Binding .}" 
                                                                      AllowDataDragDrop="{Binding AllowDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
                                                                      ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
-                                                                     AllowDragDrop="{Binding AllowControlReordering, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
                                                                      ParentRibbon="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" />
+                                                <!-- AllowDragDrop="{Binding AllowControlReordering, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" -->
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -2237,6 +2237,18 @@
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
                                 <Condition Property="StandardSize" Value="Large" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
@@ -2268,6 +2280,18 @@
                                 <Setter Property="Width" TargetName="colPadding" Value="0" />
                                 <Setter Property="Width" TargetName="colTitle" Value="0" />
                                 <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <MultiTrigger>
@@ -2377,22 +2401,6 @@
                         </Border.Style>
 
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                            <!--<ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}">
-                                <ContentPresenter.Style>
-                                    <Style TargetType="{x:Type ContentPresenter}" >
-                                        <Setter Property="Opacity" Value="1.0" />
-                                        <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                                        <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                                        -->
-                            <!--<Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" Value="False" >
-                                                    <Setter Property="Opacity" Value="0.6"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>-->
-                            <!--
-                                    </Style>
-                                </ContentPresenter.Style>
-                            </ContentPresenter>-->
                             <Grid x:Name="btn_Cc" Margin="{TemplateBinding Padding}" >
                                 <Grid x:Name="Part_Small" Margin="2,1">
                                     <Grid.ColumnDefinitions>
@@ -2449,6 +2457,18 @@
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
                                 <Condition Property="StandardSize" Value="Large" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
@@ -2480,6 +2500,18 @@
                                 <Setter Property="Width" TargetName="colPadding" Value="0" />
                                 <Setter Property="Width" TargetName="colTitle" Value="0" />
                                 <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <MultiTrigger>
@@ -2781,7 +2813,6 @@
                                 <Style TargetType="{x:Type ContentPresenter}" >
                                     <Setter Property="Opacity" Value="1.0" />
                                     <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCustomControl}}}" />
-
                                 </Style>
                             </ContentPresenter.Style>
                         </ContentPresenter>
@@ -2960,6 +2991,18 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type ribbon:Gallery}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ribbon:Gallery}">
+                    <Border>
+                        
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="{x:Type flat:SplitButton}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinHeight" Value="24" />
@@ -3185,7 +3228,7 @@ Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResourc
     Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteAll}}" />
                             <Setter TargetName="PART_Main" Property="BorderThickness"
                                 Value="{Binding BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}, 
-Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteAll}}" />       
+Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteAll}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
