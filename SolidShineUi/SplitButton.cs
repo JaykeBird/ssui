@@ -16,7 +16,7 @@ namespace SolidShineUi
     /// A control that displays two buttons: a main button on the left which activates like a normal button, 
     /// and a secondary button on the right that displays a menu of additional options.
     /// </summary>
-    public class SplitButton : ContentControl
+    public class SplitButton : ContentControl, IClickSelectableControl
     {
         static SplitButton()
         {
@@ -694,7 +694,8 @@ namespace SolidShineUi
             OnClick();
         }
 
-        #region Menu Button
+        #region Menu Button Layout
+
         /// <summary>
         /// Get or set where the menu button should be placed in relation to the main button. Default is <c>Right</c>.
         /// </summary>
@@ -724,6 +725,7 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(20.0));
 
         #endregion
+
         #endregion
 
         #region Click Handling
@@ -894,7 +896,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Perform a click pn the main button programmatically. The button responds the same way as if it was clicked by the user.
+        /// Perform a click on the main button programmatically. The button responds the same way as if it was clicked by the user.
         /// </summary>
         public void DoClick()
         {
