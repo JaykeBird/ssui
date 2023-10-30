@@ -45,9 +45,6 @@ namespace SolidShineUi
             SelectedFiles.ItemAdding += SelectedFiles_AddingItem;
             SelectedFiles.CollectionChanged += SelectedFiles_CollectionChanged;
 
-            InternalCornerRadiusChanged += FileSelect_InternalCornerRadiusChanged;
-            InternalAllowMultipleFilesChanged += fs_InternalAllowMultipleFilesChanged;
-
             CommandBindings.Add(new CommandBinding(BrowseForFile, OnBrowseForFile, CanExecuteAlways));
             CommandBindings.Add(new CommandBinding(ClearSelectedFiles, OnClearSelectedFiles, CanExecuteIfNotEmpty));
             CommandBindings.Add(new CommandBinding(CopyFilenames, OnCopyFilenames, CanExecuteIfNotEmpty));
@@ -96,7 +93,6 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-
         /// <summary>
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
@@ -119,8 +115,8 @@ namespace SolidShineUi
 
             if (d is FileSelect c)
             {
-                c.ColorSchemeChanged?.Invoke(d, e);
                 c.ApplyColorScheme(cs);
+                c.ColorSchemeChanged?.Invoke(d, e);
             }
         }
 
@@ -305,24 +301,21 @@ namespace SolidShineUi
             set => SetValue(CornerRadiusProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnCornerRadiusChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// The backing routed event for <see cref="CornerRadiusChanged"/>. See the related event for details.
         /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
             "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Raised when the CornerRadius property is changed.
+        /// Raised when the <see cref="CornerRadius"/> property is changed.
         /// </summary>
         public event RoutedEventHandler CornerRadiusChanged
         {
@@ -334,14 +327,9 @@ namespace SolidShineUi
         {
             if (d is FileSelect f)
             {
-                f.InternalCornerRadiusChanged?.Invoke(f, e);
+                RoutedEventArgs re = new RoutedEventArgs(CornerRadiusChangedEvent);
+                f.RaiseEvent(re);
             }
-        }
-
-        private void FileSelect_InternalCornerRadiusChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            RoutedEventArgs re = new RoutedEventArgs(CornerRadiusChangedEvent);
-            RaiseEvent(re);
         }
 
         /// <summary>
@@ -354,33 +342,44 @@ namespace SolidShineUi
             set => SetValue(ButtonCornerRadiusProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="ButtonCornerRadius"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ButtonCornerRadiusProperty = DependencyProperty.Register(
             "ButtonCornerRadius", typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
         #region Other Appearance Properties
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="BrowseButtonText"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty BrowseButtonTextProperty = DependencyProperty.Register(
             "BrowseButtonText", typeof(string), typeof(FileSelect),
             new FrameworkPropertyMetadata("Browse..."));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="NoFilesSelectedMessage"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty NoFilesSelectedMessageProperty = DependencyProperty.Register(
             "NoFilesSelectedMessage", typeof(string), typeof(FileSelect),
             new FrameworkPropertyMetadata("(no files selected)"));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="ShowIcon"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
             "ShowIcon", typeof(bool), typeof(FileSelect),
             new FrameworkPropertyMetadata(true));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="FileListPadding"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty FileListPaddingProperty = DependencyProperty.Register(
             "FileListPadding", typeof(Thickness), typeof(FileSelect),
             new FrameworkPropertyMetadata(new Thickness(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the text displayed in the Browse button. The default value is "Browse...".
@@ -412,11 +411,12 @@ namespace SolidShineUi
             set => SetValue(ShowIconProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="ButtonPlacement"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ButtonPlacementProperty = DependencyProperty.Register(
             "ButtonPlacement", typeof(PlacementDirection), typeof(FileSelect),
             new FrameworkPropertyMetadata(PlacementDirection.Right));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the placement location of the Browse button. The button can be placed on any of the four edges of the control, or it can be hidden entirely.
@@ -428,11 +428,12 @@ namespace SolidShineUi
             set => SetValue(ButtonPlacementProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="DisplayFilenames"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty DisplayFilenamesProperty = DependencyProperty.Register(
             "DisplayFilenames", typeof(bool), typeof(FileSelect),
             new FrameworkPropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the filenames of the selected files are displayed. If true, then all selected files are displayed in a vertical list (with scrolling if needed).
@@ -445,11 +446,26 @@ namespace SolidShineUi
             set => SetValue(DisplayFilenamesProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// Get or set the padding to put around the file list portion of the control (the portion that actually has the files listed).
+        /// </summary>
+        /// <remarks>
+        /// This can be used to add some space between the Browse button and the list of files, in situations where some extra space may be needed there.
+        /// Use <see cref="Control.Padding"/> to add space between the edges of this FileSelect and its contents (the file list and Browse button together). 
+        /// </remarks>
+        [Category("Layout")]
+        public Thickness FileListPadding
+        {
+            get => (Thickness)GetValue(FileListPaddingProperty);
+            set => SetValue(FileListPaddingProperty, value);
+        }
+
+        /// <summary>
+        /// The backing dependency property for <see cref="HorizontalScrollBarVisibility"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register(
             "HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
@@ -461,11 +477,12 @@ namespace SolidShineUi
             set => SetValue(HorizontalScrollBarVisibilityProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="VerticalScrollBarVisibility"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
             "VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
@@ -475,19 +492,6 @@ namespace SolidShineUi
         {
             get => (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty);
             set => SetValue(VerticalScrollBarVisibilityProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the padding to put around the file list portion of the control (the portion that actually has the files listed).
-        /// </summary>
-        /// <remarks>
-        /// This can be used to add some space between the Browse button and the list of files, in situations where the two in contact may lead to undesirable results.
-        /// </remarks>
-        [Category("Layout")]
-        public Thickness FileListPadding
-        {
-            get => (Thickness)GetValue(FileListPaddingProperty);
-            set => SetValue(FileListPaddingProperty, value);
         }
 
         #endregion
@@ -644,63 +648,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Selected Files
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        private static readonly DependencyPropertyKey SelectedFilesPropertyKey
-            = DependencyProperty.RegisterReadOnly("SelectedFiles", typeof(LimitableStringCollection), typeof(FileSelect),
-            new FrameworkPropertyMetadata(new LimitableStringCollection()));
-
-        public static readonly DependencyProperty SelectedFilesProperty = SelectedFilesPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get the list of files selected in this FileSelect. You can add or remove items from the collection, or set the collection's max size via the <c>Capacity</c> property.
-        /// </summary>
-        [Category("Common")]
-        public LimitableStringCollection SelectedFiles
-        {
-            get { return (LimitableStringCollection)GetValue(SelectedFilesProperty); }
-            private set { SetValue(SelectedFilesPropertyKey, value); }
-        }
-
-        private void SelectedFiles_AddingItem(object sender, ItemAddingStringEventArgs e)
-        {
-            if (!File.Exists(e.Item) && !FileMatchesFilter(e.Item, FileFilter.Split(';')))
-            {
-                e.Cancel = true;
-            }
-        }
-
-#if NETCOREAPP
-        private void SelectedFiles_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-#else
-        private void SelectedFiles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-#endif
-        {
-            //LoadTemplateItems();
-
-            RoutedEventArgs re = new RoutedEventArgs(SelectionChangedEvent);
-            RaiseEvent(re);
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Raised when the list of selected files is changed.
-        /// </summary>
-        public event RoutedEventHandler SelectionChanged
-        {
-            add { AddHandler(SelectionChangedEvent, value); }
-            remove { RemoveHandler(SelectionChangedEvent, value); }
-        }
-
-        #endregion
-
-        #region Connections to Control Template
+        #region Template IO
 
         /// <inheritdoc/>
         public override void OnApplyTemplate()
@@ -739,25 +687,35 @@ namespace SolidShineUi
 
         #endregion
 
-        #region File Filtering Properties
+        #region FileFilter / AllowMultipleFiles
 
         /// <summary>
         /// Defines the standard filter for displaying all files (as in, no filter is applied).
         /// </summary>
         public const string ALL_FILES_FILTER = "*.*";
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty FileFilterProperty = DependencyProperty.Register(
-            "FileFilter", typeof(string), typeof(FileSelect),
-            new PropertyMetadata("*.*"));
-
-        public static readonly DependencyProperty AllowMultipleFilesProperty = DependencyProperty.Register(
-            "AllowMultipleFiles", typeof(bool), typeof(FileSelect),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalAllowMultipleFilesChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// Defines the delimiter character to use when specifying multiple filters for <see cref="FileFilter"/>.
+        /// </summary>
+        public static char FILTER_DELIMITER = ';';
 
         /// <summary>
-        /// Get or set the file filter used when selecting files. Use semicolons (;) to separate multiple extensions/filters (i.e. <c>*.docx;*.xlsx;*.pptx</c>). Supports * and ? wildcards like Windows.
+        /// The backing dependency property for <see cref="FileFilter"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty FileFilterProperty = DependencyProperty.Register(
+            "FileFilter", typeof(string), typeof(FileSelect),
+            new PropertyMetadata(ALL_FILES_FILTER));
+
+        /// <summary>
+        /// The backing dependency property for <see cref="AllowMultipleFiles"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty AllowMultipleFilesProperty = DependencyProperty.Register(
+            "AllowMultipleFiles", typeof(bool), typeof(FileSelect),
+            new PropertyMetadata(true, new PropertyChangedCallback(OnAllowMultipleFilesChanged)));
+
+        /// <summary>
+        /// Get or set the file filter used when selecting files. Use the <see cref="FILTER_DELIMITER"/> character (usually a semicolon ";")
+        /// to separate multiple extensions/filters (i.e. <c>*.docx;*.xlsx;*.pptx</c>). Supports <c>*</c> and <c>?</c> wildcards like Windows.
         /// </summary>
         /// <remarks>
         /// If the filter is changed after files have been selected, the existing selected files are not re-run against the new filter. This only applies to files added in afterwards.
@@ -783,12 +741,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalAllowMultipleFilesChanged;
-
-        /// <summary>
-        /// Raised when the AllowMultipleFiles property is changed.
+        /// Raised when the <see cref="AllowMultipleFiles"/> property is changed.
         /// </summary>
 #if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? AllowMultipleFilesChanged;
@@ -796,56 +749,133 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler AllowMultipleFilesChanged;
 #endif
 
-        private static void OnInternalAllowMultipleFilesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnAllowMultipleFilesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is FileSelect s)
             {
-                s.InternalAllowMultipleFilesChanged?.Invoke(s, e);
+                s.AllowMultipleFilesChanged?.Invoke(s, e);
+                s.SelectedFiles.MaxCount = s.AllowMultipleFiles ? -1 : 1;
             }
-        }
-        private void fs_InternalAllowMultipleFilesChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            AllowMultipleFilesChanged?.Invoke(this, e);
-            SelectedFiles.MaxCount = AllowMultipleFiles ? -1 : 1;
         }
 
         #endregion
 
-        #region Select Files
+        #region Selected Files
+
+        private static readonly DependencyPropertyKey SelectedFilesPropertyKey
+            = DependencyProperty.RegisterReadOnly("SelectedFiles", typeof(LimitableStringCollection), typeof(FileSelect),
+            new FrameworkPropertyMetadata(new LimitableStringCollection()));
 
         /// <summary>
-        /// Select a file.
+        /// The backing dependency property for <see cref="SelectedFiles"/>. See the related property for more details.
         /// </summary>
-        /// <param name="file">The full path to the file.</param>
-        /// <remarks>If there is no file at the specified path, it is not selected.</remarks>
-        public void SelectFiles(string file)
+        public static readonly DependencyProperty SelectedFilesProperty = SelectedFilesPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get the list of files selected in this FileSelect. You can add or remove items from the collection, or set the collection's max size via the <c>Capacity</c> property.
+        /// </summary>
+        [Category("Common")]
+        public LimitableStringCollection SelectedFiles
         {
-            if (File.Exists(file))
+            get { return (LimitableStringCollection)GetValue(SelectedFilesProperty); }
+            private set { SetValue(SelectedFilesPropertyKey, value); }
+        }
+
+        private void SelectedFiles_AddingItem(object sender, ItemAddingStringEventArgs e)
+        {
+            if (!File.Exists(e.Item) && FileMustExist || !FileMatchesFilter(e.Item, FileFilter.Split(FILTER_DELIMITER)))
             {
-                InternalSelectFiles(file);
+                e.Cancel = true;
             }
         }
 
+#if NETCOREAPP
+        private void SelectedFiles_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#else
+        private void SelectedFiles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#endif
+        {
+            RoutedEventArgs re = new RoutedEventArgs(SelectionChangedEvent);
+            RaiseEvent(re);
+        }
+
         /// <summary>
-        /// Select a list of files.
+        /// The backing routed event for <see cref="SelectionChanged"/>. See the related event for details.
         /// </summary>
-        /// <param name="files">An enumeration of files, each string being a separate full path to a file.</param>
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
+            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
+
+        /// <summary>
+        /// Raised when the list of selected files (<see cref="SelectedFiles"/>) is changed.
+        /// </summary>
+        public event RoutedEventHandler SelectionChanged
+        {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
+
+        /// <summary>
+        /// Get or set if a file must exist at a specified path before it can be added to <see cref="SelectedFiles"/>. Default is <c>true</c>.
+        /// </summary>
+        /// <remarks>
+        /// If set to <c>false</c>, users might be able to input file paths for files that currently don't exist. This could be useful in some scenarios.
+        /// Even when this is set to <c>true</c>, it may be best to verify a file exists when you're acting upon it anyway, just to ensure it didn't
+        /// get deleted between the time that the user selected a file and you're acting upon it.
+        /// <para />
+        /// If this property is changed after files have been selected, the existing selected files are not re-checked. This only applies to files added in afterwards.
+        /// </remarks>
+        public bool FileMustExist { get => (bool)GetValue(FileMustExistProperty); set => SetValue(FileMustExistProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="FileMustExist"/>. See the related property for details.</summary>
+        public static DependencyProperty FileMustExistProperty
+            = DependencyProperty.Register("FileMustExist", typeof(bool), typeof(FileSelect),
+            new FrameworkPropertyMetadata(true));
+
+        #region Select Files functions
+
+        /// <summary>
+        /// Select a file. The selected files, if they match the <see cref="FileFilter"/>, will be added to <see cref="SelectedFiles"/>.
+        /// </summary>
+        /// <param name="file">The full path to the file</param>
         /// <remarks>If there is no file at the specified path, it is not selected.</remarks>
+        public void SelectFiles(string file)
+        {
+            if (FileMustExist && !File.Exists(file))
+            {
+                return;
+            }
+
+            InternalSelectFiles(file);
+        }
+
+        /// <summary>
+        /// Select a list of files. The selected files, if they match the <see cref="FileFilter"/>, will be added to <see cref="SelectedFiles"/>.
+        /// </summary>
+        /// <param name="files">An enumeration of files, each string being a full path to a file</param>
+        /// <remarks>
+        /// If <see cref="AllowMultipleFiles"/> is set to <c>false</c>, only the first file from the list will be selected.
+        /// If there is no file at the specified path, it is not selected.
+        /// </remarks>
         public void SelectFiles(IEnumerable<string> files)
         {
             List<string> allowedFiles = new List<string>();
 
             foreach (string file in files)
             {
-                if (File.Exists(file))
+                if (FileMustExist && !File.Exists(file))
                 {
-                    allowedFiles.Add(file);
+                    continue;
                 }
+
+                allowedFiles.Add(file);
             }
 
             InternalSelectFiles(allowedFiles);
-            //return allowedFiles;
         }
+
+        #endregion
+
+        #region Internal file accepting functions
 
         void InternalSelectFiles(string file)
         {
@@ -855,9 +885,9 @@ namespace SolidShineUi
         void InternalSelectFiles(IEnumerable<string> files)
         {
             // check how many files have been selected
-            if (!files.Any()) //(files.Count() == 0)
+            if (!files.Any())
             {
-                // no files were selected? okay lol
+                // no files were selected? okay, let's blank the control
                 AcceptFiles(new List<string>());
             }
             else if (files.Count() == 1)
@@ -866,7 +896,7 @@ namespace SolidShineUi
                 string filename = files.First();
                 if (FileFilter != ALL_FILES_FILTER)
                 {
-                    if (FileMatchesFilter(filename, FileFilter.Split(';')))
+                    if (FileMatchesFilter(filename, FileFilter.Split(FILTER_DELIMITER)))
                     {
                         // accept file
                         AcceptFiles(new List<string> { filename });
@@ -880,9 +910,10 @@ namespace SolidShineUi
             }
             else
             {
-                // multiple files inputted
+                // multiple files inputted, can we accept multiple files?
                 if (AllowMultipleFiles)
                 {
+                    // yes, we can accept multiple - now let's check each one against the filter
                     List<string> allowedFiles = GetFilteredFiles(files);
 
                     // accept allowedFiles
@@ -894,7 +925,7 @@ namespace SolidShineUi
                     string filename = files.First();
                     if (FileFilter != ALL_FILES_FILTER)
                     {
-                        if (FileMatchesFilter(filename, FileFilter.Split(';')))
+                        if (FileMatchesFilter(filename, FileFilter.Split(FILTER_DELIMITER)))
                         {
                             // accept file
                             AcceptFiles(new List<string> { filename });
@@ -913,29 +944,20 @@ namespace SolidShineUi
         /// Check if a file matches against a collection of filters.
         /// </summary>
         /// <param name="file">The file path to check.</param>
-        /// <param name="filters">The filters to check against. If using the FileFilter property, split the string via the <c>Split</c> function, splitting with the ";" delimiter.</param>
+        /// <param name="filters">The filters to check against. If using the FileFilter property, split the string with the <c>string.Split</c> function, using the ";" delimiter.</param>
         /// <returns></returns>
         private static bool FileMatchesFilter(string file, string[] filters)
         {
             // we only need to match at least one filter wildcard
             // so the moment one is matched, jump out of the foreach (in case there's a lot of filters)
-            // start "match" variable as false, as the || (or) operator will set it to true if the regex matches, or keep it false if it doesn't
-            // we just need to check that "match" is true at the end, doesn't matter which regex worked
+            // start "match" variable as false, as the || (or) operator will set it to true if the wildcard matches, or keep it false if it doesn't
+            // we just need to check that "match" is true at the end, doesn't really matter which wildcard worked
 
             bool match = false;
             foreach (string filter in filters)
             {
                 // match wildcards
                 match = match || WildcardMatch.MatchesWildcard(Path.GetFileName(file), filter, true);
-
-                // source: https://stackoverflow.com/a/30300521/2987285
-                //string r = "^" + Regex.Escape(filter).Replace("\\?", ".").Replace("\\*", ".*") + "$";
-                //string r = "^" + filter;
-                //if (filter.Contains("."))
-                //{
-                //    r = r.Replace(".", "\\.");
-                //}
-                //match = match || Regex.IsMatch(file, r, RegexOptions.IgnoreCase);
 
                 if (match) break;
             }
@@ -954,7 +976,7 @@ namespace SolidShineUi
             List<string> allowedFiles = new List<string>();
 
             // get filter list to use
-            string[] filters = FileFilter.Split(';');
+            string[] filters = FileFilter.Split(FILTER_DELIMITER);
 
             foreach (string file in files)
             {
@@ -984,28 +1006,10 @@ namespace SolidShineUi
 
                 SelectedFiles.Add(files[0]);
             }
-
-            //switch (files.Count)
-            //{
-            //    case 0:
-            //        txtName.Text = "(no files selected)";
-            //        imgIcon.Source = null;
-            //        break;
-            //    case 1:
-            //        txtName.Text = Path.GetFileName(files[0]);
-            //        imgIcon.Source = NativeMethods.GetSmallIcon(files[0]);
-            //        break;
-            //    default:
-            //        txtName.Text = files.Count + " files selected";
-            //        imgIcon.Source = GetStackImage(MessageDialogImageColor.Color);
-            //        break;
-            //}
-
-            //_acceptedFiles = files;
-
-            //RoutedEventArgs e = new RoutedEventArgs(SelectionChangedEvent);
-            //RaiseEvent(e);
         }
+
+        #endregion
+
         #endregion
 
         #region File Stream Functions
@@ -1061,7 +1065,7 @@ namespace SolidShineUi
     }
 
     /// <summary>
-    /// Used to indicate the placement of a UI element within a larger UI element.
+    /// Used to indicate the placement of a UI element within a larger parent element/control.
     /// </summary>
     public enum PlacementDirection
     {
@@ -1070,19 +1074,19 @@ namespace SolidShineUi
         /// </summary>
         Hidden = 0,
         /// <summary>
-        /// Display the UI element at the top side of the larger UI element.
+        /// Display the UI element at the top side of the control.
         /// </summary>
         Top = 1,
         /// <summary>
-        /// Display the UI element at the left side of the larger UI element.
+        /// Display the UI element at the left side of the control.
         /// </summary>
         Left = 2,
         /// <summary>
-        /// Display the UI element at the right side of the larger UI element.
+        /// Display the UI element at the right side of the control.
         /// </summary>
         Right = 3,
         /// <summary>
-        /// Display the UI element at the bottom side of the larger UI element.
+        /// Display the UI element at the bottom side of the control.
         /// </summary>
         Bottom = 4,
     }

@@ -26,7 +26,7 @@ namespace SolidShineUi
 
             IsEnabledChanged += SelectableItem_IsEnabledChanged;
             chkSel.CheckChanged += ChkSel_CheckChanged;
-            SelectionChanged += SelectableItem_SelectionChanged;
+            IsSelectedChanged += SelectableItem_SelectionChanged;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SolidShineUi
 
             IsEnabledChanged += SelectableItem_IsEnabledChanged;
             chkSel.CheckChanged += ChkSel_CheckChanged;
-            SelectionChanged += SelectableItem_SelectionChanged;
+            IsSelectedChanged += SelectableItem_SelectionChanged;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace SolidShineUi
 
             IsEnabledChanged += SelectableItem_IsEnabledChanged;
             chkSel.CheckChanged += ChkSel_CheckChanged;
-            SelectionChanged += SelectableItem_SelectionChanged;
+            IsSelectedChanged += SelectableItem_SelectionChanged;
         }
 
         /// <summary>

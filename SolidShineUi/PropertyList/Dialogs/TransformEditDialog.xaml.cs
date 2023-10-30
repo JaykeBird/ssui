@@ -102,6 +102,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 if (item is TransformGroup tg)
                 {
                     ImportTransforms(tg);
+                    continue;
                 }
                 AddTransform(item);
             }
@@ -122,6 +123,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 if (item is TransformGroup tg)
                 {
                     ImportTransforms(tg);
+                    continue;
                 }
                 AddTransform(item);
             }
@@ -142,6 +144,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 if (item is TransformGroup tg)
                 {
                     ImportTransforms(tg);
+                    continue;
                 }
                 AddTransform(item);
             }

@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Diagnostics;
 using System.Windows.Threading;
 using System.Windows.Controls.Primitives;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -16,7 +17,7 @@ namespace SolidShineUi
     /// </summary>
     [DefaultEvent("Click")]
     [Localizability(LocalizationCategory.Button)]
-    public class FlatButton : ButtonBase
+    public class FlatButton : ButtonBase, IClickSelectableControl
     {
         static FlatButton()
         {
@@ -61,25 +62,6 @@ namespace SolidShineUi
             //invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             //invalidTimer.Tick += InvalidTimer_Tick;
         }
-
-#if NETCOREAPP
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
-#else
-        ///// <summary>
-        ///// Raised when the user clicks on the button. Please use the new Click event instead.
-        ///// </summary>
-        //[Obsolete("Please transition to the new Click event, which is a routed event. This will be removed in a later version.", false)]
-        //public event EventHandler UnroutedClick;
-
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
-#endif
-
 
         #region Brushes
 
@@ -217,8 +199,6 @@ namespace SolidShineUi
 
         #region ColorScheme/TransparentBack/UseAccentColors
 
-        //DispatcherTimer invalidTimer = new DispatcherTimer();
-
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -228,23 +208,14 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="ColorScheme"/>. See the related dependency property for details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatButton),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        //bool use_transp = false;
-        //bool use_accent = false;
-
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is ColorScheme cs)
             {
@@ -254,14 +225,6 @@ namespace SolidShineUi
                     f.ColorSchemeChanged?.Invoke(d, e);
                 }
             }
-
-//#if NETCOREAPP
-//            ColorScheme cs = (e.NewValue as ColorScheme)!;
-//#else
-//            ColorScheme cs = e.NewValue as ColorScheme;
-//#endif
-
-
         }
 
         /// <summary>
@@ -276,11 +239,13 @@ namespace SolidShineUi
 
         bool runApply = true;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TransparentBackProperty 
-            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton), 
-            new PropertyMetadata(false, new PropertyChangedCallback(OnTransparentBackChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="TransparentBack"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty TransparentBackProperty
+            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton),
+            new PropertyMetadata(false, 
+                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, v, f.UseAccentColors); }))));
 
         /// <summary>
         /// Get or set whether the button should have a transparent background when the button is not focused.
@@ -293,26 +258,12 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Perform an action when a property of an object has changed. Primarily used internally.
+        /// The backing dependency property for <see cref="UseAccentColors"/>. See the related property for details.
         /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnTransparentBackChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool tb)
-            {
-                if (d is FlatButton f)
-                {
-                    f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
-                }
-            }
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty UseAccentColorsProperty
             = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnUseAccentColorsChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            new PropertyMetadata(false,
+                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, v); }))));
 
         /// <summary>
         /// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
@@ -323,54 +274,6 @@ namespace SolidShineUi
             get => (bool)GetValue(UseAccentColorsProperty);
             set => SetValue(UseAccentColorsProperty, value);
         }
-
-        /// <summary>
-        /// Perform an action when a property of an object has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnUseAccentColorsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool ua)
-            {
-                if (d is FlatButton f)
-                {
-                    f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, ua);
-                }
-            }
-        }
-
-        ///// <summary>
-        ///// Get or set whether the button should have a transparent background when the button is not focused.
-        ///// </summary>
-        //public bool TransparentBack
-        //{
-        //    get
-        //    {
-        //        return use_transp;
-        //    }
-        //    set
-        //    {
-        //        use_transp = value;
-        //        if (runApply) ApplyColorScheme(ColorScheme, value, use_accent);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
-        ///// </summary>
-        //public bool UseAccentColors
-        //{
-        //    get
-        //    {
-        //        return use_accent;
-        //    }
-        //    set
-        //    {
-        //        use_accent = value;
-        //        if (runApply) ApplyColorScheme(ColorScheme, TransparentBack, value);
-        //    }
-        //}
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
@@ -401,8 +304,6 @@ namespace SolidShineUi
                 ColorScheme = cs;
                 return;
             }
-
-            //colScheme = cs;
 
             runApply = false;
 
@@ -493,99 +394,7 @@ namespace SolidShineUi
             }
 
             runApply = true;
-
-            //InvalidateMeasure();
-            //InvalidateVisual();
-            //invalidTimer.Start();
-
-            if (Template == null)
-            {
-                return;
-            }
-
-            // //** why is this section here?
-            //Border border = (Border)Template.FindName("btn_Border", this);
-            //if (border != null)
-            //{
-            //    if (IsSelected)
-            //    {
-            //        border.Background = SelectedBrush;
-            //        border.BorderBrush = BorderSelectedBrush;
-            //        border.BorderThickness = BorderSelectionThickness;
-            //    }
-            //    else
-            //    {
-            //        border.Background = Background;
-            //        border.BorderBrush = BorderBrush;
-            //        border.BorderThickness = BorderThickness;
-            //    }
-            //}
-
-
-            //GetBindingExpression(ColorSchemeProperty).UpdateTarget();
-            //fBtn_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
         }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="hco">The high-contrast color scheme to apply.</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
-        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
-            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
-        public void ApplyColorScheme(HighContrastOption hco, bool transparentBack = false)
-        {
-            ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
-            ApplyColorScheme(cs, transparentBack, false);
-            //if (cs != ColorScheme)
-            //{
-            //    ColorScheme = cs;
-            //    TransparentBack = transparentBack;
-            //    return;
-            //}
-
-            //if (transparentBack || TransparentBack)
-            //{
-            //    Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
-            //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-            //    HighlightBrush = cs.HighlightColor.ToBrush();
-            //    DisabledBrush = cs.LightDisabledColor.ToBrush();
-            //    BorderDisabledBrush = cs.BorderColor.ToBrush();
-            //    SelectedBrush = cs.HighlightColor.ToBrush();
-            //    BorderHighlightBrush = cs.BorderColor.ToBrush();
-            //    BorderSelectedBrush = cs.BorderColor.ToBrush();
-            //    Foreground = cs.ForegroundColor.ToBrush();
-            //    TransparentBack = true;
-            //}
-            //else
-            //{
-            //    Background = cs.BackgroundColor.ToBrush();
-            //    BorderBrush = cs.BorderColor.ToBrush();
-            //    HighlightBrush = cs.HighlightColor.ToBrush();
-            //    DisabledBrush = cs.LightDisabledColor.ToBrush();
-            //    BorderDisabledBrush = cs.BorderColor.ToBrush();
-            //    SelectedBrush = cs.HighlightColor.ToBrush();
-            //    BorderHighlightBrush = cs.BorderColor.ToBrush();
-            //    BorderSelectedBrush = cs.BorderColor.ToBrush();
-            //    Foreground = cs.ForegroundColor.ToBrush();
-            //}
-
-            ////fBtn_IsEnabledChanged(this, new DependencyPropertyChangedEventArgs());
-        }
-
-        //private void InvalidTimer_Tick(object sender, EventArgs e)
-        //{
-        //    if (Application.Current != null)
-        //    {
-        //        Dispatcher.Invoke(() =>
-        //        {
-        //            InvalidateMeasure();
-        //            InvalidateVisual();
-        //        }, DispatcherPriority.Render);
-        //    }
-
-        //    invalidTimer.IsEnabled = false;
-        //}
 
         #endregion
 
@@ -641,10 +450,11 @@ namespace SolidShineUi
 
         #region Routed Events
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
             "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
@@ -695,27 +505,20 @@ namespace SolidShineUi
         #region Variables/Properties
         bool initiatingClick = false;
 
-        //bool sel = false;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="IsSelected"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        /// <summary>
-        /// Perform an action when a property of an object has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is bool se)
             {
                 if (d is FlatButton f)
                 {
                     f.IsSelectedChanged?.Invoke(d, e);
-                    //f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
                 }
             }
         }
@@ -736,34 +539,24 @@ namespace SolidShineUi
             }
             set
             {
-                //bool sel = value;
                 SetValue(IsSelectedProperty, value);
-
-                //if (Template != null)
-                //{
-                //    Border border = (Border)Template.FindName("btn_Border", this);
-                //    if (border != null)
-                //    {
-                //        if (sel)
-                //        {
-                //            border.Background = SelectedBrush;
-                //        }
-                //        else
-                //        {
-                //            border.Background = Background;
-                //        }
-                //    }
-                //}
-
-                //SelectionChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// Raised if the button's IsSelected value is changed. This can be used to monitor the button's selected state, and is recommended to use this rather than the <see cref="ButtonBase.Click"/> event.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
+#else
+        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
+#endif
+
+        /// <summary>
+        /// The backing dependency property for <see cref="SelectOnClick"/>. See the related dependency property for details.
+        /// </summary>
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            "SelectOnClick", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "SelectOnClick", typeof(bool), typeof(FlatButton), new PropertyMetadata(false));
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
@@ -858,26 +651,20 @@ namespace SolidShineUi
 
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //e.Handled = false;
             if (e.ChangedButton == MouseButton.Right)
             {
                 PressRightClick();
             }
             SetIsMouseDown(this, true);
-            //IsPressed = true;
-            //base.OnPreviewMouseDown(e);
         }
 
         private void UserControl_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            //e.Handled = false;
             if (e.ChangedButton == MouseButton.Right)
             {
                 PerformRightClick();
             }
             SetIsMouseDown(this, false);
-            //IsPressed = false;
-            //base.OnPreviewMouseUp(e);
         }
 
 
@@ -907,6 +694,22 @@ namespace SolidShineUi
         // OnDefault code adapted from .NET Core WPF repository
         // https://github.com/dotnet/wpf/blob/master/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Button.cs
 
+        // unfortunately, I'm unable to actually achieve the "IsDefault" functionality as is present in WPF
+        // the reason is that the WPF button accesses properties and methods marked as "internal" - which means it only works within that library
+        // the biggest culprits are the KeyboardNavigation instance in FrameworkElement, and the FocusChanged event in KeyboardNavigation
+        // if those two were accessible, then I would be able to mirror the code exactly and set up my buttons as capable of being a "default" button
+        // but now, that's a feature that's only exclusive to WPF's own Buttons, which really sucks
+        // there's a 0% chance Microsoft will change how .NET Framework's WPF acts, and I find it unlikely they'll entertain a PR to make those values public
+        // (since there's probably concerns they have about malicious/imcompetent coders misusing or abusing the KeyboardNavigation instance)
+        // I'd say the best solution is to make access to that specific event available via a protected method in ButtonBase (imo)
+        // anyway, I'd be left with just creating my own instance of a Button and hijacking it, but I'm concerned that might not work either
+
+//#if NETCOREAPP
+//        private KeyboardFocusChangedEventHandler? FocusChangedHandler = null;
+//#else
+//        private KeyboardFocusChangedEventHandler FocusChangedHandler = null;
+//#endif
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty IsDefaultProperty
             = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
@@ -926,14 +729,22 @@ namespace SolidShineUi
         {
             if (d is FlatButton b)
             {
+                //if (b.FocusChangedHandler == null)
+                //{
+                //    b.FocusChangedHandler = new KeyboardFocusChangedEventHandler(b.OnFocusChanged);
+                //}
+
+
                 if ((bool)e.NewValue)
                 {
                     AccessKeyManager.Register("\x000D", b);
+                    //KeyboardNavigation.FocusChanged += b.FocusChangedHandler;
                     b.UpdateIsDefaulted(Keyboard.FocusedElement);
                 }
                 else
                 {
                     AccessKeyManager.Unregister("\x000D", b);
+                    //KeyboardNavigation.FocusChanged -= b.FocusChangedHandler;
                     b.UpdateIsDefaulted(null);
                 }
             }
@@ -1010,6 +821,6 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+#endregion
     }
 }

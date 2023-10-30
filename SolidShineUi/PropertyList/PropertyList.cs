@@ -388,8 +388,11 @@ namespace SolidShineUi.PropertyList
             ObjectDisplayName = "";
             _clearing = false;
 
-            txtType.Text = NOTHING_LOADED;
-            txtType.ToolTip = "";
+            if (txtType != null)
+            {
+                txtType.Text = NOTHING_LOADED;
+                txtType.ToolTip = "";
+            }
         }
 
         /// <summary>
@@ -466,7 +469,7 @@ namespace SolidShineUi.PropertyList
         public static DependencyProperty SortOptionProperty
             = DependencyProperty.Register("SortOption", typeof(PropertySortOption), typeof(PropertyList),
             new FrameworkPropertyMetadata(PropertySortOption.Name,
-                new PropertyChangedCallback((o, e) => o.AsThis<PropertyList>((p) => p.SortOptionChanged?.Invoke(p, e)))));
+                new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.SortOptionChanged?.Invoke(p, e)))));
 
         /// <summary>
         /// Get or set the settings for what properties should be displayed in the PropertyList.
@@ -489,7 +492,7 @@ namespace SolidShineUi.PropertyList
         public static DependencyProperty ShowInheritedPropertiesProperty
             = DependencyProperty.Register("ShowInheritedProperties", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true,
-                new PropertyChangedCallback((o, e) => o.AsThis<PropertyList>((p) => p.ShowInheritedPropertiesChanged?.Invoke(p, e)))));
+                new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowInheritedPropertiesChanged?.Invoke(p, e)))));
 
 
         /// <summary>
@@ -501,7 +504,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>The backing dependency property for <see cref="ShowReadOnlyProperties"/>. See the related property for details.</summary>
         public static DependencyProperty ShowReadOnlyPropertiesProperty
             = DependencyProperty.Register("ShowReadOnlyProperties", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true, new PropertyChangedCallback((o, e) => o.AsThis<PropertyList>((p) => p.ShowReadOnlyPropertiesChanged?.Invoke(p, e)))));
+            new FrameworkPropertyMetadata(true, new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowReadOnlyPropertiesChanged?.Invoke(p, e)))));
 
         /// <summary>
         /// Get or set the string to use for filtering the properties. Only properties that match this filter text will be displayed, 
@@ -515,7 +518,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>The backing dependency property for <see cref="FilterText"/>. See the related property for details.</summary>
         public static DependencyProperty FilterTextProperty
             = DependencyProperty.Register("FilterText", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("", new PropertyChangedCallback((o, e) => o.AsThis<PropertyList>((p) => p.FilterTextChanged?.Invoke(p, e)))));
+            new FrameworkPropertyMetadata("", new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.FilterTextChanged?.Invoke(p, e)))));
 
         #endregion
 
@@ -1443,7 +1446,7 @@ namespace SolidShineUi.PropertyList
         public static DependencyProperty ShowGridlinesProperty
             = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(false,
-                new PropertyChangedCallback((o, e) => o.AsThis<PropertyList>((p) => p.ShowGridlinesChanged?.Invoke(p, e)))));
+                new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowGridlinesChanged?.Invoke(p, e)))));
 
         /// <summary>
         /// Get or set the brush of the gridlines in the control. Use <see cref="ShowGridlines"/> to actually display the gridlines.
@@ -1462,7 +1465,7 @@ namespace SolidShineUi.PropertyList
 
         void UpdateGridlines()
         {
-            //mnuGridlines.IsChecked = ShowGridlines;
+            if (stkProperties == null) return;
 
 #if NETCOREAPP
             foreach (UIElement? item in stkProperties.Children)

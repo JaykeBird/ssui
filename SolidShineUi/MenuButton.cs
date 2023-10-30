@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace SolidShineUi
 {
@@ -37,16 +38,16 @@ namespace SolidShineUi
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
 
-            if (Menu != null) Menu.ApplyColorScheme(cs);
+            Menu?.ApplyColorScheme(cs);
         }
-
 
         #region Menu
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="Menu"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(MenuButton),
             new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 #if NETCOREAPP
         /// <summary>
@@ -80,19 +81,6 @@ namespace SolidShineUi
         public EventHandler MenuClosed;
 #endif
 
-        #endregion
-
-
-        /// <summary>
-        /// Get or set the placement mode for the MenuButton's menu.
-        /// </summary>
-        public System.Windows.Controls.Primitives.PlacementMode MenuPlacement { get; set; } = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-
-        /// <summary>
-        /// Get or set the placement rectangle for the MenuButton's menu. This sets the area relative to the button that the menu is positioned.
-        /// </summary>
-        public Rect MenuPlacementRectangle { get; set; } = Rect.Empty;
-
         /// <summary>
         /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
         /// </summary>
@@ -110,11 +98,59 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        private void Menu_Closed(object sender, RoutedEventArgs e)
+        {
+            MenuClosed?.Invoke(this, EventArgs.Empty);
+        }
+
+        #region Placement
+
+        /// <summary>
+        /// Get or set the placement mode for the MenuButton's menu.
+        /// </summary>
+        public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementProperty
+            = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(MenuButton),
+            new FrameworkPropertyMetadata(PlacementMode.Bottom));
+
+
+        /// <summary>
+        /// Get or set the placement target for the MenuButton's menu. Set to <c>null</c> to set the target to this MenuButton.
+        /// </summary>
+#if NETCOREAPP
+        public UIElement? MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
+#else
+        public UIElement MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
+#endif
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementTargetProperty
+            = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(MenuButton),
+            new FrameworkPropertyMetadata(null));
+
+
+        /// <summary>
+        /// Get or set the placement rectangle for the MenuButton's menu. This sets the area relative to the button that the menu is positioned.
+        /// </summary>
+        public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuPlacementRectangleProperty
+            = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(MenuButton),
+            new FrameworkPropertyMetadata(Rect.Empty));
+
+        #endregion
+
+        #endregion
+
+        /// <summary>
+        /// The backing dependency property for <see cref="ShowMenuArrow"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
             "ShowMenuArrow", typeof(bool), typeof(MenuButton),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
@@ -126,14 +162,16 @@ namespace SolidShineUi
             set => SetValue(ShowMenuArrowProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="KeepMenuArrowOnRight"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty KeepMenuArrowOnRightProperty = DependencyProperty.Register(
             "KeepMenuArrowOnRight", typeof(bool), typeof(MenuButton),
             new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned.
+        /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 
+        /// (via <see cref="System.Windows.Controls.Control.HorizontalContentAlignment"/>).
         /// </summary>
         [Category("Common")]
         public bool KeepMenuArrowOnRight
@@ -142,32 +180,19 @@ namespace SolidShineUi
             set => SetValue(KeepMenuArrowOnRightProperty, value);
         }
 
-        /// <summary>
-        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
-        /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
-        /// This can also be achieved with the <c>UseAccentColors</c> property.
-        /// </param>
-        public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
-        {
-            base.ApplyColorScheme(cs, transparentBack, useAccentColors);
-            if (Menu != null) Menu.ApplyColorScheme(cs);
-        }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="hco">The high-contrast color scheme to apply.</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
-        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
-            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
-        public new void ApplyColorScheme(HighContrastOption hco, bool transparentBack = false)
-        {
-            base.ApplyColorScheme(hco, transparentBack);
-            if (Menu != null) Menu.ApplyColorScheme(hco);
-        }
+        ///// <summary>
+        ///// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        ///// </summary>
+        ///// <param name="cs">The color scheme to apply</param>
+        ///// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
+        ///// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
+        ///// This can also be achieved with the <c>UseAccentColors</c> property.
+        ///// </param>
+        //public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
+        //{
+        //    base.ApplyColorScheme(cs, transparentBack, useAccentColors);
+        //    Menu?.ApplyColorScheme(cs);
+        //}
 
         /// <summary>
         /// Internal method for opening up the menu when the button is clicked
@@ -177,18 +202,13 @@ namespace SolidShineUi
             if (Menu != null)
             {
                 Menu.Placement = MenuPlacement;
-                Menu.PlacementTarget = this;
+                Menu.PlacementTarget = MenuPlacementTarget ?? this;
                 Menu.PlacementRectangle = MenuPlacementRectangle;
                 Menu.HorizontalOffset = 0;
                 Menu.VerticalOffset = -1;
                 Menu.IsOpen = true;
                 Menu.Closed += Menu_Closed;
             }
-        }
-
-        private void Menu_Closed(object sender, RoutedEventArgs e)
-        {
-            MenuClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

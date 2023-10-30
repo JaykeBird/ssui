@@ -74,5 +74,10 @@ namespace SsuiSample
         {
             txtResult.Text = $"{(sender as FrameworkElement).Name} was right-clicked";
         }
+
+        private void Button_MenuClick(object sender, RoutedEventArgs e)
+        {
+            txtResult.Text = $"{(sender as FrameworkElement).Name} was clicked on the menu";
+        }
     }
 }
