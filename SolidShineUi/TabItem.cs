@@ -929,7 +929,7 @@ namespace SolidShineUi
         /// </remarks>
         public void Close()
         {
-            InternalTabClosing?.Invoke(this, EventArgs.Empty);
+            RequestTabClosing?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -937,27 +937,27 @@ namespace SolidShineUi
         /// </summary>
         public void BringIntoView()
         {
-            InternalBringIntoViewRequested?.Invoke(this, EventArgs.Empty);
+            BringIntoViewRequested?.Invoke(this, EventArgs.Empty);
         }
 
 
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// Used internally to request closing of this tab.
         /// </summary>
 #if NETCOREAPP
-        internal protected event EventHandler? InternalTabClosing;
+        internal protected event EventHandler? RequestTabClosing;
 
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// Used internally to request bringing this tab into view.
         /// </summary>
-        internal protected event EventHandler? InternalBringIntoViewRequested;
+        internal protected event EventHandler? BringIntoViewRequested;
 #else
-        internal protected event EventHandler InternalTabClosing;
+        internal protected event EventHandler RequestTabClosing;
         
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
+        /// Used internally to request bringing this tab into view.
         /// </summary>
-        internal protected event EventHandler InternalBringIntoViewRequested;
+        internal protected event EventHandler BringIntoViewRequested;
 #endif
 
         ///<summary>
