@@ -333,8 +333,8 @@ namespace SolidShineUi.Utils
         {
             if (TabItem != null)
             {
-                TabItem.InternalTabClosing += TabItem_InternalTabClosing;
-                TabItem.InternalBringIntoViewRequested += TabItem_InternalBringIntoViewRequested;
+                TabItem.RequestTabClosing += TabItem_InternalTabClosing;
+                TabItem.BringIntoViewRequested += TabItem_InternalBringIntoViewRequested;
             }
         }
 
