@@ -31,25 +31,16 @@ namespace SolidShineUi
         {
             MouseDown += UserControl_MouseDown;
             MouseUp += UserControl_MouseUp;
-            //MouseEnter += UserControl_MouseEnter;
             MouseLeave += UserControl_MouseLeave;
-            //TouchDown += UserControl_TouchDown;
-            //TouchUp += UserControl_TouchUp;
-            //StylusDown += UserControl_StylusDown;
-            //StylusUp += UserControl_StylusUp;
 
             PreviewMouseDown += UserControl_PreviewMouseDown;
             PreviewMouseUp += UserControl_PreviewMouseUp;
 
-            //GotFocus += UserControl_GotFocus;
-            //GotKeyboardFocus += UserControl_GotKeyboardFocus;
             LostFocus += UserControl_LostFocus;
             LostKeyboardFocus += UserControl_LostKeyboardFocus;
 
             KeyDown += UserControl_KeyDown;
             KeyUp += UserControl_KeyUp;
-
-            //IsEnabledChanged += fBtn_IsEnabledChanged;
 
             Focusable = true;
             KeyboardNavigation.SetIsTabStop(this, true);
@@ -58,9 +49,6 @@ namespace SolidShineUi
             VerticalContentAlignment = VerticalAlignment.Center;
 
             Padding = new Thickness(5, 0, 5, 0);
-
-            //invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
-            //invalidTimer.Tick += InvalidTimer_Tick;
         }
 
         #region Brushes
@@ -157,43 +145,69 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.White.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
             "BorderHighlightBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
             "BorderSelectedBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -400,19 +414,26 @@ namespace SolidShineUi
 
         #region Border
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(2)));
 
+        /// <summary>
+        /// The backing value for a dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
             new PropertyMetadata(new CornerRadius(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border around the button.
