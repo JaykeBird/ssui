@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace SolidShineUi.Utils
 {
@@ -16,6 +17,58 @@ namespace SolidShineUi.Utils
     /// </summary>
     public class SpinnerBase : UserControl
     {
+
+        /// <summary>
+        /// Create a SpinnerBase.
+        /// </summary>
+        public SpinnerBase()
+        {
+            Loaded += SpinnerBase_Loaded;
+
+            keyDownTimer.AutoReset = false;
+            advanceTimer.AutoReset = true;
+
+            keyDownTimer.Elapsed += (s, e) => advanceTimer.Start();
+            advanceTimer.Elapsed += AdvanceTimer_Elapsed;
+
+            PropertyChanged += (x, y) => ValidateValue();
+        }
+
+        private void SpinnerBase_Loaded(object sender, RoutedEventArgs e)
+        {
+            // doesn't work in constructor, apparently
+            _raiseChangedEvent = false;
+            ValidateValue();
+            _raiseChangedEvent = true;
+        }
+
+#if NETCOREAPP
+        private void AdvanceTimer_Elapsed(object? sender, ElapsedEventArgs e)
+#else
+        private void AdvanceTimer_Elapsed(object sender, ElapsedEventArgs e)
+#endif
+        {
+            try
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (advanceStepUp)
+                    {
+                        StepUp();
+                    }
+                    else
+                    {
+                        StepDown();
+                    }
+
+                    UpdateUI();
+                }, System.Windows.Threading.DispatcherPriority.Input);
+            }
+            catch (TaskCanceledException)
+            {
+                advanceTimer.Stop();
+            }
+        }
 
         #region Internal Values
 
@@ -44,6 +97,8 @@ namespace SolidShineUi.Utils
         protected bool advanceStepUp = false;
 
         #endregion
+
+        #region Events / Event-related methods
 
         /// <summary>
         /// Raised when the Value, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
@@ -101,16 +156,7 @@ namespace SolidShineUi.Utils
         {
             DependencyPropertyDescriptor.FromProperty(property, targetType).AddValueChanged(this, PropertyChanged);
         }
-
-        /// <summary>
-        /// Create a SpinnerBase.
-        /// </summary>
-        public SpinnerBase()
-        {
-            keyDownTimer.AutoReset = false;
-            advanceTimer.AutoReset = true;
-        }
-
+        #endregion
 
         #region Brushes
 
@@ -238,6 +284,8 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #region Properties
+
         #region RepeatDelayProperty
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -295,7 +343,7 @@ namespace SolidShineUi.Utils
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SpinnerBase),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
+            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnCornerRadiusChanged()))));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -310,14 +358,6 @@ namespace SolidShineUi.Utils
         {
             add { AddHandler(CornerRadiusChangedEvent, value); }
             remove { RemoveHandler(CornerRadiusChangedEvent, value); }
-        }
-
-        private static void OnInternalCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is SpinnerBase s)
-            {
-                s.OnCornerRadiusChanged();
-            }
         }
 
         /// <summary>
@@ -369,7 +409,7 @@ namespace SolidShineUi.Utils
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
             "ShowArrows", typeof(bool), typeof(SpinnerBase),
-            new PropertyMetadata(true, new PropertyChangedCallback(OnInternalShowArrowsChanged)));
+            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnShowArrowsChanged()))));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -384,14 +424,6 @@ namespace SolidShineUi.Utils
         {
             add { AddHandler(ShowArrowsChangedEvent, value); }
             remove { RemoveHandler(ShowArrowsChangedEvent, value); }
-        }
-
-        private static void OnInternalShowArrowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is SpinnerBase s)
-            {
-                s.OnShowArrowsChanged();
-            }
         }
 
         /// <summary>
@@ -444,6 +476,9 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #endregion
+
+        #region Base Functions
 
         /// <summary>
         /// Update internal values based upon visual or other changes. In SpinnerBase, this currently does nothing.
@@ -452,5 +487,134 @@ namespace SolidShineUi.Utils
         {
 
         }
+
+        /// <summary>
+        /// Validate the value and update the UI if needed.
+        /// </summary>
+        protected virtual void ValidateValue()
+        {
+            UpdateUI();
+            RaiseValueValidated(this);
+        }
+        
+        /// <summary>
+        /// Handle the process of updating value properties. Should be overridden in child classes in order to perform validation or other functions.
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void UpdateValue(DependencyPropertyChangedEventArgs e)
+        {
+            UpdateUI();
+            RaiseValueChanged(this, e);
+        }
+
+        /// <summary>
+        /// Increase the spinner's value by whatever the Step value is. Should be overridden in child classes.
+        /// </summary>
+        protected virtual void StepUp()
+        {
+
+        }
+
+        /// <summary>
+        /// Decrease the spinner's value by whatever the Step value is. Should be overridden in child classes.
+        /// </summary>
+        protected virtual void StepDown()
+        {
+
+        }
+
+        #endregion
+
+        #region TextBox/Arrow Functions
+
+        /// <summary>
+        /// Handle the functionality for pressing a key in the text box of a spinner control.
+        /// </summary>
+        /// <param name="e">The KeyEventArgs for the related event (from the child object).</param>
+        protected void TextBoxKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Space)
+            {
+                ValidateValue();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                advanceStepUp = false;
+                keyDownTimer.Start();
+            }
+            else if (e.Key == Key.Up)
+            {
+                advanceStepUp = true;
+                keyDownTimer.Start();
+            }
+        }
+
+        /// <summary>
+        /// Handle the functionality for releasing a key in the text box of a spinner control.
+        /// </summary>
+        protected void TextBoxKeyUp(KeyEventArgs e)
+        {
+            if (e.Key == Key.Down)
+            {
+                if (advanceTimer.Enabled)
+                {
+                    advanceTimer.Stop();
+                }
+                else
+                {
+                    keyDownTimer.Stop();
+                    StepDown();
+                }
+            }
+            else if (e.Key == Key.Up)
+            {
+                if (advanceTimer.Enabled)
+                {
+                    advanceTimer.Stop();
+                }
+                else
+                {
+                    keyDownTimer.Stop();
+                    StepUp();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Perform the actions of stepping down when pressing the down button.
+        /// </summary>
+        protected void DownButtonPress()
+        {
+            if (advanceTimer.Enabled)
+            {
+                advanceTimer.Stop();
+            }
+            else
+            {
+                keyDownTimer.Stop();
+                StepDown();
+                UpdateUI();
+            }
+        }
+
+        /// <summary>
+        /// Perform the actions of stepping up when pressing the up button.
+        /// </summary>
+        protected void UpButtonPress()
+        {
+            if (advanceTimer.Enabled)
+            {
+                advanceTimer.Stop();
+            }
+            else
+            {
+                keyDownTimer.Stop();
+                StepUp();
+                UpdateUI();
+            }
+        }
+
+        #endregion
     }
 }
