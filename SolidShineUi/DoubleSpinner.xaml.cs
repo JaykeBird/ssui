@@ -492,19 +492,19 @@ namespace SolidShineUi
         #endregion
 
         /// <inheritdoc/>
-        protected override void StepDown()
+        protected override void DoStepDown()
         {
             if (Value >= MinValue) Value -= Step;
             else Value = MinValue;
-            base.StepDown();
+            base.DoStepDown();
         }
 
         /// <inheritdoc/>
-        protected override void StepUp()
+        protected override void DoStepUp()
         {
             if (Value <= MaxValue) Value += Step;
             else Value = MaxValue;
-            base.StepUp();
+            base.DoStepUp();
         }
 
         private void btnUp_MouseDown(object sender, MouseButtonEventArgs e)

@@ -54,11 +54,11 @@ namespace SolidShineUi.Utils
                 {
                     if (advanceStepUp)
                     {
-                        StepUp();
+                        DoStepUp();
                     }
                     else
                     {
-                        StepDown();
+                        DoStepDown();
                     }
 
                     UpdateUI();
@@ -69,6 +69,54 @@ namespace SolidShineUi.Utils
                 advanceTimer.Stop();
             }
         }
+
+        #region Commands
+
+        // these will be used for the transition from standard UserControls to full templated controls
+
+        /// <summary>A WPF command that when executed, will increase a spinner's value by its <c>Step</c> amount</summary>
+        public static RoutedCommand StepUp { get; } = new RoutedCommand("StepUp", typeof(SpinnerBase));
+
+        /// <summary>A WPF command that when executed, will decrease a spinner's value by its <c>Step</c> amount</summary>
+        public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(SpinnerBase));
+
+        #endregion
+
+        #region IsAtMaxValue / IsAtMinValue
+
+        /// <summary>
+        /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property. Only accessible to <c>SpinnerBase</c> and controls that inherit from it.
+        /// </summary>
+        protected static readonly DependencyPropertyKey IsAtMaxValuePropertyKey
+            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property. Only accessible to <c>SpinnerBase</c> and controls that inherit from it.
+        /// </summary>
+        protected static readonly DependencyPropertyKey IsAtMinValuePropertyKey
+            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// A dependency property object backing the <see cref="IsAtMaxValue"/> property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty IsAtMaxValueProperty = IsAtMaxValuePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// A dependency property object backing the <see cref="IsAtMinValue"/> property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty IsAtMinValueProperty = IsAtMinValuePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get if this spinner's <c>Value</c> is currently equal to its <c>MaxValue</c>. If true, the value cannot be increased any more.
+        /// </summary>
+        public bool IsAtMaxValue { get => (bool)GetValue(IsAtMaxValueProperty); protected set => SetValue(IsAtMaxValuePropertyKey, value); }
+
+        /// <summary>
+        /// Get if this spinner's <c>Value</c> is currently equal to its <c>MinValue</c>. If true, the value cannot be decreased any more.
+        /// </summary>
+        public bool IsAtMinValue { get => (bool)GetValue(IsAtMinValueProperty); protected set => SetValue(IsAtMinValuePropertyKey, value); }
+
+        #endregion
 
         #region Internal Values
 
@@ -288,16 +336,18 @@ namespace SolidShineUi.Utils
 
         #region RepeatDelayProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="RepeatDelay"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
             "RepeatDelay", typeof(double), typeof(SpinnerBase),
-            new PropertyMetadata(300d, new PropertyChangedCallback(OnInternalRepeatDelayChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            new PropertyMetadata(300d, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnRepeatDelayChanged()))));
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
+        /// </summary>
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
             "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
@@ -306,14 +356,6 @@ namespace SolidShineUi.Utils
         {
             add { AddHandler(RepeatDelayChangedEvent, value); }
             remove { RemoveHandler(RepeatDelayChangedEvent, value); }
-        }
-
-        private static void OnInternalRepeatDelayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is SpinnerBase s)
-            {
-                s.OnRepeatDelayChanged();
-            }
         }
 
         /// <summary>
@@ -340,16 +382,18 @@ namespace SolidShineUi.Utils
 
         #region CornerRadiusProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="CornerRadius"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SpinnerBase),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnCornerRadiusChanged()))));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
+        /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
             "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
@@ -383,11 +427,12 @@ namespace SolidShineUi.Utils
 
         #region AcceptExpressionsProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="AcceptExpressions"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
             "AcceptExpressions", typeof(bool), typeof(SpinnerBase),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the spinner should evaluate arithmetic expressions (such as "2+5") to accept as a value.
@@ -406,16 +451,18 @@ namespace SolidShineUi.Utils
 
         #region ShowArrowsProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="ShowArrows"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
             "ShowArrows", typeof(bool), typeof(SpinnerBase),
             new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnShowArrowsChanged()))));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The routed event object for the <see cref="ShowArrowsChanged"/> event. See the related event for details.
+        /// </summary>
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
             "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the ShowArrows property is changed.
@@ -450,7 +497,7 @@ namespace SolidShineUi.Utils
         #region MinimumDigitCount
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The dependency property object for the <see cref="MinimumDigitCount"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
             "MinimumDigitCount", typeof(int), typeof(SpinnerBase),
@@ -481,7 +528,7 @@ namespace SolidShineUi.Utils
         #region Base Functions
 
         /// <summary>
-        /// Update internal values based upon visual or other changes. In SpinnerBase, this currently does nothing.
+        /// Update internal values based upon visual or other changes. This should be overridden in controls that inherit this class.
         /// </summary>
         protected virtual void UpdateUI()
         {
@@ -489,7 +536,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Validate the value and update the UI if needed.
+        /// Validate the value and update the UI if needed. This should be overriden in controls that inherit this class, to perform actual validation on the value.
         /// </summary>
         protected virtual void ValidateValue()
         {
@@ -498,9 +545,9 @@ namespace SolidShineUi.Utils
         }
         
         /// <summary>
-        /// Handle the process of updating value properties. Should be overridden in child classes in order to perform validation or other functions.
+        /// Handle the process of updating value properties. Should be overridden in classes that inherit this, in order to perform validation or other functions.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Event args from the related <see cref="ValueChanged"/> event.</param>
         protected virtual void UpdateValue(DependencyPropertyChangedEventArgs e)
         {
             UpdateUI();
@@ -508,17 +555,17 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Increase the spinner's value by whatever the Step value is. Should be overridden in child classes.
+        /// Increase the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
         /// </summary>
-        protected virtual void StepUp()
+        protected virtual void DoStepUp()
         {
 
         }
 
         /// <summary>
-        /// Decrease the spinner's value by whatever the Step value is. Should be overridden in child classes.
+        /// Decrease the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
         /// </summary>
-        protected virtual void StepDown()
+        protected virtual void DoStepDown()
         {
 
         }
@@ -564,7 +611,7 @@ namespace SolidShineUi.Utils
                 else
                 {
                     keyDownTimer.Stop();
-                    StepDown();
+                    DoStepDown();
                 }
             }
             else if (e.Key == Key.Up)
@@ -576,7 +623,7 @@ namespace SolidShineUi.Utils
                 else
                 {
                     keyDownTimer.Stop();
-                    StepUp();
+                    DoStepUp();
                 }
             }
         }
@@ -593,7 +640,7 @@ namespace SolidShineUi.Utils
             else
             {
                 keyDownTimer.Stop();
-                StepDown();
+                DoStepDown();
                 UpdateUI();
             }
         }
@@ -610,7 +657,7 @@ namespace SolidShineUi.Utils
             else
             {
                 keyDownTimer.Stop();
-                StepUp();
+                DoStepUp();
                 UpdateUI();
             }
         }
