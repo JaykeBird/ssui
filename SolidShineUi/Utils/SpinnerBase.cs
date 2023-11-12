@@ -528,7 +528,7 @@ namespace SolidShineUi.Utils
         #region Base Functions
 
         /// <summary>
-        /// Update internal values based upon visual or other changes. This should be overridden in controls that inherit this class.
+        /// Update visual appearance, based upon internal values and the current state. This should be overridden in controls that inherit this class.
         /// </summary>
         protected virtual void UpdateUI()
         {
@@ -637,6 +637,17 @@ namespace SolidShineUi.Utils
         {
             advanceStepUp = stepUp;
             keyDownTimer.Start();
+        }
+
+        /// <summary>
+        /// Perform the cutoff action for when a button is no longer pressed down. More specifically, this has been used for when <c>MouseLeave</c> occurs,
+        /// although in the future I may look into other situations for this to run.
+        /// </summary>
+        /// <param name="stepUp">Determine if stepping up (<c>true</c>) or stepping down (<c>false</c>)</param>
+        protected void StopButtonPress(bool stepUp)
+        {
+            if (advanceStepUp == stepUp) advanceTimer.Stop();
+            UpdateUI();
         }
 
         /// <summary>

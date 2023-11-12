@@ -561,8 +561,7 @@ namespace SolidShineUi
         private void btnUp_MouseLeave(object sender, MouseEventArgs e)
         {
             btnUp.Background = ButtonBackground;
-            if (advanceStepUp) advanceTimer.Stop();
-            UpdateUI();
+            StopButtonPress(true);
         }
 
         private void btnDown_MouseEnter(object sender, MouseEventArgs e)
@@ -573,8 +572,7 @@ namespace SolidShineUi
         private void btnDown_MouseLeave(object sender, MouseEventArgs e)
         {
             btnDown.Background = ButtonBackground;
-            if (!advanceStepUp) advanceTimer.Stop();
-            UpdateUI();
+            StopButtonPress(false);
         }
 
         private void BaseSpinner_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
