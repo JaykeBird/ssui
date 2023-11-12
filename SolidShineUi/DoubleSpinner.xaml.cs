@@ -510,8 +510,7 @@ namespace SolidShineUi
         private void btnUp_MouseDown(object sender, MouseButtonEventArgs e)
         {
             btnUp.Background = ClickBrush;
-            advanceStepUp = true;
-            keyDownTimer.Start();
+            BeginButtonPress(true);
         }
 
         private void btnUp_MouseUp(object sender, MouseButtonEventArgs e)
@@ -523,8 +522,7 @@ namespace SolidShineUi
         private void btnDown_MouseDown(object sender, MouseButtonEventArgs e)
         {
             btnDown.Background = ClickBrush;
-            advanceStepUp = false;
-            keyDownTimer.Start();
+            BeginButtonPress(false);
         }
 
         private void btnDown_MouseUp(object sender, MouseButtonEventArgs e)
@@ -581,8 +579,7 @@ namespace SolidShineUi
         private void btnUp_TouchDown(object sender, TouchEventArgs e)
         {
             btnUp.Background = ClickBrush;
-            advanceStepUp = true;
-            keyDownTimer.Start();
+            BeginButtonPress(true);
         }
 
         private void btnUp_TouchUp(object sender, TouchEventArgs e)
@@ -594,8 +591,7 @@ namespace SolidShineUi
         private void btnUp_StylusDown(object sender, StylusDownEventArgs e)
         {
             btnUp.Background = ButtonBackground;
-            advanceStepUp = true;
-            keyDownTimer.Start();
+            BeginButtonPress(true);
         }
 
         private void btnUp_StylusUp(object sender, StylusEventArgs e)
@@ -608,8 +604,7 @@ namespace SolidShineUi
         private void btnDown_TouchDown(object sender, TouchEventArgs e)
         {
             btnDown.Background = ClickBrush;
-            advanceStepUp = false;
-            keyDownTimer.Start();
+            BeginButtonPress(false);
         }
 
         private void btnDown_TouchUp(object sender, TouchEventArgs e)
@@ -621,8 +616,7 @@ namespace SolidShineUi
         private void btnDown_StylusDown(object sender, StylusDownEventArgs e)
         {
             btnDown.Background = ButtonBackground;
-            advanceStepUp = false;
-            keyDownTimer.Start();
+            BeginButtonPress(false);
         }
 
         private void btnDown_StylusUp(object sender, StylusEventArgs e)

@@ -629,6 +629,17 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
+        /// Perform the initial action for when a button is pressed down. This doesn't actually perform any changes to <c>Value</c> yet.
+        /// Use <paramref name="stepUp"/> to determine if this is stepping up (<c>true</c>) or stepping down (<c>false</c>).
+        /// </summary>
+        /// <param name="stepUp">Determine if stepping up (<c>true</c>) or stepping down (<c>false</c>)</param>
+        protected void BeginButtonPress(bool stepUp)
+        {
+            advanceStepUp = stepUp;
+            keyDownTimer.Start();
+        }
+
+        /// <summary>
         /// Perform the actions of stepping down when pressing the down button.
         /// </summary>
         protected void DownButtonPress()
