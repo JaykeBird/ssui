@@ -31,7 +31,7 @@ namespace SsuiSample
                     Point pos = Mouse.GetPosition(this);
                     if (TestIfPointIsMaximizeButton(pos))
                     {
-                    
+                        Debug.Print("MAX BUTTON");
                     }
                     else
                     {
@@ -57,15 +57,8 @@ namespace SsuiSample
             double maxButtonTopBound = borderTop;
             double maxButtonBottomBound = borderTop + btnHeight;
 
-            if (p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound)
-            {
-                Debug.Print("MAX BUTTON");
-                return true; // MAXIMIZE BUTTON
-            }
-            else
-            {
-                return false; // let the main function handle this
-            }
+            // if true, this is MAXIMIZE BUTTON
+            return p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound;
         }
 
         private void mnuExit_Click(object sender, RoutedEventArgs e)
@@ -129,7 +122,7 @@ namespace SsuiSample
             }
         }
 
-        private void si_Click(object sender, EventArgs e)
+        private void si_Click(object sender, RoutedEventArgs e)
         {
             string name = (sender as SelectableItem).Tag as string;
 
@@ -146,7 +139,6 @@ namespace SsuiSample
         private void mnuWebsite_Click(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo psi = new ProcessStartInfo("https://jaykebird.com/software/ssui");
-
             psi.UseShellExecute = true;
             Process.Start(psi);
         }
