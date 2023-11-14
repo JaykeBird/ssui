@@ -652,7 +652,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         #region Change Brush
 
-        private void siNothing_Click(object sender, EventArgs e)
+        private void siNothing_Click(object sender, RoutedEventArgs e)
         {
             // change to null
             _dataValue = null;
@@ -667,7 +667,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             btnEditBrush.Content = "Edit...";
         }
 
-        private void siSolid_Click(object sender, EventArgs e)
+        private void siSolid_Click(object sender, RoutedEventArgs e)
         {
             // change to solid color brush
             _dataValue = new SolidColorBrush(Colors.Red);
@@ -677,7 +677,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             SetUiButtons(typeof(SolidColorBrush), _dataValue);
         }
 
-        private void siLinear_Click(object sender, EventArgs e)
+        private void siLinear_Click(object sender, RoutedEventArgs e)
         {
             // change to linear gradient brush
             _dataValue = new LinearGradientBrush(Colors.Green, Colors.Orange, 45);
@@ -687,7 +687,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             SetUiButtons(typeof(LinearGradientBrush), _dataValue);
         }
 
-        private void siRadial_Click(object sender, EventArgs e)
+        private void siRadial_Click(object sender, RoutedEventArgs e)
         {
             // change to radial gradient brush
             _dataValue = new RadialGradientBrush(Colors.Green, Colors.Orange);
@@ -697,7 +697,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             SetUiButtons(typeof(RadialGradientBrush), _dataValue);
         }
 
-        private void siImage_Click(object sender, EventArgs e)
+        private void siImage_Click(object sender, RoutedEventArgs e)
         {
             // change to image brush
             // display image brush editor dialog, don't actually immediately change
