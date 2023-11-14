@@ -16,11 +16,11 @@ namespace SolidShineUi.Utils
     {
 
         /// <summary>
-        /// Convert a double into a string, with rounding possible by setting the <paramref name="parameter"/> value.
+        /// Modify a <see cref="CornerRadius"/> to only apply to a few corners, as based upon the values in <paramref name="parameter"/>.
         /// </summary>
-        /// <param name="value">The <see cref="CornerRadius"/> object to read from</param>
+        /// <param name="value">The <see cref="CornerRadius"/> object to read from (or a <see cref="double"/> for a uniform value)</param>
         /// <param name="targetType">Not used, returned type will always be a <see cref="CornerRadius"/></param>
-        /// <param name="parameter">The corners to apply to the result; one or more of <c>TL,TR,BL,BR</c></param>
+        /// <param name="parameter">The corners to carry over to the final output; one or more of strings <c>"TL,TR,BL,BR"</c>, or a <see cref="byte"/></param>
         /// <param name="culture">Not used</param>
         /// <returns>A <see cref="CornerRadius"/> that only has a portion of its values set </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
