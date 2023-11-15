@@ -63,6 +63,15 @@
                         </flat:ContextMenu>
                     </ribbon:RibbonMenuButton>
                 </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Title="Gallery">
+                    <ribbon:Gallery ItemLayout="SmallIconAndContent" >
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/CopyColor.png" LargeIcon="Resources/Images/32/CopyColor.png" Title="Copy" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/SaveColor.png" LargeIcon="Resources/Images/32/SaveColor.png" Title="Wow" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/SmileyColor.png" Title="Yay" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/DownloadColor.png" LargeIcon="Resources/Images/32/DownloadColor.png" Title="Link" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/DownloadColor.png" LargeIcon="Resources/Images/32/DownloadColor.png" Title="Link" />
+                    </ribbon:Gallery>
+                </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Title="Next">
                 <ribbon:RibbonGroup Title="Empty 1" />

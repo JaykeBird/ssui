@@ -2992,12 +2992,238 @@
     </Style>
 
     <Style TargetType="{x:Type ribbon:Gallery}">
+        <Setter Property="MinHeight" Value="28" />
+        <Setter Property="Height" Value="72" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:Gallery}">
-                    <Border>
-                        
+                    <Border BorderThickness="1" Margin="1" BorderBrush="{TemplateBinding BorderBrush}" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="25" />
+                            </Grid.ColumnDefinitions>
+
+                            <ributils:RibbonGroupItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding DisplayedItems}" Margin="{TemplateBinding Padding}" Focusable="False" >
+                                <ributils:RibbonGroupItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True" Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ributils:RibbonGroupItemsControl.ItemsPanel>
+                                <!--<ributils:RibbonGroupItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <ContentPresenter Content="{Binding .}" HorizontalAlignment="Left" Width="Auto" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ributils:RibbonGroupItemsControl.ItemTemplate>-->
+                            </ributils:RibbonGroupItemsControl>
+
+                            <Border BorderThickness="1,0,0,0" BorderBrush="{TemplateBinding BorderBrush}" Grid.Column="1" >
+                                <Grid Margin="0,1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="1*" />
+                                    </Grid.RowDefinitions>
+
+                                    <flat:FlatButton Grid.Row="0" TransparentBack="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="22"
+                                                     Visibility="{TemplateBinding DisplayScrollButtons, Converter={StaticResource VisConverter}}" Padding="0" >
+                                        
+                                        <Path Grid.Column="1" Data="M0,5 L4,0 8,5 z" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            Height="5" Width="8" Margin="5,0,3,0" Stretch="Fill">
+                                            <Path.Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="Opacity" Value="1.0" />
+                                                    <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                    <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
+                                    </flat:FlatButton>
+                                    <flat:FlatButton Grid.Row="1" TransparentBack="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="22"
+                                                     Visibility="{TemplateBinding DisplayScrollButtons, Converter={StaticResource VisConverter}}" Padding="0" >
+                                        <Path Grid.Column="1" Data="M0,0 L8,0 4,4 z" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            Margin="5,0,3,0" Stretch="Fill">
+                                            <Path.Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="Opacity" Value="1.0" />
+                                                    <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                    <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
+                                    </flat:FlatButton>
+                                    <flat:FlatButton Grid.Row="2" TransparentBack="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="0" >
+                                        <Path Grid.Column="1" Data="M0,0 L8,0 4,4 z" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            Margin="5,0,3,0" Stretch="Fill">
+                                            <Path.Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="Opacity" Value="1.0" />
+                                                    <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                    <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
+                                    </flat:FlatButton>
+                                </Grid>
+                            </Border>
+                            
+                        </Grid>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ribbon:GalleryItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ribbon:GalleryItem}">
+                    <Border x:Name="PART_Border">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:GalleryItem}}}" />
+                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:GalleryItem}}}" />
+                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:GalleryItem}}}" />
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="FirstCol" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="Auto" SharedSizeGroup="RowTitle" />
+                        </Grid.RowDefinitions>
+                        <Image Source="{TemplateBinding SmallIcon}" Grid.Column="0" Grid.Row="0" x:Name="PART_SmallIcon" MaxHeight="16" MaxWidth="16" Margin="2" VerticalAlignment="Center" />
+                        <Image Source="{TemplateBinding LargeIcon}" Grid.Column="0" Grid.Row="0" x:Name="PART_LargeIcon" MaxHeight="32" MaxWidth="32" Margin="2,1" HorizontalAlignment="Center" />
+                        <ContentPresenter x:Name="PART_Content" />
+                        <TextBlock x:Name="PART_Header" Text="{TemplateBinding Title}" VerticalAlignment="Center" Margin="2,0" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="LayoutType" Value="LargeIconOnly">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Visible" />
+                            <Setter Property="Height" Value="66" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="SmallIconOnly">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Height" Value="22" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="SmallIconAndText">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Height" Value="22" />
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_Header" Property="HorizontalAlignment" Value="Left" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="SmallContentAndText">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Height" Value="22" />
+                            <Setter TargetName="PART_Content" Property="Margin" Value="2" />
+                            <Setter TargetName="PART_Content" Property="Height" Value="18" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_Content" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_Header" Property="HorizontalAlignment" Value="Left" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="SmallContentOnly">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Height" Value="22" />
+                            <Setter TargetName="PART_Content" Property="Margin" Value="2" />
+                            <Setter TargetName="PART_Content" Property="Height" Value="18" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_Content" Property="Grid.Row" Value="0" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="SmallIconAndContent">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Height" Value="22" />
+                            <Setter TargetName="PART_Content" Property="Margin" Value="2" />
+                            <Setter TargetName="PART_Content" Property="Height" Value="18" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_Content" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="2" />
+                            <Setter TargetName="PART_Header" Property="HorizontalAlignment" Value="Left" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="LargeContentOnly">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Height" Value="66" />
+                            <Setter TargetName="PART_Content" Property="Margin" Value="1" />
+                            <Setter TargetName="PART_Content" Property="Height" Value="64" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_Content" Property="Grid.Row" Value="0" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="LargeContentAndText">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="Height" Value="66" />
+                            <Setter TargetName="PART_Content" Property="Margin" Value="1" />
+                            <Setter TargetName="PART_Content" Property="Height" Value="64" />
+                            <Setter TargetName="PART_Content" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_Content" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_Header" Property="HorizontalAlignment" Value="Center" />
+                        </Trigger>
+                        <Trigger Property="LayoutType" Value="LargeIconAndText">
+                            <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Content" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Header" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_LargeIcon" Property="Visibility" Value="Visible" />
+                            <Setter Property="Height" Value="66" />
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_Header" Property="HorizontalAlignment" Value="Center" />
+                        </Trigger>
+                        <!-- selection / mouse interaction visuals -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="PART_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="PART_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <Setter Property="Background" TargetName="PART_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="PART_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseDown" Value="True">
+                            <Setter Property="Background" TargetName="PART_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="PART_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

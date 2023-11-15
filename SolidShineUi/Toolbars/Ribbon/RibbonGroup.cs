@@ -47,13 +47,11 @@ namespace SolidShineUi.Toolbars.Ribbon
             new FrameworkPropertyMetadata(true));
 
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
 
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of items in this RibbonGroup. This Items property can be used to add and remove items.
@@ -65,13 +63,11 @@ namespace SolidShineUi.Toolbars.Ribbon
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ExpandedItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("ExpandedItems", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
 
         public static readonly DependencyProperty ExpandedItemsProperty = ExpandedItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of items in this RibbonGroup's expanded panel. This Items property can be used to add and remove items. If there are no items, the expanded panel will not be shown.

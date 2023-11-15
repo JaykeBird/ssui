@@ -1,10 +1,15 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace SolidShineUi.Toolbars.Ribbon
@@ -12,6 +17,8 @@ namespace SolidShineUi.Toolbars.Ribbon
     /// <summary>
     /// A dynamic control for use on a <see cref="Ribbon"/>, designed to display a list of options with a more visual layout.
     /// </summary>
+    [ContentProperty("Items")]
+    [Localizability(LocalizationCategory.ListBox)]
     public class Gallery : Control, IRibbonItem
     {
         static Gallery()
@@ -24,8 +31,14 @@ namespace SolidShineUi.Toolbars.Ribbon
         /// </summary>
         public Gallery()
         {
+            Padding = new Thickness(1);
+            Items.CollectionChanged += Items_CollectionChanged;
 
+            DisplayedItems = new ListCollectionView(Items);
+            DisplayedItems.Filter = FilterItems;
         }
+
+        #region IRibbonItem implementations
 
         public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
 
@@ -82,6 +95,8 @@ namespace SolidShineUi.Toolbars.Ribbon
         public static DependencyProperty CompactOrderProperty
             = DependencyProperty.Register("CompactOrder", typeof(int), typeof(Gallery),
             new FrameworkPropertyMetadata(0));
+
+        #endregion
 
         #region Color Scheme
         /// <summary>
@@ -145,16 +160,84 @@ namespace SolidShineUi.Toolbars.Ribbon
                 return;
             }
 
+            BorderBrush = cs.BorderColor.ToBrush();
+
+            UpdateSubitemColors();
             
         }
         #endregion
+
+        private static readonly DependencyPropertyKey ItemsPropertyKey
+            = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<GalleryItem>), typeof(Gallery),
+            new FrameworkPropertyMetadata(new ObservableCollection<GalleryItem>()));
+
+        public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get or set the list of items in this RibbonGroup. This Items property can be used to add and remove items.
+        /// </summary>
+        [Category("Common")]
+        public ObservableCollection<GalleryItem> Items
+        {
+            get { return (ObservableCollection<GalleryItem>)GetValue(ItemsProperty); }
+            private set { SetValue(ItemsPropertyKey, value); }
+        }
+
+        private static readonly DependencyPropertyKey DisplayedItemsPropertyKey
+            = DependencyProperty.RegisterReadOnly("DisplayedItems", typeof(ListCollectionView), typeof(Gallery), new FrameworkPropertyMetadata());
+
+        public ListCollectionView DisplayedItems { get => (ListCollectionView)GetValue(DisplayedItemsProperty); private set => SetValue(DisplayedItemsPropertyKey, value); }
+
+        /// <summary>The backing dependency property for <see cref="DisplayedItems"/>. See the related property for details.</summary>
+        public static DependencyProperty DisplayedItemsProperty = DisplayedItemsPropertyKey.DependencyProperty;
+
+        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
+            if (e.NewItems.Count > 0)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    if (item is GalleryItem gi)
+                    {
+                        gi.ColorScheme = ColorScheme;
+                        gi.LayoutType = ItemLayout;
+                    }
+                }
+            }
+        }
 
         public GalleryItemLayout ItemLayout { get => (GalleryItemLayout)GetValue(ItemLayoutProperty); set => SetValue(ItemLayoutProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ItemLayout"/>. See the related property for details.</summary>
         public static DependencyProperty ItemLayoutProperty
             = DependencyProperty.Register("ItemLayout", typeof(GalleryItemLayout), typeof(Gallery),
-            new FrameworkPropertyMetadata(GalleryItemLayout.LargeIconAndText));
+            new FrameworkPropertyMetadata(GalleryItemLayout.LargeIconAndText, (d, e) => d.PerformAs<Gallery>(g => g.UpdateSubitemLayouts())));
+
+        void UpdateSubitemLayouts()
+        {
+            foreach (var item in Items)
+            {
+                item.LayoutType = ItemLayout;
+            }
+        }
+
+        void UpdateSubitemColors()
+        {
+            foreach (var item in Items)
+            {
+                item.ColorScheme = ColorScheme;
+            }
+        }
+
+        bool FilterItems(object item)
+        {
+            if (item is GalleryItem i)
+            {
+                return true;
+            }
+            else return false;
+        }
 
         public int MaxItemsDisplayed { get => (int)GetValue(MaxItemsDisplayedProperty); set => SetValue(MaxItemsDisplayedProperty, value); }
 
@@ -170,6 +253,12 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("MaxItemWidth", typeof(double), typeof(Gallery),
             new FrameworkPropertyMetadata(150.0));
 
+        public bool DisplayScrollButtons { get => (bool)GetValue(DisplayScrollButtonsProperty); set => SetValue(DisplayScrollButtonsProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="DisplayScrollButtons"/>. See the related property for details.</summary>
+        public static DependencyProperty DisplayScrollButtonsProperty
+            = DependencyProperty.Register("DisplayScrollButtons", typeof(bool), typeof(Gallery),
+            new FrameworkPropertyMetadata(true));
 
     }
 }
