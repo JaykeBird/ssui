@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SolidShineUi
 {
@@ -133,6 +135,8 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Properties
+
         #region ValueProperty
 
         /// <summary>
@@ -189,7 +193,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof(int), typeof(NewIntegerSpinner),
-            new PropertyMetadata(int.MinValue));
+            new PropertyMetadata(int.MinValue, (d, e) => d.PerformAs<NewIntegerSpinner>(i => i.OnMinValueChanged(e))));
 
         ///<summary>
         /// Get or set the minimum value allowed for this spinner (inclusive).
@@ -205,6 +209,12 @@ namespace SolidShineUi
             }
         }
 
+        private void OnMinValueChanged(DependencyPropertyChangedEventArgs e)
+        {
+            ValidateMinMax();
+            RaiseMinValueChanged(this, e);
+        }
+
         #endregion
 
         #region MaxValueProperty
@@ -214,7 +224,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof(int), typeof(NewIntegerSpinner),
-            new PropertyMetadata(int.MaxValue));
+            new PropertyMetadata(int.MaxValue, (d, e) => d.PerformAs<NewIntegerSpinner>(s => s.OnMaxValueChanged(e))));
 
         ///<summary>
         /// Get or set the maximum value allowed for this spinner (inclusive).
@@ -229,6 +239,12 @@ namespace SolidShineUi
 
                 SetValue(MaxValueProperty, value);
             }
+        }
+
+        private void OnMaxValueChanged(DependencyPropertyChangedEventArgs e)
+        {
+            ValidateMinMax();
+            RaiseMinValueChanged(this, e);
         }
 
         #endregion
@@ -260,14 +276,18 @@ namespace SolidShineUi
 
         #region DisplayAsHex
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for <see cref="DisplayAsHex"/>. Please see the related property for details.
+        /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
             "DisplayAsHex", typeof(bool), typeof(NewIntegerSpinner),
             new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<NewIntegerSpinner>((s) => s.OnDisplayAsHexChanged()))));
 
+        /// <summary>
+        /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
             "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewIntegerSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.
@@ -287,7 +307,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while DisplayAsHex is set to true, <see cref="SpinnerBase.AcceptExpressions"/> is ignored.
+        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while this is set to <c>true</c>, <c>AcceptExpressions</c> is ignored.
         /// </summary>
         /// <remarks>
         /// Certain situations, particularly involving computer representations of data or memory, may benefit more with displaying numbers as hexadecimals rather than decimals.
@@ -303,5 +323,159 @@ namespace SolidShineUi
 
         #endregion
 
+        #endregion
+
+        #region Template IO
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            LoadTemplateItems();
+        }
+
+        bool itemsLoaded = false;
+
+#if NETCOREAPP
+        TextBox? txtValue = null;
+        Border? vb = null;
+#else
+        TextBox txtValue = null;
+        Border vb = null;
+#endif
+
+        void LoadTemplateItems()
+        {
+            if (!itemsLoaded)
+            {
+                txtValue = (TextBox)GetTemplateChild("PART_Text");
+                vb = (Border)GetTemplateChild("PART_Border");
+
+                if (txtValue != null && vb != null)
+                {
+                    txtValue.TextChanged += txtValue_TextChanged;
+                    txtValue.LostFocus += txtValue_LostFocus;
+                    txtValue.KeyDown += txtValue_KeyDown;
+                    txtValue.KeyUp += txtValue_KeyUp;
+
+                    itemsLoaded = true;
+                }
+            }
+        }
+        #endregion
+
+        #region Base Functions
+
+        /// <inheritdoc/>
+        protected override void ValidateValue()
+        {
+            int val = Value;
+            if (val < MinValue) val = MinValue;
+            if (val > MaxValue) val = MaxValue;
+            if (val != Value) Value = val;
+
+            base.ValidateValue();
+        }
+
+        /// <summary>
+        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        /// </summary>
+        protected override void ValidateMinMax()
+        {
+            if (MinValue > MaxValue) MinValue = MaxValue;
+            if (MaxValue < MinValue) MaxValue = MinValue;
+            base.ValidateMinMax();
+        }
+
+        /// <inheritdoc/>
+        protected override void DoStepDown()
+        {
+            if (Value >= MinValue) Value -= Step;
+            else Value = MinValue;
+            base.DoStepDown();
+        }
+
+        /// <inheritdoc/>
+        protected override void DoStepUp()
+        {
+            if (Value <= MaxValue) Value += Step;
+            else Value = MaxValue;
+            base.DoStepUp();
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
+        {
+            int value = Value;
+
+            if (!advanceTimer.Enabled)
+            {
+                ValidateValue();
+
+                IsAtMinValue = Value == MinValue;
+                IsAtMaxValue = Value == MaxValue;
+            }
+            base.UpdateValue(e);
+        }
+
+        #endregion
+
+        #region TextBox
+        private void txtValue_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtValue == null)
+            {
+                return;
+            }
+
+            _updateBox = false;
+            if (DisplayAsHex)
+            {
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out _))
+                {
+                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
+                }
+            }
+            else
+            {
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out _))
+                {
+                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
+                }
+                else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
+                {
+                    try
+                    {
+                        Value = (int)Math.Round(ArithmeticParser.Evaluate(txtValue.Text), MidpointRounding.AwayFromZero);
+                    }
+                    catch (FormatException)
+                    {
+
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+
+                    }
+                }
+            }
+            _updateBox = true;
+        }
+
+        private void txtValue_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ValidateValue();
+        }
+
+        private void txtValue_KeyDown(object sender, KeyEventArgs e)
+        {
+            TextBoxKeyDown(e);
+        }
+
+        private void txtValue_KeyUp(object sender, KeyEventArgs e)
+        {
+            TextBoxKeyUp(e);
+        }
+
+        #endregion
     }
 }

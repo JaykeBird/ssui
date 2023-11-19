@@ -58,6 +58,14 @@ namespace SolidShineUi
         /// </summary>
         public bool SelectFirstTabOnLoad { get; set; } = true;
 
+        private void TabControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Items.Count > 0 && SelectFirstTabOnLoad)
+            {
+                Items.Select(Items[0]);
+            }
+        }
+
         #region Template IO
         /// <inheritdoc/>
         public override void OnApplyTemplate()
@@ -65,14 +73,6 @@ namespace SolidShineUi
             base.OnApplyTemplate();
 
             LoadTemplateItems();
-        }
-
-        private void TabControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (Items.Count > 0 && SelectFirstTabOnLoad)
-            {
-                Items.Select(Items[0]);
-            }
         }
 
         bool itemsLoaded = false;

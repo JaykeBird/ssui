@@ -157,18 +157,41 @@ namespace SolidShineUi.Utils
         public event EventHandler PropertyChanged;
 #endif
 
+#if NETCOREAPP
         /// <summary>
         /// Raised when the Value property is changed.
         /// </summary>
-#if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ValueChanged;
+        
+        /// <summary>
+        /// Raised when the MinValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler? MinValueChanged;
+        
+        /// <summary>
+        /// Raised when the MaxValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler? MaxValueChanged;
 
         /// <summary>
         /// Raised when the Value property is validated, and changed to a valid value if needed.
         /// </summary>
         public event EventHandler? ValueValidated;
 #else
+        /// <summary>
+        /// Raised when the Value property is changed.
+        /// </summary>
         public event DependencyPropertyChangedEventHandler ValueChanged;
+
+        /// <summary>
+        /// Raised when the MinValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler MinValueChanged;
+
+        /// <summary>
+        /// Raised when the MaxValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler MaxValueChanged;
 
         /// <summary>
         /// Raised when the Value property is validated, and changed to a valid value if needed.
@@ -184,6 +207,26 @@ namespace SolidShineUi.Utils
         protected void RaiseValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_raiseChangedEvent) ValueChanged?.Invoke(sender, e);
+        }
+
+        /// <summary>
+        /// Raise the <see cref="ValueChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Extra event data to provide to any event listeners.</param>
+        protected void RaiseMinValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MinValueChanged?.Invoke(sender, e);
+        }
+
+        /// <summary>
+        /// Raise the <see cref="ValueChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Extra event data to provide to any event listeners.</param>
+        protected void RaiseMaxValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MaxValueChanged?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -542,6 +585,15 @@ namespace SolidShineUi.Utils
         {
             UpdateUI();
             RaiseValueValidated(this);
+        }
+
+        /// <summary>
+        /// Validate MinValue and MaxValue, to make sure they're not impossibly out of bounds of each other. This should be overriden in controls that inherit this class, to 
+        /// perform actual validation on the value. This base function calls <see cref="ValidateValue"/>.
+        /// </summary>
+        protected virtual void ValidateMinMax()
+        {
+            ValidateValue();
         }
 
         /// <summary>
