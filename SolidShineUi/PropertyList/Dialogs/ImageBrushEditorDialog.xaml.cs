@@ -267,10 +267,14 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudOpacity_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdatePreview();
         }
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0051 // Remove unused private members
 
         void UpdatePreview()
         {

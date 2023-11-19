@@ -228,7 +228,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     // load matrix controls
                     DisplayTransformControl(null);
                 }
-                else if (selTransform is TransformGroup g)
+                else if (selTransform is TransformGroup)
                 {
                     // oh dear
                     DisplayTransformControl(null);

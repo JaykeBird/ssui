@@ -323,7 +323,7 @@ namespace SolidShineUi
                 int value1;
                 int value2;
                 int value3;
-                int value4;
+                //int value4; // uncomment if/when I want to add support for CMYK
 
                 // again, two bytes for the color space
                 colorSpace = (ColorSpace)(ReadInt16(stream));
@@ -331,7 +331,7 @@ namespace SolidShineUi
                 value1 = ReadInt16(stream);
                 value2 = ReadInt16(stream);
                 value3 = ReadInt16(stream);
-                value4 = ReadInt16(stream);
+                _ = ReadInt16(stream); // change back to value4 if/when I want to add support for CMYK
 
                 if (version == FileVersion.Version2)
                 {

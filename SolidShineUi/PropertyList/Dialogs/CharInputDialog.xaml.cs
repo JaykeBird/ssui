@@ -327,6 +327,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
         private void nudDec_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_internalAction) return;
@@ -426,5 +427,6 @@ namespace SolidShineUi.PropertyList.Dialogs
             UpdatePreview();
             _internalAction = false;
         }
+#pragma warning restore IDE0051 // Remove unused private members
     }
 }

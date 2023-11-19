@@ -710,6 +710,8 @@ namespace SolidShineUi
 
         bool _internalAlphaChange = false;
 
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudAlpha_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_internalAlphaChange) return;
@@ -720,6 +722,8 @@ namespace SolidShineUi
             UpdateSelectedColor(SelectedColor);
             _internalAlphaChange = false;
         }
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0051 // Remove unused private members
 
         private void sldAlpha_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
