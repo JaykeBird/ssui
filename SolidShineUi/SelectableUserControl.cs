@@ -14,7 +14,7 @@ namespace SolidShineUi
     /// </summary>
     [Localizability(LocalizationCategory.ListBox)]
     [DefaultEvent(nameof(IsSelectedChanged))]
-    public class SelectableUserControl : System.Windows.Controls.UserControl, IClickSelectableControl //, IEquatable<SelectableUserControl>
+    public class SelectableUserControl : System.Windows.Controls.UserControl, IClickSelectableControl
     {
         /// <summary>
         /// Create a SelectableUserControl.
@@ -191,7 +191,9 @@ namespace SolidShineUi
                     if (s.IsSelected)
                     {
                         s.sel = false;
-                        s.IsSelectedChanged?.Invoke(s, new ItemSelectionChangedEventArgs(true, false, SelectionChangeTrigger.DisableSelecting, s));
+
+                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, true, false, SelectionChangeTrigger.DisableSelecting, s);
+                        s.RaiseEvent(re);
                     }
                     s.ChangeBaseBackground(s.Background);
                 }
@@ -255,7 +257,8 @@ namespace SolidShineUi
 
                 if (curVal != sel)
                 {
-                    IsSelectedChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, triggerMethod, triggerSource));
+                    ItemSelectionChangedEventArgs e = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, curVal, sel, triggerMethod, triggerSource);
+                    RaiseEvent(e);
                 }
             }
         }
@@ -265,23 +268,30 @@ namespace SolidShineUi
 
 #if NETCOREAPP
         /// <summary>
-        /// Raised if the IsSelected property is changed.
-        /// </summary>
-        public event ItemSelectionChangedEventHandler? IsSelectedChanged;
-        /// <summary>
         /// Raised if the CanSelect property is changed.
         /// </summary>
         public event DependencyPropertyChangedEventHandler? CanSelectChanged;
 #else
         /// <summary>
-        /// Raised if the IsSelected property is changed.
-        /// </summary>
-        public event ItemSelectionChangedEventHandler IsSelectedChanged;
-        /// <summary>
         /// Raised if the CanSelect property is changed.
         /// </summary>
         public event DependencyPropertyChangedEventHandler CanSelectChanged;
 #endif
+
+        /// <summary>
+        /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
+            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SelectableUserControl));
+
+        /// <summary>
+        /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event ItemSelectionChangedEventHandler IsSelectedChanged
+        {
+            add { AddHandler(IsSelectedChangedEvent, value); }
+            remove { RemoveHandler(IsSelectedChangedEvent, value); }
+        }
 
         /// <summary>
         /// The backing value for the <see cref="Click"/> event. See the related event for more details.
@@ -313,13 +323,6 @@ namespace SolidShineUi
             add { AddHandler(RightClickEvent, value); }
             remove { RemoveHandler(RightClickEvent, value); }
         }
-
-        /// <summary>
-        /// Represents a handler for the <see cref="IsSelectedChanged"/> event.
-        /// </summary>
-        /// <param name="sender">The source object of the event.</param>
-        /// <param name="e">The event arguments, containing information on the new IsSelected value and how the selection changed.</param>
-        public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
 
         #endregion
 
@@ -530,22 +533,89 @@ namespace SolidShineUi
         #endregion
     }
 
+//    /// <summary>
+//    /// The event arguments for the IsSelectedChanged event of the SelectableUserControl.
+//    /// </summary>
+//    public class ItemSelectionChangedEventArgs : EventArgs
+//    {
+//        /// <summary>
+//        /// Create a new ItemSelectionChangedEventArgs.
+//        /// </summary>
+//        /// <param name="oldValue">The old IsSelected value.</param>
+//        /// <param name="newValue">The new IsSelected value.</param>
+//        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+//        /// <param name="triggerSource">The source object that updated the value (if available).</param>
+//#if NETCOREAPP
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null)
+//#else
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null)
+//#endif
+//        {
+//            OldValue = oldValue;
+//            NewValue = newValue;
+//            TriggerMethod = trigger;
+//            TriggerSource = triggerSource;
+//        }
+
+//        /// <summary>
+//        /// The old value of the IsSelected property.
+//        /// </summary>
+//        public bool OldValue { get; private set; }
+//        /// <summary>
+//        /// The new value of the IsSelected property.
+//        /// </summary>
+//        public bool NewValue { get; private set; }
+//        /// <summary>
+//        /// The method that was used to update the value.
+//        /// </summary>
+//        public SelectionChangeTrigger TriggerMethod { get; private set; }
+
+//        /// <summary>
+//        /// The object that caused the update to occur, if available.
+//        /// </summary>
+//#if NETCOREAPP
+//        public object? TriggerSource { get; private set; }
+//#else
+//        public object TriggerSource { get; private set; }
+//#endif
+//    }
+
     /// <summary>
     /// The event arguments for the IsSelectedChanged event of the SelectableUserControl.
     /// </summary>
-    public class ItemSelectionChangedEventArgs : EventArgs
+    public class ItemSelectionChangedEventArgs : RoutedEventArgs
     {
+//        /// <summary>
+//        /// Create a new ItemSelectionChangedEventArgs.
+//        /// </summary>
+//        /// <param name="oldValue">The old IsSelected value.</param>
+//        /// <param name="newValue">The new IsSelected value.</param>
+//        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+//        /// <param name="triggerSource">The source object that updated the value (if available).</param>
+//#if NETCOREAPP
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null) : base()
+//#else
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null) : base()
+//#endif
+//        {
+//            OldValue = oldValue;
+//            NewValue = newValue;
+//            TriggerMethod = trigger;
+//            TriggerSource = triggerSource;
+//        }
+
         /// <summary>
-        /// Create a new ItemSelectionChangedEventArgs.
+        /// Create a new ItemSelectionChangedRoutedEventArgs.
         /// </summary>
+        /// <param name="ev">the routed event associated with these routed event args</param>
         /// <param name="oldValue">The old IsSelected value.</param>
         /// <param name="newValue">The new IsSelected value.</param>
         /// <param name="trigger">The trigger method that caused the value to be updated.</param>
         /// <param name="triggerSource">The source object that updated the value (if available).</param>
 #if NETCOREAPP
-        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null)
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null) : base(ev, triggerSource)
 #else
-        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null)
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null) : base(ev, triggerSource)
 #endif
         {
             OldValue = oldValue;
@@ -553,6 +623,7 @@ namespace SolidShineUi
             TriggerMethod = trigger;
             TriggerSource = triggerSource;
         }
+
 
         /// <summary>
         /// The old value of the IsSelected property.

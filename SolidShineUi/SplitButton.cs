@@ -302,37 +302,14 @@ namespace SolidShineUi
             }
         }
 
-        ///// <summary>
-        ///// Get or set whether the button should have a transparent background when the button is not focused.
-        ///// </summary>
-        //public bool TransparentBack
-        //{
-        //    get
-        //    {
-        //        return use_transp;
-        //    }
-        //    set
-        //    {
-        //        use_transp = value;
-        //        if (runApply) ApplyColorScheme(ColorScheme, value, use_accent);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
-        ///// </summary>
-        //public bool UseAccentColors
-        //{
-        //    get
-        //    {
-        //        return use_accent;
-        //    }
-        //    set
-        //    {
-        //        use_accent = value;
-        //        if (runApply) ApplyColorScheme(ColorScheme, TransparentBack, value);
-        //    }
-        //}
+        /// <summary>
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            ApplyColorScheme(cs, TransparentBack, UseAccentColors);
+        }
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
@@ -815,6 +792,7 @@ namespace SolidShineUi
         #endregion
 
         #region Variables/Properties
+        bool _runSelChangeEvent = true;
 
         /// <summary>
         /// The backing dependency property for <see cref="IsSelected"/>. See the related property for more details.
@@ -827,9 +805,15 @@ namespace SolidShineUi
         {
             if (e.NewValue is bool se)
             {
+                bool old = Convert.ToBoolean(e.OldValue);
+
                 if (d is SplitButton f)
                 {
-                    f.IsSelectedChanged?.Invoke(d, e);
+                    if (f._runSelChangeEvent)
+                    {
+                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, SelectionChangeTrigger.CodeUnknown, null);
+                        f.RaiseEvent(re);
+                    }
                 }
             }
         }
@@ -878,13 +862,41 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to monitor the button's selected state, and is recommended to use this rather than the <see cref="Click"/> event.
+        /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
         /// </summary>
+        public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
+            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SelectableUserControl));
+
+        /// <summary>
+        /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event ItemSelectionChangedEventHandler IsSelectedChanged
+        {
+            add { AddHandler(IsSelectedChangedEvent, value); }
+            remove { RemoveHandler(IsSelectedChangedEvent, value); }
+        }
+
+        /// <summary>
+        /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
+        /// </summary>
+        /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
+        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="triggerSource">The object that triggered the change.</param>
 #if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
 #else
-        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
 #endif
+        {
+            bool old = IsSelected;
+
+            _runSelChangeEvent = false;
+            IsSelected = value;
+            _runSelChangeEvent = true;
+
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
+            RaiseEvent(re);
+        }
 
         #endregion
 
@@ -910,7 +922,7 @@ namespace SolidShineUi
         {
             if (SelectOnClick)
             {
-                IsSelected = !IsSelected;
+                SetIsSelectedWithSource(!IsSelected, SelectionChangeTrigger.ControlClick, this);
             }
 
             RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);

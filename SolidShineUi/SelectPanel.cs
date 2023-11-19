@@ -223,10 +223,7 @@ namespace SolidShineUi
             {
                 foreach (var item in ItemsSource)
                 {
-                    if (item is SelectableUserControl suc)
-                    {
-                        item.SetIsSelectedWithSource(isl.IsSelected(item), SelectionChangeTrigger.Parent, this);
-                    }
+                    item?.SetIsSelectedWithSource(isl.IsSelected(item), SelectionChangeTrigger.Parent, this);
                 }
             }
 
