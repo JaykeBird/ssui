@@ -36,14 +36,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
-        ColorScheme _cs = new ColorScheme();
+        //ColorScheme _cs = new ColorScheme();
 
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
             set
             {
-                _cs = value;
+                //_cs = value;
                 nudValue.ColorScheme = value;
                 btnMenu.ColorScheme = value;
                 imgMenu.Source = LoadIcon("ThreeDots", value);
@@ -168,6 +168,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _internalAction = false;
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudValue_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_internalAction) return;
@@ -179,5 +181,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (_internalAction) return;
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0060 // Remove unused parameter
     }
 }

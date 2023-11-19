@@ -1025,9 +1025,9 @@ namespace SolidShineUi.PropertyList
         {
             try
             {
-                if (registeredEditors.ContainsKey(propType))
+                if (registeredEditors.TryGetValue(propType, out var editorType) && editorType != null)
                 {
-                    object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
+                    object o = Activator.CreateInstance(editorType) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;

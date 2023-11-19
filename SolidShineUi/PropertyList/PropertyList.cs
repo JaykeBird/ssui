@@ -1156,9 +1156,9 @@ namespace SolidShineUi.PropertyList
                 // 4. check if it's a generic IEnumerable (if so, use the included EnumerableEditor)
                 // 5. check if it's a non-generic IEnumerable (if so, use the included EnumerableEditor)
 
-                if (registeredEditors.ContainsKey(propType))
+                if (registeredEditors.TryGetValue(propType, out var editorType) && editorType != null)
                 {
-                    object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
+                    object o = Activator.CreateInstance(editorType) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;

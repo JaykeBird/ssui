@@ -38,7 +38,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => _writable; set { _writable = value; btnMenu.IsEnabled = value; } }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
+        public ExperimentalPropertyList ParentPropertyList { set { /* _parent = value; */ } }
 
         ColorScheme _cs = new ColorScheme();
 
@@ -76,12 +76,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         bool _setNull = false;
 
 #if NETCOREAPP
-        ExperimentalPropertyList? _parent = null;
+        //ExperimentalPropertyList? _parent = null;
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 #else
-        ExperimentalPropertyList _parent = null;
+        //ExperimentalPropertyList _parent = null;
         
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
@@ -169,6 +169,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool OpenTransformDialog()
         {
             TransformEditDialog ted = new TransformEditDialog();
+            ted.Owner = Window.GetWindow(this);
             ted.ColorScheme = _cs;
             if (_specificType)
             {

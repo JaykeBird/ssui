@@ -280,7 +280,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     DisplayTransformControl(grdMatrix);
                     LoadInMatrixTransform(m);
                 }
-                else if (selTransform is TransformGroup g)
+                else if (selTransform is TransformGroup)
                 {
                     // oh dear
                     DisplayTransformControl(null);

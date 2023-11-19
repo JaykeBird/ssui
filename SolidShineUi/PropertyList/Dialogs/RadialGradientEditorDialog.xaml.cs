@@ -188,6 +188,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
 #pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudStartX_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             RunUpdateAction(() =>
@@ -220,6 +221,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             });
         }
 #pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0060 // Remove unused parameter
 
         void RunUpdateAction(Action a)
         {
@@ -279,6 +281,8 @@ namespace SolidShineUi.PropertyList.Dialogs
             UpdatePreview();
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0051 // Remove unused private members
         private void nudOpacity_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdatePreview();
@@ -321,5 +325,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             UpdatePreview();
         }
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0060 // Remove unused parameter
     }
 }
