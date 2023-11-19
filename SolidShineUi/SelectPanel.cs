@@ -568,6 +568,10 @@ namespace SolidShineUi
 
         void RaiseSelectionChangedEvent(List<SelectableUserControl> addedItems, List<SelectableUserControl> removedItems)
         {
+#if NETCOREAPP
+            addedItems ??= new List<IClickSelectableControl>();
+            removedItems ??= new List<IClickSelectableControl>();
+#else
             if (addedItems == null)
             {
                 addedItems = new List<SelectableUserControl>();
@@ -577,6 +581,7 @@ namespace SolidShineUi
             {
                 removedItems = new List<SelectableUserControl>();
             }
+#endif
 
             SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(SelectionChangedEvent, addedItems, removedItems);
             RaiseEvent(newEventArgs);
@@ -598,10 +603,14 @@ namespace SolidShineUi
 
         void RaiseItemsAddedEvent(List<SelectableUserControl> addedItems)
         {
+#if NETCOREAPP
+            addedItems ??= new List<IClickSelectableControl>();
+#else
             if (addedItems == null)
             {
                 addedItems = new List<SelectableUserControl>();
             }
+#endif
 
             SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsAddedEvent, new List<SelectableUserControl>(), addedItems);
             RaiseEvent(newEventArgs);
@@ -623,15 +632,19 @@ namespace SolidShineUi
 
         void RaiseItemsRemovedEvent(List<SelectableUserControl> removedItems)
         {
+#if NETCOREAPP
+            removedItems ??= new List<IClickSelectableControl>();
+#else
             if (removedItems == null)
             {
                 removedItems = new List<SelectableUserControl>();
             }
+#endif
 
             SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsRemovedEvent, removedItems, new List<SelectableUserControl>());
             RaiseEvent(newEventArgs);
         }
-        #endregion
+#endregion
 
         #region Visual Properties
 
@@ -1044,7 +1057,7 @@ namespace SolidShineUi
 
             public int Compare(SelectableUserControl? a, SelectableUserControl? b)
 #else
-            public SelectableCollection<SelectableUserControl> ParentCollection { get; set; }
+            public IList<IClickSelectableControl> ParentCollection { get; set; }
 
             public int Compare(SelectableUserControl a, SelectableUserControl b)
 #endif

@@ -183,9 +183,8 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                if (selectedItems.Contains(item))
+                                if (selectedItems.Remove(item))
                                 {
-                                    selectedItems.Remove(item);
                                     removedItems.Add(item);
                                 }
                             }
@@ -201,9 +200,8 @@ namespace SolidShineUi
                         {
                             if (item != null)
                             {
-                                if (selectedItems.Contains(item))
+                                if (selectedItems.Remove(item))
                                 {
-                                    selectedItems.Remove(item);
                                     removedItemsR.Add(item);
                                 }
                             }
@@ -304,9 +302,8 @@ namespace SolidShineUi
         /// <param name="item">The item to remove.</param>
         public void Deselect(T item)
         {
-            if (selectedItems.Contains(item))
+            if (selectedItems.Remove(item))
             {
-                selectedItems.Remove(item);
                 SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T> { item }, new List<T>()));
             }
         }
@@ -413,33 +410,33 @@ namespace SolidShineUi
 
         void ISelectableCollectionSource.AddToSelection(object item)
         {
-            if (item is T)
+            if (item is T t)
             {
-                AddToSelection((T)item);
+                AddToSelection(t);
             }
         }
 
         void ISelectableCollectionSource.Select(object item)
         {
-            if (item is T)
+            if (item is T t)
             {
-                Select((T)item);
+                Select(t);
             }
         }
 
         void ISelectableCollectionSource.Deselect(object item)
         {
-            if (item is T)
+            if (item is T t)
             {
-                Deselect((T)item);
+                Deselect(t);
             }
         }
 
         bool ISelectableCollectionSource.IsSelected(object item)
         {
-            if (item is T)
+            if (item is T t)
             {
-                return IsSelected((T)item);
+                return IsSelected(t);
             }
             else
             {
