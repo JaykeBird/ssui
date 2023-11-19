@@ -159,7 +159,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         #region Gradient Direction Handling
         // taken from WPF source code
-        private Point EndPointFromAngle(double angle)
+        private static Point EndPointFromAngle(double angle)
         {
             angle = angle * 0.0055555555555555558 * Math.PI;
             return new Point(Math.Cos(angle), Math.Sin(angle));

@@ -367,7 +367,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        string GetGradientDescriptor(GradientBrush gb)
+        static string GetGradientDescriptor(GradientBrush gb)
         {
             if (gb is LinearGradientBrush lgb)
             {
@@ -383,7 +383,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        string GetGradientDescriptor(LinearGradientBrush brush)
+        static string GetGradientDescriptor(LinearGradientBrush brush)
         {
             double height = brush.StartPoint.Y - brush.EndPoint.Y;
             double width = brush.StartPoint.X - brush.EndPoint.X;
@@ -401,7 +401,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return $"Angle: {angle}º, {brush.GradientStops.Count} stops";
         }
 
-        string GetGradientDescriptor(RadialGradientBrush brush)
+        static string GetGradientDescriptor(RadialGradientBrush brush)
         {
             if (brush.GradientStops.Count == 2)
             {
@@ -411,7 +411,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return $"Radial, {brush.GradientStops.Count} stops";
         }
 
-        string GetImageDescriptor(ImageBrush br)
+        static string GetImageDescriptor(ImageBrush br)
         {
             ImageSource isrc = br.ImageSource;
             if (isrc is BitmapImage bi)
@@ -420,22 +420,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (bi.UriSource != null)
                 {
                     string source = bi.UriSource.ToString();
-
-                    if (source.Length > 45)
-                    {
-                        if (char.IsSurrogate(source[44]))
-                        {
-                            return source.Substring(0, 44) + "...";
-                        }
-                        else
-                        {
-                            return source.Substring(0, 45) + "...";
-                        }
-                    }
-                    else
-                    {
-                        return source;
-                    }
+                    return source.Truncate(45);
                 }
                 else
                 {

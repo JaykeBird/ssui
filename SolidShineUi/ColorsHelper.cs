@@ -482,7 +482,7 @@ namespace SolidShineUi
             {
                 if (p.PropertyType == typeof(Color))
                 {
-                    if (p.Name.ToLowerInvariant() == colorName.ToLowerInvariant())
+                    if (p.Name.ToLowerInvariant().Equals(colorName.ToLowerInvariant(), StringComparison.OrdinalIgnoreCase))
                     {
                         var c = (Color?) p.GetValue(new Color(), BindingFlags.GetProperty, null, null, null);
                         if (c != null)

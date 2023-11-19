@@ -484,7 +484,7 @@ namespace SolidShineUi.Utils
 
         private void AddVerticalSnapPoint(double point)
         {
-            double sshalf = SelectorSize / 2;
+            //double sshalf = SelectorSize / 2;
             Border b = new Border();
             b.BorderThickness = new Thickness(0.75);
             b.BorderBrush = SnapLineBrush;
@@ -530,7 +530,7 @@ namespace SolidShineUi.Utils
 
         private void AddHorizontalSnapPoint(double point)
         {
-            double sshalf = SelectorSize / 2;
+            //double sshalf = SelectorSize / 2;
             Border b = new Border();
             b.BorderThickness = new Thickness(0.75);
             b.BorderBrush = SnapLineBrush;

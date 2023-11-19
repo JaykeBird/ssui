@@ -652,9 +652,12 @@ namespace SolidShineUi
                     break;
             }
 
-            foreach (ColorListItem item in colorList.Items)
+            foreach (IClickSelectableControl item in colorList.Items)
             {
-                item.DisplayMode = cld;
+                if (item is ColorListItem cli)
+                {
+                    cli.DisplayMode = cld;
+                }
             }
         }
 

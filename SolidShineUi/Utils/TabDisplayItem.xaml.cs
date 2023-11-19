@@ -453,10 +453,7 @@ namespace SolidShineUi.Utils
         }
         private void tdi_InternalParentChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (ParentTabControl != null)
-            {
-                ParentTabControl.SetupTabDisplay(this);
-            }
+            ParentTabControl?.SetupTabDisplay(this);
         }
 
         #endregion
