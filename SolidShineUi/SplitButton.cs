@@ -179,8 +179,6 @@ namespace SolidShineUi
 
         #region ColorScheme/TransparentBack/UseAccentColors
 
-        //DispatcherTimer invalidTimer = new DispatcherTimer();
-
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -212,18 +210,10 @@ namespace SolidShineUi
             {
                 if (d is SplitButton f)
                 {
-                    f.ApplyColorScheme(cs, f.TransparentBack, f.UseAccentColors);
+                    f.ApplyColorScheme(cs);
                     f.ColorSchemeChanged?.Invoke(d, e);
                 }
             }
-
-            //#if NETCOREAPP
-            //            ColorScheme cs = (e.NewValue as ColorScheme)!;
-            //#else
-            //            ColorScheme cs = e.NewValue as ColorScheme;
-            //#endif
-
-
         }
 
         /// <summary>
@@ -238,11 +228,12 @@ namespace SolidShineUi
 
         bool runApply = true;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for <see cref="TransparentBack"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty TransparentBackProperty
             = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(SplitButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnTransparentBackChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set whether the button should have a transparent background when the button is not focused.
@@ -270,11 +261,12 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for <see cref="UseAccentColors"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty UseAccentColorsProperty
             = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(SplitButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnUseAccentColorsChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
@@ -705,7 +697,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Click Handling
+        #region Click / Selection Handling
 
         #region Routed Events
 
@@ -792,6 +784,9 @@ namespace SolidShineUi
         #endregion
 
         #region Variables/Properties
+
+        #region IsSelected / IsSelectedChanged
+
         bool _runSelChangeEvent = true;
 
         /// <summary>
@@ -839,33 +834,10 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            "SelectOnClick", typeof(bool), typeof(SplitButton),
-            new PropertyMetadata(false));
-
-        /// <summary>
-        /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
-        /// </summary>
-        /// <remarks>
-        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton). A selected button will, by default, have some visual
-        /// differences to help make it look distinct from unselected buttons. The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
-        /// IsSelected property has already changed. While you could use the Click event to check when the button's IsSelected property is changed, it is better to use the IsSelectedChanged event,
-        /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
-        /// </remarks>
-        [Category("Common")]
-        public bool SelectOnClick
-        {
-            get => (bool)GetValue(SelectOnClickProperty);
-            set => SetValue(SelectOnClickProperty, value);
-        }
-
-        /// <summary>
         /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
-            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SelectableUserControl));
+            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SplitButton));
 
         /// <summary>
         /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
@@ -896,6 +868,31 @@ namespace SolidShineUi
 
             ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
             RaiseEvent(re);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
+            "SelectOnClick", typeof(bool), typeof(SplitButton),
+            new PropertyMetadata(false));
+
+        /// <summary>
+        /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
+        /// </summary>
+        /// <remarks>
+        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton). A selected button will, by default, have some visual
+        /// differences to help make it look distinct from unselected buttons. The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
+        /// IsSelected property has already changed. While you could use the Click event to check when the button's IsSelected property is changed, it is better to use the IsSelectedChanged event,
+        /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
+        /// </remarks>
+        [Category("Common")]
+        public bool SelectOnClick
+        {
+            get => (bool)GetValue(SelectOnClickProperty);
+            set => SetValue(SelectOnClickProperty, value);
         }
 
         #endregion

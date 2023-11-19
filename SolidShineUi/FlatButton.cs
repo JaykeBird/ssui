@@ -588,7 +588,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
-            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SelectableUserControl));
+            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
