@@ -354,7 +354,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else if (grdHolder.Children.IndexOf(transformControl) == -1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("The inputted element isn't actually present in the transform editor collection", nameof(transformControl));
             }
             else
             {

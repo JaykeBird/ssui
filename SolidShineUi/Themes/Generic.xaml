@@ -2113,8 +2113,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" IsEnabled="False" />
                                         <!--<Separator />
                                         <MenuItem Header="Show Gridlines" IsChecked="{TemplateBinding ShowGridlines}" 
-                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />-->
-                                        <!--<MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click"
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />
+                                        <MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click"
                                                   Command="{x:Static pl:PropertyListCommands.ChangeGridlineBrush}" />-->
                                     </flat:ContextMenu>
                                 </flat:MenuButton.Menu>

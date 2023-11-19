@@ -406,7 +406,7 @@ namespace SolidShineUi
         /// <inheritdoc/>
         protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
         {
-            int value = Value;
+            //int value = Value;
 
             if (!advanceTimer.Enabled)
             {

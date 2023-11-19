@@ -142,13 +142,15 @@ namespace SolidShineUi
                     }
 
                     colorCount = Convert.ToInt32(reader.ReadLine());
+                    char[] spaces = new[] { ' ', '\t' };
+
                     for (int i = 0; i < colorCount; i++)
                     {
                         string data;
                         string[] parts;
 
                         data = reader.ReadLine() ?? "";
-                        parts = !string.IsNullOrEmpty(data) ? data.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
+                        parts = !string.IsNullOrEmpty(data) ? data.Split(spaces, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
 
                         if (!int.TryParse(parts[0], out int r) || !int.TryParse(parts[1], out int g) || !int.TryParse(parts[2], out int b))
                         {
@@ -171,7 +173,7 @@ namespace SolidShineUi
         /// <exception cref="FormatException">Thrown if the file doesn't match the expected format.</exception>
         public static List<Color> LoadRawPalette(string filename)
         {
-            using (Stream stream = File.OpenRead(filename))
+            using (FileStream stream = File.OpenRead(filename))
             {
                 if (stream == null)
                 {
@@ -524,7 +526,7 @@ namespace SolidShineUi
                         string line;
 
                         line = reader.ReadLine() ?? "";
-                        if (!string.IsNullOrEmpty(line) && !line.StartsWith(";"))
+                        if (!string.IsNullOrEmpty(line) && !line.StartsWith(";", StringComparison.InvariantCulture))
                         {
                             try
                             {
@@ -576,7 +578,7 @@ namespace SolidShineUi
 
                         if (firstLine)
                         {
-                            if (line.Trim().ToLowerInvariant() == "gimp palette")
+                            if (line.Trim().ToLowerInvariant().Equals("gimp palette", StringComparison.OrdinalIgnoreCase))
                             {
                                 firstLine = false;
                             }

@@ -138,7 +138,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _internalAction = true;
             //_itemType = type;
 
-            GridLength? gl = null;
+            GridLength? gl;// = null;
 
             if (type == typeof(GridLength))
             {

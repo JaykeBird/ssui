@@ -58,14 +58,11 @@ namespace SolidShineUi
         private void InvalidTimer_Tick(object sender, EventArgs e)
 #endif
         {
-            if (Application.Current != null)
+            Application.Current?.Dispatcher.Invoke(() =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    InvalidateMeasure();
-                    InvalidateVisual();
-                });
-            }
+                InvalidateMeasure();
+                InvalidateVisual();
+            });
 
             invalidTimer.IsEnabled = false;
         }
