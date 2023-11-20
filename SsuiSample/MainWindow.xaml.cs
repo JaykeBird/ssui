@@ -122,7 +122,7 @@ namespace SsuiSample
             }
         }
 
-        private void si_Click(object sender, RoutedEventArgs e)
+        private void si_Click(object sender, EventArgs e)
         {
             string name = (sender as SelectableItem).Tag as string;
 

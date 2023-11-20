@@ -569,8 +569,8 @@ namespace SolidShineUi
         void RaiseSelectionChangedEvent(List<SelectableUserControl> addedItems, List<SelectableUserControl> removedItems)
         {
 #if NETCOREAPP
-            addedItems ??= new List<IClickSelectableControl>();
-            removedItems ??= new List<IClickSelectableControl>();
+            addedItems ??= new List<SelectableUserControl>();
+            removedItems ??= new List<SelectableUserControl>();
 #else
             if (addedItems == null)
             {
@@ -604,7 +604,7 @@ namespace SolidShineUi
         void RaiseItemsAddedEvent(List<SelectableUserControl> addedItems)
         {
 #if NETCOREAPP
-            addedItems ??= new List<IClickSelectableControl>();
+            addedItems ??= new List<SelectableUserControl>();
 #else
             if (addedItems == null)
             {
@@ -633,7 +633,7 @@ namespace SolidShineUi
         void RaiseItemsRemovedEvent(List<SelectableUserControl> removedItems)
         {
 #if NETCOREAPP
-            removedItems ??= new List<IClickSelectableControl>();
+            removedItems ??= new List<SelectableUserControl>();
 #else
             if (removedItems == null)
             {
@@ -1057,7 +1057,7 @@ namespace SolidShineUi
 
             public int Compare(SelectableUserControl? a, SelectableUserControl? b)
 #else
-            public IList<IClickSelectableControl> ParentCollection { get; set; }
+            public IList<SelectableUserControl> ParentCollection { get; set; }
 
             public int Compare(SelectableUserControl a, SelectableUserControl b)
 #endif

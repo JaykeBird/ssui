@@ -123,11 +123,11 @@ namespace SolidShineUi.PropertyList.Dialogs
             else
             {
                 var tsc = AddTransform(t);
-                singleEditMode = true;
-                btnAdd.Visibility = Visibility.Collapsed;
-                btnDelete.Visibility = Visibility.Collapsed;
-                btnMoveDown.Visibility = Visibility.Collapsed;
-                btnMoveUp.Visibility = Visibility.Collapsed;
+                //singleEditMode = true;
+                //btnAdd.Visibility = Visibility.Collapsed;
+                //btnDelete.Visibility = Visibility.Collapsed;
+                //btnMoveDown.Visibility = Visibility.Collapsed;
+                //btnMoveUp.Visibility = Visibility.Collapsed;
                 tsc.IsSelected = true;
             }
         }
@@ -139,10 +139,10 @@ namespace SolidShineUi.PropertyList.Dialogs
         public TransformCollection ExportTransformCollection()
         {
             TransformCollection transforms = new TransformCollection();
-            StoreDataToSelectedTransform();
+            //StoreDataToSelectedTransform();
             foreach (TransformSelectableControl item in TransformList)
             {
-                transforms.Add(item.TransformValue);
+                //transforms.Add(item.TransformValue);
             }
 
             return transforms;
@@ -157,41 +157,43 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// </remarks>
         public Transform ExportSingleTransform()
         {
-            if (!singleEditMode)
-            {
-                if (TransformList.Count == 1)
-                {
-                    StoreDataToSelectedTransform();
-                    return TransformList[0].TransformValue;
-                }
-                else
-                {
-                    return new TransformGroup() { Children = ExportTransformCollection() };
-                }
-            }
-            else
-            {
-                if (TransformList.Count >= 1)
-                {
-                    StoreDataToSelectedTransform();
-                    return TransformList[0].TransformValue;
-                }
-                else if (TransformList.Count == 0)
-                {
-                    // this "unnecessary cast" is needed for .NET Framework
-                    return returnIdentityIfBlank ? (Transform)new MatrixTransform(Matrix.Identity) : new TransformGroup();
-                }
-                else
-                {
-                    return new TransformGroup();
-                }
-            }
+            //if (!singleEditMode)
+            //{
+            //    if (TransformList.Count == 1)
+            //    {
+            //        StoreDataToSelectedTransform();
+            //        return TransformList[0].TransformValue;
+            //    }
+            //    else
+            //    {
+            //        return new TransformGroup() { Children = ExportTransformCollection() };
+            //    }
+            //}
+            //else
+            //{
+            //    if (TransformList.Count >= 1)
+            //    {
+            //        StoreDataToSelectedTransform();
+            //        return TransformList[0].TransformValue;
+            //    }
+            //    else if (TransformList.Count == 0)
+            //    {
+            //        // this "unnecessary cast" is needed for .NET Framework
+            //        return returnIdentityIfBlank ? (Transform)new MatrixTransform(Matrix.Identity) : new TransformGroup();
+            //    }
+            //    else
+            //    {
+            //        return new TransformGroup();
+            //    }
+            //}
+            return new TransformGroup();
         }
 
         TransformSelectableControl AddTransform(Transform t)
         {
             TransformSelectableControl control = new TransformSelectableControl(t);
             TransformList.Add(control);
+            return control;
         }
 
         void LoadSelectedTransform()

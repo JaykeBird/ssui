@@ -652,7 +652,7 @@ namespace SolidShineUi
                     break;
             }
 
-            foreach (IClickSelectableControl item in colorList.Items)
+            foreach (SelectableUserControl item in colorList.Items)
             {
                 if (item is ColorListItem cli)
                 {
