@@ -154,6 +154,20 @@ namespace SolidShineUi
 
         #region Selection Handling
 
+        /// <summary>
+        /// Get or set if this control should change its <see cref="IsSelected"/> value when you click on the control.
+        /// </summary>
+        /// <remarks>
+        /// This allows more fine-tuned control over when and how this control can be selected. If this is <c>false</c>, then the user can only use the checkbox to directly 
+        /// select or deselect this control. You can use <see cref="CanSelect"/> to globally disable selecting this control via any method.
+        /// </remarks>
+        public bool SelectOnClick { get => (bool)GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.</summary>
+        public static DependencyProperty SelectOnClickProperty
+            = DependencyProperty.Register("SelectOnClick", typeof(bool), typeof(SelectableUserControl),
+            new FrameworkPropertyMetadata(true));
+
         bool canSel = true;
 
         /// <summary>
@@ -337,7 +351,10 @@ namespace SolidShineUi
                 }
                 else
                 {
-                    SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
+                    if (SelectOnClick)
+                    {
+                        SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
+                    }
                     Click?.Invoke(this, EventArgs.Empty);
                 }
 
