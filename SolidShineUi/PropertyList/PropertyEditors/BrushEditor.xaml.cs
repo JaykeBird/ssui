@@ -423,6 +423,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                     if (source.Length > 45)
                     {
+#if NETCOREAPP
+                        if (char.IsSurrogate(source[44]))
+                        {
+                            return string.Concat(source.AsSpan(0, 44), "...");
+                        }
+                        else
+                        {
+                            return string.Concat(source.AsSpan(0, 45), "...");
+                        }
+#else
                         if (char.IsSurrogate(source[44]))
                         {
                             return source.Substring(0, 44) + "...";
@@ -431,6 +441,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                         {
                             return source.Substring(0, 45) + "...";
                         }
+#endif
                     }
                     else
                     {
@@ -538,9 +549,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             btnBrush.DisabledBrush = db;
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
         #region Edit Current Brush
         private void btnBrush_Click(object sender, RoutedEventArgs e)

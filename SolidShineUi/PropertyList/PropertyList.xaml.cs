@@ -1004,6 +1004,14 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Color?), typeof(ColorEditor));
             RegisterEditor(typeof(CornerRadius), typeof(CornerRadiusEditor));
             RegisterEditor(typeof(CornerRadius?), typeof(CornerRadiusEditor));
+            RegisterEditor(typeof(Transform), typeof(TransformEditor));
+            RegisterEditor(typeof(MatrixTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(RotateTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(ScaleTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(SkewTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(TranslateTransform), typeof(TransformEditor));
+            RegisterEditor(typeof(TransformCollection), typeof(TransformEditor));
+            RegisterEditor(typeof(TransformGroup), typeof(TransformEditor));
             RegisterEditor(typeof(char), typeof(CharEditor));
             RegisterEditor(typeof(char?), typeof(CharEditor));
 #if NETCOREAPP
