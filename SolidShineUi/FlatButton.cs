@@ -924,8 +924,9 @@ namespace SolidShineUi
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set if this button is the default button in the dialog or window it is located in. May not currently function correctly.
+        /// Get or set if this button is the default button in the dialog or window it is located in. Due to limitations in WPF, this actually does not work.
         /// </summary>
+        [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
         public bool IsDefault
         {
             get => (bool)GetValue(IsDefaultProperty);
@@ -967,8 +968,9 @@ namespace SolidShineUi
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Specifies whether or not this button is the button that would be invoked when Enter is pressed.
+        /// Specifies whether or not this button is the button that would be invoked when Enter is pressed. Due to limitations in WPF, this actually does not work.
         /// </summary>
+        [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
         public bool IsDefaulted
         {
             get
@@ -979,7 +981,7 @@ namespace SolidShineUi
 
         private void OnFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
         {
-            UpdateIsDefaulted(System.Windows.Input.Keyboard.FocusedElement);
+            UpdateIsDefaulted(Keyboard.FocusedElement);
         }
 
 #if NETCOREAPP
@@ -989,11 +991,13 @@ namespace SolidShineUi
 #endif
         {
             // If it's not a default button, or nothing is focused, or it's disabled then it's not defaulted.
+#pragma warning disable CS0618 // Type or member is obsolete
             if (!IsDefault || focus == null || !IsEnabled)
             {
                 SetValue(IsDefaultedPropertyKey, false);
                 return;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             if (focus is DependencyObject focusDO)
             {

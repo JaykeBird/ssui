@@ -526,6 +526,7 @@ namespace SolidShineUi
                 stkExtraButtons.Margin = new Thickness(70, 10, 20, 10);
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             switch (defaultButton)
             {
                 case MessageDialogResult.OK:
@@ -581,6 +582,7 @@ namespace SolidShineUi
                     }
                     break;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             if (Owner != null)
             {
@@ -817,6 +819,7 @@ namespace SolidShineUi
                 stkExtraButtons.Margin = new Thickness(70, 10, 20, 10);
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             switch (defaultButton)
             {
                 case MessageDialogResult.OK:
@@ -872,6 +875,7 @@ namespace SolidShineUi
                     }
                     break;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             if (Owner != null)
             {
