@@ -413,12 +413,12 @@ namespace SolidShineUi
         public UIElement? SelectedTabContent { get => (UIElement)GetValue(SelectedTabContentProperty); private set => SetValue(SelectedTabContentPropertyKey, value); }
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// A dependency property object backing the <see cref="SelectedTab"/> property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty SelectedTabProperty = SelectedTabPropertyKey!.DependencyProperty;
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// A dependency property object backing the <see cref="SelectedTabContent"/> property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty SelectedTabContentProperty = SelectedTabContentPropertyKey!.DependencyProperty;
 
@@ -454,14 +454,14 @@ namespace SolidShineUi
         /// Get the currently shown content in the main part of the control. This is the content of the currently selected tab.
         /// </summary>
         public UIElement SelectedTabContent { get => (UIElement)GetValue(SelectedTabContentProperty); private set => SetValue(SelectedTabContentPropertyKey, value); }
-        
+
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// A dependency property object backing the <see cref="SelectedTab"/> property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty SelectedTabProperty = SelectedTabPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// A dependency property object backing the <see cref="SelectedTabContent"/> property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty SelectedTabContentProperty = SelectedTabContentPropertyKey.DependencyProperty;
 
@@ -596,12 +596,15 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Properties
+
         #region ShowTabsOnBottom
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="ShowTabsOnBottom"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
@@ -642,10 +645,11 @@ namespace SolidShineUi
 
         #region HorizontalTabBarHeight
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="HorizontalTabBarHeight"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty HorizontalTabBarHeightProperty = DependencyProperty.Register("HorizontalTabBarHeight", typeof(double), typeof(TabControl),
             new FrameworkPropertyMetadata(24.0, new PropertyChangedCallback(OnInternalHorizontalTabBarHeightChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the height of the horizontal tab bar. The default value is 24.
@@ -716,12 +720,13 @@ namespace SolidShineUi
 
         #endregion
 
-        #region ShowTabListMenu / TabListMenuItemClick command
+        #region ShowTabListMenu
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="ShowTabListMenu"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
             new FrameworkPropertyMetadata(true, new PropertyChangedCallback(OnInternalShowTabListMenuChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs. This mimics a similar menu found in Visual Studio.
@@ -763,10 +768,11 @@ namespace SolidShineUi
 
         #region TabMinWidth
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="TabMinWidth"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty TabMinWidthProperty = DependencyProperty.Register("TabMinWidth", typeof(double), typeof(TabControl),
             new FrameworkPropertyMetadata(120.0d, new PropertyChangedCallback(OnInternalTabMinWidthChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the minimum width a tab should have in the tab bar. While tabs may be wider than this width, they will never be shorter than it.
@@ -823,20 +829,24 @@ namespace SolidShineUi
 
         #region SelectedTabClosedAction
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="SelectedTabClosedAction"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty SelectedTabClosedActionProperty = DependencyProperty.Register("SelectedTabClosedAction", typeof(SelectedTabCloseAction), typeof(TabControl),
             new PropertyMetadata(SelectedTabCloseAction.SelectTabToLeft));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the action to take when the currently selected tab is closed.
         /// </summary>
         /// <remarks>
-        /// Clearing the selection (via <c>Items.ClearSelection</c> or other methods) will trigger this action as well, meaning the TabControl will attempt to select another tab if
-        /// this action is not <c>SelectNothing</c>. If you need to clear the selection, you'll need to set this property to <c>SelectNothing</c> first, clear the selection, and then reset
+        /// When the currently selected tab is closed, or the selection is cleared via methods like <c>Items.ClearSelection</c>, the TabControl will attempt to select another tab based
+        /// upon what action is set here. If this is set to <c>SelectNothing</c>, then that means no tab will be selected and the content area will be blank.
+        /// <para/>
+        /// If you need to deselect all tabs and display nothing, you'll need to set this property to <c>SelectNothing</c> first, clear the selection, and then reset
         /// this to whatever value you had previously (by default, the value is <c>SelectTabToLeft</c>).<para/>
         /// 
-        /// When a tab that isn't currently the selected tab is closed, that is not affected with this property.
+        /// This property is only for situations affecting a change in the selected tab. If a different (not selected) tab is closed, no extra action is needed
+        /// and this property has no effect or relation to that.
         /// </remarks>
         public SelectedTabCloseAction SelectedTabClosedAction
         {
@@ -847,13 +857,14 @@ namespace SolidShineUi
 
         #region AllowDragDrop
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The dependency property object for the <see cref="AllowTabDragDrop"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty AllowTabDragDropProperty = DependencyProperty.Register("AllowTabDragDrop", typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowTabDragDropChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set if tabs can be dragged and dropped.
+        /// Get or set if tabs can be dragged and dropped. If <c>true</c>, users can drag tabs around to rearrange them in the control's tab bar.
         /// </summary>
         /// <remarks>
         /// Note that dragging and dropping tabs between TabControls is not currently supported.
@@ -940,6 +951,8 @@ namespace SolidShineUi
                 return;
             }
         }
+        #endregion
+
         #endregion
 
         #region Setup TabDisplayItem / Tdi Event Handlers
