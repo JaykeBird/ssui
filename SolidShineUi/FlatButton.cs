@@ -935,7 +935,7 @@ namespace SolidShineUi
 
         private static void OnIsDefaultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is FlatButton b)
+            if (d is FlatButton)
             {
                 //if (b.FocusChangedHandler == null)
                 //{

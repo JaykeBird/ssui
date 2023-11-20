@@ -38,7 +38,7 @@ namespace SolidShineUi
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
 
-            if (Menu != null) Menu.ApplyColorScheme(cs);
+            Menu?.ApplyColorScheme(cs);
         }
 
 
@@ -183,7 +183,7 @@ namespace SolidShineUi
         public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
         {
             base.ApplyColorScheme(cs, transparentBack, useAccentColors);
-            if (Menu != null) Menu.ApplyColorScheme(cs);
+            Menu?.ApplyColorScheme(cs);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace SolidShineUi
         public new void ApplyColorScheme(HighContrastOption hco, bool transparentBack = false)
         {
             base.ApplyColorScheme(hco, transparentBack);
-            if (Menu != null) Menu.ApplyColorScheme(hco);
+            Menu?.ApplyColorScheme(hco);
         }
 
         /// <summary>
