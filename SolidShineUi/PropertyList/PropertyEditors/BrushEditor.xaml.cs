@@ -136,7 +136,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object? GetValue()
         {
-            return CopyBrushToExport();
+            return CopyBrush();
         }
 #else
         /// <inheritdoc/>
@@ -145,7 +145,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object GetValue()
         {
-            return CopyBrushToExport();
+            return CopyBrush();
         }
 #endif
 
@@ -420,7 +420,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (bi.UriSource != null)
                 {
                     string source = bi.UriSource.ToString();
-                    return source.Truncate(45);
+
+                    if (source.Length > 45)
+                    {
+                        if (char.IsSurrogate(source[44]))
+                        {
+                            return source.Substring(0, 44) + "...";
+                        }
+                        else
+                        {
+                            return source.Substring(0, 45) + "...";
+                        }
+                    }
+                    else
+                    {
+                        return source;
+                    }
                 }
                 else
                 {
