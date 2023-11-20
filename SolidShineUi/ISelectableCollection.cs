@@ -11,20 +11,59 @@ namespace SolidShineUi
     /// </summary>
     public interface ISelectableCollectionSource
     {
+        /// <summary>
+        /// Get a list of currently selected items.
+        /// </summary>
         ICollection SelectedItems { get; }
 
+        /// <summary>
+        /// Add an item to the existing list of selected items.
+        /// </summary>
+        /// <param name="item">The item to add to the selection.</param>
+        /// <remarks>
+        /// If <see cref="CanSelectMultiple"/> is false, this function will only succeed if there is currently nothing selected; otherwise, nothing happens.
+        /// </remarks>
         void AddToSelection(object item);
 
+        /// <summary>
+        /// Select an item, replacing the current selection.
+        /// </summary>
+        /// <param name="item">The item to select.</param>
         void Select(object item);
 
+        /// <summary>
+        /// Remove an item from the list of selected items.
+        /// </summary>
+        /// <param name="item">The item to remove from the selection.</param>
         void Deselect(object item);
 
+        /// <summary>
+        /// Select all items in the collection.
+        /// </summary>
+        /// <remarks>
+        /// If <see cref="CanSelectMultiple"/> is false, either the first item will be selected or nothing will happen.
+        /// </remarks>
         void SelectAll();
 
+        /// <summary>
+        /// Clear the list of selected items. No items will be selected.
+        /// </summary>
         void ClearSelection();
 
+        /// <summary>
+        /// Check if an item is currently selected. Only returns true if the item is in this
+        /// collection, and is currently selected; otherwise, this always returns false.
+        /// </summary>
+        /// <param name="item">The item to check.</param>
+        /// <returns>True if the item is in this collection and is selected; otherwise, false.</returns>
         bool IsSelected(object item);
 
+        /// <summary>
+        /// Get or set if multiple items can be selected in this collection.
+        /// </summary>
+        /// <remarks>
+        /// Some implementers may not allow this value to be changed via a setter; if so, a <see cref="NotSupportedException"/> will be thrown.
+        /// </remarks>
         bool CanSelectMultiple { get; set; }
 
         /// <summary>
