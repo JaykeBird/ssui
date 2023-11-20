@@ -12,7 +12,7 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> derives from SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
-    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, IEnumerable<T>, ISelectableCollectionSource
+    public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, ICollection<T>, ISelectableCollectionSource
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
@@ -293,9 +293,11 @@ namespace SolidShineUi
         /// Remove an item from this collection.
         /// </summary>
         /// <param name="item">The item to remove.</param>
-        public void Remove(T item)
+        public bool Remove(T item)
         {
+            if (!Contains(item)) return false;
             base.Remove(item);
+            return true;
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -307,6 +309,8 @@ namespace SolidShineUi
         #region non-generic ISelectableCollectionSource implementations
 
         ICollection ISelectableCollectionSource.SelectedItems => SelectedItems;
+
+        public bool IsReadOnly => true;
 
         void ISelectableCollectionSource.AddToSelection(object item)
         {
@@ -342,6 +346,57 @@ namespace SolidShineUi
             {
                 return false;
             }
+        }
+
+        public void CopyTo(T[] array, int index)
+        {
+            if (array.Length - index < Count)
+            {
+                throw new ArgumentException("The inputted array is not large enough to fit all of the elements in this collection.");
+            }
+            else
+            {
+                for (int i = 0; i < Count; i++)
+                {
+                    array[index + i] = this[i];
+                }
+            }
+        }
+
+        void CopyTo(Array array, int index)
+        {
+            if (array is T[] a)
+            {
+                CopyTo(a, index);
+            }
+            else
+            {
+                throw new ArgumentException("The inputted Array is not an array of type \"" + typeof(T).Name + "\".");
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Add(T item)
+        {
+            if (CanAddNewItem)
+            {
+                AddNewItem(item);
+                CommitNew();
+            }
+            else
+            {
+                throw new NotSupportedException("Adding in new entries isn't directly supported. Please edit the base collection this wraps around instead.");
+            }
+            //throw new NotSupportedException("This object does not support directly adding in new entries. Please consider using AddNew, or edit the base collection this wraps around instead.");
+        }
+
+        /// <summary>
+        /// This function is not supported in this context.
+        /// </summary>
+        /// <exception cref="NotSupportedException">This function is not supported in this context.</exception>
+        public void Clear()
+        {
+            throw new NotSupportedException("This object does not support this function. Please edit the base collection this wraps around instead.");
         }
         #endregion
     }

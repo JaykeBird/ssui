@@ -6,6 +6,9 @@ using System.Collections.Specialized;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// Defines an interface for a collection where items within it can be selected. This is the non-generic version of <see cref="ISelectableCollectionSource{T}"/>.
+    /// </summary>
     public interface ISelectableCollectionSource
     {
         ICollection SelectedItems { get; }
@@ -35,7 +38,7 @@ namespace SolidShineUi
     }
 
     /// <summary>
-    /// Defines a generic interface for a collection where items within it can be selected.
+    /// Defines a generic interface for a collection where items within it can be selected. This is the generic version of <see cref="ISelectableCollectionSource"/>.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
     public interface ISelectableCollectionSource<T>
