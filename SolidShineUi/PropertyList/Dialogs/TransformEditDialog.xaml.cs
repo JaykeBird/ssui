@@ -185,9 +185,21 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             TransformCollection transforms = new TransformCollection();
             StoreDataToSelectedTransform();
-            foreach (TransformSelectableControl item in TransformList)
+            if (TransformList.Count == 1)
             {
-                transforms.Add(item.TransformValue);
+                return new TransformCollection() { TransformList[0].TransformValue };
+            }
+            else if (TransformList.Count == 0)
+            {
+                return new TransformCollection();
+            }
+            else
+            {
+                foreach (TransformSelectableControl item in TransformList)
+                {
+                    if (item.TransformValue.Value.IsIdentity && ExcludeBlanksInExport) continue; // identity matrix is as good as blank
+                    transforms.Add(item.TransformValue);
+                }
             }
 
             return transforms;
@@ -233,6 +245,21 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
             }
         }
+
+        /// <summary>
+        /// Get or set if identity matrices (<see cref="Matrix.Identity"/>) should be excluded when using <see cref="ExportTransformCollection"/> or <see cref="ExportSingleTransform(bool)"/>.
+        /// </summary>
+        /// <remarks>
+        /// An identity matrix doesn't affect the transforms in any way, and could potentially add performance issues if multiple are present. 
+        /// If the identity matrix is the only transform in the list, then it will still be included in the export; if there are multiple transforms in the list, then it will be excluded.
+        /// </remarks>
+        public bool ExcludeBlanksInExport { get => (bool)GetValue(ExcludeBlanksInExportProperty); set => SetValue(ExcludeBlanksInExportProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ExcludeBlanksInExport"/>. See the related property for details.</summary>
+        public static DependencyProperty ExcludeBlanksInExportProperty
+            = DependencyProperty.Register("ExcludeBlanksInExport", typeof(bool), typeof(TransformEditDialog),
+            new FrameworkPropertyMetadata(true));
+
 
         TransformSelectableControl AddTransform(Transform t)
         {
@@ -682,7 +709,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 if (mt.Matrix.IsIdentity)
                 {
-                    Text = "Identity (nothing)";
+                    Text = "Matrix (identity)";
                 }
                 else
                 {
