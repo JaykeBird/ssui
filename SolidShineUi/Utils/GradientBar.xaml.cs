@@ -251,11 +251,7 @@ namespace SolidShineUi.Utils
         {
             if (_stops.Contains(gs))
             {
-#if NETCOREAPP3_1
-                foreach (GradientStopItem? gsi in grdStops.Children)
-#else
                 foreach (GradientStopItem gsi in grdStops.Children)
-#endif
                 {
                     if (gsi == null) continue;
                     if (gsi.GradientStop == gs)
@@ -287,11 +283,7 @@ namespace SolidShineUi.Utils
 
             GradientStop gradientStop = _stops[index];
 
-#if NETCOREAPP3_1
-            foreach (GradientStopItem? gsi in grdStops.Children)
-#else
             foreach (GradientStopItem gsi in grdStops.Children)
-#endif
             {
                 if (gsi == null) continue;
 
