@@ -295,16 +295,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 var selControl = TransformList.SelectedItems[0];
                 Transform value = GetValuesFromActiveTransform();
-                if (selControl.TransformValue.GetType() == value.GetType())
-                {
-                    // this is the same type of transform, so let's replace it
-                    selControl.TransformValue = value;
-                }
-                else
-                {
-                    // the two types differ for some reason... is there a mismatch?
-                    // let's not store anything right now
-                }
+                selControl.UpdateValue(value);
             }
             else
             {
@@ -317,16 +308,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (TransformList.SelectedItems.Count > 0)
             {
                 Transform value = GetValuesFromActiveTransform();
-                if (tsc.TransformValue.GetType() == value.GetType())
-                {
-                    // this is the same type of transform, so let's replace it
-                    tsc.TransformValue = value;
-                }
-                else
-                {
-                    // the two types differ for some reason... is there a mismatch?
-                    // let's not store anything right now
-                }
+                tsc.UpdateValue(value);
             }
             else
             {
@@ -551,10 +533,22 @@ namespace SolidShineUi.PropertyList.Dialogs
             nudScaleCenterY.Value = 0;
         }
 
+        private void btnScaleValReset_Click(object sender, RoutedEventArgs e)
+        {
+            nudScaleX.Value = 1;
+            nudScaleY.Value = 1;
+        }
+
         private void btnSkewReset_Click(object sender, RoutedEventArgs e)
         {
             nudSkewCenterX.Value = 0;
             nudSkewCenterY.Value = 0;
+        }
+
+        private void btnSkewValReset_Click(object sender, RoutedEventArgs e)
+        {
+            nudSkewX.Value = 0;
+            nudSkewY.Value = 0;
         }
 
         private void btnTranslateReset_Click(object sender, RoutedEventArgs e)
@@ -617,6 +611,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             T t = new T();
             TransformEditDialog lted = new TransformEditDialog();
             lted.ImportSingleTransform(t);
+            lted.ColorScheme = ColorScheme;
             lted.ShowDialog();
             if (lted.DialogResult)
             {
@@ -642,6 +637,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             nudMatrixOffsetY.Value = m.OffsetY;
         }
         #endregion
+
     }
 
     /// <summary>
@@ -655,29 +651,45 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// <param name="transform">The transform value to store in this control.</param>
         public TransformSelectableControl(Transform transform) : base()
         {
+            UpdateValue(transform);
+        }
+
+        /// <summary>
+        /// Update the appearance of this transform display control to match the transform that it is containing.
+        /// </summary>
+        /// <param name="transform">the new transform value</param>
+        public void UpdateValue(Transform transform)
+        {
             TransformValue = transform;
 
-            if (transform is RotateTransform)
+            if (transform is RotateTransform rt)
             {
-                Text = "Rotate";
+                Text = "Rotate " + rt.Angle;
             }
-            else if (transform is ScaleTransform)
+            else if (transform is ScaleTransform st)
             {
-                Text = "Scale";
+                Text = $"Scale (X:{st.ScaleX}, Y: {st.ScaleY})";
             }
-            else if (transform is TranslateTransform)
+            else if (transform is TranslateTransform tt)
             {
-                Text = "Translate";
+                Text = $"Translate (X:{tt.X}, Y: {tt.Y})";
             }
-            else if (transform is SkewTransform)
+            else if (transform is SkewTransform kt)
             {
-                Text = "Skew";
+                Text = $"Skew (X:{kt.AngleX}, Y: {kt.AngleY})";
             }
-            else if (transform is MatrixTransform)
+            else if (transform is MatrixTransform mt)
             {
-                Text = "Matrix";
+                if (mt.Matrix.IsIdentity)
+                {
+                    Text = "Identity (nothing)";
+                }
+                else
+                {
+                    Text = "Matrix";
+                }
             }
-            else if (transform is TransformGroup)
+            else if (transform is TransformGroup tg)
             {
                 Text = "Transform Group";
             }
