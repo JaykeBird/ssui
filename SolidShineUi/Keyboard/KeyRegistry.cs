@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using static SolidShineUi.KeyboardShortcuts.KeyboardShortcut;
@@ -63,7 +64,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// A read-only list of all keyboard shortcuts registed in this registry. Use the RegisteryKeyShortcut and UnregisterKeyShortcut methods to add or remove shortcuts.
         /// </summary>
-        public IReadOnlyList<KeyboardShortcut> RegisteredShortcuts { get => Ksr_All.AsReadOnly(); }
+        public ReadOnlyCollection<KeyboardShortcut> RegisteredShortcuts { get => Ksr_All.AsReadOnly(); }
 
         private Dictionary<Key, KeyboardShortcut> Ksr_None = new Dictionary<Key, KeyboardShortcut>();
         private Dictionary<Key, KeyboardShortcut> Ksr_Ctrl = new Dictionary<Key, KeyboardShortcut>();

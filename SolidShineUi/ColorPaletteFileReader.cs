@@ -150,7 +150,16 @@ namespace SolidShineUi
                         string[] parts;
 
                         data = reader.ReadLine() ?? "";
+#if (NETCOREAPP || NET462_OR_GREATER)
                         parts = !string.IsNullOrEmpty(data) ? data.Split(spaces, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
+#else
+                        parts = !string.IsNullOrEmpty(data) ? data.Split(spaces, StringSplitOptions.RemoveEmptyEntries) : new string[0];
+#endif
+
+                        if (parts.Length == 0)
+                        {
+                            throw new InvalidDataException(string.Format("Invalid palette contents found with data '{0}'", data));
+                        }
 
                         if (!int.TryParse(parts[0], out int r) || !int.TryParse(parts[1], out int g) || !int.TryParse(parts[2], out int b))
                         {
@@ -206,7 +215,7 @@ namespace SolidShineUi
             return ae.GetString(br.ReadBytes(length));
         }
 
-        #endregion
+#endregion
 
         #region Photoshop ACO
         // see notes at top of code file

@@ -257,6 +257,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuOpenUrl_Click(object sender, RoutedEventArgs e)
         {
+#if (NETCOREAPP || NET47_OR_GREATER)
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Process.Start(new ProcessStartInfo(_uri.AbsoluteUri) { UseShellExecute = true });
@@ -269,6 +270,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 Process.Start("open", _uri.AbsoluteUri);
             }
+#else
+            Process.Start(new ProcessStartInfo(_uri.AbsoluteUri) { UseShellExecute = true });
+#endif
         }
 
         private void txtText_LostFocus(object sender, RoutedEventArgs e)

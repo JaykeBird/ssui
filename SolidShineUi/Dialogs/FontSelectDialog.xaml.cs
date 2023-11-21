@@ -597,20 +597,50 @@ namespace SolidShineUi
 
         private void chkOverline_Unchecked(object sender, RoutedEventArgs e)
         {
+#if (NETCOREAPP || NET462_OR_GREATER)
             txtPreview.TextDecorations.TryRemove(TextDecorations.OverLine, out var tdc);
             txtPreview.TextDecorations = tdc;
+#else
+            TextDecorationCollection tdc = new TextDecorationCollection();
+            foreach (TextDecoration item in txtPreview.TextDecorations)
+            {
+                if (TextDecorations.OverLine.Contains(item)) continue;
+                tdc.Add(item);
+            }
+            txtPreview.TextDecorations = tdc;
+#endif
         }
 
         private void chkStrike_Unchecked(object sender, RoutedEventArgs e)
         {
+#if (NETCOREAPP || NET462_OR_GREATER)
             txtPreview.TextDecorations.TryRemove(TextDecorations.Strikethrough, out var tdc);
             txtPreview.TextDecorations = tdc;
+#else
+            TextDecorationCollection tdc = new TextDecorationCollection();
+            foreach (TextDecoration item in txtPreview.TextDecorations)
+            {
+                if (TextDecorations.Strikethrough.Contains(item)) continue;
+                tdc.Add(item);
+            }
+            txtPreview.TextDecorations = tdc;
+#endif
         }
 
         private void chkUnderline_Unchecked(object sender, RoutedEventArgs e)
         {
+#if (NETCOREAPP || NET462_OR_GREATER)
             txtPreview.TextDecorations.TryRemove(TextDecorations.Underline, out var tdc);
             txtPreview.TextDecorations = tdc;
+#else
+            TextDecorationCollection tdc = new TextDecorationCollection();
+            foreach (TextDecoration item in txtPreview.TextDecorations)
+            {
+                if (TextDecorations.Underline.Contains(item)) continue;
+                tdc.Add(item);
+            }
+            txtPreview.TextDecorations = tdc;
+#endif
         }
 
         private void chkItalic_Unchecked(object sender, RoutedEventArgs e)
@@ -625,8 +655,18 @@ namespace SolidShineUi
 
         private void chkBaseline_Unchecked(object sender, RoutedEventArgs e)
         {
+#if (NETCOREAPP || NET462_OR_GREATER)
             txtPreview.TextDecorations.TryRemove(TextDecorations.Baseline, out var tdc);
             txtPreview.TextDecorations = tdc;
+#else
+            TextDecorationCollection tdc = new TextDecorationCollection();
+            foreach (TextDecoration item in txtPreview.TextDecorations)
+            {
+                if (TextDecorations.Baseline.Contains(item)) continue;
+                tdc.Add(item);
+            }
+            txtPreview.TextDecorations = tdc;
+#endif
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)

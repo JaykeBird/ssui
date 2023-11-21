@@ -78,11 +78,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
         {
             cbbEnums.Enum = type;
-            if (type.GetCustomAttribute<FlagsAttribute>() != null)
-            {
-                // this is an enum that supports flags
-                // in the future, I'll need to enable a way to select multiple items
-            }
+            //if (type.GetCustomAttribute<FlagsAttribute>() != null)
+            //{
+            //    // this is an enum that supports flags
+            //    // in the future, I'll need to enable a way to select multiple items
+            //}
 
             if (value == null)
             {
