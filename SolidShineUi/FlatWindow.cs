@@ -29,8 +29,6 @@ namespace SolidShineUi
         /// </summary>
         public FlatWindow()
         {
-            AllowsTransparency = true;
-            WindowStyle = WindowStyle.None;
 
             SetWindowChrome();
             //DwmDropShadow.DropShadowToWindow(this);
