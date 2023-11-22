@@ -3,8 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:flat="clr-namespace:SolidShineUi"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
-    xmlns:system="clr-namespace:System;assembly=mscorlib" 
-    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell">
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
 
     <!--<ResourceDictionary.MergedDictionaries>
@@ -41,11 +40,11 @@
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="Effect">
+                                <!--<Setter Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect BlurRadius="27" Color="Black" Opacity="0.8" ShadowDepth="2" Direction="-75" />
                                     </Setter.Value>
-                                </Setter>
+                                </Setter>-->
                                 <!--<Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />-->
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding WindowState, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="Maximized">
