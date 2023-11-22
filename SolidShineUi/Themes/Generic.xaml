@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:flat="clr-namespace:SolidShineUi"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
-    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    xmlns:system="clr-namespace:System;assembly=mscorlib" 
+    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
 
     <!--<ResourceDictionary.MergedDictionaries>
@@ -20,19 +21,19 @@
     <ssut:IconSizeConverter x:Key="IconSizeConverter" />
 
     <Style TargetType="{x:Type flat:FlatWindow}">
-        <!--<Setter Property="WindowStyle" Value="None" />
-        <Setter Property="AllowsTransparency" Value="True" />-->
-        <Setter Property="WindowChrome.WindowChrome">
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <!--<Setter Property="ssut:WindowChromeWrapper.WindowChromeVal">
             <Setter.Value>
-                <!-- Make sure this matches the settings in the ResizeCaptionHeight method. -->
-                <WindowChrome
+                 --><!--Make sure this matches the settings in the ResizeCaptionHeight method.--><!-- 
+                <ssut:WindowChromeWrapper
                         ResizeBorderThickness="4"
                         CaptionHeight="29"
                         CornerRadius="0"
                         UseAeroCaptionButtons="False"
                         GlassFrameThickness="0,0,0,1"/>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:FlatWindow}">
@@ -62,7 +63,7 @@
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                        <Image WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Image ssut:WindowChromeWrapper.IsHitTestVisibleInChrome="True">
                                             <Image.Style>
                                                 <Style TargetType="{x:Type Image}">
                                                     <Setter Property="Width" Value="16" />
@@ -86,7 +87,7 @@
                                         </Image>
                                         <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding TopLeftElement, RelativeSource={RelativeSource TemplatedParent}}"
-                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopLeftElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    ssut:WindowChromeWrapper.IsHitTestVisibleInChrome="{Binding ExcludeTopLeftElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
                                         <TextBlock Grid.Row="0" Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
                                             <TextBlock.Style>
                                                 <Style TargetType="{x:Type TextBlock}">
@@ -116,12 +117,12 @@
                                     <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" >
                                         <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}"
-                                    WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    ssut:WindowChromeWrapper.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
                                         <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
                                 SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                 HighlightBrush="{Binding HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                 ButtonPadding="{Binding CaptionButtonPadding, RelativeSource={RelativeSource TemplatedParent}}"
-                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" MarginButton="0">
+                                VerticalAlignment="Bottom" ssut:WindowChromeWrapper.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" MarginButton="0">
                                             <flat:ChromeButtons.Style>
                                                 <Style TargetType="flat:ChromeButtons">
                                                     <Setter Property="Foreground" Value="{Binding Path=CaptionButtonsBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />

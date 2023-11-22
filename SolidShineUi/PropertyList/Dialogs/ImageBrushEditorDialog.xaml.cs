@@ -80,11 +80,22 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             if (!string.IsNullOrWhiteSpace(txtSource.Text))
             {
+#if (NETCOREAPP || NET45_OR_GREATER)
                 if (Uri.IsWellFormedUriString(System.Net.WebUtility.UrlEncode(txtSource.Text), UriKind.RelativeOrAbsolute))
+#else
+                if (Uri.IsWellFormedUriString(txtSource.Text, UriKind.RelativeOrAbsolute))
+#endif
                 {
-                    //_newSourceSet = true;
-                    BitmapImage bi = new BitmapImage(new Uri(txtSource.Text));
-                    LoadImageSource(bi);
+                    try
+                    {
+                        //_newSourceSet = true;
+                        BitmapImage bi = new BitmapImage(new Uri(txtSource.Text));
+                        LoadImageSource(bi);
+                    }
+                    catch (UriFormatException)
+                    {
+
+                    }
                 }
             }
         }
@@ -166,7 +177,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             imgSource.Source = isrc;
             _internalAction = false;
         }
-        #endregion
+#endregion
 
         #region Load/Save brush
 

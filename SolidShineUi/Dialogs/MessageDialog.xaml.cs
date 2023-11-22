@@ -57,21 +57,35 @@ namespace SolidShineUi
         private void InvalidTimer_Tick(object sender, EventArgs e)
 #endif
         {
+#if (NETCOREAPP || NET45_OR_GREATER)
             Application.Current?.Dispatcher.Invoke(() =>
             {
                 InvalidateMeasure();
                 InvalidateVisual();
             });
+#else
+            Application.Current?.Dispatcher.Invoke(new RunInvalidate(DoRunInvalidate));
+#endif
 
             invalidTimer.IsEnabled = false;
         }
+
+#if !(NETCOREAPP || NET45_OR_GREATER)
+        delegate void RunInvalidate();
+
+        void DoRunInvalidate()
+        {
+            InvalidateMeasure();
+            InvalidateVisual();
+        }
+#endif
 
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
             invalidTimer.Start();
         }
 
-        #endregion
+#endregion
 
         #region Color Scheme
 

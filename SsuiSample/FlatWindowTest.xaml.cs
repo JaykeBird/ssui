@@ -190,8 +190,10 @@ namespace SsuiSample
 
         private void fw_SourceInitialized(object sender, EventArgs e)
         {
+
             if (sender is FlatWindow fw)
             {
+#if (NETCOREAPP || NET45_OR_GREATER)
                 Dispatcher.Invoke(() =>
                 {
                     if (!chkMaximize.IsChecked)
@@ -204,8 +206,28 @@ namespace SsuiSample
                         fw.DisableMinimizeAction();
                     }
                 });
+#else
+                Dispatcher.Invoke(new RunButtonCheck(DoRunButtonCheck), fw);
+#endif
             }
         }
+
+#if !(NETCOREAPP || NET45_OR_GREATER)
+        delegate void RunButtonCheck(FlatWindow fw);
+
+        void DoRunButtonCheck(FlatWindow fw)
+        {
+            if (!chkMaximize.IsChecked)
+            {
+                fw.DisableMaximizeAction();
+            }
+
+            if (!chkMinimize.IsChecked)
+            {
+                fw.DisableMinimizeAction();
+            }
+        }
+#endif
 
         private void btnShowProperties_Click(object sender, RoutedEventArgs e)
         {

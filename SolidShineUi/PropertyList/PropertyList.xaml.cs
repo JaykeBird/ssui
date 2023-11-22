@@ -288,7 +288,7 @@ namespace SolidShineUi.PropertyList
 
             if (nameProp != null)
             {
-                ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
+                ObjectDisplayName = (nameProp.GetValue(o, null) ?? NO_NAME).ToString() ?? NO_NAME;
             }
             else
             {
@@ -458,7 +458,7 @@ namespace SolidShineUi.PropertyList
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
 
-                pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject) : null, ipe);
+                pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject, null) : null, ipe);
                 pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
                 pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
                 pei.ShowGridlines = ShowGridlines;
@@ -477,7 +477,7 @@ namespace SolidShineUi.PropertyList
             {
                 try
                 {
-                    e.PropertyInfo.SetValue(_baseObject, e.NewValue);
+                    e.PropertyInfo.SetValue(_baseObject, e.NewValue, null);
                     PropertyValueChanged?.Invoke(this, new PropertyValueChangedEventArgs(e));
                 }
                 catch (ArgumentException)
@@ -485,7 +485,7 @@ namespace SolidShineUi.PropertyList
                     // property doesn't have a setter, probably
 
                     e.ChangeFailed = true;
-                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
+                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject, null);
                 }
                 catch (TargetInvocationException)
                 {
@@ -493,7 +493,7 @@ namespace SolidShineUi.PropertyList
                     // use the InnerException to learn more as to what the issue was
 
                     e.ChangeFailed = true;
-                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject);
+                    e.FailedChangePropertyValue = e.PropertyInfo.GetValue(_baseObject, null);
                 }
             }
         }
@@ -548,6 +548,7 @@ namespace SolidShineUi.PropertyList
         /// <returns>The name of the category that this property is added to, or an empty string if there was no <see cref="CategoryAttribute"/> found.</returns>
         private static string GetCategoryOfProperty(PropertyInfo pi)
         {
+#if (NETCOREAPP || NET45_OR_GREATER)
             IEnumerable<CategoryAttribute> attributes = pi.GetCustomAttributes<CategoryAttribute>(true);
 
             if (attributes.Any())
@@ -558,6 +559,18 @@ namespace SolidShineUi.PropertyList
             {
                 return "";
             }
+#else
+            object[] attributes = pi.GetCustomAttributes(true);
+
+            if (attributes.OfType<CategoryAttribute>().Any())
+            {
+                return attributes.OfType<CategoryAttribute>().First().Category;
+            }
+            else
+            {
+                return "";
+            }
+#endif
         }
 
         /// <summary>
@@ -570,7 +583,7 @@ namespace SolidShineUi.PropertyList
             if (DisplayOptions.HasFlag(PropertyListDisplayFlags.ShowAll)) return true;
             else if (DisplayOptions.HasFlag(PropertyListDisplayFlags.OnlyShowPropertyListShow))
             {
-                if (pi.GetCustomAttribute<PropertyListShowAttribute>() != null)
+                if (pi.GetCustomAttributes(true).Any(o => o is PropertyListShowAttribute))
                 {
                     return true;
                 }
@@ -827,7 +840,7 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        #endregion
+#endregion
 
         #region Sort and View menu
 
@@ -897,6 +910,8 @@ namespace SolidShineUi.PropertyList
 
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
+
+#if (NETCOREAPP || NET45_OR_GREATER)
         /// <summary>
         /// Get a list of editors currently registered for each property type.
         /// </summary>
@@ -904,6 +919,17 @@ namespace SolidShineUi.PropertyList
         /// The key of the dictionary is a property type. The corresponding value is the type of the editor that will handle viewing and editing that type.
         /// </remarks>
         public ReadOnlyDictionary<Type, Type> RegisteredPropertyEditors { get => new ReadOnlyDictionary<Type, Type>(registeredEditors); }
+#else
+        /// <summary>
+        /// Get a list of editors currently registered for each property type.
+        /// </summary>
+        /// <remarks>
+        /// The key of the dictionary is a property type. The corresponding value is the type of the editor that will handle viewing and editing that type.
+        /// <para/>
+        /// .NET Framework 4.0 only: Note that this collection does not stay updated; any changes made to the base value does not stay updated.
+        /// </remarks>
+        public ReadOnlyCollection<KeyValuePair<Type, Type>> RegisteredPropertyEditors { get => new List<KeyValuePair<Type, Type>>(registeredEditors).AsReadOnly(); }
+#endif
 
         /// <summary>
         /// Register an editor for a certain property type. When the control loads an object with a property of this type, the registered editor will be used to view and edit it.
@@ -1112,7 +1138,7 @@ namespace SolidShineUi.PropertyList
             return null;
         }
 
-        #endregion
+#endregion
 
         #region Visual Elements
 

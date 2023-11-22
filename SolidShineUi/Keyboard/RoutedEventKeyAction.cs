@@ -151,9 +151,10 @@ namespace SolidShineUi.KeyboardShortcuts
                 {
                     // source: https://stackoverflow.com/questions/982709/removing-routed-event-handlers-through-reflection
                     var eventInfo = mi.GetType().GetEvent("Click", BindingFlags.Public | BindingFlags.FlattenHierarchy);
+
+#if NETCOREAPP
                     TypeInfo t = mi.GetType().GetTypeInfo();
                     var clickEvent = t.DeclaredFields.Where((ei) => { return ei.Name == "ClickEvent"; }).First();
-#if NETCOREAPP
                     RoutedEvent re = (RoutedEvent)clickEvent.GetValue(mi)!;
 
                     PropertyInfo pi = t.GetProperty("EventHandlersStore", BindingFlags.Instance | BindingFlags.NonPublic)!;
@@ -161,11 +162,24 @@ namespace SolidShineUi.KeyboardShortcuts
                     if (ehs != null)
                     {
                         var delegates = (RoutedEventHandlerInfo[]?)ehs.GetType().GetMethod("GetRoutedEventHandlers")!?.Invoke(ehs, new object[] { MenuItem.ClickEvent });
-#else
+#elif NET45_OR_GREATER
+                    TypeInfo t = mi.GetType().GetTypeInfo();
+                    var clickEvent = t.DeclaredFields.Where((ei) => { return ei.Name == "ClickEvent"; }).First();
                     RoutedEvent re = (RoutedEvent)clickEvent.GetValue(mi);
 
                     PropertyInfo pi = t.GetProperty("EventHandlersStore", BindingFlags.Instance | BindingFlags.NonPublic);
                     var ehs = pi.GetValue(mi);
+                    if (ehs != null)
+                    {
+                        var delegates = (RoutedEventHandlerInfo[])ehs.GetType().GetMethod("GetRoutedEventHandlers")?.Invoke(ehs, new object[] { MenuItem.ClickEvent });
+#else
+                    Type mit = mi.GetType();
+                    FieldInfo[] t = mit.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    var clickEvent = t.Where((ei) => { return ei.Name == "ClickEvent"; }).First();
+                    RoutedEvent re = (RoutedEvent)clickEvent.GetValue(mi);
+
+                    PropertyInfo pi = mit.GetProperty("EventHandlersStore", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var ehs = pi.GetValue(mi, null);
                     if (ehs != null)
                     {
                         var delegates = (RoutedEventHandlerInfo[])ehs.GetType().GetMethod("GetRoutedEventHandlers")?.Invoke(ehs, new object[] { MenuItem.ClickEvent });

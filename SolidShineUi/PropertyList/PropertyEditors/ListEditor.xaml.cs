@@ -98,7 +98,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
+#if (NETCOREAPP || NET45_OR_GREATER)
                 Type listType = type.GenericTypeArguments[0];
+#else
+                Type listType = type.GetGenericArguments()[0];
+#endif
                 _listType = listType;
 
 #if NETCOREAPP

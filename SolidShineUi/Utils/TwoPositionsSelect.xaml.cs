@@ -307,10 +307,17 @@ namespace SolidShineUi.Utils
         /// </summary>
         internal protected void UpdateKeyboardFocusHighlightBrush()
         {
+#if (NETCOREAPP || NET45_OR_GREATER)
             if (IsKeyboardFocused || HasEffectiveKeyboardFocus)
             {
                 brdrKeyFocus.BorderBrush = KeyboardFocusHighlight;
             }
+#else
+            if (IsKeyboardFocused)
+            {
+                brdrKeyFocus.BorderBrush = KeyboardFocusHighlight;
+            }
+#endif
         }
 
         #endregion
@@ -674,7 +681,7 @@ namespace SolidShineUi.Utils
                 grdGuidelines.Margin = new Thickness(sshalf);
             }
         }
-        #endregion  
+        #endregion
 
         #region Keyboard Controls
 
@@ -1183,6 +1190,6 @@ namespace SolidShineUi.Utils
 #else
         public event EventHandler SelectedPositionChanged;
 #endif
-        #endregion
+#endregion
     }
 }

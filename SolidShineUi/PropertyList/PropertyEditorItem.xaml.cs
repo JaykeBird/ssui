@@ -214,7 +214,7 @@ namespace SolidShineUi.PropertyList
             if (targetObject == null) throw new ArgumentNullException(nameof(targetObject), "Targetted object cannot be null");
             if (PropertyInfo == null) throw new InvalidOperationException("The property to set on the object hasn't been defined. Please set the " + nameof(PropertyInfo) + " property.");
 
-            PropertyInfo.SetValue(targetObject, PropertyValue);
+            PropertyInfo.SetValue(targetObject, PropertyValue, null);
         }
 
         //string PrettifyPropertyType(Type type, bool fullName = false)

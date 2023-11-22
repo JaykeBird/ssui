@@ -114,7 +114,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
             {
+#if (NETCOREAPP || NET45_OR_GREATER)
                 Type listType = type.GenericTypeArguments[0];
+#else
+                Type listType = type.GetGenericArguments()[0];
+#endif
                 _listType = listType;
 
                 listVal = (IEnumerable)value;

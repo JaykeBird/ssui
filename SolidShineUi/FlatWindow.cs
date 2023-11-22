@@ -8,6 +8,7 @@ using System;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Diagnostics;
+//using Microsoft.Windows.Shell;
 
 namespace SolidShineUi
 {
@@ -33,6 +34,37 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Maximized));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow, (_, e) => e.CanExecute = WindowState != WindowState.Normal));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
+
+            SetWindowChrome();
+        }
+
+        void SetWindowChrome(int height = 29)
+        {
+            //<Setter.Value>
+            //    <ssut:WindowChromeWrapper
+            //            ResizeBorderThickness="4"
+            //            CaptionHeight="29"
+            //            CornerRadius="0"
+            //            UseAeroCaptionButtons="False"
+            //            GlassFrameThickness="0,0,0,1"/>
+            //</Setter.Value>
+
+#if (NETCOREAPP || NET45_OR_GREATER)
+            WindowChrome wc = new WindowChrome();
+            wc.UseAeroCaptionButtons = false;
+#else
+            Microsoft.Windows.Shell.WindowChrome wc = new Microsoft.Windows.Shell.WindowChrome();
+#endif
+            wc.ResizeBorderThickness = new Thickness(4.0);
+            wc.CaptionHeight = height;
+            wc.CornerRadius = new CornerRadius(0.0);
+            wc.GlassFrameThickness = new Thickness(0, 0, 0, 1);
+
+#if (NETCOREAPP || NET45_OR_GREATER)
+            WindowChrome.SetWindowChrome(this, wc);
+#else
+            Microsoft.Windows.Shell.WindowChrome.SetWindowChrome(this, wc);
+#endif
         }
 
         #region Native Interop
@@ -277,15 +309,7 @@ namespace SolidShineUi
         void ResizeCaptionHeight(int height)
         {
             // note to self: if updating this method, make sure this matches the WindowChrome settings in the Generic.xaml file.
-            WindowChrome wc = new WindowChrome
-            {
-                CaptionHeight = height,
-                CornerRadius = new CornerRadius(0),
-                ResizeBorderThickness = new Thickness(4),
-                GlassFrameThickness = new Thickness(0, 0, 0, 1)
-            };
-
-            WindowChrome.SetWindowChrome(this, wc);
+            SetWindowChrome(height);
         }
 
         //void ChangeChromeCornerRadius(CornerRadius radius)

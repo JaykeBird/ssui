@@ -196,6 +196,7 @@ namespace SolidShineUi.KeyboardShortcuts
             return entries;
         }
 
+#if (NETCOREAPP || NET45_OR_GREATER)
         /// <summary>
         /// Write a list of keyboard shortcuts to a file.
         /// </summary>
@@ -232,6 +233,43 @@ namespace SolidShineUi.KeyboardShortcuts
 
             return file;
         }
+#else
+        /// <summary>
+        /// Write a list of keyboard shortcuts to a file.
+        /// </summary>
+        /// <param name="registry">They keyboard shortcut registry to read from.</param>
+        /// <param name="file">The file to write to.</param>
+        /// <returns>The filename of the file written to. This should match the filename passed in.</returns>
+        public static string WriteToFile(KeyRegistry registry, string file)
+        {
+            XmlWriter w = XmlWriter.Create(file, new XmlWriterSettings
+            {
+                Encoding = new UTF8Encoding(false),
+                Indent = true
+            });
+
+            w.WriteStartDocument();
+
+            w.WriteStartElement("", "shortcuts", "");
+
+            foreach (KeyboardShortcut item in registry.RegisteredShortcuts)
+            {
+                w.WriteStartElement("", "ks", "");
+                w.WriteAttributeString("", "comb", "", item.Combination.ToString("f"));
+                w.WriteAttributeString("", "keyid", "", item.Key.ToString("d"));
+                w.WriteAttributeString("", "action", "", item.MethodId);
+                w.WriteEndElement();
+            }
+
+            w.WriteEndElement();
+            w.WriteEndDocument();
+
+            w.Flush();
+            w.Close();
+
+            return file;
+        }
+#endif
     }
 
     /// <summary>

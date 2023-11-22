@@ -949,6 +949,7 @@ namespace SolidShineUi
         {
             try
             {
+#if (NETCOREAPP || NET45_OR_GREATER)
                 Dispatcher.Invoke(() =>
                 {
                     if (advanceStepUp)
@@ -964,12 +965,35 @@ namespace SolidShineUi
 
                     UpdateUI();
                 }, System.Windows.Threading.DispatcherPriority.Input);
+#else
+                Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Input, new DoStep(DoStepAction));
+#endif
             }
             catch (TaskCanceledException)
             {
                 advanceTimer.Stop();
             }
         }
+
+#if !(NETCOREAPP || NET45_OR_GREATER)
+        delegate void DoStep();
+
+        void DoStepAction()
+        {
+            if (advanceStepUp)
+            {
+                if (Value < MaxValue) Value += Step;
+                else Value = MaxValue;
+            }
+            else
+            {
+                if (Value > MinValue) Value -= Step;
+                else Value = MinValue;
+            }
+
+            UpdateUI();
+        }
+#endif
 
         private void btnUp_MouseEnter(object sender, MouseEventArgs e)
         {
