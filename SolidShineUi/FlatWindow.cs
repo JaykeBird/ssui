@@ -8,6 +8,7 @@ using System;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Diagnostics;
+using SolidShineUi.Utils;
 //using Microsoft.Windows.Shell;
 
 namespace SolidShineUi
@@ -28,14 +29,18 @@ namespace SolidShineUi
         /// </summary>
         public FlatWindow()
         {
+            AllowsTransparency = true;
+            WindowStyle = WindowStyle.None;
+
+            SetWindowChrome();
+            //DwmDropShadow.DropShadowToWindow(this);
+
             //InternalCornerRadiusChanged += flatWindow_InternalCornerRadiusChanged;
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.CloseWindow, OnCloseWindow, (_, e) => e.CanExecute = true));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Minimize, OnMinimizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Maximized));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow, (_, e) => e.CanExecute = WindowState != WindowState.Normal));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
-
-            SetWindowChrome();
         }
 
         void SetWindowChrome(int height = 29)
@@ -50,7 +55,7 @@ namespace SolidShineUi
             //</Setter.Value>
 
 #if (NETCOREAPP || NET45_OR_GREATER)
-            WindowChrome wc = new WindowChrome();
+            WindowChrome wc = WindowChrome.GetWindowChrome(this) ?? new WindowChrome();
             wc.UseAeroCaptionButtons = false;
 #else
             Microsoft.Windows.Shell.WindowChrome wc = new Microsoft.Windows.Shell.WindowChrome();

@@ -174,6 +174,8 @@ namespace SsuiSample
                 fw.ShowTitle = false;
             }
 
+            fw.ApplyTemplate();
+
             fw.Show();
             fwRunning = fw;
             btnShowProperties.Visibility = Visibility.Visible;

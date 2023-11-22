@@ -21,8 +21,8 @@
     <ssut:IconSizeConverter x:Key="IconSizeConverter" />
 
     <Style TargetType="{x:Type flat:FlatWindow}">
-        <Setter Property="WindowStyle" Value="None" />
-        <Setter Property="AllowsTransparency" Value="True" />
+        <!--<Setter Property="WindowStyle" Value="None" />
+        <Setter Property="AllowsTransparency" Value="True" />-->
         <!--<Setter Property="ssut:WindowChromeWrapper.WindowChromeVal">
             <Setter.Value>
                  --><!--Make sure this matches the settings in the ResizeCaptionHeight method.--><!-- 
@@ -41,6 +41,11 @@
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="27" Color="Black" Opacity="0.8" ShadowDepth="2" Direction="-75" />
+                                    </Setter.Value>
+                                </Setter>
                                 <!--<Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />-->
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding WindowState, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="Maximized">
