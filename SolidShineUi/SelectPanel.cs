@@ -32,12 +32,8 @@ namespace SolidShineUi
         /// </summary>
         public SelectPanel()
         {
-            SetValue(ItemsPropertyKey, new SelectableCollection<SelectableUserControl>());
+            SetValue(ItemsPropertyKey, new SelectableCollection<IClickSelectableControl>());
             SetValue(ItemsSourceProperty, Items);
-            //Items = new SelectableCollection<SelectableUserControl>();
-            //Items.ItemRemoving += Items_ItemRemoving;
-            //Items.CollectionChanged += Items_CollectionChanged;
-            //Items.SelectionChanged += Items_SelectionChanged;
         }
 
         #region Template Handling
@@ -85,21 +81,21 @@ namespace SolidShineUi
         /// Gets or sets a collection used to generate the content of this SelectPanel.
         /// </summary>
         /// <remarks>
-        /// It is recommended to set this property to an <see cref="ObservableCollection{SelectableUserControl}"/>, <see cref="SelectableCollection{SelectableUserControl}"/>, 
-        /// or <see cref="SelectableCollectionView{SelectableUserControl}"/>.
+        /// It is recommended to set this property to an <see cref="ObservableCollection{IClickSelectableControl}"/>, <see cref="SelectableCollection{IClickSelectableControl}"/>, 
+        /// or <see cref="SelectableCollectionView{IClickSelectableControl}"/>.
         /// If you use other IEnumerable types that do not also implement <see cref="INotifyCollectionChanged"/>, then this control's contents will not update automatically.
         /// If you do not use a SelectableCollection or SelectableCollectionView, you may also need to implement your own code for handling the selection state of the items
         /// in your collection.
         /// </remarks>
-        public IEnumerable<SelectableUserControl> ItemsSource
+        public IEnumerable<IClickSelectableControl> ItemsSource
         {
-            get { return (IEnumerable<SelectableUserControl>)GetValue(ItemsSourceProperty); }
+            get { return (IEnumerable<IClickSelectableControl>)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<SelectableUserControl>), typeof(SelectPanel),
+            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IClickSelectableControl>), typeof(SelectPanel),
                 new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -107,11 +103,11 @@ namespace SolidShineUi
         {
             if (sender is SelectPanel sp)
             {
-                sp.SelectPanel_InternalOnItemsSourceChanged((IEnumerable<SelectableUserControl>)e.OldValue, (IEnumerable<SelectableUserControl>)e.NewValue);
+                sp.SelectPanel_InternalOnItemsSourceChanged((IEnumerable<IClickSelectableControl>)e.OldValue, (IEnumerable<IClickSelectableControl>)e.NewValue);
             }
         }
 
-        private void SelectPanel_InternalOnItemsSourceChanged(IEnumerable<SelectableUserControl> oldValue, IEnumerable<SelectableUserControl> newValue)
+        private void SelectPanel_InternalOnItemsSourceChanged(IEnumerable<IClickSelectableControl> oldValue, IEnumerable<IClickSelectableControl> newValue)
         {
             if (ItemsSource == null)
             {
@@ -159,15 +155,15 @@ namespace SolidShineUi
             void RemoveOldCollectionHandlers()
             {
                 if (oldValue == null) return;
-                foreach (SelectableUserControl item in oldValue)
+                foreach (IClickSelectableControl item in oldValue)
                 {
-                    item.SelectionChanged -= Item_SelectionChanged;
+                    item.IsSelectedChanged -= Item_SelectionChanged;
                 }
             }
 
             void AddNewCollectionHandlers()
             {
-                foreach (SelectableUserControl item in newValue)
+                foreach (IClickSelectableControl item in newValue)
                 {
                     AddItemInternal(item);
                     //item.SelectionChanged += Item_SelectionChanged;
@@ -180,17 +176,15 @@ namespace SolidShineUi
         #region SelectableCollection handling
 
         bool _internalAction = false;
-
-        //public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(NewSelectPanel),
-        //    new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        
         private static readonly DependencyPropertyKey ItemsPropertyKey
-            = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<SelectableUserControl>), typeof(SelectPanel),
-            new FrameworkPropertyMetadata(new SelectableCollection<SelectableUserControl>()));
+            = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<IClickSelectableControl>), typeof(SelectPanel),
+            new FrameworkPropertyMetadata(new SelectableCollection<IClickSelectableControl>()));
 
+        /// <summary>
+        /// The dependency property object backing the <see cref="Items"/> property. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
@@ -199,9 +193,9 @@ namespace SolidShineUi
         /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead handle adding, removing, and selecting items through that property's value.
         /// </remarks>
         [Category("Common")]
-        public SelectableCollection<SelectableUserControl> Items
+        public SelectableCollection<IClickSelectableControl> Items
         {
-            get { return (SelectableCollection<SelectableUserControl>)GetValue(ItemsProperty); }
+            get { return (SelectableCollection<IClickSelectableControl>)GetValue(ItemsProperty); }
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
@@ -223,10 +217,7 @@ namespace SolidShineUi
             {
                 foreach (var item in ItemsSource)
                 {
-                    if (item is SelectableUserControl suc)
-                    {
-                        item.SetIsSelectedWithSource(isl.IsSelected(item), SelectionChangeTrigger.Parent, this);
-                    }
+                    item?.SetIsSelectedWithSource(isl.IsSelected(item), SelectionChangeTrigger.Parent, this);
                 }
             }
 
@@ -241,44 +232,44 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Add:
                     if (e.NewItems != null)
                     {
-                        foreach (SelectableUserControl? item in e.NewItems)
+                        foreach (IClickSelectableControl? item in e.NewItems)
                         {
                             if (item != null)
                             {
                                 AddItemInternal(item);
                             }
                         }
-                        RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsAddedEvent(e.NewItems.OfType<IClickSelectableControl>().ToList());
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldItems != null)
                     {
-                        foreach (SelectableUserControl? item in e.OldItems)
+                        foreach (IClickSelectableControl? item in e.OldItems)
                         {
                             if (item != null)
                             {
-                                item.SelectionChanged -= Item_SelectionChanged;
+                                item.IsSelectedChanged -= Item_SelectionChanged;
                             }
                         }
-                        RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsRemovedEvent(e.OldItems.OfType<IClickSelectableControl>().ToList());
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     if (e.OldItems != null)
                     {
-                        RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsRemovedEvent(e.OldItems.OfType<IClickSelectableControl>().ToList());
                     }
                     if (e.NewItems != null)
                     {
-                        foreach (SelectableUserControl? item in e.NewItems)
+                        foreach (IClickSelectableControl? item in e.NewItems)
                         {
                             if (item != null)
                             {
                                 AddItemInternal(item);
                             }
                         }
-                        RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsAddedEvent(e.NewItems.OfType<IClickSelectableControl>().ToList());
                     }
                     break;
                 case NotifyCollectionChangedAction.Move:
@@ -286,7 +277,7 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Reset:
                     if (e.OldItems != null)
                     {
-                        RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsRemovedEvent(e.OldItems.OfType<IClickSelectableControl>().ToList());
                     }
                     //TabsCleared?.Invoke(this, EventArgs.Empty);
                     break;
@@ -297,49 +288,49 @@ namespace SolidShineUi
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // update .NET Core section first, copy into here
-           switch (e.Action)
+            switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     if (e.NewItems != null)
                     {
-                        foreach (SelectableUserControl item in e.NewItems)
+                        foreach (IClickSelectableControl item in e.NewItems)
                         {
                             if (item != null)
                             {
                                 AddItemInternal(item);
                             }
                         }
-                        RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsAddedEvent(e.NewItems.OfType<IClickSelectableControl>().ToList());
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     if (e.OldItems != null)
                     {
-                        foreach (SelectableUserControl item in e.OldItems)
+                        foreach (IClickSelectableControl item in e.OldItems)
                         {
                             if (item != null)
                             {
-                                item.SelectionChanged -= Item_SelectionChanged;
+                                item.IsSelectedChanged -= Item_SelectionChanged;
                             }
                         }
-                        RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsRemovedEvent(e.OldItems.OfType<IClickSelectableControl>().ToList());
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     if (e.OldItems != null)
                     {
-                        RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsRemovedEvent(e.OldItems.OfType<IClickSelectableControl>().ToList());
                     }
                     if (e.NewItems != null)
                     {
-                        foreach (SelectableUserControl item in e.NewItems)
+                        foreach (IClickSelectableControl item in e.NewItems)
                         {
                             if (item != null)
                             {
                                 AddItemInternal(item);
                             }
                         }
-                        RaiseItemsAddedEvent(e.NewItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsAddedEvent(e.NewItems.OfType<IClickSelectableControl>().ToList());
                     }
                     break;
                 case NotifyCollectionChangedAction.Move:
@@ -347,24 +338,22 @@ namespace SolidShineUi
                 case NotifyCollectionChangedAction.Reset:
                     if (e.OldItems != null)
                     {
-                        RaiseItemsRemovedEvent(e.OldItems.OfType<SelectableUserControl>().ToList());
+                        RaiseItemsRemovedEvent(e.OldItems.OfType<IClickSelectableControl>().ToList());
                     }
-                    //TabsCleared?.Invoke(this, EventArgs.Empty);
                     break;
                 default:
                     break;
             }
 #endif
 
-            //LoadTemplateItems();
         }
 
-        void AddItemInternal(SelectableUserControl item)
+        void AddItemInternal(IClickSelectableControl item)
         {
             item.SelectedBrush = SelectedBrush;
             item.HighlightBrush = HighlightBrush;
             item.ClickBrush = ClickBrush;
-            item.SelectionChanged += Item_SelectionChanged;
+            item.IsSelectedChanged += Item_SelectionChanged;
             item.ApplyColorScheme(ColorScheme);
         }
 
@@ -376,7 +365,7 @@ namespace SolidShineUi
         {
             if (_internalAction) return;
 
-            if (sender is SelectableUserControl item)
+            if (sender is IClickSelectableControl item)
             {
                 _internalAction = true;
 
@@ -394,13 +383,13 @@ namespace SolidShineUi
                             isl.Select(item);
                         }
 
-                        RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<SelectableUserControl>());
+                        RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<IClickSelectableControl>());
                     }
                     else
                     {
                         isl.Deselect(item);
 
-                        RaiseSelectionChangedEvent(new List<SelectableUserControl>(), (new[] { item }).ToList());
+                        RaiseSelectionChangedEvent(new List<IClickSelectableControl>(), (new[] { item }).ToList());
                     }
                 }
 
@@ -408,17 +397,15 @@ namespace SolidShineUi
 
                 _internalAction = false;
             }
-            //throw new NotImplementedException();
         }
 
         private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
-            //LoadTemplateItems();
             if (_internalAction) return;
 
             RefreshVisualSelection();
 
-            RaiseSelectionChangedEvent(e.AddedItems.OfType<SelectableUserControl>().ToList(), e.RemovedItems.OfType<SelectableUserControl>().ToList());
+            RaiseSelectionChangedEvent(e.AddedItems.OfType<IClickSelectableControl>().ToList(), e.RemovedItems.OfType<IClickSelectableControl>().ToList());
         }
         #endregion
 
@@ -548,7 +535,7 @@ namespace SolidShineUi
 
         private void UpdateChildrenAppearance()
         {
-            foreach (SelectableUserControl item in ItemsSource)
+            foreach (IClickSelectableControl item in ItemsSource)
             {
                 item.SelectedBrush = SelectedBrush;
                 item.HighlightBrush = HighlightBrush;
@@ -574,17 +561,22 @@ namespace SolidShineUi
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 
-        void RaiseSelectionChangedEvent(List<SelectableUserControl> addedItems, List<SelectableUserControl> removedItems)
+        void RaiseSelectionChangedEvent(List<IClickSelectableControl> addedItems, List<IClickSelectableControl> removedItems)
         {
+#if NETCOREAPP
+            addedItems ??= new List<IClickSelectableControl>();
+            removedItems ??= new List<IClickSelectableControl>();
+#else
             if (addedItems == null)
             {
-                addedItems = new List<SelectableUserControl>();
+                addedItems = new List<IClickSelectableControl>();
             }
 
             if (removedItems == null)
             {
-                removedItems = new List<SelectableUserControl>();
+                removedItems = new List<IClickSelectableControl>();
             }
+#endif
 
             SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(SelectionChangedEvent, addedItems, removedItems);
             RaiseEvent(newEventArgs);
@@ -604,14 +596,18 @@ namespace SolidShineUi
             remove { RemoveHandler(ItemsAddedEvent, value); }
         }
 
-        void RaiseItemsAddedEvent(List<SelectableUserControl> addedItems)
+        void RaiseItemsAddedEvent(List<IClickSelectableControl> addedItems)
         {
+#if NETCOREAPP
+            addedItems ??= new List<IClickSelectableControl>();
+#else
             if (addedItems == null)
             {
-                addedItems = new List<SelectableUserControl>();
+                addedItems = new List<IClickSelectableControl>();
             }
+#endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsAddedEvent, new List<SelectableUserControl>(), addedItems);
+            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsAddedEvent, new List<IClickSelectableControl>(), addedItems);
             RaiseEvent(newEventArgs);
         }
 
@@ -629,17 +625,21 @@ namespace SolidShineUi
             remove { RemoveHandler(ItemsRemovedEvent, value); }
         }
 
-        void RaiseItemsRemovedEvent(List<SelectableUserControl> removedItems)
+        void RaiseItemsRemovedEvent(List<IClickSelectableControl> removedItems)
         {
+#if NETCOREAPP
+            removedItems ??= new List<IClickSelectableControl>();
+#else
             if (removedItems == null)
             {
-                removedItems = new List<SelectableUserControl>();
+                removedItems = new List<IClickSelectableControl>();
             }
+#endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsRemovedEvent, removedItems, new List<SelectableUserControl>());
+            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsRemovedEvent, removedItems, new List<IClickSelectableControl>());
             RaiseEvent(newEventArgs);
         }
-        #endregion
+#endregion
 
         #region Visual Properties
 
@@ -845,12 +845,12 @@ namespace SolidShineUi
         //public int SelectionCount { get => Items.SelectedItems.Count; }
 
         ///// <summary>
-        ///// Get a collection of items that have been selected, returned as a certain type (that inherits from SelectableUserControl).
+        ///// Get a collection of items that have been selected, returned as a certain type (that inherits from IClickSelectableControl).
         ///// Note that this function will be removed in a future version. Please instead use <c>Items.SelectedItems.OfType</c> (Linq).
         ///// </summary>
-        ///// <typeparam name="T">The type to return the selected items as. It must inherit from SelectableUserControl.</typeparam>
+        ///// <typeparam name="T">The type to return the selected items as. It must inherit from IClickSelectableControl.</typeparam>
         //[Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.SelectedItems.OfType<>\".", false)]
-        //public IEnumerable<T> GetSelectedItemsOfType<T>() where T : SelectableUserControl
+        //public IEnumerable<T> GetSelectedItemsOfType<T>() where T : IClickSelectableControl
         //{
         //    return Items.SelectedItems.OfType<T>();
         //}
@@ -878,7 +878,7 @@ namespace SolidShineUi
         ///// </summary>
         ///// <param name="item">Item to be added.</param>
         //[Obsolete("This will be removed in a future version. You can instead use \"Items.Add\".", false)]
-        //public void AddItem(SelectableUserControl item)
+        //public void AddItem(IClickSelectableControl item)
         //{
         //    Items.Add(item);
         //    //RaiseItemsAddedEvent(items.ToList());
@@ -889,9 +889,9 @@ namespace SolidShineUi
         ///// </summary>
         ///// <param name="items">The items to be added.</param>
         //[Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Add\".", false)]
-        //public void AddItems(IEnumerable<SelectableUserControl> items)
+        //public void AddItems(IEnumerable<IClickSelectableControl> items)
         //{
-        //    foreach (SelectableUserControl item in items)
+        //    foreach (IClickSelectableControl item in items)
         //    {
         //        Items.Add(item);
         //    }
@@ -904,10 +904,10 @@ namespace SolidShineUi
         ///// <param name="index">The index to insert the item at.</param>
         ///// <param name="item">The item to insert.</param>
         //[Obsolete("This will be removed in a future version. You can instead use \"Items.Insert\".", false)]
-        //public void InsertItem(int index, SelectableUserControl item)
+        //public void InsertItem(int index, IClickSelectableControl item)
         //{
         //    Items.Insert(index, item);
-        //    //RaiseItemsAddedEvent(new List<SelectableUserControl>() { item });
+        //    //RaiseItemsAddedEvent(new List<IClickSelectableControl>() { item });
         //}
 
         ///// <summary>
@@ -916,12 +916,12 @@ namespace SolidShineUi
         ///// <param name="index">The index to insert the items at.</param>
         ///// <param name="items">The items to insert.</param>
         //[Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Insert\".", false)]
-        //public void InsertItems(int index, IEnumerable<SelectableUserControl> items)
+        //public void InsertItems(int index, IEnumerable<IClickSelectableControl> items)
         //{
-        //    List<SelectableUserControl> litems = items.ToList();
+        //    List<IClickSelectableControl> litems = items.ToList();
         //    litems.Reverse();
 
-        //    foreach (SelectableUserControl item in litems)
+        //    foreach (IClickSelectableControl item in litems)
         //    {
         //        Items.Insert(index, item);
         //    }
@@ -935,10 +935,10 @@ namespace SolidShineUi
         ///// <typeparam name="T">The type to filter the SelectPanel items for.</typeparam>
         ///// <returns></returns>
         //[Obsolete("This will be removed in a future version. You can instead use the Linq method \"Items.OfType<>\".", false)]
-        //public IEnumerable<T> GetItemsAsType<T>() where T : SelectableUserControl
+        //public IEnumerable<T> GetItemsAsType<T>() where T : IClickSelectableControl
         //{
         //    return Items.OfType<T>();
-        //    //foreach (SelectableUserControl item in Items)
+        //    //foreach (IClickSelectableControl item in Items)
         //    //{
         //    //    if (item is T t)
         //    //    {
@@ -952,7 +952,7 @@ namespace SolidShineUi
         ///// </summary>
         ///// <param name="item">The item to be removed.</param>
         //[Obsolete("This will be removed in a future version. You can instead use \"Items.Remove\".", false)]
-        //public void RemoveItem(SelectableUserControl item)
+        //public void RemoveItem(IClickSelectableControl item)
         //{
         //    Items.Remove(item);
         //}
@@ -962,7 +962,7 @@ namespace SolidShineUi
         ///// </summary>
         ///// <param name="items">The items to be removed.</param>
         //[Obsolete("This will be removed in a future version. You can instead use a for or foreach loop around \"Items.Remove\".", false)]
-        //public void RemoveItems(IEnumerable<SelectableUserControl> items)
+        //public void RemoveItems(IEnumerable<IClickSelectableControl> items)
         //{
         //    foreach (var item in items)
         //    {
@@ -987,15 +987,15 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>
         /// If you are using <see cref="ItemsSource"/> to set this control's items, then this function will only work if the ItemsSource is a
-        /// <see cref="ISelectableCollection{SelectableUserControl}"/>.
+        /// <see cref="ISelectableCollection{IClickSelectableControl}"/>.
         /// </remarks>
         public void RemoveSelectedItems()
         {
             if (ItemsSource != Items)
             {
-                if (ItemsSource is ISelectableCollection<SelectableUserControl> isc)
+                if (ItemsSource is ISelectableCollection<IClickSelectableControl> isc)
                 {
-                    var items = new List<SelectableUserControl>(isc.SelectedItems);
+                    var items = new List<IClickSelectableControl>(isc.SelectedItems);
                     foreach (var item in items)
                     {
                         isc.Remove(item);
@@ -1004,7 +1004,7 @@ namespace SolidShineUi
             }
             else
             {
-                var items = new List<SelectableUserControl>(Items.SelectedItems);
+                var items = new List<IClickSelectableControl>(Items.SelectedItems);
                 foreach (var item in items)
                 {
                     Items.Remove(item);
@@ -1017,7 +1017,7 @@ namespace SolidShineUi
         ///// </summary>
         ///// <param name="item">The item to get the index of.</param>
         //[Obsolete("This will be removed in a future version. You can instead use \"Items.IndexOf\".", false)]
-        //public int IndexOf(SelectableUserControl item)
+        //public int IndexOf(IClickSelectableControl item)
         //{
         //    return Items.IndexOf(item);
         //}
@@ -1027,7 +1027,7 @@ namespace SolidShineUi
         ///// </summary>
         ///// <param name="index">The index of the item to be removed.</param>
         //[Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
-        //public SelectableUserControl Get(int index)
+        //public IClickSelectableControl Get(int index)
         //{
         //    return Items[index];
         //}
@@ -1037,7 +1037,7 @@ namespace SolidShineUi
         ///// </summary>
         ///// <param name="index">The index of the item to be removed.</param>
         //[Obsolete("This will be removed in a future version. You can instead use \"Items[]\".", false)]
-        //public SelectableUserControl this[int index]
+        //public IClickSelectableControl this[int index]
         //{
         //    get
         //    {
@@ -1058,18 +1058,18 @@ namespace SolidShineUi
 
         #region Move Items
 
-        private class SortByParentIndex : IComparer<SelectableUserControl>
+        private class SortByParentIndex : IComparer<IClickSelectableControl>
         {
-            // A class to sort a collection of SelectableUserControls by their index in the parent SelectableCollection.
+            // A class to sort a collection of IClickSelectableControls by their index in the parent SelectableCollection.
 
 #if NETCOREAPP
-            public IList<SelectableUserControl>? ParentCollection { get; set; }
+            public IList<IClickSelectableControl>? ParentCollection { get; set; }
 
-            public int Compare(SelectableUserControl? a, SelectableUserControl? b)
+            public int Compare(IClickSelectableControl? a, IClickSelectableControl? b)
 #else
-            public SelectableCollection<SelectableUserControl> ParentCollection { get; set; }
+            public IList<IClickSelectableControl> ParentCollection { get; set; }
 
-            public int Compare(SelectableUserControl a, SelectableUserControl b)
+            public int Compare(IClickSelectableControl a, IClickSelectableControl b)
 #endif
             {
                 // do null checks first
@@ -1129,9 +1129,9 @@ namespace SolidShineUi
             // set up variables
             int index = int.MaxValue;
 
-            List<SelectableUserControl> imov = new List<SelectableUserControl>();
+            List<IClickSelectableControl> imov = new List<IClickSelectableControl>();
 
-            foreach (SelectableUserControl item in Items.SelectedItems)
+            foreach (IClickSelectableControl item in Items.SelectedItems)
             {
                 if (Items.IndexOf(item) < index) index = Items.IndexOf(item);
                 imov.Add(item);
@@ -1147,7 +1147,7 @@ namespace SolidShineUi
             }
 
             // remove the items out of the control, so they can be re-inserted at the new location
-            foreach (SelectableUserControl item in imov)
+            foreach (IClickSelectableControl item in imov)
             {
                 Items.Remove(item);
             }
@@ -1157,13 +1157,13 @@ namespace SolidShineUi
             Items.ClearSelection();
 
             // re-insert and re-select all the items
-            foreach (SelectableUserControl item in imov)
+            foreach (IClickSelectableControl item in imov)
             {
                 Items.Insert(index, item);
                 //Items.AddToSelection(item);
             }
 
-            foreach (SelectableUserControl item in imov)
+            foreach (IClickSelectableControl item in imov)
             {
                 Items.AddToSelection(item);
             }
@@ -1184,9 +1184,9 @@ namespace SolidShineUi
 
             int index = int.MaxValue;
 
-            List<SelectableUserControl> imov = new List<SelectableUserControl>();
+            List<IClickSelectableControl> imov = new List<IClickSelectableControl>();
 
-            foreach (SelectableUserControl item in Items.SelectedItems)
+            foreach (IClickSelectableControl item in Items.SelectedItems)
             {
                 if (Items.IndexOf(item) < index) index = Items.IndexOf(item);
 
@@ -1202,7 +1202,7 @@ namespace SolidShineUi
             }
 
             // remove the controls
-            foreach (SelectableUserControl item in imov)
+            foreach (IClickSelectableControl item in imov)
             {
                 Items.Remove(item);
             }
@@ -1215,13 +1215,13 @@ namespace SolidShineUi
             Items.ClearSelection();
 
             // re-insert and re-select the controls at the new location
-            foreach (SelectableUserControl item in imov)
+            foreach (IClickSelectableControl item in imov)
             {
                 Items.Insert(index, item);
                 //Items.AddToSelection(item);
             }
 
-            foreach (SelectableUserControl item in imov)
+            foreach (IClickSelectableControl item in imov)
             {
                 Items.AddToSelection(item);
             }
@@ -1270,7 +1270,7 @@ namespace SolidShineUi
             }
             else
             {
-                SelectableUserControl suc = Items[index];
+                IClickSelectableControl suc = Items[index];
 
                 int moveIndex = index - 1;//IndexOf(suc) - 1;
                 if (moveIndex < 0)
@@ -1329,7 +1329,7 @@ namespace SolidShineUi
             }
             else
             {
-                SelectableUserControl suc = Items[index];
+                IClickSelectableControl suc = Items[index];
 
                 int moveIndex = index + 1; //IndexOf(suc) + 1;
                 if (moveIndex > (Items.Count - 1))

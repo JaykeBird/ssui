@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using System.IO;
 using System.Windows.Media.Imaging;
 using static SolidShineUi.MessageDialogImageConverter;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -57,14 +58,11 @@ namespace SolidShineUi
         private void InvalidTimer_Tick(object sender, EventArgs e)
 #endif
         {
-            if (Application.Current != null)
+            Application.Current?.Dispatcher.Invoke(() =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    InvalidateMeasure();
-                    InvalidateVisual();
-                });
-            }
+                InvalidateMeasure();
+                InvalidateVisual();
+            });
 
             invalidTimer.IsEnabled = false;
         }
@@ -229,18 +227,11 @@ namespace SolidShineUi
             {
                 _image = value;
 
-                MessageDialogImageColor mio = MessageDialogImageColor.Color;
+                IconVariation mio = IconVariation.Color;
 
                 if (ColorScheme.IsHighContrast)
                 {
-                    if (ColorScheme.BackgroundColor == ColorsHelper.Black)
-                    {
-                        mio = MessageDialogImageColor.White;
-                    }
-                    else
-                    {
-                        mio = MessageDialogImageColor.Black;
-                    }
+                    mio = IconLoader.SelectVariationFromColorScheme(ColorScheme);
                 }
 
                 try
@@ -1000,9 +991,9 @@ namespace SolidShineUi
         /// <param name="color">The color to use for the image. Use black or white for high-contrast themes.</param>
         /// <returns></returns>
 #if NETCOREAPP
-        public static BitmapImage? GetImage(MessageDialogImage image, MessageDialogImageColor color)
+        public static BitmapImage? GetImage(MessageDialogImage image, IconVariation color)
 #else
-        public static BitmapImage GetImage(MessageDialogImage image, MessageDialogImageColor color)
+        public static BitmapImage GetImage(MessageDialogImage image, IconVariation color)
 #endif
         {
             if (image == MessageDialogImage.None)
@@ -1025,24 +1016,7 @@ namespace SolidShineUi
             return img;
         }
 
-        /// <summary>
-        /// The color to use with a message dialog image.
-        /// </summary>
-        public enum MessageDialogImageColor
-        {
-            /// <summary>
-            /// Black monochrome icon
-            /// </summary>
-            Black,
-            /// <summary>
-            /// Multicolored icon
-            /// </summary>
-            Color,
-            /// <summary>
-            /// White monochrome icon
-            /// </summary>
-            White
-        }
+
     }
 
     /// <summary>

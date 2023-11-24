@@ -48,27 +48,27 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
             {
-                imgLeft.Source = LoadIcon("LeftArrow", ICON_WHITE);
-                imgRight.Source = LoadIcon("RightArrow", ICON_WHITE);
-                imgTop.Source = LoadIcon("UpArrow", ICON_WHITE);
-                imgBottom.Source = LoadIcon("DownArrow", ICON_WHITE);
-                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
+                imgLeft.Source = LoadIcon("LeftArrow", Utils.IconVariation.White);
+                imgRight.Source = LoadIcon("RightArrow", Utils.IconVariation.White);
+                imgTop.Source = LoadIcon("UpArrow", Utils.IconVariation.White);
+                imgBottom.Source = LoadIcon("DownArrow", Utils.IconVariation.White);
+                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
             }
             else if (cs.BackgroundColor == Colors.White)
             {
-                imgLeft.Source = LoadIcon("LeftArrow", ICON_BLACK);
-                imgRight.Source = LoadIcon("RightArrow", ICON_BLACK);
-                imgTop.Source = LoadIcon("UpArrow", ICON_BLACK);
-                imgBottom.Source = LoadIcon("DownArrow", ICON_BLACK);
-                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
+                imgLeft.Source = LoadIcon("LeftArrow", Utils.IconVariation.Black);
+                imgRight.Source = LoadIcon("RightArrow", Utils.IconVariation.Black);
+                imgTop.Source = LoadIcon("UpArrow", Utils.IconVariation.Black);
+                imgBottom.Source = LoadIcon("DownArrow", Utils.IconVariation.Black);
+                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
             }
             else
             {
-                imgLeft.Source = LoadIcon("LeftArrow", ICON_COLOR);
-                imgRight.Source = LoadIcon("RightArrow", ICON_COLOR);
-                imgTop.Source = LoadIcon("UpArrow", ICON_COLOR);
-                imgBottom.Source = LoadIcon("DownArrow", ICON_COLOR);
-                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
+                imgLeft.Source = LoadIcon("LeftArrow", Utils.IconVariation.Color);
+                imgRight.Source = LoadIcon("RightArrow", Utils.IconVariation.Color);
+                imgTop.Source = LoadIcon("UpArrow", Utils.IconVariation.Color);
+                imgBottom.Source = LoadIcon("DownArrow", Utils.IconVariation.Color);
+                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
             }
         }
 

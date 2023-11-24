@@ -383,9 +383,9 @@ namespace SolidShineUi.KeyboardShortcuts
                     if (alt)
                     {
                         // Ctrl + Shift + Alt + whatever
-                        if (Ksr_CtrlAltShift.ContainsKey(key))
+                        if (Ksr_CtrlAltShift.TryGetValue(key, out var value1))
                         {
-                            return ((Ksr_CtrlAltShift[key]).Action, "Ctrl + Shift + Alt + " + key);
+                            return (value1.Action, "Ctrl + Shift + Alt + " + key);
                         }
                         else
                         {
@@ -394,9 +394,9 @@ namespace SolidShineUi.KeyboardShortcuts
                     }
 
                     // Ctrl + Shift + whatever
-                    if (Ksr_CtrlShift.ContainsKey(key))
+                    if (Ksr_CtrlShift.TryGetValue(key, out var value2))
                     {
-                        return ((Ksr_CtrlShift[key]).Action, "Ctrl + Shift + " + key);
+                        return (value2.Action, "Ctrl + Shift + " + key);
                     }
                     else
                     {
@@ -407,9 +407,9 @@ namespace SolidShineUi.KeyboardShortcuts
                 if (alt)
                 {
                     // Ctrl + Alt + whatever
-                    if (Ksr_CtrlAlt.ContainsKey(key))
+                    if (Ksr_CtrlAlt.TryGetValue(key, out var value3))
                     {
-                        return ((Ksr_CtrlAlt[key]).Action, "Ctrl + Alt + " + key);
+                        return (value3.Action, "Ctrl + Alt + " + key);
                     }
                     else
                     {
@@ -418,9 +418,9 @@ namespace SolidShineUi.KeyboardShortcuts
                 }
 
                 // Ctrl + whatever
-                if (Ksr_Ctrl.ContainsKey(key))
+                if (Ksr_Ctrl.TryGetValue(key, out var value4))
                 {
-                    return ((Ksr_Ctrl[key]).Action, "Ctrl + " + key);
+                    return (value4.Action, "Ctrl + " + key);
                 }
                 else
                 {
@@ -433,9 +433,9 @@ namespace SolidShineUi.KeyboardShortcuts
                 if (shift)
                 {
                     // Alt + Shift + whatever
-                    if (Ksr_AltShift.ContainsKey(key))
+                    if (Ksr_AltShift.TryGetValue(key, out var value5))
                     {
-                        return ((Ksr_AltShift[key]).Action, "Shift + Alt + " + key);
+                        return (value5.Action, "Shift + Alt + " + key);
                     }
                     else
                     {
@@ -444,9 +444,9 @@ namespace SolidShineUi.KeyboardShortcuts
                 }
 
                 // Alt + whatever
-                if (Ksr_Alt.ContainsKey(key))
+                if (Ksr_Alt.TryGetValue(key, out var value6))
                 {
-                    return ((Ksr_Alt[key]).Action, "Alt + " + key);
+                    return (value6.Action, "Alt + " + key);
                 }
                 else
                 {
@@ -458,9 +458,9 @@ namespace SolidShineUi.KeyboardShortcuts
             {
                 // Shift + whatever
                 // (Note: only some keys are allowed for Shift + key shortcuts)
-                if (Ksr_Shift.ContainsKey(key))
+                if (Ksr_Shift.TryGetValue(key, out var value7))
                 {
-                    return ((Ksr_Shift[key]).Action, "Shift + " + key);
+                    return (value7.Action, "Shift + " + key);
                 }
                 else
                 {
@@ -470,9 +470,9 @@ namespace SolidShineUi.KeyboardShortcuts
 
             // finally, just keys with no modifiers
             // (Note: only some keys are allowed for unmodified shortcuts)
-            if (Ksr_None.ContainsKey(key))
+            if (Ksr_None.TryGetValue(key, out var value8))
             {
-                return ((Ksr_None[key]).Action, key.ToString());
+                return (value8.Action, key.ToString());
             }
             else
             {

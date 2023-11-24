@@ -18,18 +18,19 @@
                     <flat:MenuButton x:Name="btnAddMenu" Content="Others" HorizontalAlignment="Right" Width="72" ColorScheme="{Binding ColorScheme, ElementName=userControl}">
                         <flat:MenuButton.Menu>
                             <flat:ContextMenu>
-                                <MenuItem Header="Add Editable Item" Click="mnuSelEdit_Click" />
-                                <MenuItem Header="Add Image Item" Click="mnuSelImage_Click" />
-                                <MenuItem Header="Add Image Item (Legacy)" Click="mnuSelImageLegacy_Click" />
-                                <MenuItem Header="Add Separator" Click="mnuSelSep_Click" />
+                                <MenuItem Header="Add Editable Item" Click="mnuAddEditable_Click" />
+                                <MenuItem Header="Add Image Item (Basic)" Click="mnuAddImageBasic_Click" />
+                                <MenuItem Header="Add Image Item (Full)" Click="mnuAddImageFull_Click" />
+                                <MenuItem Header="Add Separator" Click="mnuAddSeparator_Click" />
+                                <MenuItem Header="Add FlatButton" Click="mnuAddButton_Click" />
                             </flat:ContextMenu>
                         </flat:MenuButton.Menu>
                     </flat:MenuButton>
                 </Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="0,5,0,0" Text="Use Ctrl key to select multiple items" VerticalAlignment="Top"/>
                 <Grid Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                    <flat:FlatButton HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Content="Move Up ▲" x:Name="btnSelUp" Click="btnSelUp_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                    <flat:FlatButton HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Content="Move Down ▼" x:Name="btnSelDown" Click="btnSelDown_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
+                    <flat:FlatButton HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Content="Move Up ▲" x:Name="btnMoveUp" Click="btnSelMoveUp_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
+                    <flat:FlatButton HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Content="Move Down ▼" x:Name="btnMoveDown" Click="btnSelMoveDown_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 </Grid>
                 <flat:FlatButton HorizontalAlignment="Stretch" Margin="0,20,0,0" VerticalAlignment="Top" Content="Remove Selected Items" x:Name="btnSelRemove" Click="btnSelRemove_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:FlatButton HorizontalAlignment="Stretch" Height="32" Margin="0,5,0,0" VerticalAlignment="Top" Content="Remove All Items" x:Name="btnSelRemoveAll" Click="btnSelRemoveAll_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />

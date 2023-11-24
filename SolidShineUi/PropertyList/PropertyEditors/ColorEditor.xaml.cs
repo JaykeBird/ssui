@@ -147,7 +147,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             _internalAction = true;
 
-            Color? col = null;
+            Color? col;// = null;
 
             // get the value and store it in a temporary value
             if (type == typeof(Color))
@@ -182,6 +182,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _internalAction = false;
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudValue_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_internalAction) return;
@@ -191,6 +193,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0051 // Remove unused private members
 
         private void cbbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

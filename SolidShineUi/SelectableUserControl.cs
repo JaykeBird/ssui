@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -9,11 +10,11 @@ namespace SolidShineUi
 {
 
     /// <summary>
-    /// The basic control that can be added into a SelectPanel. Extend this class to create your own UI elements to use with the SelectPanel.
+    /// The basic control that can be added into a <see cref="SelectPanel"/>. Extend this class to create your own UI elements to use with the SelectPanel.
     /// </summary>
     [Localizability(LocalizationCategory.ListBox)]
-    [DefaultEvent(nameof(SelectionChanged))]
-    public class SelectableUserControl : System.Windows.Controls.UserControl //, IEquatable<SelectableUserControl>
+    [DefaultEvent(nameof(IsSelectedChanged))]
+    public class SelectableUserControl : System.Windows.Controls.UserControl, IClickSelectableControl
     {
         /// <summary>
         /// Create a SelectableUserControl.
@@ -41,12 +42,9 @@ namespace SolidShineUi
 
             Focusable = true;
             IsTabStop = true;
-            //UniqueIdentifier = Guid.NewGuid();
 
             base.Background = Background;
         }
-
-        //public Guid UniqueIdentifier { get; set; }
 
         #region Brushes
         static Color transparent = Color.FromArgb(1, 0, 0, 0);
@@ -152,35 +150,61 @@ namespace SolidShineUi
             }
         }
 
-        #region Selection Handling
+        #region Click/Selection Handling
 
-        bool canSel = true;
+        #region Selection Properties
+        /// <summary>
+        /// Get or set if this control should change its <see cref="IsSelected"/> value when you click on the control.
+        /// </summary>
+        /// <remarks>
+        /// This allows more fine-tuned control over when and how this control can be selected. If this is <c>false</c>, then the user can only use the checkbox to directly 
+        /// select or deselect this control. You can use <see cref="CanSelect"/> to globally disable selecting this control via any method.
+        /// </remarks>
+        public bool SelectOnClick { get => (bool)GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.</summary>
+        public static DependencyProperty SelectOnClickProperty
+            = DependencyProperty.Register("SelectOnClick", typeof(bool), typeof(SelectableUserControl),
+            new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// Get or set if this control can be selected.
         /// </summary>
-        public bool CanSelect
+        /// <remarks>
+        /// If this is set to <c>false</c>, then this control cannot be selected via any method - even programmatically. Setting this to <c>false</c> will also deselect this control, 
+        /// if currently selected. For more fine-tuned control, you can use <see cref="SelectOnClick"/> to limit how the user can select this control, 
+        /// while still being able to change the selection status via <see cref="IsSelected"/>.
+        /// </remarks>
+        public bool CanSelect { get => (bool)GetValue(CanSelectProperty); set => SetValue(CanSelectProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CanSelect"/>. See the related property for details.</summary>
+        public static DependencyProperty CanSelectProperty
+            = DependencyProperty.Register("CanSelect", typeof(bool), typeof(SelectableUserControl),
+            new FrameworkPropertyMetadata(true, OnCanSelectChanged));
+
+        private static void OnCanSelectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get
+            d.PerformAs<SelectableUserControl, bool>(e.NewValue, (s, v) =>
             {
-                return canSel;
-            }
-            set
-            {
-                bool curVal = canSel;
-
-                canSel = value;
-                if (!value)
+                if (v == false)
                 {
-                    sel = false;
-                    base.Background = Background;
+                    if (s.IsSelected)
+                    {
+                        s.sel = false;
+
+                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, true, false, SelectionChangeTrigger.DisableSelecting, s);
+                        s.RaiseEvent(re);
+                    }
+                    s.ChangeBaseBackground(s.Background);
                 }
 
-                if (curVal != canSel)
-                {
-                    CanSelectChanged?.Invoke(this, EventArgs.Empty);
-                }
-            }
+                s.CanSelectChanged?.Invoke(s, e);
+            });
+        }
+
+        private void ChangeBaseBackground(Brush newValue)
+        {
+            base.Background = newValue;
         }
 
         bool sel = false;
@@ -188,6 +212,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if this control is currently selected.
         /// </summary>
+        /// <remarks>
+        /// If <see cref="CanSelect"/> is set to <c>false</c>, then this value will not be changed (silent fail).
+        /// </remarks>
         public bool IsSelected
         {
             get
@@ -199,7 +226,9 @@ namespace SolidShineUi
                 SetIsSelectedWithSource(value, SelectionChangeTrigger.CodeUnknown);
             }
         }
+        #endregion
 
+        #region SetIsSelectedWithSource
         /// <summary>
         /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
         /// </summary>
@@ -228,64 +257,88 @@ namespace SolidShineUi
 
                 if (curVal != sel)
                 {
-                    SelectionChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, triggerMethod, triggerSource));
+                    ItemSelectionChangedEventArgs e = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, curVal, sel, triggerMethod, triggerSource);
+                    RaiseEvent(e);
                 }
             }
         }
+        #endregion
+
+        #region Events
+
+#if NETCOREAPP
+        /// <summary>
+        /// Raised if the CanSelect property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler? CanSelectChanged;
+#else
+        /// <summary>
+        /// Raised if the CanSelect property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler CanSelectChanged;
+#endif
+
+        /// <summary>
+        /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
+            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SelectableUserControl));
+
+        /// <summary>
+        /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event ItemSelectionChangedEventHandler IsSelectedChanged
+        {
+            add { AddHandler(IsSelectedChangedEvent, value); }
+            remove { RemoveHandler(IsSelectedChangedEvent, value); }
+        }
+
+        /// <summary>
+        /// The backing value for the <see cref="Click"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
+            "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SelectableUserControl));
+
+        /// <summary>
+        /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler Click
+        {
+            add { AddHandler(ClickEvent, value); }
+            remove { RemoveHandler(ClickEvent, value); }
+        }
+
+
+        /// <summary>
+        /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
+            "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SelectableUserControl));
+
+        /// <summary>
+        /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler RightClick
+        {
+            add { AddHandler(RightClickEvent, value); }
+            remove { RemoveHandler(RightClickEvent, value); }
+        }
+
+        #endregion
+
+        #region Base Functions
 
         bool performingClick = false;
         bool highlighting = false;
         bool rightClick = false;
 
-#if NETCOREAPP
-        /// <summary>
-        /// Raised if the IsSelected property is changed.
-        /// </summary>
-        public event ItemSelectionChangedEventHandler? SelectionChanged;
-        /// <summary>
-        /// Raised if the CanSelect property is changed.
-        /// </summary>
-        public event EventHandler? CanSelectChanged;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler? Click;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler? RightClick;
-#else
-        /// <summary>
-        /// Raised if the IsSelected property is changed.
-        /// </summary>
-        public event ItemSelectionChangedEventHandler SelectionChanged;
-        /// <summary>
-        /// Raised if the CanSelect property is changed.
-        /// </summary>
-        public event EventHandler CanSelectChanged;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler Click;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler RightClick;
-#endif
-
-        /// <summary>
-        /// Represents a handler for the SelectionChanged event.
-        /// </summary>
-        /// <param name="sender">The source object of the event.</param>
-        /// <param name="e">The event arguments, containing information on the new IsSelected value and how the selection changed.</param>
-        public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
-
-#region User Inputs
-
         void Highlight()
         {
             highlighting = true;
-            base.Background = HighlightBrush;
+            if (CanSelect && SelectOnClick)
+            {
+                base.Background = HighlightBrush;
+            }
         }
 
         void Unhighlight()
@@ -309,26 +362,55 @@ namespace SolidShineUi
             base.Background = ClickBrush;
         }
 
+        void PerformRightClick()
+        {
+            RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
+            RaiseEvent(rre);
+        }
+
+        /// <summary>
+        /// Perform a click on this control programmatically. This responds the same way as if it was clicked by the user.
+        /// </summary>
+        public void DoClick()
+        {
+            OnClick();
+        }
+
+        /// <summary>
+        /// Defines the actions the button performs when it is clicked.
+        /// </summary>
+        protected void OnClick()
+        {
+            if (SelectOnClick)
+            {
+                SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
+            }
+
+            RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
+            RaiseEvent(rre);
+        }
+
         void PerformClick()
         {
             if (performingClick)
             {
                 if (rightClick)
                 {
-                    RightClick?.Invoke(this, EventArgs.Empty);
+                    PerformRightClick();
                     rightClick = false;
                 }
                 else
                 {
-                    SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
-                    Click?.Invoke(this, EventArgs.Empty);
+                    OnClick();
                 }
 
                 performingClick = false;
             }
         }
 
-#region Base Event Handlers
+        #endregion
+
+        #region Base Event Handlers
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -431,8 +513,6 @@ namespace SolidShineUi
             Unhighlight();
         }
 
-#endregion
-
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || e.Key == Key.Space)
@@ -448,41 +528,94 @@ namespace SolidShineUi
             }
         }
 
-#endregion
+        #endregion
 
-#endregion
-
-//#if NETCOREAPP
-//        public bool Equals([AllowNull] SelectableUserControl other)
-//#else
-//        public bool Equals(SelectableUserControl other)
-//#endif
-//        {
-//            if (other == null) return false;
-//            else
-//            {
-//                return other.UniqueIdentifier == UniqueIdentifier;
-//            }
-//        }
-
+        #endregion
     }
 
+//    /// <summary>
+//    /// The event arguments for the IsSelectedChanged event of the SelectableUserControl.
+//    /// </summary>
+//    public class ItemSelectionChangedEventArgs : EventArgs
+//    {
+//        /// <summary>
+//        /// Create a new ItemSelectionChangedEventArgs.
+//        /// </summary>
+//        /// <param name="oldValue">The old IsSelected value.</param>
+//        /// <param name="newValue">The new IsSelected value.</param>
+//        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+//        /// <param name="triggerSource">The source object that updated the value (if available).</param>
+//#if NETCOREAPP
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null)
+//#else
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null)
+//#endif
+//        {
+//            OldValue = oldValue;
+//            NewValue = newValue;
+//            TriggerMethod = trigger;
+//            TriggerSource = triggerSource;
+//        }
+
+//        /// <summary>
+//        /// The old value of the IsSelected property.
+//        /// </summary>
+//        public bool OldValue { get; private set; }
+//        /// <summary>
+//        /// The new value of the IsSelected property.
+//        /// </summary>
+//        public bool NewValue { get; private set; }
+//        /// <summary>
+//        /// The method that was used to update the value.
+//        /// </summary>
+//        public SelectionChangeTrigger TriggerMethod { get; private set; }
+
+//        /// <summary>
+//        /// The object that caused the update to occur, if available.
+//        /// </summary>
+//#if NETCOREAPP
+//        public object? TriggerSource { get; private set; }
+//#else
+//        public object TriggerSource { get; private set; }
+//#endif
+//    }
+
     /// <summary>
-    /// The event arguments for the SelectionChanged event of the SelectableUserControl.
+    /// The event arguments for the IsSelectedChanged event of the SelectableUserControl.
     /// </summary>
-    public class ItemSelectionChangedEventArgs : EventArgs
+    public class ItemSelectionChangedEventArgs : RoutedEventArgs
     {
+//        /// <summary>
+//        /// Create a new ItemSelectionChangedEventArgs.
+//        /// </summary>
+//        /// <param name="oldValue">The old IsSelected value.</param>
+//        /// <param name="newValue">The new IsSelected value.</param>
+//        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+//        /// <param name="triggerSource">The source object that updated the value (if available).</param>
+//#if NETCOREAPP
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null) : base()
+//#else
+//        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null) : base()
+//#endif
+//        {
+//            OldValue = oldValue;
+//            NewValue = newValue;
+//            TriggerMethod = trigger;
+//            TriggerSource = triggerSource;
+//        }
+
         /// <summary>
-        /// Create a new ItemSelectionChangedEventArgs.
+        /// Create a new ItemSelectionChangedRoutedEventArgs.
         /// </summary>
+        /// <param name="ev">the routed event associated with these routed event args</param>
         /// <param name="oldValue">The old IsSelected value.</param>
         /// <param name="newValue">The new IsSelected value.</param>
         /// <param name="trigger">The trigger method that caused the value to be updated.</param>
-        /// <param name="triggerSource">The source object that updated the value.</param>
+        /// <param name="triggerSource">The source object that updated the value (if available).</param>
 #if NETCOREAPP
-        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null)
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null) : base(ev, triggerSource)
 #else
-        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null)
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null) : base(ev, triggerSource)
 #endif
         {
             OldValue = oldValue;
@@ -490,6 +623,7 @@ namespace SolidShineUi
             TriggerMethod = trigger;
             TriggerSource = triggerSource;
         }
+
 
         /// <summary>
         /// The old value of the IsSelected property.
@@ -532,7 +666,11 @@ namespace SolidShineUi
         /// </summary>
         Parent = 2,
         /// <summary>
-        /// The selection was changed via directly setting the value in code, or the method isn't strictly defined here.
+        /// The selection was changed because the <see cref="SelectableUserControl.CanSelect"/> property (or similar property) was changed.
+        /// </summary>
+        DisableSelecting = 3,
+        /// <summary>
+        /// The selection was changed via directly setting the value in code, or via a different undefined method.
         /// </summary>
         CodeUnknown = 9,
     }

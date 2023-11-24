@@ -63,6 +63,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         bool _raiseEvents = false;
 
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0051 // Remove unused private members
+
         private void cbbStyles_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_raiseEvents)
@@ -83,6 +86,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             _raiseEvents = true;
         }
+
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0051 // Remove unused private members
 
         private FontWeight GetWeightFromSelection()
         {

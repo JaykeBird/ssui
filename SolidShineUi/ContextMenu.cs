@@ -102,19 +102,6 @@ namespace SolidShineUi
                 CheckedBrush = cs.AccentSecondaryColor.ToBrush();
             }
         }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="hco">The high-contrast color scheme to apply.</param>
-        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
-            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
-        public void ApplyColorScheme(HighContrastOption hco)
-        {
-            ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
-
-            ApplyColorScheme(cs);
-        }
         #endregion
 
         /// <summary>

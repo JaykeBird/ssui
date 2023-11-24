@@ -37,7 +37,7 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public object? PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
 
-        private object? _oldValue = null;
+        //private object? _oldValue = null;
 
         /// <summary>
         /// Get or set the editor control to use to allow editing the value of this property.
@@ -80,7 +80,7 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public object PropertyValue { get => _value; set { _value = value; txtValue.Text = (value ?? "(null)").ToString(); } }
 
-        private object _oldValue = null;
+        //private object _oldValue = null;
 
         /// <summary>
         /// Get or set the editor control to use to allow editing the value of this property.
@@ -198,7 +198,7 @@ namespace SolidShineUi.PropertyList
                 }
                 else
                 {
-                    _oldValue = potentialOldValue;
+                    //_oldValue = potentialOldValue;
                 }
             }
         }

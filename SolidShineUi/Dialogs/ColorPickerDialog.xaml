@@ -9,63 +9,12 @@
     ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" CaptionDisplayType="Close" >
     <flat:FlatWindow.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-
-        <!-- Button with a border, no highlight color -->
-        <Style x:Key="btnBorderOnly" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Background" Value="#00000000"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"
-                                              RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <!--<Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>-->
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <!--<Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>-->
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <!--<Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>-->
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <Style x:Key="colorPickerButton" TargetType="{x:Type ssut:ColorSwatchButton}">
+            <Setter Property="MinHeight" Value="23" />
+            <Setter Property="SetToolTip" Value="False" />
+            <!--<Setter Property="AlwaysHexTooltips" Value="False" />-->
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="ColorScheme" Value="{Binding RelativeSource={RelativeSource AncestorType=flat:FlatWindow}, Path=ColorScheme}" />
         </Style>
     </flat:FlatWindow.Resources>
     <Grid x:Name="grid">
@@ -76,178 +25,178 @@
         </Grid.RowDefinitions>
         <flat:TabControl x:Name="tabControl" Margin="10" TabMinWidth="0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                          ShowTabListMenu="False" AllowTabDragDrop="False" >
-            <flat:TabItem x:Name="tabSwatches" Title="Swatches" ShowIcon="False" CanClose="False" Padding="8,0" >
+            <flat:TabItem x:Name="tabSwatches" Title="Swatches" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
                     <Border BorderBrush="Black" BorderThickness="0" Margin="8,3" >
                         <StackPanel Orientation="Horizontal" >
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSteelBlue" ToolTip="LightSteelBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BlueViolet" ToolTip="BlueViolet"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumPurple" ToolTip="MediumPurple"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSlateBlue" ToolTip="MediumSlateBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SlateBlue" ToolTip="SlateBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SteelBlue" ToolTip="SteelBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MidnightBlue" ToolTip="MidnightBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSlateBlue" ToolTip="DarkSlateBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightSteelBlue" ToolTip="LightSteelBlue" />
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="BlueViolet" ToolTip="BlueViolet" />
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumPurple" ToolTip="MediumPurple"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumSlateBlue" ToolTip="MediumSlateBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SlateBlue" ToolTip="SlateBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SteelBlue" ToolTip="SteelBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MidnightBlue" ToolTip="MidnightBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkSlateBlue" ToolTip="DarkSlateBlue"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Lavender" ToolTip="Lavender"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Thistle" ToolTip="Thistle"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Plum" ToolTip="Plum"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Violet" ToolTip="Violet"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Magenta" ToolTip="Magenta"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Fuchsia" ToolTip="Fuchsia"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Orchid" ToolTip="Orchid"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumOrchid" ToolTip="MediumOrchid"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkViolet" ToolTip="DarkViolet"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOrchid" ToolTip="DarkOrchid"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkMagenta" ToolTip="DarkMagenta"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Purple" ToolTip="Purple"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Indigo" ToolTip="Indigo"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Lavender" ToolTip="Lavender"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Thistle" ToolTip="Thistle"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Plum" ToolTip="Plum"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Violet" ToolTip="Violet"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Magenta" ToolTip="Magenta"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Fuchsia" ToolTip="Fuchsia"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Orchid" ToolTip="Orchid"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumOrchid" ToolTip="MediumOrchid"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkViolet" ToolTip="DarkViolet"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkOrchid" ToolTip="DarkOrchid"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkMagenta" ToolTip="DarkMagenta"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Purple" ToolTip="Purple"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Indigo" ToolTip="Indigo"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30" >
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Snow" ToolTip="Snow"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MistyRose" ToolTip="MistyRose"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSalmon" ToolTip="DarkSalmon"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightCoral" ToolTip="LightCoral"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="RosyBrown" ToolTip="RosyBrown"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="IndianRed" ToolTip="IndianRed"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Red" ToolTip="Red"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Crimson" ToolTip="Crimson"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Firebrick" ToolTip="Firebrick"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Brown" ToolTip="Brown"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkRed" ToolTip="DarkRed"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Maroon" ToolTip="Maroon"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Snow" ToolTip="Snow"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MistyRose" ToolTip="MistyRose"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkSalmon" ToolTip="DarkSalmon"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightCoral" ToolTip="LightCoral"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="RosyBrown" ToolTip="RosyBrown"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="IndianRed" ToolTip="IndianRed"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Red" ToolTip="Red"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Crimson" ToolTip="Crimson"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Firebrick" ToolTip="Firebrick"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Brown" ToolTip="Brown"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkRed" ToolTip="DarkRed"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Maroon" ToolTip="Maroon"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SeaShell" ToolTip="SeaShell"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Linen" ToolTip="Linen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LavenderBlush" ToolTip="LavenderBlush"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Pink" ToolTip="Pink"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightPink" ToolTip="LightPink"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="HotPink" ToolTip="HotPink"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleVioletRed" ToolTip="PaleVioletRed"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DeepPink" ToolTip="DeepPink"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumVioletRed" ToolTip="MediumVioletRed"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SeaShell" ToolTip="SeaShell"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Linen" ToolTip="Linen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LavenderBlush" ToolTip="LavenderBlush"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Pink" ToolTip="Pink"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightPink" ToolTip="LightPink"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="HotPink" ToolTip="HotPink"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="PaleVioletRed" ToolTip="PaleVioletRed"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DeepPink" ToolTip="DeepPink"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumVioletRed" ToolTip="MediumVioletRed"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="FloralWhite" ToolTip="FloralWhite"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PapayaWhip" ToolTip="PapayaWhip"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Moccasin" ToolTip="Moccasin"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PeachPuff" ToolTip="PeachPuff"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="NavajoWhite" ToolTip="NavajoWhite"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSalmon" ToolTip="LightSalmon"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Orange" ToolTip="Orange"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOrange" ToolTip="DarkOrange"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Salmon" ToolTip="Salmon"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Coral" ToolTip="Coral"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Tomato" ToolTip="Tomato"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OrangeRed" ToolTip="OrangeRed"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="FloralWhite" ToolTip="FloralWhite"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="PapayaWhip" ToolTip="PapayaWhip"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Moccasin" ToolTip="Moccasin"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="PeachPuff" ToolTip="PeachPuff"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="NavajoWhite" ToolTip="NavajoWhite"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightSalmon" ToolTip="LightSalmon"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Orange" ToolTip="Orange"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkOrange" ToolTip="DarkOrange"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Salmon" ToolTip="Salmon"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Coral" ToolTip="Coral"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Tomato" ToolTip="Tomato"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="OrangeRed" ToolTip="OrangeRed"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Cornsilk" ToolTip="Cornsilk"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OldLace" ToolTip="OldLace"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="AntiqueWhite" ToolTip="AntiqueWhite"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BlanchedAlmond" ToolTip="BlanchedAlmond"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Bisque" ToolTip="Bisque"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Wheat" ToolTip="Wheat"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Tan" ToolTip="Tan"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="BurlyWood" ToolTip="BurlyWood"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SandyBrown" ToolTip="SandyBrown"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Peru" ToolTip="Peru"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Chocolate" ToolTip="Chocolate"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Sienna" ToolTip="Sienna"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SaddleBrown" ToolTip="SaddleBrown"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Cornsilk" ToolTip="Cornsilk"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="OldLace" ToolTip="OldLace"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="AntiqueWhite" ToolTip="AntiqueWhite"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="BlanchedAlmond" ToolTip="BlanchedAlmond"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Bisque" ToolTip="Bisque"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Wheat" ToolTip="Wheat"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Tan" ToolTip="Tan"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="BurlyWood" ToolTip="BurlyWood"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SandyBrown" ToolTip="SandyBrown"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Peru" ToolTip="Peru"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Chocolate" ToolTip="Chocolate"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Sienna" ToolTip="Sienna"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SaddleBrown" ToolTip="SaddleBrown"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Ivory" ToolTip="Ivory"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightYellow" ToolTip="LightYellow"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Beige" ToolTip="Beige"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGoldenrodYellow" ToolTip="LightGoldenrodYellow"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LemonChiffon" ToolTip="LemonChiffon"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleGoldenrod" ToolTip="PaleGoldenrod"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Khaki" ToolTip="Khaki"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Yellow" ToolTip="Yellow"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gold" ToolTip="Gold"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkKhaki" ToolTip="DarkKhaki"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Goldenrod" ToolTip="Goldenrod"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGoldenrod" ToolTip="DarkGoldenrod"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Olive" ToolTip="Olive"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Ivory" ToolTip="Ivory"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightYellow" ToolTip="LightYellow"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Beige" ToolTip="Beige"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightGoldenrodYellow" ToolTip="LightGoldenrodYellow"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LemonChiffon" ToolTip="LemonChiffon"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="PaleGoldenrod" ToolTip="PaleGoldenrod"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Khaki" ToolTip="Khaki"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Yellow" ToolTip="Yellow"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Gold" ToolTip="Gold"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkKhaki" ToolTip="DarkKhaki"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Goldenrod" ToolTip="Goldenrod"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkGoldenrod" ToolTip="DarkGoldenrod"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Olive" ToolTip="Olive"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Honeydew" ToolTip="Honeydew"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="GreenYellow" ToolTip="GreenYellow"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Chartreuse" ToolTip="Chartreuse"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LawnGreen" ToolTip="LawnGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Lime" ToolTip="Lime"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LimeGreen" ToolTip="LimeGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="YellowGreen" ToolTip="YellowGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="OliveDrab" ToolTip="OliveDrab"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="ForestGreen" ToolTip="ForestGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Green" ToolTip="Green"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkOliveGreen" ToolTip="DarkOliveGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGreen" ToolTip="DarkGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Honeydew" ToolTip="Honeydew"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="GreenYellow" ToolTip="GreenYellow"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Chartreuse" ToolTip="Chartreuse"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LawnGreen" ToolTip="LawnGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Lime" ToolTip="Lime"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LimeGreen" ToolTip="LimeGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="YellowGreen" ToolTip="YellowGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="OliveDrab" ToolTip="OliveDrab"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="ForestGreen" ToolTip="ForestGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Green" ToolTip="Green"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkOliveGreen" ToolTip="DarkOliveGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkGreen" ToolTip="DarkGreen"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MintCream" ToolTip="MintCream"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleGreen" ToolTip="PaleGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Aquamarine" ToolTip="Aquamarine"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SpringGreen" ToolTip="SpringGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGreen" ToolTip="LightGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSpringGreen" ToolTip="MediumSpringGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumAquamarine" ToolTip="MediumAquamarine"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSeaGreen" ToolTip="DarkSeaGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="CadetBlue" ToolTip="CadetBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumSeaGreen" ToolTip="MediumSeaGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SeaGreen" ToolTip="SeaGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkSlateGray" ToolTip="DarkSlateGray"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MintCream" ToolTip="MintCream"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="PaleGreen" ToolTip="PaleGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Aquamarine" ToolTip="Aquamarine"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SpringGreen" ToolTip="SpringGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightGreen" ToolTip="LightGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumSpringGreen" ToolTip="MediumSpringGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumAquamarine" ToolTip="MediumAquamarine"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkSeaGreen" ToolTip="DarkSeaGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="CadetBlue" ToolTip="CadetBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumSeaGreen" ToolTip="MediumSeaGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SeaGreen" ToolTip="SeaGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkSlateGray" ToolTip="DarkSlateGray"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Azure" ToolTip="Azure"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightCyan" ToolTip="LightCyan"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PaleTurquoise" ToolTip="PaleTurquoise"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="PowderBlue" ToolTip="PowderBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightBlue" ToolTip="LightBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Cyan" ToolTip="Cyan/Aqua"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Turquoise" ToolTip="Turquoise"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumTurquoise" ToolTip="MediumTurquoise"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkTurquoise" ToolTip="DarkTurquoise"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSeaGreen" ToolTip="LightSeaGreen"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkCyan" ToolTip="DarkCyan"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Teal" ToolTip="Teal"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Azure" ToolTip="Azure"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightCyan" ToolTip="LightCyan"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="PaleTurquoise" ToolTip="PaleTurquoise"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="PowderBlue" ToolTip="PowderBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightBlue" ToolTip="LightBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Cyan" ToolTip="Cyan/Aqua"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Turquoise" ToolTip="Turquoise"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumTurquoise" ToolTip="MediumTurquoise"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkTurquoise" ToolTip="DarkTurquoise"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightSeaGreen" ToolTip="LightSeaGreen"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkCyan" ToolTip="DarkCyan"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Teal" ToolTip="Teal"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="AliceBlue" ToolTip="AliceBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SkyBlue" ToolTip="SkyBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSkyBlue" ToolTip="LightSkyBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DeepSkyBlue" ToolTip="DeepSkyBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DodgerBlue" ToolTip="DodgerBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="CornflowerBlue" ToolTip="CornflowerBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="RoyalBlue" ToolTip="RoyalBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Blue" ToolTip="Blue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="MediumBlue" ToolTip="MediumBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkBlue" ToolTip="DarkBlue"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Navy" ToolTip="Navy"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="AliceBlue" ToolTip="AliceBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SkyBlue" ToolTip="SkyBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightSkyBlue" ToolTip="LightSkyBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DeepSkyBlue" ToolTip="DeepSkyBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DodgerBlue" ToolTip="DodgerBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="CornflowerBlue" ToolTip="CornflowerBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="RoyalBlue" ToolTip="RoyalBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Blue" ToolTip="Blue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="MediumBlue" ToolTip="MediumBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkBlue" ToolTip="DarkBlue"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Navy" ToolTip="Navy"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Width="30">
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="White" ToolTip="White"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="GhostWhite" ToolTip="GhostWhite"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="WhiteSmoke" ToolTip="WhiteSmoke"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gainsboro" ToolTip="Gainsboro"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightGray" ToolTip="LightGray"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Silver" ToolTip="Silver"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DarkGray" ToolTip="DarkGray"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="LightSlateGray" ToolTip="LightSlateGray"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="SlateGray" ToolTip="SlateGray"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Gray" ToolTip="Gray"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="DimGray" ToolTip="DimGray"/>
-                                <Button Height="22" Margin="1" Click="ColorButton_Click" Style="{StaticResource btnBorderOnly}" Background="Black" ToolTip="Black"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="White" ToolTip="White"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="GhostWhite" ToolTip="GhostWhite"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="WhiteSmoke" ToolTip="WhiteSmoke"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Gainsboro" ToolTip="Gainsboro"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightGray" ToolTip="LightGray"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Silver" ToolTip="Silver"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DarkGray" ToolTip="DarkGray"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="LightSlateGray" ToolTip="LightSlateGray"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="SlateGray" ToolTip="SlateGray"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Gray" ToolTip="Gray"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="DimGray" ToolTip="DimGray"/>
+                                <ssut:ColorSwatchButton Style="{StaticResource colorPickerButton}" Click="ColorButton_Click" Color="Black" ToolTip="Black"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
                 </Grid>
             </flat:TabItem>
-            <flat:TabItem x:Name="tabSliders" Title="Sliders" ShowIcon="False" CanClose="False" Padding="8,0" >
+            <flat:TabItem x:Name="tabSliders" Title="Sliders" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="80"/>
@@ -310,7 +259,7 @@
                     <TextBlock x:Name="lblQ" Grid.Column="1" HorizontalAlignment="Left" Margin="125,267,0,0" TextWrapping="Wrap" Text="s" FontFamily="Webdings" FontSize="16" VerticalAlignment="Top" Visibility="Collapsed" />
                 </Grid>
             </flat:TabItem>
-            <flat:TabItem x:Name="tabImage" Title="From Image" ShowIcon="False" CanClose="False" Padding="8,0" >
+            <flat:TabItem x:Name="tabImage" Title="From Image" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
                     <Border Margin="10,10,10,45" BorderBrush="Black" Background="DarkGray" BorderThickness="1">
                         <ssut:ImageColorPicker x:Name="imgPicker" SelectedColorChanged="imgPicker_SelectedColorChanged" />
@@ -320,7 +269,7 @@
                     <TextBlock x:Name="lblImageExplain" HorizontalAlignment="Right" Margin="0,0,10,15" TextWrapping="Wrap" Text="Click on the image to select the color." VerticalAlignment="Bottom" />
                 </Grid>
             </flat:TabItem>
-            <flat:TabItem x:Name="tabPalette" Title="Palette File" ShowIcon="False" CanClose="False" Padding="8,0" >
+            <flat:TabItem x:Name="tabPalette" Title="Palette File" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
                     <flat:FlatButton x:Name="btnLoadPal" Content="Open Palette..." HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="109" Height="24" Click="btnLoadPal_Click"
                          ColorScheme="{Binding ElementName=window, Path=ColorScheme}"  />

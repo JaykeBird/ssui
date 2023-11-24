@@ -61,14 +61,11 @@ namespace SolidShineUi.KeyboardShortcuts
         /// </summary>
         public void Execute()
         {
-            if (reh != null)
-            {
 #if NETCOREAPP
-                reh.Invoke((object?)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
+                reh?.Invoke((object?)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
 #else
-                reh.Invoke((object)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
+                reh?.Invoke((object)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
 #endif
-            }
         }
 
         /// <summary>

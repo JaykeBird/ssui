@@ -31,13 +31,6 @@ namespace SolidShineUi
             AddPropertyChangedTrigger(DecimalsProperty, typeof(DoubleSpinner));
             AddPropertyChangedTrigger(MinValueProperty, typeof(DoubleSpinner));
             AddPropertyChangedTrigger(MaxValueProperty, typeof(DoubleSpinner));
-
-            InternalValueChanged += DoubleSpinner_InternalValueChanged;
-
-            PropertyChanged += (x, y) => ValidateValue();
-
-            keyDownTimer.Elapsed += KeyDownTimer_Elapsed;
-            advanceTimer.Elapsed += AdvanceTimer_Elapsed;
         }
 
         private void DoubleSpinner_Loaded(object sender, EventArgs e)
@@ -45,7 +38,8 @@ namespace SolidShineUi
             txtValue.TextChanged += txtValue_TextChanged;
         }
 
-        private void DoubleSpinner_InternalValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        /// <inheritdoc/>
+        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
         {
             // this little section at the top prevents a stack overflow from occurring
             // when rounding occurs and causes the value to round up beyond the MaxValue
@@ -109,8 +103,7 @@ namespace SolidShineUi
                 }
             }
 
-            UpdateUI();
-            RaiseValueChanged(this, e);
+            base.UpdateValue(e);
         }
 
         #region ColorScheme
@@ -221,11 +214,6 @@ namespace SolidShineUi
         #region ValueProperty
 
         /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalValueChanged;
-
-        /// <summary>
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
@@ -246,7 +234,7 @@ namespace SolidShineUi
         {
             if (d is DoubleSpinner s)
             {
-                s.InternalValueChanged?.Invoke(s, e);
+                s.UpdateValue(e);
             }
         }
 
@@ -368,10 +356,9 @@ namespace SolidShineUi
 
         #endregion
 
-        /// <summary>
-        /// Validate the value and update the UI if needed.
-        /// </summary>
-        private void ValidateValue()
+
+        /// <inheritdoc/>
+        protected override void ValidateValue()
         {
             if (MinValue > MaxValue) MinValue = MaxValue;
             if (MaxValue < MinValue) MaxValue = MinValue;
@@ -382,8 +369,7 @@ namespace SolidShineUi
 
             Value = Math.Round(Value, Decimals);
 
-            UpdateUI();
-            RaiseValueValidated(this);
+            base.ValidateValue();
         }
 
         /// <summary>
@@ -449,8 +435,11 @@ namespace SolidShineUi
             {
                 if (_updateBox) txtValue.Text = sVal;
             }
-        }
 
+            base.UpdateUI();
+        }
+        
+        #region Textbox
         private void txtValue_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (txtValue == null)
@@ -493,149 +482,53 @@ namespace SolidShineUi
 
         private void txtValue_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter || e.Key == Key.Space)
-            {
-                ValidateValue();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Down)
-            {
-                advanceStepUp = false;
-                keyDownTimer.Start();
-            }
-            else if (e.Key == Key.Up)
-            {
-                advanceStepUp = true;
-                keyDownTimer.Start();
-            }
+            TextBoxKeyDown(e);
         }
 
         private void txtValue_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Down)
-            {
-                if (advanceTimer.Enabled)
-                {
-                    advanceTimer.Stop();
-                }
-                else
-                {
-                    keyDownTimer.Stop();
-                    if (Value >= MinValue) Value -= Step;
-                    else Value = MinValue;
-                    //UpdateUI();
-                }
-            }
-            else if (e.Key == Key.Up)
-            {
-                if (advanceTimer.Enabled)
-                {
-                    advanceTimer.Stop();
-                }
-                else
-                {
-                    keyDownTimer.Stop();
-                    if (Value <= MaxValue) Value += Step;
-                    else Value = MaxValue;
-                    //UpdateUI();
-                }
-            }
+            TextBoxKeyUp(e);
+        }
+        #endregion
+
+        /// <inheritdoc/>
+        protected override void DoStepDown()
+        {
+            if (Value >= MinValue) Value -= Step;
+            else Value = MinValue;
+            base.DoStepDown();
         }
 
-        private void baseSpinner_Loaded(object sender, RoutedEventArgs e)
+        /// <inheritdoc/>
+        protected override void DoStepUp()
         {
-            // doesn't work in constructor, apparently
-            _raiseChangedEvent = false;
-            ValidateValue();
-            _raiseChangedEvent = true;
+            if (Value <= MaxValue) Value += Step;
+            else Value = MaxValue;
+            base.DoStepUp();
         }
 
         private void btnUp_MouseDown(object sender, MouseButtonEventArgs e)
         {
             btnUp.Background = ClickBrush;
-            advanceStepUp = true;
-            keyDownTimer.Start();
+            BeginButtonPress(true);
         }
 
         private void btnUp_MouseUp(object sender, MouseButtonEventArgs e)
         {
             btnUp.Background = HighlightBrush;
-
-            if (advanceTimer.Enabled)
-            {
-                advanceTimer.Stop();
-            }
-            else
-            {
-                keyDownTimer.Stop();
-                if (Value <= MaxValue) Value += Step;
-                else Value = MaxValue;
-                UpdateUI();
-            }
+            UpButtonPress();
         }
 
         private void btnDown_MouseDown(object sender, MouseButtonEventArgs e)
         {
             btnDown.Background = ClickBrush;
-            advanceStepUp = false;
-            keyDownTimer.Start();
+            BeginButtonPress(false);
         }
 
         private void btnDown_MouseUp(object sender, MouseButtonEventArgs e)
         {
             btnDown.Background = HighlightBrush;
-
-            if (advanceTimer.Enabled)
-            {
-                advanceTimer.Stop();
-            }
-            else
-            {
-                keyDownTimer.Stop();
-                if (Value >= MinValue) Value -= Step;
-                else Value = MinValue;
-                UpdateUI();
-            }
-        }
-
-#if NETCOREAPP
-        private void KeyDownTimer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            advanceTimer.Start();
-        }
-
-        private void AdvanceTimer_Elapsed(object? sender, ElapsedEventArgs e)
-#else
-        private void KeyDownTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            advanceTimer.Start();
-        }
-
-        private void AdvanceTimer_Elapsed(object sender, ElapsedEventArgs e)
-#endif
-        {
-            try
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    if (advanceStepUp)
-                    {
-                        if (Value < MaxValue) Value += Step;
-                        else Value = MaxValue;
-                    }
-                    else
-                    {
-                        if (Value > MinValue) Value -= Step;
-                        else Value = MinValue;
-                    }
-
-                    UpdateUI();
-                }, System.Windows.Threading.DispatcherPriority.Input);
-            }
-            catch (TaskCanceledException)
-            {
-                advanceTimer.Stop();
-            }
+            DownButtonPress();
         }
 
         private void btnUp_MouseEnter(object sender, MouseEventArgs e)
@@ -646,8 +539,7 @@ namespace SolidShineUi
         private void btnUp_MouseLeave(object sender, MouseEventArgs e)
         {
             btnUp.Background = ButtonBackground;
-            if (advanceStepUp) advanceTimer.Stop();
-            UpdateUI();
+            StopButtonPress(true);
         }
 
         private void btnDown_MouseEnter(object sender, MouseEventArgs e)
@@ -658,8 +550,7 @@ namespace SolidShineUi
         private void btnDown_MouseLeave(object sender, MouseEventArgs e)
         {
             btnDown.Background = ButtonBackground;
-            if (!advanceStepUp) advanceTimer.Stop();
-            UpdateUI();
+            StopButtonPress(false);
         }
 
         private void BaseSpinner_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -686,97 +577,50 @@ namespace SolidShineUi
         private void btnUp_TouchDown(object sender, TouchEventArgs e)
         {
             btnUp.Background = ClickBrush;
-            advanceStepUp = true;
-            keyDownTimer.Start();
+            BeginButtonPress(true);
         }
 
         private void btnUp_TouchUp(object sender, TouchEventArgs e)
         {
             btnUp.Background = ButtonBackground;
-
-            if (advanceTimer.Enabled)
-            {
-                advanceTimer.Stop();
-            }
-            else
-            {
-                keyDownTimer.Stop();
-                if (Value <= MaxValue) Value += Step;
-                else Value = MaxValue;
-                UpdateUI();
-            }
+            UpButtonPress();
         }
 
         private void btnUp_StylusDown(object sender, StylusDownEventArgs e)
         {
             btnUp.Background = ButtonBackground;
-            advanceStepUp = true;
-            keyDownTimer.Start();
+            BeginButtonPress(true);
         }
 
         private void btnUp_StylusUp(object sender, StylusEventArgs e)
         {
             btnUp.Background = ButtonBackground;
 
-            if (advanceTimer.Enabled)
-            {
-                advanceTimer.Stop();
-            }
-            else
-            {
-                keyDownTimer.Stop();
-                if (Value <= MaxValue) Value += Step;
-                else Value = MaxValue;
-                UpdateUI();
-            }
+            UpButtonPress();
         }
 
         private void btnDown_TouchDown(object sender, TouchEventArgs e)
         {
             btnDown.Background = ClickBrush;
-            advanceStepUp = false;
-            keyDownTimer.Start();
+            BeginButtonPress(false);
         }
 
         private void btnDown_TouchUp(object sender, TouchEventArgs e)
         {
             btnDown.Background = ButtonBackground;
-
-            if (advanceTimer.Enabled)
-            {
-                advanceTimer.Stop();
-            }
-            else
-            {
-                keyDownTimer.Stop();
-                if (Value >= MinValue) Value -= Step;
-                else Value = MinValue;
-                UpdateUI();
-            }
+            DownButtonPress();
         }
 
         private void btnDown_StylusDown(object sender, StylusDownEventArgs e)
         {
             btnDown.Background = ButtonBackground;
-            advanceStepUp = false;
-            keyDownTimer.Start();
+            BeginButtonPress(false);
         }
 
         private void btnDown_StylusUp(object sender, StylusEventArgs e)
         {
             btnDown.Background = ButtonBackground;
-
-            if (advanceTimer.Enabled)
-            {
-                advanceTimer.Stop();
-            }
-            else
-            {
-                keyDownTimer.Stop();
-                if (Value >= MinValue) Value -= Step;
-                else Value = MinValue;
-                UpdateUI();
-            }
+            DownButtonPress();
         }
 
         #endregion

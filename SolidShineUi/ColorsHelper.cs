@@ -476,18 +476,16 @@ namespace SolidShineUi
         /// <remarks>Make sure to enter the name as it appears in the class <c>System.Windows.Media.Colors</c>, with no spaces or alternate spellings.</remarks>
         public static Color GetX11Color(string colorName)
         {
-            Type t = typeof(Colors);
-            PropertyInfo[] propInfo = t.GetProperties();
+            PropertyInfo[] propInfo = typeof(Colors).GetProperties();
             foreach (PropertyInfo p in propInfo)
             {
                 if (p.PropertyType == typeof(Color))
                 {
-                    if (p.Name.ToLowerInvariant() == colorName.ToLowerInvariant())
+                    if (p.Name.ToLowerInvariant().Equals(colorName.ToLowerInvariant(), StringComparison.OrdinalIgnoreCase))
                     {
-                        var c = (Color?) p.GetValue(new Color(), BindingFlags.GetProperty, null, null, null);
-                        if (c != null)
+                        if (p.GetValue(new Color(), BindingFlags.GetProperty, null, null, null) is Color c)
                         {
-                            return c.Value;
+                            return c;
                         }
                         else
                         {
@@ -498,6 +496,50 @@ namespace SolidShineUi
             }
 
             throw new ArgumentException("There is no color with this name.", nameof(colorName));
+        }
+
+        /// <summary>
+        /// Get the name for a color on the X11 Color table, as it appears in <c>System.Windows.Media.Colors</c>.
+        /// </summary>
+        /// <param name="color">The color to get the name for.</param>
+        /// <returns>The color's name, if it appears on the table; otherwise, this returns an empty string.</returns>
+        public static string GetX11NameFromColor(Color color)
+        {
+            PropertyInfo[] propInfo = typeof(Colors).GetProperties();
+            foreach (PropertyInfo p in propInfo)
+            {
+                if (p.PropertyType == typeof(Color))
+                {
+                    if (p.GetValue(new Color(), BindingFlags.GetProperty, null, null, null) is Color c)
+                    {
+                        if (c == color)
+                        {
+                            return p.Name;
+                        }
+                    }
+                }
+            }
+
+            return "";
+        }
+
+        /// <summary>
+        /// Get a collection of all the colors in the X11 Color table, as they appear in <c>System.Windows.Media.Colors</c>.
+        /// </summary>
+        /// <remarks>This uses reflection to go through each property in <see cref="Colors"/>, and returns a list containing all of their values.</remarks>
+        public static IEnumerable<Color> GetAllX11Colors()
+        {
+            PropertyInfo[] propInfo = typeof(Colors).GetProperties();
+            foreach (PropertyInfo p in propInfo)
+            {
+                if (p.PropertyType == typeof(Color))
+                {
+                    if (p.GetValue(new Color(), BindingFlags.GetProperty, null, null, null) is Color c)
+                    {
+                        yield return c;
+                    }
+                }
+            }
         }
 
 //#if DEBUG

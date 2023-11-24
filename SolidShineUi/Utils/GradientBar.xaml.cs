@@ -253,6 +253,7 @@ namespace SolidShineUi.Utils
             {
                 foreach (GradientStopItem gsi in grdStops.Children)
                 {
+                    if (gsi == null) continue;
                     if (gsi.GradientStop == gs)
                     {
                         if (gsi == _selected) return; // this one is already selected
@@ -284,6 +285,8 @@ namespace SolidShineUi.Utils
 
             foreach (GradientStopItem gsi in grdStops.Children)
             {
+                if (gsi == null) continue;
+
                 if (gsi.GradientStop == gradientStop)
                 {
                     if (gsi == _selected) return; // this one is already selected
@@ -307,7 +310,7 @@ namespace SolidShineUi.Utils
                 return _selected?.GradientStop;
             }
         }
-        #endregion
+#endregion
 
         #region ShowControls
 
@@ -564,14 +567,18 @@ namespace SolidShineUi.Utils
             }
         }
 
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudOffset_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_selected == null) return;
 
             UpdateStopOffset(_selected, nudOffset.Value);
         }
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0051 // Remove unused private members
 
-#endregion
+        #endregion
 
         private void btnColorChange_Click(object sender, RoutedEventArgs e)
         {

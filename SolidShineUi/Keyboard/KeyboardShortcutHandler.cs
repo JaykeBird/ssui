@@ -152,10 +152,7 @@ namespace SolidShineUi.KeyboardShortcuts
             (IKeyAction m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
 #endif
 
-            if (m != null)
-            {
-                m.Execute();
-            }
+            m?.Execute();
 
             return;
         }

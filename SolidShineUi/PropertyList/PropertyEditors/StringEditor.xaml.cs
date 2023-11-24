@@ -197,7 +197,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 led.Owner = Window.GetWindow(this);
                 led.ColorScheme = _cs;
                 led.LoadEnumerable(txtText.Text, typeof(char), propEditorType);
-                led.Description = "collection string, of type char, with " + txtText.Text.Count() + " items:";
+                led.Description = "collection string, of type char, with " + txtText.Text.Length + " items:";
 
                 led.ShowDialog();
             }

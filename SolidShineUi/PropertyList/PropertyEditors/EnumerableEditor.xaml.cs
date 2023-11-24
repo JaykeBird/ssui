@@ -197,10 +197,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         void RenderListDataText(object value, Type type)
 #endif
         {
-            string contentsData = "()";
 
             if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
             {
+                string contentsData;// = "()";
+
                 if (value == null)
                 {
                     // null value

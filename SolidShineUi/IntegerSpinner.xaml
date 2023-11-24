@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SolidShineUi"
              xmlns:utils="clr-namespace:SolidShineUi.Utils"
              mc:Ignorable="d" x:Name="baseSpinner" MinHeight="24"
-             d:DesignWidth="80" Loaded="baseSpinner_Loaded" IsEnabledChanged="BaseSpinner_IsEnabledChanged" >
+             d:DesignWidth="80" IsEnabledChanged="BaseSpinner_IsEnabledChanged" >
     <!--<UserControl.Resources>
         <ControlTemplate x:Key="styleUpDown" TargetType="Button">
             <Border x:Name="br" BorderThickness="0" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:IntegerSpinner}}}"

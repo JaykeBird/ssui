@@ -42,18 +42,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                 if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
                 {
-                    imgNew.Source = LoadIcon("Reload", ICON_WHITE);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
+                    imgNew.Source = LoadIcon("Reload", Utils.IconVariation.White);
+                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
                 }
                 else if (value.BackgroundColor == Colors.White)
                 {
-                    imgNew.Source = LoadIcon("Reload", ICON_BLACK);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
+                    imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Black);
+                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
                 }
                 else
                 {
-                    imgNew.Source = LoadIcon("Reload", ICON_COLOR);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
+                    imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Color);
+                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
                 }
             }
         }

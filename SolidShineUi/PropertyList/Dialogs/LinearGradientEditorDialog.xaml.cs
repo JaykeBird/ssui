@@ -159,7 +159,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         #region Gradient Direction Handling
         // taken from WPF source code
-        private Point EndPointFromAngle(double angle)
+        private static Point EndPointFromAngle(double angle)
         {
             angle = angle * 0.0055555555555555558 * Math.PI;
             return new Point(Math.Cos(angle), Math.Sin(angle));
@@ -197,6 +197,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
 #pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudStartX_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             RunUpdateAction(() =>
@@ -283,6 +284,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             });
         }
 #pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0060 // Remove unused parameter
 
         private void btnAngleLeft_Click(object sender, RoutedEventArgs e)
         {
@@ -356,11 +358,13 @@ namespace SolidShineUi.PropertyList.Dialogs
 
 
 #pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
         private void nudOpacity_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdatePreview();
         }
 #pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0060 // Remove unused parameter
 
         #endregion
 
