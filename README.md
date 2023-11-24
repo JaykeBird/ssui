@@ -6,12 +6,11 @@ This is a library containing controls and windows for WPF .NET programs (many ne
 This library is created and maintained by JaykeBird (Jayke R. Huempfner). While a majority of the code and functionality was built by me, a portion of it was originally created by others. Please see the credits on my website for more details (linked below).
 
 The entire library is available under the MIT License.
+( [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_shield) )
 
 View more details about this library at [my website, jaykebird.com](https://jaykebird.com/software/ssui).
 
 ## Use it now
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_shield)
-
 
 The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries [directly from here on GitHub](https://github.com/JaykeBird/ssui/releases/latest).
 
@@ -200,9 +199,12 @@ Included is the SsuiSample program, which is useful for demonstrating the librar
 
 If you receive this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start button, or you can access it via `Build > Configuration Manager...` and set the active configuration there).
 
-## Credits/Usage
-
+## License
 This library is released under the [MIT License](License.md).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_large)
+
+## Credits/Usage
 
 For credits/attribution for when you use the library, please use one of the versions below (the first one is preferred):
 
@@ -223,6 +225,3 @@ For credits/attribution for when you use the library, please use one of the vers
 
 The full credits is available on [the Credits page on my website](https://jaykebird.com/software/ssui/credits).
 
-
-## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_large)
