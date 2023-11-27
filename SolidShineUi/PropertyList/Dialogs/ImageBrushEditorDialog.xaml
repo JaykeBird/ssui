@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SolidShineUi.PropertyList.Dialogs"
         xmlns:flat="clr-namespace:SolidShineUi"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:Utils="clr-namespace:SolidShineUi.Utils" x:Class="SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog"
-        mc:Ignorable="d" Height="520" Width="700" Loaded="Window_Loaded" ResizeMode="NoResize" CaptionDisplayType="Close" >
+        xmlns:utils="clr-namespace:SolidShineUi.Utils" 
+        x:Class="SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog"
+        mc:Ignorable="d" Height="700" Width="700" Loaded="Window_Loaded" ResizeMode="NoResize" CaptionDisplayType="Close" >
     <flat:FlatWindow.Resources>
         <flat:ColorToBrushConverter x:Key="ctb" />
         <BooleanToVisibilityConverter x:Key="btv" />
@@ -58,12 +57,9 @@
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
                     <RowDefinition Height="26" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="26" />
-                    <RowDefinition Height="26" />
-                    <RowDefinition Height="26" />
-                    <RowDefinition Height="26" />
-                    <RowDefinition Height="26" />
-                    <RowDefinition Height="26" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -73,70 +69,38 @@
 
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Stretch:"/>
                 <TextBlock HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" Text="Opacity:"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Text="Tile mode:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" Text="Viewbox X/Y:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Center" Text="Viewbox Width/Height:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Center" Text="Viewbox Units:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="6" VerticalAlignment="Center" Text="Viewport X/Y:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="7" VerticalAlignment="Center" Text="Viewport Width/Height:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="8" VerticalAlignment="Center" Text="Viewport Units:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="9" VerticalAlignment="Center" Text="View alignment X:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
-                <TextBlock HorizontalAlignment="Left" Grid.Row="10" VerticalAlignment="Center" Text="View alignment Y:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
+                <TextBlock HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Text="X Alignment:" Visibility="Visible"/>
+                <TextBlock HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" Text="Y Alignment:" Visibility="Visible"/>
+                <TextBlock HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Center" Text="Tile mode:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
+                <TextBlock HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Center" Text="Viewbox:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
+                <TextBlock HorizontalAlignment="Left" Grid.Row="7" VerticalAlignment="Center" Text="Viewport:" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"/>
 
                 <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" x:Name="cbbStretch" Width="110" SelectedIndex="0"
                                Enum="{x:Type Stretch}" SelectionChanged="cbbStretch_SelectionChanged" />
                 <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" x:Name="nudOpacity" Width="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                 MinValue="0.0" MaxValue="1.0" Value="1.0" Decimals="2" Step="0.05" ValueChanged="nudOpacity_ValueChanged" />
-                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="cbbTileMode" Width="65" SelectedIndex="0"
+                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="cbbAlignmentX" Width="110" SelectedIndex="1"
+                               Enum="{x:Type AlignmentX}" SelectionChanged="cbbAlignmentX_SelectionChanged" Visibility="Visible" />
+                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2" x:Name="cbbAlignmentY" Width="110" SelectedIndex="1"
+                               Enum="{x:Type AlignmentY}" SelectionChanged="cbbAlignmentX_SelectionChanged" Visibility="Visible" />
+                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" x:Name="cbbTileMode" Width="65" SelectedIndex="0"
                                Enum="{x:Type TileMode}" SelectionChanged="cbbTileMode_SelectionChanged" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="3" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" >
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewX" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="0.0" Decimals="3" Step="0.1" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewY" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="0.0" Decimals="3" Step="0.1" Margin="5,0" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewAX" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewAY" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" Margin="5,0" />
+                <StackPanel Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="5" VerticalAlignment="Center"
+                             Visibility="{Binding IsChecked, Converter={StaticResource btv}, ElementName=chkViewbox}" >
+                    <TextBlock Text="Units:" VerticalAlignment="Center" Margin="0,0,3,0" />
+                    <flat:EnumComboBox x:Name="cbbViewUnits" Width="155" SelectedIndex="0"
+                        Enum="{x:Type BrushMappingMode}" SelectionChanged="cbbViewUnits_SelectionChanged" Visibility="{Binding IsChecked, Converter={StaticResource btv}, ElementName=chkViewbox}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="4" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" >
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewW" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="1.0" Decimals="3" Step="0.1" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewH" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="1.0" Decimals="3" Step="0.1" Margin="5,0" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewAW" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudViewAH" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" Margin="5,0" />
+                <utils:RectEdit Grid.Row="6" Grid.ColumnSpan="3" Margin="5,0,0,0" x:Name="reViewbox" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}"
+                                Height="150" Width="250" HorizontalAlignment="Left" />
+                <StackPanel Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" VerticalAlignment="Center"
+                             Visibility="{Binding IsChecked, Converter={StaticResource btv}, ElementName=chkViewbox}" >
+                    <TextBlock Text="Units:" VerticalAlignment="Center" Margin="0,0,3,0" />
+                    <flat:EnumComboBox x:Name="cbbPortUnits" Width="155" SelectedIndex="0"
+                        Enum="{x:Type BrushMappingMode}" SelectionChanged="cbbPortUnits_SelectionChanged" />
                 </StackPanel>
-                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" x:Name="cbbViewUnits" Width="160" SelectedIndex="0"
-                               Enum="{x:Type BrushMappingMode}" SelectionChanged="cbbViewUnits_SelectionChanged" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="6" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" >
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortX" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="0.0" Decimals="3" Step="0.1" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortY" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="0.0" Decimals="3" Step="0.1" Margin="5,0" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortAX" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortAY" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" Margin="5,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="7" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" >
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortW" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="1.0" Decimals="3" Step="0.1" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortH" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="1.0" Value="1.0" Decimals="3" Step="0.1" Margin="5,0" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortAW" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" />
-                    <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="nudPortAH" Width="70" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                                MinValue="0.0" MaxValue="2000.0" Value="0.0" Decimals="2" Step="1.0" Visibility="Collapsed" Margin="5,0" />
-                </StackPanel>
-                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="2" x:Name="cbbPortUnits" Width="160" SelectedIndex="0"
-                               Enum="{x:Type BrushMappingMode}" SelectionChanged="cbbPortUnits_SelectionChanged" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" />
-                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="2" x:Name="cbbAlignmentX" Width="110" SelectedIndex="1"
-                               Enum="{x:Type AlignmentX}" SelectionChanged="cbbStretch_SelectionChanged" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" />
-                <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="2" x:Name="cbbAlignmentY" Width="110" SelectedIndex="1"
-                               Enum="{x:Type AlignmentY}" SelectionChanged="cbbStretch_SelectionChanged" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" />
+                <utils:RectEdit Grid.Row="8" Grid.ColumnSpan="3" Margin="5,0,0,0" x:Name="reViewport" Visibility="{Binding ElementName=chkViewbox, Path=IsChecked, Converter={StaticResource btv}}" 
+                                Height="150" Width="250" HorizontalAlignment="Left" />
             </Grid>
             <flat:CheckBox Grid.Row="3" Grid.Column="2" Content="Show Viewbox/Viewport options" IsChecked="False" x:Name="chkViewbox" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
             <TextBlock HorizontalAlignment="Right" Margin="0,5,10,0" Text="-" x:Name="imgSize" VerticalAlignment="Top"/>

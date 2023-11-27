@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,35 +15,28 @@ namespace SolidShineUi
     public class EnumComboBox : ComboBox
     {
 
-
         /// <summary>
         /// Create an EnumComboBox.
         /// </summary>
         public EnumComboBox()
         {
-            InternalEnumChanged += EnumComboBox_InternalEnumChanged;
+
         }
 
         #region EnumProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>The backing dependency property for <see cref="Enum"/>. See the related property for details.</summary>
         public static readonly DependencyProperty EnumProperty = DependencyProperty.Register(
             "Enum", typeof(Type), typeof(EnumComboBox),
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalEnumChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalEnumChanged;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing routed event for <see cref="EnumChanged"/>. See the related event for details.</summary>
         public static readonly RoutedEvent EnumChangedEvent = EventManager.RegisterRoutedEvent(
             "EnumChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(EnumComboBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Raised when the Enum property is changed.
+        /// Raised when the <see cref="Enum"/> property is changed.
         /// </summary>
         public event RoutedEventHandler EnumChanged
         {
@@ -54,11 +48,11 @@ namespace SolidShineUi
         {
             if (d is EnumComboBox s)
             {
-                s.InternalEnumChanged?.Invoke(s, e);
+                s.OnEnumChanged(e);
             }
         }
 
-        private void EnumComboBox_InternalEnumChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnEnumChanged(DependencyPropertyChangedEventArgs e)
         {
             if (Enum.BaseType != typeof(Enum))
             {
@@ -90,7 +84,7 @@ namespace SolidShineUi
         #endregion
 
         /// <summary>
-        /// Get or set the selected item of the EnumComboBox. To avoid casting, use the SelectedEnumValueAsEnum function.
+        /// Get or set the selected item of the EnumComboBox. To avoid casting when getting this value, use the SelectedEnumValueAsEnum function.
         /// </summary>
         public object SelectedEnumValue
         {
