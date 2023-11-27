@@ -1,4 +1,4 @@
-﻿
+﻿#if false
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -6,10 +6,18 @@ using System.Windows.Interop;
 using System.Globalization;
 using System.Runtime.Serialization;
 
+// this was one of my original attempts to get shadows and window effects working again after I accidentally broke it
+// now I've figured out what my error was and fixed it, so I no longer need this at all
+// I'll keep this here and un-compiled in the 1.9.7 branch, because it's just nice to have as a reference if needed, this won't be brought forward to 2.0
+// note that I will not provide any support or help with this code, you may have better luck at the stackoverflow link below
+
 namespace SolidShineUi.Utils
 {
     // from https://stackoverflow.com/questions/3372303/dropshadow-for-wpf-borderless-window/6313576#6313576
 
+    /// <summary>
+    /// A helper class to provide a drop shadow on windows (for when using Windows Vista or later).
+    /// </summary>
     public static class DwmDropShadow
     {
         [DllImport("dwmapi.dll", PreserveSig = true)]
@@ -65,7 +73,7 @@ namespace SolidShineUi.Utils
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Probably dwmapi.dll not found (incompatible OS)
                 return false;
@@ -73,6 +81,13 @@ namespace SolidShineUi.Utils
         }
     }
 
+    /// <summary>
+    /// A measurement of margins of an object, such as when placed upon a page.
+    /// </summary>
+    /// <remarks>
+    /// This is directly copied from <c>System.Drawing.Printing.Margins</c>, since that library isn't included in recent versions of .NET.
+    /// Since this is used in the native Windows API call that <see cref="DwmDropShadow"/> uses, this is why I had to copy this here.
+    /// </remarks>
     public class Margins : ICloneable
     {
         private int left;
@@ -95,17 +110,10 @@ namespace SolidShineUi.Utils
         [OptionalField]
         private double doubleBottom;
 
-        //
-        // Summary:
-        //     Gets or sets the left margin width, in hundredths of an inch.
-        //
-        // Returns:
-        //     The left margin width, in hundredths of an inch.
-        //
-        // Exceptions:
-        //   T:System.ArgumentException:
-        //     The System.Drawing.Printing.Margins.Left property is set to a value that is less
-        //     than 0.
+        /// <summary>
+        /// Get or sets the left margin, in hundredths of an inch.
+        /// </summary>
+        /// <exception cref="ArgumentException">thrown if set to a value less than 0</exception>
         public int Left
         {
             get
@@ -114,23 +122,16 @@ namespace SolidShineUi.Utils
             }
             set
             {
-                CheckMargin(value, "Left");
+                Margins.CheckMargin(value, "Left");
                 left = value;
                 doubleLeft = value;
             }
         }
 
-        //
-        // Summary:
-        //     Gets or sets the right margin width, in hundredths of an inch.
-        //
-        // Returns:
-        //     The right margin width, in hundredths of an inch.
-        //
-        // Exceptions:
-        //   T:System.ArgumentException:
-        //     The System.Drawing.Printing.Margins.Right property is set to a value that is
-        //     less than 0.
+        /// <summary>
+        /// Get or sets the right margin, in hundredths of an inch.
+        /// </summary>
+        /// <exception cref="ArgumentException">thrown if set to a value less than 0</exception>
         public int Right
         {
             get
@@ -139,23 +140,16 @@ namespace SolidShineUi.Utils
             }
             set
             {
-                CheckMargin(value, "Right");
+                Margins.CheckMargin(value, "Right");
                 right = value;
                 doubleRight = value;
             }
         }
 
-        //
-        // Summary:
-        //     Gets or sets the top margin width, in hundredths of an inch.
-        //
-        // Returns:
-        //     The top margin width, in hundredths of an inch.
-        //
-        // Exceptions:
-        //   T:System.ArgumentException:
-        //     The System.Drawing.Printing.Margins.Top property is set to a value that is less
-        //     than 0.
+        /// <summary>
+        /// Get or sets the top margin, in hundredths of an inch.
+        /// </summary>
+        /// <exception cref="ArgumentException">thrown if set to a value less than 0</exception>
         public int Top
         {
             get
@@ -164,23 +158,16 @@ namespace SolidShineUi.Utils
             }
             set
             {
-                CheckMargin(value, "Top");
+                Margins.CheckMargin(value, "Top");
                 top = value;
                 doubleTop = value;
             }
         }
 
-        //
-        // Summary:
-        //     Gets or sets the bottom margin, in hundredths of an inch.
-        //
-        // Returns:
-        //     The bottom margin, in hundredths of an inch.
-        //
-        // Exceptions:
-        //   T:System.ArgumentException:
-        //     The System.Drawing.Printing.Margins.Bottom property is set to a value that is
-        //     less than 0.
+        /// <summary>
+        /// Get or sets the bottom margin, in hundredths of an inch.
+        /// </summary>
+        /// <exception cref="ArgumentException">thrown if set to a value less than 0</exception>
         public int Bottom
         {
             get
@@ -189,7 +176,7 @@ namespace SolidShineUi.Utils
             }
             set
             {
-                CheckMargin(value, "Bottom");
+                Margins.CheckMargin(value, "Bottom");
                 bottom = value;
                 doubleBottom = value;
             }
@@ -247,44 +234,28 @@ namespace SolidShineUi.Utils
             }
         }
 
-        //
-        // Summary:
-        //     Initializes a new instance of the System.Drawing.Printing.Margins class with
-        //     1-inch wide margins.
+        /// <summary>
+        /// Create a new Margins with 1-inch wide margins (each value is set to 100).
+        /// </summary>
         public Margins()
             : this(100, 100, 100, 100)
         {
         }
 
-        //
-        // Summary:
-        //     Initializes a new instance of the System.Drawing.Printing.Margins class with
-        //     the specified left, right, top, and bottom margins.
-        //
-        // Parameters:
-        //   left:
-        //     The left margin, in hundredths of an inch.
-        //
-        //   right:
-        //     The right margin, in hundredths of an inch.
-        //
-        //   top:
-        //     The top margin, in hundredths of an inch.
-        //
-        //   bottom:
-        //     The bottom margin, in hundredths of an inch.
-        //
-        // Exceptions:
-        //   T:System.ArgumentException:
-        //     The left parameter value is less than 0. -or- The right parameter value is less
-        //     than 0. -or- The top parameter value is less than 0. -or- The bottom parameter
-        //     value is less than 0.
+        /// <summary>
+        /// Create a new Margins with the specified left, right, top, and bottom margins.
+        /// </summary>
+        /// <param name="left">the left margin, in hundredths of an inch</param>
+        /// <param name="right">the right margin, in hundredths of an inch</param>
+        /// <param name="top">the top margin, in hundredths of an inch</param>
+        /// <param name="bottom">the bottom margin, in hundredths of an inch</param>
+        /// <exception cref="ArgumentException">if any of the parameters are less than 0</exception>
         public Margins(int left, int right, int top, int bottom)
         {
-            CheckMargin(left, "left");
-            CheckMargin(right, "right");
-            CheckMargin(top, "top");
-            CheckMargin(bottom, "bottom");
+            Margins.CheckMargin(left, "left");
+            Margins.CheckMargin(right, "right");
+            Margins.CheckMargin(top, "top");
+            Margins.CheckMargin(bottom, "bottom");
             this.left = left;
             this.right = right;
             this.top = top;
@@ -319,7 +290,13 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private void CheckMargin(int margin, string name)
+        /// <summary>
+        /// Check if a margin value is below 0. If so, this throws an <see cref="ArgumentException"/>.
+        /// </summary>
+        /// <param name="margin">the margin value to check</param>
+        /// <param name="name">the name of the value to provide in the ArgumentException, if thrown</param>
+        /// <exception cref="ArgumentException">thrown if <paramref name="margin"/> is less than 0</exception>
+        private static void CheckMargin(int margin, string name)
         {
             if (margin < 0)
             {
@@ -327,59 +304,53 @@ namespace SolidShineUi.Utils
             }
         }
 
-        //
-        // Summary:
-        //     Retrieves a duplicate of this object, member by member.
-        //
-        // Returns:
-        //     A duplicate of this object.
+        /// <summary>
+        /// Retrieves a duplicate of this object, member by member.
+        /// </summary>
+        /// <returns>A duplicate of this object.</returns>
         public object Clone()
         {
             return MemberwiseClone();
         }
 
-        //
-        // Summary:
-        //     Compares this System.Drawing.Printing.Margins to the specified System.Object
-        //     to determine whether they have the same dimensions.
-        //
-        // Parameters:
-        //   obj:
-        //     The object to which to compare this System.Drawing.Printing.Margins.
-        //
-        // Returns:
-        //     true if the specified object is a System.Drawing.Printing.Margins and has the
-        //     same System.Drawing.Printing.Margins.Top, System.Drawing.Printing.Margins.Bottom,
-        //     System.Drawing.Printing.Margins.Right and System.Drawing.Printing.Margins.Left
-        //     values as this System.Drawing.Printing.Margins; otherwise, false.
+        /// <summary>
+        /// Compares this Margins object to the specified <see cref="object"/> to determine whether they have the same dimensions.
+        /// </summary>
+        /// <param name="obj">the object to which to compare this Margins</param>
+        /// <returns>
+        /// <c>true</c> if the object is a Margins, and has the same <see cref="Top"/>, <see cref="Bottom"/>, <see cref="Right"/>, and <see cref="Left"/> values as this;
+        /// otherwise, <c>false</c>
+        /// </returns>
         public override bool Equals(object obj)
         {
-            Margins margins = obj as Margins;
-            if (margins == this)
-            {
-                return true;
-            }
-
-            if (margins == null)
+            if (obj is null)
             {
                 return false;
             }
-
-            if (margins.Left == Left && margins.Right == Right && margins.Top == Top)
+            else if (obj is Margins margins)
             {
-                return margins.Bottom == Bottom;
-            }
+                if (margins == this)
+                {
+                    return true;
+                }
 
-            return false;
+                if (margins.Left == Left && margins.Right == Right && margins.Top == Top)
+                {
+                    return margins.Bottom == Bottom;
+                }
+
+                return false;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        //
-        // Summary:
-        //     Calculates and retrieves a hash code based on the width of the left, right, top,
-        //     and bottom margins.
-        //
-        // Returns:
-        //     A hash code based on the left, right, top, and bottom margins.
+        /// <summary>
+        /// Calculates and retrieves a hash code based on the width of the left, right, top, and bottom margins.
+        /// </summary>
+        /// <returns>A hash code based on the left, right, top, and bottom margins.</returns>
         public override int GetHashCode()
         {
             uint num = (uint)Left;
@@ -389,30 +360,23 @@ namespace SolidShineUi.Utils
             return (int)(num ^ ((num2 << 13) | (num2 >> 19)) ^ ((num3 << 26) | (num3 >> 6)) ^ ((num4 << 7) | (num4 >> 25)));
         }
 
-        //
-        // Summary:
-        //     Compares two System.Drawing.Printing.Margins to determine if they have the same
-        //     dimensions.
-        //
-        // Parameters:
-        //   m1:
-        //     The first System.Drawing.Printing.Margins to compare for equality.
-        //
-        //   m2:
-        //     The second System.Drawing.Printing.Margins to compare for equality.
-        //
-        // Returns:
-        //     true to indicate the System.Drawing.Printing.Margins.Left, System.Drawing.Printing.Margins.Right,
-        //     System.Drawing.Printing.Margins.Top, and System.Drawing.Printing.Margins.Bottom
-        //     properties of both margins have the same value; otherwise, false.
+        /// <summary>
+        /// Compares two Margins to determine if they have the same dimensions.
+        /// </summary>
+        /// <param name="m1">The first Margins to compare for equality</param>
+        /// <param name="m2">The second Margins to compare for equality</param>
+        /// <returns>
+        /// <c>true</c> to indiciate the <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/>, and <see cref="Bottom"/> properties of both margins have the same value;
+        /// otherwise, <c>false</c>
+        /// </returns>
         public static bool operator ==(Margins m1, Margins m2)
         {
-            if ((object)m1 == null != ((object)m2 == null))
+            if (m1 is null != (m2 is null))
             {
                 return false;
             }
 
-            if ((object)m1 != null)
+            if (!(m1 is null) && !(m2 is null))
             {
                 if (m1.Left == m2.Left && m1.Top == m2.Top && m1.Right == m2.Right)
                 {
@@ -425,36 +389,29 @@ namespace SolidShineUi.Utils
             return true;
         }
 
-        //
-        // Summary:
-        //     Compares two System.Drawing.Printing.Margins to determine whether they are of
-        //     unequal width.
-        //
-        // Parameters:
-        //   m1:
-        //     The first System.Drawing.Printing.Margins to compare for inequality.
-        //
-        //   m2:
-        //     The second System.Drawing.Printing.Margins to compare for inequality.
-        //
-        // Returns:
-        //     true to indicate if the System.Drawing.Printing.Margins.Left, System.Drawing.Printing.Margins.Right,
-        //     System.Drawing.Printing.Margins.Top, or System.Drawing.Printing.Margins.Bottom
-        //     properties of both margins are not equal; otherwise, false.
+        /// <summary>
+        /// Compares two Margins to determine whether they are of unequal width.
+        /// </summary>
+        /// <param name="m1">The first Margins to compare for inequality.</param>
+        /// <param name="m2">The second Margins to compare for inequality.</param>
+        /// <returns>
+        /// <c>true</c> if the <see cref="Left"/>, <see cref="Right"/>, <see cref="Top"/>, or <see cref="Bottom"/> properties of both margins are not equal;
+        /// otherwise, <c>false</c>
+        /// </returns>
         public static bool operator !=(Margins m1, Margins m2)
         {
             return !(m1 == m2);
         }
 
-        //
-        // Summary:
-        //     Converts the System.Drawing.Printing.Margins to a string.
-        //
-        // Returns:
-        //     A System.String representation of the System.Drawing.Printing.Margins.
+        /// <summary>
+        /// Converts the Margins to a <see cref="string"/>.
+        /// </summary>
+        /// <returns>A <see cref="string"/> representation of the Margins.</returns>
         public override string ToString()
         {
-            return "[Margins Left=" + Left.ToString(CultureInfo.InvariantCulture) + " Right=" + Right.ToString(CultureInfo.InvariantCulture) + " Top=" + Top.ToString(CultureInfo.InvariantCulture) + " Bottom=" + Bottom.ToString(CultureInfo.InvariantCulture) + "]";
+            return "[Margins Left=" + Left.ToString(CultureInfo.InvariantCulture) + " Right=" + Right.ToString(CultureInfo.InvariantCulture) + 
+                " Top=" + Top.ToString(CultureInfo.InvariantCulture) + " Bottom=" + Bottom.ToString(CultureInfo.InvariantCulture) + "]";
         }
     }
 }
+#endif
