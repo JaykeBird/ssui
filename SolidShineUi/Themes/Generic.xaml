@@ -3,8 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:flat="clr-namespace:SolidShineUi"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
-    xmlns:system="clr-namespace:System;assembly=mscorlib" 
-    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell">
+    xmlns:system="clr-namespace:System;assembly=mscorlib" >
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
 
     <!--<ResourceDictionary.MergedDictionaries>
