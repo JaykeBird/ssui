@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi.Utils"
              xmlns:flat="clr-namespace:SolidShineUi"
-             mc:Ignorable="d" 
-             d:DesignHeight="160" d:DesignWidth="280" MinHeight="130" MinWidth="230" >
+             mc:Ignorable="d" Height="145" Width="250" MinHeight="130" MinWidth="230" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
     </UserControl.Resources>
