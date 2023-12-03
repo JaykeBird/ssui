@@ -121,7 +121,11 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Raisede when <see cref="MeasureType"/> changed.
         /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? MeasureTypeChanged;
+#else
         public event DependencyPropertyChangedEventHandler MeasureTypeChanged;
+#endif
 
         private static void OnInternalMeasureTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -205,7 +209,7 @@ namespace SolidShineUi.Utils
             }
         }
 
-        #endregion
+#endregion
 
         #region Limit To Percentage Range
 
