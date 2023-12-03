@@ -202,20 +202,40 @@ namespace SolidShineUi.PropertyList.Dialogs
             // okay, now the viewport properties
             cbbAlignmentX.SelectedEnumValue = br.AlignmentX;
             cbbAlignmentY.SelectedEnumValue = br.AlignmentY;
-            cbbViewUnits.SelectedEnumValue = br.ViewboxUnits;
-            cbbPortUnits.SelectedEnumValue = br.ViewportUnits;
+            cbbViewUnits.SelectedIndex = br.ViewboxUnits == BrushMappingMode.Absolute ? 0 : 1;
+            cbbPortUnits.SelectedIndex = br.ViewportUnits == BrushMappingMode.Absolute ? 0 : 1;
 
-            reViewport.LoadRect(br.Viewport);
-            reViewbox.LoadRect(br.Viewbox);
+            SetPortUnitsVisibility();
+            SetViewUnitsVisibility();
 
-            if (br.ViewportUnits == BrushMappingMode.RelativeToBoundingBox)
+            if (br.ViewportUnits == BrushMappingMode.Absolute)
             {
-                reViewport.LimitToPercentageRange = true;
+                nudPortAH.Value = br.Viewport.Height;
+                nudPortAW.Value = br.Viewport.Width;
+                nudPortAX.Value = br.Viewport.X;
+                nudPortAY.Value = br.Viewport.Y;
+            }
+            else
+            {
+                nudPortH.Value = br.Viewport.Height;
+                nudPortW.Value = br.Viewport.Width;
+                nudPortX.Value = br.Viewport.X;
+                nudPortY.Value = br.Viewport.Y;
             }
 
-            if (br.ViewboxUnits == BrushMappingMode.RelativeToBoundingBox)
+            if (br.ViewboxUnits == BrushMappingMode.Absolute)
             {
-                reViewbox.LimitToPercentageRange = true;
+                nudViewAH.Value = br.Viewbox.Height;
+                nudViewAW.Value = br.Viewbox.Width;
+                nudViewAX.Value = br.Viewbox.X;
+                nudViewAY.Value = br.Viewbox.Y;
+            }
+            else
+            {
+                nudViewH.Value = br.Viewbox.Height;
+                nudViewW.Value = br.Viewbox.Width;
+                nudViewX.Value = br.Viewbox.X;
+                nudViewY.Value = br.Viewbox.Y;
             }
         }
 
@@ -231,11 +251,26 @@ namespace SolidShineUi.PropertyList.Dialogs
             ibr.TileMode = cbbTileMode.SelectedEnumValueAsEnum<TileMode>();
             ibr.AlignmentX = cbbAlignmentX.SelectedEnumValueAsEnum<AlignmentX>();
             ibr.AlignmentY = cbbAlignmentY.SelectedEnumValueAsEnum<AlignmentY>();
-            ibr.ViewportUnits = cbbPortUnits.SelectedEnumValueAsEnum<BrushMappingMode>();
-            ibr.ViewboxUnits = cbbViewUnits.SelectedEnumValueAsEnum<BrushMappingMode>();
+            ibr.ViewportUnits = cbbPortUnits.SelectedIndex == 0 ? BrushMappingMode.Absolute : BrushMappingMode.RelativeToBoundingBox;
+            ibr.ViewboxUnits = cbbViewUnits.SelectedIndex == 0 ? BrushMappingMode.Absolute : BrushMappingMode.RelativeToBoundingBox;
 
-            ibr.Viewport = reViewport.GetRect();
-            ibr.Viewbox = reViewbox.GetRect();
+            if (ibr.ViewportUnits == BrushMappingMode.Absolute)
+            {
+                ibr.Viewport = new Rect(nudPortAX.Value, nudPortAY.Value, nudPortAW.Value, nudPortAH.Value);
+            }
+            else
+            {
+                ibr.Viewport = new Rect(nudPortX.Value, nudPortY.Value, nudPortW.Value, nudPortH.Value);
+            }
+
+            if (ibr.ViewboxUnits == BrushMappingMode.Absolute)
+            {
+                ibr.Viewbox = new Rect(nudViewAX.Value, nudViewAY.Value, nudViewAW.Value, nudViewAH.Value);
+            }
+            else
+            {
+                ibr.Viewbox = new Rect(nudViewX.Value, nudViewY.Value, nudViewW.Value, nudViewH.Value);
+            }
 
             return ibr;
         }
@@ -243,6 +278,11 @@ namespace SolidShineUi.PropertyList.Dialogs
         #endregion
 
         private void cbbStretch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdatePreview();
+        }
+
+        private void cbbAlignmentX_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdatePreview();
         }
@@ -295,21 +335,149 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
         }
 
+        void SetPortUnitsVisibility()
+        {
+            Visibility va = Visibility.Collapsed;
+            Visibility vr = Visibility.Visible;
+
+            if ((BrushMappingMode)cbbPortUnits.SelectedIndex == 0)
+            {
+                va = Visibility.Visible;
+                vr = Visibility.Collapsed;
+            }
+
+            nudPortAH.Visibility = va;
+            nudPortAW.Visibility = va;
+            nudPortAX.Visibility = va;
+            nudPortAY.Visibility = va;
+
+            nudPortH.Visibility = vr;
+            nudPortW.Visibility = vr;
+            nudPortX.Visibility = vr;
+            nudPortY.Visibility = vr;
+        }
+
+        void SetViewUnitsVisibility()
+        {
+            Visibility va = Visibility.Collapsed;
+            Visibility vr = Visibility.Visible;
+
+            if ((BrushMappingMode)cbbViewUnits.SelectedIndex == 0)
+            {
+                va = Visibility.Visible;
+                vr = Visibility.Collapsed;
+            }
+
+            nudViewAH.Visibility = va;
+            nudViewAW.Visibility = va;
+            nudViewAX.Visibility = va;
+            nudViewAY.Visibility = va;
+
+            nudViewH.Visibility = vr;
+            nudViewW.Visibility = vr;
+            nudViewX.Visibility = vr;
+            nudViewY.Visibility = vr;
+        }
+
         private void cbbPortUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (reViewport == null) return;
-            reViewport.LimitToPercentageRange = (BrushMappingMode)cbbPortUnits.SelectedEnumValue != BrushMappingMode.Absolute;
+            if (nudPortAH == null) return;
+
+            SetPortUnitsVisibility();
         }
 
         private void cbbViewUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (reViewbox == null) return;
-            reViewbox.LimitToPercentageRange = (BrushMappingMode)cbbViewUnits.SelectedEnumValue != BrushMappingMode.Absolute;
+            if (nudViewAH == null) return;
+
+            SetViewUnitsVisibility();
         }
 
-        private void cbbAlignmentX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        #region Presets Menu
+
+        void ApplyPreset(TileMode tm, Rect viewBox, BrushMappingMode viewBoxUnits, Rect viewPort, BrushMappingMode viewPortUnits)
         {
-            UpdatePreview();
+            ApplyPreset(tm, viewBox, viewBoxUnits == BrushMappingMode.Absolute, viewPort, viewPortUnits == BrushMappingMode.Absolute);
         }
+
+        void ApplyPreset(TileMode tm, Rect viewBox, bool viewBoxAbsolute, Rect viewPort, bool viewPortAbsolute)
+        {
+            cbbTileMode.SelectedEnumValue = tm;
+            cbbViewUnits.SelectedIndex = viewBoxAbsolute ? 0 : 1;
+            cbbPortUnits.SelectedIndex = viewPortAbsolute ? 0 : 1;
+
+            if (viewPortAbsolute)
+            {
+                nudPortAH.Value = viewPort.Height;
+                nudPortAW.Value = viewPort.Width;
+                nudPortAX.Value = viewPort.X;
+                nudPortAY.Value = viewPort.Y;
+            }
+            else
+            {
+                nudPortH.Value = viewPort.Height;
+                nudPortW.Value = viewPort.Width;
+                nudPortX.Value = viewPort.X;
+                nudPortY.Value = viewPort.Y;
+            }
+
+            if (viewBoxAbsolute)
+            {
+                nudViewAH.Value = viewBox.Height;
+                nudViewAW.Value = viewBox.Width;
+                nudViewAX.Value = viewBox.X;
+                nudViewAY.Value = viewBox.Y;
+            }
+            else
+            {
+                nudViewH.Value = viewBox.Height;
+                nudViewW.Value = viewBox.Width;
+                nudViewX.Value = viewBox.X;
+                nudViewY.Value = viewBox.Y;
+            }
+        }
+
+        private static Rect FullRelative = new Rect(0, 0, 1, 1);
+
+        private void mnuPresetNone_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyPreset(TileMode.None, FullRelative, false, FullRelative, false);
+        }
+
+        private void mnuPresetTile_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyPreset(TileMode.Tile, FullRelative, false, new Rect(0, 0, 0.5, 0.5), false);
+        }
+
+        private void mnuPresetTile4_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyPreset(TileMode.Tile, FullRelative, false, new Rect(0, 0, 0.25, 0.25), false);
+        }
+
+        private void mnuPresetFlip1_Click(object sender, RoutedEventArgs e)
+        {
+            // top
+            ApplyPreset(TileMode.FlipY, new Rect(0, 0, 1, 0.5), false, new Rect(0, 0, 1, 0.5), false);
+        }
+
+        private void mnuPresetFlip2_Click(object sender, RoutedEventArgs e)
+        {
+            // bottom
+            ApplyPreset(TileMode.FlipY, new Rect(0, 0.5, 1, 0.5), false, new Rect(0, 0.5, 1, 0.5), false);
+        }
+
+        private void mnuPresetFlip3_Click(object sender, RoutedEventArgs e)
+        {
+            // left
+            ApplyPreset(TileMode.FlipX, new Rect(0, 0, 0.5, 1), false, new Rect(0, 0, 0.5, 1), false);
+        }
+
+        private void mnuPresetFlip4_Click(object sender, RoutedEventArgs e)
+        {
+            // right
+            ApplyPreset(TileMode.FlipX, new Rect(0.5, 0, 0.5, 1), false, new Rect(0.5, 0, 0.5, 1), false);
+        }
+
+        #endregion
     }
 }

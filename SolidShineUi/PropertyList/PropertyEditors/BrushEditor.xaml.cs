@@ -327,7 +327,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 txtCurrentBrush.Text = "Image Brush";
                 txtCurrentValue.Text = GetImageDescriptor((ImageBrush)value);
                 btnEditBrush.IsEnabled = true;
-                btnEditBrush.Content = "Edit...";
+                btnEditBrush.Content = "Edit Brush...";
             }
             else if (brushType == typeof(BitmapCacheBrush))
             {
