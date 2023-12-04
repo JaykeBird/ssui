@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.Dialogs
 {
@@ -20,6 +21,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         public ImageBrushEditorDialog()
         {
             InitializeComponent();
+            ColorSchemeChanged += dialog_ColorSchemeChanged;
         }
 
         /// <summary>
@@ -28,6 +30,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         public ImageBrushEditorDialog(ColorScheme cs)
         {
             InitializeComponent();
+            ColorSchemeChanged += dialog_ColorSchemeChanged;
             ColorScheme = cs;
         }
 
@@ -43,6 +46,12 @@ namespace SolidShineUi.PropertyList.Dialogs
             //    nudEndX.Value = edtPoints.SelectedWidth2;
             //    nudEndY.Value = edtPoints.SelectedHeight2;
             //});
+        }
+
+        private void dialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
+            imgSetFullView.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
         }
 
         /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK", <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
@@ -67,6 +76,9 @@ namespace SolidShineUi.PropertyList.Dialogs
         bool _blankSourceOnEnter = false;
         //bool _newSourceSet = false;
         bool _internalAction = false;
+
+        Size imageSize = new Size(0, 0);
+
         private void txtSource_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_internalAction) return;
@@ -132,6 +144,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 _blankSourceOnEnter = true;
                 imgSize.Text = "- x -";
                 imgSize.ToolTip = null;
+                imageSize = new Size(0, 0);
             }
             else if (isrc is BitmapImage bi)
             {
@@ -151,6 +164,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
                 imgSize.Text = Math.Round(bi.Height, 2).ToString() + " x " + Math.Round(bi.Width, 2).ToString();
                 imgSize.ToolTip = "Device independent size: " + bi.Height.ToString() + " x " + bi.Width.ToString() + "\n" + "Actual pixel size: " + bi.PixelHeight.ToString() + " x " + bi.PixelWidth.ToString();
+                imageSize = new Size(Math.Round(bi.Width, 2), Math.Round(bi.Height, 2));
             }
             else if (isrc is BitmapSource bs)
             {
@@ -160,6 +174,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 _blankSourceOnEnter = true;
                 imgSize.Text = Math.Round(bs.Height, 2).ToString() + " x " + Math.Round(bs.Width, 2).ToString();
                 imgSize.ToolTip = "Device independent size: " + bs.Height.ToString() + " x " + bs.Width.ToString() + "\n" + "Actual pixel size: " + bs.PixelHeight.ToString() + " x " + bs.PixelWidth.ToString();
+                imageSize = new Size(Math.Round(bs.Width, 2), Math.Round(bs.Height, 2));
             }
             else if (isrc is DrawingImage di)
             {
@@ -169,6 +184,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 _blankSourceOnEnter = true;
                 imgSize.Text = Math.Round(di.Height, 2).ToString() + " x " + Math.Round(di.Width, 2).ToString();
                 imgSize.ToolTip = null;
+                imageSize = new Size(Math.Round(di.Width, 2), Math.Round(di.Height, 2));
             }
             else
             {
@@ -178,6 +194,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 _blankSourceOnEnter = true;
                 imgSize.Text = Math.Round(isrc.Height, 2).ToString() + " x " + Math.Round(isrc.Width, 2).ToString();
                 imgSize.ToolTip = null;
+                imageSize = new Size(Math.Round(isrc.Width, 2), Math.Round(isrc.Height, 2));
             }
             imgSource.Source = isrc;
             _internalAction = false;
@@ -479,5 +496,45 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         #endregion
+
+        private void btnSetFullView_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbbViewUnits.SelectedIndex == 0)
+            {
+                // absolute
+                nudViewAH.Value = imageSize.Height;
+                nudViewAW.Value = imageSize.Width;
+                nudViewAX.Value = 0.0;
+                nudViewAY.Value = 0.0;
+            }
+            else
+            {
+                // relative
+                nudViewH.Value = 1.0;
+                nudViewW.Value = 1.0;
+                nudViewX.Value = 0.0;
+                nudViewY.Value = 0.0;
+            }
+        }
+
+        private void btnSetFullPort_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbbPortUnits.SelectedIndex == 0)
+            {
+                // absolute
+                nudPortAH.Value = imageSize.Height;
+                nudPortAW.Value = imageSize.Width;
+                nudPortAX.Value = 0.0;
+                nudPortAY.Value = 0.0;
+            }
+            else
+            {
+                // relative
+                nudPortH.Value = 1.0;
+                nudPortW.Value = 1.0;
+                nudPortX.Value = 0.0;
+                nudPortY.Value = 0.0;
+            }
+        }
     }
 }
