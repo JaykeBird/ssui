@@ -14,20 +14,33 @@ using Microsoft.Windows.Shell;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// An internal wrapper around a base <c>WindowChrome</c> object. This is built as .NET 4.5+ and .NET Core includes System.Windows.Shell.WindowChrome out of the box,
+    /// An internal wrapper around a base <c>WindowChrome</c> object. This was built because .NET 4.5+ and .NET Core includes <c>System.Windows.Shell.WindowChrome</c> out of the box,
     /// but .NET 4.0 does not (and thus relies upon an external dependency).
     /// </summary>
+    /// <remarks>
+    /// If you are not targetting multiple .NET Framework versions in your program, it's better to instead just use the standard <c>WindowChrome</c> object.
+    /// </remarks>
     public class WindowChromeWrapper : Freezable
     {
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// Get a uniform thickness of -1.
+        /// </summary>
         public static Thickness GlassFrameCompleteThickness { get { return new Thickness(-1); } }
 
+        /// <summary>
+        /// The underlying WindowChrome object that actually holds the data for a particular window.
+        /// </summary>
         public WindowChrome BaseWindowChromeObject { get; set; } = new WindowChrome();
 
         #region Attached Properties
 
         #region WindowChrome
+        /// <summary>
+        /// Get or set the WindowChromeWrapper for a particular window.
+        /// </summary>
+        /// <remarks>
+        /// If this property is attached to an object other than a <see cref="Window"/>, this will fail.
+        /// </remarks>
         public WindowChromeWrapper WindowChromeVal { 
             get => (WindowChromeWrapper)GetValue(WindowChromeValProperty); 
             set => SetValue(WindowChromeValProperty, value); }
@@ -62,12 +75,21 @@ namespace SolidShineUi.Utils
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Get a WindowChromeWrapper for a particular window.
+        /// </summary>
+        /// <param name="window">The window to get the value for.</param>
         public static WindowChromeWrapper GetWindowChromeVal(Window window)
         {
             return (WindowChromeWrapper)window.GetValue(WindowChromeValProperty);
         }
 
+        /// <summary>
+        /// Set a WindowChromeWrapper for a particular window.
+        /// </summary>
+        /// <param name="window">The window to get the value for.</param>
+        /// <param name="chrome">The WindowChromeWrapper value to apply.</param>
         public static void SetWindowChromeVal(Window window, WindowChromeWrapper chrome)
         {
             if (window != null)
@@ -79,6 +101,13 @@ namespace SolidShineUi.Utils
 
         #region IsHitTestVisibleInChrome
 
+        /// <summary>
+        /// A dependency property for backing the <c>IsHitTestVisibleInChrome</c> attached property.
+        /// This determines if the attached object is available for hit-testing. If <c>false</c>, the object cannot be clicked on and is considered part of the window chrome.
+        /// </summary>
+        /// <remarks>
+        /// Use <see cref="GetIsHitTestVisibleInChrome(IInputElement)"/> and <see cref="SetIsHitTestVisibleInChrome(IInputElement, bool)"/> to set this property on an object.
+        /// </remarks>
         public static readonly DependencyProperty IsHitTestVisibleInChromeProperty
             = DependencyProperty.RegisterAttached("IsHitTestVisibleInChrome",
                 typeof(bool),
@@ -86,6 +115,11 @@ namespace SolidShineUi.Utils
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, 
                     _OnHitTestChange));
 
+        /// <summary>
+        /// Get if a particular object is available for hit-testing. If <c>false</c>, the object cannot be clicked on and is considered part of the window chrome.
+        /// </summary>
+        /// <param name="inputElement">the dependency object to check</param>
+        /// <exception cref="ArgumentException">thrown if the inputted object is not a <see cref="DependencyObject"/></exception>
         public static bool GetIsHitTestVisibleInChrome(IInputElement inputElement)
         {
             VerifyIsNotNull(inputElement, "inputElement");
@@ -106,6 +140,12 @@ namespace SolidShineUi.Utils
             return wb;
         }
 
+        /// <summary>
+        /// Set if a particular object is available for hit-testing. If <c>false</c>, the object cannot be clicked on and is considered part of the window chrome.
+        /// </summary>
+        /// <param name="inputElement">the dependency object to set the value for</param>
+        /// <param name="hitTestVisible">the value to set</param>
+        /// <exception cref="ArgumentException">thrown if the inputted object is not a <see cref="DependencyObject"/></exception>
         public static void SetIsHitTestVisibleInChrome(IInputElement inputElement, bool hitTestVisible)
         {
             VerifyIsNotNull(inputElement, "inputElement");
@@ -135,25 +175,30 @@ namespace SolidShineUi.Utils
 
         #region Other Properties
 
-        /// <summary>The extent of the top of the window to treat as the caption.</summary>
+        /// <summary>Get or set the height of the caption area at the top of the window. This is also known as the title bar.</summary>
         public double CaptionHeight
         {
             get { return BaseWindowChromeObject.CaptionHeight; }
             set { BaseWindowChromeObject.CaptionHeight = value; }
         }
 
+        /// <summary>Get or set the width of the border that can be used for resizing the window. The larger the border, the larger an area that can be clicked on to start resizing.</summary>
         public Thickness ResizeBorderThickness
         {
             get { return BaseWindowChromeObject.ResizeBorderThickness; }
             set { BaseWindowChromeObject.ResizeBorderThickness = value; }
         }
 
+        /// <summary>Get or set the size of the glass frame around the edges of the window. This is more useful on versions of Windows that have the Aero effect, like Windows 7.</summary>
         public Thickness GlassFrameThickness
         {
             get { return BaseWindowChromeObject.GlassFrameThickness; }
             set { BaseWindowChromeObject.GlassFrameThickness = value; }
         }
 
+        /// <summary>
+        /// Get or set if hit-testing is enabled on the Windows Aero caption buttons. These are the maximize/minimize/close buttons on the top corner of the window.
+        /// </summary>
 #if (NETCOREAPP || NET45_OR_GREATER)
         public bool UseAeroCaptionButtons
         {
@@ -161,6 +206,9 @@ namespace SolidShineUi.Utils
             set { BaseWindowChromeObject.UseAeroCaptionButtons = value; }
         }
         
+        /// <summary>
+        /// Get or set which edges of the window frame are not owned by the client.
+        /// </summary>
         public NonClientFrameEdges NonClientFrameEdges
         {
             get { return BaseWindowChromeObject.NonClientFrameEdges; }
@@ -170,6 +218,9 @@ namespace SolidShineUi.Utils
         public bool UseAeroCaptionButtons { get; set; }
 #endif
 
+        /// <summary>
+        /// Get or set the amount of rounding to apply to the corners of the window.
+        /// </summary>
         public CornerRadius CornerRadius
         {
             get { return BaseWindowChromeObject.CornerRadius; }
@@ -179,11 +230,11 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        /// <inheritdoc/>
         protected override Freezable CreateInstanceCore()
         {
             return new WindowChromeWrapper();
         }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         static void VerifyIsNotNull(object obj, string name)
         {
