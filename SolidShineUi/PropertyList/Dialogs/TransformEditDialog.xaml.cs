@@ -84,7 +84,10 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 ImportTransforms(tg);
             }
-            AddTransform(transform);
+            else
+            {
+                AddTransform(transform);
+            }
         }
 
         /// <summary>

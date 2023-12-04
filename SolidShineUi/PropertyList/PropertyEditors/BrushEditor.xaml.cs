@@ -740,6 +740,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 Transform t = _dataValue.Transform;
                 TransformEditDialog ted = new TransformEditDialog();
+                ted.ImportTransforms(t);
                 ted.ColorScheme = _cs;
                 ted.ShowDialog();
 
@@ -767,6 +768,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 Transform t = _dataValue.RelativeTransform;
                 TransformEditDialog ted = new TransformEditDialog();
+                ted.ImportTransforms(t);
                 ted.ColorScheme = _cs;
                 ted.ShowDialog();
 
