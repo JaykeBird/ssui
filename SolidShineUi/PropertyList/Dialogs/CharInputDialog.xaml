@@ -6,18 +6,18 @@
         xmlns:flat="clr-namespace:SolidShineUi"
         x:Class="SolidShineUi.PropertyList.Dialogs.CharInputDialog" x:Name="window"
         mc:Ignorable="d"
-        Title="Enter Char as Unicode" Height="260" Width="400" Loaded="FlatWindow_Loaded" CaptionDisplayType="Close" ResizeMode="NoResize" FontSize="12" >
+        Title="Enter Unicode Code Point" Height="260" Width="400" Loaded="FlatWindow_Loaded" CaptionDisplayType="Close" ResizeMode="NoResize" FontSize="12" >
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="151*"/>
-            <ColumnDefinition Width="149*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="38"/>
-            <RowDefinition Height="32"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="81"/>
-            <RowDefinition/>
+            <RowDefinition Height="5*" MinHeight="40"/>
+            <RowDefinition Height="4*" MinHeight="32" />
+            <RowDefinition Height="5*" MinHeight="40" />
+            <RowDefinition Height="10*" MinHeight="80"/>
+            <RowDefinition Height="5*" MinHeight="34" />
         </Grid.RowDefinitions>
         <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Enter a Unicode (UTF-32) code point:" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="222"/>
         <flat:FlatButton x:Name="btnOK" Content="OK" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" Grid.Column="1" />
