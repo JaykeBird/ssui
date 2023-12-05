@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 using SolidShineUi.Utils;
+using System.Net;
 
 namespace SolidShineUi.PropertyList.Dialogs
 {
@@ -52,6 +53,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
             imgSetFullView.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
+            imgOpen.Source = IconLoader.LoadIcon("SearchImage", ColorScheme);
         }
 
         /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK", <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
@@ -101,7 +103,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     try
                     {
                         //_newSourceSet = true;
-                        BitmapImage bi = new BitmapImage(new Uri(txtSource.Text));
+                        BitmapImage bi = new BitmapImage(new Uri(txtSource.Text), new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.BypassCache));
                         LoadImageSource(bi);
                     }
                     catch (UriFormatException)
@@ -131,14 +133,39 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         void LoadImageSource(ImageSource isrc)
         {
-            // TODO: do some testing to make sure the image source is valid
+
+            // note that support for newer versions of TLS (including the most modern, 1.3) is not available on older versions of .NET Framework
+            // most notably, .NET Framework 4.0 only supports TLS 1.0, which is now considered deprecated and should not be used
+            // .NET Framework 4.5 added support for TLS 1.1 and 1.2, but support for TLS 1.3 was only added with .NET Framework 4.8
+            // for those reasons, most attempts to load images from the internet on these older .NET Framework versions will fail
+
+            // as long as http://nginx.org/nginx.png still loads without an HTTPS redirect, we can use that to test that image loading does work in .NET Framework 4.0
+            // (or also test http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png, or an image on a different site from https://whynohttps.com)
+
+#if (NETCOREAPP || NET45_OR_GREATER)
+            string click_here = "click here to type/paste in a URL or file path";
+#else
+            string click_here = "click here to type/paste in a file path";
+#endif
+
+            if (isrc is BitmapSource bsc)
+            {
+                if (bsc.IsDownloading)
+                {
+                    imgSize.Text = "Downloading...";
+                    imgSize.ToolTip = null;
+                    bsc.DownloadFailed += DownloadFailed;
+                    bsc.DownloadCompleted += (x, y) => LoadImageSource(bsc);
+                    return;
+                }
+            }
 
             _source = isrc;
             _internalAction = true;
             if (isrc == null)
             {
                 // I don't know
-                txtSource.Text = "(image source is null, click here to change to a URL or file path)";
+                txtSource.Text = $"(image source is null, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
                 imgSize.Text = "- x -";
@@ -157,28 +184,28 @@ namespace SolidShineUi.PropertyList.Dialogs
                 else
                 {
                     // stream source
-                    txtSource.Text = "(image from stream, click here to change to a URL or file path)";
+                    txtSource.Text = $"(image from stream, {click_here})";
                     txtSource.FontStyle = FontStyles.Italic;
                     _blankSourceOnEnter = true;
                 }
                 imgSize.Text = Math.Round(bi.Height, 2).ToString() + " x " + Math.Round(bi.Width, 2).ToString();
-                imgSize.ToolTip = "Device independent size: " + bi.Height.ToString() + " x " + bi.Width.ToString() + "\n" + "Actual pixel size: " + bi.PixelHeight.ToString() + " x " + bi.PixelWidth.ToString();
+                imgSize.ToolTip = $"Device independent size: {bi.Height} x {bi.Width}\nActual pixel size: {bi.PixelHeight} x {bi.PixelWidth}";
                 imageSize = new Size(Math.Round(bi.Width, 2), Math.Round(bi.Height, 2));
             }
             else if (isrc is BitmapSource bs)
             {
                 // bitmap source
-                txtSource.Text = "(image from bitmap source, click here to change to a URL or file path)";
+                txtSource.Text = $"(image from bitmap source, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
                 imgSize.Text = Math.Round(bs.Height, 2).ToString() + " x " + Math.Round(bs.Width, 2).ToString();
-                imgSize.ToolTip = "Device independent size: " + bs.Height.ToString() + " x " + bs.Width.ToString() + "\n" + "Actual pixel size: " + bs.PixelHeight.ToString() + " x " + bs.PixelWidth.ToString();
+                imgSize.ToolTip = $"Device independent size: {bs.Height} x {bs.Width}\nActual pixel size: {bs.PixelHeight} x {bs.PixelWidth}";
                 imageSize = new Size(Math.Round(bs.Width, 2), Math.Round(bs.Height, 2));
             }
             else if (isrc is DrawingImage di)
             {
                 // maybe in the future, I can display some options or settings
-                txtSource.Text = "(image from drawing, click here to change to a URL or file path)";
+                txtSource.Text = $"(image from drawing, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
                 imgSize.Text = Math.Round(di.Height, 2).ToString() + " x " + Math.Round(di.Width, 2).ToString();
@@ -188,7 +215,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             else
             {
                 // I don't know
-                txtSource.Text = "(image from unknown source, click here to change to a URL or file path)";
+                txtSource.Text = $"(image from unknown source, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
                 imgSize.Text = Math.Round(isrc.Height, 2).ToString() + " x " + Math.Round(isrc.Width, 2).ToString();
@@ -198,7 +225,18 @@ namespace SolidShineUi.PropertyList.Dialogs
             imgSource.Source = isrc;
             _internalAction = false;
         }
-        #endregion
+
+        void DownloadFailed(object sender, ExceptionEventArgs e)
+        {
+            MessageDialog md = new MessageDialog(ColorScheme);
+
+            md.ShowDialog($"The image at the above URL could not be downloaded due to:\n\n{e.ErrorException}", owner: this, title: "Image Download Failed",
+                image: MessageDialogImage.Error, buttonDisplay: MessageDialogButtonDisplay.Auto);
+
+            LoadImageSource(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, MessageDialogImageConverter.MessageDialogImageColor.Color));
+        }
+
+#endregion
 
         #region Load/Save brush
 

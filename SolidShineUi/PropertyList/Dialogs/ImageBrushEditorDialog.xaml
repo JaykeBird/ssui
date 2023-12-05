@@ -28,8 +28,13 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Image source:" VerticalAlignment="Center" Margin="0,0,3,0" />
             <flat:ClickSelectTextBox Grid.Column="1" x:Name="txtSource" TextChanged="txtSource_TextChanged" />
-            <flat:FlatButton x:Name="btnSourceSelect" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2"
-                             Content="Select from File..." Margin="5,0,0,0" Click="btnSourceSelect_Click" Padding="8,3" />
+            <flat:FlatButton x:Name="btnSourceSelect" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" Margin="5,0,0,0" 
+                             Click="btnSourceSelect_Click" Padding="5,3">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" Width="16" x:Name="imgOpen" Source="/SolidShineUi;component/Images/SearchImageColor.png" />
+                    <TextBlock Margin="3,0" >Select From File...</TextBlock>
+                </StackPanel>
+            </flat:FlatButton>
         </Grid>
         <Grid Margin="30,5,10,5" Grid.Row="2" >
             <Grid.RowDefinitions>
