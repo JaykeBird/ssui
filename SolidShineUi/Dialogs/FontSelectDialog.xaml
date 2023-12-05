@@ -75,27 +75,7 @@
             </ListBox>
             <!--DataContext="{x:Static Fonts.SystemFontFamilies}" ItemsSource='{Binding}' />-->
             <TextBlock HorizontalAlignment="Left" Margin="25,15,0,0" Text="Font:" VerticalAlignment="Top"/>
-            <ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" >
-                <ListBox.Resources>
-                    <CollectionViewSource x:Key="myFonts" Source="{Binding Source={x:Static flat:FontSelectDialog.AvailableFontWeights}}">
-                        <CollectionViewSource.SortDescriptions>
-                            <ComponentModel:SortDescription PropertyName="Name" />
-                        </CollectionViewSource.SortDescriptions>
-                    </CollectionViewSource>
-
-                    <Style x:Key="FontStyle">
-                        <Setter Property="Control.FontFamily" Value="{Binding Source}" />
-                        <Setter Property="Control.FontSize" Value="12" />
-                    </Style>
-
-                    <!--<DataTemplate x:Key="FontTemplate">
-                    <StackPanel VirtualizingStackPanel.IsVirtualizing="True">
-                        <TextBlock Style="{StaticResource FontStyle}" Height="18"
-                                        Text="{Binding Source}"
-                                        ToolTip="{Binding Source}" />
-                    </StackPanel>
-                </DataTemplate>-->
-                </ListBox.Resources>
+            <ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" d:ItemsSource="{d:SampleData ItemCount=5}" >
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -106,12 +86,9 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <VirtualizingStackPanel CanHorizontallyScroll="False" />
+                        <StackPanel CanHorizontallyScroll="False" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                <ListBox.ItemsSource>
-                    <Binding Source="{StaticResource myFonts}" />
-                </ListBox.ItemsSource>
             </ListBox>
             <flat:DoubleSpinner x:Name="txtSize" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10" ValueChanged="txtSize_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" />
             <ListBox x:Name="lstSize" Margin="10,60,10,10" Width="90" SelectionChanged="lstSize_SelectionChanged" Grid.Column="2" >

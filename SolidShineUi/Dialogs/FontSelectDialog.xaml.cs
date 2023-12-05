@@ -22,6 +22,7 @@ namespace SolidShineUi
         public FontSelectDialog()
         {
             InitializeComponent();
+            lstWeight.ItemsSource = AvailableFontWeights;
             AutoCompleteBehavior.SetAutoCompleteItemsSource(txtFont, FontFamiliesByString());
         }
 
