@@ -447,6 +447,10 @@ namespace SolidShineUi
                 //Background = cs.BackgroundColor.ToBrush();
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
                 CheckForeground = cs.ForegroundColor.ToBrush();
+                if (CheckBackground is SolidColorBrush sc && sc.Color == cs.ForegroundColor)
+                {
+                    CheckForeground = cs.BackgroundColor.ToBrush();
+                }
             }
             else
             {
