@@ -47,11 +47,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             btnEditBrush.ColorScheme = cs;
             selChange.ColorScheme = cs;
             brdrPop.BorderBrush = cs.BorderColor.ToBrush();
-            brdrPop.Background = cs.ThirdHighlightColor.ToBrush();
-
-            //brdrTransform.BorderBrush = value.BorderColor.ToBrush();
-            //btnEditTransform.ColorScheme = value;
-            //btnEditRelativeTransform.ColorScheme = value;
 
             if (cs.IsHighContrast)
             {
@@ -62,6 +57,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 //btnBrush.DisabledBrush = value.BackgroundColor.ToBrush();
                 btnBrush.Foreground = cs.ForegroundColor.ToBrush();
                 btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+
+                brdrPop.Background = cs.BackgroundColor.ToBrush();
             }
             else
             {
@@ -72,6 +69,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 btnBrush.BorderSelectedBrush = cs.SelectionColor.ToBrush();
                 btnBrush.Foreground = cs.ForegroundColor.ToBrush();
                 btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+
+                brdrPop.Background = cs.ThirdHighlightColor.ToBrush();
             }
 
             if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
