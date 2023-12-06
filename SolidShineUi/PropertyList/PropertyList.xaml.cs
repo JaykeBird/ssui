@@ -596,6 +596,12 @@ namespace SolidShineUi.PropertyList
             {
                 // let's go through the list
                 object[] attributes = pi.GetCustomAttributes(true);
+                
+                // there are no attributes set, so there's no flags that would be tripped by this
+                if (attributes.Length == 0)
+                {
+                    return true;
+                }
 
                 if (DisplayOptions.HasFlag(PropertyListDisplayFlags.HideObsolete) && attributes.Any(o => o is ObsoleteAttribute))
                 {
