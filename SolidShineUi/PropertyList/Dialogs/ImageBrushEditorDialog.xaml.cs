@@ -53,7 +53,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
             imgSetFullView.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
-            imgOpen.Source = IconLoader.LoadIcon("SearchImage", ColorScheme);
+            imgOpen.Source = IconLoader.LoadIcon("Open", ColorScheme);
         }
 
         /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK", <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
