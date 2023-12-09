@@ -374,20 +374,6 @@ namespace SolidShineUi
 
         #region Basic Properties / Events
 
-        /// <summary>
-        /// A delegate to be used with events regarding the selected TabItem changing in a TabControl.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void TabItemChangeEventHandler(object sender, TabItemChangeEventArgs e);
-
-        /// <summary>
-        /// A delegate to be used with events regarding a TabItem being closed in a TabControl.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
-
         private static readonly DependencyPropertyKey SelectedTabPropertyKey
             = DependencyProperty.RegisterReadOnly("CurrentTab", typeof(TabItem), typeof(TabControl), new FrameworkPropertyMetadata(null));
 
@@ -1169,6 +1155,22 @@ namespace SolidShineUi
         /// </summary>
         public TabItem TabItem { get; private set; }
     }
+
+
+    /// <summary>
+    /// A delegate to be used with events regarding the selected <see cref="TabItem"/> changing in a <see cref="TabControl"/>, such as <see cref="TabControl.TabChanged"/>.
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void TabItemChangeEventHandler(object sender, TabItemChangeEventArgs e);
+
+    /// <summary>
+    /// A delegate to be used with the <see cref="TabControl.TabClosing"/> event, which is raised immediately before a tab is closed (to provide an ability to cancel closing the tab).
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
+
 
     /// <summary>
     /// References the action to take when the currently-selected tab is closed.

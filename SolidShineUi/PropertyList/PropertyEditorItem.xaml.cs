@@ -49,14 +49,6 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public bool IsReadOnly { get; private set; }
 
-
-        /// <summary>
-        /// A delegate to be used with events regarding the value of a property editor's property changing.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void PropertyEditorValueChangedEventHandler(object? sender, PropertyEditorValueChangedEventArgs e);
-
         /// <summary>
         /// Raised when the value of this property is changed, by use of a <see cref="PropertyEditorControl"/>.
         /// </summary>
@@ -91,13 +83,6 @@ namespace SolidShineUi.PropertyList
         /// Get if this property is read only, meaning it cannot be edited or changed.
         /// </summary>
         public bool IsReadOnly { get; private set; }
-
-        /// <summary>
-        /// A delegate to be used with events regarding the value of a property editor's property changing.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void PropertyEditorValueChangedEventHandler(object sender, PropertyEditorValueChangedEventArgs e);
 
         /// <summary>
         /// Raised when the value of this property is changed, by use of a <see cref="PropertyEditorControl"/>.

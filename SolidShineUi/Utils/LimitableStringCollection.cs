@@ -28,10 +28,6 @@ namespace SolidShineUi.Utils
             MaxCount = maxCount;
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public delegate void ItemAddingStringEventHandler(object sender, ItemAddingStringEventArgs e);
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
         /// <summary>
         /// Raised prior to an item being added to this collection, with the ability to cancel adding the item.
         /// </summary>
@@ -83,7 +79,7 @@ namespace SolidShineUi.Utils
         public new void Add(string item)
         {
             if (Contains(item)) return;
-            ItemAddingStringEventArgs e = new ItemAddingStringEventArgs(item);
+            ItemAddingEventArgs<string> e = new ItemAddingEventArgs<string>(item);
             ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             if (MaxCount >= 0 && Count >= MaxCount)
@@ -105,7 +101,7 @@ namespace SolidShineUi.Utils
         public new void Insert(int index, string item)
         {
             if (Contains(item)) return;
-            ItemAddingStringEventArgs e = new ItemAddingStringEventArgs(item);
+            ItemAddingEventArgs<string> e = new ItemAddingEventArgs<string>(item);
             ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             if (MaxCount >= 0 && Count >= MaxCount)
@@ -118,28 +114,10 @@ namespace SolidShineUi.Utils
     }
 
     /// <summary>
-    /// The event arguments for the ItemAdding event of the LimitableStringCollection.
+    /// A delegate for handling the <see cref="LimitableStringCollection.ItemAdding"/> event.
     /// </summary>
-    public class ItemAddingStringEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Get the item about to be added.
-        /// </summary>
-        public string Item { get; private set; }
-
-        /// <summary>
-        /// Get or set whether the addition of this item should be cancelled. By default, this is set to <c>false</c>, as in "do not cancel".
-        /// </summary>
-        public bool Cancel { get; set; } = false;
-
-        /// <summary>
-        /// Create an ItemAddingStringEventArgs.
-        /// </summary>
-        /// <param name="item">The item about to be added.</param>
-        public ItemAddingStringEventArgs(string item)
-        {
-            Item = item;
-        }
-    }
+    /// <param name="sender">the object that raised this event</param>
+    /// <param name="e">the event args associated with this event</param>
+    public delegate void ItemAddingStringEventHandler(object sender, ItemAddingEventArgs<string> e);
 
 }

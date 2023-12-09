@@ -9,6 +9,36 @@ namespace SolidShineUi.PropertyList
 {
 
     /// <summary>
+    /// A delegate to be used with events regarding the value of a property changing.
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void PropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
+
+    /// <summary>
+    /// A delegate to be used with events regarding an object being loaded or accessed.
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void PropertyListObjectEventHandler(object sender, PropertyListObjectEventArgs e);
+
+#if NETCOREAPP
+    /// <summary>
+    /// A delegate to be used with events regarding the value of a property editor's property changing.
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void PropertyEditorValueChangedEventHandler(object? sender, PropertyEditorValueChangedEventArgs e);
+#else
+    /// <summary>
+    /// A delegate to be used with events regarding the value of a property editor's property changing.
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void PropertyEditorValueChangedEventHandler(object sender, PropertyEditorValueChangedEventArgs e);
+#endif
+
+    /// <summary>
     /// The event arguments for the PropertyEditorValueChanged event, which is raised when the value of a property is changed using a property editor control.
     /// </summary>
 #if NETCOREAPP
@@ -19,6 +49,7 @@ namespace SolidShineUi.PropertyList
         /// the new value could not be set, then set this value to <c>true</c> and then set the <see cref="FailedChangePropertyValue"/> to what the updated value actually is.
         /// </summary>
         public bool ChangeFailed { get; set; } = false;
+
         /// <summary>
         /// Get or set what the value of the property is after a failure to change the property to the new value above.
         /// </summary>
@@ -175,7 +206,7 @@ namespace SolidShineUi.PropertyList
         public Type LoadedObjectType { get; private set; }
 
         /// <summary>
-        /// Get if this event was triggered by reloading the current object, rather than 
+        /// Get if this event was triggered by reloading the current object (via <see cref="PropertyList.ReloadObject()"/>, rather than loading in a different object.
         /// </summary>
         public bool IsReload { get; private set; }
 
