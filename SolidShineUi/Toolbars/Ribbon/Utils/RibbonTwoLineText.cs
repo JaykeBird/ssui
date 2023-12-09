@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+
 //using System.Diagnostics;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -10,7 +12,7 @@ using System.Windows.Shapes;
 
 // This comes from the .NET Foundation's WPF repository
 // https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/System.Windows.Controls.Ribbon/Microsoft/Windows/Controls/Ribbon/RibbonTwoLineText.cs
-// This is licensed under the MIT license and thus is free for me to reuse.
+// This is licensed under the MIT license and thus I am able to reuse this.
 //
 // I felt there was not much point in me simply redoing nearly the exactly same calculations/work when there was something
 // already available under the same open-source license. Plus, writing my own version of this wouldn't be very fun for me lol.
@@ -70,36 +72,62 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
 
         #region Public Properties
 
+        #region Text Formatting / Layout
+
+        /// <summary>
+        /// Get or set the decorations to apply to the <see cref="Text"/> of this <c>RibbonTwoLineText</c> control.
+        /// </summary>
         public TextDecorationCollection TextDecorations
         {
             get { return (TextDecorationCollection)GetValue(TextDecorationsProperty); }
             set { SetValue(TextDecorationsProperty, value); }
         }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="TextDecorations"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty TextDecorationsProperty = TextBlock.TextDecorationsProperty.AddOwner(typeof(RibbonTwoLineText));
 
+        /// <summary>
+        /// Get or set the effects to apply to the <see cref="Text"/> of this <c>RibbonTwoLineText</c> control.
+        /// </summary>
         public TextEffectCollection TextEffects
         {
             get { return (TextEffectCollection)GetValue(TextEffectsProperty); }
             set { SetValue(TextEffectsProperty, value); }
         }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="TextEffects"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty TextEffectsProperty = TextBlock.TextEffectsProperty.AddOwner(typeof(RibbonTwoLineText));
 
+        /// <summary>
+        /// Get or set how offset each line of <see cref="Text"/> should be from the baseline.
+        /// </summary>
         public double BaselineOffset
         {
             get { return (double)GetValue(BaselineOffsetProperty); }
             set { SetValue(BaselineOffsetProperty, value); }
         }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="BaselineOffset"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BaselineOffsetProperty = TextBlock.BaselineOffsetProperty.AddOwner(typeof(RibbonTwoLineText));
 
+        /// <summary>
+        /// Get or set how much spacing there is from the content inside this control, and its edges/border.
+        /// </summary>
         new public Thickness Padding
         {
             get { return (Thickness)GetValue(PaddingProperty); }
             set { SetValue(PaddingProperty, value); }
         }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="Padding"/>. See the related property for more details.
+        /// </summary>
         new public static readonly DependencyProperty PaddingProperty = TextBlock.PaddingProperty.AddOwner(typeof(RibbonTwoLineText));
 
         /// <summary>
@@ -164,6 +192,8 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         public static readonly DependencyProperty LineStackingStrategyProperty =
             TextBlock.LineStackingStrategyProperty.AddOwner(typeof(RibbonTwoLineText));
 
+        #endregion
+
         #region Path Handling
         /// <summary>
         ///   Gets or sets the fill of the label's appending geometry.
@@ -197,11 +227,12 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
                     DependencyProperty.Register("PathStroke", typeof(Brush),
                             typeof(RibbonTwoLineText), null);
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="ShowPath"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ShowPathProperty = DependencyProperty.Register(
             "ShowPath", typeof(bool), typeof(RibbonTwoLineText),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
@@ -220,20 +251,32 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
                     DependencyProperty.RegisterAttached("PathData", typeof(Geometry), typeof(RibbonTwoLineText),
                             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
+        /// <summary>
+        /// Get the Path data that will be displayed when <see cref="ShowPath"/> is set to true.
+        /// </summary>
+        /// <param name="element">The DependencyObject to load the path data from</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">thrown if <paramref name="element"/> is null</exception>
         public static Geometry GetPathData(DependencyObject element)
         {
             if (element == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
             return (Geometry)element.GetValue(PathDataProperty);
         }
 
+        /// <summary>
+        /// Set the Path data to attach to a DependencyObject. Meant for use when <see cref="ShowPath"/> is set to <c>true</c>.
+        /// </summary>
+        /// <param name="element">the DependencyObject to set the path data for</param>
+        /// <param name="value">the path data to apply</param>
+        /// <exception cref="ArgumentNullException">thrown if <paramref name="element"/> is null</exception>
         public static void SetPathData(DependencyObject element, Geometry value)
         {
             if (element == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
             element.SetValue(PathDataProperty, value);
         }
@@ -256,6 +299,8 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
                     TextBlock.TextProperty.AddOwner(typeof(RibbonTwoLineText),
                     new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+        #region HasTwoLines
+
         /// <summary>
         ///   Using a DependencyProperty as the backing store for HasTwoLinesProperty.  This enables animation, styling, binding, etc...
         /// </summary>
@@ -264,26 +309,32 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
                                                   new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         /// <summary>
-        ///   Gets or sets a value indicating whether the RibbonTwoLineText should be allowed to
+        ///   Gets a value indicating whether the RibbonTwoLineText should be allowed to
         ///   layout on two lines or if it should be restricted to one.
         /// </summary>
         public static bool GetHasTwoLines(DependencyObject element)
         {
             if (element == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
             return (bool)element.GetValue(HasTwoLinesProperty);
         }
 
+        /// <summary>
+        ///   Sets a value indicating whether the RibbonTwoLineText should be allowed to
+        ///   layout on two lines or if it should be restricted to one.
+        /// </summary>
         public static void SetHasTwoLines(DependencyObject element, bool value)
         {
             if (element == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
             element.SetValue(HasTwoLinesProperty, value);
         }
+
+        #endregion
 
         #endregion
 
@@ -371,7 +422,8 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         private void MeasureWithConstraint(Size availableSize, out TextPointer secondLinePointer)
 #endif
         {
-            //Debug.Assert(_textBlock1 != null && _textBlock2 != null);
+            //if (_textBlock1 == null || _textBlock2 == null) throw new InvalidOperationException("This control is not yet prepared");
+            Debug.Assert(_textBlock1 != null && _textBlock2 != null);
 
             // Temporarily assign _textBlock1.Text to measure the length it would require
             _textBlock1.Text = Text;
@@ -409,7 +461,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         private void MeasureWithoutConstraint(out TextPointer secondLinePointer)
 #endif
         {
-            //Debug.Assert(_textBlock1 != null && _textBlock2 != null);
+            Debug.Assert(_textBlock1 != null && _textBlock2 != null);
 
             secondLinePointer = null;
 
@@ -489,8 +541,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
         {
             if (includeContentElements)
             {
-                ContentElement ce = element as ContentElement;
-                if (ce != null)
+                if (element is ContentElement ce)
                 {
                     return LogicalTreeHelper.GetParent(ce);
                 }
@@ -513,8 +564,7 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
                 {
                     return;
                 }
-                UIElement element = pathStart as UIElement;
-                if (element != null)
+                if (pathStart is UIElement element)
                 {
                     element.InvalidateMeasure();
                 }

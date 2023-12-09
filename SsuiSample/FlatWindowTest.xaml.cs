@@ -22,17 +22,22 @@ namespace SsuiSample
             InitializeComponent();
         }
 
+#if NETCOREAPP
+        FlatWindow? fwRunning = null;
+#else
         FlatWindow fwRunning = null;
-
-//#if NETCOREAPP
-//        FlatWindow? fwRunning = null;
-//#else
-//        FlatWindow fwRunning = null;
-//#endif
+#endif
 
         #region ColorScheme
 
+        /// <summary>
+        /// Raised when the value of <see cref="ColorScheme"/> changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
 
         public static DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindowTest),
@@ -40,12 +45,13 @@ namespace SsuiSample
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is FlatWindowTest s)
+            if (e.NewValue is ColorScheme cs)
             {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
+                if (d is FlatWindowTest s)
+                {
+                    s.ColorSchemeChanged?.Invoke(d, e);
+                    s.ApplyColorScheme(cs);
+                }
             }
         }
 
@@ -180,7 +186,11 @@ namespace SsuiSample
             propList.LoadObject(fw);
         }
 
+#if NETCOREAPP
+        private void Fw_Closed(object? sender, EventArgs e)
+#else
         private void Fw_Closed(object sender, EventArgs e)
+#endif
         {
             fwRunning = null;
             colProperties.MinWidth = 0;
@@ -188,7 +198,11 @@ namespace SsuiSample
             btnShowProperties.Visibility = Visibility.Collapsed;
         }
 
+#if NETCOREAPP
+        private void fw_SourceInitialized(object? sender, EventArgs e)
+#else
         private void fw_SourceInitialized(object sender, EventArgs e)
+#endif
         {
             if (sender is FlatWindow fw)
             {

@@ -91,7 +91,11 @@ namespace SolidShineUi.Toolbars.Ribbon
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
+#if NETCOREAPP
+        private void Items_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+#else
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+#endif
         {
             //if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Replace)
             //{
@@ -99,7 +103,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             //    {
             //        if (item is RibbonGroup group)
             //        {
-                        
+
             //        }
             //    }
             //}
@@ -136,14 +140,30 @@ namespace SolidShineUi.Toolbars.Ribbon
         #endregion
 
         #region Contextual Tab
+        /// <summary>
+        /// Get or set if this is a contextual tab. A contextual tab should only be displayed in the situations or contexts where the commands within it are useful,
+        /// and otherwise should be hidden (such as displaying controls for editing a picture only while a picture is selected)
+        /// </summary>
+        /// <remarks>
+        /// To help contextual tabs stand out in the UI, they're often assigned a special color. Use <see cref="ContextualColor"/> to set that color for the tab.
+        /// </remarks>
         public bool IsContextual { get => (bool)GetValue(IsContextualProperty); set => SetValue(IsContextualProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="IsContextual"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty IsContextualProperty
             = DependencyProperty.Register("IsContextual", typeof(bool), typeof(RibbonTab),
             new FrameworkPropertyMetadata(false));
 
+        /// <summary>
+        /// Get or set the color to use with this tab, if this is a contextual tab (if <see cref="IsContextual"/> is set to <c>true</c>).
+        /// </summary>
         public Color ContextualColor { get => (Color)GetValue(ContextualColorProperty); set => SetValue(ContextualColorProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="ContextualColor"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty ContextualColorProperty
             = DependencyProperty.Register("ContextualColor", typeof(Color), typeof(RibbonTab),
             new FrameworkPropertyMetadata(Colors.Blue));

@@ -123,7 +123,11 @@ namespace SolidShineUi.Toolbars.Ribbon
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
+#if NETCOREAPP
+        private void Items_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+#else
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+#endif
         {
             // TODO: does e.Action == Reset list all removed items in e.OldItems? if not, how can we get them???
             if (e.NewItems != null)
@@ -161,7 +165,11 @@ namespace SolidShineUi.Toolbars.Ribbon
             }
         }
 
+#if NETCOREAPP
+        private void tab_InternalBringIntoViewRequested(object? sender, EventArgs e)
+#else
         private void tab_InternalBringIntoViewRequested(object sender, EventArgs e)
+#endif
         {
             if (sender is RibbonTab tab)
             {
@@ -169,6 +177,7 @@ namespace SolidShineUi.Toolbars.Ribbon
                 {
                     SelectedTab = tab;
 
+                    if (ic == null) return;
                     for (int i = 0; i < ic.Items.Count; i++)
                     {
                         // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
@@ -409,7 +418,7 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         #endregion
 
-        #endregion
+#endregion
 
         #region Main Bar
 
@@ -652,7 +661,11 @@ namespace SolidShineUi.Toolbars.Ribbon
             //CheckScrolling();
         }
 
+#if NETCOREAPP
+        private void tdi_RequestSelect(object? sender, EventArgs e)
+#else
         private void tdi_RequestSelect(object sender, EventArgs e)
+#endif
         {
             if (sender is RibbonTabDisplayItem tdi)
             {
@@ -766,7 +779,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         }
 
 
-        #endregion
+#endregion
 
         #region Scrolling
 

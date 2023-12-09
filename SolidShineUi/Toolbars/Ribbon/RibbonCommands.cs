@@ -7,7 +7,10 @@ using System.Windows.Input;
 
 namespace SolidShineUi.Toolbars.Ribbon
 {
-    public class RibbonCommands
+    /// <summary>
+    /// A list of commands for interacting with a <see cref="Ribbon"/> or controls within a Ribbon. Currently, this is blank.
+    /// </summary>
+    public static class RibbonCommands
     {
 
         ///// <summary>A WPF command that when executed, will open or close a File menu in <see cref="RibbonFileMenu"/>.</summary>

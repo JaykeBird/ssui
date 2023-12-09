@@ -171,10 +171,13 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<GalleryItem>), typeof(Gallery),
             new FrameworkPropertyMetadata(new ObservableCollection<GalleryItem>()));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="Items"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Get or set the list of items in this RibbonGroup. This Items property can be used to add and remove items.
+        /// Get the list of items in this Gallery. This Items property can be used to add and remove items.
         /// </summary>
         [Category("Common")]
         public ObservableCollection<GalleryItem> Items
@@ -186,14 +189,22 @@ namespace SolidShineUi.Toolbars.Ribbon
         private static readonly DependencyPropertyKey DisplayedItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("DisplayedItems", typeof(ListCollectionView), typeof(Gallery), new FrameworkPropertyMetadata());
 
+        /// <summary>
+        /// Get the handler that displays the items from <see cref="Items"/> that are currently visible in the Ribbon.
+        /// </summary>
         public ListCollectionView DisplayedItems { get => (ListCollectionView)GetValue(DisplayedItemsProperty); private set => SetValue(DisplayedItemsPropertyKey, value); }
 
         /// <summary>The backing dependency property for <see cref="DisplayedItems"/>. See the related property for details.</summary>
         public static DependencyProperty DisplayedItemsProperty = DisplayedItemsPropertyKey.DependencyProperty;
 
+#if NETCOREAPP
+        private void Items_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#else
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#endif
         {
             //throw new NotImplementedException();
+            if (e.NewItems == null) return;
             if (e.NewItems.Count > 0)
             {
                 foreach (var item in e.NewItems)
@@ -207,6 +218,18 @@ namespace SolidShineUi.Toolbars.Ribbon
             }
         }
 
+        /// <summary>
+        /// Get or set the layout to use for displaying <see cref="GalleryItem"/> objects within this Gallery.
+        /// </summary>
+        /// <remarks>
+        /// Certain layouts, such as <see cref="GalleryItemLayout.LargeIconAndText"/> will take up the full height of the Gallery, and so each <see cref="GalleryItem"/> is displayed
+        /// side by side. Others, such as <see cref="GalleryItemLayout.SmallIconAndText"/> may allow multiple GalleryItems to be displayed on top of each other. Thus, the smaller layouts
+        /// are more beneficial if you have a large number of options in this Gallery that you want to display.
+        /// <para/>
+        /// Please be mindful about the type of content you want to display in this Gallery, and also the height of the Ribbon that this Gallery will be in, to set which layout option
+        /// you want to use. Some layout options, such as <see cref="GalleryItemLayout.SmallContentOnly"/> or <see cref="GalleryItemLayout.LargeContentOnly"/> allow you to set some
+        /// custom content to be displayed in each <see cref="GalleryItem"/>. However, other layouts won't display this custom content, or they may or may not display an icon or some text.
+        /// </remarks>
         public GalleryItemLayout ItemLayout { get => (GalleryItemLayout)GetValue(ItemLayoutProperty); set => SetValue(ItemLayoutProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ItemLayout"/>. See the related property for details.</summary>
@@ -253,6 +276,10 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("MaxItemWidth", typeof(double), typeof(Gallery),
             new FrameworkPropertyMetadata(150.0));
 
+        /// <summary>
+        /// Get or set if scrolling buttons should be displayed on the options on the right side. If <c>true</c>, then users can scroll through all the items in this Gallery
+        /// without needing to use the expand button to display the whole menu.
+        /// </summary>
         public bool DisplayScrollButtons { get => (bool)GetValue(DisplayScrollButtonsProperty); set => SetValue(DisplayScrollButtonsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="DisplayScrollButtons"/>. See the related property for details.</summary>

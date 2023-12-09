@@ -18,6 +18,9 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
     /// </summary>
     public partial class RibbonTabDisplayItem : UserControl
     {
+        /// <summary>
+        /// Create a RibbonTabDisplayItem.
+        /// </summary>
         public RibbonTabDisplayItem()
         {
             InitializeComponent();
@@ -34,6 +37,9 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             };
         }
 
+        /// <summary>
+        /// Create a RibbonTabDisplayItem, with a tab preloaded in.
+        /// </summary>
         public RibbonTabDisplayItem(RibbonTab tab)
         {
             InitializeComponent();
@@ -55,20 +61,24 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
 
         #region Selection
 
+        /// <summary>
+        /// Get or set if this tab is currently selected.
+        /// </summary>
+        /// <remarks>
+        /// This is only used to update this object's visuals; please use <see cref="Ribbon.Items"/> to actually select a tab on a Ribbon.
+        /// </remarks>
         public bool IsSelected { get => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="IsSelected"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty IsSelectedProperty
             = DependencyProperty.Register("IsSelected", typeof(bool), typeof(RibbonTabDisplayItem),
-            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<RibbonTabDisplayItem>((i) => i.InternalIsSelectedChanged())));
 
-        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is RibbonTabDisplayItem r)
-            {
-                r.InternalIsSelectedChanged();
-            }
-        }
-
+        /// <summary>
+        /// Raised when <see cref="IsSelected"/> is changed.
+        /// </summary>
         protected void InternalIsSelectedChanged()
         {
             if (IsSelected)
@@ -83,7 +93,14 @@ namespace SolidShineUi.Toolbars.Ribbon.Utils
             }
         }
 
+        /// <summary>
+        /// Raised when this item is selected via mouse click or other interaction. From here, this tab should then be selected.
+        /// </summary>
+#if NETCOREAPP
+        public event EventHandler? RequestSelect;
+#else
         public event EventHandler RequestSelect;
+#endif
 
         #endregion
 

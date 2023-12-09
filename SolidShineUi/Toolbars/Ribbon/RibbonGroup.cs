@@ -13,6 +13,13 @@ using System.Windows.Media;
 
 namespace SolidShineUi.Toolbars.Ribbon
 {
+    /// <summary>
+    /// A holder for a group of <see cref="IRibbonItem"/> objects within a <see cref="RibbonTab"/>. 
+    /// </summary>
+    /// <remarks>
+    /// Most tabs are comprised of multiple groups, and all of the items in each group
+    /// usually have some correlation or related context to each other (such as copy, cut, and paste being in the same group because they're all related to interacting with the clipboard).
+    /// </remarks>
     [ContentProperty("Items")]
     public class RibbonGroup : Control
     {
@@ -21,6 +28,9 @@ namespace SolidShineUi.Toolbars.Ribbon
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RibbonGroup), new FrameworkPropertyMetadata(typeof(RibbonGroup)));
         }
 
+        /// <summary>
+        /// Create a RibbonGroup.
+        /// </summary>
         public RibbonGroup()
         {
             SetValue(ItemsPropertyKey, new ObservableCollection<IRibbonItem>());
@@ -32,6 +42,9 @@ namespace SolidShineUi.Toolbars.Ribbon
         [Category("Common")]
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property object. See the related property for details.
+        /// </summary>
         public static DependencyProperty TitleProperty
             = DependencyProperty.Register("Title", typeof(string), typeof(RibbonGroup),
             new FrameworkPropertyMetadata("Group"));
@@ -42,6 +55,9 @@ namespace SolidShineUi.Toolbars.Ribbon
         [Category("Common")]
         public bool ShowGroupHeader { get => (bool)GetValue(ShowGroupHeaderProperty); set => SetValue(ShowGroupHeaderProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property object. See the related property for details.
+        /// </summary>
         public static DependencyProperty ShowGroupHeaderProperty
             = DependencyProperty.Register("ShowGroupHeader", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(true));
@@ -51,6 +67,9 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
 
+        /// <summary>
+        /// The backing dependency property object. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -67,6 +86,9 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.RegisterReadOnly("ExpandedItems", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
 
+        /// <summary>
+        /// The backing dependency property object. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ExpandedItemsProperty = ExpandedItemsPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -81,20 +103,38 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         #region Right Separator
 
+        /// <summary>
+        /// Get or set if a vertical separator bar should be displayed on the far-right side of this control.
+        /// </summary>
         public bool ShowGroupSeparator { get => (bool)GetValue(ShowGroupSeparatorProperty); set => SetValue(ShowGroupSeparatorProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property object. See the related property for details.
+        /// </summary>
         public static DependencyProperty ShowGroupSeparatorProperty
             = DependencyProperty.Register("ShowGroupSeparator", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set the brush for the vertical separator bar on the far-right side of this control.
+        /// </summary>
         public Brush GroupSeparatorBrush { get => (Brush)GetValue(GroupSeparatorBrushProperty); set => SetValue(GroupSeparatorBrushProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property object. See the related property for details.
+        /// </summary>
         public static DependencyProperty GroupSeparatorBrushProperty
             = DependencyProperty.Register("GroupSeparatorBrush", typeof(Brush), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
-
+        
+        /// <summary>
+        /// Get or set how wide the vertical separator bar on the far-right side of this control.
+        /// </summary>
         public double GroupSeparatorWidth { get => (double)GetValue(GroupSeparatorWidthProperty); set => SetValue(GroupSeparatorWidthProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property object. See the related property for details.
+        /// </summary>
         public static DependencyProperty GroupSeparatorWidthProperty
             = DependencyProperty.Register("GroupSeparatorWidth", typeof(double), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(1.0));
@@ -229,8 +269,15 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("IsLauncherEnabled", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(true));
 
-
+        /// <summary>
+        /// Raised when the launcher in the bottom-right corner of the group is clicked. 
+        /// The launcher is only shown and clickable if <see cref="ShowLauncher"/> is set to <c>true</c>.
+        /// </summary>
+#if NETCOREAPP
+        public event EventHandler? LauncherClick;
+#else
         public event EventHandler LauncherClick;
+#endif
 
         #endregion
 

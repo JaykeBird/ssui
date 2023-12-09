@@ -22,7 +22,14 @@ namespace SsuiSample
 
         #region ColorScheme
 
+        /// <summary>
+        /// Raised when the value of <see cref="ColorScheme"/> changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
 
         public static DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabControlTest),
@@ -30,12 +37,13 @@ namespace SsuiSample
 
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is TabControlTest s)
+            if (e.NewValue is ColorScheme cs)
             {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
+                if (d is TabControlTest s)
+                {
+                    s.ColorSchemeChanged?.Invoke(d, e);
+                    s.ApplyColorScheme(cs);
+                }
             }
         }
 

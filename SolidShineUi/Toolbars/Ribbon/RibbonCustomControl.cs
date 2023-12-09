@@ -10,6 +10,9 @@ using System.Windows.Media;
 
 namespace SolidShineUi.Toolbars.Ribbon
 {
+    /// <summary>
+    /// A wrapper for displaying a control within a <see cref="Ribbon"/> that isn't one of the premade controls in this namespace.
+    /// </summary>
     [ContentProperty("Content")]
     public class RibbonCustomControl : Control, IRibbonItem
     {
