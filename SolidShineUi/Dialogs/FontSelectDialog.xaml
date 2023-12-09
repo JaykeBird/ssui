@@ -27,7 +27,8 @@
                 <ColumnDefinition Width="Auto" x:Name="colWeights" />
                 <ColumnDefinition Width="Auto" x:Name="colSize" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtFont" Height="23" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190" flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase" TextChanged="txtFont_TextChanged" />
+            <TextBox x:Name="txtFont" Height="23" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190" flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase"
+                     TextChanged="txtFont_TextChanged" />
             <ListBox x:Name="lstFont" Margin="25,60,10,10" SelectionChanged="lstFont_SelectionChanged" >
                 <ListBox.Resources>
                     <CollectionViewSource x:Key="myFonts" Source="{Binding Source={x:Static Fonts.SystemFontFamilies}}">
@@ -75,27 +76,7 @@
             </ListBox>
             <!--DataContext="{x:Static Fonts.SystemFontFamilies}" ItemsSource='{Binding}' />-->
             <TextBlock HorizontalAlignment="Left" Margin="25,15,0,0" Text="Font:" VerticalAlignment="Top"/>
-            <ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" >
-                <ListBox.Resources>
-                    <CollectionViewSource x:Key="myFonts" Source="{Binding Source={x:Static flat:FontSelectDialog.AvailableFontWeights}}">
-                        <CollectionViewSource.SortDescriptions>
-                            <ComponentModel:SortDescription PropertyName="Name" />
-                        </CollectionViewSource.SortDescriptions>
-                    </CollectionViewSource>
-
-                    <Style x:Key="FontStyle">
-                        <Setter Property="Control.FontFamily" Value="{Binding Source}" />
-                        <Setter Property="Control.FontSize" Value="12" />
-                    </Style>
-
-                    <!--<DataTemplate x:Key="FontTemplate">
-                    <StackPanel VirtualizingStackPanel.IsVirtualizing="True">
-                        <TextBlock Style="{StaticResource FontStyle}" Height="18"
-                                        Text="{Binding Source}"
-                                        ToolTip="{Binding Source}" />
-                    </StackPanel>
-                </DataTemplate>-->
-                </ListBox.Resources>
+            <ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" ItemsSource="{x:Static flat:FontSelectDialog.AvailableFontWeights}" >
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -106,14 +87,12 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <VirtualizingStackPanel CanHorizontallyScroll="False" />
+                        <StackPanel CanHorizontallyScroll="False" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                <ListBox.ItemsSource>
-                    <Binding Source="{StaticResource myFonts}" />
-                </ListBox.ItemsSource>
             </ListBox>
-            <flat:DoubleSpinner x:Name="txtSize" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10" ValueChanged="txtSize_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" />
+            <flat:DoubleSpinner x:Name="txtSize" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10" 
+                                ValueChanged="txtSize_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" />
             <ListBox x:Name="lstSize" Margin="10,60,10,10" Width="90" SelectionChanged="lstSize_SelectionChanged" Grid.Column="2" >
                 <sys:Int32>6</sys:Int32>
                 <sys:Int32>7</sys:Int32>
@@ -136,6 +115,7 @@
                 <sys:Int32>40</sys:Int32>
                 <sys:Int32>44</sys:Int32>
                 <sys:Int32>48</sys:Int32>
+                <sys:Int32>52</sys:Int32>
                 <sys:Int32>56</sys:Int32>
                 <sys:Int32>60</sys:Int32>
                 <sys:Int32>64</sys:Int32>
@@ -150,12 +130,18 @@
 
         <TextBlock HorizontalAlignment="Left" Margin="25,2,0,0" Text="Styles/Decorations:" VerticalAlignment="Top" x:Name="lblStyles" Grid.Row="1" />
         <TextBlock HorizontalAlignment="Left" Margin="25,1,0,0" Text="Preview:" VerticalAlignment="Top" x:Name="lblPreview" Grid.Row="2" />
-        <flat:CheckBox x:Name="chkOverline" Content="Overline" HorizontalAlignment="Left" Margin="25,27,0,0" VerticalAlignment="Top" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked" Grid.Row="1" Padding="5,0" />
-        <flat:CheckBox x:Name="chkStrike" Content="Strikethrough" HorizontalAlignment="Left" Margin="25,52,0,0" VerticalAlignment="Top" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked" Grid.Row="1" Padding="5,0" />
-        <flat:CheckBox x:Name="chkUnderline" Content="Underline" HorizontalAlignment="Left" Margin="135,52,0,0" VerticalAlignment="Top" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked" Grid.Row="1" Padding="5,0" />
-        <flat:CheckBox x:Name="chkBaseline" Content="Baseline" HorizontalAlignment="Left" Margin="135,27,0,0" VerticalAlignment="Top" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked" Grid.Row="1" Padding="5,0" />
-        <flat:CheckBox x:Name="chkItalic" Content="Italic" HorizontalAlignment="Left" Margin="225,27,0,0" VerticalAlignment="Top" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked" Grid.Row="1" Padding="5,0" />
-        <flat:CheckBox x:Name="chkOblique" Content="Oblique" HorizontalAlignment="Left" Margin="225,52,0,0" VerticalAlignment="Top" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked" Grid.Row="1" Padding="5,0" />
+        <flat:CheckBox x:Name="chkOverline" Content="Overline" HorizontalAlignment="Left" Margin="25,27,0,0" VerticalAlignment="Top" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked" 
+                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <flat:CheckBox x:Name="chkStrike" Content="Strikethrough" HorizontalAlignment="Left" Margin="25,52,0,0" VerticalAlignment="Top" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked" 
+                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <flat:CheckBox x:Name="chkUnderline" Content="Underline" HorizontalAlignment="Left" Margin="135,52,0,0" VerticalAlignment="Top" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked" 
+                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <flat:CheckBox x:Name="chkBaseline" Content="Baseline" HorizontalAlignment="Left" Margin="135,27,0,0" VerticalAlignment="Top" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked" 
+                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <flat:CheckBox x:Name="chkItalic" Content="Italic" HorizontalAlignment="Left" Margin="225,27,0,0" VerticalAlignment="Top" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked" 
+                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <flat:CheckBox x:Name="chkOblique" Content="Oblique" HorizontalAlignment="Left" Margin="225,52,0,0" VerticalAlignment="Top" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked" 
+                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
 
         <!--<TextBlock HorizontalAlignment="Left" Margin="240,250,0,0" Text="Font color:" VerticalAlignment="Top"/>-->
 
@@ -167,9 +153,12 @@
             </ScrollViewer>
         </Border>
 
-        <flat:FlatButton x:Name="btnText" Content="Set Preview Text..." HorizontalAlignment="Left" Margin="25,0,0,25" VerticalAlignment="Bottom" Width="120" ColorScheme="{Binding ColorScheme, ElementName=window}" Click="btnText_Click" Grid.Row="4"/>
+        <flat:FlatButton x:Name="btnText" Content="Set Preview Text..." HorizontalAlignment="Left" Margin="25,0,0,25" VerticalAlignment="Bottom" Width="120" 
+                         ColorScheme="{Binding ColorScheme, ElementName=window}" Click="btnText_Click" Grid.Row="4"/>
         <!--<flat:FlatButton x:Name="btnApply" Content="Apply" HorizontalAlignment="Right" Margin="0,0,205,25" VerticalAlignment="Bottom" Width="80"/>-->
-        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,110,25" VerticalAlignment="Bottom" Width="80" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnOK_Click" Grid.Row="4"/>
-        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="80" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnCancel_Click" Grid.Row="4"/>
+        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,110,25" VerticalAlignment="Bottom" Width="80" 
+                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnOK_Click" Grid.Row="4"/>
+        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="80" 
+                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnCancel_Click" Grid.Row="4"/>
     </Grid>
 </flat:FlatWindow>

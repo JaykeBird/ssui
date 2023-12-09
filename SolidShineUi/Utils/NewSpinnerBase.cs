@@ -15,15 +15,15 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// The base class for Solid Shine UI's spinner controls (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
     /// </summary>
-    public class SpinnerBase : UserControl
+    public class NewSpinnerBase : Control
     {
 
         /// <summary>
-        /// Create a SpinnerBase.
+        /// Create a NewSpinnerBase.
         /// </summary>
-        public SpinnerBase()
+        public NewSpinnerBase()
         {
-            Loaded += SpinnerBase_Loaded;
+            Loaded += NewSpinnerBase_Loaded;
 
             keyDownTimer.AutoReset = false;
             advanceTimer.AutoReset = true;
@@ -34,7 +34,7 @@ namespace SolidShineUi.Utils
             PropertyChanged += (x, y) => ValidateValue();
         }
 
-        private void SpinnerBase_Loaded(object sender, RoutedEventArgs e)
+        private void NewSpinnerBase_Loaded(object sender, RoutedEventArgs e)
         {
             // doesn't work in constructor, apparently
             _raiseChangedEvent = false;
@@ -75,26 +75,26 @@ namespace SolidShineUi.Utils
         // these will be used for the transition from standard UserControls to full templated controls
 
         /// <summary>A WPF command that when executed, will increase a spinner's value by its <c>Step</c> amount</summary>
-        public static RoutedCommand StepUp { get; } = new RoutedCommand("StepUp", typeof(SpinnerBase));
+        public static RoutedCommand StepUp { get; } = new RoutedCommand("StepUp", typeof(NewSpinnerBase));
 
         /// <summary>A WPF command that when executed, will decrease a spinner's value by its <c>Step</c> amount</summary>
-        public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(SpinnerBase));
+        public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(NewSpinnerBase));
 
         #endregion
 
         #region IsAtMaxValue / IsAtMinValue
 
         /// <summary>
-        /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property. Only accessible to <c>SpinnerBase</c> and controls that inherit from it.
+        /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
         /// </summary>
         protected static readonly DependencyPropertyKey IsAtMaxValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(NewSpinnerBase), new FrameworkPropertyMetadata(false));
 
         /// <summary>
-        /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property. Only accessible to <c>SpinnerBase</c> and controls that inherit from it.
+        /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
         /// </summary>
         protected static readonly DependencyPropertyKey IsAtMinValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(NewSpinnerBase), new FrameworkPropertyMetadata(false));
 
         /// <summary>
         /// A dependency property object backing the <see cref="IsAtMaxValue"/> property. See the related property for more details.
@@ -157,18 +157,41 @@ namespace SolidShineUi.Utils
         public event EventHandler PropertyChanged;
 #endif
 
+#if NETCOREAPP
         /// <summary>
         /// Raised when the Value property is changed.
         /// </summary>
-#if NETCOREAPP
         public event DependencyPropertyChangedEventHandler? ValueChanged;
+        
+        /// <summary>
+        /// Raised when the MinValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler? MinValueChanged;
+        
+        /// <summary>
+        /// Raised when the MaxValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler? MaxValueChanged;
 
         /// <summary>
         /// Raised when the Value property is validated, and changed to a valid value if needed.
         /// </summary>
         public event EventHandler? ValueValidated;
 #else
+        /// <summary>
+        /// Raised when the Value property is changed.
+        /// </summary>
         public event DependencyPropertyChangedEventHandler ValueChanged;
+
+        /// <summary>
+        /// Raised when the MinValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler MinValueChanged;
+
+        /// <summary>
+        /// Raised when the MaxValue property is changed.
+        /// </summary>
+        public event DependencyPropertyChangedEventHandler MaxValueChanged;
 
         /// <summary>
         /// Raised when the Value property is validated, and changed to a valid value if needed.
@@ -184,6 +207,26 @@ namespace SolidShineUi.Utils
         protected void RaiseValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (_raiseChangedEvent) ValueChanged?.Invoke(sender, e);
+        }
+
+        /// <summary>
+        /// Raise the <see cref="ValueChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Extra event data to provide to any event listeners.</param>
+        protected void RaiseMinValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MinValueChanged?.Invoke(sender, e);
+        }
+
+        /// <summary>
+        /// Raise the <see cref="ValueChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Extra event data to provide to any event listeners.</param>
+        protected void RaiseMaxValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MaxValueChanged?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -210,27 +253,27 @@ namespace SolidShineUi.Utils
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
-            "ButtonBackground", typeof(Brush), typeof(SpinnerBase),
+            "ButtonBackground", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(SpinnerBase),
+            "DisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(SpinnerBase),
+            "BorderBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(SpinnerBase),
+            "HighlightBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(SpinnerBase),
+            "ClickBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(SpinnerBase),
+            "BorderDisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -340,14 +383,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="RepeatDelay"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
-            "RepeatDelay", typeof(double), typeof(SpinnerBase),
-            new PropertyMetadata(300d, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnRepeatDelayChanged()))));
+            "RepeatDelay", typeof(double), typeof(NewSpinnerBase),
+            new PropertyMetadata(300d, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnRepeatDelayChanged()))));
 
         /// <summary>
         /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
-            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
+            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
@@ -386,14 +429,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="CornerRadius"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(SpinnerBase),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnCornerRadiusChanged()))));
+            "CornerRadius", typeof(CornerRadius), typeof(NewSpinnerBase),
+            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnCornerRadiusChanged()))));
 
         /// <summary>
         /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
+            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
@@ -431,7 +474,7 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="AcceptExpressions"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(SpinnerBase),
+            "AcceptExpressions", typeof(bool), typeof(NewSpinnerBase),
             new PropertyMetadata(true));
 
         /// <summary>
@@ -455,14 +498,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="ShowArrows"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
-            "ShowArrows", typeof(bool), typeof(SpinnerBase),
-            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnShowArrowsChanged()))));
+            "ShowArrows", typeof(bool), typeof(NewSpinnerBase),
+            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnShowArrowsChanged()))));
 
         /// <summary>
         /// The routed event object for the <see cref="ShowArrowsChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
-            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
+            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
 
         /// <summary>
         /// Raised when the ShowArrows property is changed.
@@ -500,7 +543,7 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="MinimumDigitCount"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
-            "MinimumDigitCount", typeof(int), typeof(SpinnerBase),
+            "MinimumDigitCount", typeof(int), typeof(NewSpinnerBase),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
@@ -543,7 +586,16 @@ namespace SolidShineUi.Utils
             UpdateUI();
             RaiseValueValidated(this);
         }
-        
+
+        /// <summary>
+        /// Validate MinValue and MaxValue, to make sure they're not impossibly out of bounds of each other. This should be overriden in controls that inherit this class, to 
+        /// perform actual validation on the value. This base function calls <see cref="ValidateValue"/>.
+        /// </summary>
+        protected virtual void ValidateMinMax()
+        {
+            ValidateValue();
+        }
+
         /// <summary>
         /// Handle the process of updating value properties. Should be overridden in classes that inherit this, in order to perform validation or other functions.
         /// </summary>

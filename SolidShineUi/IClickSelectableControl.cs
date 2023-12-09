@@ -34,9 +34,34 @@ namespace SolidShineUi
         event RoutedEventHandler RightClick;
 
         /// <summary>
+        /// Raised when the <see cref="IsSelected"/> value is changed.
+        /// </summary>
+        event ItemSelectionChangedEventHandler IsSelectedChanged;
+
+        /// <summary>
+        /// Set the <see cref="IsSelected"/> value for this control, while also providing additional information to pass along to the <see cref="IsSelectedChanged"/> event.
+        /// </summary>
+        /// <param name="value">the new value to set <see cref="IsSelected"/> to</param>
+        /// <param name="trigger">the method by which the value has changed (if not specified, use <see cref="SelectionChangeTrigger.CodeUnknown"/>)</param>
+        /// <param name="triggerSource">the object that triggered this value change, or <c>null</c></param>
+#if NETCOREAPP
+        void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object? triggerSource);
+#else 
+        void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object triggerSource);
+#endif
+
+        /// <summary>
         /// Perform a click programmatically. This control responds the same way as if it was clicked by the user.
         /// </summary>
         void DoClick();
+
+        #region Appearance
+
+        /// <summary>
+        /// Update this control's brushes and appearance using a ColorScheme.
+        /// </summary>
+        /// <param name="cs">the ColorScheme to apply</param>
+        void ApplyColorScheme(ColorScheme cs);
 
         /// <summary>
         /// Get or set the background brush used for this control, when it isn't being clicked or selected.
@@ -57,5 +82,15 @@ namespace SolidShineUi
         /// Get or set the background brush used for this control, while it is selected (and isn't being clicked).
         /// </summary>
         Brush SelectedBrush { get; set; }
+        #endregion
     }
+
+
+    /// <summary>
+    /// Represents a handler for the <see cref="IClickSelectableControl.IsSelectedChanged"/> event.
+    /// </summary>
+    /// <param name="sender">The source object of the event.</param>
+    /// <param name="e">The event arguments, containing information on the new IsSelected value and how the selection changed.</param>
+    public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
+
 }

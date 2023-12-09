@@ -333,8 +333,8 @@ namespace SolidShineUi.Utils
         {
             if (TabItem != null)
             {
-                TabItem.InternalTabClosing += TabItem_InternalTabClosing;
-                TabItem.InternalBringIntoViewRequested += TabItem_InternalBringIntoViewRequested;
+                TabItem.RequestTabClosing += TabItem_InternalTabClosing;
+                TabItem.BringIntoViewRequested += TabItem_InternalBringIntoViewRequested;
             }
         }
 
@@ -453,10 +453,7 @@ namespace SolidShineUi.Utils
         }
         private void tdi_InternalParentChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (ParentTabControl != null)
-            {
-                ParentTabControl.SetupTabDisplay(this);
-            }
+            ParentTabControl?.SetupTabDisplay(this);
         }
 
         #endregion

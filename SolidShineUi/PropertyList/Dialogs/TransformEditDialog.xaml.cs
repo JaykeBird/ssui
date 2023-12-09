@@ -185,9 +185,21 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             TransformCollection transforms = new TransformCollection();
             StoreDataToSelectedTransform();
-            foreach (TransformSelectableControl item in TransformList)
+            if (TransformList.Count == 1)
             {
-                transforms.Add(item.TransformValue);
+                return new TransformCollection() { TransformList[0].TransformValue };
+            }
+            else if (TransformList.Count == 0)
+            {
+                return new TransformCollection();
+            }
+            else
+            {
+                foreach (TransformSelectableControl item in TransformList)
+                {
+                    if (item.TransformValue.Value.IsIdentity && ExcludeBlanksInExport) continue; // identity matrix is as good as blank
+                    transforms.Add(item.TransformValue);
+                }
             }
 
             return transforms;
@@ -233,6 +245,21 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
             }
         }
+
+        /// <summary>
+        /// Get or set if identity matrices (<see cref="Matrix.Identity"/>) should be excluded when using <see cref="ExportTransformCollection"/> or <see cref="ExportSingleTransform(bool)"/>.
+        /// </summary>
+        /// <remarks>
+        /// An identity matrix doesn't affect the transforms in any way, and could potentially add performance issues if multiple are present. 
+        /// If the identity matrix is the only transform in the list, then it will still be included in the export; if there are multiple transforms in the list, then it will be excluded.
+        /// </remarks>
+        public bool ExcludeBlanksInExport { get => (bool)GetValue(ExcludeBlanksInExportProperty); set => SetValue(ExcludeBlanksInExportProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ExcludeBlanksInExport"/>. See the related property for details.</summary>
+        public static DependencyProperty ExcludeBlanksInExportProperty
+            = DependencyProperty.Register("ExcludeBlanksInExport", typeof(bool), typeof(TransformEditDialog),
+            new FrameworkPropertyMetadata(true));
+
 
         TransformSelectableControl AddTransform(Transform t)
         {
@@ -280,7 +307,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     DisplayTransformControl(grdMatrix);
                     LoadInMatrixTransform(m);
                 }
-                else if (selTransform is TransformGroup g)
+                else if (selTransform is TransformGroup)
                 {
                     // oh dear
                     DisplayTransformControl(null);
@@ -295,16 +322,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 var selControl = TransformList.SelectedItems[0];
                 Transform value = GetValuesFromActiveTransform();
-                if (selControl.TransformValue.GetType() == value.GetType())
-                {
-                    // this is the same type of transform, so let's replace it
-                    selControl.TransformValue = value;
-                }
-                else
-                {
-                    // the two types differ for some reason... is there a mismatch?
-                    // let's not store anything right now
-                }
+                selControl.UpdateValue(value);
             }
             else
             {
@@ -317,16 +335,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (TransformList.SelectedItems.Count > 0)
             {
                 Transform value = GetValuesFromActiveTransform();
-                if (tsc.TransformValue.GetType() == value.GetType())
-                {
-                    // this is the same type of transform, so let's replace it
-                    tsc.TransformValue = value;
-                }
-                else
-                {
-                    // the two types differ for some reason... is there a mismatch?
-                    // let's not store anything right now
-                }
+                tsc.UpdateValue(value);
             }
             else
             {
@@ -354,7 +363,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else if (grdHolder.Children.IndexOf(transformControl) == -1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("The inputted element isn't actually present in the transform editor collection", nameof(transformControl));
             }
             else
             {
@@ -551,10 +560,22 @@ namespace SolidShineUi.PropertyList.Dialogs
             nudScaleCenterY.Value = 0;
         }
 
+        private void btnScaleValReset_Click(object sender, RoutedEventArgs e)
+        {
+            nudScaleX.Value = 1;
+            nudScaleY.Value = 1;
+        }
+
         private void btnSkewReset_Click(object sender, RoutedEventArgs e)
         {
             nudSkewCenterX.Value = 0;
             nudSkewCenterY.Value = 0;
+        }
+
+        private void btnSkewValReset_Click(object sender, RoutedEventArgs e)
+        {
+            nudSkewX.Value = 0;
+            nudSkewY.Value = 0;
         }
 
         private void btnTranslateReset_Click(object sender, RoutedEventArgs e)
@@ -617,6 +638,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             T t = new T();
             TransformEditDialog lted = new TransformEditDialog();
             lted.ImportSingleTransform(t);
+            lted.ColorScheme = ColorScheme;
             lted.ShowDialog();
             if (lted.DialogResult)
             {
@@ -642,6 +664,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             nudMatrixOffsetY.Value = m.OffsetY;
         }
         #endregion
+
     }
 
     /// <summary>
@@ -655,29 +678,45 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// <param name="transform">The transform value to store in this control.</param>
         public TransformSelectableControl(Transform transform) : base()
         {
+            UpdateValue(transform);
+        }
+
+        /// <summary>
+        /// Update the appearance of this transform display control to match the transform that it is containing.
+        /// </summary>
+        /// <param name="transform">the new transform value</param>
+        public void UpdateValue(Transform transform)
+        {
             TransformValue = transform;
 
-            if (transform is RotateTransform)
+            if (transform is RotateTransform rt)
             {
-                Text = "Rotate";
+                Text = "Rotate " + rt.Angle;
             }
-            else if (transform is ScaleTransform)
+            else if (transform is ScaleTransform st)
             {
-                Text = "Scale";
+                Text = $"Scale (X:{st.ScaleX}, Y: {st.ScaleY})";
             }
-            else if (transform is TranslateTransform)
+            else if (transform is TranslateTransform tt)
             {
-                Text = "Translate";
+                Text = $"Translate (X:{tt.X}, Y: {tt.Y})";
             }
-            else if (transform is SkewTransform)
+            else if (transform is SkewTransform kt)
             {
-                Text = "Skew";
+                Text = $"Skew (X:{kt.AngleX}, Y: {kt.AngleY})";
             }
-            else if (transform is MatrixTransform)
+            else if (transform is MatrixTransform mt)
             {
-                Text = "Matrix";
+                if (mt.Matrix.IsIdentity)
+                {
+                    Text = "Matrix (identity)";
+                }
+                else
+                {
+                    Text = "Matrix";
+                }
             }
-            else if (transform is TransformGroup)
+            else if (transform is TransformGroup tg)
             {
                 Text = "Transform Group";
             }

@@ -924,14 +924,7 @@ namespace SolidShineUi.PropertyList
                 throw new ArgumentException("The editor must inherit the IPropertyEditor interface.", nameof(editor));
             }
 
-            if (registeredEditors.ContainsKey(type))
-            {
-                registeredEditors[type] = editor;
-            }
-            else
-            {
-                registeredEditors.Add(type, editor);
-            }
+            registeredEditors[type] = editor;
         }
 
         /// <summary>
@@ -1032,9 +1025,9 @@ namespace SolidShineUi.PropertyList
         {
             try
             {
-                if (registeredEditors.ContainsKey(propType))
+                if (registeredEditors.TryGetValue(propType, out var editorType) && editorType != null)
                 {
-                    object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
+                    object o = Activator.CreateInstance(editorType) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;

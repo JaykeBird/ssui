@@ -23,6 +23,7 @@
     <ssut:IconSizeConverter x:Key="IconSizeConverter" />
     <ssut:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
     <ssut:PartialThicknessConverter x:Key="PartialThConverter" />
+    <ssut:CornerRadiusModifierConverter x:Key="CrModConverter" />
     <system:Byte x:Key="byteRightCR">21</system:Byte>
     <system:Byte x:Key="byteLeftCR">10</system:Byte>
     <system:Byte x:Key="byteBottomCR">35</system:Byte>
@@ -3530,8 +3531,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                         <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" IsEnabled="False" />
                                         <!--<Separator />
                                         <MenuItem Header="Show Gridlines" IsChecked="{TemplateBinding ShowGridlines}" 
-                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />-->
-                                        <!--<MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click"
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />
+                                        <MenuItem Header="Set Gridline Color..." x:Name="mnuGridlineBrush" Click="mnuGridlineBrush_Click"
                                                   Command="{x:Static pl:PropertyListCommands.ChangeGridlineBrush}" />-->
                                     </flat:ContextMenu>
                                 </flat:MenuButton.Menu>
@@ -3566,6 +3567,52 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type flat:NewIntegerSpinner}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:NewIntegerSpinner}">
+                    <Border x:Name="PART_Border" >
+                        <Border.OpacityMask>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Border /> <!-- TODO: fill in details later -->
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Border.OpacityMask>
+                        <Grid Background="{TemplateBinding Background}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="20" x:Name="colArrows" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" />
+                            <Border BorderThickness="1,0,0,0" Margin="0,1,1,1" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <flat:FlatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19"
+                                                     Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                     ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                        <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
+                                    </flat:FlatButton>
+                                    <flat:FlatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19"
+                                                     Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                     ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                        <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L8,0 L4,4 z" />
+                                    </flat:FlatButton>
+                                </Grid>
+                            </Border>
+                            <Border />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <!--</ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>-->
 

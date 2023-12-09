@@ -68,10 +68,10 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private void Setup()
-        {
-            //Click += control_Click;
-        }
+        //private void Setup()
+        //{
+        //    //Click += control_Click;
+        //}
 
         /// <summary>
         /// Get or set the offset value for this gradient stop. The offset determines how far along the gradient this stop occurs.

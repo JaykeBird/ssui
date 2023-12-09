@@ -21,6 +21,8 @@ namespace SsuiSample
             selPanel.Items.CanSelectMultiple = true;
         }
 
+        #region Add Item Methods
+
         private void btnAddBlank_Click(object sender, RoutedEventArgs e)
         {
             SelectableItem si = new SelectableItem();
@@ -32,7 +34,7 @@ namespace SsuiSample
             selPanel.Items.Add(si);
         }
 
-        private void mnuSelImage_Click(object sender, RoutedEventArgs e)
+        private void mnuAddImageBasic_Click(object sender, RoutedEventArgs e)
         {
             ImageTextListItem itle = new ImageTextListItem();
             itle.Title = "Image";
@@ -43,8 +45,7 @@ namespace SsuiSample
             selPanel.Items.Add(itle);
         }
 
-
-        private void mnuSelImageLegacy_Click(object sender, RoutedEventArgs e)
+        private void mnuAddImageFull_Click(object sender, RoutedEventArgs e)
         {
             SelectableItem si = new SelectableItem();
             si.Text = "Image";
@@ -57,7 +58,7 @@ namespace SsuiSample
             selPanel.Items.Add(si);
         }
 
-        private void mnuSelEdit_Click(object sender, RoutedEventArgs e)
+        private void mnuAddEditable_Click(object sender, RoutedEventArgs e)
         {
             SelectableItem si = new SelectableItem();
             si.Text = "Editable";
@@ -69,14 +70,27 @@ namespace SsuiSample
             selPanel.Items.Add(si);
         }
 
-        private void mnuSelSep_Click(object sender, RoutedEventArgs e)
+        private void mnuAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            FlatButton si = new FlatButton();
+            si.Content = "Button";
+            si.SelectOnClick = true;
+            si.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            selPanel.Items.Add(si);
+        }
+
+        private void mnuAddSeparator_Click(object sender, RoutedEventArgs e)
         {
             selPanel.Items.Add(new SeparatorItem());
         }
 
+        #endregion
+
+
         private void btnSelRemove_Click(object sender, RoutedEventArgs e)
         {
-            var items = new List<SelectableUserControl>(selPanel.Items.SelectedItems);
+            var items = new List<IClickSelectableControl>(selPanel.Items.SelectedItems);
             foreach (var item in items)
             {
                 selPanel.Items.Remove(item);
@@ -88,15 +102,26 @@ namespace SsuiSample
             selPanel.Items.Clear();
         }
 
-        private void btnSelUp_Click(object sender, RoutedEventArgs e)
+        private void btnSelMoveUp_Click(object sender, RoutedEventArgs e)
         {
             selPanel.MoveSelectedItemsUp();
         }
 
-        private void btnSelDown_Click(object sender, RoutedEventArgs e)
+        private void btnSelMoveDown_Click(object sender, RoutedEventArgs e)
         {
             selPanel.MoveSelectedItemsDown();
         }
+        private void btnSelAll_Click(object sender, RoutedEventArgs e)
+        {
+            selPanel.Items.SelectRange(selPanel.Items);
+        }
+
+        private void btnSelNone_Click(object sender, RoutedEventArgs e)
+        {
+            selPanel.Items.ClearSelection();
+        }
+
+        #region Select Panel Event Listeners
 
         private void selPanel_ItemsAdded(object sender, SelectionChangedEventArgs e)
         {
@@ -116,15 +141,7 @@ namespace SsuiSample
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();
         }
 
-        private void btnSelAll_Click(object sender, RoutedEventArgs e)
-        {
-            selPanel.Items.SelectRange(selPanel.Items);
-        }
-
-        private void btnSelNone_Click(object sender, RoutedEventArgs e)
-        {
-            selPanel.Items.ClearSelection();
-        }
+        #endregion
 
         #region ColorScheme
 
@@ -165,7 +182,7 @@ namespace SsuiSample
 
         private void chkShowChk_CheckChanged(object sender, RoutedEventArgs e)
         {
-            foreach (SelectableUserControl item in selPanel.Items)
+            foreach (IClickSelectableControl item in selPanel.Items)
             {
                 if (item is SelectableItem si)
                 {

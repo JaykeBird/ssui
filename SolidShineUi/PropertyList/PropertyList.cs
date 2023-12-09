@@ -945,14 +945,7 @@ namespace SolidShineUi.PropertyList
                 throw new ArgumentException("The editor must inherit the IPropertyEditor interface.", nameof(editor));
             }
 
-            if (registeredEditors.ContainsKey(type))
-            {
-                registeredEditors[type] = editor;
-            }
-            else
-            {
-                registeredEditors.Add(type, editor);
-            }
+            registeredEditors[type] = editor;
         }
 
         /// <summary>
@@ -969,7 +962,7 @@ namespace SolidShineUi.PropertyList
             else return false;
         }
 
-        #endregion
+#endregion
 
         private void PreregisterEditors()
         {
@@ -1163,9 +1156,9 @@ namespace SolidShineUi.PropertyList
                 // 4. check if it's a generic IEnumerable (if so, use the included EnumerableEditor)
                 // 5. check if it's a non-generic IEnumerable (if so, use the included EnumerableEditor)
 
-                if (registeredEditors.ContainsKey(propType))
+                if (registeredEditors.TryGetValue(propType, out var editorType) && editorType != null)
                 {
-                    object o = Activator.CreateInstance(registeredEditors[propType]) ?? new object();
+                    object o = Activator.CreateInstance(editorType) ?? new object();
                     if (o is IPropertyEditor i)
                     {
                         return i;
@@ -1240,7 +1233,7 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
-        #endregion
+#endregion
 
         #region Visual Elements
 

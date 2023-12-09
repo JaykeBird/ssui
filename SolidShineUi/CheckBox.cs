@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -12,13 +13,29 @@ using System.Windows.Media;
 
 namespace SolidShineUi
 {
+    // Usage of a CheckBox is good to indicate selection (such as, checking specific items from a list of checkboxes to select those items).
+    // The IsChecked value is just a bool, so this can be useful for situations where you need to present an option that's stored as a bool.
+
     /// <summary>
-    /// A CheckBox control with more customization over the appearance, and a larger box for a more touch-friendly UI.
+    /// A control that can display content alongside a large, touch-friendly checkbox, which users are able to check or uncheck. Provides more customization than the standard WPF CheckBox.
     /// </summary>
+    /// <remarks>
+    /// Unlike the standard WPF CheckBox, a nullable bool (<c>bool?</c>) is not used for <see cref="IsChecked"/>; instead, <c>IsChecked</c> will return true if there is any mark,
+    /// including either a full checkmark or an indeterminate mark (a square), and false only if there is no mark at all.
+    /// Instead, use <see cref="IsIndeterminate"/> to check if the mark is an indeterminate mark, or use <see cref="CheckState"/> to get the current state as an enum.
+    /// </remarks>
     [DefaultEvent(nameof(CheckChanged))]
     [Localizability(LocalizationCategory.CheckBox)]
     public class CheckBox : ContentControl
     {
+        // in my personal experience, I've run into difficulties and annoyances with the standard WPF CheckBox
+        // while I understand the usage of nullable bool for IsChecked, to cover the potential of it being an indeterminate mark, I've personally never used tri-state checkboxes
+        // all the checkboxes I've directly implemented have all been only two-state (checked or unchecked), so the extra unwrapping to do to get that raw value was annoying
+        // on top of that, there was a limited selection of brush properties to be able to directly make the control I'd want it to be (such as the box background and foreground)
+        // while styles or a custom template could've been used to make it how I would've wanted, at that point I would already be 50% of the way to making my own control
+        // soooo that's pretty much what I did. and now I have all the features and customization I want, and practically none of the annoyances I had
+        // of course, 
+
         static CheckBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CheckBox), new FrameworkPropertyMetadata(typeof(CheckBox)));
@@ -29,75 +46,44 @@ namespace SolidShineUi
         /// </summary>
         public CheckBox()
         {
-            //InitializeComponent();
             Padding = new Thickness(5, 0, 0, 0);
-
-            InternalIsCheckedChanged += CheckBox_InternalIsCheckedChanged;
-            InternalIsIndeterminateChanged += CheckBox_InternalIsIndeterminateChanged;
 
             CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
 
             SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
 
-            //if (Template != null)
-            //{
-            //    try
-            //    {
-            //        ((Border)Template.FindName("brdrChk", this)).MouseEnter += Border_MouseEnter;
-            //        ((Border)Template.FindName("brdrChk", this)).MouseLeave += Border_MouseLeave;
-            //    }
-            //    catch (NullReferenceException)
-            //    {
-
-            //    }
-            //}
-
-            //Focusable = true;
             KeyboardNavigation.SetIsTabStop(this, true);
 
             MouseDown += UserControl_MouseDown;
             MouseUp += UserControl_MouseUp;
-            //MouseEnter += UserControl_MouseEnter;
-            //MouseLeave += UserControl_MouseLeave;
             TouchDown += UserControl_TouchDown;
             TouchUp += UserControl_TouchUp;
             StylusDown += UserControl_StylusDown;
             StylusUp += UserControl_StylusUp;
 
-            //GotFocus += UserControl_GotFocus;
-            //GotKeyboardFocus += UserControl_GotKeyboardFocus;
-            //LostFocus += UserControl_LostFocus;
-            //LostKeyboardFocus += UserControl_LostKeyboardFocus;
-
             KeyDown += UserControl_KeyDown;
             KeyUp += UserControl_KeyUp;
         }
 
-        //private void Border_MouseLeave(object sender, MouseEventArgs e)
-        //{
-        //    if (Debugger.IsAttached) Debugger.Log(0, "CheckBox", "Border leave");
-        //}
-
-        //private void Border_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //    if (Debugger.IsAttached) Debugger.Log(0, "CheckBox", "Border enter");
-        //}
-
+        #region CheckBoxClick
         /// <summary>
         /// The command that activates when the box of the checkbox itself has been clicked.
         /// </summary>
         public static readonly RoutedCommand CheckBoxClickCommand = new RoutedCommand();
 
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing value for the <see cref="CheckBoxClick"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent CheckBoxClickEvent = EventManager.RegisterRoutedEvent(
             "CheckBoxClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// An event that raises only when the checkbox itself is clicked.
         /// </summary>
+        /// <remarks>
+        /// When combined with <see cref="OnlyAllowCheckBoxClick"/>, this can limit the checkbox to only being checkable when the box itself is clicked,
+        /// not just anywhere within the control. This could be useful if the <c>Content</c> can also interact with the mouse.
+        /// </remarks>
         public event RoutedEventHandler CheckBoxClick
         {
             add { AddHandler(CheckBoxClickEvent, value); }
@@ -114,10 +100,9 @@ namespace SolidShineUi
             DoClick();
             checkBoxClick = false;
         }
+        #endregion
 
-        #region IsChecked/IsIndeterminate/CheckState & Events
-
-        //private byte sel = 0;
+        #region CheckState
 
         #region Routed Events
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -177,25 +162,20 @@ namespace SolidShineUi
         }
         #endregion
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        #region Properties
+        /// <summary>
+        /// The backing value for the <see cref="IsChecked"/> dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
             "IsChecked", typeof(bool), typeof(CheckBox),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsCheckedChanged)));
+            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<CheckBox>((c) => c.CheckedChanged()))));
 
+        /// <summary>
+        /// The backing value for the <see cref="IsIndeterminate"/> dependency property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
             "IsIndeterminate", typeof(bool), typeof(CheckBox),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsIndeterminateChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalIsCheckedChanged;
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalIsIndeterminateChanged;
+            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<CheckBox>((c) => c.IndeterminateChanged()))));
 
         /// <summary>
         /// Get or set if the check box is checked. (Note: if in the Indeterminate state, it will still return true as checked.)
@@ -250,35 +230,13 @@ namespace SolidShineUi
                 }
             }
         }
+        #endregion
 
         bool raiseChangedEvent = true;
         bool updateBoolValues = true;
 
-        private static void OnInternalIsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void CheckedChanged()
         {
-            if (d is CheckBox c)
-            {
-                c.InternalIsCheckedChanged?.Invoke(c, e);
-            }
-        }
-
-        private static void OnInternalIsIndeterminateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is CheckBox c)
-            {
-                c.InternalIsIndeterminateChanged?.Invoke(c, e);
-            }
-        }
-
-        private void CheckBox_InternalIsCheckedChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            // code to run whenever the IsChecked value is changed
-            //if (raiseChangedEvent)
-            //{
-            //    RoutedEventArgs t = new RoutedEventArgs(CheckChangedEvent);
-            //    RaiseEvent(t);
-            //}
-
             if (!IsChecked)
             {
                 raiseChangedEvent = false;
@@ -312,15 +270,8 @@ namespace SolidShineUi
             }
         }
 
-        private void CheckBox_InternalIsIndeterminateChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void IndeterminateChanged()
         {
-            // code to run whenever the IsIndeterminate value is changed
-
-            //if (raiseChangedEvent)
-            //{
-            //    RoutedEventArgs t = new RoutedEventArgs(CheckChangedEvent);
-            //    RaiseEvent(t);
-            //}
 
             if (IsIndeterminate)
             {
@@ -665,10 +616,11 @@ namespace SolidShineUi
 
         #region Routed Events
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing value for the <see cref="Click"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
             "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the check box is clicked.
@@ -679,10 +631,11 @@ namespace SolidShineUi
             remove { RemoveHandler(ClickEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
             "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the check box is right-clicked.
@@ -696,6 +649,7 @@ namespace SolidShineUi
         #endregion
 
         #region Variables/Properties
+
         bool initiatingClick = false;
         /// <summary>
         /// Gets or sets whether the Click event should be raised when the checkbox is pressed, rather than when it is released.
@@ -704,7 +658,8 @@ namespace SolidShineUi
         public bool ClickOnPress { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets whether the checkbox should cycle through three states (rather than two) when clicked. The third state is the "Indeterminate" state, which can be checked via the IsIndeterminate property.
+        /// Gets or sets whether the checkbox should cycle through three states (rather than two) when clicked. 
+        /// The third state is the "Indeterminate" state, which can be checked via <see cref="IsIndeterminate"/> or <see cref="CheckState"/>.
         /// </summary>
         [Category("Common")]
         public bool TriStateClick { get => (bool)GetValue(TriStateClickProperty); set => SetValue(TriStateClickProperty, value); }
@@ -798,7 +753,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Perform a click programattically. The checkbox responds the same way as if it was clicked by the user.
+        /// Perform a click programmatically. The checkbox responds the same way as if it was clicked by the user.
         /// </summary>
         public void DoClick()
         {
@@ -873,7 +828,7 @@ namespace SolidShineUi
     }
 
     /// <summary>
-    /// Represents the current state of a CheckBox.
+    /// Represents the current state of a <see cref="CheckBox"/>.
     /// </summary>
     public enum CheckState
     {
