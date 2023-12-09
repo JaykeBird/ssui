@@ -96,9 +96,6 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (!string.IsNullOrWhiteSpace(txtSource.Text))
             {
                 if (Uri.IsWellFormedUriString(System.Net.WebUtility.UrlEncode(txtSource.Text), UriKind.RelativeOrAbsolute))
-#else
-                if (Uri.IsWellFormedUriString(txtSource.Text, UriKind.Absolute) || File.Exists(txtSource.Text))
-#endif
                 {
                     try
                     {
@@ -142,11 +139,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             // as long as http://nginx.org/nginx.png still loads without an HTTPS redirect, we can use that to test that image loading does work in .NET Framework 4.0
             // (or also test http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png, or an image on a different site from https://whynohttps.com)
 
-#if (NETCOREAPP || NET45_OR_GREATER)
             string click_here = "click here to type/paste in a URL or file path";
-#else
-            string click_here = "click here to type/paste in a file path";
-#endif
 
             if (isrc is BitmapSource bsc)
             {
@@ -226,14 +219,22 @@ namespace SolidShineUi.PropertyList.Dialogs
             _internalAction = false;
         }
 
+#if NETCOREAPP
+        void DownloadFailed(object? sender, ExceptionEventArgs e)
+#else
         void DownloadFailed(object sender, ExceptionEventArgs e)
+#endif
         {
             MessageDialog md = new MessageDialog(ColorScheme);
 
             md.ShowDialog($"The image at the above URL could not be downloaded due to:\n\n{e.ErrorException}", owner: this, title: "Image Download Failed",
                 image: MessageDialogImage.Error, buttonDisplay: MessageDialogButtonDisplay.Auto);
 
-            LoadImageSource(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, MessageDialogImageConverter.MessageDialogImageColor.Color));
+#if NETCOREAPP
+            LoadImageSource(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, IconVariation.Color)!);
+#else
+            LoadImageSource(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, IconVariation.Color));
+#endif
         }
 
 #endregion
