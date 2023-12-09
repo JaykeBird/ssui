@@ -380,31 +380,23 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         #region Variables/Properties
 
+        #region IsSelected / IsSelectedChanged
+
+        bool _runSelChangeEvent = true;
+
         /// <summary>
-        /// The backing dependency property for <see cref="IsSelected"/>. See the related property for more details.
+        /// The backing dependency property for <see cref="IsSelected"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(GalleryItem),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
 
-        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool se)
-            {
-                if (d is GalleryItem f)
-                {
-                    f.IsSelectedChanged?.Invoke(d, e);
-                }
-            }
-        }
-
         /// <summary>
-        /// Gets or sets whether this button is selected. This property (combined with <c>SelectOnClick</c>) allows the button to function like a ToggleButton.
+        /// Gets or sets whether this GalleryItem is selected. If <see cref="SelectOnClick"/> is <c>true</c>, this state will toggle when this item is clicked.
         /// </summary>
         /// <remarks>
-        /// A selected button will have a slightly different visual appearance to differentiate it as being selected. This will include, by default, the border being a bit thicker.
-        /// This can be changed via the <see cref="BorderSelectionThickness"/> property. You can also directly edit the brushes used via the <see cref="SelectedBrush"/> and
-        /// <see cref="BorderSelectedBrush"/> properties.
+        /// A selected GalleryItem will have a constant highlighted background (set via <see cref="SelectedBrush"/>) to show that it is selected.
+        /// This can be used in situations where a Gallery is being used to select one or more options, with the currently active option having <c>IsSelected</c> set to <c>true</c>.
         /// </remarks>
         public bool IsSelected
         {
@@ -417,6 +409,61 @@ namespace SolidShineUi.Toolbars.Ribbon
                 SetValue(IsSelectedProperty, value);
             }
         }
+
+        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool se)
+            {
+                bool old = Convert.ToBoolean(e.OldValue);
+
+                if (d is GalleryItem f)
+                {
+                    if (f._runSelChangeEvent)
+                    {
+                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, SelectionChangeTrigger.CodeUnknown, null);
+                        f.RaiseEvent(re);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
+            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(GalleryItem));
+
+        /// <summary>
+        /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event ItemSelectionChangedEventHandler IsSelectedChanged
+        {
+            add { AddHandler(IsSelectedChangedEvent, value); }
+            remove { RemoveHandler(IsSelectedChangedEvent, value); }
+        }
+
+        /// <summary>
+        /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
+        /// </summary>
+        /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
+        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="triggerSource">The object that triggered the change.</param>
+#if NETCOREAPP
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
+#else
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
+#endif
+        {
+            bool old = IsSelected;
+
+            _runSelChangeEvent = false;
+            IsSelected = value;
+            _runSelChangeEvent = true;
+
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
+            RaiseEvent(re);
+        }
+        #endregion
 
         /// <summary>
         /// The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.
@@ -440,15 +487,6 @@ namespace SolidShineUi.Toolbars.Ribbon
             get => (bool)GetValue(SelectOnClickProperty);
             set => SetValue(SelectOnClickProperty, value);
         }
-
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to monitor the button's selected state, and is recommended to use this rather than the <see cref="Click"/> event.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
-#else
-        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
-#endif
 
         #endregion
 
@@ -474,7 +512,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         {
             if (SelectOnClick)
             {
-                IsSelected = !IsSelected;
+                SetIsSelectedWithSource(!IsSelected, SelectionChangeTrigger.ControlClick, this);
             }
 
             RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
