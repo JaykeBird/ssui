@@ -87,7 +87,6 @@ namespace SsuiSample
 
         #endregion
 
-
         private void btnSelRemove_Click(object sender, RoutedEventArgs e)
         {
             var items = new List<IClickSelectableControl>(selPanel.Items.SelectedItems);
@@ -123,19 +122,19 @@ namespace SsuiSample
 
         #region Select Panel Event Listeners
 
-        private void selPanel_ItemsAdded(object sender, SelectionChangedEventArgs e)
+        private void selPanel_ItemsAdded(object sender, CollectionSelectionChangedEventArgs e)
         {
             lblTotalItems.Text = selPanel.Items.Count.ToString();
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();
         }
 
-        private void selPanel_ItemsRemoved(object sender, SelectionChangedEventArgs e)
+        private void selPanel_ItemsRemoved(object sender, CollectionSelectionChangedEventArgs e)
         {
             lblTotalItems.Text = selPanel.Items.Count.ToString();
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();
         }
 
-        private void selPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void selPanel_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
             lblTotalItems.Text = selPanel.Items.Count.ToString();
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();
