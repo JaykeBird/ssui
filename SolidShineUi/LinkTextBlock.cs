@@ -1,10 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+#if AVALONIA
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
+using Avalonia.Layout;
+using Avalonia.Interactivity;
+#else
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+#endif
 
 namespace SolidShineUi
 {
@@ -16,10 +25,59 @@ namespace SolidShineUi
     {
         bool isHighlighted = false;
 
+#if AVALONIA
+        /// <summary>
+        /// The routed event object for the <see cref="Click"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> ClickEvent = RoutedEvent.Register<LinkTextBlock, RoutedEventArgs>
+            (nameof(Click), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// This event is raised when the control is clicked.
+        /// </summary>
+        public event EventHandler<RoutedEventArgs> Click
+        {
+            add => AddHandler(ClickEvent, value);
+            remove => RemoveHandler(ClickEvent, value);
+        }
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public static readonly StyledProperty<Brush> TextBrushProperty = AvaloniaProperty.Register<LinkTextBlock, Brush>(
+            nameof(TextBrush), Color.FromRgb(0, 102, 204).ToBrush());
+
+        public static readonly StyledProperty<Brush> HighlightBrushProperty = AvaloniaProperty.Register<LinkTextBlock, Brush>(
+            nameof(HighlightBrush), Color.FromRgb(51, 153, 255).ToBrush());
+
+        public static readonly StyledProperty<Brush> DisabledBrushProperty = AvaloniaProperty.Register<LinkTextBlock, Brush>(
+            nameof(DisabledBrush), Color.FromRgb(120, 120, 120).ToBrush());
+
+        public static readonly StyledProperty<bool> AutoSetLinkFromTextProperty = AvaloniaProperty.Register<LinkTextBlock, bool>(
+            nameof(AutoSetLinkFromText), false);
+
+        public static readonly StyledProperty<bool> UnderlineOnHighlightProperty = AvaloniaProperty.Register<LinkTextBlock, bool>(
+            nameof(UnderlineOnHighlight), true);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <inheritdoc/>
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            switch (change.Property.Name)
+            {
+                case nameof(TextBrush):
+                case nameof(HighlightBrush):
+                case nameof(DisabledBrush):
+                    HandleInternalBrushChanged();
+                    break;
+            }
+        }
+#else
+        /// <summary>
+        /// The routed event object for the <see cref="Click"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
             "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(LinkTextBlock));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// This event is raised when the control is clicked.
@@ -52,21 +110,15 @@ namespace SolidShineUi
             new PropertyMetadata(true));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        #region Brush change hook
         private static void OnInternalBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is LinkTextBlock t)
             {
-                t.InternalBrushChanged?.Invoke(t, e);
+                t.HandleInternalBrushChanged();
             }
         }
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalBrushChanged;
-
-        private void LinkTextBlock_InternalBrushChanged(object sender, DependencyPropertyChangedEventArgs e)
+#endif
+        private void HandleInternalBrushChanged()
         {
             if (IsEnabled)
             {
@@ -85,7 +137,6 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
 
         /// <summary>
         /// Get or set the standard foreground brush for the text. This overwrites the Foreground property.
@@ -155,6 +206,17 @@ namespace SolidShineUi
             Foreground = TextBrush;
             Focusable = true;
 
+#if AVALONIA
+            VerticalAlignment = VerticalAlignment.Top;
+            HorizontalAlignment = HorizontalAlignment.Left;
+
+            PointerEntered += LinkTextBlock_MouseEnter;
+            PointerExited += LinkTextBlock_MouseLeave;
+            AddHandler(PointerReleasedEvent, LinkTextBlock_PreviewTouchUp, RoutingStrategies.Tunnel);
+            GotFocus += LinkTextBlock_GotKeyboardFocus;
+            LostFocus += LinkTextBlock_LostKeyboardFocus;
+            AddHandler(KeyUpEvent, LinkTextBlock_PreviewKeyUp, RoutingStrategies.Tunnel);
+#else
             VerticalAlignment = VerticalAlignment.Top;
             HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -166,10 +228,10 @@ namespace SolidShineUi
             GotKeyboardFocus += LinkTextBlock_GotKeyboardFocus;
             LostKeyboardFocus += LinkTextBlock_LostKeyboardFocus;
             PreviewKeyUp += LinkTextBlock_PreviewKeyUp;
-
-            InternalBrushChanged += LinkTextBlock_InternalBrushChanged;
+#endif
         }
 
+#if !AVALONIA
         /// <summary>
         /// Create a LinkTextBlock, with a <see cref="System.Windows.Documents.Inline"/> as the initial display content.
         /// </summary>
@@ -191,9 +253,8 @@ namespace SolidShineUi
             GotKeyboardFocus += LinkTextBlock_GotKeyboardFocus;
             LostKeyboardFocus += LinkTextBlock_LostKeyboardFocus;
             PreviewKeyUp += LinkTextBlock_PreviewKeyUp;
-
-            InternalBrushChanged += LinkTextBlock_InternalBrushChanged;
         }
+#endif
 
         /// <summary>
         /// Gets or sets a value indicating whether this element is enabled in the user interface (UI).
@@ -220,7 +281,11 @@ namespace SolidShineUi
         {
             if (IsEnabled)
             {
+#if AVALONIA
+                if (UnderlineOnHighlight) TextDecorations = new TextDecorationCollection() { new TextDecoration() { Location = TextDecorationLocation.Underline } };
+#else
                 if (UnderlineOnHighlight) TextDecorations = System.Windows.TextDecorations.Underline;
+#endif
                 Foreground = HighlightBrush;
                 isHighlighted = true;
             }
@@ -236,6 +301,27 @@ namespace SolidShineUi
             }
         }
 
+#if AVALONIA
+        void LinkTextBlock_MouseEnter(object? sender, PointerEventArgs e)
+        {
+            Highlight();
+        }
+
+        void LinkTextBlock_MouseLeave(object? sender, PointerEventArgs e)
+        {
+            Unlight();
+        }
+
+        void LinkTextBlock_GotKeyboardFocus(object? sender, GotFocusEventArgs e)
+        {
+            Highlight();
+        }
+
+        void LinkTextBlock_LostKeyboardFocus(object? sender, RoutedEventArgs e)
+        {
+            Unlight();
+        }
+#else
         void LinkTextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
             Highlight();
@@ -255,6 +341,7 @@ namespace SolidShineUi
         {
             Unlight();
         }
+#endif
 
         private void RaiseClick()
         {
@@ -267,7 +354,9 @@ namespace SolidShineUi
             RaiseEvent(re);
         }
 
-#if NETCOREAPP
+#if AVALONIA
+        void LinkTextBlock_PreviewTouchUp(object? sender, PointerReleasedEventArgs e)
+#elif NETCOREAPP
         void LinkTextBlock_PreviewTouchUp(object? sender, TouchEventArgs e)
 #else
         void LinkTextBlock_PreviewTouchUp(object sender, TouchEventArgs e)
@@ -276,6 +365,7 @@ namespace SolidShineUi
             RaiseClick();
         }
 
+#if !AVALONIA
         void LinkTextBlock_PreviewStylusUp(object sender, StylusEventArgs e)
         {
             RaiseClick();
@@ -285,9 +375,13 @@ namespace SolidShineUi
         {
             RaiseClick();
         }
+#endif
 
-
+#if AVALONIA
+        void LinkTextBlock_PreviewKeyUp(object? sender, KeyEventArgs e)
+#else
         void LinkTextBlock_PreviewKeyUp(object sender, KeyEventArgs e)
+#endif
         {
             if (e.Key == Key.Enter || e.Key == Key.Space)
             {
@@ -297,6 +391,7 @@ namespace SolidShineUi
 
         void OpenLinkFromText()
         {
+            // TODO: add in support for opening links on non-Windows platforms - UseShellExecute is Windows-only
             try
             {
                 // must use UseShellExecute so that it works on .NET Core
