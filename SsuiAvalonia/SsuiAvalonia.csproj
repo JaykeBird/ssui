@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <RootNamespace>SolidShineUi</RootNamespace>
+    <AssemblyName>SolidShineUi.Avalonia</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);AVALONIA</DefineConstants>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>SolidShineUi Avalonia</Title>
+    <Authors>JaykeBird, other contributors</Authors>
+    <PackageProjectUrl>https://jaykebird.com/software/ssui</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolidShineUi\ArithmeticParser.cs" Link="ArithmeticParser.cs" />
+    <Compile Include="..\SolidShineUi\BrushFactory.cs" Link="BrushFactory.cs" />
+    <Compile Include="..\SolidShineUi\ColorPaletteFileReader.cs" Link="ColorPaletteFileReader.cs" />
+    <Compile Include="..\SolidShineUi\ColorScheme.cs" Link="ColorScheme.cs" />
+    <Compile Include="..\SolidShineUi\ColorsHelper.cs" Link="ColorsHelper.cs" />
+    <Compile Include="..\SolidShineUi\ISelectableCollection.cs" Link="ISelectableCollection.cs" />
+    <Compile Include="..\SolidShineUi\Keyboard\ActionKeyAction.cs" Link="Keyboard\ActionKeyAction.cs" />
+    <Compile Include="..\SolidShineUi\Keyboard\CommandKeyAction.cs" Link="Keyboard\CommandKeyAction.cs" />
+    <Compile Include="..\SolidShineUi\Keyboard\IKeyAction.cs" Link="Keyboard\IKeyAction.cs" />
+    <Compile Include="..\SolidShineUi\Keyboard\KeyboardShortcutHandler.cs" Link="Keyboard\KeyboardShortcutHandler.cs" />
+    <Compile Include="..\SolidShineUi\Keyboard\KeyboardShortcuts.cs" Link="Keyboard\KeyboardShortcuts.cs" />
+    <Compile Include="..\SolidShineUi\Keyboard\KeyRegistry.cs" Link="Keyboard\KeyRegistry.cs" />
+    <Compile Include="..\SolidShineUi\Keyboard\RoutedEventKeyAction.cs" Link="Keyboard\RoutedEventKeyAction.cs" />
+    <Compile Include="..\SolidShineUi\SelectableCollection.cs" Link="SelectableCollection.cs" />
+    <Compile Include="..\SolidShineUi\Utils\LimitableStringCollection.cs" Link="Utils\LimitableStringCollection.cs" />
+    <Compile Include="..\SolidShineUi\WildcardMatch.cs" Link="WildcardMatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+	<None Include="..\LICENSE.md">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
+	<!-- A new Avalonia project (created by Avalonia for Visual Studio) doesn't include any themes with it, so I had to also add on this reference. 
+	     relavant: https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
+    <!--<PackageReference Include="Avalonia.Themes.Simple" Version="11.0.6" />
+	<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />-->
+   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Keyboard\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+</Project>

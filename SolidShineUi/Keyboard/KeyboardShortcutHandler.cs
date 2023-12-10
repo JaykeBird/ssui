@@ -2,12 +2,22 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+#if AVALONIA
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Threading;
+
+using KeyBoard = Avalonia.Input.KeyboardDevice;
+#else
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
 using KeyBoard = System.Windows.Input.Keyboard;
+#endif
+
 
 namespace SolidShineUi.KeyboardShortcuts
 {
@@ -31,7 +41,11 @@ namespace SolidShineUi.KeyboardShortcuts
             w.KeyDown += window_KeyDown;
             w.KeyUp += window_KeyUp;
 
+#if AVALONIA
+            keyCheck = new DispatcherTimer(new TimeSpan(400), DispatcherPriority.Input, KeyModifierCheck);
+#else
             keyCheck = new DispatcherTimer(new TimeSpan(400), DispatcherPriority.Input, KeyModifierCheck, w.Dispatcher);
+#endif
         }
 
         /// <summary>
@@ -108,7 +122,11 @@ namespace SolidShineUi.KeyboardShortcuts
         //    KeyRegistry.ApplyDisplaySettings(display);
         //}
 
+#if AVALONIA
+        private void window_KeyDown(object? sender, KeyEventArgs e)
+#else
         private void window_KeyDown(object sender, KeyEventArgs e)
+#endif
         {
             // first, check for modifier key changes
 
@@ -157,7 +175,11 @@ namespace SolidShineUi.KeyboardShortcuts
             return;
         }
 
+#if AVALONIA
+        private void window_KeyUp(object? sender, KeyEventArgs e)
+#else
         private void window_KeyUp(object sender, KeyEventArgs e)
+#endif
         {
             // use to monitor modifier key changes
 
@@ -174,6 +196,8 @@ namespace SolidShineUi.KeyboardShortcuts
         private void KeyModifierCheck(object sender, EventArgs e)
 #endif
         {
+            // TODO: let's see if this is not needed at all in Avalonia... maybe see if this straight up isn't needed at all??
+#if !AVALONIA
             if (CtrlPressed)
             {
                 if (!KeyBoard.IsKeyDown(Key.LeftCtrl) && !KeyBoard.IsKeyDown(Key.RightCtrl))
@@ -202,7 +226,7 @@ namespace SolidShineUi.KeyboardShortcuts
             {
                 keyCheck.Stop();
             }
+#endif
         }
-
     }
 }

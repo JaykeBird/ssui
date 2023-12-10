@@ -1,10 +1,19 @@
 ﻿using System;
+
+#if AVALONIA
+using System.Globalization;
+using System.Collections.Generic;
+using System.Reflection;
+using Avalonia.Media;
+using Color = Avalonia.Media.Color;
+#else
 using System.Windows.Media;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Drawing;
 using Color = System.Windows.Media.Color;
+#endif
 
 namespace SolidShineUi
 {
@@ -54,6 +63,8 @@ namespace SolidShineUi
         /// </remarks>
         public static Color CreateFromHex(string hex)
         {
+            // TODO: rely upon Avalonia's implementation in the Avalonia version
+
             // first, remove the starting # symbol (change #890ABC to 890ABC)
             if (hex.StartsWith("#", StringComparison.Ordinal))
             {
@@ -115,6 +126,7 @@ namespace SolidShineUi
             }
         }
 
+#if !AVALONIA
         /// <summary>
         /// Create a color based upon an OLE color value.
         /// </summary>
@@ -126,6 +138,7 @@ namespace SolidShineUi
             System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
             return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
+#endif
 
         // TODO: perform benchmark to see if ToHexString or ToHexStringLegacy is faster
 
@@ -178,6 +191,7 @@ namespace SolidShineUi
             return color.A.ToString("X2") + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
+#if !AVALONIA
         /// <summary>
         /// Get the OLE color value that translates to this color.
         /// </summary>
@@ -188,8 +202,9 @@ namespace SolidShineUi
         {
             return ColorTranslator.ToOle(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
+#endif
 
-        #endregion
+#endregion
 
         #region Additional Functions
 
@@ -280,6 +295,8 @@ namespace SolidShineUi
         /// <param name="value">The value (also known as brightness) value of the color.</param>
         public static void ToHSV(Color color, out double hue, out double saturation, out double value)
         {
+            // TODO: rely upon Avalonia's implementation in the Avalonia version
+
             // taken from http://www.rapidtables.com/convert/color/rgb-to-hsv.htm
             // backed up by https://en.wikipedia.org/wiki/HSL_and_HSV#Formal_derivation
 
@@ -333,6 +350,8 @@ namespace SolidShineUi
         /// <returns>Return a color that corresponds to these HSV values.</returns>
         public static Color CreateFromHSV(double hue, double saturation, double value)
         {
+            // TODO: rely upon Avalonia's implementation in the Avalonia version
+
             // taken from https://en.wikipedia.org/wiki/HSL_and_HSV#Converting_to_RGB
 
             double c = value * saturation; // chroma

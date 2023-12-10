@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,9 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Get the UI element associated with the key action's activator, if any.
         /// </summary>
-#if NETCOREAPP
+#if AVALONIA
+        Control? SourceElement { get; }
+#elif NETCOREAPP
         UIElement? SourceElement { get; }
 #else
         UIElement SourceElement { get; }

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if AVALONIA
+using Avalonia.Controls;
+#else
 using System.Windows;
+#endif
 
 namespace SolidShineUi.KeyboardShortcuts
 {
@@ -15,7 +19,25 @@ namespace SolidShineUi.KeyboardShortcuts
     {
         Action a;
 
-#if NETCOREAPP
+#if AVALONIA
+        /// <summary>
+        /// Gets the UI element that this action is related to, if any.
+        /// </summary>
+        public Control? SourceElement { get; }
+
+        /// <summary>
+        /// Create a new ActionKeyAction.
+        /// </summary>
+        /// <param name="action">The action to execute when this key action is activated.</param>
+        /// <param name="methodId">The unique ID of this key action.</param>
+        /// <param name="sourceElement">The UI element, if any, this action is related to. For example, it could be a menu item or button that would alternatively trigger this action.</param>
+        public ActionKeyAction(Action action, string methodId, Control? sourceElement = null)
+        {
+            a = action;
+            ID = methodId;
+            SourceElement = sourceElement;
+        }
+#elif NETCOREAPP
         /// <summary>
         /// Gets the UI element that this action is related to, if any.
         /// </summary>

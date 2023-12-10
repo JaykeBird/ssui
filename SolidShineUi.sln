@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsuiWindows11Interop", "SsuiWindows11Interop\SsuiWindows11Interop.csproj", "{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsuiAvalonia", "SsuiAvalonia\SsuiAvalonia.csproj", "{CAE6CD65-AAFC-49E2-9508-7C3EF63ABEBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsuiSampleAvalonia", "SsuiSampleAvalonia\SsuiSampleAvalonia.csproj", "{3C76F0D9-51D7-47F2-925E-6A07DD8BC3FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3579F5A-7155-4575-A1C4-BADF0B1EB8A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAE6CD65-AAFC-49E2-9508-7C3EF63ABEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE6CD65-AAFC-49E2-9508-7C3EF63ABEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE6CD65-AAFC-49E2-9508-7C3EF63ABEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE6CD65-AAFC-49E2-9508-7C3EF63ABEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C76F0D9-51D7-47F2-925E-6A07DD8BC3FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C76F0D9-51D7-47F2-925E-6A07DD8BC3FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C76F0D9-51D7-47F2-925E-6A07DD8BC3FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C76F0D9-51D7-47F2-925E-6A07DD8BC3FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

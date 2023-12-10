@@ -1,6 +1,13 @@
 ﻿using System;
+#if AVALONIA
+using Avalonia;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+#else
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+#endif
 
 namespace SolidShineUi
 {
@@ -40,7 +47,22 @@ namespace SolidShineUi
         /// <returns>A LinearGradientBrush that includes the two colors.</returns>
         public static LinearGradientBrush Create(Color col1, Color col2, double angle)
         {
+#if AVALONIA
+            return new LinearGradientBrush
+            {
+                GradientStops = new GradientStops { new GradientStop(col1, 0.0), new GradientStop(col2, 1.0) },
+                StartPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(EndPointFromAngle(angle), RelativeUnit.Relative)
+            };
+#else
             return new LinearGradientBrush(col1, col2, angle);
+#endif
+        }
+
+        private static Point EndPointFromAngle(double angle)
+        {
+            angle = angle * (1.0 / 180.0) * Math.PI;
+            return new Point(Math.Cos(angle), Math.Sin(angle));
         }
 
         /// <summary>
@@ -48,11 +70,26 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="image">The image to use.</param>
         /// <returns>An ImageBrush containing this image.</returns>
+#if AVALONIA
+        public static ImageBrush CreateFromImage(IImageBrushSource image)
+#else
         public static ImageBrush CreateFromImage(ImageSource image)
+#endif
         {
             return new ImageBrush(image);
         }
 
+#if AVALONIA
+        /// <summary>
+        /// Create a brush based upon an image.
+        /// </summary>
+        /// <param name="fileName">The file location of the image to use.</param>
+        /// <returns>An ImageBrush containing this image.</returns>
+        public static ImageBrush CreateFromImage(string fileName)
+        {
+            return new ImageBrush(new Bitmap(fileName));
+        }
+#else
         /// <summary>
         /// Create a brush based upon an image.
         /// </summary>
@@ -62,6 +99,7 @@ namespace SolidShineUi
         {
             return new ImageBrush(new BitmapImage(location));
         }
+#endif
 
         /// <summary>
         /// Create a brush based upon an image, with tiling.
@@ -69,14 +107,24 @@ namespace SolidShineUi
         /// <param name="image">The image to use.</param>
         /// <param name="tile">The tiling mode to use for tiling this image.</param>
         /// <returns>An ImageBrush containing this image.</returns>
+#if AVALONIA
+        public static ImageBrush CreateFromImage(Bitmap image, TileMode tile)
+        {
+            ImageBrush br = new ImageBrush(image);
+            br.DestinationRect = new RelativeRect(new Point(0, 0), new Size(image.Size.Width, image.Size.Height), RelativeUnit.Absolute);
+            br.TileMode = tile;
+            return br;
+        }
+#else
         public static ImageBrush CreateFromImage(ImageSource image, TileMode tile)
         {
             ImageBrush br = new ImageBrush(image);
             br.ViewportUnits = BrushMappingMode.Absolute;
             br.Viewport = new System.Windows.Rect(new System.Windows.Point(0, 0), new System.Windows.Size(image.Width, image.Height));
             br.TileMode = tile;
-            return new ImageBrush(image);
+            return br;
         }
+#endif
 
         /// <summary>
         /// Create a brush based upon an image, with tiling.
@@ -84,6 +132,16 @@ namespace SolidShineUi
         /// <param name="location">The location, such as a web address or file location, of the image to use.</param>
         /// <param name="tile">The tiling mode to use for tiling this image.</param>
         /// <returns>An ImageBrush containing this image.</returns>
+#if AVALONIA
+        public static ImageBrush CreateFromImage(string location, TileMode tile)
+        {
+            Bitmap image = new Bitmap(location);
+            ImageBrush br = new ImageBrush(image);
+            br.DestinationRect = new RelativeRect(new Point(0, 0), new Size(image.Size.Width, image.Size.Height), RelativeUnit.Absolute);
+            br.TileMode = tile;
+            return br;
+        }
+#else
         public static ImageBrush CreateFromImage(Uri location, TileMode tile)
         {
             ImageSource image = new BitmapImage(location);
@@ -91,8 +149,9 @@ namespace SolidShineUi
             br.ViewportUnits = BrushMappingMode.Absolute;
             br.Viewport = new System.Windows.Rect(new System.Windows.Point(0, 0), new System.Windows.Size(image.Width, image.Height));
             br.TileMode = tile;
-            return new ImageBrush(image);
+            return br;
         }
+#endif
 
         /// <summary>
         /// Create a brush with a checkerboard pattern, where the size and colors of the squares are customizable.
@@ -127,8 +186,12 @@ namespace SolidShineUi
             DrawingBrush cbb = new DrawingBrush();
             cbb.Stretch = Stretch.None;
             cbb.TileMode = TileMode.Tile;
+#if AVALONIA
+            cbb.DestinationRect = new RelativeRect(0, 0, fullsize, fullsize, RelativeUnit.Absolute);
+#else
             cbb.Viewport = new System.Windows.Rect(0, 0, fullsize, fullsize);
             cbb.ViewportUnits = BrushMappingMode.Absolute;
+#endif
 
             DrawingGroup cbd = new DrawingGroup();
             cbd.Children.Add(new GeometryDrawing() { Brush = brush1, Geometry = Geometry.Parse($"M0,0 L{fullsize},0 {fullsize},{fullsize} 0,{fullsize}Z") });

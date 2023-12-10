@@ -4,8 +4,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+#if AVALONIA
+using Avalonia.Input;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+#else
 using System.Windows;
 using System.Windows.Controls;
+#endif
 
 namespace SolidShineUi.KeyboardShortcuts
 {
@@ -14,7 +20,22 @@ namespace SolidShineUi.KeyboardShortcuts
     /// </summary>
     public class RoutedEventKeyAction : IKeyAction
     {
-#if NETCOREAPP
+#if AVALONIA
+        EventHandler<RoutedEventArgs>? reh = null;
+
+        /// <summary>
+        /// Gets the UI element that this action is related to, if any.
+        /// </summary>
+        public Control? SourceElement { get; private set; }
+
+        /// <summary>
+        /// Create a RoutedEventKeyAction.
+        /// </summary>
+        /// <param name="reh">The RoutedEventHandler to invoke when this key action is activated.</param>
+        /// <param name="methodId">The unique ID to associate with this key action.</param>
+        /// <param name="sourceElement">The UI element, if any, associated with this RoutedEventHandler. For example, it could be a menu item or button that would alternatively invoke this routed event handler.</param>
+        public RoutedEventKeyAction(EventHandler<RoutedEventArgs> reh, string methodId, Control? sourceElement = null)
+#elif NETCOREAPP
         RoutedEventHandler? reh = null;
 
         /// <summary>
@@ -61,13 +82,18 @@ namespace SolidShineUi.KeyboardShortcuts
         /// </summary>
         public void Execute()
         {
-#if NETCOREAPP
-                reh?.Invoke((object?)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
+#if AVALONIA
+            reh?.Invoke((object?)SourceElement ?? this, new RoutedEventArgs(InputElement.KeyDownEvent, this));
+#elif NETCOREAPP
+            reh?.Invoke((object?)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
 #else
-                reh?.Invoke((object)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
+            reh?.Invoke((object)SourceElement ?? this, new RoutedEventArgs(UIElement.KeyDownEvent, this));
 #endif
         }
 
+        // TODO: see how Avalonia stores event handlers for its objects; see if I can't access that via reflection or not
+
+#if !AVALONIA
         /// <summary>
         /// Create a list of key actions from all the menu items in a particular menu. Each menu item with a name and Click event handler will be added to this list.
         /// </summary>
@@ -203,5 +229,6 @@ namespace SolidShineUi.KeyboardShortcuts
                 throw new ArgumentNullException(nameof(mi));
             }
         }
+#endif
     }
 }

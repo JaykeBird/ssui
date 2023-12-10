@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
+#if AVALONIA
+using Avalonia.Controls;
+using Avalonia.Input;
+#else
+using System.Windows;
+#endif
 
 namespace SolidShineUi.KeyboardShortcuts
 {
@@ -14,8 +19,75 @@ namespace SolidShineUi.KeyboardShortcuts
     /// </summary>
     public class CommandKeyAction : IKeyAction, ICommandSource
     {
+        // interestingly, Avalonia uses System.Windows.Input.ICommand internally for handling commands, rather than using its own implementation
+        // I can only hope/wonder that this means this particular type is also included on non-Windows systems... time will tell, I suppose!
 
-#if NETCOREAPP
+#if AVALONIA
+        object? cParam = null;
+        //IInputElement? cTarget = null;
+
+        /// <summary>
+        /// Gets the UI element that this action is related to, if any.
+        /// </summary>
+        public Control? SourceElement { get; }
+
+        /// <summary>
+        /// Get the command parameter associated with this key action. When the command is executed, this parameter is also supplied.
+        /// </summary>
+        public object? CommandParameter { get => cParam; }
+        ///// <summary>
+        ///// Get the command target to associated with this key action. When the command is executed, it will be executed in relation to this target.
+        ///// </summary>
+        //public IInputElement? CommandTarget { get => cTarget; }
+
+        /// <summary>
+        /// Create a CommandKeyAction.
+        /// </summary>
+        /// <param name="command">The command to execute when this key action is activated.</param>
+        /// <param name="commandParameter">The parameter to supply with this command. Set to null to not set a parameter.</param>
+        /// <param name="methodId">The unique ID to associate with this key action.</param>
+        /// <param name="sourceItem">The UI element, if any, associated with this command. For example, it could be a menu item or button that would alternatively execute this command.</param>
+        public CommandKeyAction(ICommand command, object? commandParameter, string methodId, Control? sourceItem = null)
+        {
+            c = command;
+            cParam = commandParameter;
+            //cTarget = null;
+            ID = methodId;
+            SourceElement = sourceItem;
+        }
+
+        /// <summary>
+        /// Create a CommandKeyAction.
+        /// </summary>
+        /// <param name="command">The command to execute when this key action is activated.</param>
+        /// <param name="commandParameter">The parameter to supply with this command. Set to null to not set a parameter.</param>
+        /// <param name="commandTarget">The target of the command. Set to null to not set a target.</param>
+        /// <param name="methodId">The unique ID to associate with this key action.</param>
+        /// <param name="sourceItem">The UI element, if any, associated with this command. For example, it could be a menu item or button that would alternatively execute this command.</param>
+        public CommandKeyAction(ICommand command, object? commandParameter, IInputElement? commandTarget, string methodId, Control? sourceItem = null)
+        {
+            c = command;
+            cParam = commandParameter;
+            //cTarget = commandTarget;
+            ID = methodId;
+            SourceElement = sourceItem;
+        }
+
+        /// <summary>
+        /// Create a CommandKeyAction.
+        /// </summary>
+        /// <param name="command">The command to execute when this key action is activated.</param>
+        /// <param name="methodId">The unique ID to associate with this key action.</param>
+        /// <param name="sourceItem">The UI element, if any, associated with this command. For example, it could be a menu item or button that would alternatively execute this command.</param>
+        public CommandKeyAction(ICommand command, string methodId, Control? sourceItem = null)
+        {
+            c = command;
+            cParam = null;
+            //cTarget = null;
+            ID = methodId;
+            SourceElement = sourceItem;
+        }
+#elif NETCOREAPP
         object? cParam = null;
         IInputElement? cTarget = null;
 
@@ -132,7 +204,7 @@ namespace SolidShineUi.KeyboardShortcuts
 #else
         public static KeyActionList LoadFromType(Type commandsClass, object commandParameter = null, IInputElement commandTarget = null)
 #endif
-        { 
+        {
             KeyActionList kal = new KeyActionList();
 
             var props = commandsClass.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
@@ -161,7 +233,16 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Get the command that will be executed when this key action is activated.
         /// </summary>
+#if AVALONIA
+        public ICommand? Command { get => c; }
+#else
         public ICommand Command { get => c; }
+#endif
+
+        /// <summary>
+        /// Gets a value indicating whether this control and all its parents are enabled.
+        /// </summary>
+        public bool IsEffectivelyEnabled => true;
 
         /// <summary>
         /// Activate this key action.
@@ -170,6 +251,10 @@ namespace SolidShineUi.KeyboardShortcuts
         {
             if (c.CanExecute(cParam))
             {
+#if AVALONIA
+                // Avalonia doesn't implement or use RoutedCommands, I guess?
+                c.Execute(cParam);
+#else
                 if (c is RoutedCommand rc)
                 {
                     rc.Execute(cParam, cTarget);
@@ -178,7 +263,13 @@ namespace SolidShineUi.KeyboardShortcuts
                 {
                     c.Execute(cParam);
                 }
+#endif
             }
+        }
+
+        public void CanExecuteChanged(object sender, EventArgs e)
+        {
+            // for the purposes of this, I cann
         }
     }
 }

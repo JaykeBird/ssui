@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#if AVALONIA
+using Avalonia.Input;
+#else
 using System.Windows.Input;
+#endif
 using static SolidShineUi.KeyboardShortcuts.KeyboardShortcut;
 
 namespace SolidShineUi.KeyboardShortcuts
