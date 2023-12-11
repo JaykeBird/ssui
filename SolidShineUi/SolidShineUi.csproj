@@ -13,9 +13,9 @@
 		<Title>Solid Shine UI</Title>
 		<Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
 		<Copyright>Copyright 2018-2023 Jayke R. Huempfner, other contributors</Copyright>
-		<Version>1.9.6</Version>
-		<AssemblyVersion>1.9.6</AssemblyVersion>
-		<FileVersion>1.9.6</FileVersion>
+		<Version>1.9.7</Version>
+		<AssemblyVersion>1.9.7</AssemblyVersion>
+		<FileVersion>1.9.7</FileVersion>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<Authors>Jayke R. Huempfner, other contributors</Authors>
 		<PackageIconUrl></PackageIconUrl>
@@ -29,7 +29,13 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReleaseNotes>Version 1.9.6
+		<PackageReleaseNotes>Version 1.9.7
+			- Add TransformEditDialog, TransformEditor for PropertyList
+			- Add support for .NET 8, and .NET Framework 4.0, 4.5, and 4.6.2
+			- Improvements to SelectPanel, various PropertyList editors
+			- Various other smaller improvements and bug fixes
+			
+			Version 1.9.6
 			- Fix bug in SelectPanel
 			- Add LoadFromType to CommandKeyAction
 			- Set-only properties are skipped in PropertyList control
@@ -40,12 +46,6 @@
 			- Add validation check feature to StringInputDialog
 			- New control: LongSpinner - like an IntegerSpinner, but with longs
 			- Improvements to SelectableItem, IntegerSpinner/DoubleSpinner, ColorsHelper
-			
-			Version 1.9.4
-			- Fix bugs with ColorPickerDialog, ImageBrushEditorDialog
-			- Minor improvements to TabControl and CheckBox
-			- Add FileListPadding property to FileSelect control
-
 			See website for more details!</PackageReleaseNotes>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
