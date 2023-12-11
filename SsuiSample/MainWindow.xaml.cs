@@ -22,7 +22,11 @@ namespace SsuiSample
         public MainWindow()
         {
             InitializeComponent();
-            ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
+
+            ColorScheme cs = new ColorScheme(ColorsHelper.CreateFromHex("#77AAEE"), ColorsHelper.CreateFromHex("#EEAA77"));
+            //cs.MenusUseAccent = true;
+            ColorScheme = cs;
+
             SetupSidebar();
             KeyDown += (s, e) =>
             {
