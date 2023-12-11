@@ -77,7 +77,8 @@ namespace SolidShineUi.PropertyList
         /// Raised when the currently loaded/observed object in the PropertyList control changes.
         /// </summary>
         /// <remarks>
-        /// This is also raised when the ReloadObject 
+        /// This is also raised when <see cref="ReloadObject()"/> is called; in those cases, 
+        /// <see cref="PropertyListObjectEventArgs.IsReload"/> is set to <c>true</c>.
         /// </remarks>
 #if NETCOREAPP
         public event PropertyListObjectEventHandler? LoadedObjectChanged;

@@ -175,7 +175,7 @@ namespace SolidShineUi.PropertyList
         public Type LoadedObjectType { get; private set; }
 
         /// <summary>
-        /// Get if this event was triggered by reloading the current object, rather than 
+        /// Get if this event was triggered by reloading the current object, rather than loading in a new object.
         /// </summary>
         public bool IsReload { get; private set; }
 
