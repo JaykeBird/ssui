@@ -227,17 +227,25 @@ namespace SolidShineUi.PropertyList.Dialogs
             _internalAction = false;
         }
 
+#if NETCOREAPP
+        void DownloadFailed(object? sender, ExceptionEventArgs e)
+#else
         void DownloadFailed(object sender, ExceptionEventArgs e)
+#endif
         {
             MessageDialog md = new MessageDialog(ColorScheme);
 
             md.ShowDialog($"The image at the above URL could not be downloaded due to:\n\n{e.ErrorException}", owner: this, title: "Image Download Failed",
                 image: MessageDialogImage.Error, buttonDisplay: MessageDialogButtonDisplay.Auto);
 
-            LoadImageSource(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, MessageDialogImageConverter.MessageDialogImageColor.Color));
+            var bs = MessageDialogImageConverter.GetImage(MessageDialogImage.Question, MessageDialogImageConverter.MessageDialogImageColor.Color);
+            if (bs != null)
+            {
+                LoadImageSource(bs);
+            }
         }
 
-#endregion
+        #endregion
 
         #region Load/Save brush
 
