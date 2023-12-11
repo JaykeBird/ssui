@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Diagnostics;
 using SolidShineUi.Utils;
+using System.Windows.Threading;
 //using Microsoft.Windows.Shell;
 
 namespace SolidShineUi
@@ -39,7 +40,43 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Maximized));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow, (_, e) => e.CanExecute = WindowState != WindowState.Normal));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
+
+//#if !(NETCOREAPP || NET45_OR_GREATER)
+//            // this is really only meant to solve the rendering problem on Windows XP
+//            // I suspect that this is probably due to the included Microsoft.Windows.Shell DLL
+//            // but either way, there's no harm in running this even on newer systems with .NET Framework 4.0
+
+//            Loaded += FlatWindow_Loaded;
+
+//            invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+//            invalidTimer.Tick += InvalidTimer_Tick;
+//#endif
         }
+
+//#if !(NETCOREAPP || NET45_OR_GREATER)
+
+//        DispatcherTimer invalidTimer = new DispatcherTimer();
+
+//        private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
+//        {
+//            invalidTimer.Start();
+//        }
+
+//        private void InvalidTimer_Tick(object sender, EventArgs e)
+//        {
+//            Application.Current?.Dispatcher.Invoke(new RunInvalidate(DoRunInvalidate));
+
+//            invalidTimer.IsEnabled = false;
+//        }
+
+//        delegate void RunInvalidate();
+
+//        void DoRunInvalidate()
+//        {
+//            InvalidateMeasure();
+//            InvalidateVisual();
+//        }
+//#endif
 
         void SetWindowChrome(int height = 29)
         {

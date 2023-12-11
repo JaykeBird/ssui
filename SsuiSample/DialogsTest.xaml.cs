@@ -134,8 +134,18 @@ namespace SsuiSample
 
             if (cpd.DialogResult)
             {
-                txtSampleText.Foreground = new SolidColorBrush(cpd.SelectedColor);
+                SolidColorBrush scb = new SolidColorBrush(cpd.SelectedColor);
+                txtSampleText.Foreground = scb;
+                txtSampleText.TextBrush = scb;
+                txtSampleText.HighlightBrush = scb;
             }
+        }
+
+        private void txtSampleText_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog md = new MessageDialog(ColorScheme);
+            md.ShowDialog(txtSampleText.Text, owner: Window.GetWindow(this), title: "Message Dialog", buttonDisplay: MessageDialogButtonDisplay.Auto,
+                            image: MessageDialogImage.Info, customOkButtonText: "Ta-da!");
         }
     }
 }

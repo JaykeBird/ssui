@@ -20,7 +20,8 @@
                 <RowDefinition Height="105"/>
             </Grid.RowDefinitions>
             <Border Background="#77FFFFFF" BorderThickness="1" BorderBrush="Black" Grid.ColumnSpan="3" Margin="20,10,20,20">
-                <TextBlock x:Name="txtSampleText" Text="Sample Text" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <flat:LinkTextBlock x:Name="txtSampleText" Text="Sample Text" VerticalAlignment="Center" HorizontalAlignment="Center" Click="txtSampleText_Click"
+                                    UnderlineOnHighlight="False" Foreground="Black" TextBrush="Black" HighlightBrush="Black" />
             </Border>
             <flat:FlatButton x:Name="btnSetText" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Text..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Click="btnSetText_Click"/>
             <flat:FlatButton x:Name="btnSetFont" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Font..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1" Click="btnSetFont_Click"/>
