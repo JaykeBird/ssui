@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia;
-using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 using Avalonia.Interactivity;
 
 namespace SolidShineUi
@@ -53,7 +53,7 @@ namespace SolidShineUi
                 Visual? parent = e.Source as Visual;
 
                 while (parent != null && !(parent is TextBox))
-                    parent = (Visual?)LogicalExtensions.GetLogicalParent(parent);
+                    parent = parent.GetVisualParent();
 
                 if (parent != null)
                 {
