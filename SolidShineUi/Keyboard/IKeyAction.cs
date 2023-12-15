@@ -1,10 +1,13 @@
-﻿using Avalonia.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if AVALONIA
+using Avalonia.Controls;
+#else
 using System.Windows;
+#endif
 
 namespace SolidShineUi.KeyboardShortcuts
 {

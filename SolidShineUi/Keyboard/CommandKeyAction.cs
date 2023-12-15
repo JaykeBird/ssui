@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 #if AVALONIA
@@ -267,9 +265,13 @@ namespace SolidShineUi.KeyboardShortcuts
             }
         }
 
+        /// <summary>
+        /// Raised when the underlying <see cref="Command"/> has changed whether it's able to be executed or not.
+        /// </summary>
         public void CanExecuteChanged(object sender, EventArgs e)
         {
-            // for the purposes of this, I cann
+            // I don't actually have anything to update or change based upon this
+            // soooooo I'm not actually going to do anything!
         }
     }
 }

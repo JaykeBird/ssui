@@ -35,7 +35,7 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property backing its related property. See <see cref="SelectOnFocus"/> for more details.
         /// </summary>
-        public static StyledProperty<bool> SelectOnFocusProperty
+        public static readonly StyledProperty<bool> SelectOnFocusProperty
             = AvaloniaProperty.Register<ClickSelectTextBox, bool>(nameof(SelectOnFocus), true);
 
 
