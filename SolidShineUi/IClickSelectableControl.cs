@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
@@ -92,5 +88,82 @@ namespace SolidShineUi
     /// <param name="sender">The source object of the event.</param>
     /// <param name="e">The event arguments, containing information on the new IsSelected value and how the selection changed.</param>
     public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
+
+    /// <summary>
+    /// Indicates which method or source triggered the change in selection.
+    /// </summary>
+    public enum SelectionChangeTrigger
+    {
+        /// <summary>
+        /// The selection was changed due to the control itself being clicked.
+        /// </summary>
+        ControlClick = 0,
+        /// <summary>
+        /// The selection was changed due to a checkbox in the control being clicked.
+        /// </summary>
+        CheckBox = 1,
+        /// <summary>
+        /// The selection was changed due to an action by the parent object containing the control.
+        /// </summary>
+        Parent = 2,
+        /// <summary>
+        /// The selection was changed because the <see cref="SelectableUserControl.CanSelect"/> property (or similar property) was changed.
+        /// </summary>
+        DisableSelecting = 3,
+        /// <summary>
+        /// The selection was changed via directly setting the value in code, or via a different undefined method.
+        /// </summary>
+        CodeUnknown = 9,
+    }
+
+    /// <summary>
+    /// The event arguments for the IsSelectedChanged event of a <see cref="IClickSelectableControl"/>.
+    /// </summary>
+    public class ItemSelectionChangedEventArgs : RoutedEventArgs
+    {
+
+        /// <summary>
+        /// Create a new ItemSelectionChangedRoutedEventArgs.
+        /// </summary>
+        /// <param name="ev">the routed event associated with these routed event args</param>
+        /// <param name="oldValue">The old IsSelected value.</param>
+        /// <param name="newValue">The new IsSelected value.</param>
+        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+        /// <param name="triggerSource">The source object that updated the value (if available).</param>
+#if NETCOREAPP
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null) : base(ev, triggerSource)
+#else
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null) : base(ev, triggerSource)
+#endif
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
+            TriggerMethod = trigger;
+            TriggerSource = triggerSource;
+        }
+
+
+        /// <summary>
+        /// The old value of the IsSelected property.
+        /// </summary>
+        public bool OldValue { get; private set; }
+        /// <summary>
+        /// The new value of the IsSelected property.
+        /// </summary>
+        public bool NewValue { get; private set; }
+        /// <summary>
+        /// The method that was used to update the value.
+        /// </summary>
+        public SelectionChangeTrigger TriggerMethod { get; private set; }
+
+        /// <summary>
+        /// The object that caused the update to occur, if available.
+        /// </summary>
+#if NETCOREAPP
+        public object? TriggerSource { get; private set; }
+#else
+        public object TriggerSource { get; private set; }
+#endif
+    }
 
 }
