@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove=".gitignore" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
-	  <!-- A new Avalonia project (created by Avalonia for Visual Studio) doesn't include any themes with it, so I had to also add on this reference. 
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.0.6" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
+		<!-- A new Avalonia project (created by Avalonia for Visual Studio) doesn't include any themes with it, so I had to also add on this reference. 
 	     relavant: https://github.com/AvaloniaUI/Avalonia/issues/5593 -->
-	  <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.6" />
-	  <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SsuiAvalonia\SsuiAvalonia.csproj" />
-  </ItemGroup>
+		<PackageReference Include="Avalonia.Themes.Simple" Version="11.0.6" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SsuiAvalonia\SsuiAvalonia.csproj" />
+	</ItemGroup>
 </Project>
