@@ -11,7 +11,6 @@ namespace SolidShineUi.Utils
     /// Extension methods for various WPF or C# objects. (While newer .NET may have some of these methods included, these are not available on .NET Framework).
     /// </summary>
     public static class BaseExtensions
-
     {
 
         /// <summary>

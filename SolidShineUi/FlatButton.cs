@@ -227,7 +227,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatButton),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
