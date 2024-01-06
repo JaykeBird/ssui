@@ -23,14 +23,113 @@ namespace SolidShineUi
 
         public FlatButton()
         {
-
+            Padding = new Thickness(5, 0, 5, 0);
         }
+
+        private Button btn;
 
         #region Appearance
 
         private const string pcTb = ":tb";
 
+        /// <summary>
+        /// Get or set the color scheme to apply to this button. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
+        public ColorScheme ColorScheme { get => GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
+            = AvaloniaProperty.Register<FlatButton, ColorScheme>(nameof(ColorScheme), new ColorScheme());
+
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (ColorScheme != cs)
+            {
+                ColorScheme = cs;
+                return;
+            }
+        }
+
+        #region Brushes
+
+        public new IBrush? Background { get => GetValue(BackgroundProperty); set => SetValue(BackgroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="Background"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BackgroundProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(Background), Colors.White.ToBrush());
+
+
+        public IBrush? ClickBrush { get => GetValue(ClickBrushProperty); set => SetValue(ClickBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> ClickBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(ClickBrush), Colors.Gainsboro.ToBrush());
+
+
+        public IBrush? SelectedBrush { get => GetValue(SelectedBrushProperty); set => SetValue(SelectedBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> SelectedBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(SelectedBrush), Colors.WhiteSmoke.ToBrush());
+
+
+        public IBrush? HighlightBrush { get => GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(HighlightBrush), Colors.LightGray.ToBrush());
+
+
+        public IBrush? DisabledBrush { get => GetValue(DisabledBrushProperty); set => SetValue(DisabledBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> DisabledBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(DisabledBrush), Colors.Gray.ToBrush());
+
+
+        public IBrush? BorderDisabledBrush { get => GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BorderDisabledBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderDisabledBrush), Colors.DarkGray.ToBrush());
+
+
+        public IBrush? BorderBrush { get => GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BorderBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BorderBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderBrush), Colors.Black.ToBrush());
+
+
+        public IBrush? BorderHighlightBrush { get => GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BorderHighlightBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderHighlightBrush), Colors.Black.ToBrush());
+
+
+        public IBrush? BorderSelectedBrush { get => GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BorderSelectedBrushProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderSelectedBrush), Colors.DimGray.ToBrush());
+
         #endregion
+
+        #endregion
+
+        /// <inheritdoc/>
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            switch (change.Property.Name)
+            {
+                case nameof(ColorScheme):
+
+                    break;
+            }
+        }
 
         #region Click / Selection Handling
 
@@ -246,6 +345,7 @@ namespace SolidShineUi
             set => SetValue(CommandParameterProperty, value);
         }
 
+        /// <inheritdoc/>
         public void CanExecuteChanged(object sender, EventArgs e)
         {
             // TODO: change if this is enabled??
@@ -425,6 +525,7 @@ namespace SolidShineUi
             IsPressed = false;
         }
 
+        /// <inheritdoc/>
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
@@ -436,6 +537,5 @@ namespace SolidShineUi
 
         #endregion
 
-        private Button btn;
     }
 }
