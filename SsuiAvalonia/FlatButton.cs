@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Avalonia.VisualTree;
 using System.Linq;
 using Avalonia.Media;
+using System.ComponentModel;
 
 namespace SolidShineUi
 {
@@ -41,6 +42,28 @@ namespace SolidShineUi
         public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
             = AvaloniaProperty.Register<FlatButton, ColorScheme>(nameof(ColorScheme), new ColorScheme());
 
+        /// <summary>
+        /// Get or set whether the button should have a transparent background when the button is not focused.
+        /// </summary>
+        public bool TransparentBack { get => GetValue(TransparentBackProperty); set => SetValue(TransparentBackProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="TransparentBack"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> TransparentBackProperty
+            = AvaloniaProperty.Register<FlatButton, bool>(nameof(TransparentBack), false);
+
+        /// <summary>
+        /// Get or set if the button should use the accent brushes of the color scheme, rather than the standard brushes.
+        /// </summary>
+        public bool UseAccentColors { get => GetValue(UseAccentColorsProperty); set => SetValue(UseAccentColorsProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="UseAccentColors"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> UseAccentColorsProperty
+            = AvaloniaProperty.Register<FlatButton, bool>(nameof(UseAccentColors), false);
+
+        #region Apply Color Scheme
+
+        bool _internalAction = true;
+
         public void ApplyColorScheme(ColorScheme cs)
         {
             if (ColorScheme != cs)
@@ -50,43 +73,64 @@ namespace SolidShineUi
             }
         }
 
+        #endregion
+
         #region Brushes
 
-        public new IBrush? Background { get => GetValue(BackgroundProperty); set => SetValue(BackgroundProperty, value); }
+        ///// <summary>
+        ///// Get or set the bursh used for the background of the control.
+        ///// </summary>
+        //[Category("Brushes")]
+        //public new IBrush? Background { get => GetValue(BackgroundProperty); set => SetValue(BackgroundProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="Background"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<IBrush?> BackgroundProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(Background), Colors.White.ToBrush());
+        ///// <summary>The backing styled property for <see cref="Background"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<IBrush?> BackgroundProperty
+        //    = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(Background), Colors.White.ToBrush());
 
-
+        /// <summary>
+        /// Get or set the brush used for the background of the control while the mouse/pointer is clicking it.
+        /// </summary>
+        [Category("Brushes")]
         public IBrush? ClickBrush { get => GetValue(ClickBrushProperty); set => SetValue(ClickBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> ClickBrushProperty
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(ClickBrush), Colors.Gainsboro.ToBrush());
 
-
+        /// <summary>
+        /// Get or set the brush used for the background of the button while it is selected
+        /// (i.e. the <c>IsSelected</c> property is true).
+        /// </summary>
+        [Category("Brushes")]
         public IBrush? SelectedBrush { get => GetValue(SelectedBrushProperty); set => SetValue(SelectedBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> SelectedBrushProperty
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(SelectedBrush), Colors.WhiteSmoke.ToBrush());
 
-
+        /// <summary>
+        /// Get or set the brush used for the background of the control while the mouse/pointer is over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
         public IBrush? HighlightBrush { get => GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightBrushProperty
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(HighlightBrush), Colors.LightGray.ToBrush());
 
-
+        /// <summary>
+        /// Get or set the brush used for the background of the control when it is disabled.
+        /// </summary>
+        [Category("Brushes")]
         public IBrush? DisabledBrush { get => GetValue(DisabledBrushProperty); set => SetValue(DisabledBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> DisabledBrushProperty
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(DisabledBrush), Colors.Gray.ToBrush());
 
-
+        /// <summary>
+        /// Get or set the brush used for the border around the control, when it is disabled.
+        /// </summary>
         public IBrush? BorderDisabledBrush { get => GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
@@ -94,20 +138,27 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderDisabledBrush), Colors.DarkGray.ToBrush());
 
 
-        public IBrush? BorderBrush { get => GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
+        //public new IBrush? BorderBrush { get => GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="BorderBrush"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<IBrush?> BorderBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderBrush), Colors.Black.ToBrush());
+        ///// <summary>The backing styled property for <see cref="BorderBrush"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<IBrush?> BorderBrushProperty
+        //    = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderBrush), Colors.Black.ToBrush());
 
-
+        /// <summary>
+        /// Get or set the brush used for the border while the control has the mouse/pointer over it (or it has keyboard focus).
+        /// </summary>
+        [Category("Brushes")]
         public IBrush? BorderHighlightBrush { get => GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderHighlightBrushProperty
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderHighlightBrush), Colors.Black.ToBrush());
 
-
+        /// <summary>
+        /// Get or set the brush used for the border while the control is selected
+        /// (i.e. the <c>IsSelected</c> property is true).
+        /// </summary>
+        [Category("Brushes")]
         public IBrush? BorderSelectedBrush { get => GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
