@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
@@ -25,114 +22,36 @@ namespace SolidShineUi.Utils
         /// <returns>A <see cref="CornerRadius"/> that only has a portion of its values set </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            (bool topLeft, bool topRight, bool bottomLeft, bool bottomRight) vals = (false, false, false, false);
+            CornerRadius baseVal;
+
+            // first discern the value
             if (value is double d)
             {
-                CornerRadius cr = new CornerRadius(d);
-                if (parameter is string s)
-                {
-                    CornerRadius cr2 = new CornerRadius(0.0);
-
-                    if (s.Contains("TL"))
-                    {
-                        cr2.TopLeft = cr.TopLeft;
-                    }
-                    if (s.Contains("TR"))
-                    {
-                        cr2.TopRight = cr.TopRight;
-                    }
-                    if (s.Contains("BL"))
-                    {
-                        cr2.BottomLeft = cr.BottomLeft;
-                    }
-                    if (s.Contains("BR"))
-                    {
-                        cr2.BottomRight = cr.BottomRight;
-                    }
-
-                    return cr2;
-                }
-                else if (parameter is byte b)
-                {
-                    CornerRadius cr2 = new CornerRadius(0.0);
-
-                    if (b % 2 == 0)
-                    {
-                        cr2.TopLeft = cr.TopLeft;
-                    }
-                    if (b % 3 == 0)
-                    {
-                        cr2.TopRight = cr.TopRight;
-                    }
-                    if (b % 5 == 0)
-                    {
-                        cr2.BottomLeft = cr.BottomLeft;
-                    }
-                    if (b % 7 == 0)
-                    {
-                        cr2.BottomRight = cr.BottomRight;
-                    }
-
-                    return cr2;
-                }
-                else
-                {
-                    return cr;
-                }
+                baseVal = new CornerRadius(d);
             }
             else if (value is CornerRadius cr)
             {
-                if (parameter is string s)
-                {
-                    CornerRadius cr2 = new CornerRadius(0.0);
-
-                    if (s.Contains("TL"))
-                    {
-                        cr2.TopLeft = cr.TopLeft;
-                    }
-                    if (s.Contains("TR"))
-                    {
-                        cr2.TopRight = cr.TopRight;
-                    }
-                    if (s.Contains("BL"))
-                    {
-                        cr2.BottomLeft = cr.BottomLeft;
-                    }
-                    if (s.Contains("BR"))
-                    {
-                        cr2.BottomRight = cr.BottomRight;
-                    }
-
-                    return cr2;
-                }
-                else if (parameter is byte b)
-                {
-                    CornerRadius cr2 = new CornerRadius(0.0);
-
-                    if (b % 2 == 0)
-                    {
-                        cr2.TopLeft = cr.TopLeft;
-                    }
-                    if (b % 3 == 0)
-                    {
-                        cr2.TopRight = cr.TopRight;
-                    }
-                    if (b % 5 == 0)
-                    {
-                        cr2.BottomLeft = cr.BottomLeft;
-                    }
-                    if (b % 7 == 0)
-                    {
-                        cr2.BottomRight = cr.BottomRight;
-                    }
-
-                    return cr2;
-                }
-                else
-                {
-                    return cr;
-                }
+                baseVal = cr;
             }
             else { return new CornerRadius(); }
+
+            // then discern the parameter
+            if (parameter is string s)
+            {
+                vals = PartialValueHelper.DecodeCornerRadiusPartialValue(s);
+            }
+            else if (parameter is byte b)
+            {
+                vals = PartialValueHelper.DecodeCornerRadiusPartialValue(b);
+            }
+            else
+            {
+                return baseVal;
+            }
+
+            // finally, do the "conversion"
+            return new CornerRadius(vals.topLeft ? baseVal.TopLeft : 0, vals.topRight ? baseVal.TopRight : 0, vals.bottomRight ? baseVal.BottomRight : 0, vals.bottomLeft ? baseVal.BottomLeft : 0);
         }
 
         /// <summary>
@@ -140,7 +59,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
 
     }

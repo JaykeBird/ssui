@@ -18,121 +18,43 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Convert a double into a string, with rounding possible by setting the <paramref name="parameter"/> value.
         /// </summary>
-        /// <param name="value">The <see cref="Thickness"/> object to read from</param>
+        /// <param name="value">The <see cref="Thickness"/> object to read from (or <see cref="double"/> for a uniform value)</param>
         /// <param name="targetType">Not used, returned type will always be a <see cref="Thickness"/></param>
-        /// <param name="parameter">The corners to apply to the result; one or more of <c>TL,TR,BL,BR</c></param>
+        /// <param name="parameter">The corners to apply to the result; one or more of <c>L,T,B,R</c></param>
         /// <param name="culture">Not used</param>
         /// <returns>A <see cref="Thickness"/> that only has a portion of its values set </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            (bool left, bool top, bool right, bool bottom) vals = (false, false, false, false);
+            Thickness baseVal;
+
+            // first discern the value
             if (value is double d)
             {
-                Thickness th = new Thickness(d);
-                if (parameter is string s)
-                {
-                    Thickness th2 = new Thickness(0.0);
-
-                    if (s.Contains("T"))
-                    {
-                        th2.Top = th.Top;
-                    }
-                    if (s.Contains("L"))
-                    {
-                        th2.Left = th.Left;
-                    }
-                    if (s.Contains("R"))
-                    {
-                        th2.Right = th.Right;
-                    }
-                    if (s.Contains("B"))
-                    {
-                        th2.Bottom = th.Bottom;
-                    }
-
-                    return th2;
-                }
-                else if (parameter is byte b)
-                {
-                    Thickness th2 = new Thickness(0.0);
-
-                    if (b % 2 == 0)
-                    {
-                        th2.Top = th.Top;
-                    }
-                    if (b % 3 == 0)
-                    {
-                        th2.Left = th.Left;
-                    }
-                    if (b % 5 == 0)
-                    {
-                        th2.Right = th.Right;
-                    }
-                    if (b % 7 == 0)
-                    {
-                        th2.Bottom = th.Bottom;
-                    }
-
-                    return th2;
-                }
-                else
-                {
-                    return th;
-                }
+                baseVal = new Thickness(d);
             }
             else if (value is Thickness th)
             {
-                if (parameter is string s)
-                {
-                    Thickness th2 = new Thickness(0.0);
-
-                    if (s.Contains("T"))
-                    {
-                        th2.Top = th.Top;
-                    }
-                    if (s.Contains("L"))
-                    {
-                        th2.Left = th.Left;
-                    }
-                    if (s.Contains("R"))
-                    {
-                        th2.Right = th.Right;
-                    }
-                    if (s.Contains("B"))
-                    {
-                        th2.Bottom = th.Bottom;
-                    }
-
-                    return th2;
-                }
-                else if (parameter is byte b)
-                {
-                    Thickness th2 = new Thickness(0.0);
-
-                    if (b % 2 == 0)
-                    {
-                        th2.Top = th.Top;
-                    }
-                    if (b % 3 == 0)
-                    {
-                        th2.Left = th.Left;
-                    }
-                    if (b % 5 == 0)
-                    {
-                        th2.Right = th.Right;
-                    }
-                    if (b % 7 == 0)
-                    {
-                        th2.Bottom = th.Bottom;
-                    }
-
-                    return th2;
-                }
-                else
-                {
-                    return th;
-                }
+                baseVal = th;
             }
             else { return new Thickness(); }
+
+            // then discern the parameter
+            if (parameter is string s)
+            {
+                vals = PartialValueHelper.DecodeThicknessPartialValue(s);
+            }
+            else if (parameter is byte b)
+            {
+                vals = PartialValueHelper.DecodeThicknessPartialValue(b);
+            }
+            else
+            {
+                return baseVal;
+            }
+
+            // finally, do the "conversion"
+            return new Thickness(vals.left ? baseVal.Left : 0, vals.top ? baseVal.Top : 0, vals.right ? baseVal.Right : 0, vals.bottom ? baseVal.Bottom : 0);
         }
 
         /// <summary>
@@ -140,7 +62,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
 
     }
