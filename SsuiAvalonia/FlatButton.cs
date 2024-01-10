@@ -10,6 +10,8 @@ using Avalonia.VisualTree;
 using System.Linq;
 using Avalonia.Media;
 using System.ComponentModel;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Avalonia.Controls.Converters;
 
 namespace SolidShineUi
 {
@@ -64,14 +66,120 @@ namespace SolidShineUi
 
         bool _internalAction = true;
 
+        /// <summary>
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply</param>
         public void ApplyColorScheme(ColorScheme cs)
+        {
+            ApplyColorScheme(cs, UseAccentColors);
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply</param>
+        /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
+        /// This can also be achieved with the <c>UseAccentColors</c> property.
+        /// </param>
+        public void ApplyColorScheme(ColorScheme cs, bool useAccentColors = true)
         {
             if (ColorScheme != cs)
             {
                 ColorScheme = cs;
                 return;
             }
+
+            if (UseAccentColors != useAccentColors)
+            {
+                UseAccentColors = useAccentColors;
+                return;
+            }
+
+            _internalAction = false;
+
+            if (cs.IsHighContrast)
+            {
+                Background = cs.BackgroundColor.ToBrush();
+                HighlightBrush = cs.HighlightColor.ToBrush();
+                SelectedBrush = cs.HighlightColor.ToBrush();
+                BorderHighlightBrush = cs.BorderColor.ToBrush();
+                BorderSelectedBrush = cs.BorderColor.ToBrush();
+                BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                DisabledBrush = cs.BackgroundColor.ToBrush();
+                Foreground = cs.ForegroundColor.ToBrush();
+                ClickBrush = cs.ThirdHighlightColor.ToBrush();
+
+                // this should be covered via the :tb pseudo-class
+                //if (TransparentBack)
+                //{
+                //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
+                //}
+                //else
+                //{
+                //    BorderBrush = cs.BorderColor.ToBrush();
+                //}
+            }
+            //else if (TransparentBack)
+            //{
+            //    Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
+            //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
+
+            //    if (UseAccentColors)
+            //    {
+            //        HighlightBrush = cs.AccentSecondHighlightColor.ToBrush();
+            //        SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
+            //        BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
+            //        BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
+            //        BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+            //        DisabledBrush = cs.LightDisabledColor.ToBrush();
+            //        Foreground = cs.ForegroundColor.ToBrush();
+            //        ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
+            //    }
+            //    else
+            //    {
+            //        HighlightBrush = cs.SecondHighlightColor.ToBrush();
+            //        DisabledBrush = cs.LightDisabledColor.ToBrush();
+            //        BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+            //        SelectedBrush = cs.ThirdHighlightColor.ToBrush();
+            //        BorderHighlightBrush = cs.HighlightColor.ToBrush();
+            //        BorderSelectedBrush = cs.SelectionColor.ToBrush();
+            //        Foreground = cs.ForegroundColor.ToBrush();
+            //        ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            //    }
+            //}
+            else
+            {
+                if (UseAccentColors)
+                {
+                    Background = cs.AccentSecondaryColor.ToBrush();
+                    BorderBrush = cs.AccentBorderColor.ToBrush();
+                    HighlightBrush = cs.AccentSecondHighlightColor.ToBrush();
+                    DisabledBrush = cs.LightDisabledColor.ToBrush();
+                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                    SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
+                    BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
+                    BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
+                    Foreground = cs.ForegroundColor.ToBrush();
+                    ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
+                }
+                else
+                {
+                    Background = cs.SecondaryColor.ToBrush();
+                    BorderBrush = cs.BorderColor.ToBrush();
+                    HighlightBrush = cs.SecondHighlightColor.ToBrush();
+                    DisabledBrush = cs.LightDisabledColor.ToBrush();
+                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                    SelectedBrush = cs.ThirdHighlightColor.ToBrush();
+                    BorderHighlightBrush = cs.HighlightColor.ToBrush();
+                    BorderSelectedBrush = cs.SelectionColor.ToBrush();
+                    Foreground = cs.ForegroundColor.ToBrush();
+                    ClickBrush = cs.ThirdHighlightColor.ToBrush();
+                }
+            }
         }
+        
+        
 
         #endregion
 
@@ -167,6 +275,31 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Border
+
+        public Thickness BorderThickness { get => GetValue(BorderThicknessProperty); set => SetValue(BorderThicknessProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BorderThickness"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<Thickness> BorderThicknessProperty
+            = AvaloniaProperty.Register<FlatButton, Thickness>(nameof(BorderThickness), new Thickness(1));
+
+
+        public Thickness BorderSelectionThickness { get => GetValue(BorderSelectionThicknessProperty); set => SetValue(BorderSelectionThicknessProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<Thickness> BorderSelectionThicknessProperty
+            = AvaloniaProperty.Register<FlatButton, Thickness>(nameof(BorderSelectionThickness), new Thickness(2));
+
+        public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
+            = AvaloniaProperty.Register<FlatButton, CornerRadius>(nameof(CornerRadius), new CornerRadius(1));
+        
+        CornerRadiusFilterConverter
+
+        #endregion
+
         #endregion
 
         /// <inheritdoc/>
@@ -176,8 +309,14 @@ namespace SolidShineUi
 
             switch (change.Property.Name)
             {
+                case nameof(TransparentBack):
+                    PseudoClasses.Set(pcTb, TransparentBack);
+                    break;
+                case nameof(UseAccentColors):
+                    ApplyColorScheme(ColorScheme, UseAccentColors);
+                    break;
                 case nameof(ColorScheme):
-
+                    ApplyColorScheme(ColorScheme);
                     break;
             }
         }
