@@ -416,11 +416,7 @@ namespace SolidShineUi
         /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
         /// <param name="triggerSource">The object that triggered the change.</param>
         /// <remarks>If <see cref="CanSelect"/> is set to <c>false</c>, then nothing will occur (silent fail).</remarks>
-#if NETCOREAPP
         public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
-#else
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
-#endif
         {
             if (CanSelect)
             {

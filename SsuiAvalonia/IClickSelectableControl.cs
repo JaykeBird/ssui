@@ -41,11 +41,7 @@ namespace SolidShineUi
         /// <param name="value">the new value to set <see cref="IsSelected"/> to</param>
         /// <param name="trigger">the method by which the value has changed (if not specified, use <see cref="SelectionChangeTrigger.CodeUnknown"/>)</param>
         /// <param name="triggerSource">the object that triggered this value change, or <c>null</c></param>
-#if NETCOREAPP
         void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object? triggerSource);
-#else 
-        void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object triggerSource);
-#endif
 
         /// <summary>
         /// Perform a click programmatically. This control responds the same way as if it was clicked by the user.
