@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+
 #if AVALONIA
 using Avalonia;
 using Avalonia.Controls;
@@ -391,11 +393,30 @@ namespace SolidShineUi
 
         void OpenLinkFromText()
         {
-            // TODO: add in support for opening links on non-Windows platforms - UseShellExecute is Windows-only
             try
             {
+#if AVALONIA
+                if (Text == null)
+                {
+                    return;
+                }
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start(new ProcessStartInfo(Text) { UseShellExecute = true });
+                }
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", Text);
+                }
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", Text);
+                }
+#else
                 // must use UseShellExecute so that it works on .NET Core
                 Process.Start(new ProcessStartInfo { FileName = Text, UseShellExecute = true });
+#endif
             }
             catch (ArgumentNullException)
             {
