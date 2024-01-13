@@ -1,20 +1,21 @@
-﻿using Avalonia;
+﻿using System;
+using System.Windows.Input;
+using System.Linq;
+using System.ComponentModel;
+using Avalonia;
 using Avalonia.Input;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Metadata;
-using Avalonia.Interactivity;
-using System;
-using System.Windows.Input;
-using Avalonia.VisualTree;
-using System.Linq;
 using Avalonia.Media;
-using System.ComponentModel;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Avalonia.Controls.Converters;
+using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A button with a custom, flat style and addiitonal functionality. Use <c>SelectOnClick</c> to have the button act like a toggle button.
+    /// </summary>
+    [DefaultEvent(nameof(Click))]
     [PseudoClasses(pcPressed, pcTb, pcSel)]
     public class FlatButton : ContentControl, IClickSelectableControl, ICommandSource
     {
@@ -24,12 +25,13 @@ namespace SolidShineUi
 
         }
 
+        /// <summary>
+        /// Create a FlatButton.
+        /// </summary>
         public FlatButton()
         {
             Padding = new Thickness(5, 0, 5, 0);
         }
-
-        private Button btn;
 
         #region Appearance
 
@@ -277,26 +279,26 @@ namespace SolidShineUi
 
         #region Border
 
-        public Thickness BorderThickness { get => GetValue(BorderThicknessProperty); set => SetValue(BorderThicknessProperty, value); }
+        //public Thickness BorderThickness { get => GetValue(BorderThicknessProperty); set => SetValue(BorderThicknessProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="BorderThickness"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<Thickness> BorderThicknessProperty
-            = AvaloniaProperty.Register<FlatButton, Thickness>(nameof(BorderThickness), new Thickness(1));
+        ///// <summary>The backing styled property for <see cref="BorderThickness"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<Thickness> BorderThicknessProperty
+        //    = AvaloniaProperty.Register<FlatButton, Thickness>(nameof(BorderThickness), new Thickness(1));
 
-
+        /// <summary>
+        /// Get or set the thickness of the board around the button, while the button is in a selected state (<c>IsSelected</c> is true).
+        /// </summary>
         public Thickness BorderSelectionThickness { get => GetValue(BorderSelectionThicknessProperty); set => SetValue(BorderSelectionThicknessProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly StyledProperty<Thickness> BorderSelectionThicknessProperty
             = AvaloniaProperty.Register<FlatButton, Thickness>(nameof(BorderSelectionThickness), new Thickness(2));
 
-        public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+        //public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
-            = AvaloniaProperty.Register<FlatButton, CornerRadius>(nameof(CornerRadius), new CornerRadius(1));
-        
-        CornerRadiusFilterConverter
+        ///// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
+        //    = AvaloniaProperty.Register<FlatButton, CornerRadius>(nameof(CornerRadius), new CornerRadius(1));
 
         #endregion
 
@@ -317,6 +319,9 @@ namespace SolidShineUi
                     break;
                 case nameof(ColorScheme):
                     ApplyColorScheme(ColorScheme);
+                    break;
+                case nameof(CanSelect):
+                    OnCanSelectChanged(change);
                     break;
             }
         }
@@ -406,7 +411,6 @@ namespace SolidShineUi
                 SetIsSelectedWithSource(value, SelectionChangeTrigger.CodeUnknown);
             }
         }
-        #endregion
 
         #region SetIsSelectedWithSource
         /// <summary>
@@ -431,6 +435,8 @@ namespace SolidShineUi
                 }
             }
         }
+        #endregion
+
         #endregion
 
         #region Events

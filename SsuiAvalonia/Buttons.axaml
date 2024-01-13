@@ -4,7 +4,9 @@
     <!-- Add Resources Here -->
 	<Design.PreviewWith>
 		<Border Padding="20">
-			
+			<flat:FlatButton>
+				<TextBlock>what</TextBlock>
+			</flat:FlatButton>
 		</Border>
 	</Design.PreviewWith>
 
@@ -36,15 +38,8 @@
 							</Style>
 						</Border.Style>-->
 						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-							<ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}">
-								<!--<ContentPresenter.Style>
-									<Style TargetType="{x:Type ContentPresenter}" >
-										<Setter Property="Opacity" Value="1.0" />
-										<Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-										<Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-									</Style>
-								</ContentPresenter.Style>-->
-							</ContentPresenter>
+							<ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0"
+											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 							<!--<Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
 									   Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
 								--><!--<Rectangle.Style>

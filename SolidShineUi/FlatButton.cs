@@ -645,6 +645,8 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Base Click Functions
+
         // Sets up the button to be clicked. This must be run before PerformClick.
         void PressRightClick()
         {
@@ -681,6 +683,7 @@ namespace SolidShineUi
 
             base.OnClick();
         }
+        #endregion
 
         #region Event handlers
 

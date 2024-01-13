@@ -4,5 +4,6 @@
 			 RequestedThemeVariant="Default" >
     <Application.Styles>
         <FluentTheme />
+		
     </Application.Styles>
 </Application>
