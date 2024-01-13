@@ -13,6 +13,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia;
 using Avalonia.Input;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SolidShineUi.Utils
 {
@@ -140,11 +141,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Raised when the Value, MinValue, or MaxValue properties are changed. Used internally to trigger revalidating the value.
         /// </summary>
-#if NETCOREAPP
-        public event EventHandler? PropertyChanged;
-#else
-        public event EventHandler PropertyChanged;
-#endif
+        public event EventHandler<AvaloniaPropertyChangedEventArgs>? SpinnerPropertyChanged;
 
         /// <summary>
         /// Raised when the Value property is changed.
@@ -176,57 +173,53 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Add a dependency property to trigger the <see cref="PropertyChanged"/> event when its value changes.
+        /// Add a dependency property to trigger the <see cref="SpinnerPropertyChanged"/> event when its value changes.
         /// </summary>
         /// <param name="property">The dependency property to monitor changes to.</param>
-        /// <param name="targetType">The type which contains the dependency property.</param>
-        protected void AddPropertyChangedTrigger(AvaloniaProperty property, Type targetType)
+        protected void AddPropertyChangedTrigger(AvaloniaProperty property)
         {
-            property.Changed.AddClassHandler<SpinnerBase>((tt, e) => PropertyChanged?.Invoke(this, e));
+            property.Changed.AddClassHandler<SpinnerBase>((tt, e) => SpinnerPropertyChanged?.Invoke(this, e));
             //DependencyPropertyDescriptor.FromProperty(property, targetType).AddValueChanged(this, PropertyChanged);
         }
         #endregion
 
-        #region To Be Worked On
-        /*
-
         #region Brushes
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
-            "ButtonBackground", typeof(Brush), typeof(SpinnerBase),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
+        /// <summary>The backing styled property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> ButtonBackgroundProperty
+            = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(ButtonBackground), new SolidColorBrush(ColorsHelper.White));
 
-        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(SpinnerBase),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+        /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> DisabledBrushProperty
+            = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(DisabledBrush), new SolidColorBrush(Colors.Gray));
 
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(SpinnerBase),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+        ///// <summary>The backing styled property for <see cref="BorderBrush"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<IBrush?> BorderBrushProperty
+        //    = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(BorderBrush), new SolidColorBrush(Colors.Black));
 
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(SpinnerBase),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+        /// <summary>The backing styled property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BorderDisabledBrushProperty
+            = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(BorderDisabledBrush), new SolidColorBrush(Colors.DarkGray));
 
-        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(SpinnerBase),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
+        /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightBrushProperty
+            = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(HighlightBrush), new SolidColorBrush(Colors.LightGray));
 
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(SpinnerBase),
-            new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> ClickBrushProperty
+            = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(ClickBrush), new SolidColorBrush(Colors.Gainsboro));
+
+
 
         /// <summary>
         /// Get or set the brush used for the background of the buttons of the spinner.
         /// </summary>
         [Category("Brushes")]
-        public Brush ButtonBackground
+        public IBrush? ButtonBackground
         {
             get
             {
-                return (Brush)GetValue(ButtonBackgroundProperty);
+                return GetValue(ButtonBackgroundProperty);
             }
             set
             {
@@ -238,11 +231,11 @@ namespace SolidShineUi.Utils
         /// Get or set the brush used for the background of the buttons when the control is disabled.
         /// </summary>
         [Category("Brushes")]
-        public Brush DisabledBrush
+        public IBrush? DisabledBrush
         {
             get
             {
-                return (Brush)GetValue(DisabledBrushProperty);
+                return GetValue(DisabledBrushProperty);
             }
             set
             {
@@ -250,31 +243,31 @@ namespace SolidShineUi.Utils
             }
         }
 
-        /// <summary>
-        /// Get or set the brush of the border around the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get
-            {
-                return (Brush)GetValue(BorderBrushProperty);
-            }
-            set
-            {
-                SetValue(BorderBrushProperty, value);
-            }
-        }
+        ///// <summary>
+        ///// Get or set the brush of the border around the control.
+        ///// </summary>
+        //[Category("Brushes")]
+        //public new IBrush? BorderBrush
+        //{
+        //    get
+        //    {
+        //        return GetValue(BorderBrushProperty);
+        //    }
+        //    set
+        //    {
+        //        SetValue(BorderBrushProperty, value);
+        //    }
+        //}
 
         /// <summary>
         /// Get or set the brush used when a button is highlighted (i.e. has a mouse over it or keyboard focus).
         /// </summary>
         [Category("Brushes")]
-        public Brush HighlightBrush
+        public IBrush? HighlightBrush
         {
             get
             {
-                return (Brush)GetValue(HighlightBrushProperty);
+                return GetValue(HighlightBrushProperty);
             }
             set
             {
@@ -286,11 +279,11 @@ namespace SolidShineUi.Utils
         /// Get or set the brush used when a button is being clicked.
         /// </summary>
         [Category("Brushes")]
-        public Brush ClickBrush
+        public IBrush? ClickBrush
         {
             get
             {
-                return (Brush)GetValue(ClickBrushProperty);
+                return GetValue(ClickBrushProperty);
             }
             set
             {
@@ -302,11 +295,11 @@ namespace SolidShineUi.Utils
         /// Get or set the brush used for the border around the control, while the control is disabled.
         /// </summary>
         [Category("Brushes")]
-        public Brush BorderDisabledBrush
+        public IBrush? BorderDisabledBrush
         {
             get
             {
-                return (Brush)GetValue(BorderDisabledBrushProperty);
+                return GetValue(BorderDisabledBrushProperty);
             }
             set
             {
@@ -321,22 +314,26 @@ namespace SolidShineUi.Utils
         #region RepeatDelayProperty
 
         /// <summary>
-        /// The dependency property object for the <see cref="RepeatDelay"/> property. See the related property for details.
+        /// Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.
         /// </summary>
-        public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
-            "RepeatDelay", typeof(double), typeof(SpinnerBase),
-            new PropertyMetadata(300d, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnRepeatDelayChanged()))));
+        [Category("Common")]
+        public double RepeatDelay { get => GetValue(RepeatDelayProperty); set => SetValue(RepeatDelayProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="RepeatDelay"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<double> RepeatDelayProperty
+            = AvaloniaProperty.Register<SpinnerBase, double>(nameof(RepeatDelay), 300.0);
+
 
         /// <summary>
         /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
         /// </summary>
-        public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
-            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
+        public static readonly RoutedEvent RepeatDelayChangedEvent = RoutedEvent.Register<SpinnerBase, RoutedEventArgs>(
+            "RepeatDelayChanged", RoutingStrategies.Bubble);
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
         /// </summary>
-        public event RoutedEventHandler RepeatDelayChanged
+        public event EventHandler<RoutedEventArgs> RepeatDelayChanged
         {
             add { AddHandler(RepeatDelayChangedEvent, value); }
             remove { RemoveHandler(RepeatDelayChangedEvent, value); }
@@ -352,37 +349,20 @@ namespace SolidShineUi.Utils
             RaiseEvent(re);
         }
 
-        /// <summary>
-        /// Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.
-        /// </summary>
-        [Category("Common")]
-        public double RepeatDelay
-        {
-            get => (double)GetValue(RepeatDelayProperty);
-            set => SetValue(RepeatDelayProperty, value);
-        }
-
         #endregion
 
         #region CornerRadiusProperty
 
         /// <summary>
-        /// The dependency property object for the <see cref="CornerRadius"/> property. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(SpinnerBase),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnCornerRadiusChanged()))));
-
-        /// <summary>
         /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
         /// </summary>
-        public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
+        public static readonly RoutedEvent CornerRadiusChangedEvent = RoutedEvent.Register<SpinnerBase, RoutedEventArgs>(
+            "CornerRadiusChanged", RoutingStrategies.Bubble);
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
         /// </summary>
-        public event RoutedEventHandler CornerRadiusChanged
+        public event EventHandler<RoutedEventArgs> CornerRadiusChanged
         {
             add { AddHandler(CornerRadiusChangedEvent, value); }
             remove { RemoveHandler(CornerRadiusChangedEvent, value); }
@@ -401,22 +381,15 @@ namespace SolidShineUi.Utils
         /// Get or set the corner radius to use around the corners of this control. Setting the corner radius to a value other than 0 displays rounded corners.
         /// </summary>
         [Category("Appearance")]
-        public CornerRadius CornerRadius
-        {
-            get => (CornerRadius)GetValue(CornerRadiusProperty);
-            set => SetValue(CornerRadiusProperty, value);
-        }
+        public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
+            = AvaloniaProperty.Register<SpinnerBase, CornerRadius>(nameof(CornerRadius), new CornerRadius(0));
 
         #endregion
 
         #region AcceptExpressionsProperty
-
-        /// <summary>
-        /// The dependency property object for the <see cref="AcceptExpressions"/> property. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(SpinnerBase),
-            new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the spinner should evaluate arithmetic expressions (such as "2+5") to accept as a value.
@@ -425,33 +398,26 @@ namespace SolidShineUi.Utils
         /// See the <see cref="ArithmeticParser"/> class for more info about how expressions are parsed.
         /// </remarks>
         [Category("Common")]
-        public bool AcceptExpressions
-        {
-            get => (bool)GetValue(AcceptExpressionsProperty);
-            set => SetValue(AcceptExpressionsProperty, value);
-        }
+        public bool AcceptExpressions { get => GetValue(AcceptExpressionsProperty); set => SetValue(AcceptExpressionsProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="AcceptExpressions"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> AcceptExpressionsProperty
+            = AvaloniaProperty.Register<SpinnerBase, bool>(nameof(AcceptExpressions), true);
+
 
         #endregion
 
         #region ShowArrowsProperty
 
         /// <summary>
-        /// The dependency property object for the <see cref="ShowArrows"/> property. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
-            "ShowArrows", typeof(bool), typeof(SpinnerBase),
-            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnShowArrowsChanged()))));
-
-        /// <summary>
         /// The routed event object for the <see cref="ShowArrowsChanged"/> event. See the related event for details.
         /// </summary>
-        public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
-            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SpinnerBase));
+        public static readonly RoutedEvent ShowArrowsChangedEvent = RoutedEvent.Register<SpinnerBase, RoutedEventArgs>("ShowArrowsChanged", RoutingStrategies.Bubble);
 
         /// <summary>
         /// Raised when the ShowArrows property is changed.
         /// </summary>
-        public event RoutedEventHandler ShowArrowsChanged
+        public event EventHandler<RoutedEventArgs> ShowArrowsChanged
         {
             add { AddHandler(ShowArrowsChangedEvent, value); }
             remove { RemoveHandler(ShowArrowsChangedEvent, value); }
@@ -470,22 +436,15 @@ namespace SolidShineUi.Utils
         /// Get or set whether the up and down arrow buttons are shown.
         /// </summary>
         [Category("Common")]
-        public bool ShowArrows
-        {
-            get => (bool)GetValue(ShowArrowsProperty);
-            set => SetValue(ShowArrowsProperty, value);
-        }
+        public bool ShowArrows { get => GetValue(ShowArrowsProperty); set => SetValue(ShowArrowsProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ShowArrows"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> ShowArrowsProperty
+            = AvaloniaProperty.Register<SpinnerBase, bool>(nameof(ShowArrows), true);
 
         #endregion
 
         #region MinimumDigitCount
-
-        /// <summary>
-        /// The dependency property object for the <see cref="MinimumDigitCount"/> property. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
-            "MinimumDigitCount", typeof(int), typeof(SpinnerBase),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
         /// Get or set the minimum number of integral digits to display in the spinner (for spinners that display numbers). A value of 0 or lower will revert the display to the standard number display format.
@@ -499,17 +458,15 @@ namespace SolidShineUi.Utils
         /// for modifying how many numbers to display after the decimal point.
         /// </remarks>
         [Category("Common")]
-        public int MinimumDigitCount
-        {
-            get => (int)GetValue(MinimumDigitCountProperty);
-            set => SetValue(MinimumDigitCountProperty, value);
-        }
+        public int MinimumDigitCount { get => GetValue(MinimumDigitCountProperty); set => SetValue(MinimumDigitCountProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="MinimumDigitCount"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<int> MinimumDigitCountProperty
+            = AvaloniaProperty.Register<SpinnerBase, int>(nameof(MinimumDigitCount), 0, defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
+
 
         #endregion
 
-        #endregion
-
-        */
         #endregion
 
         #region Base Functions
