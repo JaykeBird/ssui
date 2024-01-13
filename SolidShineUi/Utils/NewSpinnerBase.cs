@@ -600,6 +600,9 @@ namespace SolidShineUi.Utils
         /// Handle the process of updating value properties. Should be overridden in classes that inherit this, in order to perform validation or other functions.
         /// </summary>
         /// <param name="e">Event args from the related <see cref="ValueChanged"/> event.</param>
+        /// <remarks>
+        /// Overridding functions of this should additionally set the <see cref="IsAtMaxValue"/> and <see cref="IsAtMinValue"/> properties at this stage.
+        /// </remarks>
         protected virtual void UpdateValue(DependencyPropertyChangedEventArgs e)
         {
             UpdateUI();

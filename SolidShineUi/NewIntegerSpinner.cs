@@ -313,6 +313,9 @@ namespace SolidShineUi
         /// Certain situations, particularly involving computer representations of data or memory, may benefit more with displaying numbers as hexadecimals rather than decimals.
         /// With hexadecimals, the letters A-F are allowed along with 0-9, and the number "15" in decimal turns into "F" in hexadecimal. Please view online resources like
         /// Wikipedia for more details.
+        /// <para/>
+        /// <see cref="ArithmeticParser"/> is currently not built to correctly handle hexadecimal values, and so math expressions cannot be entered, and will instead be treated
+        /// as an invalid value.
         /// </remarks>
         [Category("Common")]
         public bool DisplayAsHex
@@ -326,6 +329,7 @@ namespace SolidShineUi
         #endregion
 
         #region Template IO
+        
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -351,14 +355,17 @@ namespace SolidShineUi
                 txtValue = (TextBox)GetTemplateChild("PART_Text");
                 vb = (Border)GetTemplateChild("PART_Border");
 
-                if (txtValue != null && vb != null)
+                if (txtValue != null)
                 {
                     txtValue.TextChanged += txtValue_TextChanged;
                     txtValue.LostFocus += txtValue_LostFocus;
                     txtValue.KeyDown += txtValue_KeyDown;
                     txtValue.KeyUp += txtValue_KeyUp;
 
-                    itemsLoaded = true;
+                    if (vb != null)
+                    {
+                        itemsLoaded = true;
+                    }
                 }
             }
         }
@@ -366,7 +373,9 @@ namespace SolidShineUi
 
         #region Base Functions
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        /// </summary>
         protected override void ValidateValue()
         {
             int val = Value;
