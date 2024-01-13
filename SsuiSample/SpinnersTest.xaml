@@ -20,7 +20,7 @@
                 <TextBlock HorizontalAlignment="Left" Margin="21,238,0,0" Text="Double Spinner with WPF Slider" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="183,0,0,0" Text="Integer Spinner Steps by 5" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="373,0,0,0" Text="Integer Spinner Steps by 100" VerticalAlignment="Top"/>
-                <flat:IntegerSpinner x:Name="nud1" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
+                <flat:NewIntegerSpinner x:Name="nud1" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:IntegerSpinner x:Name="nud5" HorizontalAlignment="Left" Margin="183,20,0,0" VerticalAlignment="Top" Width="80" Step="5" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:IntegerSpinner x:Name="nud7" HorizontalAlignment="Left" Margin="373,20,0,0" VerticalAlignment="Top" Width="80" Step="100" MinimumDigitCount="4" 
                                      ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
@@ -28,16 +28,7 @@
                 <flat:IntegerSpinner x:Name="nud8" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" DisplayAsHex="True" />
                 <TextBlock HorizontalAlignment="Left" Margin="248,60,0,0" Text="Integer Spinner - Color Hex" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nud9" HorizontalAlignment="Left" Margin="248,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" 
-                                     DisplayAsHex="True" MinimumDigitCount="6" MinValue="0" MaxValue="16777215" ValueChanged="nud9_ValueChanged" >
-                    <flat:IntegerSpinner.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="-0.118"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </flat:IntegerSpinner.RenderTransform>
-                </flat:IntegerSpinner>
+                                     DisplayAsHex="True" MinimumDigitCount="6" MinValue="0" MaxValue="16777215" ValueChanged="nud9_ValueChanged" />
                 <flat:DoubleSpinner x:Name="nud2" HorizontalAlignment="Left" Margin="21,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     Decimals="3" />
                 <flat:DoubleSpinner x:Name="nud3" HorizontalAlignment="Left" Margin="21,198,0,0" VerticalAlignment="Top" Width="140" ColorScheme="{Binding ColorScheme, ElementName=userControl}"

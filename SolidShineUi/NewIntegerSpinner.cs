@@ -16,6 +16,10 @@ namespace SolidShineUi
     /// </summary>
     public class NewIntegerSpinner : NewSpinnerBase
     {
+        static NewIntegerSpinner()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewIntegerSpinner), new FrameworkPropertyMetadata(typeof(NewIntegerSpinner)));
+        }
 
         /// <summary>
         /// Create an NewIntegerSpinner.
@@ -29,111 +33,10 @@ namespace SolidShineUi
             AddPropertyChangedTrigger(ValueProperty, typeof(NewIntegerSpinner));
             AddPropertyChangedTrigger(MinValueProperty, typeof(NewIntegerSpinner));
             AddPropertyChangedTrigger(MaxValueProperty, typeof(NewIntegerSpinner));
+
+            CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
+            CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
         }
-
-        #region ColorScheme
-
-        /// <summary>
-        /// Raised when the ColorScheme property is changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-#endif
-
-
-        /// <summary>
-        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
-        /// </summary>
-        public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewIntegerSpinner),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-            if (d is NewIntegerSpinner s)
-            {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
-            }
-        }
-
-        /// <summary>
-        /// Get or set the color scheme used for this spinner. For easier color scheme management, bind this to the window or larger control you're using.
-        /// </summary>
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply.</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-
-            BorderBrush = cs.BorderColor.ToBrush();
-            DisabledBrush = cs.LightDisabledColor.ToBrush();
-            BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-
-            if (cs.IsHighContrast)
-            {
-                ButtonBackground = cs.BackgroundColor.ToBrush();
-                //divider.BorderBrush = cs.BorderColor.ToBrush();
-                //pathUp.Fill = cs.BorderColor.ToBrush();
-                //pathDown.Fill = cs.BorderColor.ToBrush();
-            }
-            else
-            {
-                ButtonBackground = cs.SecondaryColor.ToBrush();
-                //divider.BorderBrush = cs.SecondHighlightColor.ToBrush();
-                //pathUp.Fill = cs.ForegroundColor.ToBrush();
-                //pathDown.Fill = cs.ForegroundColor.ToBrush();
-            }
-
-            if (IsEnabled)
-            {
-                //brdr.BorderBrush = BorderBrush;
-                //visBorder.BorderBrush = BorderBrush;
-                //btnUp.Background = ButtonBackground;
-                //btnDown.Background = ButtonBackground;
-            }
-            else
-            {
-                //brdr.BorderBrush = BorderDisabledBrush;
-                //visBorder.BorderBrush = BorderDisabledBrush;
-                //btnUp.Background = DisabledBrush;
-                //btnDown.Background = DisabledBrush;
-            }
-
-            _updateBox = false;
-            UpdateUI();
-            _updateBox = true;
-
-            ClickBrush = cs.ThirdHighlightColor.ToBrush();
-            HighlightBrush = cs.HighlightColor.ToBrush();
-            Foreground = cs.ForegroundColor.ToBrush();
-        }
-
-        #endregion
 
         #region Properties
 
@@ -249,31 +152,6 @@ namespace SolidShineUi
 
         #endregion
 
-        #region ShowArrows/CornerRadius
-
-        // properties defined in SpinnerBase
-
-        /// <summary>
-        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.CornerRadius"/>.
-        /// </summary>
-        protected override void OnCornerRadiusChanged()
-        {
-            //brdrVisualEffect.CornerRadius = new CornerRadius(CornerRadius.TopLeft + 0.5, CornerRadius.TopRight + 0.5, CornerRadius.BottomRight + 0.5, CornerRadius.BottomLeft + 0.5);
-            //visBorder.CornerRadius = CornerRadius;
-
-            base.OnCornerRadiusChanged();
-        }
-
-        /// <summary>
-        /// Update this control's UI to reflect the change in <see cref="SpinnerBase.ShowArrows"/>.
-        /// </summary>
-        protected override void OnShowArrowsChanged()
-        {
-            base.OnShowArrowsChanged();
-        }
-
-        #endregion
-
         #region DisplayAsHex
 
         /// <summary>
@@ -342,10 +220,8 @@ namespace SolidShineUi
 
 #if NETCOREAPP
         TextBox? txtValue = null;
-        Border? vb = null;
 #else
         TextBox txtValue = null;
-        Border vb = null;
 #endif
 
         void LoadTemplateItems()
@@ -353,7 +229,6 @@ namespace SolidShineUi
             if (!itemsLoaded)
             {
                 txtValue = (TextBox)GetTemplateChild("PART_Text");
-                vb = (Border)GetTemplateChild("PART_Border");
 
                 if (txtValue != null)
                 {
@@ -362,10 +237,7 @@ namespace SolidShineUi
                     txtValue.KeyDown += txtValue_KeyDown;
                     txtValue.KeyUp += txtValue_KeyUp;
 
-                    if (vb != null)
-                    {
-                        itemsLoaded = true;
-                    }
+                    itemsLoaded = true;
                 }
             }
         }
@@ -427,11 +299,31 @@ namespace SolidShineUi
             base.UpdateValue(e);
         }
 
+        /// <inheritdoc/>
+        protected override void UpdateUI()
+        {
+            base.UpdateUI();
+
+            string digitDisplay = "";
+            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G"); }
+            string sVal = Value.ToString((DisplayAsHex ? "X" : "D") + digitDisplay);
+
+            if (txtValue == null) return; // this is not good, as it means that the template didn't apply, or the applied template's text box won't get the updated value
+
+            if (txtValue.Text != sVal)
+            {
+                if (_updateBox) txtValue.Text = sVal;
+            }
+        }
+
         #endregion
 
         #region TextBox
         private void txtValue_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // raised when a new value is typed into the textbox
+            // Value is updated as the text is being typed in (if it can be parsed), and full validation occurs once the text box loses focus or the user presses the Enter key
+
             if (txtValue == null)
             {
                 return;
@@ -440,16 +332,16 @@ namespace SolidShineUi
             _updateBox = false;
             if (DisplayAsHex)
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out _))
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out int newVal))
                 {
-                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
+                    Value = newVal;
                 }
             }
             else
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out _))
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out int newVal))
                 {
-                    Value = int.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
+                    Value = newVal;
                 }
                 else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
                 {

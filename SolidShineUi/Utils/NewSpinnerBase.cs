@@ -17,6 +17,10 @@ namespace SolidShineUi.Utils
     /// </summary>
     public class NewSpinnerBase : Control
     {
+        static NewSpinnerBase()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewSpinnerBase), new FrameworkPropertyMetadata(typeof(NewSpinnerBase)));
+        }
 
         /// <summary>
         /// Create a NewSpinnerBase.
@@ -24,6 +28,9 @@ namespace SolidShineUi.Utils
         public NewSpinnerBase()
         {
             Loaded += NewSpinnerBase_Loaded;
+
+            BorderThickness = new Thickness(1);
+            SetResourceReference(BackgroundProperty, SystemColors.WindowBrushKey);
 
             keyDownTimer.AutoReset = false;
             advanceTimer.AutoReset = true;
@@ -377,6 +384,74 @@ namespace SolidShineUi.Utils
 
         #region Properties
 
+
+        #region ColorScheme
+
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
+
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
+        public static readonly DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewSpinnerBase),
+            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+#if NETCOREAPP
+            ColorScheme cs = (e.NewValue as ColorScheme)!;
+#else
+            ColorScheme cs = e.NewValue as ColorScheme;
+#endif
+            if (d is NewIntegerSpinner s)
+            {
+                s.ColorSchemeChanged?.Invoke(d, e);
+                s.ApplyColorScheme(cs);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the color scheme used for this spinner. For easier color scheme management, bind this to the window or larger control you're using.
+        /// </summary>
+        public ColorScheme ColorScheme
+        {
+            get => (ColorScheme)GetValue(ColorSchemeProperty);
+            set => SetValue(ColorSchemeProperty, value);
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            BorderBrush = cs.BorderColor.ToBrush();
+            DisabledBrush = cs.LightDisabledColor.ToBrush();
+            BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+
+            ButtonBackground = cs.IsHighContrast ? cs.BackgroundColor.ToBrush() : cs.SecondaryColor.ToBrush();
+
+            ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            HighlightBrush = cs.HighlightColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+        }
+
+        #endregion
+
         #region RepeatDelayProperty
 
         /// <summary>
@@ -575,7 +650,10 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected virtual void UpdateUI()
         {
-
+            if (!IsEnabled || IsAtMaxValue || IsAtMinValue)
+            {
+                advanceTimer.Stop();
+            }
         }
 
         /// <summary>
