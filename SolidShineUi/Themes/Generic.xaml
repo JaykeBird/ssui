@@ -2188,18 +2188,18 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                             <RowDefinition />
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <flat:FlatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     Command="{x:Static ssut:NewSpinnerBase.StepUp}" 
+                                        <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
+                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepUp}" 
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
-                                        </flat:FlatButton>
-                                        <flat:FlatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     Command="{x:Static ssut:NewSpinnerBase.StepDown}" 
+                                        </flat:FlatRepeatButton>
+                                        <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
+                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepDown}" 
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L8,0 L4,4 z" />
-                                        </flat:FlatButton>
+                                        </flat:FlatRepeatButton>
                                     </Grid>
                                 </Border>
                             </Grid>
