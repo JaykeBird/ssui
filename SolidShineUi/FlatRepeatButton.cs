@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace SolidShineUi
 {
@@ -238,27 +239,28 @@ namespace SolidShineUi
 
         void SetupTimer()
         {
-            executeTimer.Elapsed += ExecuteTimer_Elapsed;
+            executeTimer.Tick += ExecuteTimer_Elapsed;
             ResetTimer();
         }
 
         void ResetTimer()
         {
             executeTimer.Stop();
-            executeTimer.Interval = Delay;
-            executeTimer.AutoReset = false;
+            executeTimer.Interval = new TimeSpan(0, 0, 0, 0, Delay);
+            //executeTimer.AutoReset = false;
         }
 
 #if NETCOREAPP
-        private void ExecuteTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        private void ExecuteTimer_Elapsed(object? sender, EventArgs e)
 #else
-        private void ExecuteTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void ExecuteTimer_Elapsed(object sender, EventArgs e)
 #endif
         {
             if (firstRun)
             {
-                executeTimer.Interval = Interval;
-                executeTimer.AutoReset = true;
+                executeTimer.IsEnabled = false;
+                executeTimer.Interval = new TimeSpan(0, 0, 0, 0, Interval);
+                executeTimer.Start();
                 
                 firstRun = false;
                 timerRan = true;
@@ -267,13 +269,12 @@ namespace SolidShineUi
             }
 
             DoExecute();
-            //Dispatcher.Invoke(() => DoExecute());
         }
 
         /// <summary>
         /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
         /// </summary>
-        protected Timer executeTimer = new Timer(200);
+        protected DispatcherTimer executeTimer = new DispatcherTimer();
 
         bool firstRun = false;
         bool timerRan = false;
@@ -281,25 +282,25 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set how long of a pause there should be between <see cref="Execute"/> firing, while the button is being pressed. Measured in milliseconds.
         /// </summary>
-        public double Interval { get => (double)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
+        public int Interval { get => (int)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
         public static DependencyProperty IntervalProperty
-            = DependencyProperty.Register(nameof(Interval), typeof(double), typeof(FlatRepeatButton),
-            new FrameworkPropertyMetadata(200d));
+            = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(FlatRepeatButton),
+            new FrameworkPropertyMetadata(200));
 
         /// <summary>
         /// Get or set how long the delay should be after the button is initially pressed, before starting to raise <see cref="Execute"/>. Measured in milliseconds.
         /// </summary>
-        public double Delay { get => (double)GetValue(DelayProperty); set => SetValue(DelayProperty, value); }
+        public int Delay { get => (int)GetValue(DelayProperty); set => SetValue(DelayProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Delay"/>. See the related property for details.</summary>
         public static DependencyProperty DelayProperty
-            = DependencyProperty.Register(nameof(Delay), typeof(double), typeof(FlatRepeatButton),
-            new FrameworkPropertyMetadata(200d));
+            = DependencyProperty.Register(nameof(Delay), typeof(int), typeof(FlatRepeatButton),
+            new FrameworkPropertyMetadata(200));
 
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Get or set if the Execute event should be activated when the button is initially clicked, even if the <see cref="Delay"/> time hasn't been reached.
