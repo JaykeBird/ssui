@@ -12,7 +12,7 @@ using System.Windows.Input;
 namespace SolidShineUi
 {
     /// <summary>
-    /// An updated version of <see cref="IntegerSpinner"/>. The functionality is present, but the UI has not yet been built.
+    /// An updated version of <see cref="IntegerSpinner"/>, built using a new, custom templated control.
     /// </summary>
     public class NewIntegerSpinner : NewSpinnerBase
     {
@@ -159,26 +159,27 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
             "DisplayAsHex", typeof(bool), typeof(NewIntegerSpinner),
-            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<NewIntegerSpinner>((s) => s.OnDisplayAsHexChanged()))));
+            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<NewIntegerSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
 
         /// <summary>
         /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
         /// </summary>
         public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
-            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewIntegerSpinner));
+            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(NewIntegerSpinner));
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.
         /// </summary>
-        public event RoutedEventHandler DisplayAsHexChanged
+        public event RoutedPropertyChangedEventHandler<bool> DisplayAsHexChanged
         {
             add { AddHandler(DisplayAsHexChangedEvent, value); }
             remove { RemoveHandler(DisplayAsHexChangedEvent, value); }
         }
 
-        private void OnDisplayAsHexChanged()
+        private void OnDisplayAsHexChanged(DependencyPropertyChangedEventArgs e)
         {
-            RoutedEventArgs re = new RoutedEventArgs(DisplayAsHexChangedEvent);
+            RoutedPropertyChangedEventArgs<bool> re = new RoutedPropertyChangedEventArgs<bool>((bool)e.OldValue, (bool)e.NewValue, DisplayAsHexChangedEvent);
+            re.Source = this;
             RaiseEvent(re);
 
             UpdateUI();

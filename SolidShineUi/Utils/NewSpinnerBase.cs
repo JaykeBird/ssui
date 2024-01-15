@@ -384,7 +384,6 @@ namespace SolidShineUi.Utils
 
         #region Properties
 
-
         #region ColorScheme
 
         /// <summary>
@@ -458,19 +457,19 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="RepeatDelay"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
-            "RepeatDelay", typeof(double), typeof(NewSpinnerBase),
-            new PropertyMetadata(300d, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnRepeatDelayChanged()))));
+            "RepeatDelay", typeof(int), typeof(NewSpinnerBase),
+            new PropertyMetadata(300, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnRepeatDelayChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
-            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
+            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(NewSpinnerBase));
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
         /// </summary>
-        public event RoutedEventHandler RepeatDelayChanged
+        public event RoutedPropertyChangedEventHandler<int> RepeatDelayChanged
         {
             add { AddHandler(RepeatDelayChangedEvent, value); }
             remove { RemoveHandler(RepeatDelayChangedEvent, value); }
@@ -479,21 +478,71 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Update internal values based upon a change in the <see cref="RepeatDelay"/> property.
         /// </summary>
-        protected virtual void OnRepeatDelayChanged()
+        protected virtual void OnRepeatDelayChanged(DependencyPropertyChangedEventArgs e)
         {
             keyDownTimer.Interval = RepeatDelay;
-            RoutedEventArgs re = new RoutedEventArgs(RepeatDelayChangedEvent);
+            RoutedPropertyChangedEventArgs<int> re = new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, RepeatDelayChangedEvent);
+            re.Source = this;
             RaiseEvent(re);
         }
 
         /// <summary>
         /// Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.
         /// </summary>
+        /// <remarks>
+        /// Once this time period is reached and the button continues to be held down, then the spinner will begin repeatedly stepping up or down, at the rate
+        /// specified in <see cref="Interval"/>. This will continue until the button is no longer held down, or the <c>MaxValue</c> or <c>MinValue</c> is reached.
+        /// </remarks>
         [Category("Common")]
-        public double RepeatDelay
+        public int RepeatDelay
         {
-            get => (double)GetValue(RepeatDelayProperty);
+            get => (int)GetValue(RepeatDelayProperty);
             set => SetValue(RepeatDelayProperty, value);
+        }
+
+        #endregion
+
+        #region IntervalProperty
+
+        /// <summary>
+        /// Get or set the rate of repeatedly stepping up or down while a button is held, in milliseconds. Default is 50 milliseconds.
+        /// </summary>
+        /// <remarks>
+        /// While holding down a button, once the <see cref="RepeatDelay"/> time period is reached, then stepping begins to occur repeatedly, at the rate
+        /// specified in this property. This continues until the button is no longer held, or the <c>MaxValue</c> or <c>MinValue</c> is reached.
+        /// </remarks>
+        [Category("Common")]
+        public int Interval { get => (int)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
+        public static DependencyProperty IntervalProperty
+            = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(NewSpinnerBase),
+            new FrameworkPropertyMetadata(50, (d, e) => d.PerformAs<NewSpinnerBase>((o) => o.OnIntervalChanged(e))));
+
+        /// <summary>
+        /// Update internal values based upon a change in the <see cref="RepeatDelay"/> property.
+        /// </summary>
+        protected virtual void OnIntervalChanged(DependencyPropertyChangedEventArgs e)
+        {
+            advanceTimer.Interval = Interval;
+            RoutedPropertyChangedEventArgs<int> re = new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, IntervalChangedEvent);
+            re.Source = this;
+            RaiseEvent(re);
+        }
+
+        /// <summary>
+        /// The routed event object for the <see cref="IntervalChanged"/> event. See the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent IntervalChangedEvent = EventManager.RegisterRoutedEvent(
+            "IntervalChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(NewSpinnerBase));
+
+        /// <summary>
+        /// Raised when the <see cref="Interval"/> property is changed.
+        /// </summary>
+        public event RoutedPropertyChangedEventHandler<int> IntervalChanged
+        {
+            add { AddHandler(IntervalChangedEvent, value); }
+            remove { RemoveHandler(IntervalChangedEvent, value); }
         }
 
         #endregion
@@ -505,18 +554,18 @@ namespace SolidShineUi.Utils
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(NewSpinnerBase),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnCornerRadiusChanged()))));
+            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnCornerRadiusChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
+            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<CornerRadius>), typeof(NewSpinnerBase));
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
         /// </summary>
-        public event RoutedEventHandler CornerRadiusChanged
+        public event RoutedPropertyChangedEventHandler<CornerRadius> CornerRadiusChanged
         {
             add { AddHandler(CornerRadiusChangedEvent, value); }
             remove { RemoveHandler(CornerRadiusChangedEvent, value); }
@@ -525,9 +574,10 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Update internal values based upon a change in the <see cref="CornerRadius"/> property.
         /// </summary>
-        protected virtual void OnCornerRadiusChanged()
+        protected virtual void OnCornerRadiusChanged(DependencyPropertyChangedEventArgs e)
         {
-            RoutedEventArgs re = new RoutedEventArgs(CornerRadiusChangedEvent);
+            RoutedPropertyChangedEventArgs<CornerRadius> re = new RoutedPropertyChangedEventArgs<CornerRadius>((CornerRadius)e.OldValue, (CornerRadius)e.NewValue, CornerRadiusChangedEvent);
+            re.Source = this;
             RaiseEvent(re);
         }
 
@@ -574,18 +624,18 @@ namespace SolidShineUi.Utils
         /// </summary>
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
             "ShowArrows", typeof(bool), typeof(NewSpinnerBase),
-            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnShowArrowsChanged()))));
+            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnShowArrowsChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="ShowArrowsChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
-            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
+            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(NewSpinnerBase));
 
         /// <summary>
-        /// Raised when the ShowArrows property is changed.
+        /// Raised when the <see cref="ShowArrows"/> property is changed.
         /// </summary>
-        public event RoutedEventHandler ShowArrowsChanged
+        public event RoutedPropertyChangedEventHandler<bool> ShowArrowsChanged
         {
             add { AddHandler(ShowArrowsChangedEvent, value); }
             remove { RemoveHandler(ShowArrowsChangedEvent, value); }
@@ -594,9 +644,10 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Update internal values based upon a change in the <see cref="ShowArrows"/> property.
         /// </summary>
-        protected virtual void OnShowArrowsChanged()
+        protected virtual void OnShowArrowsChanged(DependencyPropertyChangedEventArgs e)
         {
-            RoutedEventArgs re = new RoutedEventArgs(ShowArrowsChangedEvent);
+            RoutedPropertyChangedEventArgs<bool> re = new RoutedPropertyChangedEventArgs<bool>((bool)e.OldValue, (bool)e.NewValue, ShowArrowsChangedEvent);
+            re.Source = this;
             RaiseEvent(re);
         }
 
