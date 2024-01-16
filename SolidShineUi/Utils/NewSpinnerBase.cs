@@ -14,7 +14,7 @@ namespace SolidShineUi.Utils
 {
 
     /// <summary>
-    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="NewIntegerSpinner"/>).
+    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="NewIntegerSpinner"/> and <see cref="NewDoubleSpinner"/>).
     /// </summary>
     /// <typeparam name="T">The data type supported by the spinner.</typeparam>
     /// <remarks>
@@ -50,10 +50,10 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected override void ValidateValue()
         {
-            //T val = Value;
-            //if (val < MinValue) val = MinValue;
-            //if (val > MaxValue) val = MaxValue;
-            //if (!val.Equals(Value)) Value = val;
+            T val = Value;
+            if (val.CompareTo(MinValue) < 0) val = MinValue;
+            if (val.CompareTo(MaxValue) > 0) val = MaxValue;
+            if (!val.Equals(Value)) Value = val;
 
             base.ValidateValue();
         }
@@ -63,9 +63,28 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected override void ValidateMinMax()
         {
-            //if (MinValue > MaxValue) MinValue = MaxValue;
-            //if (MaxValue < MinValue) MaxValue = MinValue;
+            if (MinValue.CompareTo(MaxValue) > 0) MinValue = MaxValue;
+            if (MaxValue.CompareTo(MinValue) < 0) MaxValue = MinValue;
+
+            IsAtMinValue = Value.Equals(MinValue);
+            IsAtMaxValue = Value.Equals(MaxValue);
+
             base.ValidateMinMax();
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
+        {
+            //int value = Value;
+
+            if (!advanceTimer.Enabled)
+            {
+                ValidateValue();
+
+                IsAtMinValue = Value.Equals(MinValue);
+                IsAtMaxValue = Value.Equals(MaxValue);
+            }
+            base.UpdateValue(e);
         }
     }
 

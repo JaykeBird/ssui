@@ -40,7 +40,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(long), typeof(NewLongSpinner),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            new FrameworkPropertyMetadata(0L, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -66,7 +66,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(long), typeof(NewLongSpinner), new PropertyMetadata(1));
+            "Step", typeof(long), typeof(NewLongSpinner), new PropertyMetadata(1L));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -230,28 +230,28 @@ namespace SolidShineUi
 
         #region Base Functions
 
-        /// <summary>
-        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
-        /// </summary>
-        protected override void ValidateValue()
-        {
-            long val = Value;
-            if (val < MinValue) val = MinValue;
-            if (val > MaxValue) val = MaxValue;
-            if (val != Value) Value = val;
+        ///// <summary>
+        ///// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        ///// </summary>
+        //protected override void ValidateValue()
+        //{
+        //    long val = Value;
+        //    if (val < MinValue) val = MinValue;
+        //    if (val > MaxValue) val = MaxValue;
+        //    if (val != Value) Value = val;
 
-            base.ValidateValue();
-        }
+        //    base.ValidateValue();
+        //}
 
-        /// <summary>
-        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
-        /// </summary>
-        protected override void ValidateMinMax()
-        {
-            if (MinValue > MaxValue) MinValue = MaxValue;
-            if (MaxValue < MinValue) MaxValue = MinValue;
-            base.ValidateMinMax();
-        }
+        ///// <summary>
+        ///// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        ///// </summary>
+        //protected override void ValidateMinMax()
+        //{
+        //    if (MinValue > MaxValue) MinValue = MaxValue;
+        //    if (MaxValue < MinValue) MaxValue = MinValue;
+        //    base.ValidateMinMax();
+        //}
 
         /// <inheritdoc/>
         protected override void DoStepDown()
@@ -267,20 +267,20 @@ namespace SolidShineUi
             else Value = MaxValue;
         }
 
-        /// <inheritdoc/>
-        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
-        {
-            //int value = Value;
+        ///// <inheritdoc/>
+        //protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
+        //{
+        //    //int value = Value;
 
-            if (!advanceTimer.Enabled)
-            {
-                ValidateValue();
+        //    if (!advanceTimer.Enabled)
+        //    {
+        //        ValidateValue();
 
-                IsAtMinValue = Value == MinValue;
-                IsAtMaxValue = Value == MaxValue;
-            }
-            base.UpdateValue(e);
-        }
+        //        IsAtMinValue = Value == MinValue;
+        //        IsAtMaxValue = Value == MaxValue;
+        //    }
+        //    base.UpdateValue(e);
+        //}
 
         /// <inheritdoc/>
         protected override void UpdateUI()

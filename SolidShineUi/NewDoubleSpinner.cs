@@ -44,13 +44,13 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(double), typeof(NewDoubleSpinner),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            new FrameworkPropertyMetadata(0.0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <inheritdoc/>
         [Category("Common")]
         public override double Value
         {
-            get => (int)GetValue(ValueProperty);
+            get => (double)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
@@ -70,7 +70,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(double), typeof(NewDoubleSpinner), new PropertyMetadata(1));
+            "Step", typeof(double), typeof(NewDoubleSpinner), new PropertyMetadata(1.0d));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -208,25 +208,30 @@ namespace SolidShineUi
         /// <inheritdoc/>
         protected override void ValidateValue()
         {
-            if (Value < MinValue) Value = MinValue;
-            if (Value > MaxValue) Value = MaxValue;
+            base.ValidateValue();
+
             if (Decimals > 15) Decimals = 15;
             if (Decimals < 0) Decimals = 0;
 
+            double oldVal = Value;
             Value = Math.Round(Value, Decimals);
 
-            base.ValidateValue();
+            if (oldVal != Value)
+            {
+                // redo the underlying value updates again
+                base.ValidateValue();
+            }
         }
 
-        /// <summary>
-        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
-        /// </summary>
-        protected override void ValidateMinMax()
-        {
-            if (MinValue > MaxValue) MinValue = MaxValue;
-            if (MaxValue < MinValue) MaxValue = MinValue;
-            base.ValidateMinMax();
-        }
+        ///// <summary>
+        ///// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        ///// </summary>
+        //protected override void ValidateMinMax()
+        //{
+        //    if (MinValue > MaxValue) MinValue = MaxValue;
+        //    if (MaxValue < MinValue) MaxValue = MinValue;
+        //    base.ValidateMinMax();
+        //}
 
         /// <inheritdoc/>
         protected override void DoStepDown()

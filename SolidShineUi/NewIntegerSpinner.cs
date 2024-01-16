@@ -231,28 +231,28 @@ namespace SolidShineUi
 
         #region Base Functions
 
-        /// <summary>
-        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
-        /// </summary>
-        protected override void ValidateValue()
-        {
-            int val = Value;
-            if (val < MinValue) val = MinValue;
-            if (val > MaxValue) val = MaxValue;
-            if (val != Value) Value = val;
+        ///// <summary>
+        ///// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        ///// </summary>
+        //protected override void ValidateValue()
+        //{
+        //    int val = Value;
+        //    if (val < MinValue) val = MinValue;
+        //    if (val > MaxValue) val = MaxValue;
+        //    if (val != Value) Value = val;
 
-            base.ValidateValue();
-        }
+        //    base.ValidateValue();
+        //}
 
-        /// <summary>
-        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
-        /// </summary>
-        protected override void ValidateMinMax()
-        {
-            if (MinValue > MaxValue) MinValue = MaxValue;
-            if (MaxValue < MinValue) MaxValue = MinValue;
-            base.ValidateMinMax();
-        }
+        ///// <summary>
+        ///// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        ///// </summary>
+        //protected override void ValidateMinMax()
+        //{
+        //    if (MinValue > MaxValue) MinValue = MaxValue;
+        //    if (MaxValue < MinValue) MaxValue = MinValue;
+        //    base.ValidateMinMax();
+        //}
 
         /// <inheritdoc/>
         protected override void DoStepDown()
@@ -266,21 +266,6 @@ namespace SolidShineUi
         {
             if (Value <= MaxValue) Value += Step;
             else Value = MaxValue;
-        }
-
-        /// <inheritdoc/>
-        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
-        {
-            //int value = Value;
-
-            if (!advanceTimer.Enabled)
-            {
-                ValidateValue();
-
-                IsAtMinValue = Value == MinValue;
-                IsAtMaxValue = Value == MaxValue;
-            }
-            base.UpdateValue(e);
         }
 
         /// <inheritdoc/>
