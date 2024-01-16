@@ -40,7 +40,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// This is not implemented. Returns <see cref="DependencyProperty.UnsetValue"/>
+        /// This is not implemented. Returns <see cref="DependencyProperty.UnsetValue"/>.
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
