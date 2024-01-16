@@ -14,81 +14,6 @@ namespace SolidShineUi.Utils
 {
 
     /// <summary>
-    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="NewIntegerSpinner"/> and <see cref="NewDoubleSpinner"/>).
-    /// </summary>
-    /// <typeparam name="T">The data type supported by the spinner.</typeparam>
-    /// <remarks>
-    /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
-    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="NewSpinnerBase"/>.
-    /// </remarks>
-    public abstract class NumericSpinnerBase<T> : NewSpinnerBase where T : IEquatable<T>, IComparable<T>
-    {
-        /// <summary>
-        /// Get or set the value of the spinner.
-        /// </summary>
-        public abstract T Value { get; set; }
-        
-        /// <summary>
-        /// Get or set the maximum value allowed in this spinner (inclusive).
-        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
-        /// </summary>
-        public abstract T MinValue { get; set; }
-
-        /// <summary>
-        /// Get or set the maximum value allowed in this spinner (inclusive).
-        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
-        /// </summary>
-        public abstract T MaxValue { get; set; }
-
-        /// <summary>
-        /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
-        /// </summary>
-        public abstract T Step { get; set; }
-
-        /// <summary>
-        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
-        /// </summary>
-        protected override void ValidateValue()
-        {
-            T val = Value;
-            if (val.CompareTo(MinValue) < 0) val = MinValue;
-            if (val.CompareTo(MaxValue) > 0) val = MaxValue;
-            if (!val.Equals(Value)) Value = val;
-
-            base.ValidateValue();
-        }
-
-        /// <summary>
-        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
-        /// </summary>
-        protected override void ValidateMinMax()
-        {
-            if (MinValue.CompareTo(MaxValue) > 0) MinValue = MaxValue;
-            if (MaxValue.CompareTo(MinValue) < 0) MaxValue = MinValue;
-
-            IsAtMinValue = Value.Equals(MinValue);
-            IsAtMaxValue = Value.Equals(MaxValue);
-
-            base.ValidateMinMax();
-        }
-
-        /// <inheritdoc/>
-        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
-        {
-            //int value = Value;
-
-            if (!advanceTimer.Enabled)
-            {
-                ValidateValue();
-
-                IsAtMinValue = Value.Equals(MinValue);
-                IsAtMaxValue = Value.Equals(MaxValue);
-            }
-            base.UpdateValue(e);
-        }
-    }
-
-    /// <summary>
     /// The base class for Solid Shine UI's spinner controls (such as <see cref="NewIntegerSpinner"/> and <see cref="NewDoubleSpinner"/>).
     /// </summary>
     /// <remarks>
@@ -754,8 +679,8 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-        //#region ShowButtonDividerProperty
-
+        #region ShowButtonDividerProperty
+        
         ///// <summary>
         ///// Get or set if a small divider border should be shown between the buttons and the text box.
         ///// </summary>
@@ -770,7 +695,7 @@ namespace SolidShineUi.Utils
         //    = DependencyProperty.Register(nameof(ShowButtonDivider), typeof(bool), typeof(NewSpinnerBase),
         //    new FrameworkPropertyMetadata(true));
 
-        //#endregion
+        #endregion
 
         #region MinimumDigitCount
 
@@ -973,5 +898,80 @@ namespace SolidShineUi.Utils
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="NewIntegerSpinner"/> and <see cref="NewDoubleSpinner"/>).
+    /// </summary>
+    /// <typeparam name="T">The data type supported by the spinner.</typeparam>
+    /// <remarks>
+    /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
+    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="NewSpinnerBase"/>.
+    /// </remarks>
+    public abstract class NumericSpinnerBase<T> : NewSpinnerBase where T : IEquatable<T>, IComparable<T>
+    {
+        /// <summary>
+        /// Get or set the value of the spinner.
+        /// </summary>
+        public abstract T Value { get; set; }
+
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MinValue { get; set; }
+
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MaxValue { get; set; }
+
+        /// <summary>
+        /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
+        /// </summary>
+        public abstract T Step { get; set; }
+
+        /// <summary>
+        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        /// </summary>
+        protected override void ValidateValue()
+        {
+            T val = Value;
+            if (val.CompareTo(MinValue) < 0) val = MinValue;
+            if (val.CompareTo(MaxValue) > 0) val = MaxValue;
+            if (!val.Equals(Value)) Value = val;
+
+            base.ValidateValue();
+        }
+
+        /// <summary>
+        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        /// </summary>
+        protected override void ValidateMinMax()
+        {
+            if (MinValue.CompareTo(MaxValue) > 0) MinValue = MaxValue;
+            if (MaxValue.CompareTo(MinValue) < 0) MaxValue = MinValue;
+
+            IsAtMinValue = Value.Equals(MinValue);
+            IsAtMaxValue = Value.Equals(MaxValue);
+
+            base.ValidateMinMax();
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
+        {
+            //int value = Value;
+
+            if (!advanceTimer.Enabled)
+            {
+                ValidateValue();
+
+                IsAtMinValue = Value.Equals(MinValue);
+                IsAtMaxValue = Value.Equals(MaxValue);
+            }
+            base.UpdateValue(e);
+        }
     }
 }
