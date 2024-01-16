@@ -89,13 +89,15 @@ namespace SolidShineUi.Utils
     }
 
     /// <summary>
-    /// The base class for Solid Shine UI's spinner controls (such as <see cref="NewIntegerSpinner"/> and <see cref="DoubleSpinner"/>).
+    /// The base class for Solid Shine UI's spinner controls (such as <see cref="NewIntegerSpinner"/> and <see cref="NewDoubleSpinner"/>).
     /// </summary>
     /// <remarks>
     /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
     /// </remarks>
     public abstract class NewSpinnerBase : Control
     {
+
+        #region Constructors
         static NewSpinnerBase()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NewSpinnerBase), new FrameworkPropertyMetadata(typeof(NewSpinnerBase)));
@@ -128,33 +130,7 @@ namespace SolidShineUi.Utils
             _raiseChangedEvent = true;
         }
 
-#if NETCOREAPP
-        private void AdvanceTimer_Elapsed(object? sender, ElapsedEventArgs e)
-#else
-        private void AdvanceTimer_Elapsed(object sender, ElapsedEventArgs e)
-#endif
-        {
-            try
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    if (advanceStepUp)
-                    {
-                        DoStepUp();
-                    }
-                    else
-                    {
-                        DoStepDown();
-                    }
-
-                    UpdateUI();
-                }, System.Windows.Threading.DispatcherPriority.Input);
-            }
-            catch (TaskCanceledException)
-            {
-                advanceTimer.Stop();
-            }
-        }
+        #endregion
 
         #region Commands
 
@@ -204,7 +180,7 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-        #region Internal Values
+        #region Internal Values / Timers
 
         /// <summary>
         /// determine the text box's text should be changed when <c>Value</c> is updated
@@ -214,6 +190,8 @@ namespace SolidShineUi.Utils
         /// determine if the <see cref="ValueChanged"/> event should be raised
         /// </summary>
         protected bool _raiseChangedEvent = true;
+
+        #region Timer Values / Functions
 
         /// <summary>
         /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
@@ -229,6 +207,36 @@ namespace SolidShineUi.Utils
         /// determine whether to increase or decrease the <c>Value</c> while the control is stepping; false for decrease, true for increase
         /// </summary>
         protected bool advanceStepUp = false;
+
+#if NETCOREAPP
+        private void AdvanceTimer_Elapsed(object? sender, ElapsedEventArgs e)
+#else
+        private void AdvanceTimer_Elapsed(object sender, ElapsedEventArgs e)
+#endif
+        {
+            try
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (advanceStepUp)
+                    {
+                        DoStepUp();
+                    }
+                    else
+                    {
+                        DoStepDown();
+                    }
+
+                    UpdateUI();
+                }, System.Windows.Threading.DispatcherPriority.Input);
+            }
+            catch (TaskCanceledException)
+            {
+                advanceTimer.Stop();
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -337,31 +345,35 @@ namespace SolidShineUi.Utils
 
         #region Brushes
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
             "ButtonBackground", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the brush used for the background of the buttons of the spinner.
@@ -489,7 +501,7 @@ namespace SolidShineUi.Utils
 #else
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
-            if (d is NewIntegerSpinner s)
+            if (d is NewSpinnerBase s)
             {
                 s.ColorSchemeChanged?.Invoke(d, e);
                 s.ApplyColorScheme(cs);
@@ -741,6 +753,24 @@ namespace SolidShineUi.Utils
         }
 
         #endregion
+
+        //#region ShowButtonDividerProperty
+
+        ///// <summary>
+        ///// Get or set if a small divider border should be shown between the buttons and the text box.
+        ///// </summary>
+        ///// <remarks>
+        ///// In earlier versions of Solid Shine UI, there was no divider shown (although there actually should've been one).
+        ///// So the default value now is <c>true</c>, as is the intended behavior, but this can be set to <c>false</c> if you want to maintain appearance 
+        ///// </remarks>
+        //public bool ShowButtonDivider { get => (bool)GetValue(ShowButtonDividerProperty); set => SetValue(ShowButtonDividerProperty, value); }
+
+        ///// <summary>The backing dependency property for <see cref="ShowButtonDivider"/>. See the related property for details.</summary>
+        //public static DependencyProperty ShowButtonDividerProperty
+        //    = DependencyProperty.Register(nameof(ShowButtonDivider), typeof(bool), typeof(NewSpinnerBase),
+        //    new FrameworkPropertyMetadata(true));
+
+        //#endregion
 
         #region MinimumDigitCount
 
