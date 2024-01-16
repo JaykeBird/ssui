@@ -16,7 +16,6 @@ namespace SolidShineUi
     /// A button with a custom, flat style and addiitonal functionality. Use <c>SelectOnClick</c> to have the button act like a toggle button.
     /// </summary>
     [DefaultEvent(nameof(Click))]
-    [PseudoClasses(pcPressed, pcTb, pcSel)]
     public class FlatButton : ContentControl, IClickSelectableControl, ICommandSource
     {
 
@@ -34,8 +33,6 @@ namespace SolidShineUi
         }
 
         #region Appearance
-
-        private const string pcTb = ":tb";
 
         /// <summary>
         /// Get or set the color scheme to apply to this button. The color scheme can quickly apply a whole visual style to your control.
@@ -311,9 +308,6 @@ namespace SolidShineUi
 
             switch (change.Property.Name)
             {
-                case nameof(TransparentBack):
-                    PseudoClasses.Set(pcTb, TransparentBack);
-                    break;
                 case nameof(UseAccentColors):
                     ApplyColorScheme(ColorScheme, UseAccentColors);
                     break;
@@ -333,9 +327,6 @@ namespace SolidShineUi
         private bool _isPressed = false;
         private bool _isRightPressed = false;
 
-        private const string pcPressed = ":pressed";
-        private const string pcSel = ":sel";
-
         #endregion
 
         #region Selection Properties
@@ -349,7 +340,7 @@ namespace SolidShineUi
         public bool SelectOnClick { get => GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.</summary>
-        public static StyledProperty<bool> SelectOnClickProperty
+        public static readonly StyledProperty<bool> SelectOnClickProperty
             = AvaloniaProperty.Register<FlatButton, bool>("SelectOnClick", false);
 
         /// <summary>
@@ -363,7 +354,7 @@ namespace SolidShineUi
         public bool CanSelect { get => GetValue(CanSelectProperty); set => SetValue(CanSelectProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CanSelect"/>. See the related property for details.</summary>
-        public static StyledProperty<bool> CanSelectProperty
+        public static readonly StyledProperty<bool> CanSelectProperty
             = AvaloniaProperty.Register<FlatButton, bool>("CanSelect", true);
         // OnCanSelectChanged
 
@@ -389,7 +380,7 @@ namespace SolidShineUi
         /// <summary>
         /// The backing direct property for <see cref="IsSelected"/>. See the related property for details.
         /// </summary>
-        public static DirectProperty<FlatButton, bool> IsSelectedProperty
+        public static readonly DirectProperty<FlatButton, bool> IsSelectedProperty
             = AvaloniaProperty.RegisterDirect<FlatButton, bool>("IsSelected", (fb) => fb.IsSelected, (fb, v) => fb.IsSelected = v);
 
         /// <summary>
@@ -426,7 +417,7 @@ namespace SolidShineUi
             {
                 bool curVal = sel;
                 SetAndRaise(IsSelectedProperty, ref sel, value);
-                PseudoClasses.Set(pcSel, value);
+                //PseudoClasses.Set(pcSel, value);
 
                 if (curVal != sel)
                 {
