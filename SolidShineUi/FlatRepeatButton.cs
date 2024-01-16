@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -274,7 +269,7 @@ namespace SolidShineUi
         /// <summary>
         /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
         /// </summary>
-        protected DispatcherTimer executeTimer = new DispatcherTimer();
+        protected DispatcherTimer executeTimer = new DispatcherTimer(DispatcherPriority.Input);
 
         bool firstRun = false;
         bool timerRan = false;
@@ -298,7 +293,6 @@ namespace SolidShineUi
         public static DependencyProperty DelayProperty
             = DependencyProperty.Register(nameof(Delay), typeof(int), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(200));
-
 
         #endregion
 
