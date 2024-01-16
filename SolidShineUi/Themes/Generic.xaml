@@ -2149,13 +2149,13 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type flat:NewIntegerSpinner}">
+    <Style TargetType="{x:Type flat:IntegerSpinner}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type flat:NewIntegerSpinner}">
+                <ControlTemplate TargetType="{x:Type flat:IntegerSpinner}">
                     <Border x:Name="PART_SpinnerBorder" >
                         <Border.Style>
                             <Style TargetType="Border">
@@ -2189,14 +2189,14 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
@@ -2238,13 +2238,13 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type flat:NewLongSpinner}">
+    <Style TargetType="{x:Type flat:LongSpinner}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type flat:NewLongSpinner}">
+                <ControlTemplate TargetType="{x:Type flat:LongSpinner}">
                     <Border x:Name="PART_SpinnerBorder" >
                         <Border.Style>
                             <Style TargetType="Border">
@@ -2278,14 +2278,14 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
@@ -2327,13 +2327,13 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type flat:NewDoubleSpinner}">
+    <Style TargetType="{x:Type flat:DoubleSpinner}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type flat:NewDoubleSpinner}">
+                <ControlTemplate TargetType="{x:Type flat:DoubleSpinner}">
                     <Border x:Name="PART_SpinnerBorder" >
                         <Border.Style>
                             <Style TargetType="Border">
@@ -2367,14 +2367,14 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:NewSpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >

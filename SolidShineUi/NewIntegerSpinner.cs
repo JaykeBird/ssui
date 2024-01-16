@@ -8,24 +8,24 @@ using System.Windows.Input;
 namespace SolidShineUi
 {
     /// <summary>
-    /// An updated version of <see cref="IntegerSpinner"/>, built as a templated control.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed.
     /// </summary>
-    public class NewIntegerSpinner : NumericSpinnerBase<int>
+    public class IntegerSpinner : NumericSpinnerBase<int>
     {
-        static NewIntegerSpinner()
+        static IntegerSpinner()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewIntegerSpinner), new FrameworkPropertyMetadata(typeof(NewIntegerSpinner)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(IntegerSpinner), new FrameworkPropertyMetadata(typeof(IntegerSpinner)));
         }
 
         /// <summary>
         /// Create a NewIntegerSpinner.
         /// </summary>
-        public NewIntegerSpinner()
+        public IntegerSpinner()
         {
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            AddPropertyChangedTrigger(ValueProperty, typeof(NewIntegerSpinner));
-            AddPropertyChangedTrigger(MinValueProperty, typeof(NewIntegerSpinner));
-            AddPropertyChangedTrigger(MaxValueProperty, typeof(NewIntegerSpinner));
+            AddPropertyChangedTrigger(ValueProperty, typeof(IntegerSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(IntegerSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(IntegerSpinner));
 
             CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
             CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
@@ -39,7 +39,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(int), typeof(NewIntegerSpinner),
+            "Value", typeof(int), typeof(IntegerSpinner),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <inheritdoc/>
@@ -52,7 +52,7 @@ namespace SolidShineUi
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is NewIntegerSpinner s)
+            if (d is IntegerSpinner s)
             {
                 s.UpdateValue(e);
             }
@@ -66,7 +66,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(int), typeof(NewIntegerSpinner), new PropertyMetadata(1));
+            "Step", typeof(int), typeof(IntegerSpinner), new PropertyMetadata(1));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -84,8 +84,8 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(int), typeof(NewIntegerSpinner),
-            new PropertyMetadata(int.MinValue, (d, e) => d.PerformAs<NewIntegerSpinner>(i => i.OnMinValueChanged(e))));
+            "MinValue", typeof(int), typeof(IntegerSpinner),
+            new PropertyMetadata(int.MinValue, (d, e) => d.PerformAs<IntegerSpinner>(i => i.OnMinValueChanged(e))));
 
         ///<inheritdoc/>
         [Category("Common")]
@@ -113,8 +113,8 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(int), typeof(NewIntegerSpinner),
-            new PropertyMetadata(int.MaxValue, (d, e) => d.PerformAs<NewIntegerSpinner>(s => s.OnMaxValueChanged(e))));
+            "MaxValue", typeof(int), typeof(IntegerSpinner),
+            new PropertyMetadata(int.MaxValue, (d, e) => d.PerformAs<IntegerSpinner>(s => s.OnMaxValueChanged(e))));
 
         ///<inheritdoc/>
         [Category("Common")]
@@ -143,14 +143,14 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="DisplayAsHex"/>. Please see the related property for details.
         /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
-            "DisplayAsHex", typeof(bool), typeof(NewIntegerSpinner),
-            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<NewIntegerSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
+            "DisplayAsHex", typeof(bool), typeof(IntegerSpinner),
+            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<IntegerSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
 
         /// <summary>
         /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
         /// </summary>
         public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
-            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(NewIntegerSpinner));
+            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(IntegerSpinner));
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.

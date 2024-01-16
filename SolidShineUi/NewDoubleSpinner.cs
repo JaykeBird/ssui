@@ -12,24 +12,24 @@ using System.Windows;
 namespace SolidShineUi
 {
     /// <summary>
-    /// An updated version of <see cref="DoubleSpinner"/>, built as a templated control.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons.
     /// </summary>
-    public class NewDoubleSpinner : NumericSpinnerBase<double>
+    public class DoubleSpinner : NumericSpinnerBase<double>
     {
-        static NewDoubleSpinner()
+        static DoubleSpinner()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewDoubleSpinner), new FrameworkPropertyMetadata(typeof(NewDoubleSpinner)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleSpinner), new FrameworkPropertyMetadata(typeof(DoubleSpinner)));
         }
 
         /// <summary>
         /// Create a NewDoubleSpinner.
         /// </summary>
-        public NewDoubleSpinner()
+        public DoubleSpinner()
         {
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            AddPropertyChangedTrigger(ValueProperty, typeof(NewDoubleSpinner));
-            AddPropertyChangedTrigger(MinValueProperty, typeof(NewDoubleSpinner));
-            AddPropertyChangedTrigger(MaxValueProperty, typeof(NewDoubleSpinner));
+            AddPropertyChangedTrigger(ValueProperty, typeof(DoubleSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(DoubleSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(DoubleSpinner));
 
             CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
             CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
@@ -43,7 +43,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(NewDoubleSpinner),
+            "Value", typeof(double), typeof(DoubleSpinner),
             new FrameworkPropertyMetadata(0.0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <inheritdoc/>
@@ -56,7 +56,7 @@ namespace SolidShineUi
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is NewDoubleSpinner s)
+            if (d is DoubleSpinner s)
             {
                 s.UpdateValue(e);
             }
@@ -70,7 +70,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(double), typeof(NewDoubleSpinner), new PropertyMetadata(1.0d));
+            "Step", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(1.0d));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -88,8 +88,8 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(double), typeof(NewDoubleSpinner),
-            new PropertyMetadata(double.MinValue, (d, e) => d.PerformAs<NewDoubleSpinner>(i => i.OnMinValueChanged(e))));
+            "MinValue", typeof(double), typeof(DoubleSpinner),
+            new PropertyMetadata(double.MinValue, (d, e) => d.PerformAs<DoubleSpinner>(i => i.OnMinValueChanged(e))));
 
         ///<inheritdoc/>
         [Category("Common")]
@@ -117,8 +117,8 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(double), typeof(NewDoubleSpinner),
-            new PropertyMetadata(double.MaxValue, (d, e) => d.PerformAs<NewDoubleSpinner>(s => s.OnMaxValueChanged(e))));
+            "MaxValue", typeof(double), typeof(DoubleSpinner),
+            new PropertyMetadata(double.MaxValue, (d, e) => d.PerformAs<DoubleSpinner>(s => s.OnMaxValueChanged(e))));
 
         ///<inheritdoc/>
         [Category("Common")]
@@ -147,7 +147,7 @@ namespace SolidShineUi
         /// A dependency property object backing the <see cref="Decimals"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty DecimalsProperty = DependencyProperty.Register(
-            "Decimals", typeof(int), typeof(NewDoubleSpinner), new PropertyMetadata(2));
+            "Decimals", typeof(int), typeof(DoubleSpinner), new PropertyMetadata(2));
 
         ///<summary>
         /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.

@@ -20,26 +20,26 @@
                 <TextBlock HorizontalAlignment="Left" Margin="21,238,0,0" Text="Double Spinner with WPF Slider" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="183,0,0,0" Text="Integer Spinner Steps by 5" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="373,0,0,0" Text="Long Spinner Steps by 100" VerticalAlignment="Top"/>
-                <flat:NewIntegerSpinner x:Name="nud1" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                <flat:NewIntegerSpinner x:Name="nud5" HorizontalAlignment="Left" Margin="183,20,0,0" VerticalAlignment="Top" Width="80" Step="5" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                <flat:NewLongSpinner x:Name="nud7" HorizontalAlignment="Left" Margin="373,20,0,0" VerticalAlignment="Top" Width="80" Step="100" MinimumDigitCount="4" 
+                <flat:IntegerSpinner x:Name="nud1" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
+                <flat:IntegerSpinner x:Name="nud5" HorizontalAlignment="Left" Margin="183,20,0,0" VerticalAlignment="Top" Width="80" Step="5" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
+                <flat:LongSpinner x:Name="nud7" HorizontalAlignment="Left" Margin="373,20,0,0" VerticalAlignment="Top" Width="80" Step="100" MinimumDigitCount="4" 
                                      ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <TextBlock HorizontalAlignment="Left" Margin="19,60,0,0" Text="Integer Spinner - Display as Hex" VerticalAlignment="Top"/>
-                <flat:NewIntegerSpinner x:Name="nud8" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" DisplayAsHex="True" />
+                <flat:IntegerSpinner x:Name="nud8" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" DisplayAsHex="True" />
                 <TextBlock HorizontalAlignment="Left" Margin="248,60,0,0" Text="Integer Spinner - Color Hex" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nud9" HorizontalAlignment="Left" Margin="248,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" 
                                      DisplayAsHex="True" MinimumDigitCount="6" MinValue="0" MaxValue="16777215" ValueChanged="nud9_ValueChanged" Loaded="nud9_Loaded" />
-                <flat:NewDoubleSpinner x:Name="nud2" HorizontalAlignment="Left" Margin="21,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:DoubleSpinner x:Name="nud2" HorizontalAlignment="Left" Margin="21,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     Decimals="3" />
-                <flat:NewDoubleSpinner x:Name="nud2_Copy" HorizontalAlignment="Left" Margin="305,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:DoubleSpinner x:Name="nud2_Copy" HorizontalAlignment="Left" Margin="305,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     Decimals="7" />
-                <flat:NewDoubleSpinner x:Name="nud3" HorizontalAlignment="Left" Margin="21,198,0,0" VerticalAlignment="Top" Width="140" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:DoubleSpinner x:Name="nud3" HorizontalAlignment="Left" Margin="21,198,0,0" VerticalAlignment="Top" Width="140" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     AcceptExpressions="True" />
-                <flat:NewDoubleSpinner x:Name="nud4" HorizontalAlignment="Left" Margin="20,262,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:DoubleSpinner x:Name="nud4" HorizontalAlignment="Left" Margin="20,262,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     MinValue="0" MaxValue="100" Value="{Binding Value, ElementName=slider, Mode=TwoWay}" Step="1" />
                 <Slider x:Name="slider" Margin="110,258,10,0" VerticalAlignment="Top" TickPlacement="Both" Value="0" Minimum="0" Maximum="100" TickFrequency="5"
                     Foreground="{Binding ColorScheme.BorderColor, Converter={StaticResource ctb}, ElementName=userControl}" />
-                <flat:NewIntegerSpinner x:Name="nud6" HorizontalAlignment="Left" Margin="413,198,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:IntegerSpinner x:Name="nud6" HorizontalAlignment="Left" Margin="413,198,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     MinValue="0" MaxValue="100" Step="1" IsEnabled="False" />
                 <TextBlock HorizontalAlignment="Left" Margin="413,177,0,0" Text="Disabled Spinner" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="304,118,0,0" Text="Double Spinner - Limited to 7 Decimal Points" VerticalAlignment="Top"/>

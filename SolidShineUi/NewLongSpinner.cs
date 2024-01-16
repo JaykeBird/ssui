@@ -8,24 +8,25 @@ using System.Windows.Input;
 namespace SolidShineUi
 {
     /// <summary>
-    /// An updated version of the <see cref="LongSpinner"/>, built as a templated control.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed, 
+    /// but larger numbers than what <see cref="IntegerSpinner"/> supports are allowed here (since numbers are stored as a <c>long</c>).
     /// </summary>
-    public class NewLongSpinner : NumericSpinnerBase<long>
+    public class LongSpinner : NumericSpinnerBase<long>
     {
-        static NewLongSpinner()
+        static LongSpinner()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewLongSpinner), new FrameworkPropertyMetadata(typeof(NewLongSpinner)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(LongSpinner), new FrameworkPropertyMetadata(typeof(LongSpinner)));
         }
 
         /// <summary>
         /// Create a NewLongSpinner.
         /// </summary>
-        public NewLongSpinner()
+        public LongSpinner()
         {
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            AddPropertyChangedTrigger(ValueProperty, typeof(NewLongSpinner));
-            AddPropertyChangedTrigger(MinValueProperty, typeof(NewLongSpinner));
-            AddPropertyChangedTrigger(MaxValueProperty, typeof(NewLongSpinner));
+            AddPropertyChangedTrigger(ValueProperty, typeof(LongSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(LongSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(LongSpinner));
 
             CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
             CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
@@ -39,7 +40,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(long), typeof(NewLongSpinner),
+            "Value", typeof(long), typeof(LongSpinner),
             new FrameworkPropertyMetadata(0L, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <inheritdoc/>
@@ -52,7 +53,7 @@ namespace SolidShineUi
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is NewLongSpinner s)
+            if (d is LongSpinner s)
             {
                 s.UpdateValue(e);
             }
@@ -66,7 +67,7 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(long), typeof(NewLongSpinner), new PropertyMetadata(1L));
+            "Step", typeof(long), typeof(LongSpinner), new PropertyMetadata(1L));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -84,8 +85,8 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(long), typeof(NewLongSpinner),
-            new PropertyMetadata(long.MinValue, (d, e) => d.PerformAs<NewLongSpinner>(i => i.OnMinValueChanged(e))));
+            "MinValue", typeof(long), typeof(LongSpinner),
+            new PropertyMetadata(long.MinValue, (d, e) => d.PerformAs<LongSpinner>(i => i.OnMinValueChanged(e))));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -113,8 +114,8 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(long), typeof(NewLongSpinner),
-            new PropertyMetadata(long.MaxValue, (d, e) => d.PerformAs<NewLongSpinner>(s => s.OnMaxValueChanged(e))));
+            "MaxValue", typeof(long), typeof(LongSpinner),
+            new PropertyMetadata(long.MaxValue, (d, e) => d.PerformAs<LongSpinner>(s => s.OnMaxValueChanged(e))));
 
         /// <inheritdoc/>
         [Category("Common")]
@@ -142,14 +143,14 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="DisplayAsHex"/>. Please see the related property for details.
         /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
-            "DisplayAsHex", typeof(bool), typeof(NewLongSpinner),
-            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<NewLongSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
+            "DisplayAsHex", typeof(bool), typeof(LongSpinner),
+            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<LongSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
 
         /// <summary>
         /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
         /// </summary>
         public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
-            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(NewLongSpinner));
+            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(LongSpinner));
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.

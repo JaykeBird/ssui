@@ -14,24 +14,24 @@ namespace SolidShineUi.Utils
 {
 
     /// <summary>
-    /// The base class for Solid Shine UI's spinner controls (such as <see cref="NewIntegerSpinner"/> and <see cref="NewDoubleSpinner"/>).
+    /// The base class for Solid Shine UI's spinner controls (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
     /// </summary>
     /// <remarks>
     /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
     /// </remarks>
-    public abstract class NewSpinnerBase : Control
+    public abstract class SpinnerBase : Control
     {
 
         #region Constructors
-        static NewSpinnerBase()
+        static SpinnerBase()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NewSpinnerBase), new FrameworkPropertyMetadata(typeof(NewSpinnerBase)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SpinnerBase), new FrameworkPropertyMetadata(typeof(SpinnerBase)));
         }
 
         /// <summary>
         /// Create a NewSpinnerBase.
         /// </summary>
-        public NewSpinnerBase()
+        public SpinnerBase()
         {
             Loaded += NewSpinnerBase_Loaded;
 
@@ -62,10 +62,10 @@ namespace SolidShineUi.Utils
         // these will be used for the transition from standard UserControls to full templated controls
 
         /// <summary>A WPF command that when executed, will increase a spinner's value by its <c>Step</c> amount</summary>
-        public static RoutedCommand StepUp { get; } = new RoutedCommand("StepUp", typeof(NewSpinnerBase));
+        public static RoutedCommand StepUp { get; } = new RoutedCommand("StepUp", typeof(SpinnerBase));
 
         /// <summary>A WPF command that when executed, will decrease a spinner's value by its <c>Step</c> amount</summary>
-        public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(NewSpinnerBase));
+        public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(SpinnerBase));
 
         #endregion
 
@@ -75,13 +75,13 @@ namespace SolidShineUi.Utils
         /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
         /// </summary>
         protected static readonly DependencyPropertyKey IsAtMaxValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(NewSpinnerBase), new FrameworkPropertyMetadata(false));
+            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
 
         /// <summary>
         /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
         /// </summary>
         protected static readonly DependencyPropertyKey IsAtMinValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(NewSpinnerBase), new FrameworkPropertyMetadata(false));
+            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
 
         /// <summary>
         /// A dependency property object backing the <see cref="IsAtMaxValue"/> property. See the related property for more details.
@@ -272,32 +272,32 @@ namespace SolidShineUi.Utils
 
         /// <summary>The backing dependency property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
-            "ButtonBackground", typeof(Brush), typeof(NewSpinnerBase),
+            "ButtonBackground", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "DisabledBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "BorderBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "HighlightBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "ClickBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "BorderDisabledBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace SolidShineUi.Utils
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(NewSpinnerBase),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SpinnerBase),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -426,7 +426,7 @@ namespace SolidShineUi.Utils
 #else
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
-            if (d is NewSpinnerBase s)
+            if (d is SpinnerBase s)
             {
                 s.ColorSchemeChanged?.Invoke(d, e);
                 s.ApplyColorScheme(cs);
@@ -473,14 +473,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="RepeatDelay"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
-            "RepeatDelay", typeof(int), typeof(NewSpinnerBase),
-            new PropertyMetadata(300, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnRepeatDelayChanged(e)))));
+            "RepeatDelay", typeof(int), typeof(SpinnerBase),
+            new PropertyMetadata(300, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnRepeatDelayChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
-            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(NewSpinnerBase));
+            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
@@ -532,8 +532,8 @@ namespace SolidShineUi.Utils
 
         /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
         public static DependencyProperty IntervalProperty
-            = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(NewSpinnerBase),
-            new FrameworkPropertyMetadata(50, (d, e) => d.PerformAs<NewSpinnerBase>((o) => o.OnIntervalChanged(e))));
+            = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(SpinnerBase),
+            new FrameworkPropertyMetadata(50, (d, e) => d.PerformAs<SpinnerBase>((o) => o.OnIntervalChanged(e))));
 
         /// <summary>
         /// Update internal values based upon a change in the <see cref="RepeatDelay"/> property.
@@ -550,7 +550,7 @@ namespace SolidShineUi.Utils
         /// The routed event object for the <see cref="IntervalChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent IntervalChangedEvent = EventManager.RegisterRoutedEvent(
-            "IntervalChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(NewSpinnerBase));
+            "IntervalChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the <see cref="Interval"/> property is changed.
@@ -569,14 +569,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="CornerRadius"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(NewSpinnerBase),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnCornerRadiusChanged(e)))));
+            "CornerRadius", typeof(CornerRadius), typeof(SpinnerBase),
+            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnCornerRadiusChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<CornerRadius>), typeof(NewSpinnerBase));
+            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<CornerRadius>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
@@ -615,7 +615,7 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="AcceptExpressions"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(NewSpinnerBase),
+            "AcceptExpressions", typeof(bool), typeof(SpinnerBase),
             new PropertyMetadata(true));
 
         /// <summary>
@@ -639,14 +639,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="ShowArrows"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
-            "ShowArrows", typeof(bool), typeof(NewSpinnerBase),
-            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnShowArrowsChanged(e)))));
+            "ShowArrows", typeof(bool), typeof(SpinnerBase),
+            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnShowArrowsChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="ShowArrowsChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
-            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(NewSpinnerBase));
+            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the <see cref="ShowArrows"/> property is changed.
@@ -703,7 +703,7 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="MinimumDigitCount"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
-            "MinimumDigitCount", typeof(int), typeof(NewSpinnerBase),
+            "MinimumDigitCount", typeof(int), typeof(SpinnerBase),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
@@ -901,14 +901,14 @@ namespace SolidShineUi.Utils
     }
 
     /// <summary>
-    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="NewIntegerSpinner"/> and <see cref="NewDoubleSpinner"/>).
+    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
     /// </summary>
     /// <typeparam name="T">The data type supported by the spinner.</typeparam>
     /// <remarks>
     /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
-    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="NewSpinnerBase"/>.
+    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="SpinnerBase"/>.
     /// </remarks>
-    public abstract class NumericSpinnerBase<T> : NewSpinnerBase where T : IEquatable<T>, IComparable<T>
+    public abstract class NumericSpinnerBase<T> : SpinnerBase where T : IEquatable<T>, IComparable<T>
     {
         /// <summary>
         /// Get or set the value of the spinner.
