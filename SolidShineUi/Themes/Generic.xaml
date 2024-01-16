@@ -1334,6 +1334,7 @@
                                             <Style TargetType="MenuItem">
                                                 <Setter Property="CommandParameter" Value="{Binding .}" />
                                                 <Setter Property="Command" Value="{x:Static flat:TabControl.SwitchToTab}" />
+                                                <Setter Property="Visibility" Value="{Binding Visibility}" />
                                                 <Setter Property="Icon">
                                                     <Setter.Value>
                                                         <Image Source="{Binding Icon}" />

@@ -50,6 +50,9 @@
                                 <MenuItem Header="As Custom Gradient..." x:Name="mnuBackGradient" Click="mnuBackGradient_Click" />
                             </MenuItem>
                             <MenuItem Header="Set Tab IsDirty" x:Name="mnuDirty" Click="mnuDirty_Click" IsCheckable="True" />
+                            <Separator />
+                            <MenuItem Header="Hide Current Tab" x:Name="mnuHide" Click="mnuHide_Click" />
+                            <MenuItem Header="Unhide All Hidden Tabs" x:Name="mnuUnhideAll" Click="mnuUnhideAll_Click" />
                         </flat:ContextMenu>
                     </flat:MenuButton.Menu>
                 </flat:MenuButton>
