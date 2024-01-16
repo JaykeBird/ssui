@@ -685,6 +685,8 @@ namespace SolidShineUi
         }
         #endregion
 
+        #endregion
+
         #region Event handlers
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)

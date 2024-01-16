@@ -532,5 +532,4 @@ namespace SolidShineUi
 
         #endregion
     }
-
 }

@@ -12,18 +12,31 @@ using System.Windows.Input;
 
 namespace SolidShineUi.Utils
 {
+
     /// <summary>
     /// The base class for Solid Shine UI's spinner controls (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
     /// </summary>
-    public class NewSpinnerBase : Control
+    /// <remarks>
+    /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
+    /// </remarks>
+    public abstract class SpinnerBase : Control
     {
+
+        #region Constructors
+        static SpinnerBase()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SpinnerBase), new FrameworkPropertyMetadata(typeof(SpinnerBase)));
+        }
 
         /// <summary>
         /// Create a NewSpinnerBase.
         /// </summary>
-        public NewSpinnerBase()
+        public SpinnerBase()
         {
             Loaded += NewSpinnerBase_Loaded;
+
+            BorderThickness = new Thickness(1);
+            SetResourceReference(BackgroundProperty, SystemColors.WindowBrushKey);
 
             keyDownTimer.AutoReset = false;
             advanceTimer.AutoReset = true;
@@ -41,6 +54,84 @@ namespace SolidShineUi.Utils
             ValidateValue();
             _raiseChangedEvent = true;
         }
+
+        #endregion
+
+        #region Commands
+
+        // these will be used for the transition from standard UserControls to full templated controls
+
+        /// <summary>A WPF command that when executed, will increase a spinner's value by its <c>Step</c> amount</summary>
+        public static RoutedCommand StepUp { get; } = new RoutedCommand("StepUp", typeof(SpinnerBase));
+
+        /// <summary>A WPF command that when executed, will decrease a spinner's value by its <c>Step</c> amount</summary>
+        public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(SpinnerBase));
+
+        #endregion
+
+        #region IsAtMaxValue / IsAtMinValue
+
+        /// <summary>
+        /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
+        /// </summary>
+        protected static readonly DependencyPropertyKey IsAtMaxValuePropertyKey
+            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
+        /// </summary>
+        protected static readonly DependencyPropertyKey IsAtMinValuePropertyKey
+            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// A dependency property object backing the <see cref="IsAtMaxValue"/> property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty IsAtMaxValueProperty = IsAtMaxValuePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// A dependency property object backing the <see cref="IsAtMinValue"/> property. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty IsAtMinValueProperty = IsAtMinValuePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get if this spinner's <c>Value</c> is currently equal to its <c>MaxValue</c>. If true, the value cannot be increased any more.
+        /// </summary>
+        public bool IsAtMaxValue { get => (bool)GetValue(IsAtMaxValueProperty); protected set => SetValue(IsAtMaxValuePropertyKey, value); }
+
+        /// <summary>
+        /// Get if this spinner's <c>Value</c> is currently equal to its <c>MinValue</c>. If true, the value cannot be decreased any more.
+        /// </summary>
+        public bool IsAtMinValue { get => (bool)GetValue(IsAtMinValueProperty); protected set => SetValue(IsAtMinValuePropertyKey, value); }
+
+        #endregion
+
+        #region Internal Values / Timers
+
+        /// <summary>
+        /// determine the text box's text should be changed when <c>Value</c> is updated
+        /// </summary>
+        protected bool _updateBox = true;
+        /// <summary>
+        /// determine if the <see cref="ValueChanged"/> event should be raised
+        /// </summary>
+        protected bool _raiseChangedEvent = true;
+
+        #region Timer Values / Functions
+
+        /// <summary>
+        /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
+        /// </summary>
+        protected Timer keyDownTimer = new Timer(300);
+
+        /// <summary>
+        /// the timer to set the interval at which the value is changed while the user is holding down an arrow button
+        /// </summary>
+        protected Timer advanceTimer = new Timer(50);
+
+        /// <summary>
+        /// determine whether to increase or decrease the <c>Value</c> while the control is stepping; false for decrease, true for increase
+        /// </summary>
+        protected bool advanceStepUp = false;
 
 #if NETCOREAPP
         private void AdvanceTimer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -70,79 +161,7 @@ namespace SolidShineUi.Utils
             }
         }
 
-        #region Commands
-
-        // these will be used for the transition from standard UserControls to full templated controls
-
-        /// <summary>A WPF command that when executed, will increase a spinner's value by its <c>Step</c> amount</summary>
-        public static RoutedCommand StepUp { get; } = new RoutedCommand("StepUp", typeof(NewSpinnerBase));
-
-        /// <summary>A WPF command that when executed, will decrease a spinner's value by its <c>Step</c> amount</summary>
-        public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(NewSpinnerBase));
-
         #endregion
-
-        #region IsAtMaxValue / IsAtMinValue
-
-        /// <summary>
-        /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
-        /// </summary>
-        protected static readonly DependencyPropertyKey IsAtMaxValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(NewSpinnerBase), new FrameworkPropertyMetadata(false));
-
-        /// <summary>
-        /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
-        /// </summary>
-        protected static readonly DependencyPropertyKey IsAtMinValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(NewSpinnerBase), new FrameworkPropertyMetadata(false));
-
-        /// <summary>
-        /// A dependency property object backing the <see cref="IsAtMaxValue"/> property. See the related property for more details.
-        /// </summary>
-        public static readonly DependencyProperty IsAtMaxValueProperty = IsAtMaxValuePropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// A dependency property object backing the <see cref="IsAtMinValue"/> property. See the related property for more details.
-        /// </summary>
-        public static readonly DependencyProperty IsAtMinValueProperty = IsAtMinValuePropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Get if this spinner's <c>Value</c> is currently equal to its <c>MaxValue</c>. If true, the value cannot be increased any more.
-        /// </summary>
-        public bool IsAtMaxValue { get => (bool)GetValue(IsAtMaxValueProperty); protected set => SetValue(IsAtMaxValuePropertyKey, value); }
-
-        /// <summary>
-        /// Get if this spinner's <c>Value</c> is currently equal to its <c>MinValue</c>. If true, the value cannot be decreased any more.
-        /// </summary>
-        public bool IsAtMinValue { get => (bool)GetValue(IsAtMinValueProperty); protected set => SetValue(IsAtMinValuePropertyKey, value); }
-
-        #endregion
-
-        #region Internal Values
-
-        /// <summary>
-        /// determine the text box's text should be changed when <c>Value</c> is updated
-        /// </summary>
-        protected bool _updateBox = true;
-        /// <summary>
-        /// determine if the <see cref="ValueChanged"/> event should be raised
-        /// </summary>
-        protected bool _raiseChangedEvent = true;
-
-        /// <summary>
-        /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
-        /// </summary>
-        protected Timer keyDownTimer = new Timer(300);
-
-        /// <summary>
-        /// the timer to set the interval at which the value is changed while the user is holding down an arrow button
-        /// </summary>
-        protected Timer advanceTimer = new Timer(50);
-
-        /// <summary>
-        /// determine whether to increase or decrease the <c>Value</c> while the control is stepping; false for decrease, true for increase
-        /// </summary>
-        protected bool advanceStepUp = false;
 
         #endregion
 
@@ -251,31 +270,35 @@ namespace SolidShineUi.Utils
 
         #region Brushes
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
-            "ButtonBackground", typeof(Brush), typeof(NewSpinnerBase),
+            "ButtonBackground", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "DisabledBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "BorderBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "HighlightBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "ClickBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(NewSpinnerBase),
+            "BorderDisabledBrush", typeof(Brush), typeof(SpinnerBase),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the brush used for the background of the buttons of the spinner.
@@ -377,25 +400,92 @@ namespace SolidShineUi.Utils
 
         #region Properties
 
+        #region ColorScheme
+
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
+
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
+        public static readonly DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SpinnerBase),
+            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+#if NETCOREAPP
+            ColorScheme cs = (e.NewValue as ColorScheme)!;
+#else
+            ColorScheme cs = e.NewValue as ColorScheme;
+#endif
+            if (d is SpinnerBase s)
+            {
+                s.ColorSchemeChanged?.Invoke(d, e);
+                s.ApplyColorScheme(cs);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the color scheme used for this spinner. For easier color scheme management, bind this to the window or larger control you're using.
+        /// </summary>
+        public ColorScheme ColorScheme
+        {
+            get => (ColorScheme)GetValue(ColorSchemeProperty);
+            set => SetValue(ColorSchemeProperty, value);
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            BorderBrush = cs.BorderColor.ToBrush();
+            DisabledBrush = cs.LightDisabledColor.ToBrush();
+            BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+
+            ButtonBackground = cs.IsHighContrast ? cs.BackgroundColor.ToBrush() : cs.SecondaryColor.ToBrush();
+
+            ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            HighlightBrush = cs.HighlightColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+        }
+
+        #endregion
+
         #region RepeatDelayProperty
 
         /// <summary>
         /// The dependency property object for the <see cref="RepeatDelay"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
-            "RepeatDelay", typeof(double), typeof(NewSpinnerBase),
-            new PropertyMetadata(300d, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnRepeatDelayChanged()))));
+            "RepeatDelay", typeof(int), typeof(SpinnerBase),
+            new PropertyMetadata(300, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnRepeatDelayChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
-            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
+            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
         /// </summary>
-        public event RoutedEventHandler RepeatDelayChanged
+        public event RoutedPropertyChangedEventHandler<int> RepeatDelayChanged
         {
             add { AddHandler(RepeatDelayChangedEvent, value); }
             remove { RemoveHandler(RepeatDelayChangedEvent, value); }
@@ -404,21 +494,71 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Update internal values based upon a change in the <see cref="RepeatDelay"/> property.
         /// </summary>
-        protected virtual void OnRepeatDelayChanged()
+        protected virtual void OnRepeatDelayChanged(DependencyPropertyChangedEventArgs e)
         {
             keyDownTimer.Interval = RepeatDelay;
-            RoutedEventArgs re = new RoutedEventArgs(RepeatDelayChangedEvent);
+            RoutedPropertyChangedEventArgs<int> re = new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, RepeatDelayChangedEvent);
+            re.Source = this;
             RaiseEvent(re);
         }
 
         /// <summary>
         /// Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.
         /// </summary>
+        /// <remarks>
+        /// Once this time period is reached and the button continues to be held down, then the spinner will begin repeatedly stepping up or down, at the rate
+        /// specified in <see cref="Interval"/>. This will continue until the button is no longer held down, or the <c>MaxValue</c> or <c>MinValue</c> is reached.
+        /// </remarks>
         [Category("Common")]
-        public double RepeatDelay
+        public int RepeatDelay
         {
-            get => (double)GetValue(RepeatDelayProperty);
+            get => (int)GetValue(RepeatDelayProperty);
             set => SetValue(RepeatDelayProperty, value);
+        }
+
+        #endregion
+
+        #region IntervalProperty
+
+        /// <summary>
+        /// Get or set the rate of repeatedly stepping up or down while a button is held, in milliseconds. Default is 50 milliseconds.
+        /// </summary>
+        /// <remarks>
+        /// While holding down a button, once the <see cref="RepeatDelay"/> time period is reached, then stepping begins to occur repeatedly, at the rate
+        /// specified in this property. This continues until the button is no longer held, or the <c>MaxValue</c> or <c>MinValue</c> is reached.
+        /// </remarks>
+        [Category("Common")]
+        public int Interval { get => (int)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
+        public static DependencyProperty IntervalProperty
+            = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(SpinnerBase),
+            new FrameworkPropertyMetadata(50, (d, e) => d.PerformAs<SpinnerBase>((o) => o.OnIntervalChanged(e))));
+
+        /// <summary>
+        /// Update internal values based upon a change in the <see cref="RepeatDelay"/> property.
+        /// </summary>
+        protected virtual void OnIntervalChanged(DependencyPropertyChangedEventArgs e)
+        {
+            advanceTimer.Interval = Interval;
+            RoutedPropertyChangedEventArgs<int> re = new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, IntervalChangedEvent);
+            re.Source = this;
+            RaiseEvent(re);
+        }
+
+        /// <summary>
+        /// The routed event object for the <see cref="IntervalChanged"/> event. See the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent IntervalChangedEvent = EventManager.RegisterRoutedEvent(
+            "IntervalChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
+
+        /// <summary>
+        /// Raised when the <see cref="Interval"/> property is changed.
+        /// </summary>
+        public event RoutedPropertyChangedEventHandler<int> IntervalChanged
+        {
+            add { AddHandler(IntervalChangedEvent, value); }
+            remove { RemoveHandler(IntervalChangedEvent, value); }
         }
 
         #endregion
@@ -429,19 +569,19 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="CornerRadius"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(NewSpinnerBase),
-            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnCornerRadiusChanged()))));
+            "CornerRadius", typeof(CornerRadius), typeof(SpinnerBase),
+            new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnCornerRadiusChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
+            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<CornerRadius>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
         /// </summary>
-        public event RoutedEventHandler CornerRadiusChanged
+        public event RoutedPropertyChangedEventHandler<CornerRadius> CornerRadiusChanged
         {
             add { AddHandler(CornerRadiusChangedEvent, value); }
             remove { RemoveHandler(CornerRadiusChangedEvent, value); }
@@ -450,9 +590,10 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Update internal values based upon a change in the <see cref="CornerRadius"/> property.
         /// </summary>
-        protected virtual void OnCornerRadiusChanged()
+        protected virtual void OnCornerRadiusChanged(DependencyPropertyChangedEventArgs e)
         {
-            RoutedEventArgs re = new RoutedEventArgs(CornerRadiusChangedEvent);
+            RoutedPropertyChangedEventArgs<CornerRadius> re = new RoutedPropertyChangedEventArgs<CornerRadius>((CornerRadius)e.OldValue, (CornerRadius)e.NewValue, CornerRadiusChangedEvent);
+            re.Source = this;
             RaiseEvent(re);
         }
 
@@ -474,7 +615,7 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="AcceptExpressions"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(NewSpinnerBase),
+            "AcceptExpressions", typeof(bool), typeof(SpinnerBase),
             new PropertyMetadata(true));
 
         /// <summary>
@@ -498,19 +639,19 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="ShowArrows"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
-            "ShowArrows", typeof(bool), typeof(NewSpinnerBase),
-            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<NewSpinnerBase>((s) => s.OnShowArrowsChanged()))));
+            "ShowArrows", typeof(bool), typeof(SpinnerBase),
+            new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnShowArrowsChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="ShowArrowsChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
-            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewSpinnerBase));
+            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(SpinnerBase));
 
         /// <summary>
-        /// Raised when the ShowArrows property is changed.
+        /// Raised when the <see cref="ShowArrows"/> property is changed.
         /// </summary>
-        public event RoutedEventHandler ShowArrowsChanged
+        public event RoutedPropertyChangedEventHandler<bool> ShowArrowsChanged
         {
             add { AddHandler(ShowArrowsChangedEvent, value); }
             remove { RemoveHandler(ShowArrowsChangedEvent, value); }
@@ -519,9 +660,10 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Update internal values based upon a change in the <see cref="ShowArrows"/> property.
         /// </summary>
-        protected virtual void OnShowArrowsChanged()
+        protected virtual void OnShowArrowsChanged(DependencyPropertyChangedEventArgs e)
         {
-            RoutedEventArgs re = new RoutedEventArgs(ShowArrowsChangedEvent);
+            RoutedPropertyChangedEventArgs<bool> re = new RoutedPropertyChangedEventArgs<bool>((bool)e.OldValue, (bool)e.NewValue, ShowArrowsChangedEvent);
+            re.Source = this;
             RaiseEvent(re);
         }
 
@@ -537,13 +679,31 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #region ShowButtonDividerProperty
+        
+        ///// <summary>
+        ///// Get or set if a small divider border should be shown between the buttons and the text box.
+        ///// </summary>
+        ///// <remarks>
+        ///// In earlier versions of Solid Shine UI, there was no divider shown (although there actually should've been one).
+        ///// So the default value now is <c>true</c>, as is the intended behavior, but this can be set to <c>false</c> if you want to maintain appearance 
+        ///// </remarks>
+        //public bool ShowButtonDivider { get => (bool)GetValue(ShowButtonDividerProperty); set => SetValue(ShowButtonDividerProperty, value); }
+
+        ///// <summary>The backing dependency property for <see cref="ShowButtonDivider"/>. See the related property for details.</summary>
+        //public static DependencyProperty ShowButtonDividerProperty
+        //    = DependencyProperty.Register(nameof(ShowButtonDivider), typeof(bool), typeof(NewSpinnerBase),
+        //    new FrameworkPropertyMetadata(true));
+
+        #endregion
+
         #region MinimumDigitCount
 
         /// <summary>
         /// The dependency property object for the <see cref="MinimumDigitCount"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
-            "MinimumDigitCount", typeof(int), typeof(NewSpinnerBase),
+            "MinimumDigitCount", typeof(int), typeof(SpinnerBase),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
@@ -575,7 +735,10 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected virtual void UpdateUI()
         {
-
+            if (!IsEnabled || IsAtMaxValue || IsAtMinValue)
+            {
+                advanceTimer.Stop();
+            }
         }
 
         /// <summary>
@@ -600,27 +763,25 @@ namespace SolidShineUi.Utils
         /// Handle the process of updating value properties. Should be overridden in classes that inherit this, in order to perform validation or other functions.
         /// </summary>
         /// <param name="e">Event args from the related <see cref="ValueChanged"/> event.</param>
+        /// <remarks>
+        /// Overridding functions of this should additionally set the <see cref="IsAtMaxValue"/> and <see cref="IsAtMinValue"/> properties at this stage.
+        /// </remarks>
         protected virtual void UpdateValue(DependencyPropertyChangedEventArgs e)
         {
             UpdateUI();
             RaiseValueChanged(this, e);
         }
 
+
         /// <summary>
         /// Increase the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
         /// </summary>
-        protected virtual void DoStepUp()
-        {
-
-        }
+        protected abstract void DoStepUp();
 
         /// <summary>
         /// Decrease the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
         /// </summary>
-        protected virtual void DoStepDown()
-        {
-
-        }
+        protected abstract void DoStepDown();
 
         #endregion
 
@@ -737,5 +898,80 @@ namespace SolidShineUi.Utils
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
+    /// </summary>
+    /// <typeparam name="T">The data type supported by the spinner.</typeparam>
+    /// <remarks>
+    /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
+    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="SpinnerBase"/>.
+    /// </remarks>
+    public abstract class NumericSpinnerBase<T> : SpinnerBase where T : IEquatable<T>, IComparable<T>
+    {
+        /// <summary>
+        /// Get or set the value of the spinner.
+        /// </summary>
+        public abstract T Value { get; set; }
+
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MinValue { get; set; }
+
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MaxValue { get; set; }
+
+        /// <summary>
+        /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
+        /// </summary>
+        public abstract T Step { get; set; }
+
+        /// <summary>
+        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        /// </summary>
+        protected override void ValidateValue()
+        {
+            T val = Value;
+            if (val.CompareTo(MinValue) < 0) val = MinValue;
+            if (val.CompareTo(MaxValue) > 0) val = MaxValue;
+            if (!val.Equals(Value)) Value = val;
+
+            base.ValidateValue();
+        }
+
+        /// <summary>
+        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        /// </summary>
+        protected override void ValidateMinMax()
+        {
+            if (MinValue.CompareTo(MaxValue) > 0) MinValue = MaxValue;
+            if (MaxValue.CompareTo(MinValue) < 0) MaxValue = MinValue;
+
+            IsAtMinValue = Value.Equals(MinValue);
+            IsAtMaxValue = Value.Equals(MaxValue);
+
+            base.ValidateMinMax();
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
+        {
+            //int value = Value;
+
+            if (!advanceTimer.Enabled)
+            {
+                ValidateValue();
+
+                IsAtMinValue = Value.Equals(MinValue);
+                IsAtMaxValue = Value.Equals(MaxValue);
+            }
+            base.UpdateValue(e);
+        }
     }
 }

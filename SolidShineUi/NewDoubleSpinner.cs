@@ -1,31 +1,35 @@
 ﻿using SolidShineUi.Utils;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
 
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons.
     /// </summary>
-    public class IntegerSpinner : NumericSpinnerBase<int>
+    public class DoubleSpinner : NumericSpinnerBase<double>
     {
-        static IntegerSpinner()
+        static DoubleSpinner()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(IntegerSpinner), new FrameworkPropertyMetadata(typeof(IntegerSpinner)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleSpinner), new FrameworkPropertyMetadata(typeof(DoubleSpinner)));
         }
 
         /// <summary>
-        /// Create a NewIntegerSpinner.
+        /// Create a NewDoubleSpinner.
         /// </summary>
-        public IntegerSpinner()
+        public DoubleSpinner()
         {
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            AddPropertyChangedTrigger(ValueProperty, typeof(IntegerSpinner));
-            AddPropertyChangedTrigger(MinValueProperty, typeof(IntegerSpinner));
-            AddPropertyChangedTrigger(MaxValueProperty, typeof(IntegerSpinner));
+            AddPropertyChangedTrigger(ValueProperty, typeof(DoubleSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(DoubleSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(DoubleSpinner));
 
             CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
             CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
@@ -39,20 +43,20 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(int), typeof(IntegerSpinner),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            "Value", typeof(double), typeof(DoubleSpinner),
+            new FrameworkPropertyMetadata(0.0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <inheritdoc/>
         [Category("Common")]
-        public override int Value
+        public override double Value
         {
-            get => (int)GetValue(ValueProperty);
+            get => (double)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is IntegerSpinner s)
+            if (d is DoubleSpinner s)
             {
                 s.UpdateValue(e);
             }
@@ -66,13 +70,13 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(int), typeof(IntegerSpinner), new PropertyMetadata(1));
+            "Step", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(1.0d));
 
         /// <inheritdoc/>
         [Category("Common")]
-        public override int Step
+        public override double Step
         {
-            get => (int)GetValue(StepProperty);
+            get => (double)GetValue(StepProperty);
             set => SetValue(StepProperty, value);
         }
 
@@ -84,14 +88,14 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(int), typeof(IntegerSpinner),
-            new PropertyMetadata(int.MinValue, (d, e) => d.PerformAs<IntegerSpinner>(i => i.OnMinValueChanged(e))));
+            "MinValue", typeof(double), typeof(DoubleSpinner),
+            new PropertyMetadata(double.MinValue, (d, e) => d.PerformAs<DoubleSpinner>(i => i.OnMinValueChanged(e))));
 
         ///<inheritdoc/>
         [Category("Common")]
-        public override int MinValue
+        public override double MinValue
         {
-            get { return (int)GetValue(MinValueProperty); }
+            get { return (double)GetValue(MinValueProperty); }
             set
             {
                 if (value > MaxValue) { MaxValue = value; }
@@ -113,14 +117,14 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(int), typeof(IntegerSpinner),
-            new PropertyMetadata(int.MaxValue, (d, e) => d.PerformAs<IntegerSpinner>(s => s.OnMaxValueChanged(e))));
+            "MaxValue", typeof(double), typeof(DoubleSpinner),
+            new PropertyMetadata(double.MaxValue, (d, e) => d.PerformAs<DoubleSpinner>(s => s.OnMaxValueChanged(e))));
 
         ///<inheritdoc/>
         [Category("Common")]
-        public override int MaxValue
+        public override double MaxValue
         {
-            get { return (int)GetValue(MaxValueProperty); }
+            get { return (double)GetValue(MaxValueProperty); }
             set
             {
                 if (value < MinValue) { value = MinValue; }
@@ -137,55 +141,25 @@ namespace SolidShineUi
 
         #endregion
 
-        #region DisplayAsHex
+        #region DecimalsProperty
 
         /// <summary>
-        /// The backing dependency property object for <see cref="DisplayAsHex"/>. Please see the related property for details.
+        /// A dependency property object backing the <see cref="Decimals"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
-            "DisplayAsHex", typeof(bool), typeof(IntegerSpinner),
-            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<IntegerSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
+        public static readonly DependencyProperty DecimalsProperty = DependencyProperty.Register(
+            "Decimals", typeof(int), typeof(DoubleSpinner), new PropertyMetadata(2));
 
-        /// <summary>
-        /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
-        /// </summary>
-        public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
-            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(IntegerSpinner));
-
-        /// <summary>
-        /// Raised when the DisplayAsHex property is changed.
-        /// </summary>
-        public event RoutedPropertyChangedEventHandler<bool> DisplayAsHexChanged
-        {
-            add { AddHandler(DisplayAsHexChangedEvent, value); }
-            remove { RemoveHandler(DisplayAsHexChangedEvent, value); }
-        }
-
-        private void OnDisplayAsHexChanged(DependencyPropertyChangedEventArgs e)
-        {
-            RoutedPropertyChangedEventArgs<bool> re = new RoutedPropertyChangedEventArgs<bool>((bool)e.OldValue, (bool)e.NewValue, DisplayAsHexChangedEvent);
-            re.Source = this;
-            RaiseEvent(re);
-
-            UpdateUI();
-        }
-
-        /// <summary>
-        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while this is set to <c>true</c>, <c>AcceptExpressions</c> is ignored.
-        /// </summary>
-        /// <remarks>
-        /// Certain situations, particularly involving computer representations of data or memory, may benefit more with displaying numbers as hexadecimals rather than decimals.
-        /// With hexadecimals, the letters A-F are allowed along with 0-9, and the number "15" in decimal turns into "F" in hexadecimal. Please view online resources like
-        /// Wikipedia for more details.
-        /// <para/>
-        /// <see cref="ArithmeticParser"/> is currently not built to correctly handle hexadecimal values, and so math expressions cannot be entered, and will instead be treated
-        /// as an invalid value.
-        /// </remarks>
+        ///<summary>
+        /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.
+        ///</summary>
+        ///<remarks>
+        /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 2.
+        ///</remarks>
         [Category("Common")]
-        public bool DisplayAsHex
+        public int Decimals
         {
-            get => (bool)GetValue(DisplayAsHexProperty);
-            set => SetValue(DisplayAsHexProperty, value);
+            get => (int)GetValue(DecimalsProperty);
+            set => SetValue(DecimalsProperty, value);
         }
 
         #endregion
@@ -193,7 +167,7 @@ namespace SolidShineUi
         #endregion
 
         #region Template IO
-        
+
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -231,18 +205,23 @@ namespace SolidShineUi
 
         #region Base Functions
 
-        ///// <summary>
-        ///// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
-        ///// </summary>
-        //protected override void ValidateValue()
-        //{
-        //    int val = Value;
-        //    if (val < MinValue) val = MinValue;
-        //    if (val > MaxValue) val = MaxValue;
-        //    if (val != Value) Value = val;
+        /// <inheritdoc/>
+        protected override void ValidateValue()
+        {
+            base.ValidateValue();
 
-        //    base.ValidateValue();
-        //}
+            if (Decimals > 15) Decimals = 15;
+            if (Decimals < 0) Decimals = 0;
+
+            double oldVal = Value;
+            Value = Math.Round(Value, Decimals);
+
+            if (oldVal != Value)
+            {
+                // redo the underlying value updates again
+                base.ValidateValue();
+            }
+        }
 
         ///// <summary>
         ///// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
@@ -271,11 +250,9 @@ namespace SolidShineUi
         /// <inheritdoc/>
         protected override void UpdateUI()
         {
-            base.UpdateUI();
-
-            string digitDisplay = "";
-            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G"); }
-            string sVal = Value.ToString((DisplayAsHex ? "X" : "D") + digitDisplay);
+            string digitDisplay = "G";
+            if (MinimumDigitCount > 0) { digitDisplay = new string('0', MinimumDigitCount) + "." + new string('#', Decimals + 1); }
+            string sVal = Value.ToString(digitDisplay);
 
             if (txtValue == null) return; // this is not good, as it means that the template didn't apply, or the applied template's text box won't get the updated value
 
@@ -283,6 +260,8 @@ namespace SolidShineUi
             {
                 if (_updateBox) txtValue.Text = sVal;
             }
+
+            base.UpdateUI();
         }
 
         #endregion
@@ -299,34 +278,29 @@ namespace SolidShineUi
             }
 
             _updateBox = false;
-            if (DisplayAsHex)
+            if (double.TryParse(txtValue.Text, out _))
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out int newVal))
+                Value = Math.Round(double.Parse(txtValue.Text), Decimals);
+            }
+            else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
+            {
+                try
                 {
-                    Value = newVal;
+                    Value = Math.Round(ArithmeticParser.Evaluate(txtValue.Text), Decimals, MidpointRounding.AwayFromZero);
+                }
+                catch (FormatException)
+                {
+
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+
                 }
             }
             else
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out int newVal))
-                {
-                    Value = newVal;
-                }
-                else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
-                {
-                    try
-                    {
-                        Value = (int)Math.Round(ArithmeticParser.Evaluate(txtValue.Text), MidpointRounding.AwayFromZero);
-                    }
-                    catch (FormatException)
-                    {
-
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-
-                    }
-                }
+                // this is not valid
+                //currently do nothing
             }
             _updateBox = true;
         }

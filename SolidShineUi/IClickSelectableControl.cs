@@ -90,34 +90,7 @@ namespace SolidShineUi
     public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
 
     /// <summary>
-    /// Indicates which method or source triggered the change in selection.
-    /// </summary>
-    public enum SelectionChangeTrigger
-    {
-        /// <summary>
-        /// The selection was changed due to the control itself being clicked.
-        /// </summary>
-        ControlClick = 0,
-        /// <summary>
-        /// The selection was changed due to a checkbox in the control being clicked.
-        /// </summary>
-        CheckBox = 1,
-        /// <summary>
-        /// The selection was changed due to an action by the parent object containing the control.
-        /// </summary>
-        Parent = 2,
-        /// <summary>
-        /// The selection was changed because the <see cref="SelectableUserControl.CanSelect"/> property (or similar property) was changed.
-        /// </summary>
-        DisableSelecting = 3,
-        /// <summary>
-        /// The selection was changed via directly setting the value in code, or via a different undefined method.
-        /// </summary>
-        CodeUnknown = 9,
-    }
-
-    /// <summary>
-    /// The event arguments for the IsSelectedChanged event of a <see cref="IClickSelectableControl"/>.
+    /// The event arguments for the IsSelectedChanged event of the SelectableUserControl.
     /// </summary>
     public class ItemSelectionChangedEventArgs : RoutedEventArgs
     {
@@ -164,6 +137,33 @@ namespace SolidShineUi
 #else
         public object TriggerSource { get; private set; }
 #endif
+    }
+
+    /// <summary>
+    /// Indicates which method or source triggered the change in selection.
+    /// </summary>
+    public enum SelectionChangeTrigger
+    {
+        /// <summary>
+        /// The selection was changed due to the control itself being clicked.
+        /// </summary>
+        ControlClick = 0,
+        /// <summary>
+        /// The selection was changed due to a checkbox in the control being clicked.
+        /// </summary>
+        CheckBox = 1,
+        /// <summary>
+        /// The selection was changed due to an action by the parent object containing the control.
+        /// </summary>
+        Parent = 2,
+        /// <summary>
+        /// The selection was changed because the <see cref="SelectableUserControl.CanSelect"/> property (or similar property) was changed.
+        /// </summary>
+        DisableSelecting = 3,
+        /// <summary>
+        /// The selection was changed via directly setting the value in code, or via a different undefined method.
+        /// </summary>
+        CodeUnknown = 9,
     }
 
 }

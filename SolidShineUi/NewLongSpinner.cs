@@ -8,24 +8,25 @@ using System.Windows.Input;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed, 
+    /// but larger numbers than what <see cref="IntegerSpinner"/> supports are allowed here (since numbers are stored as a <c>long</c>).
     /// </summary>
-    public class IntegerSpinner : NumericSpinnerBase<int>
+    public class LongSpinner : NumericSpinnerBase<long>
     {
-        static IntegerSpinner()
+        static LongSpinner()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(IntegerSpinner), new FrameworkPropertyMetadata(typeof(IntegerSpinner)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(LongSpinner), new FrameworkPropertyMetadata(typeof(LongSpinner)));
         }
 
         /// <summary>
-        /// Create a NewIntegerSpinner.
+        /// Create a NewLongSpinner.
         /// </summary>
-        public IntegerSpinner()
+        public LongSpinner()
         {
             // set up ValidateValue to run whenever these properties are updated (Value, MinValue, MaxValue)
-            AddPropertyChangedTrigger(ValueProperty, typeof(IntegerSpinner));
-            AddPropertyChangedTrigger(MinValueProperty, typeof(IntegerSpinner));
-            AddPropertyChangedTrigger(MaxValueProperty, typeof(IntegerSpinner));
+            AddPropertyChangedTrigger(ValueProperty, typeof(LongSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(LongSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(LongSpinner));
 
             CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
             CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
@@ -39,20 +40,20 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(int), typeof(IntegerSpinner),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            "Value", typeof(long), typeof(LongSpinner),
+            new FrameworkPropertyMetadata(0L, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <inheritdoc/>
         [Category("Common")]
-        public override int Value
+        public override long Value
         {
-            get => (int)GetValue(ValueProperty);
+            get => (long)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is IntegerSpinner s)
+            if (d is LongSpinner s)
             {
                 s.UpdateValue(e);
             }
@@ -66,13 +67,13 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(int), typeof(IntegerSpinner), new PropertyMetadata(1));
+            "Step", typeof(long), typeof(LongSpinner), new PropertyMetadata(1L));
 
         /// <inheritdoc/>
         [Category("Common")]
-        public override int Step
+        public override long Step
         {
-            get => (int)GetValue(StepProperty);
+            get => (long)GetValue(StepProperty);
             set => SetValue(StepProperty, value);
         }
 
@@ -84,14 +85,14 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(int), typeof(IntegerSpinner),
-            new PropertyMetadata(int.MinValue, (d, e) => d.PerformAs<IntegerSpinner>(i => i.OnMinValueChanged(e))));
+            "MinValue", typeof(long), typeof(LongSpinner),
+            new PropertyMetadata(long.MinValue, (d, e) => d.PerformAs<LongSpinner>(i => i.OnMinValueChanged(e))));
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         [Category("Common")]
-        public override int MinValue
+        public override long MinValue
         {
-            get { return (int)GetValue(MinValueProperty); }
+            get { return (long)GetValue(MinValueProperty); }
             set
             {
                 if (value > MaxValue) { MaxValue = value; }
@@ -113,18 +114,17 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(int), typeof(IntegerSpinner),
-            new PropertyMetadata(int.MaxValue, (d, e) => d.PerformAs<IntegerSpinner>(s => s.OnMaxValueChanged(e))));
+            "MaxValue", typeof(long), typeof(LongSpinner),
+            new PropertyMetadata(long.MaxValue, (d, e) => d.PerformAs<LongSpinner>(s => s.OnMaxValueChanged(e))));
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         [Category("Common")]
-        public override int MaxValue
+        public override long MaxValue
         {
-            get { return (int)GetValue(MaxValueProperty); }
+            get { return (long)GetValue(MaxValueProperty); }
             set
             {
                 if (value < MinValue) { value = MinValue; }
-
                 SetValue(MaxValueProperty, value);
             }
         }
@@ -143,14 +143,14 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="DisplayAsHex"/>. Please see the related property for details.
         /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
-            "DisplayAsHex", typeof(bool), typeof(IntegerSpinner),
-            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<IntegerSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
+            "DisplayAsHex", typeof(bool), typeof(LongSpinner),
+            new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<LongSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
 
         /// <summary>
         /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
         /// </summary>
         public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
-            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(IntegerSpinner));
+            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(LongSpinner));
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.
@@ -193,7 +193,7 @@ namespace SolidShineUi
         #endregion
 
         #region Template IO
-        
+
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -236,7 +236,7 @@ namespace SolidShineUi
         ///// </summary>
         //protected override void ValidateValue()
         //{
-        //    int val = Value;
+        //    long val = Value;
         //    if (val < MinValue) val = MinValue;
         //    if (val > MaxValue) val = MaxValue;
         //    if (val != Value) Value = val;
@@ -267,6 +267,21 @@ namespace SolidShineUi
             if (Value <= MaxValue) Value += Step;
             else Value = MaxValue;
         }
+
+        ///// <inheritdoc/>
+        //protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
+        //{
+        //    //int value = Value;
+
+        //    if (!advanceTimer.Enabled)
+        //    {
+        //        ValidateValue();
+
+        //        IsAtMinValue = Value == MinValue;
+        //        IsAtMaxValue = Value == MaxValue;
+        //    }
+        //    base.UpdateValue(e);
+        //}
 
         /// <inheritdoc/>
         protected override void UpdateUI()
@@ -301,14 +316,14 @@ namespace SolidShineUi
             _updateBox = false;
             if (DisplayAsHex)
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out int newVal))
+                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out long newVal))
                 {
                     Value = newVal;
                 }
             }
             else
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out int newVal))
+                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out long newVal))
                 {
                     Value = newVal;
                 }
