@@ -12,10 +12,70 @@ using System.Windows.Input;
 
 namespace SolidShineUi.Utils
 {
+
     /// <summary>
-    /// The base class for Solid Shine UI's spinner controls (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
+    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="NewIntegerSpinner"/>).
     /// </summary>
-    public class NewSpinnerBase : Control
+    /// <typeparam name="T">The data type supported by the spinner.</typeparam>
+    /// <remarks>
+    /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
+    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="NewSpinnerBase"/>.
+    /// </remarks>
+    public abstract class NumericSpinnerBase<T> : NewSpinnerBase where T : IEquatable<T>, IComparable<T>
+    {
+        /// <summary>
+        /// Get or set the value of the spinner.
+        /// </summary>
+        public abstract T Value { get; set; }
+        
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MinValue { get; set; }
+
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MaxValue { get; set; }
+
+        /// <summary>
+        /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
+        /// </summary>
+        public abstract T Step { get; set; }
+
+        /// <summary>
+        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        /// </summary>
+        protected override void ValidateValue()
+        {
+            //T val = Value;
+            //if (val < MinValue) val = MinValue;
+            //if (val > MaxValue) val = MaxValue;
+            //if (!val.Equals(Value)) Value = val;
+
+            base.ValidateValue();
+        }
+
+        /// <summary>
+        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        /// </summary>
+        protected override void ValidateMinMax()
+        {
+            //if (MinValue > MaxValue) MinValue = MaxValue;
+            //if (MaxValue < MinValue) MaxValue = MinValue;
+            base.ValidateMinMax();
+        }
+    }
+
+    /// <summary>
+    /// The base class for Solid Shine UI's spinner controls (such as <see cref="NewIntegerSpinner"/> and <see cref="DoubleSpinner"/>).
+    /// </summary>
+    /// <remarks>
+    /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
+    /// </remarks>
+    public abstract class NewSpinnerBase : Control
     {
         static NewSpinnerBase()
         {
@@ -738,21 +798,16 @@ namespace SolidShineUi.Utils
             RaiseValueChanged(this, e);
         }
 
+
         /// <summary>
         /// Increase the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
         /// </summary>
-        protected virtual void DoStepUp()
-        {
-
-        }
+        protected abstract void DoStepUp();
 
         /// <summary>
         /// Decrease the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
         /// </summary>
-        protected virtual void DoStepDown()
-        {
-
-        }
+        protected abstract void DoStepDown();
 
         #endregion
 

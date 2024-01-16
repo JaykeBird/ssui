@@ -1,10 +1,6 @@
 ﻿using SolidShineUi.Utils;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,9 +8,9 @@ using System.Windows.Input;
 namespace SolidShineUi
 {
     /// <summary>
-    /// An updated version of <see cref="IntegerSpinner"/>, built using a new, custom templated control.
+    /// An updated version of <see cref="IntegerSpinner"/>, built as a templated control.
     /// </summary>
-    public class NewIntegerSpinner : NewSpinnerBase
+    public class NewIntegerSpinner : NumericSpinnerBase<int>
     {
         static NewIntegerSpinner()
         {
@@ -46,11 +42,9 @@ namespace SolidShineUi
             "Value", typeof(int), typeof(NewIntegerSpinner),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
-        /// <summary>
-        /// Get or set the value of the spinner.
-        /// </summary>
+        /// <inheritdoc/>
         [Category("Common")]
-        public int Value
+        public override int Value
         {
             get => (int)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
@@ -74,11 +68,9 @@ namespace SolidShineUi
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof(int), typeof(NewIntegerSpinner), new PropertyMetadata(1));
 
-        ///<summary>
-        /// Get or set how much to change the value by when you press the up or down button.
-        ///</summary>
+        /// <inheritdoc/>
         [Category("Common")]
-        public int Step
+        public override int Step
         {
             get => (int)GetValue(StepProperty);
             set => SetValue(StepProperty, value);
@@ -95,11 +87,9 @@ namespace SolidShineUi
             "MinValue", typeof(int), typeof(NewIntegerSpinner),
             new PropertyMetadata(int.MinValue, (d, e) => d.PerformAs<NewIntegerSpinner>(i => i.OnMinValueChanged(e))));
 
-        ///<summary>
-        /// Get or set the minimum value allowed for this spinner (inclusive).
-        ///</summary>
+        ///<inheritdoc/>
         [Category("Common")]
-        public int MinValue
+        public override int MinValue
         {
             get { return (int)GetValue(MinValueProperty); }
             set
@@ -126,11 +116,9 @@ namespace SolidShineUi
             "MaxValue", typeof(int), typeof(NewIntegerSpinner),
             new PropertyMetadata(int.MaxValue, (d, e) => d.PerformAs<NewIntegerSpinner>(s => s.OnMaxValueChanged(e))));
 
-        ///<summary>
-        /// Get or set the maximum value allowed for this spinner (inclusive).
-        ///</summary>
+        ///<inheritdoc/>
         [Category("Common")]
-        public int MaxValue
+        public override int MaxValue
         {
             get { return (int)GetValue(MaxValueProperty); }
             set
@@ -271,7 +259,6 @@ namespace SolidShineUi
         {
             if (Value >= MinValue) Value -= Step;
             else Value = MinValue;
-            base.DoStepDown();
         }
 
         /// <inheritdoc/>
@@ -279,7 +266,6 @@ namespace SolidShineUi
         {
             if (Value <= MaxValue) Value += Step;
             else Value = MaxValue;
-            base.DoStepUp();
         }
 
         /// <inheritdoc/>
