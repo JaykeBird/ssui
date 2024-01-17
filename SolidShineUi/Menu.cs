@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using static SolidShineUi.ColorsHelper;
 
 namespace SolidShineUi
 {
@@ -208,31 +207,35 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for a property. See the related property for details.</summary>
         public static readonly DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
             "MenuBackground", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>The backing dependency property for a property. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for a property. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for a property. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightSubitemBrushProperty = DependencyProperty.Register(
             "HighlightSubitemBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for a property. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for a property. See the related property for details.</summary>
         public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
             "CheckedBrush", typeof(Brush), typeof(Menu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     }
 }

@@ -1,0 +1,125 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:flat="using:SolidShineUi" >
+	<!-- Add Resources Here -->
+	<Design.PreviewWith>
+		<Border Margin="30,12">
+			<flat:Menu HighlightBrush="LightBlue" >
+				<flat:Menu.Items>
+					<MenuItem Header="Files" >
+						<MenuItem Header="What" />
+						<MenuItem Header="Wow!" />
+						<Separator />
+						<MenuItem Header="Menu2" />
+					</MenuItem>
+					<MenuItem Header="Hello!" />
+					<MenuItem Header="Fhqwhgads" >
+						<MenuItem Header="Everybody to the Limit" />
+						<MenuItem Header="Everybody Come On" />
+						<MenuItem Header="Fhqwhgads" />
+					</MenuItem>
+					<MenuItem Header="Okay">
+						RIP Trevor the Vampire
+					</MenuItem>
+					<MenuItem Header="Help">
+						<MenuItem Header="Help Topics" />
+						<MenuItem Header="Online Help" />
+						<MenuItem Header="Keyboard Shortcuts" />
+						<Separator />
+						<MenuItem Header="About..." />
+					</MenuItem>
+				</flat:Menu.Items>
+			</flat:Menu>
+		</Border>
+	</Design.PreviewWith>
+
+	<ControlTheme x:Key="{x:Type flat:Menu}" TargetType="flat:Menu">
+		<ControlTheme.Resources>
+			<Style x:Key="SeparatorStyle" x:DataType="Separator" >
+				<Setter Property="Template">
+					<ControlTemplate TargetType="Separator">
+						<Border BorderThickness="1" Margin="25,0,0,0" BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
+						<!--<Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="25,0,0,0">
+							<Border.Style>
+								<Style TargetType="Border">
+									<Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+									<Style.Triggers>
+										<Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
+											<Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</Border.Style>
+						</Border>-->
+					</ControlTemplate>
+				</Setter>
+			</Style>
+		</ControlTheme.Resources>
+
+		<Setter Property="ItemContainerTheme">
+			<ControlTheme TargetType="MenuItem">
+				<!--<Setter Property="Background" Value="{Binding $parent[flat:Menu].Background}" />
+				<Setter Property="Foreground" Value="{Binding $parent[flat:Menu].Foreground}" />-->
+				<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Background}" />
+				<Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}" />
+				<!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
+				<!--<Setter Property="Padding" Value="{DynamicResource MenuBarItemPadding}" />-->
+				<Setter Property="Template">
+					<ControlTemplate>
+						<Border Name="PART_LayoutRoot"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								CornerRadius="{TemplateBinding CornerRadius}">
+							<Panel>
+								<ContentPresenter Name="PART_HeaderPresenter"
+												  Content="{TemplateBinding Header}"
+												  ContentTemplate="{TemplateBinding HeaderTemplate}"
+												  VerticalAlignment="Center"
+												  HorizontalAlignment="Stretch"
+												  RecognizesAccessKey="True"
+												  Margin="{TemplateBinding Padding}"/>
+								<Popup Name="PART_Popup"
+									   WindowManagerAddShadowHint="False"
+									   MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+									   IsLightDismissEnabled="True"
+									   IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+									   Placement="BottomEdgeAlignedLeft"
+									   OverlayInputPassThroughElement="{Binding $parent[Menu]}">
+									<Border Background="{DynamicResource MenuFlyoutPresenterBackground}"
+											BorderBrush="{DynamicResource MenuFlyoutPresenterBorderBrush}"
+											BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
+											Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
+											MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+											MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+											HorizontalAlignment="Stretch"
+											CornerRadius="{DynamicResource OverlayCornerRadius}">
+										<ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+											<ItemsPresenter Name="PART_ItemsPresenter"
+															ItemsPanel="{TemplateBinding ItemsPanel}"
+															Margin="{DynamicResource MenuFlyoutScrollerMargin}"
+															Grid.IsSharedSizeScope="True" />
+										</ScrollViewer>
+									</Border>
+								</Popup>
+							</Panel>
+						</Border>
+					</ControlTemplate>
+				</Setter>
+
+				<Style Selector="^:pointerover">
+					<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBrush}" />
+				</Style>
+			</ControlTheme>
+		</Setter>
+		
+		<Setter Property="Template">
+			<ControlTemplate TargetType="{x:Type flat:Menu}">
+				<Grid Background="{TemplateBinding Background}">
+					<ItemsPresenter Margin="2,0,0,0" x:Name="mnu_Il" />
+				</Grid>
+			</ControlTemplate>
+		</Setter>
+	</ControlTheme>
+	
+</ResourceDictionary>

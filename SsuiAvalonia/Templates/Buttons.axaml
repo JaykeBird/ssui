@@ -3,18 +3,18 @@
 					xmlns:flat="using:SolidShineUi" >
     <!-- Add Resources Here -->
 	<Design.PreviewWith>
-		<StackPanel Margin="7">
-			<flat:FlatButton Background="Orange" BorderBrush="Black" BorderThickness="1" BorderHighlightBrush="Green" SelectOnClick="True" SelectedBrush="LightBlue" >
-				<TextBlock Foreground="Red" >what</TextBlock>
+		<StackPanel Margin="7" >
+			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" BorderThickness="1" BorderHighlightBrush="Green" SelectOnClick="True" SelectedBrush="LightBlue" >
+				<TextBlock >Button1</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="Orange" BorderBrush="Black" BorderThickness="1" IsEnabled="False" >
-				<TextBlock Foreground="Red" >what</TextBlock>
+			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" BorderThickness="1" IsEnabled="False" DisabledBrush="WhiteSmoke" >
+				<TextBlock >Button2</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="Orange" BorderBrush="Black" BorderThickness="1" SelectOnClick="True" SelectedBrush="LightBlue" TransparentBack="True" BorderHighlightBrush="Green" >
-				<TextBlock Foreground="Red" >what</TextBlock>
+			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" BorderThickness="1" SelectOnClick="True" SelectedBrush="LightBlue" TransparentBack="True" BorderHighlightBrush="Green" >
+				<TextBlock >Button3</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="Orange" BorderBrush="Black" IsEnabled="False" BorderThickness="1" TransparentBack="True" BorderHighlightBrush="Green" >
-				<TextBlock Foreground="Red" >what</TextBlock>
+			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" IsEnabled="False" BorderThickness="1" TransparentBack="True" BorderHighlightBrush="Green" >
+				<TextBlock >Button4</TextBlock>
 			</flat:FlatButton>
 		</StackPanel>
 	</Design.PreviewWith>
