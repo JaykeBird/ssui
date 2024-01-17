@@ -205,7 +205,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> DisabledBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(DisabledBrush), Colors.Gray.ToBrush());
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(DisabledBrush), Colors.LightGray.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the border around the control, when it is disabled.

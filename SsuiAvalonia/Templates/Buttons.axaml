@@ -4,13 +4,13 @@
     <!-- Add Resources Here -->
 	<Design.PreviewWith>
 		<StackPanel Margin="7" >
-			<flat:FlatButton SelectOnClick="True" SelectedBrush="LightBlue" >
+			<flat:FlatButton SelectOnClick="True" >
 				<TextBlock >Button1</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" IsEnabled="False" DisabledBrush="WhiteSmoke" >
+			<flat:FlatButton Background="PaleGoldenrod" IsEnabled="False" >
 				<TextBlock >Button2</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" SelectOnClick="True" SelectedBrush="LightBlue" TransparentBack="True" >
+			<flat:FlatButton Background="PaleGoldenrod" SelectOnClick="True" TransparentBack="True" >
 				<TextBlock >Button3</TextBlock>
 			</flat:FlatButton>
 			<flat:FlatButton Background="PaleGoldenrod" IsEnabled="False" TransparentBack="True" >

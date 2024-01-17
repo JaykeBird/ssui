@@ -15,11 +15,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid ColumnDefinitions="200,1*" RowDefinitions="30,Auto,200,1*" >
-        
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Welcome to Avalonia!" />
+    <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,20,40,200,1*" >
 
-        <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" >
+        <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" >
             <MenuItem Header="File">
                 <MenuItem Header="New" />
                 <MenuItem Header="Open" />
@@ -61,9 +59,13 @@
                 <MenuItem Header="About..." />
             </MenuItem>
         </flat:Menu>
+
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="5,0" Text="Welcome to Avalonia!" />
         
         <flat:FlatButton x:Name="btnMain" Grid.Column="0" Grid.Row="2" Height="24" VerticalAlignment="Center" Margin="10,0" >
             <TextBlock Text="HWHAT" />
         </flat:FlatButton>
+        <flat:FlatButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" IsEnabled="False" Height="24" 
+                         VerticalAlignment="Center" Margin="10,0" Content="D" />
     </Grid>
 </Window>
