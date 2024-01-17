@@ -61,6 +61,11 @@ namespace SolidShineUi
         public static readonly StyledProperty<bool> UseAccentColorsProperty
             = AvaloniaProperty.Register<FlatButton, bool>(nameof(UseAccentColors), false);
 
+        /// <summary>
+        /// Raised when the <see cref="ColorScheme"/> property has changed.
+        /// </summary>
+        public event EventHandler<AvaloniaPropertyChangedEventArgs>? ColorSchemeChanged;
+
         #region Apply Color Scheme
 
         bool _internalAction = true;
@@ -108,45 +113,7 @@ namespace SolidShineUi
                 DisabledBrush = cs.BackgroundColor.ToBrush();
                 Foreground = cs.ForegroundColor.ToBrush();
                 ClickBrush = cs.ThirdHighlightColor.ToBrush();
-
-                // this should be covered via the :tb pseudo-class
-                //if (TransparentBack)
-                //{
-                //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-                //}
-                //else
-                //{
-                //    BorderBrush = cs.BorderColor.ToBrush();
-                //}
             }
-            //else if (TransparentBack)
-            //{
-            //    Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
-            //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-
-            //    if (UseAccentColors)
-            //    {
-            //        HighlightBrush = cs.AccentSecondHighlightColor.ToBrush();
-            //        SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
-            //        BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
-            //        BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
-            //        BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-            //        DisabledBrush = cs.LightDisabledColor.ToBrush();
-            //        Foreground = cs.ForegroundColor.ToBrush();
-            //        ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
-            //    }
-            //    else
-            //    {
-            //        HighlightBrush = cs.SecondHighlightColor.ToBrush();
-            //        DisabledBrush = cs.LightDisabledColor.ToBrush();
-            //        BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-            //        SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-            //        BorderHighlightBrush = cs.HighlightColor.ToBrush();
-            //        BorderSelectedBrush = cs.SelectionColor.ToBrush();
-            //        Foreground = cs.ForegroundColor.ToBrush();
-            //        ClickBrush = cs.ThirdHighlightColor.ToBrush();
-            //    }
-            //}
             else
             {
                 if (UseAccentColors)
@@ -309,6 +276,7 @@ namespace SolidShineUi
             switch (change.Property.Name)
             {
                 case nameof(UseAccentColors):
+                    ColorSchemeChanged?.Invoke(this, change);
                     ApplyColorScheme(ColorScheme, UseAccentColors);
                     break;
                 case nameof(ColorScheme):

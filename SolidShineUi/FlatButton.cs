@@ -761,8 +761,6 @@ namespace SolidShineUi
 
         #endregion
 
-        #endregion
-
         #region IsDefault
 
         // OnDefault code adapted from .NET Core WPF repository
