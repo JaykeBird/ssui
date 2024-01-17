@@ -29,7 +29,12 @@ namespace SolidShineUi
         /// </summary>
         public FlatButton()
         {
-            Padding = new Thickness(5, 0, 5, 0);
+            // applied these in the control template
+            //Padding = new Thickness(5, 0, 5, 0);
+            //Background = Colors.White.ToBrush();
+            //BorderBrush = Colors.Black.ToBrush();
+            //BorderThickness = new Thickness(1);
+            //CornerRadius = new CornerRadius(0);
         }
 
         #region Appearance
@@ -262,7 +267,7 @@ namespace SolidShineUi
 
         ///// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         //public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
-        //    = AvaloniaProperty.Register<FlatButton, CornerRadius>(nameof(CornerRadius), new CornerRadius(1));
+        //    = AvaloniaProperty.Register<FlatButton, CornerRadius>(nameof(CornerRadius), new CornerRadius(0));
 
         #endregion
 

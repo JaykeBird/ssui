@@ -2,8 +2,68 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" Width="400" Height="350"
+        xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi.Avalonia"
+        xmlns:ssut="clr-namespace:SolidShineUi.Utils;assembly=SolidShineUi.Avalonia"
         x:Class="SsuiSampleAvalonia.MainWindow"
         Title="SsuiSampleAvalonia">
-    Welcome to Avalonia!
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
+                <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid ColumnDefinitions="200,1*" RowDefinitions="30,Auto,200,1*" >
+        
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Welcome to Avalonia!" />
+
+        <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" >
+            <MenuItem Header="File">
+                <MenuItem Header="New" />
+                <MenuItem Header="Open" />
+                <Separator />
+                <MenuItem Header="Save" />
+                <MenuItem Header="Save as" >
+                    <MenuItem Header="Save a copy..." />
+                    <MenuItem Header="Change file format..." />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Print..." />
+                <MenuItem Header="Print Preview" />
+                <Separator />
+                <MenuItem Header="Close" />
+                <Separator />
+                <MenuItem Header="Exit" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy" />
+                <MenuItem Header="Cut" />
+                <MenuItem Header="Paste" />
+                <Separator />
+                <MenuItem Header="Select All" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Toolbar" IsSelected="True" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Resources..." />
+                <Separator />
+                <MenuItem Header="Options..." />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Help Topics" />
+                <MenuItem Header="Online Help" />
+                <Separator />
+                <MenuItem Header="Contact Us" />
+                <Separator />
+                <MenuItem Header="About..." />
+            </MenuItem>
+        </flat:Menu>
+        
+        <flat:FlatButton x:Name="btnMain" Grid.Column="0" Grid.Row="2" Height="24" VerticalAlignment="Center" Margin="10,0" >
+            <TextBlock Text="HWHAT" />
+        </flat:FlatButton>
+    </Grid>
 </Window>

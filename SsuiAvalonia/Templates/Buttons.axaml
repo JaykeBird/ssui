@@ -1,19 +1,19 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:flat="using:SolidShineUi" >
+					xmlns:flat="clr-namespace:SolidShineUi" >
     <!-- Add Resources Here -->
 	<Design.PreviewWith>
 		<StackPanel Margin="7" >
-			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" BorderThickness="1" BorderHighlightBrush="Green" SelectOnClick="True" SelectedBrush="LightBlue" >
+			<flat:FlatButton SelectOnClick="True" SelectedBrush="LightBlue" >
 				<TextBlock >Button1</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" BorderThickness="1" IsEnabled="False" DisabledBrush="WhiteSmoke" >
+			<flat:FlatButton Background="PaleGoldenrod" IsEnabled="False" DisabledBrush="WhiteSmoke" >
 				<TextBlock >Button2</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" BorderThickness="1" SelectOnClick="True" SelectedBrush="LightBlue" TransparentBack="True" BorderHighlightBrush="Green" >
+			<flat:FlatButton Background="PaleGoldenrod" SelectOnClick="True" SelectedBrush="LightBlue" TransparentBack="True" >
 				<TextBlock >Button3</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" BorderBrush="Black" IsEnabled="False" BorderThickness="1" TransparentBack="True" BorderHighlightBrush="Green" >
+			<flat:FlatButton Background="PaleGoldenrod" IsEnabled="False" TransparentBack="True" >
 				<TextBlock >Button4</TextBlock>
 			</flat:FlatButton>
 		</StackPanel>
@@ -22,6 +22,13 @@
 	<ControlTheme x:Key="{x:Type flat:FlatButton}" TargetType="flat:FlatButton">
 		<Setter Property="Focusable" Value="True" />
 		<Setter Property="MinHeight" Value="24" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="5,0,5,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="Template">
 			<ControlTemplate TargetType="{x:Type flat:FlatButton}">
 				<Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"

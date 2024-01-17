@@ -1,22 +1,20 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using SolidShineUi;
 
 namespace SsuiSampleAvalonia
 {
     public partial class MainWindow : Window
     {
+        ColorScheme cs = new ColorScheme(Avalonia.Media.Colors.Sienna);
+
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-        }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            btnMain.ColorScheme = cs;
+            mnuMain.ColorScheme = cs;
         }
     }
 }
