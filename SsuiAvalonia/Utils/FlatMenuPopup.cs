@@ -2,81 +2,19 @@
 using Avalonia;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel;
+using Avalonia.Controls.Primitives;
 
-namespace SolidShineUi
+namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// A menu control that can display and organize commands within various drop-down elements. This differs from the WPF menu with a visual style that matches other Solid Shine UI controls.
+    /// A helper class for <see cref="Menu"/>, to pass properties down to the menus and menu items in the menu bar.
     /// </summary>
-    public class Menu : Avalonia.Controls.Menu
+    public class FlatMenuPopup : Popup
     {
-
-        #region ColorScheme
-
-        /// <summary>
-        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
-        /// </summary>
-        [Category("Appearance")]
-        public ColorScheme ColorScheme { get => GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
-            = AvaloniaProperty.Register<Menu, ColorScheme>(nameof(ColorScheme), new ColorScheme());
-
-        /// <inheritdoc/>
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            if (change.Property.Name == nameof(ColorScheme))
-            {
-                ColorSchemeChanged?.Invoke(this, change);
-            }
-
-            base.OnPropertyChanged(change);
-        }
-
-        /// <summary>
-        /// Raised when the <see cref="ColorScheme"/> property has changed.
-        /// </summary>
-        public event EventHandler<AvaloniaPropertyChangedEventArgs>? ColorSchemeChanged;
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply.</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-
-            Background = cs.MainColor.ToBrush();
-            MenuBackground = cs.LightBackgroundColor.ToBrush();
-            DisabledBrush = cs.DarkDisabledColor.ToBrush();
-            BorderBrush = cs.BorderColor.ToBrush();
-            HighlightBrush = cs.ThirdHighlightColor.ToBrush();
-            HighlightSubitemBrush = cs.ThirdHighlightColor.ToBrush();
-            CheckedBrush = cs.SecondaryColor.ToBrush();
-            Foreground = cs.ForegroundColor.ToBrush();
-
-            if (cs.IsHighContrast)
-            {
-                DisabledBrush = cs.LightDisabledColor.ToBrush();
-                CheckedBrush = cs.HighlightColor.ToBrush();
-            }
-            else if (cs.MenusUseAccent)
-            {
-                HighlightSubitemBrush = cs.AccentThirdHighlightColor.ToBrush();
-                CheckedBrush = cs.AccentSecondaryColor.ToBrush();
-            }
-        }
-
-        #endregion
 
         #region Brushes
 
@@ -88,7 +26,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="MenuBackground"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> MenuBackgroundProperty
-            = AvaloniaProperty.Register<Menu, IBrush?>(nameof(MenuBackground), new SolidColorBrush(Colors.White));
+            = AvaloniaProperty.Register<FlatMenuPopup, IBrush?>(nameof(MenuBackground), new SolidColorBrush(Colors.White));
 
         /// <summary>
         /// Get or set the brush used for the foreground of menu items that are disabled.
@@ -98,7 +36,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> DisabledBrushProperty
-            = AvaloniaProperty.Register<Menu, IBrush?>(nameof(DisabledBrush), new SolidColorBrush(Colors.Gray));
+            = AvaloniaProperty.Register<FlatMenuPopup, IBrush?>(nameof(DisabledBrush), new SolidColorBrush(Colors.Gray));
 
         /// <summary>
         /// Get or set the brush used for the border of the menu's drop-down area.
@@ -108,7 +46,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="PopupBorderBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> PopupBorderBrushProperty
-            = AvaloniaProperty.Register<Menu, IBrush?>(nameof(PopupBorderBrush), new SolidColorBrush(Colors.Gray));
+            = AvaloniaProperty.Register<FlatMenuPopup, IBrush?>(nameof(PopupBorderBrush), new SolidColorBrush(Colors.Gray));
 
         /// <summary>
         /// Get or set the brush used for menu items that aren't top-level on the menu bar, when the mouse is over them or they have keyboard focus.
@@ -118,7 +56,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="HighlightSubitemBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightSubitemBrushProperty
-            = AvaloniaProperty.Register<Menu, IBrush?>(nameof(HighlightSubitemBrush), new SolidColorBrush(Colors.LightGray));
+            = AvaloniaProperty.Register<FlatMenuPopup, IBrush?>(nameof(HighlightSubitemBrush), new SolidColorBrush(Colors.LightGray));
 
         /// <summary>
         /// Get or set the brush used for the top-level menu items in the menu bar, when the mouse is over them or they have keyboard focus.
@@ -128,7 +66,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightBrushProperty
-            = AvaloniaProperty.Register<Menu, IBrush?>(nameof(HighlightBrush), new SolidColorBrush(Colors.LightGray));
+            = AvaloniaProperty.Register<FlatMenuPopup, IBrush?>(nameof(HighlightBrush), new SolidColorBrush(Colors.LightGray));
 
         /// <summary>
         /// Get or set the brush to use for the check highlight for checked menu items.
@@ -138,7 +76,13 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="CheckedBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> CheckedBrushProperty
-            = AvaloniaProperty.Register<Menu, IBrush?>(nameof(CheckedBrush), new SolidColorBrush(Colors.LightGray));
+            = AvaloniaProperty.Register<FlatMenuPopup, IBrush?>(nameof(CheckedBrush), new SolidColorBrush(Colors.LightGray));
+
+        public IBrush? Foreground { get => GetValue(ForegroundProperty); set => SetValue(ForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="Foreground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> ForegroundProperty
+            = AvaloniaProperty.Register<FlatMenuPopup, IBrush?>(nameof(Foreground), new SolidColorBrush(Colors.Black));
 
         #endregion
 
@@ -149,8 +93,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="MenuCornerRadius"/>. See the related property for details.</summary>
         public static readonly StyledProperty<CornerRadius> MenuCornerRadiusProperty
-            = AvaloniaProperty.Register<Menu, CornerRadius>(nameof(MenuCornerRadius), new CornerRadius(0));
-
+            = AvaloniaProperty.Register<FlatMenuPopup, CornerRadius>(nameof(MenuCornerRadius), new CornerRadius(0));
 
     }
 }
