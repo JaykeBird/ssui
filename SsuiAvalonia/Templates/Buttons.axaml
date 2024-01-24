@@ -7,13 +7,13 @@
 			<flat:FlatButton SelectOnClick="True" >
 				<TextBlock >Button1</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" IsEnabled="False" >
+			<flat:FlatButton IsEnabled="False" >
 				<TextBlock >Button2</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" SelectOnClick="True" TransparentBack="True" >
+			<flat:FlatButton SelectOnClick="True" TransparentBack="True" >
 				<TextBlock >Button3</TextBlock>
 			</flat:FlatButton>
-			<flat:FlatButton Background="PaleGoldenrod" IsEnabled="False" TransparentBack="True" >
+			<flat:FlatButton IsEnabled="False" TransparentBack="True" >
 				<TextBlock >Button4</TextBlock>
 			</flat:FlatButton>
 		</StackPanel>
@@ -57,6 +57,10 @@
 			<Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectedBrush}" />
 			<Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness}" />
 		</Style>
+
+        <!--<Style Selector="^[IsSelected=true][TransparentBack=true] /template/ Border#btn_Border" >
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
+        </Style>-->
 
 		<Style Selector="^:disabled">
 			<Setter Property="Focusable" Value="False" />
