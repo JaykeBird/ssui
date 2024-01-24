@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SsuiSample"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -39,11 +40,18 @@
                     MinValue="0" MaxValue="100" Value="{Binding Value, ElementName=slider, Mode=TwoWay}" Step="1" />
                 <Slider x:Name="slider" Margin="110,258,10,0" VerticalAlignment="Top" TickPlacement="Both" Value="0" Minimum="0" Maximum="100" TickFrequency="5"
                     Foreground="{Binding ColorScheme.BorderColor, Converter={StaticResource ctb}, ElementName=userControl}" />
-                <flat:IntegerSpinner x:Name="nud6" HorizontalAlignment="Left" Margin="413,198,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:IntegerSpinner x:Name="nud6" HorizontalAlignment="Left" Margin="434,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     MinValue="0" MaxValue="100" Step="1" IsEnabled="False" />
-                <TextBlock HorizontalAlignment="Left" Margin="413,177,0,0" Text="Disabled Spinner" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="434,59,0,0" Text="Disabled Spinner" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="304,118,0,0" Text="Double Spinner - Limited to 7 Decimal Points" VerticalAlignment="Top"/>
                 <Border BorderBrush="Black" x:Name="brdrColor" BorderThickness="1" HorizontalAlignment="Left" Height="24" Margin="343,80,0,0" VerticalAlignment="Top" Width="24"/>
+                <flat:StringSpinner x:Name="nudString" HorizontalAlignment="Left" Margin="413,198,0,0" VerticalAlignment="Top" Width="150" ColorScheme="{Binding ColorScheme, ElementName=userControl}" >
+                    <sys:String>Lemon</sys:String>
+                    <sys:String>Small</sys:String>
+                    <sys:String>Size</sys:String>
+                    <sys:String>Word</sys:String>
+                </flat:StringSpinner>
+                <TextBlock HorizontalAlignment="Left" Margin="413,177,0,0" Text="String Spinner" VerticalAlignment="Top"/>
 
             </Grid>
         </ScrollViewer>
