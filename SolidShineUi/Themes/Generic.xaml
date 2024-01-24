@@ -2421,7 +2421,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="20" x:Name="colArrows" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" />
+                                <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF"
+                                         flat:AutoCompleteBehavior.AutoCompleteStringComparison="Ordinal" flat:AutoCompleteBehavior.AutoCompleteItemsSource="{TemplateBinding Items}" />
                                 <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" >
                                     <Border.Style>
                                         <Style TargetType="Border">

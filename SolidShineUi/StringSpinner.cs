@@ -93,10 +93,20 @@ namespace SolidShineUi
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             ValidateValue();
-            MaxValue = Items.Count - 1;
-            if (_selected > MaxValue)
+            if (Items.Count <= 0)
             {
-                SelectedIndex = MaxValue;
+                MaxValue = 0;
+                _selected = 0;
+                Value = "";
+            }
+            else
+            {
+                MaxValue = Items.Count - 1;
+
+                if (_selected > MaxValue)
+                {
+                    SelectedIndex = MaxValue;
+                }
             }
         }
 
@@ -214,7 +224,7 @@ namespace SolidShineUi
             }
             else if (Items.Count == 0)
             {
-                _selected = -1;
+                _selected = 0;
                 IsAtMinValue = true;
                 IsAtMaxValue = true;
             }
