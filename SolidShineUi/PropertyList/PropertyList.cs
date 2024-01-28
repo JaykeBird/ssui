@@ -1028,6 +1028,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Rune), typeof(CharEditor));
             RegisterEditor(typeof(Rune?), typeof(CharEditor));
 #endif
+            RegisterEditor(typeof(Cursor), typeof(CursorEditor));
         }
 
         #region Generator Property Editors / Editor Value Changed
