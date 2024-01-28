@@ -2,54 +2,67 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:flat="clr-namespace:SolidShineUi"
                     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
+                    xmlns:mnuh="clr-namespace:SolidShineUi.Utils.MenuUtils"
                     xmlns:converters="using:Avalonia.Controls.Converters" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <!-- Add Resources Here -->
     <Design.PreviewWith>
-        <Border Margin="15,12,100,90">
-            <flat:Menu HighlightSubitemBrush="Orange" Foreground="Red" >
-                <flat:Menu.Items>
-                    <MenuItem Header="Files" >
-                        <MenuItem Header="What" />
-                        <MenuItem Header="Wow!" />
-                        <Separator />
-                        <MenuItem Header="Menu2">
-                            <MenuItem Header="Whoa" />
+        <Border Margin="5,3,90,70">
+            <Grid RowDefinitions="Auto,1*" >
+                <flat:Menu HighlightSubitemBrush="Orange" Foreground="Red" >
+                    <flat:Menu.Items>
+                        <MenuItem Header="Files" >
+                            <MenuItem Header="What" />
+                            <MenuItem Header="Wow!" />
+                            <Separator />
+                            <MenuItem Header="Menu2">
+                                <MenuItem Header="Whoa" />
+                            </MenuItem>
                         </MenuItem>
-                    </MenuItem>
-                    <MenuItem Header="Okay">
-                        <MenuItem Header="RIP Trevor the Vampire" />
-                    </MenuItem>
-                    <MenuItem Header="Hello!" />
-                    <MenuItem Header="Fhqwhgads" >
-                        <MenuItem Header="Everybody to the Limit" />
-                        <MenuItem Header="Everybody Come On" />
-                        <MenuItem Header="Fhqwhgads" />
-                    </MenuItem>
-                    <MenuItem Header="Help">
-                        <MenuItem Header="Help Topics" />
-                        <MenuItem Header="Online Help" />
-                        <MenuItem Header="Keyboard Shortcuts" />
-                        <Separator />
-                        <MenuItem Header="About..." />
-                    </MenuItem>
-                </flat:Menu.Items>
-            </flat:Menu>
+                        <MenuItem Header="Okay">
+                            <MenuItem Header="RIP Trevor the Vampire" />
+                        </MenuItem>
+                        <MenuItem Header="Hello!" />
+                        <MenuItem Header="Fhqwhgads" >
+                            <MenuItem Header="Everybody to the Limit" />
+                            <MenuItem Header="Everybody Come On" />
+                            <MenuItem Header="Fhqwhgads" />
+                        </MenuItem>
+                        <MenuItem Header="Help">
+                            <MenuItem Header="Help Topics" />
+                            <MenuItem Header="Online Help" />
+                            <MenuItem Header="Keyboard Shortcuts" />
+                            <Separator />
+                            <MenuItem Header="About..." />
+                        </MenuItem>
+                    </flat:Menu.Items>
+                </flat:Menu>
+
+                <flat:FlatRepeatButton Grid.Row="1" Content="Button test" Height="24" Margin="5,3" HorizontalAlignment="Left" Padding="10,2" />
+
+            </Grid>
         </Border>
     </Design.PreviewWith>
 
-    <ControlTheme x:Key="SsuiMenuScrollViewer" TargetType="ScrollViewer">
+    <ControlTheme x:Key="SsuiMenuScrollViewer" TargetType="mnuh:FlatMenuScrollViewer">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <ControlTemplate>
                 <DockPanel>
-                    <RepeatButton DockPanel.Dock="Top"
-                                  BorderThickness="0"
+                    <flat:FlatRepeatButton x:Name="rptTop" DockPanel.Dock="Top"
+                                  BorderThickness="0" Height="24"
                                   Background="Transparent"
+                                  HighlightBrush="{TemplateBinding HighlightSubitemBrush}"
+                                  ClickBrush="{TemplateBinding HighlightBrush}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Center"
                                   RenderTransform="{x:Null}"
-                                  Command="{Binding LineUp, RelativeSource={RelativeSource TemplatedParent}}">
-                        <RepeatButton.IsVisible>
+                                  ExecuteCommand="{Binding LineUp, RelativeSource={RelativeSource TemplatedParent}}">
+                        <flat:FlatRepeatButton.IsVisible>
                             <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
                                           ConverterParameter="0">
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="VerticalScrollBarVisibility" />
@@ -57,25 +70,27 @@
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Extent.Height" />
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Viewport.Height" />
                             </MultiBinding>
-                        </RepeatButton.IsVisible>
+                        </flat:FlatRepeatButton.IsVisible>
                         <Viewbox Width="{DynamicResource ScrollBarButtonArrowIconFontSize}"
                                  Height="{DynamicResource ScrollBarButtonArrowIconFontSize}">
                             <Path VerticalAlignment="Center"
                                   HorizontalAlignment="Center"
                                   Data="M 19.091797 14.970703 L 10 5.888672 L 0.908203 14.970703 L 0.029297 14.091797 L 10 4.111328 L 19.970703 14.091797 Z"
-                                  Fill="{DynamicResource ScrollBarButtonArrowForeground}"
+                                  Fill="{TemplateBinding Foreground}"
                                   Width="20"
                                   Height="20" />
                         </Viewbox>
-                    </RepeatButton>
-                    <RepeatButton DockPanel.Dock="Bottom"
+                    </flat:FlatRepeatButton>
+                    <flat:FlatRepeatButton x:Name="rptBottom" DockPanel.Dock="Bottom"
                                   BorderThickness="0"
                                   Background="Transparent"
+                                  HighlightBrush="{TemplateBinding HighlightSubitemBrush}"
+                                  ClickBrush="{TemplateBinding HighlightBrush}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Center"
                                   RenderTransform="{x:Null}"
-                                  Command="{Binding LineDown, RelativeSource={RelativeSource TemplatedParent}}">
-                        <RepeatButton.IsVisible>
+                                  ExecuteCommand="{Binding LineDown, RelativeSource={RelativeSource TemplatedParent}}">
+                        <flat:FlatRepeatButton.IsVisible>
                             <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
                                           ConverterParameter="100">
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="VerticalScrollBarVisibility" />
@@ -83,17 +98,17 @@
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Extent.Height" />
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Viewport.Height" />
                             </MultiBinding>
-                        </RepeatButton.IsVisible>
+                        </flat:FlatRepeatButton.IsVisible>
                         <Viewbox Width="{DynamicResource ScrollBarButtonArrowIconFontSize}"
                                  Height="{DynamicResource ScrollBarButtonArrowIconFontSize}">
                             <Path VerticalAlignment="Center"
                                   HorizontalAlignment="Center"
                                   Data="M 18.935547 4.560547 L 19.814453 5.439453 L 10 15.253906 L 0.185547 5.439453 L 1.064453 4.560547 L 10 13.496094 Z"
-                                  Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}"
+                                  Fill="{TemplateBinding Foreground}"
                                   Width="20"
                                   Height="20" />
                         </Viewbox>
-                    </RepeatButton>
+                    </flat:FlatRepeatButton>
                     <ScrollContentPresenter Name="PART_ContentPresenter">
                         <ScrollContentPresenter.GestureRecognizers>
                             <ScrollGestureRecognizer CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
@@ -103,8 +118,9 @@
                 </DockPanel>
             </ControlTemplate>
         </Setter>
-        <Style Selector="^ /template/ RepeatButton:pointerover">
-            <Setter Property="Background" Value="{Binding $parent[ssut:FlatMenuPopup].HighlightSubitemBrush}" />
+
+        <Style Selector="^ /template/ RepeatButton#rptTop:pointerover" >
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightSubitemBrush}" />
         </Style>
     </ControlTheme>
 
@@ -131,7 +147,7 @@
                                           HorizontalAlignment="Stretch"
                                           RecognizesAccessKey="True"
                                           Margin="{TemplateBinding Padding}"/>
-                        <ssut:FlatMenuPopup Name="PART_Popup"
+                        <mnuh:FlatMenuPopup Name="PART_Popup"
                                WindowManagerAddShadowHint="False"
                                MenuBackground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuBackground}"
                                PopupBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=PopupBorderBrush}"
@@ -154,14 +170,22 @@
                                     MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
                                     HorizontalAlignment="Stretch"
                                     CornerRadius="{Binding #PART_Popup.MenuCornerRadius}">
-                                <ScrollViewer Theme="{StaticResource SsuiMenuScrollViewer}" >
+                                <mnuh:FlatMenuScrollViewer Theme="{StaticResource SsuiMenuScrollViewer}"
+                                    MenuBackground="{Binding #PART_Popup.MenuBackground}"
+                                    PopupBorderBrush="{Binding #PART_Popup.PopupBorderBrush}"
+                                    DisabledBrush="{Binding #PART_Popup.DisabledBrush}"
+                                    HighlightSubitemBrush="{Binding #PART_Popup.HighlightSubitemBrush}"
+                                    HighlightBrush="{Binding #PART_Popup.HighlightBrush}"
+                                    CheckedBrush="{Binding #PART_Popup.CheckedBrush}"
+                                    MenuCornerRadius="{Binding #PART_Popup.MenuCornerRadius}"
+                                    Foreground="{Binding #PART_Popup.Foreground}" >
                                     <ItemsPresenter Name="PART_ItemsPresenter"
                                                     ItemsPanel="{TemplateBinding ItemsPanel}"
                                                     Margin="{DynamicResource MenuFlyoutScrollerMargin}"
                                                     Grid.IsSharedSizeScope="True" />
-                                </ScrollViewer>
+                                </mnuh:FlatMenuScrollViewer>
                             </Border>
-                        </ssut:FlatMenuPopup>
+                        </mnuh:FlatMenuPopup>
                     </Panel>
                 </Border>
             </ControlTemplate>
@@ -172,15 +196,12 @@
         </Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="FlatMenuItem" TargetType="MenuItem" >
-        
-    </ControlTheme>
-
     <!--<Style x:Key="SeparatorStyle" x:DataType="Separator" >
         <Setter Property="Template">
             <ControlTemplate TargetType="Separator">
                 <Border BorderThickness="1" Margin="25,0,0,0" BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
-                --><!--<Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="25,0,0,0">
+                -->
+    <!--<Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="25,0,0,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -191,13 +212,14 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                        </Border>--><!--
+                        </Border>-->
+    <!--
             </ControlTemplate>
         </Setter>
     </Style>-->
 
     <ControlTheme x:Key="{x:Type flat:Menu}" TargetType="flat:Menu">
-        <Setter Property="ItemContainerTheme" Value="{StaticResource FlatTopLevelMenuItem}" />		
+        <Setter Property="ItemContainerTheme" Value="{StaticResource FlatTopLevelMenuItem}" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:Menu}">
                 <Grid Background="{TemplateBinding Background}">
@@ -212,5 +234,5 @@
             </ControlTemplate>
         </Setter>
     </ControlTheme>
-    
+
 </ResourceDictionary>
