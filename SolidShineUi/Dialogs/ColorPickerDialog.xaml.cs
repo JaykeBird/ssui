@@ -667,7 +667,7 @@ namespace SolidShineUi
             }
         }
 
-        private void colorList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void colorList_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
             if (colorList.Items.Count == 0) return;
             UpdateSelectedColor(colorList.Items.SelectedItems.OfType<ColorListItem>().First().Color);

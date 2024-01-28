@@ -251,5 +251,22 @@ namespace SsuiSample
             }
         }
 
+        private void mnuHide_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabControl.SelectedTab != null)
+            {
+                TabItem ti = tabControl.SelectedTab;
+                ti.Visibility = Visibility.Collapsed;
+                tabControl.Items.ClearSelection();
+            }
+        }
+
+        private void mnuUnhideAll_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (TabItem item in tabControl.Items)
+            {
+                item.Visibility = Visibility.Visible;
+            }
+        }
     }
 }
