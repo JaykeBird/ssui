@@ -135,9 +135,7 @@
         <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
-        <!--<Setter Property="ItemContainerTheme">
-            <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" x:DataType="MenuItem" />
-        </Setter>-->
+        <!--<Setter Property="ItemContainerTheme" Value="{TemplateBinding Theme}" />-->
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
