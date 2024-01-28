@@ -17,7 +17,11 @@
                     <flat:Menu.Items>
                         <MenuItem Header="Files" >
                             <MenuItem Header="What" />
-                            <MenuItem Header="Wow!" />
+                            <MenuItem Header="Wow!" >
+                                <MenuItem.Icon>
+                                    <CheckBox IsChecked="True"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
                             <Separator />
                             <MenuItem Header="Menu2">
                                 <MenuItem Header="Whoa" />
@@ -118,9 +122,176 @@
                 </DockPanel>
             </ControlTemplate>
         </Setter>
+    </ControlTheme>
 
-        <Style Selector="^ /template/ RepeatButton#rptTop:pointerover" >
-            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightSubitemBrush}" />
+    <converters:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
+    <x:Double x:Key="MenuFlyoutSubItemPopupHorizontalOffset">-4</x:Double>
+    <Thickness x:Key="MenuIconPresenterMargin">0,0,12,0</Thickness>
+    <Thickness x:Key="MenuInputGestureTextMargin">24,0,0,0</Thickness>
+    <StreamGeometry x:Key="MenuItemChevronPathData">M 1,0 10,10 l -9,10 -1,-1 L 8,10 -0,1 Z</StreamGeometry>
+
+    <ControlTheme x:Key="SsuiSubItem" TargetType="MenuItem">
+        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
+        <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
+        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
+        <!--<Setter Property="ItemContainerTheme">
+            <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" x:DataType="MenuItem" />
+        </Setter>-->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border Name="PART_LayoutRoot"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="MenuItemIcon" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="MenuItemIGT" />
+                                <ColumnDefinition Width="Auto"
+                                                  SharedSizeGroup="MenuItemChevron" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentControl x:Name="PART_IconPresenter"
+                                            Theme="{StaticResource FluentMenuItemIconTheme}"
+                                            Content="{TemplateBinding Icon}"
+                                            IsVisible="False"
+                                            Margin="{DynamicResource MenuIconPresenterMargin}" />
+
+                            <ContentPresenter Name="PART_HeaderPresenter"
+                                              Content="{TemplateBinding Header}"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Stretch"
+                                              RecognizesAccessKey="True"
+                                              Grid.Column="1"/>
+                            <TextBlock x:Name="PART_InputGestureText"
+                                       Grid.Column="2"
+                                       Classes="CaptionTextBlockStyle"
+                                       Margin="{DynamicResource MenuInputGestureTextMargin}"
+                                       Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                            <Path Name="PART_ChevronPath"
+                                  Stretch="Uniform"
+                                  Width="8"
+                                  Height="16"
+                                  Data="{StaticResource MenuItemChevronPathData}"
+                                  Fill="{DynamicResource MenuFlyoutSubItemChevron}"
+                                  Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
+                                  VerticalAlignment="Center"
+                                  Grid.Column="3" />
+                        </Grid>
+                    </Border>
+                    <mnuh:FlatMenuPopup Name="PART_Popup"
+                           WindowManagerAddShadowHint="False"
+                           MenuBackground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuBackground}"
+                           PopupBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=PopupBorderBrush}"
+                           DisabledBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=DisabledBrush}"
+                           HighlightSubitemBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightSubitemBrush}"
+                           HighlightBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBrush}"
+                           CheckedBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=CheckedBrush}"
+                           MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuCornerRadius}"
+                           Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}"
+                           MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                           IsLightDismissEnabled="True"
+                           IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+                           Placement="RightEdgeAlignedBottom"
+                           OverlayInputPassThroughElement="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}">
+                        <Border Background="{Binding #PART_Popup.MenuBackground}"
+                                BorderBrush="{Binding #PART_Popup.PopupBorderBrush}"
+                                BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
+                                Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
+                                MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+                                MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
+                                HorizontalAlignment="Stretch"
+                                CornerRadius="{Binding #PART_Popup.MenuCornerRadius}">
+                            <mnuh:FlatMenuScrollViewer Theme="{StaticResource SsuiMenuScrollViewer}"
+                                MenuBackground="{Binding #PART_Popup.MenuBackground}"
+                                PopupBorderBrush="{Binding #PART_Popup.PopupBorderBrush}"
+                                DisabledBrush="{Binding #PART_Popup.DisabledBrush}"
+                                HighlightSubitemBrush="{Binding #PART_Popup.HighlightSubitemBrush}"
+                                HighlightBrush="{Binding #PART_Popup.HighlightBrush}"
+                                CheckedBrush="{Binding #PART_Popup.CheckedBrush}"
+                                MenuCornerRadius="{Binding #PART_Popup.MenuCornerRadius}"
+                                Foreground="{Binding #PART_Popup.Foreground}" >
+                                <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                Margin="{DynamicResource MenuFlyoutScrollerMargin}" Grid.IsSharedSizeScope="True" />
+                            </mnuh:FlatMenuScrollViewer>
+                        </Border>
+                    </mnuh:FlatMenuPopup>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:icon /template/ ContentControl#PART_IconPresenter">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:selected">
+            <Style Selector="^ /template/ Border#PART_LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
+            </Style>
+            <Style Selector="^ /template/ Path#PART_ChevronPath">
+                <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
+            </Style>
+        </Style>
+
+        <!--  Listen for PART_LayoutRoot:pointerover, so it will not be triggered when subitem is pressed  -->
+        <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
+            <Setter Property="Background" Value="Orange" />
+            <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
+            </Style>
+            <Style Selector="^ TextBlock#PART_InputGestureText">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPressed}" />
+            </Style>
+            <Style Selector="^ Path#PART_ChevronPath">
+                <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronPressed}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:disabled">
+            <Style Selector="^ /template/ Border#PART_LayoutRoot">
+                <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
+                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />
+            </Style>
+            <Style Selector="^ /template/ Path#PART_ChevronPath">
+                <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />
+            </Style>
+        </Style>
+
+        <Style Selector="^:open /template/ Path#PART_ChevronPath">
+            <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronSubMenuOpened}" />
+        </Style>
+
+        <Style Selector="^:empty /template/ Path#PART_ChevronPath">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+
+        <Style Selector="^:separator">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Separator/>
+                </ControlTemplate>
+            </Setter>
         </Style>
     </ControlTheme>
 
@@ -130,6 +301,9 @@
         <Setter Property="Padding" Value="6,0,6,2"/>
         <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Background}" />
         <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}" />
+        <Setter Property="ItemContainerTheme">
+            <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" x:DataType="MenuItem" />
+        </Setter>
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
         <!--<Setter Property="Padding" Value="{DynamicResource MenuBarItemPadding}" />-->
         <Setter Property="Template">
@@ -179,10 +353,8 @@
                                     CheckedBrush="{Binding #PART_Popup.CheckedBrush}"
                                     MenuCornerRadius="{Binding #PART_Popup.MenuCornerRadius}"
                                     Foreground="{Binding #PART_Popup.Foreground}" >
-                                    <ItemsPresenter Name="PART_ItemsPresenter"
-                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                    Margin="{DynamicResource MenuFlyoutScrollerMargin}"
-                                                    Grid.IsSharedSizeScope="True" />
+                                    <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                    Margin="{DynamicResource MenuFlyoutScrollerMargin}" Grid.IsSharedSizeScope="True" />
                                 </mnuh:FlatMenuScrollViewer>
                             </Border>
                         </mnuh:FlatMenuPopup>
@@ -194,6 +366,23 @@
         <Style Selector="^:pointerover">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBrush}" />
         </Style>
+    </ControlTheme>
+    
+    <ControlTheme x:Key="HorizontalMenuItem" TargetType="MenuItem" BasedOn="{StaticResource FlatTopLevelMenuItem}">
+        <Setter Property="Padding" Value="{DynamicResource HorizontalMenuFlyoutItemThemePaddingNarrow}" />
+        <Setter Property="Margin" Value="{DynamicResource HorizontalMenuFlyoutItemMargin}" />
+    </ControlTheme>
+    
+    <ControlTheme x:Key="FluentMenuItemIconTheme" TargetType="ContentControl">
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Viewbox StretchDirection="DownOnly" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding Content}" />
+                </Viewbox>
+            </ControlTemplate>
+        </Setter>
     </ControlTheme>
 
     <!--<Style x:Key="SeparatorStyle" x:DataType="Separator" >
