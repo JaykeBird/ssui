@@ -16,6 +16,9 @@
 			<flat:FlatButton IsEnabled="False" TransparentBack="True" >
 				<TextBlock >Button4</TextBlock>
 			</flat:FlatButton>
+            <flat:FlatRepeatButton>
+                <TextBlock >Button5</TextBlock>
+            </flat:FlatRepeatButton>
 		</StackPanel>
 	</Design.PreviewWith>
 
@@ -90,5 +93,7 @@
 			<Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
 		</Style>
 	</ControlTheme>
-	
+    
+    <ControlTheme x:Key="{x:Type flat:FlatRepeatButton}" TargetType="flat:FlatRepeatButton" BasedOn="{StaticResource {x:Type flat:FlatButton}}" />
+
 </ResourceDictionary>
