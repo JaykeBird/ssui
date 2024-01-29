@@ -135,7 +135,7 @@
         <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
-        <!--<Setter Property="ItemContainerTheme" Value="{TemplateBinding Theme}" />-->
+        <!--<Setter Property="ItemContainerTheme" Value="{StaticResource SsuiSubSubItem}" />-->
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -292,6 +292,12 @@
             </Setter>
         </Style>
     </ControlTheme>
+    
+    <!--<ControlTheme x:Key="SsuiSubSubItem" TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" />-->
+
+    <!--<ControlTheme x:Key="{x:Type mnuh:FlatMenuPopup}" TargetType="mnuh:FlatMenuPopup" BasedOn="{StaticResource {x:Type Popup}}">
+        <Setter Property="ItemContainerTheme" Value="{StaticResource SsuiSubItem}" />
+    </ControlTheme>-->
 
     <ControlTheme x:Key="FlatTopLevelMenuItem" TargetType="MenuItem">
         <!--<Setter Property="Background" Value="{Binding $parent[flat:Menu].Background}" />
@@ -406,6 +412,18 @@
     </Style>-->
 
     <ControlTheme x:Key="{x:Type flat:Menu}" TargetType="flat:Menu">
+        <!--<ControlTheme.Resources>
+            <ControlTheme TargetType="{x:Type MenuItem}" x:DataType="MenuItem" >
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <ContentPresenter Content="{TemplateBinding Header}" />
+                            <TextBlock Text="Custom" />
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+        </ControlTheme.Resources>-->
         <Setter Property="ItemContainerTheme" Value="{StaticResource FlatTopLevelMenuItem}" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:Menu}">
