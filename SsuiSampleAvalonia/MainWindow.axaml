@@ -7,14 +7,6 @@
         xmlns:ssut="clr-namespace:SolidShineUi.Utils;assembly=SolidShineUi.Avalonia"
         x:Class="SsuiSampleAvalonia.MainWindow"
         Title="SsuiSampleAvalonia">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
-                <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
     <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,20,40,200,1*" >
 
         <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" >

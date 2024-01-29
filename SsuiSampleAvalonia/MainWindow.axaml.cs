@@ -8,7 +8,7 @@ namespace SsuiSampleAvalonia
 {
     public partial class MainWindow : Window
     {
-        ColorScheme cs = new ColorScheme(Avalonia.Media.Colors.Sienna);
+        ColorScheme cs = new ColorScheme(Avalonia.Media.Colors.CornflowerBlue);
 
         public MainWindow()
         {
@@ -16,6 +16,7 @@ namespace SsuiSampleAvalonia
 
             btnMain.ColorScheme = cs;
             mnuMain.ColorScheme = cs;
+            Background = cs.BackgroundColor.ToBrush();
         }
 
         private void FlatButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
