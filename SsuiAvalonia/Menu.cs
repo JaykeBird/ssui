@@ -32,6 +32,7 @@ namespace SolidShineUi
         {
             if (change.Property.Name == nameof(ColorScheme))
             {
+                ApplyColorScheme(change.GetNewValue<ColorScheme>());
                 ColorSchemeChanged?.Invoke(this, change);
             }
 

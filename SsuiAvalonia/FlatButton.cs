@@ -281,11 +281,11 @@ namespace SolidShineUi
             switch (change.Property.Name)
             {
                 case nameof(UseAccentColors):
-                    ColorSchemeChanged?.Invoke(this, change);
                     ApplyColorScheme(ColorScheme, UseAccentColors);
                     break;
                 case nameof(ColorScheme):
                     ApplyColorScheme(ColorScheme);
+                    ColorSchemeChanged?.Invoke(this, change);
                     break;
                 case nameof(CanSelect):
                     OnCanSelectChanged(change);
