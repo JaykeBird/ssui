@@ -13,7 +13,7 @@
     <Design.PreviewWith>
         <Border Margin="5,3,90,70">
             <Grid RowDefinitions="Auto,1*" >
-                <flat:Menu HighlightSubitemBrush="Orange" Foreground="Red" >
+                <flat:Menu HighlightSubitemBrush="Orange" Foreground="Red" PopupBorderBrush="Green" >
                     <flat:Menu.Items>
                         <MenuItem Header="Files" >
                             <MenuItem Header="What" />
@@ -135,7 +135,7 @@
         <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
-        <!--<Setter Property="ItemContainerTheme" Value="{StaticResource SsuiSubSubItem}" />-->
+        <Setter Property="ItemContainerTheme" Value="{DynamicResource SsuiSubItem}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel>
@@ -190,14 +190,14 @@
                     </Border>
                     <mnuh:FlatMenuPopup Name="PART_Popup"
                            WindowManagerAddShadowHint="False"
-                           MenuBackground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuBackground}"
-                           PopupBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=PopupBorderBrush}"
-                           DisabledBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=DisabledBrush}"
-                           HighlightSubitemBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightSubitemBrush}"
-                           HighlightBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBrush}"
-                           CheckedBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=CheckedBrush}"
-                           MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuCornerRadius}"
-                           Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}"
+                           MenuBackground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=MenuBackground}"
+                           PopupBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=PopupBorderBrush}"
+                           DisabledBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=DisabledBrush}"
+                           HighlightSubitemBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBrush}"
+                           HighlightBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightBrush}"
+                           CheckedBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=CheckedBrush}"
+                           MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=MenuCornerRadius}"
+                           Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}"
                            MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
                            IsLightDismissEnabled="True"
                            IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
@@ -249,7 +249,7 @@
 
         <!--  Listen for PART_LayoutRoot:pointerover, so it will not be triggered when subitem is pressed  -->
         <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
-            <Setter Property="Background" Value="Orange" />
+            <Setter Property="Background" Value="Green" />
             <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
             </Style>

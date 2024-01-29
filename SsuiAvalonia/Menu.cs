@@ -60,6 +60,7 @@ namespace SolidShineUi
             MenuBackground = cs.LightBackgroundColor.ToBrush();
             DisabledBrush = cs.DarkDisabledColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();
+            PopupBorderBrush = cs.BorderColor.ToBrush();
             HighlightBrush = cs.ThirdHighlightColor.ToBrush();
             HighlightSubitemBrush = cs.ThirdHighlightColor.ToBrush();
             CheckedBrush = cs.SecondaryColor.ToBrush();
