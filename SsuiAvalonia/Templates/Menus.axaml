@@ -11,7 +11,7 @@
 
     <!-- Add Resources Here -->
     <Design.PreviewWith>
-        <Border Margin="5,3,90,70">
+        <Border Margin="2,3,90,100">
             <Grid RowDefinitions="Auto,1*" >
                 <flat:Menu HighlightSubitemBrush="Orange" Foreground="Red" PopupBorderBrush="Green" >
                     <flat:Menu.Items>
@@ -27,10 +27,10 @@
                                 <MenuItem Header="Whoa" />
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Header="Okay">
-                            <MenuItem Header="RIP Trevor the Vampire" />
+                        <MenuItem Header="Hello!">
+                            <MenuItem Header="RIP Trevor the Vampire" IsEnabled="False" />
                         </MenuItem>
-                        <MenuItem Header="Hello!" />
+                        <MenuItem Header="Just Me" />
                         <MenuItem Header="Fhqwhgads" >
                             <MenuItem Header="Everybody to the Limit" />
                             <MenuItem Header="Everybody Come On" />
@@ -45,9 +45,6 @@
                         </MenuItem>
                     </flat:Menu.Items>
                 </flat:Menu>
-
-                <flat:FlatRepeatButton Grid.Row="1" Content="Button test" Height="24" Margin="5,3" HorizontalAlignment="Left" Padding="10,2" />
-
             </Grid>
         </Border>
     </Design.PreviewWith>
@@ -131,10 +128,10 @@
     <StreamGeometry x:Key="MenuItemChevronPathData">M 1,0 10,10 l -9,10 -1,-1 L 8,10 -0,1 Z</StreamGeometry>
 
     <ControlTheme x:Key="SsuiSubItem" TargetType="MenuItem">
-        <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />
-        <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForeground}" />
+        <!--<Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />-->
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
-        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutItemThemePaddingNarrow}" />
+        <Setter Property="Padding" Value="4,4,8,4" />
         <Setter Property="ItemContainerTheme" Value="{DynamicResource SsuiSubItem}" />
         <Setter Property="Template">
             <ControlTemplate>
@@ -147,13 +144,10 @@
                             CornerRadius="{TemplateBinding CornerRadius}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"
-                                                  SharedSizeGroup="MenuItemIcon" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIcon" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto"
-                                                  SharedSizeGroup="MenuItemIGT" />
-                                <ColumnDefinition Width="Auto"
-                                                  SharedSizeGroup="MenuItemChevron" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGT" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemChevron" />
                             </Grid.ColumnDefinitions>
 
                             <ContentControl x:Name="PART_IconPresenter"
@@ -249,7 +243,7 @@
 
         <!--  Listen for PART_LayoutRoot:pointerover, so it will not be triggered when subitem is pressed  -->
         <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
-            <Setter Property="Background" Value="Green" />
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBrush}" />
             <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
                 <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
             </Style>
@@ -262,14 +256,14 @@
         </Style>
 
         <Style Selector="^:disabled">
-            <Style Selector="^ /template/ Border#PART_LayoutRoot">
+            <!--<Style Selector="^ /template/ Border#PART_LayoutRoot">
                 <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundDisabled}" />
-            </Style>
+            </Style>-->
             <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=DisabledBrush}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
-                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundDisabled}" />
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=DisabledBrush}" />
             </Style>
             <Style Selector="^ /template/ Path#PART_ChevronPath">
                 <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />
@@ -287,7 +281,7 @@
         <Style Selector="^:separator">
             <Setter Property="Template">
                 <ControlTemplate>
-                    <Separator/>
+                    <Separator BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=PopupBorderBrush}" />
                 </ControlTemplate>
             </Setter>
         </Style>
@@ -336,8 +330,7 @@
                                MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuCornerRadius}"
                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}"
                                MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
-                               IsLightDismissEnabled="True"
-                               IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+                               IsLightDismissEnabled="True" IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
                                Placement="BottomEdgeAlignedLeft"
                                OverlayInputPassThroughElement="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}">
                             <Border Background="{Binding #PART_Popup.MenuBackground}"
@@ -346,8 +339,7 @@
                                     Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                     MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
                                     MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
-                                    HorizontalAlignment="Stretch"
-                                    CornerRadius="{Binding #PART_Popup.MenuCornerRadius}">
+                                    HorizontalAlignment="Stretch" CornerRadius="{Binding #PART_Popup.MenuCornerRadius}">
                                 <mnuh:FlatMenuScrollViewer Theme="{StaticResource SsuiMenuScrollViewer}"
                                     MenuBackground="{Binding #PART_Popup.MenuBackground}"
                                     PopupBorderBrush="{Binding #PART_Popup.PopupBorderBrush}"
@@ -392,21 +384,18 @@
     <!--<Style x:Key="SeparatorStyle" x:DataType="Separator" >
         <Setter Property="Template">
             <ControlTemplate TargetType="Separator">
-                <Border BorderThickness="1" Margin="25,0,0,0" BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
-                -->
-    <!--<Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="25,0,0,0">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <Style.Triggers>
-                                        <Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
-                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                        </Border>-->
-    <!--
+                <Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="25,0,0,0">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Style.Triggers>
+                                <Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
+                                    <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
             </ControlTemplate>
         </Setter>
     </Style>-->
