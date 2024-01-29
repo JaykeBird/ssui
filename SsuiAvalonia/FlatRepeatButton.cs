@@ -27,7 +27,7 @@ namespace SolidShineUi
             Click += FlatRepeatButton_Click;
         }
 
-        private void FlatRepeatButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void FlatRepeatButton_Click(object? sender, RoutedEventArgs e)
         {
             if (ExecuteOnFirstClick && !timerRan)
             {
@@ -276,29 +276,33 @@ namespace SolidShineUi
 
         void PressBegan()
         {
-            //if (PressBeginsCommand != null)
-            //{
-            //    ActivateCommand(PressBeginsCommand, PressBeginsCommandParameter, PressBeginsCommandTarget);
-            //}
-            //RoutedEventArgs re = new RoutedEventArgs(PressBeginsEvent, this);
-            //RaiseEvent(re);
+            if (PressBeginsCommand != null)
+            {
+                ActivateCommand(PressBeginsCommand, PressBeginsCommandParameter);
+            }
+            RoutedEventArgs re = new RoutedEventArgs(PressBeginsEvent, this);
+            RaiseEvent(re);
 
-            //firstRun = true;
-            //executeTimer.Start();
+            firstRun = true;
+            executeTimer.Start();
         }
 
         void PressEnded()
         {
-            //if (PressEndsCommand != null)
-            //{
-            //    ActivateCommand(PressEndsCommand, PressEndsCommandParameter, PressEndsCommandTarget);
-            //}
-            //RoutedEventArgs re = new RoutedEventArgs(PressEndsEvent, this);
-            //RaiseEvent(re);
+            if (PressEndsCommand != null)
+            {
+                ActivateCommand(PressEndsCommand, PressEndsCommandParameter);
+            }
+            RoutedEventArgs re = new RoutedEventArgs(PressEndsEvent, this);
+            RaiseEvent(re);
 
-            //ResetTimer();
+            ResetTimer();
         }
 
+        /// <summary>
+        /// Raise the <see cref="Execute"/> event and activate the <see cref="ExecuteCommand"/> (if present). This occurs automatically and repeatedly while the button is being pressed.
+        /// This method allows you to cause this to occur programmatically at any point, as if the button was being pressed.
+        /// </summary>
         public void DoExecute()
         {
             if (ExecuteCommand != null)
