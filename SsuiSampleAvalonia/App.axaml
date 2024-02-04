@@ -1,15 +1,17 @@
 <Application xmlns="https://github.com/avaloniaui"
+             xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi.Avalonia"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SsuiSampleAvalonia.App"
 			 RequestedThemeVariant="Default" >
     <Application.Styles>
         <FluentTheme />
+        <flat:SolidShineUi />
     </Application.Styles>
-    <Application.Resources>
+    <!--<Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://SolidShineUi.Avalonia/SolidShineUiControls.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Application.Resources>
+    </Application.Resources>-->
 </Application>

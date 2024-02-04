@@ -1,0 +1,69 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" x:Class="SolidShineUi.SolidShineUi"
+        xmlns:flat="using:SolidShineUi"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border>
+            <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,5,40,110" >
+                <flat:Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" >
+                    <MenuItem Header="File">
+                        <MenuItem Header="New" />
+                        <MenuItem Header="Open" />
+                        <Separator />
+                        <MenuItem Header="Save" />
+                        <MenuItem Header="Save as" >
+                            <MenuItem Header="Save a copy..." />
+                            <MenuItem Header="Change file format..." />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Print..." />
+                        <MenuItem Header="Print Preview" />
+                        <Separator />
+                        <MenuItem Header="Close" />
+                        <Separator />
+                        <MenuItem Header="Exit" />
+                    </MenuItem>
+                    <MenuItem Header="Edit">
+                        <MenuItem Header="Copy" />
+                        <MenuItem Header="Cut" />
+                        <MenuItem Header="Paste" />
+                        <Separator />
+                        <MenuItem Header="Select All" />
+                    </MenuItem>
+                    <MenuItem Header="View">
+                        <MenuItem Header="Toolbar" IsSelected="True" />
+                    </MenuItem>
+                    <MenuItem Header="Tools">
+                        <MenuItem Header="Resources..." />
+                        <Separator />
+                        <MenuItem Header="Options..." />
+                    </MenuItem>
+                    <MenuItem Header="Help">
+                        <MenuItem Header="Help Topics" />
+                        <MenuItem Header="Online Help" />
+                        <Separator />
+                        <MenuItem Header="Contact Us" />
+                        <Separator />
+                        <MenuItem Header="About..." />
+                    </MenuItem>
+                </flat:Menu>
+
+                <flat:FlatButton x:Name="btnMain" Grid.Column="0" Grid.Row="2" Height="24" VerticalAlignment="Center"
+                                 Margin="10,0" >
+                    <TextBlock Text="Button1" />
+                </flat:FlatButton>
+                <flat:FlatButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" IsEnabled="False" Height="24"
+                                 VerticalAlignment="Center" Margin="10,0" Content="D" />
+            </Grid>
+        </Border>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/SolidShineUiControls.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <!-- Add Styles Here -->
+</Styles>
