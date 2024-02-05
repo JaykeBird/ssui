@@ -705,6 +705,7 @@
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Width" Value="Auto" />
+        <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:FlatButton}">
@@ -809,6 +810,7 @@
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Width" Value="Auto" />
+        <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:MenuButton}">
