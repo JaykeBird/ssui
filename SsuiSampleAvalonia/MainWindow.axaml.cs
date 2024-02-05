@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Dialogs;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using SolidShineUi;
 
@@ -17,6 +18,9 @@ namespace SsuiSampleAvalonia
             btnMain.ColorScheme = cs;
             mnuMain.ColorScheme = cs;
             Background = cs.BackgroundColor.ToBrush();
+
+            MenuItem mi = mnuNew;
+            string clickName = MenuItem.ClickEvent.Name;
         }
 
         private void FlatButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -24,6 +28,11 @@ namespace SsuiSampleAvalonia
 
             //AboutAvaloniaDialog aad = new AboutAvaloniaDialog();
             //aad.ShowDialog(this);
+        }
+
+        private void MenuItem_Click_1(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+
         }
     }
 }

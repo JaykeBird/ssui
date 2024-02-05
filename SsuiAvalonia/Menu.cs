@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Controls;
 
 namespace SolidShineUi
 {
@@ -141,6 +142,17 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="CheckedBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> CheckedBrushProperty
             = AvaloniaProperty.Register<Menu, IBrush?>(nameof(CheckedBrush), new SolidColorBrush(Colors.LightGray));
+
+        /// <summary>
+        /// Get or set the brush to use for the check highlight for checked menu items.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? ClickBrush { get => GetValue(ClickBrushProperty); set => SetValue(ClickBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> ClickBrushProperty
+            = AvaloniaProperty.Register<Menu, IBrush?>(nameof(ClickBrush), new SolidColorBrush(Colors.Gainsboro));
+
 
         #endregion
 

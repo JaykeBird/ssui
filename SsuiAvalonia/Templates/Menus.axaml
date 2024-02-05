@@ -13,7 +13,7 @@
     <Design.PreviewWith>
         <Border Margin="2,3,90,100">
             <Grid RowDefinitions="Auto,1*" >
-                <flat:Menu HighlightSubitemBrush="Orange" Foreground="Red" PopupBorderBrush="Green" >
+                <flat:Menu HighlightSubitemBrush="Orange" PopupBorderBrush="Green" >
                     <flat:Menu.Items>
                         <MenuItem Header="Files" >
                             <MenuItem Header="What" />
@@ -128,6 +128,7 @@
     <StreamGeometry x:Key="MenuItemChevronPathData">M 1,0 10,10 l -9,10 -1,-1 L 8,10 -0,1 Z</StreamGeometry>
 
     <ControlTheme x:Key="SsuiSubItem" TargetType="MenuItem">
+        <Setter Property="Background" Value="#01000000" />
         <!--<Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />-->
         <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
@@ -144,17 +145,20 @@
                             CornerRadius="{TemplateBinding CornerRadius}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIcon" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" MinWidth="20" SharedSizeGroup="MenuItemIcon" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGT" />
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemChevron" />
+                                <ColumnDefinition Width="14" SharedSizeGroup="MenuItemChevron" />
                             </Grid.ColumnDefinitions>
-
-                            <ContentControl x:Name="PART_IconPresenter"
-                                            Theme="{StaticResource FluentMenuItemIconTheme}"
-                                            Content="{TemplateBinding Icon}"
-                                            IsVisible="False"
-                                            Margin="{DynamicResource MenuIconPresenterMargin}" />
+                            
+                            <Border x:Name="Check" Grid.Column="0" Height="18" Width="18" HorizontalAlignment="Center"
+                                    UseLayoutRounding="True" VerticalAlignment="Center">
+                                <ContentControl x:Name="PART_IconPresenter"
+                                    Theme="{StaticResource FluentMenuItemIconTheme}"
+                                    Content="{TemplateBinding Icon}"
+                                    IsVisible="False"
+                                    Margin="{DynamicResource MenuIconPresenterMargin}" />
+                            </Border>
 
                             <ContentPresenter Name="PART_HeaderPresenter"
                                               Content="{TemplateBinding Header}"
@@ -173,11 +177,11 @@
                                        Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                             <Path Name="PART_ChevronPath"
                                   Stretch="Uniform"
-                                  Width="8"
-                                  Height="16"
-                                  Data="{StaticResource MenuItemChevronPathData}"
+                                  Width="6"
+                                  Height="12"
+                                  Data="M0,0 L0,8 L4,4 z"
                                   Fill="{DynamicResource MenuFlyoutSubItemChevron}"
-                                  Margin="{DynamicResource MenuFlyoutItemChevronMargin}"
+                                  Margin="4,0,6,0"
                                   VerticalAlignment="Center"
                                   Grid.Column="3" />
                         </Grid>
