@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -8,9 +7,11 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using System.Collections;
 #else
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
 #endif
 
 namespace SolidShineUi.KeyboardShortcuts
@@ -93,7 +94,61 @@ namespace SolidShineUi.KeyboardShortcuts
 
         // TODO: see how Avalonia stores event handlers for its objects; see if I can't access that via reflection or not
 
-#if !AVALONIA
+#if AVALONIA
+        // Avalonia stores all event handlers for all Avalonia objects using an internal _eventHandlers field
+        // https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Base/Interactivity/Interactive.cs
+        public static RoutedEventKeyAction CreateFromClickEvent(Interactive i)
+        {
+            var ehListField = i.GetType().GetField("_eventHandlers", BindingFlags.Instance | BindingFlags.NonPublic);
+            var ehList = ehListField?.GetValue(i);
+            if (ehList != null)
+            {
+                // if this is null, then either the internal design has radically changed
+                // or the control hasn't actually had its Click event set yet (or any event for that matter)
+
+                if (ehList is IDictionary id)
+                {
+                    RoutedEvent? clickEvent = null;
+
+                    foreach (object item in id.Keys)
+                    {
+                        if (item is RoutedEvent re)
+                        {
+                            if (re.Name == "Click")
+                            {
+                                // we have our click event
+                                clickEvent = re;
+                            }
+                        }
+                    }
+
+                    if (clickEvent != null)
+                    {
+                        var subList = id[clickEvent];
+                        if (subList != null)
+                        {
+                            // soo this is a List of EventSubscription objects
+                            // but EventSubscription is a private struct
+                        }
+                    }
+                }
+            }
+
+            return new RoutedEventKeyAction((o, e) => { }, "null");
+
+            void GetHandlerFromEventSubscription(object subscription)
+            {
+                // so EventSubscription is a private struct, soooo I'll have to rely back upon reflection
+                Type subType = subscription.GetType();
+                PropertyInfo? handlerProp = subType.GetProperty("Handler", BindingFlags.Instance | BindingFlags.Public);
+                if (handlerProp != null)
+                {
+
+                }
+            }
+        }
+
+#else
         /// <summary>
         /// Create a list of key actions from all the menu items in a particular menu. Each menu item with a name and Click event handler will be added to this list.
         /// </summary>
