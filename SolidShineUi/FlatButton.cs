@@ -16,7 +16,7 @@ namespace SolidShineUi
     /// </summary>
     [DefaultEvent("Click")]
     [Localizability(LocalizationCategory.Button)]
-    public class FlatButton : ButtonBase
+    public class FlatButton : ButtonBase, IClickSelectableControl
     {
         static FlatButton()
         {
@@ -61,24 +61,6 @@ namespace SolidShineUi
             //invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             //invalidTimer.Tick += InvalidTimer_Tick;
         }
-
-#if NETCOREAPP
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler? IsSelectedChanged;
-#else
-        ///// <summary>
-        ///// Raised when the user clicks on the button. Please use the new Click event instead.
-        ///// </summary>
-        //[Obsolete("Please transition to the new Click event, which is a routed event. This will be removed in a later version.", false)]
-        //public event EventHandler UnroutedClick;
-
-        /// <summary>
-        /// Raised if the button's IsSelected value is changed. This can be used to have the button act as a ToggleButton.
-        /// </summary>
-        public event DependencyPropertyChangedEventHandler IsSelectedChanged;
-#endif
 
 
         #region Brushes
@@ -371,6 +353,15 @@ namespace SolidShineUi
         //        if (runApply) ApplyColorScheme(ColorScheme, TransparentBack, value);
         //    }
         //}
+
+        /// <summary>
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            ApplyColorScheme(cs, TransparentBack, UseAccentColors);
+        }
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
@@ -693,15 +684,27 @@ namespace SolidShineUi
         #endregion
 
         #region Variables/Properties
+
         bool initiatingClick = false;
+        bool _runSelChangeEvent = true;
 
-        //bool sel = false;
+        /// <summary>
+        /// Raised if the button's <see cref="IsSelected"/> value is changed. If using this button as a toggle button, you should listen to this event 
+        /// (rather than <c>Click</c>) to monitor changes to the <c>IsSelected</c> value.
+        /// </summary>
+#if NETCOREAPP
+        public event ItemSelectionChangedEventHandler? IsSelectedChanged;
+#else
+        public event ItemSelectionChangedEventHandler IsSelectedChanged;
+#endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// The backing dependency property object for the <see cref="IsSelected"/> property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
             "IsSelected", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when a property of an object has changed. Primarily used internally.
@@ -712,21 +715,28 @@ namespace SolidShineUi
         {
             if (e.NewValue is bool se)
             {
+                bool old = Convert.ToBoolean(e.OldValue);
+
                 if (d is FlatButton f)
                 {
-                    f.IsSelectedChanged?.Invoke(d, e);
-                    //f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
+                    if (f._runSelChangeEvent)
+                    {
+                        f.IsSelectedChanged?.Invoke(f, new ItemSelectionChangedEventArgs(old, se, SelectionChangeTrigger.CodeUnknown, null));
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Gets or sets whether this button is selected. This property (combined with <c>SelectOnClick</c>) allows the button to function like a ToggleButton.
+        /// Gets or sets whether this button is selected. This property (combined with <see cref="SelectOnClick"/>) allows the button to function like a ToggleButton.
         /// </summary>
         /// <remarks>
         /// A selected button will have a slightly different visual appearance to differentiate it as being selected. This will include, by default, the border being a bit thicker.
         /// This can be changed via the <see cref="BorderSelectionThickness"/> property. You can also directly edit the brushes used via the <see cref="SelectedBrush"/> and
         /// <see cref="BorderSelectedBrush"/> properties.
+        /// <para />
+        /// To listen to changes to this property, use <see cref="IsSelectedChanged"/>, rather than listening to the <c>Click</c> event, as other actions could change this 
+        /// property rather than just clicking it.
         /// </remarks>
         public bool IsSelected
         {
@@ -736,34 +746,37 @@ namespace SolidShineUi
             }
             set
             {
-                //bool sel = value;
                 SetValue(IsSelectedProperty, value);
-
-                //if (Template != null)
-                //{
-                //    Border border = (Border)Template.FindName("btn_Border", this);
-                //    if (border != null)
-                //    {
-                //        if (sel)
-                //        {
-                //            border.Background = SelectedBrush;
-                //        }
-                //        else
-                //        {
-                //            border.Background = Background;
-                //        }
-                //    }
-                //}
-
-                //SelectionChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
+        /// </summary>
+        /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
+        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="triggerSource">The object that triggered the change.</param>
+#if NETCOREAPP
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
+#else
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
+#endif
+        {
+            bool old = IsSelected;
+
+            _runSelChangeEvent = false;
+            IsSelected = value;
+            _runSelChangeEvent = true;
+
+            IsSelectedChanged?.Invoke(this, new ItemSelectionChangedEventArgs(old, value, triggerMethod, triggerSource));
+        }
+        
+        /// <summary>
+        /// The backing dependency property object for the <see cref="SelectOnClick"/> property. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
             "SelectOnClick", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.

@@ -13,7 +13,7 @@ namespace SolidShineUi
     /// </summary>
     [Localizability(LocalizationCategory.ListBox)]
     [DefaultEvent(nameof(IsSelectedChanged))]
-    public class SelectableUserControl : System.Windows.Controls.UserControl //, IEquatable<SelectableUserControl>
+    public class SelectableUserControl : System.Windows.Controls.UserControl, IClickSelectableControl //, IEquatable<SelectableUserControl>
     {
         /// <summary>
         /// Create a SelectableUserControl.
@@ -49,6 +49,7 @@ namespace SolidShineUi
         //public Guid UniqueIdentifier { get; set; }
 
         #region Brushes
+
         static Color transparent = Color.FromArgb(1, 0, 0, 0);
 
         /// <summary>
@@ -256,7 +257,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised if the IsSelected property is changed.
         /// </summary>
-        public event ItemSelectionChangedEventHandler? IsSelectedChanged;        
+        public event SolidShineUi.ItemSelectionChangedEventHandler? IsSelectedChanged;        
         /// <summary>
         /// Raised if the IsSelected property is changed.
         /// </summary>
@@ -269,19 +270,11 @@ namespace SolidShineUi
         /// Raised if the CanSelect property is changed.
         /// </summary>
         public event EventHandler? CanSelectChanged;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler? Click;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler? RightClick;
 #else
         /// <summary>
         /// Raised if the IsSelected property is changed.
         /// </summary>
-        public event ItemSelectionChangedEventHandler IsSelectedChanged;
+        public event SolidShineUi.ItemSelectionChangedEventHandler IsSelectedChanged;
         /// <summary>
         /// Raised if the IsSelected property is changed.
         /// </summary>
@@ -294,14 +287,6 @@ namespace SolidShineUi
         /// Raised if the CanSelect property is changed.
         /// </summary>
         public event EventHandler CanSelectChanged;
-        /// <summary>
-        /// Raised when the control is clicked.
-        /// </summary>
-        public event EventHandler Click;
-        /// <summary>
-        /// Raised when the control is right-clicked.
-        /// </summary>
-        public event EventHandler RightClick;
 #endif
 
         /// <summary>
@@ -311,7 +296,7 @@ namespace SolidShineUi
         /// <param name="e">The event arguments, containing information on the new IsSelected value and how the selection changed.</param>
         public delegate void ItemSelectionChangedEventHandler(object sender, ItemSelectionChangedEventArgs e);
 
-#region User Inputs
+        #region User Inputs
 
         void Highlight()
         {
@@ -340,29 +325,53 @@ namespace SolidShineUi
             base.Background = ClickBrush;
         }
 
+        void PerformRightClick()
+        {
+            RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
+            RaiseEvent(rre);
+        }
+
+        /// <summary>
+        /// Perform a click on this control programmatically. This responds the same way as if it was clicked by the user.
+        /// </summary>
+        public void DoClick()
+        {
+            OnClick();
+        }
+
+        /// <summary>
+        /// Defines the actions the button performs when it is clicked.
+        /// </summary>
+        protected void OnClick()
+        {
+            if (SelectOnClick)
+            {
+                SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
+            }
+
+            RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
+            RaiseEvent(rre);
+        }
+
         void PerformClick()
         {
             if (performingClick)
             {
                 if (rightClick)
                 {
-                    RightClick?.Invoke(this, EventArgs.Empty);
+                    PerformRightClick();
                     rightClick = false;
                 }
                 else
                 {
-                    if (SelectOnClick)
-                    {
-                        SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
-                    }
-                    Click?.Invoke(this, EventArgs.Empty);
+                    OnClick();
                 }
 
                 performingClick = false;
             }
         }
 
-#region Base Event Handlers
+        #region Base Event Handlers
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -465,7 +474,7 @@ namespace SolidShineUi
             Unhighlight();
         }
 
-#endregion
+        #endregion
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
@@ -482,22 +491,44 @@ namespace SolidShineUi
             }
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #region Routed Events
 
-//#if NETCOREAPP
-//        public bool Equals([AllowNull] SelectableUserControl other)
-//#else
-//        public bool Equals(SelectableUserControl other)
-//#endif
-//        {
-//            if (other == null) return false;
-//            else
-//            {
-//                return other.UniqueIdentifier == UniqueIdentifier;
-//            }
-//        }
+        /// <summary>
+        /// The backing value for the <see cref="Click"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
+            "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SelectableUserControl));
+
+        /// <summary>
+        /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler Click
+        {
+            add { AddHandler(ClickEvent, value); }
+            remove { RemoveHandler(ClickEvent, value); }
+        }
+
+
+        /// <summary>
+        /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
+            "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SelectableUserControl));
+
+        /// <summary>
+        /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler RightClick
+        {
+            add { AddHandler(RightClickEvent, value); }
+            remove { RemoveHandler(RightClickEvent, value); }
+        }
+
+        #endregion
+
+        #endregion
 
     }
 
@@ -546,28 +577,5 @@ namespace SolidShineUi
 #else
         public object TriggerSource { get; private set; }
 #endif
-    }
-
-    /// <summary>
-    /// Indicates which method or source triggered the change in selection.
-    /// </summary>
-    public enum SelectionChangeTrigger
-    {
-        /// <summary>
-        /// The selection was changed due to the control itself being clicked.
-        /// </summary>
-        ControlClick = 0,
-        /// <summary>
-        /// The selection was changed due to a checkbox in the control being clicked.
-        /// </summary>
-        CheckBox = 1,
-        /// <summary>
-        /// The selection was changed due to an action by the parent object containing the control.
-        /// </summary>
-        Parent = 2,
-        /// <summary>
-        /// The selection was changed via directly setting the value in code, or via a different undefined method.
-        /// </summary>
-        CodeUnknown = 9,
     }
 }
