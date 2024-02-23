@@ -12,6 +12,8 @@
                 ResizeMode="NoResize" CaptionDisplayType="Close" >
     <flat:FlatWindow.Resources>
         <flat:ColorToBrushConverter x:Key="ColorConverter" />
+        <flat:FontWeightValueConverter x:Key="fvc" />
+        <flat:FontWeightStringConverter x:Key="fwc" />
     </flat:FlatWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -27,7 +29,7 @@
                 <ColumnDefinition Width="Auto" x:Name="colWeights" />
                 <ColumnDefinition Width="Auto" x:Name="colSize" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtFont" Height="23" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190" flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase"
+            <TextBox x:Name="txtFont" Height="24" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190" flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase"
                      TextChanged="txtFont_TextChanged" />
             <ListBox x:Name="lstFont" Margin="25,60,10,10" SelectionChanged="lstFont_SelectionChanged" >
                 <ListBox.Resources>
@@ -76,12 +78,13 @@
             </ListBox>
             <!--DataContext="{x:Static Fonts.SystemFontFamilies}" ItemsSource='{Binding}' />-->
             <TextBlock HorizontalAlignment="Left" Margin="25,15,0,0" Text="Font:" VerticalAlignment="Top"/>
-            <ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" ItemsSource="{x:Static flat:FontSelectDialog.AvailableFontWeights}" >
-
+            <ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" SelectionChanged="lstWeight_SelectionChanged" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Height="18">
-                            <TextBlock VerticalAlignment="Center" Margin="3,0" Text="{Binding}" FontFamily="{Binding ElementName=lstFont, Path=SelectedItem}" FontWeight="{Binding}" ToolTip="{Binding}" />
+                            <TextBlock VerticalAlignment="Center" Margin="3,0" FontFamily="{Binding ElementName=lstFont, Path=SelectedItem}" 
+                                       FontWeight="{Binding ., Converter={StaticResource fvc}}" 
+                                       ToolTip="{Binding ., Converter={StaticResource fwc}}" Text="{Binding ., Converter={StaticResource fwc}}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -90,6 +93,16 @@
                         <StackPanel CanHorizontallyScroll="False" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
+                <sys:Int32>100</sys:Int32>
+                <sys:Int32>200</sys:Int32>
+                <sys:Int32>300</sys:Int32>
+                <sys:Int32>400</sys:Int32>
+                <sys:Int32>500</sys:Int32>
+                <sys:Int32>600</sys:Int32>
+                <sys:Int32>700</sys:Int32>
+                <sys:Int32>800</sys:Int32>
+                <sys:Int32>900</sys:Int32>
+                <sys:Int32>950</sys:Int32>
             </ListBox>
             <flat:DoubleSpinner x:Name="txtSize" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10" 
                                 ValueChanged="txtSize_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" />
@@ -126,6 +139,8 @@
             </ListBox>
             <TextBlock HorizontalAlignment="Left" Margin="13,15,0,0" Text="Font weight:" VerticalAlignment="Top" x:Name="lblWeight" Grid.Column="1" />
             <TextBlock HorizontalAlignment="Left" Margin="7,15,0,0" Text="Size:" VerticalAlignment="Top" x:Name="lblSize" Grid.Column="2" />
+            <flat:IntegerSpinner x:Name="txtWeight" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" MinValue="1" Step="50" MaxValue="999" Value="400" 
+                ValueChanged="txtWeight_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="1" />
         </Grid>
 
         <TextBlock HorizontalAlignment="Left" Margin="25,2,0,0" Text="Styles/Decorations:" VerticalAlignment="Top" x:Name="lblStyles" Grid.Row="1" />
@@ -149,7 +164,8 @@
                 Background="{Binding ElementName=window, Path=ColorScheme.LightBackgroundColor, Converter={StaticResource ColorConverter}}" Grid.Row="3">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" >
                 <TextBlock x:Name="txtPreview" Text="AaBbCc123!" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                       FontFamily="{Binding ElementName=lstFont, Path=SelectedItem}" FontSize="{Binding ElementName=txtSize, Path=Value}" FontWeight="{Binding ElementName=lstWeight, Path=SelectedItem}" />
+                       FontFamily="{Binding ElementName=lstFont, Path=SelectedItem}" FontSize="{Binding ElementName=txtSize, Path=Value}" 
+                       FontWeight="{Binding ElementName=txtWeight, Path=Value, Converter={StaticResource fvc}}" />
             </ScrollViewer>
         </Border>
 

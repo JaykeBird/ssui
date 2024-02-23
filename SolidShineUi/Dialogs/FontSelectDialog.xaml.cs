@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 
 namespace SolidShineUi
 {
@@ -112,12 +116,12 @@ namespace SolidShineUi
         {
             get
             {
-                return (FontWeight)lstWeight.SelectedItem;
+                return FontWeight.FromOpenTypeWeight(txtWeight.Value);
             }
             set
             {
                 //_weight = value;
-                lstWeight.SelectedItem = value;
+                txtWeight.Value = value.ToOpenTypeWeight();
             }
         }
 
@@ -196,7 +200,7 @@ namespace SolidShineUi
             set
             {
                 //_dec = value;
-
+                if (value == null) return;
                 foreach (TextDecoration item in value)
                 {
                     if (TextDecorations.Underline.Contains(item))
@@ -465,7 +469,7 @@ namespace SolidShineUi
             FontWeights.Bold,
             FontWeights.ExtraBold,
             FontWeights.Black,
-            FontWeights.ExtraBlack,
+            FontWeights.ExtraBlack
 
             /*
             FontWeights.Black,
@@ -534,8 +538,8 @@ namespace SolidShineUi
             listBoxUpdate = false;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Still needed")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Still needed")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
         private void txtSize_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (lstSize == null)
@@ -700,5 +704,36 @@ namespace SolidShineUi
             set => txtPreview.Text = value;
         }
 
+        private void txtWeight_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (lstWeight == null)
+            {
+                return;
+            }
+
+            if (!listBoxUpdate)
+            {
+                if (lstWeight.Items.Contains(txtWeight.Value))
+                {
+                    lstWeight.SelectedItem = txtWeight.Value;
+                }
+                else
+                {
+                    lstWeight.SelectedIndex = -1;
+                }
+            }
+        }
+
+        private void lstWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstWeight.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            listBoxUpdate = true;
+            txtWeight.Value = (int)lstWeight.SelectedItem;
+            listBoxUpdate = false;
+        }
     }
 }
