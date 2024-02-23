@@ -20,19 +20,6 @@
     <ssut:IconSizeConverter x:Key="IconSizeConverter" />
 
     <Style TargetType="{x:Type flat:FlatWindow}">
-        <!--<Setter Property="WindowStyle" Value="None" />
-        <Setter Property="AllowsTransparency" Value="True" />-->
-        <!--<Setter Property="ssut:WindowChromeWrapper.WindowChromeVal">
-            <Setter.Value>
-                 --><!--Make sure this matches the settings in the ResizeCaptionHeight method.--><!-- 
-                <ssut:WindowChromeWrapper
-                        ResizeBorderThickness="4"
-                        CaptionHeight="29"
-                        CornerRadius="0"
-                        UseAeroCaptionButtons="False"
-                        GlassFrameThickness="0,0,0,1"/>
-            </Setter.Value>
-        </Setter>-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:FlatWindow}">
@@ -1324,6 +1311,7 @@
                                             <Style TargetType="MenuItem">
                                                 <Setter Property="CommandParameter" Value="{Binding .}" />
                                                 <Setter Property="Command" Value="{x:Static flat:TabControl.SwitchToTab}" />
+                                                <Setter Property="Visibility" Value="{Binding Visibility}" />
                                                 <Setter Property="Icon">
                                                     <Setter.Value>
                                                         <Image Source="{Binding Icon}" />
