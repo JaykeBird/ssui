@@ -24,7 +24,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Convert a SolidColorBrush to its Color. If the passed in value is not a SolidColorBrush, this returns null.
+        /// Convert a SolidColorBrush to its Color. If the passed in value is not a SolidColorBrush, this returns <see cref="DependencyProperty.UnsetValue"/>.
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
