@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="Auto" x:Name="colSize" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="txtFont" Height="24" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190" flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase"
-                     TextChanged="txtFont_TextChanged" />
+                     TextChanged="txtFont_TextChanged" VerticalContentAlignment="Center" />
             <ListBox x:Name="lstFont" Margin="25,60,10,10" SelectionChanged="lstFont_SelectionChanged" >
                 <ListBox.Resources>
                     <CollectionViewSource x:Key="myFonts" Source="{Binding Source={x:Static Fonts.SystemFontFamilies}}">

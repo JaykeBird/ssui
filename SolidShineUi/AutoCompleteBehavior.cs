@@ -208,7 +208,17 @@ namespace SolidShineUi
                 int textLength = matchingString.Length;
 
                 StringComparison comparer = GetAutoCompleteStringComparison(tb);
+
+                // if we already have a string that matches a value in the list, then let's not go any further
+                if (values.Contains(matchingString))
+                {
+                    return;
+                }
+
                 //Do search and changes here.
+                // tried to visualize the below LINQ as actual C# method calls
+                //values.Where((s) => s != null && s.Length >= textLength).Select((s) => s.Substring(textLength, s.Length - textLength));
+
                 string match =
                 (
                     from
