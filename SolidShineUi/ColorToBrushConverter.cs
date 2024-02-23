@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -15,7 +16,11 @@ namespace SolidShineUi
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new SolidColorBrush((Color)value);
+            if (value is Color c)
+            {
+                return new SolidColorBrush(c);
+            }
+            else return DependencyProperty.UnsetValue;
         }
 
         /// <summary>
@@ -23,25 +28,11 @@ namespace SolidShineUi
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-#if NETCOREAPP
             if (value is SolidColorBrush s)
             {
                 return s.Color;
             }
-            else
-            {
-                return null!;
-            }
-#else
-            if (value is SolidColorBrush s)
-            {
-                return s.Color;
-            }
-            else
-            {
-                return null;
-            }
-#endif
+            else return DependencyProperty.UnsetValue;
         }
     }
 }

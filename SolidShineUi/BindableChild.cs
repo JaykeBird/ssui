@@ -59,15 +59,7 @@ namespace SolidShineUi
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-#if NETCOREAPP
-            if (value == null) return null!;
-#else
-            if (value == null) return null;
-#endif
-
-            //var border = new Border();
-            //border.Child = (value as UIElement);
-            //return border;
+            if (value == null) return DependencyProperty.UnsetValue;
 
             return new Border()
             {
@@ -86,11 +78,7 @@ namespace SolidShineUi
             }
             else
             {
-#if NETCOREAPP
-                return null!;
-#else
-                return null;
-#endif
+                return DependencyProperty.UnsetValue;
             }
         }
     }

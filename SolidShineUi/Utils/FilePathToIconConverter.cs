@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -20,7 +21,6 @@ namespace SolidShineUi.Utils
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-#if NETCOREAPP
             if (value is IEnumerable<string> ie)
             {
                 string first = ie.FirstOrDefault() ?? "";
@@ -34,28 +34,13 @@ namespace SolidShineUi.Utils
                 }
                 catch (ArgumentNullException)
                 {
-                    return null!;
+                    return DependencyProperty.UnsetValue;
                 }
             }
             else
             {
-                return null!;
+                return DependencyProperty.UnsetValue;
             }
-#else
-            if (value is IEnumerable<string> ie)
-            {
-                string first = ie.FirstOrDefault() ?? "";
-                return GetImageFromFilePath(first);
-            }
-            else if (value is string s)
-            {
-                return GetImageFromFilePath(s);
-            }
-            else
-            {
-                return null;
-            }
-#endif
         }
 
         private static BitmapSource GetImageFromFilePath(string path)
@@ -64,11 +49,11 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// This is not implemented. Throws a <see cref="NotImplementedException"/>.
+        /// This is not implemented. Returns <see cref="DependencyProperty.UnsetValue"/>.
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
     }
 }
