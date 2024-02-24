@@ -16,6 +16,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition/>
                 <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -71,7 +72,32 @@
             <flat:FlatButton x:Name="btnAcc1" Content="Button Text" Width="100" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Click="Button_Click" RightClick="Button_RightClick" UseAccentColors="True" />
             <flat:FlatButton x:Name="btnAcc2" Content="Button Text" Width="100" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TransparentBack="True" Click="Button_Click" RightClick="Button_RightClick" UseAccentColors="True" />
             <flat:FlatButton x:Name="btnAcc3" Content="Button Text" Width="100" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" IsEnabled="False" Click="Button_Click" RightClick="Button_RightClick" UseAccentColors="True" />
-            <TextBlock x:Name="txtResult" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="5" Text="(this will update once you click on something)" VerticalAlignment="Bottom"/>
+            <TextBlock x:Name="txtResult" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="6" Text="(this will update once you click on something)" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" >SplitButton</TextBlock>
+            <flat:SplitButton x:Name="btnSpl1" Content="Button Text" Width="100" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ColorScheme, ElementName=userControl}" Click="Button_Click" RightClick="Button_RightClick" MenuClick="Button_MenuClick" >
+                <flat:SplitButton.Menu>
+                    <flat:ContextMenu>
+                        <MenuItem Header="Item 1" />
+                        <MenuItem Header="Item 2" />
+                    </flat:ContextMenu>
+                </flat:SplitButton.Menu>
+            </flat:SplitButton>
+            <flat:SplitButton x:Name="btnSpl2" Content="Button Text" Width="100" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ColorScheme, ElementName=userControl}" TransparentBack="True" Click="Button_Click" RightClick="Button_RightClick" MenuClick="Button_MenuClick" >
+                <flat:SplitButton.Menu>
+                    <flat:ContextMenu>
+                        <MenuItem Header="Item 1" />
+                        <MenuItem Header="Item 2" />
+                    </flat:ContextMenu>
+                </flat:SplitButton.Menu>
+            </flat:SplitButton>
+            <flat:SplitButton x:Name="btnSpl3" Content="Button Text" Width="100" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" ColorScheme="{Binding ColorScheme, ElementName=userControl}" IsEnabled="False" Click="Button_Click" RightClick="Button_RightClick" MenuClick="Button_MenuClick" >
+                <flat:SplitButton.Menu>
+                    <flat:ContextMenu>
+                        <MenuItem Header="Item 1" />
+                        <MenuItem Header="Item 2" />
+                    </flat:ContextMenu>
+                </flat:SplitButton.Menu>
+            </flat:SplitButton>
         </Grid>
     </Grid>
 </UserControl>

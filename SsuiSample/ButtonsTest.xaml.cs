@@ -1,16 +1,6 @@
 ﻿using SolidShineUi;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SsuiSample
 {
@@ -73,6 +63,11 @@ namespace SsuiSample
         private void Button_RightClick(object sender, RoutedEventArgs e)
         {
             txtResult.Text = $"{(sender as FrameworkElement).Name} was right-clicked";
+        }
+
+        private void Button_MenuClick(object sender, RoutedEventArgs e)
+        {
+            txtResult.Text = $"{(sender as FrameworkElement).Name} was clicked on the menu";
         }
     }
 }
