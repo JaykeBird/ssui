@@ -557,17 +557,49 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Create a new ItemSelectionChangedEventArgs, with a related DependencyProperty.
+        /// </summary>
+        /// <param name="oldValue">The old IsSelected value.</param>
+        /// <param name="newValue">The new IsSelected value.</param>
+        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+        /// <param name="triggerSource">The source object that updated the value (if available).</param>
+        /// <param name="sourceProperty">The dependency property related to this event change (if available).</param>
+#if NETCOREAPP
+        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, DependencyProperty? sourceProperty, SelectionChangeTrigger trigger, object? triggerSource = null)
+#else
+        public ItemSelectionChangedEventArgs(bool oldValue, bool newValue, DependencyProperty sourceProperty, SelectionChangeTrigger trigger, object triggerSource = null)
+#endif
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
+            TriggerMethod = trigger;
+            TriggerSource = triggerSource;
+            Property = sourceProperty;
+        }
+
+        /// <summary>
         /// The old value of the IsSelected property.
         /// </summary>
         public bool OldValue { get; private set; }
+
         /// <summary>
         /// The new value of the IsSelected property.
         /// </summary>
         public bool NewValue { get; private set; }
+
         /// <summary>
         /// The method that was used to update the value.
         /// </summary>
         public SelectionChangeTrigger TriggerMethod { get; private set; }
+
+        /// <summary>
+        /// The dependency property related to this event, if applicable.
+        /// </summary>
+#if NETCOREAPP
+        public DependencyProperty? Property { get; private set; } = null;
+#else
+        public DependencyProperty Property { get; private set; } = null;
+#endif
 
         /// <summary>
         /// The object that caused the update to occur, if available.
