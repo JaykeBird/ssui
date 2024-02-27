@@ -1,10 +1,6 @@
 ﻿using SolidShineUi.Utils;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,8 +10,13 @@ namespace SolidShineUi
 {
 
     /// <summary>
-    /// 
+    /// A control that allows you to select a string from a larger list, by using up and down buttons.
     /// </summary>
+    /// <remarks>
+    /// This is built on the same logic as <see cref="IntegerSpinner"/> or <see cref="DoubleSpinner"/>, but for the purpose of having a list of strings that can be selected from.
+    /// This is inspired by the <c>DomainUpDown</c> control in Windows Forms. If considering this control, please also compare this to the experience with WPF's <c>ComboBox</c>
+    /// to see what will be the better user experience; this control has the limitation where users aren't able to see the full list of items at one time.
+    /// </remarks>
     [ContentProperty("Items")]
     public class StringSpinner : SpinnerBase
     {
@@ -25,7 +26,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Create a NewDoubleSpinner.
+        /// Create a StringSpinner.
         /// </summary>
         public StringSpinner()
         {
@@ -39,7 +40,12 @@ namespace SolidShineUi
             Items.CollectionChanged += Items_CollectionChanged;
         }
 
-
+        /// <summary>
+        /// Get the string value that is currently selected in this control.
+        /// </summary>
+        /// <remarks>
+        /// Use <see cref="SelectedIndex"/> to select a different string programmatically, like so: <c>mySpinner.SelectedIndex = mySpinner.Items.IndexOf("my string");</c>
+        /// </remarks>
         public string Value { get => (string)GetValue(ValueProperty); private set => SetValue(ValuePropertyKey, value); }
 
         private static readonly DependencyPropertyKey ValuePropertyKey
@@ -52,6 +58,9 @@ namespace SolidShineUi
 
         #region Base StringSpinner Properties
 
+        /// <summary>
+        /// Get the list of string values to select from in this StringSpinner control. Add items to this list via <c>Items.Add("string")</c>.
+        /// </summary>
         public ObservableCollection<string> Items { get => (ObservableCollection<string>)GetValue(ItemsProperty); private set => SetValue(ItemsPropertyKey, value); }
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
@@ -64,6 +73,9 @@ namespace SolidShineUi
         private int _minValue = 0;
         private int _selected = 0;
 
+        /// <summary>
+        /// Get the highest index value that is allowed to be set via <see cref="SelectedIndex"/> in this control. This will be equal to <c>Items.Count - 1</c>.
+        /// </summary>
         public int MaxValue { get => (int)GetValue(MaxValueProperty); private set => SetValue(MaxValuePropertyKey, value); }
 
         private static readonly DependencyPropertyKey MaxValuePropertyKey
@@ -73,6 +85,9 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="MaxValue"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MaxValueProperty = MaxValuePropertyKey.DependencyProperty;
 
+        /// <summary>
+        /// Get or set the index of the selected string in this control. This index must be between 0 and <see cref="MaxValue"/>, inclusive.
+        /// </summary>
         public int SelectedIndex
         {
             get => _selected;
@@ -90,7 +105,11 @@ namespace SolidShineUi
             }
         }
 
+#if NETCOREAPP
+        private void Items_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#else
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+#endif
         {
             ValidateValue();
             if (Items.Count <= 0)
@@ -115,8 +134,9 @@ namespace SolidShineUi
             UpdateValue(e);
         }
 
-        #endregion
+#endregion
 
+        /// <inheritdoc/>
         protected override void DoStepDown()
         {
             if (_selected > _minValue)
@@ -125,6 +145,7 @@ namespace SolidShineUi
             }
         }
 
+        /// <inheritdoc/>
         protected override void DoStepUp()
         {
             if (_selected < MaxValue)
@@ -213,6 +234,7 @@ namespace SolidShineUi
             TextBoxKeyUp(e);
         }
 
+        /// <inheritdoc/>
         protected override void ValidateValue()
         {
             if (Items.Contains(Value))
@@ -237,6 +259,7 @@ namespace SolidShineUi
             base.ValidateValue();
         }
 
+        /// <inheritdoc/>
         protected override void UpdateValue(DependencyPropertyChangedEventArgs e)
         {
             //int value = Value;

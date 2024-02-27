@@ -19,7 +19,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Create a NewLongSpinner.
+        /// Create a LongSpinner.
         /// </summary>
         public LongSpinner()
         {

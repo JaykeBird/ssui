@@ -18,7 +18,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Create a NewIntegerSpinner.
+        /// Create an IntegerSpinner.
         /// </summary>
         public IntegerSpinner()
         {
