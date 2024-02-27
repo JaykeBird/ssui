@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// The display options for a <see cref="RibbonGroup"/>.

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SolidShineUi.Toolbars;
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// An item that can be displayed on a <see cref="Ribbon"/>.

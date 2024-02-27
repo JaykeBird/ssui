@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:flat="clr-namespace:SolidShineUi"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
-    xmlns:ribbon="clr-namespace:SolidShineUi.Toolbars.Ribbon"
-    xmlns:ributils="clr-namespace:SolidShineUi.Toolbars.Ribbon.Utils"
+    xmlns:ribbon="clr-namespace:SolidShineUi.Ribbon"
+    xmlns:ributils="clr-namespace:SolidShineUi.Ribbon.Utils"
     xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
@@ -24,6 +24,7 @@
     <ssut:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
     <ssut:PartialThicknessConverter x:Key="PartialThConverter" />
     <ssut:CornerRadiusModifierConverter x:Key="CrModConverter" />
+    
     <system:Byte x:Key="byteRightCR">21</system:Byte>
     <system:Byte x:Key="byteLeftCR">10</system:Byte>
     <system:Byte x:Key="byteBottomCR">35</system:Byte>

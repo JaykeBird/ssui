@@ -1,4 +1,5 @@
-﻿using SolidShineUi.Utils;
+﻿using SolidShineUi.Ribbon;
+using SolidShineUi.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace SolidShineUi.Toolbars.Ribbon.Utils
+namespace SolidShineUi.Ribbon.Utils
 {
     /// <summary>
     /// A visual rendering of a <see cref="RibbonTab"/>, to display on a <see cref="Ribbon"/>.

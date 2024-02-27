@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// A wrapper for displaying a control within a <see cref="Ribbon"/> that isn't one of the premade controls in this namespace.
@@ -70,7 +70,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             = DependencyProperty.Register("IsCompacted", typeof(bool), typeof(RibbonCustomControl),
             new FrameworkPropertyMetadata(false));
 
-        public object Content { get => (object)GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
+        public object Content { get => GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         public static DependencyProperty ContentProperty
             = DependencyProperty.Register("Content", typeof(object), typeof(RibbonCustomControl),

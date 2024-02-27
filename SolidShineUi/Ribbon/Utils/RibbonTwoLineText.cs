@@ -30,7 +30,7 @@ using System.Windows.Shapes;
 // end user, that's another reason for using the existing and established code. Also, this code isn't complex enough that I
 // don't understand it if I need to come in and tweak it, and it's relatively easy to integrate into my own system here.
 
-namespace SolidShineUi.Toolbars.Ribbon.Utils
+namespace SolidShineUi.Ribbon.Utils
 {
     /// <summary>
     ///   A specialized label that can lay itself out on at most two lines, and

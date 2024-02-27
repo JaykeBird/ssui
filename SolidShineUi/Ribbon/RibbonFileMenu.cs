@@ -11,7 +11,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// A file menu, built to be displayed in the top-left corner of a <see cref="Ribbon"/>.
@@ -27,7 +27,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         public RibbonFileMenu()
         {
             SetValue(MinWidthProperty, 60.0);
-            SetValue(PaddingProperty, new Thickness(10,2,10,2));
+            SetValue(PaddingProperty, new Thickness(10, 2, 10, 2));
 
             Click += RibbonFileMenu_Click;
             PreviewMouseDown += control_PreviewMouseDown;

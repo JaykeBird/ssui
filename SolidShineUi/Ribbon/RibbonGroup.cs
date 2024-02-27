@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// A holder for a group of <see cref="IRibbonItem"/> objects within a <see cref="RibbonTab"/>. 
@@ -126,7 +126,7 @@ namespace SolidShineUi.Toolbars.Ribbon
         public static DependencyProperty GroupSeparatorBrushProperty
             = DependencyProperty.Register("GroupSeparatorBrush", typeof(Brush), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
-        
+
         /// <summary>
         /// Get or set how wide the vertical separator bar on the far-right side of this control.
         /// </summary>

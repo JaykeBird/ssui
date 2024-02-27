@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// A tab for a <see cref="Ribbon"/>, which can display a list of commands that a user can select.
@@ -59,7 +59,7 @@ namespace SolidShineUi.Toolbars.Ribbon
 
         public static DependencyProperty VisibilityProperty
             = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RibbonTab),
-            new FrameworkPropertyMetadata(Visibility.Visible, 
+            new FrameworkPropertyMetadata(Visibility.Visible,
                 new PropertyChangedCallback((o, e) => o.PerformAs<RibbonTab>((t) => t.VisibilityChanged?.Invoke(t, e)))));
 
         /// <summary>

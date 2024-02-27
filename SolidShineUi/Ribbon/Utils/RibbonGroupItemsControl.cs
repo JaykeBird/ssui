@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using SolidShineUi.Ribbon;
 
-namespace SolidShineUi.Toolbars.Ribbon.Utils
+namespace SolidShineUi.Ribbon.Utils
 {
 
     /// <summary>

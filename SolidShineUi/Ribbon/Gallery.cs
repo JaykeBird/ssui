@@ -12,7 +12,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace SolidShineUi.Toolbars.Ribbon
+namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// A dynamic control for use on a <see cref="Ribbon"/>, designed to display a list of options with a more visual layout.
@@ -163,7 +163,7 @@ namespace SolidShineUi.Toolbars.Ribbon
             BorderBrush = cs.BorderColor.ToBrush();
 
             UpdateSubitemColors();
-            
+
         }
         #endregion
 
