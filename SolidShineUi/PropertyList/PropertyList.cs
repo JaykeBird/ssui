@@ -60,19 +60,6 @@ namespace SolidShineUi.PropertyList
         }
 
         #region Events
-        /// <summary>
-        /// A delegate to be used with events regarding the value of a property changing.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void PropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
-
-        /// <summary>
-        /// A delegate to be used with events regarding an object being loaded or accessed.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void PropertyListObjectEventHandler(object sender, PropertyListObjectEventArgs e);
 
         /// <summary>
         /// Raised when the value of a property has changed via a property editor. This refers to the properties of the object currently being observed by the PropertyList control.
@@ -87,7 +74,7 @@ namespace SolidShineUi.PropertyList
         /// Raised when the currently loaded/observed object in the PropertyList control changes.
         /// </summary>
         /// <remarks>
-        /// This is also raised when the ReloadObject 
+        /// This is also raised when <see cref="ReloadObject()"/> is called, but in that case, <see cref="PropertyListObjectEventArgs.IsReload"/> is set to <c>true</c>.
         /// </remarks>
 #if NETCOREAPP
         public event PropertyListObjectEventHandler? LoadedObjectChanged;
@@ -1041,6 +1028,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Rune), typeof(CharEditor));
             RegisterEditor(typeof(Rune?), typeof(CharEditor));
 #endif
+            RegisterEditor(typeof(Cursor), typeof(CursorEditor));
         }
 
         #region Generator Property Editors / Editor Value Changed

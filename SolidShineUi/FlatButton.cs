@@ -227,7 +227,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatButton),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -645,6 +645,8 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Base Click Functions
+
         // Sets up the button to be clicked. This must be run before PerformClick.
         void PressRightClick()
         {
@@ -681,6 +683,8 @@ namespace SolidShineUi
 
             base.OnClick();
         }
+
+        #endregion
 
         #region Event handlers
 

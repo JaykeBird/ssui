@@ -3,11 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using SolidShineUi.Utils;
-using static SolidShineUi.CollectionSelectionChangedEventArgs;
 
 namespace SolidShineUi
 {
@@ -47,11 +42,18 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Represents a handler for the ItemRemoving event.
+        /// Represents a handler for the event <see cref="ItemRemoving"/>.
         /// </summary>
         /// <param name="sender">The source object of the event.</param>
         /// <param name="e">The event arguments, containing the item being removed and the ability to cancel the removal.</param>
         public delegate void ItemRemovingEventHandler(object sender, ItemRemovingEventArgs<T> e);
+
+        /// <summary>
+        /// Represents a handler for the event <see cref="ItemAdding"/>.
+        /// </summary>
+        /// <param name="sender">The source object of the event.</param>
+        /// <param name="e">The event arguments, containing the item being added and the ability to cancel the addition.</param>
+        public delegate void ItemAddingEventHandler(object sender, ItemAddingEventArgs<T> e);
 
         /// <summary>
         /// Raised before an item is removed, to give the ability to cancel removing this item.
@@ -61,14 +63,7 @@ namespace SolidShineUi
 #else
         public event ItemRemovingEventHandler ItemRemoving;
 #endif
-
-        /// <summary>
-        /// Represents a handler for the ItemAdding event.
-        /// </summary>
-        /// <param name="sender">The source object of the event.</param>
-        /// <param name="e">The event arguments, containing the item being added and the ability to cancel the addition.</param>
-        public delegate void ItemAddingEventHandler(object sender, ItemAddingEventArgs<T> e);
-
+        
         /// <summary>
         /// Raised before an item is added, to give the ability to cancel adding this item.
         /// </summary>

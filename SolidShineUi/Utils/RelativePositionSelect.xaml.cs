@@ -24,8 +24,11 @@ namespace SolidShineUi.Utils
         {
             InitializeComponent();
 
-            HorizontalSnapPoints.CollectionChanged += HorizontalSnapPoints_CollectionChanged;
-            VerticalSnapPoints.CollectionChanged += VerticalSnapPoints_CollectionChanged;
+            HorizontalSnapPoints = new ObservableCollection<double>();
+            VerticalSnapPoints = new ObservableCollection<double>();
+
+            //HorizontalSnapPoints.CollectionChanged += HorizontalSnapPoints_CollectionChanged;
+            //VerticalSnapPoints.CollectionChanged += VerticalSnapPoints_CollectionChanged;
             SizeChanged += RelativePositionSelect_SizeChanged;
             GotKeyboardFocus += RelativePositionSelect_GotKeyboardFocus;
             LostKeyboardFocus += RelativePositionSelect_LostKeyboardFocus;
@@ -352,13 +355,56 @@ namespace SolidShineUi.Utils
         /// Get or set the list of snap points that are displayed along the horizontal (X) axis of the control.
         /// <c>0.0</c> represents the far left of the control, and <c>1.0</c> represents the far right of the control.
         /// </summary>
-        public ObservableCollection<double> HorizontalSnapPoints { get; set; } = new ObservableCollection<double>();
+        public ObservableCollection<double> HorizontalSnapPoints
+        { 
+            get => (ObservableCollection<double>)GetValue(HorizontalSnapPointsProperty); 
+            set => SetValue(HorizontalSnapPointsProperty, value); 
+        }
+
+        /// <summary>The backing dependency property for <see cref="HorizontalSnapPoints"/>. See the related property for details.</summary>
+        public static DependencyProperty HorizontalSnapPointsProperty
+            = DependencyProperty.Register(nameof(HorizontalSnapPoints), typeof(ObservableCollection<double>), typeof(RelativePositionSelect), 
+                new FrameworkPropertyMetadata(new PropertyChangedCallback((d, e) => d.PerformAs<RelativePositionSelect>((r) => r.HorizontalSnapPointsChanged(r, e)))));
 
         /// <summary>
         /// Get or set the list of snap points that are displayed along the vertical (Y) axis of the control.
         /// <c>0.0</c> represents the far top of the control, and <c>1.0</c> represents the far bottom of the control.
         /// </summary>
-        public ObservableCollection<double> VerticalSnapPoints { get; set; } = new ObservableCollection<double>();
+        public ObservableCollection<double> VerticalSnapPoints
+        { 
+            get => (ObservableCollection<double>)GetValue(VerticalSnapPointsProperty); 
+            set => SetValue(VerticalSnapPointsProperty, value); 
+        }
+
+        /// <summary>The backing dependency property for <see cref="VerticalSnapPoints"/>. See the related property for details.</summary>
+        public static DependencyProperty VerticalSnapPointsProperty
+            = DependencyProperty.Register(nameof(VerticalSnapPoints), typeof(ObservableCollection<double>), typeof(RelativePositionSelect),
+                new FrameworkPropertyMetadata(new PropertyChangedCallback((d, e) => d.PerformAs<RelativePositionSelect>((r) => r.VerticalSnapPointsChanged(r, e)))));
+
+        private void HorizontalSnapPointsChanged(RelativePositionSelect sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is ObservableCollection<double> od)
+            {
+                od.CollectionChanged -= HorizontalSnapPoints_CollectionChanged;
+            }
+            if (e.NewValue is ObservableCollection<double> nd)
+            {
+                nd.CollectionChanged += HorizontalSnapPoints_CollectionChanged;
+            }
+        }
+
+        private void VerticalSnapPointsChanged(RelativePositionSelect sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue is ObservableCollection<double> od)
+            {
+                od.CollectionChanged -= VerticalSnapPoints_CollectionChanged;
+            }
+            if (e.NewValue is ObservableCollection<double> nd)
+            {
+                nd.CollectionChanged += VerticalSnapPoints_CollectionChanged;
+            }
+        }
+
 
 #if NETCOREAPP
         private void VerticalSnapPoints_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

@@ -117,12 +117,12 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the list of selected items is changed.
         /// </summary>
-        public event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler? SelectionChanged;
+        public event SelectionChangedEventHandler? SelectionChanged;
 #else
         /// <summary>
         /// Raised when the list of selected items is changed.
         /// </summary>
-        public event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler SelectionChanged;
+        public event SelectionChangedEventHandler SelectionChanged;
 #endif
 
         /// <summary>

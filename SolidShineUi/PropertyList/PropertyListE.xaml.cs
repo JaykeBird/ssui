@@ -50,19 +50,6 @@ namespace SolidShineUi.PropertyList
         }
 
         #region Events
-        /// <summary>
-        /// A delegate to be used with events regarding the value of a property changing.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void PropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
-
-        /// <summary>
-        /// A delegate to be used with events regarding an object being loaded or accessed.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void PropertyListObjectEventHandler(object sender, PropertyListObjectEventArgs e);
 
         /// <summary>
         /// Raised when the value of a property has changed via a property editor. This refers to the properties of the object currently being observed by the PropertyList control.

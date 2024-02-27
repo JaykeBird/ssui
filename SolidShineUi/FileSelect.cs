@@ -781,7 +781,7 @@ namespace SolidShineUi
             private set { SetValue(SelectedFilesPropertyKey, value); }
         }
 
-        private void SelectedFiles_AddingItem(object sender, ItemAddingStringEventArgs e)
+        private void SelectedFiles_AddingItem(object sender, ItemAddingEventArgs<string> e)
         {
             if (!File.Exists(e.Item) && FileMustExist || !FileMatchesFilter(e.Item, FileFilter.Split(FILTER_DELIMITER)))
             {

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using System.IO;
+using System.Windows;
 
 namespace SolidShineUi.Utils
 {
@@ -18,7 +19,6 @@ namespace SolidShineUi.Utils
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-#if NETCOREAPP
             if (value is IEnumerable<string> ie)
             {
                 string first = ie.FirstOrDefault() ?? "";
@@ -30,23 +30,8 @@ namespace SolidShineUi.Utils
             }
             else
             {
-                return null!;
+                return DependencyProperty.UnsetValue;
             }
-#else
-            if (value is IEnumerable<string> ie)
-            {
-                string first = ie.FirstOrDefault() ?? "";
-                return GetFileNameFromFullPath(first);
-            }
-            else if (value is string s)
-            {
-                return GetFileNameFromFullPath(s);
-            }
-            else
-            {
-                return null;
-            }
-#endif
         }
 
         private static string GetFileNameFromFullPath(string path)
@@ -55,11 +40,11 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// This is not implemented. Throws a <see cref="NotImplementedException"/>.
+        /// This is not implemented. Returns <see cref="DependencyProperty.UnsetValue"/>.
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
 
     }

@@ -70,9 +70,9 @@ namespace SolidShineUi
         /// Raised when the selection is changed, including additions and removals.
         /// </summary>
 #if NETCOREAPP
-        event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler? SelectionChanged;
+        event SelectionChangedEventHandler? SelectionChanged;
 #else
-        event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler SelectionChanged;
+        event SelectionChangedEventHandler SelectionChanged;
 #endif
     }
 
@@ -151,12 +151,19 @@ namespace SolidShineUi
         /// Raised when the selection is changed, including additions and removals.
         /// </summary>
 #if NETCOREAPP
-        event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler? SelectionChanged;
+        event SelectionChangedEventHandler? SelectionChanged;
 #else
-        event CollectionSelectionChangedEventArgs.SelectionChangedEventHandler SelectionChanged;
+        event SelectionChangedEventHandler SelectionChanged;
 #endif
 
     }
+
+    /// <summary>
+    /// Represents a handler for the SelectionChanged event.
+    /// </summary>
+    /// <param name="sender">The source object of the event.</param>
+    /// <param name="e">The event arguments, containing the list of items being added or removed from the selection.</param>
+    public delegate void SelectionChangedEventHandler(object sender, CollectionSelectionChangedEventArgs e);
 
     /// <summary>
     /// A non-generic version of SelectionChangedEventArgs. This can be more generally used in other situations, and implemented by ISelectableCollection.
@@ -183,11 +190,5 @@ namespace SolidShineUi
         /// </summary>
         public ICollection RemovedItems { get; private set; }
 
-        /// <summary>
-        /// Represents a handler for the SelectionChanged event.
-        /// </summary>
-        /// <param name="sender">The source object of the event.</param>
-        /// <param name="e">The event arguments, containing the list of items being added or removed from the selection.</param>
-        public delegate void SelectionChangedEventHandler(object sender, CollectionSelectionChangedEventArgs e);
     }
 }

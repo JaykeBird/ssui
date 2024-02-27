@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -13,35 +14,31 @@ namespace SolidShineUi
         /// <summary>
         /// Convert a Color into a SolidColorBrush.
         /// </summary>
+        /// <remarks>
+        /// If the value is not of type <see cref="Color"/>, then <see cref="DependencyProperty.UnsetValue"/> is returned.
+        /// </remarks>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new SolidColorBrush((Color)value);
+            if (value is Color c)
+            {
+                return new SolidColorBrush(c);
+            }
+            else return DependencyProperty.UnsetValue;
         }
 
         /// <summary>
-        /// Convert a SolidColorBrush to its Color. If the passed in value is not a SolidColorBrush, this returns null.
+        /// Convert a SolidColorBrush to its Color.
         /// </summary>
+        /// <remarks>
+        /// If the value is not of type <see cref="SolidColorBrush"/>, then <see cref="DependencyProperty.UnsetValue"/> is returned.
+        /// </remarks>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-#if NETCOREAPP
             if (value is SolidColorBrush s)
             {
                 return s.Color;
             }
-            else
-            {
-                return null!;
-            }
-#else
-            if (value is SolidColorBrush s)
-            {
-                return s.Color;
-            }
-            else
-            {
-                return null;
-            }
-#endif
+            else return DependencyProperty.UnsetValue;
         }
     }
 }

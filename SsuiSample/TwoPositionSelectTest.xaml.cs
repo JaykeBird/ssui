@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using SolidShineUi;
+using SolidShineUi.Utils;
 
 namespace SsuiSample
 {
@@ -117,6 +118,18 @@ namespace SsuiSample
         private void nudSnapsize_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             selPos1.SnapDistance = nudSnapsize.Value;
+        }
+
+        private void btnSnapPointTest_Click(object sender, RoutedEventArgs e)
+        {
+            if (selPos1.VerticalSnapPoints.Contains(0.35d))
+            {
+                selPos1.VerticalSnapPoints.Remove(0.35d);
+            }
+            else
+            {
+                selPos1.VerticalSnapPoints.Add(0.35d);
+            }
         }
     }
 }

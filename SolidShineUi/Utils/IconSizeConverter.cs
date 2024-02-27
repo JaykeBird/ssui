@@ -40,11 +40,11 @@ namespace SolidShineUi.Utils
         /// </remarks>
         /// <returns>A <see cref="BitmapFrame"/> of an icon, that matches the size (or nearest size) passed in. If the icon cannot be found, returns <c>null</c>.</returns>
 #if NETCOREAPP
-        public virtual object? Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Uri? uri = null;
 #else
-        public virtual object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             Uri uri = null;
 #endif
@@ -75,7 +75,7 @@ namespace SolidShineUi.Utils
 
                 if (string.IsNullOrWhiteSpace(suri))
                 {
-                    return null;
+                    return DependencyProperty.UnsetValue;
                 }
                 else if (Uri.IsWellFormedUriString(suri, UriKind.Absolute))
                 {
@@ -108,14 +108,14 @@ namespace SolidShineUi.Utils
 
                 return result;
             }
-            catch (System.IO.FileFormatException) { return null; }
-            catch (ArgumentNullException) { return null; }
+            catch (System.IO.FileFormatException) { return DependencyProperty.UnsetValue; }
+            catch (ArgumentNullException) { return DependencyProperty.UnsetValue; }
         }
 
-        /// <summary>Not implemented, throws a <see cref="NotImplementedException"/>.</summary>
+        /// <summary>Not implemented, returns <see cref="DependencyProperty.UnsetValue"/>.</summary>
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
     }
 }

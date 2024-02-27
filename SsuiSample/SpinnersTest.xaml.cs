@@ -72,5 +72,10 @@ namespace SsuiSample
         {
             brdrColor.Background = new SolidColorBrush(ColorsHelper.CreateFromHex(nud9.Value.ToString("X6")));
         }
+
+        private void nud9_Loaded(object sender, RoutedEventArgs e)
+        {
+            brdrColor.Background = new SolidColorBrush(ColorsHelper.CreateFromHex(nud9.Value.ToString("X6")));
+        }
     }
 }

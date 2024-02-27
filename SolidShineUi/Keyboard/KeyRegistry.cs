@@ -26,17 +26,19 @@ namespace SolidShineUi.KeyboardShortcuts
         }
     }
 
+
+    /// <summary>
+    /// A delegate to be used with events regarding keyboard shortcuts.
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void KeyboardShortcutEventHandler(object sender, KeyboardShortcutEventArgs e);
+
     /// <summary>
     /// A class to hold and handle keyboard shortcuts, and determine which shortcut to use based upon key presses.
     /// </summary>
     public class KeyRegistry
     {
-        /// <summary>
-        /// A delegate to be used with events regarding keyboard shortcuts.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void KeyboardShortcutEventHandler(object sender, KeyboardShortcutEventArgs e);
 
 #if NETCOREAPP
         /// <summary>

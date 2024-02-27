@@ -13,7 +13,6 @@ namespace SolidShineUi
     /// A class containing methods that can be used to load colors from various color palette file formats.
     /// </summary>
     public static class ColorPaletteFileReader
-
     {
         // The PAL and Adobe/Photoshop file functions come from https://www.cyotek.com/blog/tag/color-palette
         // which has been a really helpful resource while dealing with these files
@@ -395,7 +394,7 @@ namespace SolidShineUi
 
         #endregion
 
-        //#region Adobe ASE (currently doesn't work)
+        #region Adobe ASE (currently doesn't work)
 
         //// this file format, in particular, suffers from the lack of advanced features which this library doesn't need
         //// all support/handling for color groups, as well as a lot of other data, is simply stripped out
@@ -499,7 +498,7 @@ namespace SolidShineUi
         //    return Color.FromRgb((byte)r, (byte)g, (byte)b);
         //}
 
-        //#endregion
+        #endregion
 
         #region Paint.NET/GIMP/PowerToys
 

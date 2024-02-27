@@ -9,7 +9,10 @@ using System.Windows.Data;
 
 namespace SolidShineUi.Utils
 {
-    internal class CornerRadiusModifierConverter : IValueConverter
+    /// <summary>
+    /// A converter to modify one <see cref="CornerRadius"/>, by adding on a constant value or another CornerRadius object.
+    /// </summary>
+    public class CornerRadiusModifierConverter : IValueConverter
     {
         /// <summary>
         /// Modify a <see cref="CornerRadius"/> to add on a constant value set in <paramref name="parameter"/>.
@@ -50,7 +53,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
 
     }
