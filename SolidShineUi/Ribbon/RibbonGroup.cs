@@ -39,32 +39,7 @@ namespace SolidShineUi.Ribbon
                 (s, e) => e.CanExecute = ShowLauncher && IsLauncherEnabled));
         }
 
-        /// <summary>
-        /// Get or set the title to display at the bottom of the group. Use a title name that succinctly describes the commands that are contained in this group.
-        /// </summary>
-        [Category("Common")]
-        public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
-
-        /// <summary>
-        /// The backing dependency property object. See the related property for details.
-        /// </summary>
-        public static DependencyProperty TitleProperty
-            = DependencyProperty.Register("Title", typeof(string), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata("Group"));
-
-        /// <summary>
-        /// Get or set if the header (which contains the group's title and launcher icon) is displayed at the bottom of the group or not.
-        /// </summary>
-        [Category("Common")]
-        public bool ShowGroupHeader { get => (bool)GetValue(ShowGroupHeaderProperty); set => SetValue(ShowGroupHeaderProperty, value); }
-
-        /// <summary>
-        /// The backing dependency property object. See the related property for details.
-        /// </summary>
-        public static DependencyProperty ShowGroupHeaderProperty
-            = DependencyProperty.Register("ShowGroupHeader", typeof(bool), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(true));
-
+        #region Items
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonGroup),
@@ -103,6 +78,38 @@ namespace SolidShineUi.Ribbon
             get { return (ObservableCollection<IRibbonItem>)GetValue(ExpandedItemsProperty); }
             private set { SetValue(ExpandedItemsPropertyKey, value); }
         }
+
+        #endregion
+
+        #region Header/Title
+
+        /// <summary>
+        /// Get or set the title to display at the bottom of the group. Use a title name that succinctly describes the commands that are contained in this group.
+        /// </summary>
+        [Category("Common")]
+        public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
+
+        /// <summary>
+        /// The backing dependency property object for <see cref="Title"/> property. See the related property for details.
+        /// </summary>
+        public static DependencyProperty TitleProperty
+            = DependencyProperty.Register("Title", typeof(string), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata("Group"));
+
+        /// <summary>
+        /// Get or set if the header (which contains the group's title and the dialog launcher button) is displayed at the bottom of the group or not.
+        /// </summary>
+        [Category("Common")]
+        public bool ShowGroupHeader { get => (bool)GetValue(ShowGroupHeaderProperty); set => SetValue(ShowGroupHeaderProperty, value); }
+
+        /// <summary>
+        /// The backing dependency property object for <see cref="ShowGroupHeader"/> property. See the related property for details.
+        /// </summary>
+        public static DependencyProperty ShowGroupHeaderProperty
+            = DependencyProperty.Register("ShowGroupHeader", typeof(bool), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(true));
+
+        #endregion
 
         #region Right Separator
 
@@ -249,32 +256,62 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("IsExpanderPinned", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(false));
 
-
         #endregion
 
         #region Launcher
 
+        /// <summary>
+        /// Get or set if the dialog launcher should be shown at the bottom-right corner of this Ribbon group.
+        /// </summary>
+        /// <remarks>
+        /// The dialog launcher is a small button which usually is used to launch a dialog box or other UI that contains more options that are related to the commands in a Ribbon group, but
+        /// were not placed onto the Ribbon group. For example, a Ribbon group with commands for changing font and text options (like font style, size, color, etc.) could have a dialog launcher
+        /// that when clicked, opens a Font dialog that contains even more options for editing fonts.
+        /// <para />
+        /// The dialog launcher should be used for displaying another piece of UI, such as a dialog box or side pane - it shouldn't directly cause something to happen with your app's content.
+        /// While the dialog launcher button was present from the start with Microsoft Office's Ribbon control, many other programs using the Ribbon do not have any dialog launcher buttons at 
+        /// all.
+        /// </remarks>
         public bool ShowLauncher { get => (bool)GetValue(ShowLauncherProperty); set => SetValue(ShowLauncherProperty, value); }
 
+        /// <summary>
+        /// The dependency property object for the <see cref="ShowLauncher"/> property. See the related property for details.
+        /// </summary>
         public static DependencyProperty ShowLauncherProperty
             = DependencyProperty.Register("ShowLauncher", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(false));
 
+        /// <summary>
+        /// Get or set the tooltip to display when the dialog launcher button has focus or the mouse over it.
+        /// </summary>
         public ToolTip LauncherTooltip { get => (ToolTip)GetValue(LauncherTooltipProperty); set => SetValue(LauncherTooltipProperty, value); }
 
+        /// <summary>
+        /// The dependency property object for the <see cref="LauncherTooltip"/> property. See the related property for details.
+        /// </summary>
         public static DependencyProperty LauncherTooltipProperty
             = DependencyProperty.Register("LauncherTooltip", typeof(ToolTip), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(null));
 
+        /// <summary>
+        /// Get or set if the dialog launcher button should be enabled. Use <see cref="ShowLauncher"/> to hide the button entirely.
+        /// </summary>
+        /// <remarks>
+        /// When in a situation where the dialog launcher button's action isn't doable or should be disabled, use this property to disable the button rather than using <see cref="ShowLauncher"/>
+        /// to hide the button. The button should remain visible even when it's disabled, so that users can still have the knowledge that this button is present, even if not usable in this context.
+        /// </remarks>
         public bool IsLauncherEnabled { get => (bool)GetValue(IsLauncherEnabledProperty); set => SetValue(IsLauncherEnabledProperty, value); }
 
+        /// <summary>
+        /// The dependency property object for the <see cref="IsLauncherEnabled"/> property. See the related property for details.
+        /// </summary>
         public static DependencyProperty IsLauncherEnabledProperty
             = DependencyProperty.Register("IsLauncherEnabled", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
-        /// Raised when the launcher in the bottom-right corner of the group is clicked. 
-        /// The launcher is only shown and clickable if <see cref="ShowLauncher"/> is set to <c>true</c>.
+        /// Raised when the dialog launcher button in the bottom-right corner of the group is clicked. 
+        /// The launcher is only shown and clickable if <see cref="ShowLauncher"/> is set to <c>true</c> (and <see cref="IsLauncherEnabled"/> is also <c>true</c>).
         /// </summary>
 #if NETCOREAPP
         public event EventHandler? LauncherClick;
@@ -286,25 +323,25 @@ namespace SolidShineUi.Ribbon
 
         #region Undocking
 
-        public bool CanBeUndocked { get => (bool)GetValue(CanBeUndockedProperty); set => SetValue(CanBeUndockedProperty, value); }
+        // not to be implemented in 2.0
 
-        public static DependencyProperty CanBeUndockedProperty
-            = DependencyProperty.Register("CanBeUndocked", typeof(bool), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(true));
+        //public bool CanBeUndocked { get => (bool)GetValue(CanBeUndockedProperty); set => SetValue(CanBeUndockedProperty, value); }
 
-        public bool IsUndocked { get => (bool)GetValue(IsUndockedProperty); set => SetValue(IsUndockedProperty, value); }
+        //public static DependencyProperty CanBeUndockedProperty
+        //    = DependencyProperty.Register("CanBeUndocked", typeof(bool), typeof(RibbonGroup),
+        //    new FrameworkPropertyMetadata(true));
 
-        public static DependencyProperty IsUndockedProperty
-            = DependencyProperty.Register("IsUndocked", typeof(bool), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(false));
+        //public bool IsUndocked { get => (bool)GetValue(IsUndockedProperty); set => SetValue(IsUndockedProperty, value); }
 
-        public Point UndockedPosition { get => (Point)GetValue(UndockedPositionProperty); set => SetValue(UndockedPositionProperty, value); }
+        //public static DependencyProperty IsUndockedProperty
+        //    = DependencyProperty.Register("IsUndocked", typeof(bool), typeof(RibbonGroup),
+        //    new FrameworkPropertyMetadata(false));
 
-        public static DependencyProperty UndockedPositionProperty
-            = DependencyProperty.Register("UndockedPosition", typeof(Point), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(null));
+        //public Point UndockedPosition { get => (Point)GetValue(UndockedPositionProperty); set => SetValue(UndockedPositionProperty, value); }
 
-
+        //public static DependencyProperty UndockedPositionProperty
+        //    = DependencyProperty.Register("UndockedPosition", typeof(Point), typeof(RibbonGroup),
+        //    new FrameworkPropertyMetadata(null));
 
         #endregion
 
