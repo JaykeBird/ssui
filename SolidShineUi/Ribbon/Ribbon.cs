@@ -37,6 +37,9 @@ namespace SolidShineUi.Ribbon
 
             //InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
 
+            CommandBindings.Add(new CommandBinding(TabControl.TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = TabScrollButtonsVisible; }));
+
+
             Loaded += Ribbon_Loaded;
 
             Items.CollectionChanged += Items_CollectionChanged;
@@ -527,7 +530,7 @@ namespace SolidShineUi.Ribbon
         #endregion
 
         /// <summary>
-        /// Get or set if tabs, groups, and controls are able to be re-arranged on this Ribbon. (Note that for 2.0, this does not work, and will be iterated upon further in later releases.)
+        /// Get or set if tabs, groups, and controls are able to be re-arranged on this Ribbon. (Note that for 2.0, this will not be supported, and will be iterated upon further in later releases.)
         /// </summary>
         private bool AllowControlReordering { get => (bool)GetValue(AllowControlReorderingProperty); set => SetValue(AllowControlReorderingProperty, value); }
 
@@ -538,6 +541,9 @@ namespace SolidShineUi.Ribbon
 
         #region Brushes
 
+        /// <summary>
+        /// Get or set the brush to use for the background of the main command bar area of the Ribbon.
+        /// </summary>
         public Brush MainBarBackground { get => (Brush)GetValue(MainBarBackgroundProperty); set => SetValue(MainBarBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MainBarBackground"/>. See the related property for details.</summary>
@@ -545,7 +551,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("MainBarBackground", typeof(Brush), typeof(Ribbon),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
-
+        /// <summary>
+        /// Get or set the brush to use for the background of the tab area of the Ribbon (where the tab labels are).
+        /// </summary>
         public Brush TabBarBackground { get => (Brush)GetValue(TabBarBackgroundProperty); set => SetValue(TabBarBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBarBackground"/>. See the related property for details.</summary>
@@ -553,6 +561,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("TabBarBackground", typeof(Brush), typeof(Ribbon),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush to use for borders in the Ribbon - such as the border around the main command bar area and around the tab headers.
+        /// </summary>
         public new Brush BorderBrush { get => (Brush)GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
@@ -585,7 +596,7 @@ namespace SolidShineUi.Ribbon
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP
             ColorScheme cs = (e.NewValue as ColorScheme)!;
@@ -644,13 +655,13 @@ namespace SolidShineUi.Ribbon
         }
         #endregion
 
-        #region Setup TabDisplayItem / Tdi Event Handlers
+        #region Setup RibbonTabDisplayItem / Tdi Event Handlers
 
         /// <summary>
-        /// Set up a new TabDisplayItem that was added to this TabControl.
-        /// This will set up the necessary event handlers and other properties to allow the TabDisplayItem to interact with the TabControl.
+        /// Set up a new RibbonTabDisplayItem that was added to this Ribbon.
+        /// This will set up the necessary event handlers and other properties to allow the RibbonTabDisplayItem to interact with the Ribbon.
         /// </summary>
-        /// <param name="tdi">The TabDisplayItem to set up.</param>
+        /// <param name="tdi">The RibbonTabDisplayItem to set up.</param>
         internal protected void SetupTabDisplay(RibbonTabDisplayItem tdi)
         {
             tdi.Click += tdi_Click;
@@ -681,6 +692,8 @@ namespace SolidShineUi.Ribbon
         {
             if (sender is RibbonTabDisplayItem tdi)
             {
+                // TODO: add on Ribbon context menu
+
                 //if (tdi.TabItem.TabContextMenu != null)
                 //{
                 //    ContextMenu cm = tdi.TabItem.TabContextMenu;
@@ -803,10 +816,10 @@ namespace SolidShineUi.Ribbon
         }
         #endregion
 
-        /// <summary>
-        /// A WPF command that when executed, will scroll the tab control's tab bar to the left or right.
-        /// </summary>
-        public static readonly RoutedCommand TabBarScrollCommand = new RoutedCommand("TabBarScrollCommand", typeof(Ribbon));
+        ///// <summary>
+        ///// A WPF command that when executed, will scroll the tab control's tab bar to the left or right.
+        ///// </summary>
+        //public static readonly RoutedCommand TabBarScrollCommand = new RoutedCommand("TabBarScrollCommand", typeof(Ribbon));
 
         void CheckScrolling()
         {

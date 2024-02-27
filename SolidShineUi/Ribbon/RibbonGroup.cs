@@ -34,10 +34,13 @@ namespace SolidShineUi.Ribbon
         public RibbonGroup()
         {
             SetValue(ItemsPropertyKey, new ObservableCollection<IRibbonItem>());
+            SetValue(ExpandedItemsPropertyKey, new ObservableCollection<IRibbonItem>());
 
             CommandBindings.Add(new System.Windows.Input.CommandBinding(RibbonCommands.DialogLauncherAction, (s, e) => LauncherClick?.Invoke(this, e),
                 (s, e) => e.CanExecute = ShowLauncher && IsLauncherEnabled));
         }
+
+
 
         #region Items
 
@@ -60,6 +63,8 @@ namespace SolidShineUi.Ribbon
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
+        #region Expanded Items
+
         private static readonly DependencyPropertyKey ExpandedItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("ExpandedItems", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
@@ -78,6 +83,20 @@ namespace SolidShineUi.Ribbon
             get { return (ObservableCollection<IRibbonItem>)GetValue(ExpandedItemsProperty); }
             private set { SetValue(ExpandedItemsPropertyKey, value); }
         }
+
+        public bool HasExpanderOpen { get => (bool)GetValue(HasExpanderOpenProperty); set => SetValue(HasExpanderOpenProperty, value); }
+
+        public static DependencyProperty HasExpanderOpenProperty
+            = DependencyProperty.Register("HasExpanderOpen", typeof(bool), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(false));
+
+        public bool IsExpanderPinned { get => (bool)GetValue(IsExpanderPinnedProperty); set => SetValue(IsExpanderPinnedProperty, value); }
+
+        public static DependencyProperty IsExpanderPinnedProperty
+            = DependencyProperty.Register("IsExpanderPinned", typeof(bool), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(false));
+
+        #endregion
 
         #endregion
 
@@ -234,27 +253,20 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("CompactOrder", typeof(int), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(0));
 
-        public GroupSizeMode SizeMode { get => (GroupSizeMode)GetValue(SizeModeProperty); set => SetValue(SizeModeProperty, value); }
+        /// <summary>
+        /// Get or set the current size for this group. 
+        /// </summary>
+        public GroupSizeMode CompactSize { get => (GroupSizeMode)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
-        public static DependencyProperty SizeModeProperty
-            = DependencyProperty.Register("SizeMode", typeof(GroupSizeMode), typeof(RibbonGroup),
+        public static DependencyProperty CompactSizeProperty
+            = DependencyProperty.Register("CompactSize", typeof(GroupSizeMode), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(GroupSizeMode.Standard));
 
-        #endregion
+        public ImageSource GroupIcon { get => (ImageSource)GetValue(GroupIconProperty); set => SetValue(GroupIconProperty, value); }
 
-        #region Expanded Items
-
-        public bool HasExpanderOpen { get => (bool)GetValue(HasExpanderOpenProperty); set => SetValue(HasExpanderOpenProperty, value); }
-
-        public static DependencyProperty HasExpanderOpenProperty
-            = DependencyProperty.Register("HasExpanderOpen", typeof(bool), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(false));
-
-        public bool IsExpanderPinned { get => (bool)GetValue(IsExpanderPinnedProperty); set => SetValue(IsExpanderPinnedProperty, value); }
-
-        public static DependencyProperty IsExpanderPinnedProperty
-            = DependencyProperty.Register("IsExpanderPinned", typeof(bool), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(false));
+        public static DependencyProperty GroupIconProperty
+            = DependencyProperty.Register("GroupIcon", typeof(ImageSource), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(null));
 
         #endregion
 

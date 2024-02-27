@@ -8,11 +8,12 @@
     xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
+    
+    <!-- when first opening this file, it's recommended to collapse all elements first. this is a very big file lol -->
 
     <!--<ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/SolidShineUi;component/TabControlStyle.xaml" />
         <ResourceDictionary>-->
-
     <flat:ColorToBrushConverter x:Key="ColorConverter" />
     <BooleanToVisibilityConverter x:Key="VisConverter" />
     <flat:BindableChildConverter x:Key="BindableChildConverter" />
