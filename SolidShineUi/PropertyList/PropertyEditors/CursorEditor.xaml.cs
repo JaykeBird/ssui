@@ -63,7 +63,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
+#if NETCOREAPP
+        public event EventHandler? ValueChanged;
+#else
         public event EventHandler ValueChanged;
+#endif
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()

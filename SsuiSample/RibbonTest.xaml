@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
-             xmlns:ribbon="clr-namespace:SolidShineUi.Toolbars.Ribbon;assembly=SolidShineUi"
+             xmlns:ribbon="clr-namespace:SolidShineUi.Ribbon;assembly=SolidShineUi"
              xmlns:local="clr-namespace:SsuiSample"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
