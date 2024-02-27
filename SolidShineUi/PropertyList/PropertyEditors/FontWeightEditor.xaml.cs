@@ -48,11 +48,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         { 
             set
             {
-                nudWeight.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-                imgItalic.Source = LoadIcon("TextBold", value);
-                imgMenu.Source = LoadIcon("ThreeDots", value);
+                ApplyColorScheme(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            nudWeight.ColorScheme = cs;
+            btnMenu.ColorScheme = cs;
+            imgItalic.Source = LoadIcon("TextBold", cs);
+            imgMenu.Source = LoadIcon("ThreeDots", cs);
         }
 
         /// <inheritdoc/>

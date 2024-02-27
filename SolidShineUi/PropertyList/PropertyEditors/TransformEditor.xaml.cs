@@ -42,17 +42,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         ColorScheme _cs = new ColorScheme();
 
-        /// <summary>
-        /// Set the visual appearance of this control via a ColorScheme.
-        /// </summary>
-        /// <param name="value">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme value)
-        {
-            _cs = value;
-            btnMenu.ColorScheme = value;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", value);
-        }
-
         /// <inheritdoc/>
         public ColorScheme ColorScheme
         {
@@ -60,6 +49,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 ApplyColorScheme(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            _cs = cs;
+            btnMenu.ColorScheme = cs;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
         }
 
         /// <inheritdoc/>

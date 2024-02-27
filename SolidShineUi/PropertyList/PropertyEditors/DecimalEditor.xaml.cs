@@ -43,21 +43,27 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             set
             {
-                _cs = value;
-                dblSpinner.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-                }
-                else
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-                }
+                ApplyColorScheme(value);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            _cs = cs;
+            dblSpinner.ColorScheme = cs;
+            btnMenu.ColorScheme = cs;
+            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
+            }
+            else if (cs.BackgroundColor == Colors.White)
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
+            }
+            else
+            {
+                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
             }
         }
 

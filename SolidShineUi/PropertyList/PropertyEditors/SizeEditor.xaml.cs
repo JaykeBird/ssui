@@ -38,29 +38,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             set
             {
-                nudHeight.ColorScheme = value;
-                nudWidth.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgWidth.Source = LoadIcon("LeftRightArrow", Utils.IconVariation.White);
-                    imgHeight.Source = LoadIcon("UpDownArrow", Utils.IconVariation.White);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgWidth.Source = LoadIcon("LeftRightArrow", Utils.IconVariation.Black);
-                    imgHeight.Source = LoadIcon("UpDownArrow", Utils.IconVariation.Black);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
-                }
-                else
-                {
-                    imgWidth.Source = LoadIcon("LeftRightArrow", Utils.IconVariation.Color);
-                    imgHeight.Source = LoadIcon("UpDownArrow", Utils.IconVariation.Color);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
-                }
+                ApplyColorScheme(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            nudHeight.ColorScheme = cs;
+            nudWidth.ColorScheme = cs;
+            btnMenu.ColorScheme = cs;
+
+            imgWidth.Source = LoadIcon("LeftRightArrow", cs);
+            imgHeight.Source = LoadIcon("UpDownArrow", cs);
+            imgFontEdit.Source = LoadIcon("ThreeDots", cs);
         }
 
         /// <summary>
