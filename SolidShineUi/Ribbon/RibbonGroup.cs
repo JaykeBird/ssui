@@ -34,6 +34,9 @@ namespace SolidShineUi.Ribbon
         public RibbonGroup()
         {
             SetValue(ItemsPropertyKey, new ObservableCollection<IRibbonItem>());
+
+            CommandBindings.Add(new System.Windows.Input.CommandBinding(RibbonCommands.DialogLauncherAction, (s, e) => LauncherClick?.Invoke(this, e),
+                (s, e) => e.CanExecute = ShowLauncher && IsLauncherEnabled));
         }
 
         /// <summary>

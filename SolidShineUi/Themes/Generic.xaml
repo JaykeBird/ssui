@@ -2004,6 +2004,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
@@ -2023,7 +2024,19 @@
                             </RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <Border Grid.Column="1" Grid.RowSpan="2" BorderBrush="{TemplateBinding GroupSeparatorBrush}" BorderThickness="1" Width="{TemplateBinding GroupSeparatorWidth}"
+                        <flat:FlatButton TransparentBack="True" Grid.Column="2" ColorScheme="{TemplateBinding ColorScheme}" Padding="1" Margin="3,0,0,0" 
+                                        MinHeight="16" x:Name="btn_InlineLauncher" IsEnabled="{TemplateBinding IsLauncherEnabled}" ToolTip="{TemplateBinding LauncherTooltip}"
+                                        Command="{x:Static ribbon:RibbonCommands.DialogLauncherAction}" >
+                            <flat:FlatButton.Style>
+                                <Style TargetType="{x:Type flat:FlatButton}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Style>
+                            </flat:FlatButton.Style>
+                            <Path Grid.Column="1" Data="M8,0 L8,8 0,8 L1,7 L7,7 L7,1 z" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                        Height="8" Width="8" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" />
+                        </flat:FlatButton>
+
+                        <Border Grid.Column="2" Grid.RowSpan="2" BorderBrush="{TemplateBinding GroupSeparatorBrush}" BorderThickness="1" Width="{TemplateBinding GroupSeparatorWidth}"
                                 Visibility="{TemplateBinding ShowGroupSeparator, Converter={StaticResource VisConverter}}" Margin="0,3" />
 
                         <ributils:RibbonGroupItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}" Margin="2,3,2,1" Focusable="False" >
@@ -2065,23 +2078,36 @@
                                         Height="5" Width="8" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" />
                                 </flat:FlatButton>
                                 <flat:FlatButton TransparentBack="True" Grid.Column="2" ColorScheme="{TemplateBinding ColorScheme}" Padding="1" Margin="3,0,0,0" 
-                                             Visibility="{TemplateBinding ShowLauncher, Converter={StaticResource VisConverter}}" MinHeight="16" >
-                                    <!--<flat:FlatButton.Style>
-                                    <Style TargetType="{x:Type flat:FlatButton}">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=ExpandedItems.Count, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonGroup}}}" Value="0">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </flat:FlatButton.Style>-->
+                                        MinHeight="16" x:Name="btn_Launcher" IsEnabled="{TemplateBinding IsLauncherEnabled}" ToolTip="{TemplateBinding LauncherTooltip}"
+                                        Command="{x:Static ribbon:RibbonCommands.DialogLauncherAction}" >
+                                    <flat:FlatButton.Style>
+                                        <Style TargetType="{x:Type flat:FlatButton}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Style>
+                                    </flat:FlatButton.Style>
                                     <Path Grid.Column="1" Data="M8,0 L8,8 0,8 L1,7 L7,7 L7,1 z" HorizontalAlignment="Left" VerticalAlignment="Center"
                                         Height="8" Width="8" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" />
                                 </flat:FlatButton>
                             </Grid>
                         </Border>
                     </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowGroupHeader" Value="True" />
+                                <Condition Property="ShowLauncher" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="btn_Launcher" Value="Visible" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowGroupHeader" Value="False" />
+                                <Condition Property="ShowLauncher" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="btn_InlineLauncher" Value="Visible" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
