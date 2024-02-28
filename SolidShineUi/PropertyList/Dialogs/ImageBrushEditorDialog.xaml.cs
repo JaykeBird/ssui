@@ -35,20 +35,6 @@ namespace SolidShineUi.PropertyList.Dialogs
             ColorScheme = cs;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //if (nudStartX == null) return;
-
-            //RunUpdateAction(() =>
-            //{
-            //    nudStartX.Value = edtPoints.SelectedWidth1;
-            //    nudStartY.Value = edtPoints.SelectedHeight1;
-
-            //    nudEndX.Value = edtPoints.SelectedWidth2;
-            //    nudEndY.Value = edtPoints.SelectedHeight2;
-            //});
-        }
-
         private void dialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
@@ -76,7 +62,6 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         ImageSource _source = new BitmapImage();
         bool _blankSourceOnEnter = false;
-        //bool _newSourceSet = false;
         bool _internalAction = false;
 
         Size imageSize = new Size(0, 0);
@@ -84,6 +69,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         private void txtSource_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_internalAction) return;
+
             if (_blankSourceOnEnter)
             {
                 _internalAction = true;
@@ -141,6 +127,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             string click_here = "click here to type/paste in a URL or file path";
 
+            // first, if this is an image from the internet, let's see if we're still in the middle of downloading it
             if (isrc is BitmapSource bsc)
             {
                 if (bsc.IsDownloading)
@@ -152,6 +139,8 @@ namespace SolidShineUi.PropertyList.Dialogs
                     return;
                 }
             }
+
+            // okay, from here on, we assume the image should be loaded in, if it's going to be loaded at all
 
             _source = isrc;
             _internalAction = true;
@@ -167,6 +156,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else if (isrc is BitmapImage bi)
             {
+                // a BitmapImage is a type of BitmapSource - we filter this out first since BitmapImage has the UriSource property which we can use
                 // https://learn.microsoft.com/en-us/dotnet/api/system.windows.media.imaging.bitmapimage.urisource
                 if (bi.UriSource != null)
                 {
@@ -176,7 +166,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
                 else
                 {
-                    // stream source
+                    // if it's not a UriSource, it's pretty much guaranteed to be a stream source (which of course we can't render as text)
                     txtSource.Text = $"(image from stream, {click_here})";
                     txtSource.FontStyle = FontStyles.Italic;
                     _blankSourceOnEnter = true;
@@ -332,28 +322,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         #endregion
 
-        private void cbbStretch_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdatePreview();
-        }
-
-        private void cbbAlignmentX_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdatePreview();
-        }
-
-        private void cbbTileMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-#pragma warning disable IDE0051 // Remove unused private members
-#pragma warning disable IDE0060 // Remove unused parameter
-        private void nudOpacity_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            UpdatePreview();
-        }
-#pragma warning restore IDE0060 // Remove unused parameter
-#pragma warning restore IDE0051 // Remove unused private members
+        #region Edit Pane / Image Preview
 
         void UpdatePreview()
         {
@@ -389,6 +358,35 @@ namespace SolidShineUi.PropertyList.Dialogs
                 }
             }
         }
+
+        #region Main option event handlers
+
+        private void cbbStretch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdatePreview();
+        }
+
+        private void cbbAlignmentX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdatePreview();
+        }
+
+        private void cbbTileMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
+        private void nudOpacity_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            UpdatePreview();
+        }
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0051 // Remove unused private members
+
+        #endregion
+
+        #region Viewport / Viewbox
 
         void SetPortUnitsVisibility()
         {
@@ -446,6 +444,46 @@ namespace SolidShineUi.PropertyList.Dialogs
             if (nudViewAH == null) return;
 
             SetViewUnitsVisibility();
+        }
+
+        private void btnSetFullView_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbbViewUnits.SelectedIndex == 0)
+            {
+                // absolute
+                nudViewAH.Value = imageSize.Height;
+                nudViewAW.Value = imageSize.Width;
+                nudViewAX.Value = 0.0;
+                nudViewAY.Value = 0.0;
+            }
+            else
+            {
+                // relative
+                nudViewH.Value = 1.0;
+                nudViewW.Value = 1.0;
+                nudViewX.Value = 0.0;
+                nudViewY.Value = 0.0;
+            }
+        }
+
+        private void btnSetFullPort_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbbPortUnits.SelectedIndex == 0)
+            {
+                // absolute
+                nudPortAH.Value = imageSize.Height;
+                nudPortAW.Value = imageSize.Width;
+                nudPortAX.Value = 0.0;
+                nudPortAY.Value = 0.0;
+            }
+            else
+            {
+                // relative
+                nudPortH.Value = 1.0;
+                nudPortW.Value = 1.0;
+                nudPortX.Value = 0.0;
+                nudPortY.Value = 0.0;
+            }
         }
 
         #region Presets Menu
@@ -535,44 +573,8 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         #endregion
 
-        private void btnSetFullView_Click(object sender, RoutedEventArgs e)
-        {
-            if (cbbViewUnits.SelectedIndex == 0)
-            {
-                // absolute
-                nudViewAH.Value = imageSize.Height;
-                nudViewAW.Value = imageSize.Width;
-                nudViewAX.Value = 0.0;
-                nudViewAY.Value = 0.0;
-            }
-            else
-            {
-                // relative
-                nudViewH.Value = 1.0;
-                nudViewW.Value = 1.0;
-                nudViewX.Value = 0.0;
-                nudViewY.Value = 0.0;
-            }
-        }
+        #endregion
 
-        private void btnSetFullPort_Click(object sender, RoutedEventArgs e)
-        {
-            if (cbbPortUnits.SelectedIndex == 0)
-            {
-                // absolute
-                nudPortAH.Value = imageSize.Height;
-                nudPortAW.Value = imageSize.Width;
-                nudPortAX.Value = 0.0;
-                nudPortAY.Value = 0.0;
-            }
-            else
-            {
-                // relative
-                nudPortH.Value = 1.0;
-                nudPortW.Value = 1.0;
-                nudPortX.Value = 0.0;
-                nudPortY.Value = 0.0;
-            }
-        }
+        #endregion
     }
 }
