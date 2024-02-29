@@ -20,10 +20,12 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="33"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Top" />
-        <ribbon:Ribbon Margin="0,0,0,0" VerticalAlignment="Top" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Row="1" x:Name="ribbon" >
+        <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Center" />
+        <ribbon:Ribbon VerticalAlignment="Center" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Row="1" x:Name="ribbon" >
             <ribbon:Ribbon.FileMenu>
                 <ribbon:RibbonFileMenu>
                     <ribbon:RibbonButton StandardSize="Small" SmallIcon="Resources/Images/SaveColor.png" Title="Save" />
@@ -32,8 +34,8 @@
             </ribbon:Ribbon.FileMenu>
             <ribbon:RibbonTab Title="Home">
                 <ribbon:RibbonGroup Title="Editing" ShowLauncher="True" >
-                    <ribbon:RibbonButton Title="AutoSum" StandardSize="Small" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png" />
-                    <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
+                    <ribbon:RibbonButton Title="AutoSum" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png" />
+                    <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
                         <ribbon:RibbonMenuButton.Menu>
                             <flat:ContextMenu>
                                 <MenuItem Header="Item 1" />
@@ -41,7 +43,7 @@
                             </flat:ContextMenu>
                         </ribbon:RibbonMenuButton.Menu>
                     </ribbon:RibbonMenuButton>
-                    <ribbon:RibbonButton Title="Clear" StandardSize="Small" LargeIcon="Resources/Images/32/DownloadColor.png" SmallIcon="Resources/Images/DownloadColor.png" />
+                    <ribbon:RibbonButton Title="Clear" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/DownloadColor.png" SmallIcon="Resources/Images/DownloadColor.png" />
                     <ribbon:RibbonMenuButton Title="Sort &amp; Filter" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png">
                         <ribbon:RibbonMenuButton.Menu>
                             <flat:ContextMenu>
@@ -85,25 +87,25 @@
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Title="View">
                 <!-- Sheet View -->
-                <ribbon:RibbonGroup Title="Workbook Views">
+                <ribbon:RibbonGroup Title="Workbook Views" CompactOrder="2" >
                     <ribbon:RibbonButton Title="Normal" StandardSize="Large" CompactSize="Small" SelectOnClick="True" IsSelected="True" />
                     <ribbon:RibbonButton Title="Page Break Preview" StandardSize="Large" CompactSize="Small" SelectOnClick="True" />
                     <ribbon:RibbonButton Title="Page Layout" StandardSize="Large" CompactSize="Small" SelectOnClick="True" x:Name="btnPageLayout" IsSelected="False" />
                     <ribbon:RibbonButton Title="Custom Views" StandardSize="Large" CompactSize="Small" SelectOnClick="True" IsEnabled="False" />
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Title="Show">
+                <ribbon:RibbonGroup Title="Show" CompactOrder="4" >
                     <ribbon:RibbonButton Title="Navigation" StandardSize="Large" CompactSize="Small" SelectOnClick="True" />
                     <ribbon:RibbonCheckBox Title="Ruler" IsEnabled="{Binding ElementName=btnPageLayout, Path=IsSelected}" />
                     <ribbon:RibbonCheckBox Title="Gridlines" />
                     <ribbon:RibbonCheckBox Title="Formula Bar" />
                     <ribbon:RibbonCheckBox Title="Headings" />
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Title="Zoom">
+                <ribbon:RibbonGroup Title="Zoom" CompactOrder="3" >
                     <ribbon:RibbonButton Title="Zoom" StandardSize="Large" CompactSize="Small" />
                     <ribbon:RibbonButton Title="100%" StandardSize="Large" CompactSize="Small" />
                     <ribbon:RibbonButton Title="Zoom to Selection" StandardSize="Large" CompactSize="Small" />
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Title="Window">
+                <ribbon:RibbonGroup Title="Window" CompactOrder="100" >
                     <ribbon:RibbonButton Title="New Window" StandardSize="Large" CompactSize="Small" />
                     <ribbon:RibbonButton Title="Arrange All" StandardSize="Large" CompactSize="Small" />
                     <ribbon:RibbonMenuButton Title="Freeze Panes" StandardSize="Large" CompactSize="Small">
@@ -115,16 +117,16 @@
                             </flat:ContextMenu>
                         </ribbon:RibbonMenuButton.Menu>
                     </ribbon:RibbonMenuButton>
-                    <ribbon:RibbonButton Title="Split" StandardSize="Small" CompactSize="Small" />
-                    <ribbon:RibbonButton Title="Hide" StandardSize="Small" CompactSize="Small" />
-                    <ribbon:RibbonButton Title="Unhide" StandardSize="Small" CompactSize="Small" />
-                    <ribbon:RibbonButton Title="View Side by Side" StandardSize="Small" CompactSize="Small" IsEnabled="False" />
-                    <ribbon:RibbonButton Title="Synchronous Scrolling" StandardSize="Small" CompactSize="Small" IsEnabled="False" />
-                    <ribbon:RibbonButton Title="Reset Window Position" StandardSize="Small" CompactSize="Small" IsEnabled="False" />
-                    <ribbon:RibbonButton Title="Switch Windows" StandardSize="Large" CompactSize="Small" />
+                    <ribbon:RibbonButton Title="Split" StandardSize="Small" CompactSize="IconOnly" />
+                    <ribbon:RibbonButton Title="Hide" StandardSize="Small" CompactSize="IconOnly" />
+                    <ribbon:RibbonButton Title="Unhide" StandardSize="Small" CompactSize="IconOnly" />
+                    <ribbon:RibbonButton Title="View Side by Side" StandardSize="Small" CompactSize="IconOnly" IsEnabled="False" />
+                    <ribbon:RibbonButton Title="Synchronous Scrolling" StandardSize="Small" CompactSize="IconOnly" IsEnabled="False" />
+                    <ribbon:RibbonButton Title="Reset Window Position" StandardSize="Small" CompactSize="IconOnly" IsEnabled="False" />
+                    <ribbon:RibbonButton Title="Switch Windows" StandardSize="Large" CompactSize="Large" />
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup>
-                    <ribbon:RibbonMenuButton Title="Macros" StandardSize="Large" CompactSize="Small" />
+                <ribbon:RibbonGroup CompactOrder="1" >
+                    <ribbon:RibbonMenuButton Title="Macros" StandardSize="Large" CompactSize="Large" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Title="Shape Format" IsContextual="True" ContextualColor="DarkOrange" Visibility="Collapsed" x:Name="tabContextual" >
@@ -134,7 +136,7 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
-        <ScrollViewer Grid.Row="2" MinHeight="24" Margin="5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
+        <ScrollViewer Grid.Row="2" MinHeight="24" Margin="5,5,5,5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
             <StackPanel Orientation="Horizontal" Height="24" >
                 <flat:CheckBox x:Name="chkContextual" Margin="5,0" Content="Show Contextual Tab" IsChecked="False" CheckChanged="chkContextual_CheckChanged" 
                                ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
@@ -144,5 +146,15 @@
                 <flat:DoubleSpinner x:Name="nudBarHeight" Value="{Binding ElementName=ribbon, Path=MainBarHeight}" MinWidth="50" Step="1" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
             </StackPanel>
         </ScrollViewer>
+        <flat:MenuButton x:Name="btnPrintOut" Content="Print Status" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="3" VerticalAlignment="Center" 
+                               ColorScheme="{Binding ElementName=control, Path=ColorScheme}">
+            <flat:MenuButton.Menu>
+                <flat:ContextMenu>
+                    <MenuItem Header="Ribbon/Tab Widths" Click="mnuWidths_Click" />
+                    <MenuItem Header="Group Compact Status" Click="mnuGroupsCompacted_Click" />
+                </flat:ContextMenu>
+            </flat:MenuButton.Menu>
+        </flat:MenuButton>
+        <TextBox x:Name="txtStatus" Grid.Row="4" TextWrapping="Wrap" Text="" Margin="20,2" AcceptsReturn="True" FontFamily="Consolas" />
     </Grid>
 </UserControl>

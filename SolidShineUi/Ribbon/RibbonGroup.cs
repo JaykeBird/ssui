@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -17,7 +18,7 @@ namespace SolidShineUi.Ribbon
     /// A holder for a group of <see cref="IRibbonItem"/> objects within a <see cref="RibbonTab"/>. 
     /// </summary>
     /// <remarks>
-    /// Most tabs are comprised of multiple groups, and all of the items in each group
+    /// Most Ribbon tabs are comprised of multiple groups, and all of the items in each group
     /// usually have some correlation or related context to each other (such as copy, cut, and paste being in the same group because they're all related to interacting with the clipboard).
     /// </remarks>
     [ContentProperty("Items")]
@@ -39,8 +40,6 @@ namespace SolidShineUi.Ribbon
             CommandBindings.Add(new System.Windows.Input.CommandBinding(RibbonCommands.DialogLauncherAction, (s, e) => LauncherClick?.Invoke(this, e),
                 (s, e) => e.CanExecute = ShowLauncher && IsLauncherEnabled));
         }
-
-
 
         #region Items
 
@@ -241,11 +240,20 @@ namespace SolidShineUi.Ribbon
 
         #region Resizing
 
-        public bool IsCollapsed { get => (bool)GetValue(IsCollapsedProperty); set => SetValue(IsCollapsedProperty, value); }
+        /// <summary>
+        /// Get if this current group is collapsed down to just an icon (as in, <see cref="CompactSize" /> is just <c>IconOnly</c>).
+        /// </summary>
+        /// <remarks>
+        /// Use <see cref="CompactSize"/> to actually change the size of this group.
+        /// </remarks>
+        public bool IsCollapsed { get => (bool)GetValue(IsCollapsedProperty); private set => SetValue(IsCollapsedPropertyKey, value); }
 
-        public static DependencyProperty IsCollapsedProperty
-            = DependencyProperty.Register("IsCollapsed", typeof(bool), typeof(RibbonGroup),
+        private static readonly DependencyPropertyKey IsCollapsedPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(IsCollapsed), typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(false));
+
+        /// <summary>The backing dependency property for <see cref="IsCollapsed"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty IsCollapsedProperty = IsCollapsedPropertyKey.DependencyProperty;
 
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
@@ -260,7 +268,26 @@ namespace SolidShineUi.Ribbon
 
         public static DependencyProperty CompactSizeProperty
             = DependencyProperty.Register("CompactSize", typeof(GroupSizeMode), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(GroupSizeMode.Standard));
+            new FrameworkPropertyMetadata(GroupSizeMode.Standard, (d, e) => d.PerformAs<RibbonGroup>((o) => o.UpdateCompactSize())));
+
+        void UpdateCompactSize()
+        {
+            if (CompactSize == GroupSizeMode.IconOnly)
+            {
+                // everything is hidden away, it's just the group title and icon now
+                IsCollapsed = true;
+            }
+            else
+            {
+                IsCollapsed = false;
+
+                foreach (IRibbonItem item in Items)
+                {
+                    item.IsCompacted = CompactSize == GroupSizeMode.Compact;
+                }
+            }
+
+        }
 
         public ImageSource GroupIcon { get => (ImageSource)GetValue(GroupIconProperty); set => SetValue(GroupIconProperty, value); }
 

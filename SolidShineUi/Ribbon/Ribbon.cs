@@ -23,6 +23,8 @@ namespace SolidShineUi.Ribbon
     [ContentProperty("Items")]
     public class Ribbon : Control
     {
+        #region Constructors / Loaded
+
         static Ribbon()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Ribbon), new FrameworkPropertyMetadata(typeof(Ribbon)));
@@ -41,7 +43,7 @@ namespace SolidShineUi.Ribbon
 
 
             Loaded += Ribbon_Loaded;
-
+            SizeChanged += Ribbon_SizeChanged;
             Items.CollectionChanged += Items_CollectionChanged;
         }
 
@@ -56,6 +58,8 @@ namespace SolidShineUi.Ribbon
         }
 
         bool loadedFirstTab = false;
+
+        #endregion
 
         #region Template IO
         /// <inheritdoc/>
@@ -75,32 +79,47 @@ namespace SolidShineUi.Ribbon
         }
 
         bool itemsLoaded = false;
-
         bool _internalAction = false;
 
 #if NETCOREAPP
-        ItemsControl? ic = null;
-        ScrollViewer? sv = null;
-        Border? ch = null;
+        ItemsControl? tabContainer = null;
+        ScrollViewer? tabScrollContainer = null;
+        Border? mainBar = null;
+        ItemsControl? mainContainer = null;
+        ScrollViewer? mainScrollContainer = null;
 #else
-        ItemsControl ic = null;
-        ScrollViewer sv = null;
-        Border ch = null;
+        ItemsControl tabContainer = null;
+        ScrollViewer tabScrollContainer = null;
+        Border mainBar = null;
+        ItemsControl mainContainer = null;
+        ScrollViewer mainScrollContainer = null;
 #endif
 
         void LoadTemplateItems()
         {
             if (!itemsLoaded)
             {
-                ic = (ItemsControl)GetTemplateChild("PART_TabBar");
-                sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
-                ch = (Border)GetTemplateChild("PART_Content");
+                tabContainer = (ItemsControl)GetTemplateChild("PART_TabBar");
+                tabScrollContainer = (ScrollViewer)GetTemplateChild("PART_TabScroll");
+                mainBar = (Border)GetTemplateChild("PART_Content");
+                mainContainer = (ItemsControl)GetTemplateChild("PART_MainContent");
+                mainScrollContainer = (ScrollViewer)GetTemplateChild("PART_MainScroll");
 
-                if (ic != null && sv != null && ch != null)
+                if (tabContainer != null && tabScrollContainer != null && mainBar != null && mainContainer != null && mainScrollContainer != null)
                 {
-                    sv.ScrollChanged += sv_ScrollChanged;
-                    ic.SizeChanged += control_SizeChanged;
                     itemsLoaded = true;
+                }
+
+                if (tabContainer != null && tabScrollContainer != null)
+                {
+                    tabScrollContainer.ScrollChanged += sv_ScrollChanged;
+                    tabContainer.SizeChanged += tabBar_SizeChanged;
+                }
+
+                if (mainBar != null && mainContainer != null && mainScrollContainer != null)
+                {
+                    mainScrollContainer.ScrollChanged += mv_ScrollChanged;
+                    mainContainer.SizeChanged += mc_SizeChanged;
                 }
             }
         }
@@ -180,12 +199,12 @@ namespace SolidShineUi.Ribbon
                 {
                     SelectedTab = tab;
 
-                    if (ic == null) return;
-                    for (int i = 0; i < ic.Items.Count; i++)
+                    if (tabContainer == null) return;
+                    for (int i = 0; i < tabContainer.Items.Count; i++)
                     {
                         // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
                         // from https://stackoverflow.com/a/1876534/2987285
-                        ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+                        ContentPresenter c = (ContentPresenter)tabContainer.ItemContainerGenerator.ContainerFromItem(tabContainer.Items[i]);
                         if (c == null) return;
                         c.ApplyTemplate();
 
@@ -219,17 +238,17 @@ namespace SolidShineUi.Ribbon
 
         private bool SelectTabInternal(RibbonTab tab)
         {
-            if (ic == null) return false;
+            if (tabContainer == null) return false;
 
             if (Items.Contains(tab) && tab.Visibility == Visibility.Visible)
             {
                 SelectedTab = tab;
 
-                for (int i = 0; i < ic.Items.Count; i++)
+                for (int i = 0; i < tabContainer.Items.Count; i++)
                 {
                     // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
                     // from https://stackoverflow.com/a/1876534/2987285
-                    ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+                    ContentPresenter c = (ContentPresenter)tabContainer.ItemContainerGenerator.ContainerFromItem(tabContainer.Items[i]);
                     if (c == null) return false;
                     c.ApplyTemplate();
                     //#if NETCOREAPP
@@ -263,6 +282,9 @@ namespace SolidShineUi.Ribbon
                 SelectedIndex = Items.IndexOf(tab);
             }
 
+            // make sure the groups in the tabs are compacted and fit within the window screen
+            CheckGroupSizes();
+
             return true;
         }
 
@@ -293,12 +315,12 @@ namespace SolidShineUi.Ribbon
         private void DeselectAllTabs()
         {
             SelectedTab = null;
-            if (ic == null) return;
-            for (int i = 0; i < ic.Items.Count; i++)
+            if (tabContainer == null) return;
+            for (int i = 0; i < tabContainer.Items.Count; i++)
             {
                 // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
                 // from https://stackoverflow.com/a/1876534/2987285
-                ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+                ContentPresenter c = (ContentPresenter)tabContainer.ItemContainerGenerator.ContainerFromItem(tabContainer.Items[i]);
                 if (c == null) continue;
                 c.ApplyTemplate();
                 if (c.ContentTemplate.FindName("PART_TabItem", c) is RibbonTabDisplayItem tb)
@@ -794,7 +816,7 @@ namespace SolidShineUi.Ribbon
 
         #endregion
 
-        #region Scrolling
+        #region Tab Bar Scrolling
 
         #region ScrollButtons
 
@@ -823,14 +845,14 @@ namespace SolidShineUi.Ribbon
 
         void CheckScrolling()
         {
-            if (sv == null || ic == null) return;
+            if (tabScrollContainer == null || tabContainer == null) return;
 
-            if (sv.ViewportWidth == 0)
+            if (tabScrollContainer.ViewportWidth == 0)
             {
                 return;
             }
 
-            if (ic.ActualWidth > sv.ViewportWidth)
+            if (tabContainer.ActualWidth > tabScrollContainer.ViewportWidth)
             {
                 TabScrollButtonsVisible = true;
             }
@@ -842,25 +864,25 @@ namespace SolidShineUi.Ribbon
 
         private void OnScrollCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            if (sv == null) return;
+            if (tabScrollContainer == null) return;
 
-            double offset = sv.HorizontalOffset;
+            double offset = tabScrollContainer.HorizontalOffset;
 
             if (e.Parameter is TabScrollCommandAction a)
             {
                 switch (a)
                 {
                     case TabScrollCommandAction.Left:
-                        sv.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
+                        tabScrollContainer.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
                         break;
                     case TabScrollCommandAction.Right:
-                        sv.ScrollToHorizontalOffset(Math.Min(offset + 20, sv.ScrollableWidth));
+                        tabScrollContainer.ScrollToHorizontalOffset(Math.Min(offset + 20, tabScrollContainer.ScrollableWidth));
                         break;
                     case TabScrollCommandAction.Home:
-                        sv.ScrollToHorizontalOffset(0);
+                        tabScrollContainer.ScrollToHorizontalOffset(0);
                         break;
                     case TabScrollCommandAction.End:
-                        sv.ScrollToHorizontalOffset(sv.ScrollableWidth);
+                        tabScrollContainer.ScrollToHorizontalOffset(tabScrollContainer.ScrollableWidth);
                         break;
                     default:
                         break;
@@ -868,7 +890,7 @@ namespace SolidShineUi.Ribbon
             }
         }
 
-        private void control_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void tabBar_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // note that this both handles the TabControl changes and the internal ItemControl changes
             if (e.WidthChanged)
@@ -886,5 +908,175 @@ namespace SolidShineUi.Ribbon
         }
 
         #endregion
+
+        #region Main Bar Scrolling
+
+        private void Ribbon_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (mainContainer == null) return;
+
+            if (e.WidthChanged)
+            {
+                if (e.NewSize.Width < e.PreviousSize.Width)
+                {
+                    if (ActualWidth < mainContainer.ActualWidth + 2)
+                    {
+                        CompactGroups();
+                    }
+                }
+                else
+                {
+                    if (ActualWidth > mainContainer.ActualWidth + 2)
+                    {
+                        UncompactGroups();
+                    }
+                }
+            }
+        }
+
+        void CheckGroupSizes()
+        {
+            if (mainContainer == null) return;
+            if (ActualWidth < mainContainer.ActualWidth + 2)
+            {
+                CompactGroups();
+            }
+            else
+            {
+                UncompactGroups();
+            }
+        }
+
+        // TODO: add Ribbon resizing property (To disable compacting)
+
+        void CompactGroups()
+        {
+            // some logic at first
+            if (mainContainer == null) return;
+            if (SelectedTab == null) return;
+            if (SelectedTab.Items.Count == 0) return;
+
+            // get the list of groups, but sorted with the largest CompactOrder first
+            var groups = SelectedTab.Items.OrderByDescending(g => g.CompactOrder).ToList();
+            int selectedGroup = 0;
+            bool iconCompacting = false;
+            while (ActualWidth < mainContainer.ActualWidth + 2)
+            {
+                if (selectedGroup >= SelectedTab.Items.Count)
+                {
+                    // we've gone through all the groups, including getting them all down to an icon
+                    if (iconCompacting) break;
+                    else
+                    {
+                        // start again, but this time we'll actually compact groups down to just an icon
+                        iconCompacting = true;
+                        selectedGroup = 0;
+                    }
+                }
+
+                if (iconCompacting)
+                {
+                    // don't bother compacting groups with just 1 (or no) items down to an icon - this just makes for extra clicks for the user
+                    if (groups[selectedGroup].Items.Count < 2)
+                    {
+                        selectedGroup++;
+                        continue;
+                    }
+                    groups[selectedGroup].CompactSize = GroupSizeMode.IconOnly;
+                }
+                else
+                {
+                    groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
+                }
+
+                // forcing an UpdateLayout run may cause a small performance hit (especially if looping over multiple groups in a row), but at least it works - maybe there's a better way?
+                groups[selectedGroup].InvalidateMeasure();
+                groups[selectedGroup].UpdateLayout();
+
+                selectedGroup++;
+                // value put into breakpoint (set to log as message):
+                // changed {groups[selectedGroup].Title} to {groups[selectedGroup].CompactSize}, now {(ActualWidth < mainContainer.ActualWidth + 2) ? "this is still not good" : "now we are good" }
+            }
+        }
+
+        void UncompactGroups()
+        {
+            // some logic at first
+            if (mainContainer == null) return;
+            if (SelectedTab == null) return;
+            if (SelectedTab.Items.Count == 0) return;
+
+            // get the list of groups, but sorted with the smallest CompactOrder first
+            var groups = SelectedTab.Items.OrderBy(g => g.CompactOrder).ToList();
+            int selectedGroup = 0;
+            bool fullUncompacting = false;
+
+            while (ActualWidth > mainContainer.ActualWidth + 2)
+            {
+                if (selectedGroup >= SelectedTab.Items.Count)
+                {
+                    // we've gone through all the groups, including getting them all down to an icon
+                    if (fullUncompacting) break;
+                    else
+                    {
+                        // start again, but this time we'll actually compact groups down to just an icon
+                        fullUncompacting = true;
+                        selectedGroup = 0;
+                    }
+                }
+
+                if (fullUncompacting)
+                {
+                    // don't bother compacting groups with just 1 (or no) items down to an icon - this just makes for extra clicks for the user
+                    groups[selectedGroup].CompactSize = GroupSizeMode.Standard;
+                }
+                else
+                {
+                    groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
+                }
+
+                // forcing an UpdateLayout run may cause a small performance hit (especially if looping over multiple groups in a row), but at least it works - maybe there's a better way?
+                groups[selectedGroup].InvalidateMeasure();
+                groups[selectedGroup].UpdateLayout();
+
+                if (ActualWidth < mainContainer.ActualWidth + 2)
+                {
+                    // we've gone too far! go back!
+                    if (fullUncompacting)
+                    {
+                        groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
+                    }
+                    else
+                    {
+                        if (groups[selectedGroup].Items.Count < 2)
+                        {
+                            break;
+                        }
+                        groups[selectedGroup].CompactSize = GroupSizeMode.IconOnly;
+                    }
+                    break;
+                }
+
+                selectedGroup++;
+            }
+        }
+
+
+        private void mc_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+            {
+                // update resizing algorithm
+                // and also see if we can hide the scroll buttons
+            }
+        }
+
+        private void mv_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            // update scroll buttons as needed (if they are visible)
+        }
+
+        #endregion
+
     }
 }

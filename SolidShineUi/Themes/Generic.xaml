@@ -1977,14 +1977,17 @@
                                         </Style.Triggers>-->
                                     </Style>
                                 </Border.Style>
-                                <ItemsControl Margin="1,0" Focusable="False" Height="{TemplateBinding MainBarHeight}" 
+                                <ScrollViewer x:Name="PART_MainScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="2" >
+                                    <ItemsControl Margin="1,0" Focusable="False" Height="{TemplateBinding MainBarHeight}" x:Name="PART_MainContent"
                                                   ItemsSource="{Binding SelectedTab.Items, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" >
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel IsItemsHost="True" Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel IsItemsHost="True" Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
                                 <!--<ContentPresenter x:Name="PART_ContentHost" ContentSource="{Binding Path=SelectedTabContent, RelativeSource={RelativeSource AncestorType={x:Type ribbon:Ribbon}}}" />-->
                             </Border>
                         </Grid>
@@ -2036,6 +2039,14 @@
                             <Path Grid.Column="1" Data="M8,0 L8,8 0,8 L1,7 L7,7 L7,1 z" HorizontalAlignment="Left" VerticalAlignment="Center"
                                         Height="8" Width="8" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" />
                         </flat:FlatButton>
+
+                        <Image Grid.Row="0" Grid.Column="0" Margin="2,3,2,1" Source="{TemplateBinding GroupIcon}" Width="16" Height="16" HorizontalAlignment="Center" x:Name="PART_GroupImage">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Style>
+                            </Image.Style>
+                        </Image>
 
                         <Border Grid.Column="2" Grid.RowSpan="2" BorderBrush="{TemplateBinding GroupSeparatorBrush}" BorderThickness="1" Width="{TemplateBinding GroupSeparatorWidth}"
                                 Visibility="{TemplateBinding ShowGroupSeparator, Converter={StaticResource VisConverter}}" Margin="0,3" />
@@ -2108,6 +2119,10 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Visibility" TargetName="btn_InlineLauncher" Value="Visible" />
                         </MultiTrigger>
+                        <Trigger Property="IsCollapsed" Value="True">
+                            <Setter Property="Visibility" TargetName="PART_GroupImage" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="PART_Ic" Value="Collapsed" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

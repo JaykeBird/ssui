@@ -1,18 +1,12 @@
-﻿using SolidShineUi;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using SolidShineUi;
+using SolidShineUi.Ribbon;
 
 namespace SsuiSample
 {
@@ -95,6 +89,43 @@ namespace SsuiSample
         private void chkContextual_CheckChanged(object sender, RoutedEventArgs e)
         {
             tabContextual.Visibility = chkContextual.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void mnuWidths_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Ribbon width: " + ribbon.ActualWidth.ToString());
+            sb.AppendLine();
+
+            foreach (RibbonTab item in ribbon.Items)
+            {
+                var totalDesired = item.Items.Sum(i => i.DesiredSize.Width);
+                var totalActual = item.Items.Sum(i => i.ActualWidth);
+                sb.Append($"{item.Title}: desired width: {totalDesired}, actual: {totalActual}");
+                sb.AppendLine(" " + (ribbon.ActualWidth > totalActual ? "ribbon size good" : "ribbon too small"));
+            }
+
+            txtStatus.Text = sb.ToString();
+        }
+
+        private void mnuGroupsCompacted_Click(object sender, RoutedEventArgs e)
+        {
+            if (ribbon.SelectedTab == null)
+            {
+                txtStatus.Text = "no tab selected!";
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Selected tab: " + ribbon.SelectedTab.Title);
+            sb.AppendLine();
+
+            foreach (RibbonGroup item in ribbon.SelectedTab.Items)
+            {
+                sb.AppendLine($"{item.Title}: compacted: {item.CompactSize}, width: {item.ActualWidth}");
+            }
+
+            txtStatus.Text = sb.ToString();
         }
     }
 }
