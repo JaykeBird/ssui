@@ -1892,7 +1892,7 @@
                                 </Border.Style>
                             </Border>
                             <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="1" Padding="1"
-                                             Command="{x:Static ribbon:Ribbon.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
+                                             Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
                                              IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}">
                                 <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, 
@@ -1953,7 +1953,7 @@
                                 </Border.Style>
                             </Border>
                             <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
-                                             Command="{x:Static ribbon:Ribbon.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
+                                             Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
                                              IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" >
                                 <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}, 
