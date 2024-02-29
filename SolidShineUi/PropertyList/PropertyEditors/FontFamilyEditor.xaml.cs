@@ -34,13 +34,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set 
-            { 
-                btnEdit.ColorScheme = value;
-                _cs = value;
+        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
 
-                imgFontEdit.Source = LoadIcon("Font", value);
-            }
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            _cs = value;
+            btnEdit.ColorScheme = value;
+            imgFontEdit.Source = LoadIcon("Font", value);
         }
 
         private ColorScheme _cs = new ColorScheme();

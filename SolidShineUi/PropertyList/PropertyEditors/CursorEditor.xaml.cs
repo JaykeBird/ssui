@@ -18,17 +18,22 @@ using System.Windows.Shapes;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// Interaction logic for CursorEditor.xaml
+    /// A property editor for <see cref="Cursor"/> objects.
     /// </summary>
     public partial class CursorEditor : UserControl, IPropertyEditor
     {
+        /// <summary>
+        /// Create a CursorEditor.
+        /// </summary>
         public CursorEditor()
         {
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(Cursor) };
 
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
@@ -84,13 +89,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         bool _internalAction = false;
 
         /// <inheritdoc/>
+#if NETCOREAPP
+        public object? GetValue()
+#else
         public object GetValue()
+#endif
         {
             return cval;
         }
 
         /// <inheritdoc/>
+#if NETCOREAPP
+        public void LoadValue(object? value, Type type)
+#else
         public void LoadValue(object value, Type type)
+#endif
         {
             if (value == null)
             {
@@ -133,7 +146,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
+        void SetValue(Cursor? c)
+#else
         void SetValue(Cursor c)
+#endif
         {
             cval = c;
             ValueChanged?.Invoke(this, EventArgs.Empty);

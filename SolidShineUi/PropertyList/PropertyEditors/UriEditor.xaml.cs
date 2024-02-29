@@ -33,10 +33,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             set
             {
-                btnMenu.ColorScheme = value;
-
-                imgMenu.Source = LoadIcon("ThreeDots", value);
+                ApplyColorScheme(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            //_cs = cs;
+            btnMenu.ColorScheme = cs;
+            imgMenu.Source = LoadIcon("ThreeDots", cs);
         }
 
         /// <inheritdoc/>

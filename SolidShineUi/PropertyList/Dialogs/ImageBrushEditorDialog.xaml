@@ -6,7 +6,7 @@
         xmlns:flat="clr-namespace:SolidShineUi"
         xmlns:utils="clr-namespace:SolidShineUi.Utils" 
         x:Class="SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog"
-        mc:Ignorable="d" Height="550" Width="700" Loaded="Window_Loaded" ResizeMode="NoResize" CaptionDisplayType="Close" FontSize="12" >
+        mc:Ignorable="d" Height="550" Width="700" ResizeMode="NoResize" CaptionDisplayType="Close" FontSize="12" >
     <flat:FlatWindow.Resources>
         <flat:ColorToBrushConverter x:Key="ctb" />
         <BooleanToVisibilityConverter x:Key="btv" />

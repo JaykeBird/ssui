@@ -43,15 +43,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             set
             {
-                _cs = value;
-                nudLeft.ColorScheme = value;
-                nudTop.ColorScheme = value;
-                nudRight.ColorScheme = value;
-                nudBottom.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-
-                imgFontEdit.Source = LoadIcon("ThreeDots", value);
+                ApplyColorScheme(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            _cs = value;
+            nudLeft.ColorScheme = value;
+            nudTop.ColorScheme = value;
+            nudRight.ColorScheme = value;
+            nudBottom.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+
+            imgFontEdit.Source = LoadIcon("ThreeDots", value);
         }
 
         /// <summary>

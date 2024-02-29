@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Linq;
 using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi.PropertyList.Dialogs;
-using SolidShineUi.Utils;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
@@ -54,10 +51,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             set
             {
-                _cs = value;
-                btnMenu.ColorScheme = value;
-                imgMenu.Source = LoadIcon("ThreeDots", value);
+                ApplyColorScheme(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            _cs = cs;
+            btnMenu.ColorScheme = cs;
+            imgMenu.Source = LoadIcon("ThreeDots", cs);
         }
 
         /// <inheritdoc/>

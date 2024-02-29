@@ -46,6 +46,12 @@ namespace SolidShineUi.PropertyList
         ColorScheme ColorScheme { set; }
 
         /// <summary>
+        /// Apply a ColorScheme to this control, to set the visual appearance.
+        /// </summary>
+        /// <param name="cs">The ColorScheme to apply</param>
+        void ApplyColorScheme(ColorScheme cs);
+
+        /// <summary>
         /// Set the parent PropertyList control for this IPropertyEditor. This allows the IPropertyEditor to connect to the PropertyList directly, to get info or set certain values.
         /// </summary>
         ExperimentalPropertyList ParentPropertyList { set; }

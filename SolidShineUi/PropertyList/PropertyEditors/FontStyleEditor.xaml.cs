@@ -39,8 +39,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         { 
             set
             {
-                imgItalic.Source = LoadIcon("TextItalic", value);
+                ApplyColorScheme(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            imgItalic.Source = LoadIcon("TextItalic", cs);
         }
 
         /// <inheritdoc/>

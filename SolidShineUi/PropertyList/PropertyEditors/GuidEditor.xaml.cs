@@ -35,26 +35,28 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set 
-            { 
-                btnMenu.ColorScheme = value;
-                _cs = value;
+        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
 
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgNew.Source = LoadIcon("Reload", Utils.IconVariation.White);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Black);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
-                }
-                else
-                {
-                    imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Color);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
-                }
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            btnMenu.ColorScheme = cs;
+            _cs = cs;
+
+            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
+            {
+                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.White);
+                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
+            }
+            else if (cs.BackgroundColor == Colors.White)
+            {
+                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Black);
+                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
+            }
+            else
+            {
+                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Color);
+                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
             }
         }
 
