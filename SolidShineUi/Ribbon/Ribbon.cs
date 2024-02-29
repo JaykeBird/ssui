@@ -947,13 +947,20 @@ namespace SolidShineUi.Ribbon
             }
         }
 
-        // TODO: add Ribbon resizing property (To disable compacting)
+        /// <summary>
+        /// Force the Ribbon
+        /// </summary>
+        public void MeasureAndCompactGroups()
+        {
+            CheckGroupSizes();
+        }
 
         void CompactGroups()
         {
             // some logic at first
             if (mainContainer == null) return;
             if (SelectedTab == null) return;
+            if (SelectedTab.FitContentsToWidth == false) return;
             if (SelectedTab.Items.Count == 0) return;
 
             // get the list of groups, but sorted with the largest CompactOrder first
@@ -1004,6 +1011,7 @@ namespace SolidShineUi.Ribbon
             // some logic at first
             if (mainContainer == null) return;
             if (SelectedTab == null) return;
+            if (SelectedTab.FitContentsToWidth == false) return;
             if (SelectedTab.Items.Count == 0) return;
 
             // get the list of groups, but sorted with the smallest CompactOrder first

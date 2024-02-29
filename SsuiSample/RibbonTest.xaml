@@ -85,7 +85,7 @@
                     <ribbon:RibbonCheckBox Title="Check me!" StandardSize="Small" CompactSize="Small" />
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
-            <ribbon:RibbonTab Title="View">
+            <ribbon:RibbonTab Title="View" >
                 <!-- Sheet View -->
                 <ribbon:RibbonGroup Title="Workbook Views" CompactOrder="2" >
                     <ribbon:RibbonButton Title="Normal" StandardSize="Large" CompactSize="Small" SelectOnClick="True" IsSelected="True" />

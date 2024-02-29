@@ -255,6 +255,16 @@ namespace SolidShineUi.Ribbon
         /// <summary>The backing dependency property for <see cref="IsCollapsed"/>. See the related property for details.</summary>
         public static readonly DependencyProperty IsCollapsedProperty = IsCollapsedPropertyKey.DependencyProperty;
 
+        /// <summary>
+        /// Get or set the sorting order value for this group, for when the Ribbon needs to do compacting.
+        /// Groups with a higher compact order value will be compacted down first, when needed.
+        /// </summary>
+        /// <remarks>
+        /// Compacting of groups is done to attempt to make sure all items in all groups on a tab can be displayed on screen without scrolling. The parent Ribbon control will attempt to do
+        /// compacting when it's not wide enough to accomodate all groups at its normal (<c>Standard</c>) size. Compacting will begin with the group with the highest <c>CompactOrder</c> value
+        /// first, and move downward from there if more compacting is still needed. Compacting can be disabled for a particular Ribbon tab by setting <see cref="RibbonTab.FitContentsToWidth"/>
+        /// to <c>false</c>.
+        /// </remarks>
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
         public static DependencyProperty CompactOrderProperty
@@ -262,13 +272,25 @@ namespace SolidShineUi.Ribbon
             new FrameworkPropertyMetadata(0));
 
         /// <summary>
-        /// Get or set the current size for this group. 
+        /// Get or set the current compacted size for this group. By default, the group should be set to <c>Standard</c>, unless it was compacted by the main <see cref="Ribbon"/> control.
         /// </summary>
+        /// <remarks>
+        /// Compacting of groups is done to attempt to make sure all items in all groups on a tab can be displayed on screen without scrolling. The parent Ribbon control will attempt to do
+        /// compacting when it's not wide enough to accomodate all groups at its <c>Standard</c> size. Compacting will begin with the group with the highest <see cref="CompactOrder"/> value
+        /// first, and move downward from there if more compacting is still needed. Compacting can be disabled for a particular Ribbon tab by setting <see cref="RibbonTab.FitContentsToWidth"/>
+        /// to <c>false</c>.
+        /// <para/>
+        /// When a RibbonGroup is compacted down to <c>IconOnly</c>, the actual items in the Ribbon aren't visible anymore, and instead the whole group is represented by just its
+        /// <see cref="Title"/> and <see cref="GroupIcon"/>.
+        /// </remarks>
         public GroupSizeMode CompactSize { get => (GroupSizeMode)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="CompactSize"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty CompactSizeProperty
             = DependencyProperty.Register("CompactSize", typeof(GroupSizeMode), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(GroupSizeMode.Standard, (d, e) => d.PerformAs<RibbonGroup>((o) => o.UpdateCompactSize())));
+            new FrameworkPropertyMetadata(GroupSizeMode.Standard, FrameworkPropertyMetadataOptions.AffectsMeasure, (d, e) => d.PerformAs<RibbonGroup>((o) => o.UpdateCompactSize())));
 
         void UpdateCompactSize()
         {
@@ -289,8 +311,15 @@ namespace SolidShineUi.Ribbon
 
         }
 
+        /// <summary>
+        /// The icon to associate with this RibbonGroup. This icon should be related to that of the items in this group; you could even just reuse the icon of the most prominent item
+        /// in this group. This icon is used if the <see cref="CompactSize"/> value is changed to <c>IconOnly</c>, or in other locations to represent the group as a whole.
+        /// </summary>
         public ImageSource GroupIcon { get => (ImageSource)GetValue(GroupIconProperty); set => SetValue(GroupIconProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="GroupIcon"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty GroupIconProperty
             = DependencyProperty.Register("GroupIcon", typeof(ImageSource), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(null));

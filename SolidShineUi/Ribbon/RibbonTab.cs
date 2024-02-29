@@ -42,12 +42,28 @@ namespace SolidShineUi.Ribbon
         /// </remarks>
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="Title"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty TitleProperty
             = DependencyProperty.Register("Title", typeof(string), typeof(RibbonTab),
             new FrameworkPropertyMetadata("Tab"));
 
+        /// <summary>
+        /// Get or set if the groups and items in this tab should be compacted down if they can't all fit with the Ribbon's current width. By default, this is <c>true</c>.
+        /// </summary>
+        /// <remarks>
+        /// With the default value of <c>true</c>, the Ribbon will attempt to compact groups on this tab to make sure that all groups are visible at once without scrolling.
+        /// With the value of <c>false</c>, no compacting will occur, and all groups' <see cref="RibbonGroup.CompactSize"/> will remain at <see cref="GroupSizeMode.Standard"/> 
+        /// at all times, but scrolling may be needed to display all items that are on this tab, if the Ribbon isn't wide enough to fit everything properly.
+        /// <para/>
+        /// This property should only be set during initialization; changes to this property will not automatically force this tab's groups to be compacted or uncompacted.
+        /// </remarks>
         public bool FitContentsToWidth { get => (bool)GetValue(FitContentsToWidthProperty); set => SetValue(FitContentsToWidthProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="FitContentsToWidth"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty FitContentsToWidthProperty
             = DependencyProperty.Register("FitContentsToWidth", typeof(bool), typeof(RibbonTab),
             new FrameworkPropertyMetadata(true));
@@ -57,6 +73,9 @@ namespace SolidShineUi.Ribbon
         /// </summary>
         public Visibility Visibility { get => (Visibility)GetValue(VisibilityProperty); set => SetValue(VisibilityProperty, value); }
 
+        /// <summary>
+        /// The backing dependency property for <see cref="Visibility"/>. See the related property for details.
+        /// </summary>
         public static DependencyProperty VisibilityProperty
             = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RibbonTab),
             new FrameworkPropertyMetadata(Visibility.Visible,
