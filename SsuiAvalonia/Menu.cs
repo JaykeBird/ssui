@@ -165,6 +165,5 @@ namespace SolidShineUi
         public static readonly StyledProperty<CornerRadius> MenuCornerRadiusProperty
             = AvaloniaProperty.Register<Menu, CornerRadius>(nameof(MenuCornerRadius), new CornerRadius(0));
 
-
     }
 }
