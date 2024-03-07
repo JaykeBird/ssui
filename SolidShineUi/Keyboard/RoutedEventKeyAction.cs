@@ -27,7 +27,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Gets the UI element that this action is related to, if any.
         /// </summary>
-        public Control? SourceElement { get; private set; }
+        public InputElement? SourceElement { get; private set; }
 
         /// <summary>
         /// Create a RoutedEventKeyAction.
@@ -35,7 +35,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <param name="reh">The RoutedEventHandler to invoke when this key action is activated.</param>
         /// <param name="methodId">The unique ID to associate with this key action.</param>
         /// <param name="sourceElement">The UI element, if any, associated with this RoutedEventHandler. For example, it could be a menu item or button that would alternatively invoke this routed event handler.</param>
-        public RoutedEventKeyAction(EventHandler<RoutedEventArgs> reh, string methodId, Control? sourceElement = null)
+        public RoutedEventKeyAction(EventHandler<RoutedEventArgs> reh, string methodId, InputElement? sourceElement = null)
 #elif NETCOREAPP
         RoutedEventHandler? reh = null;
 

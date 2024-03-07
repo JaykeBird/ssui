@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 #if AVALONIA
 using Avalonia.Controls;
+using Avalonia.Input;
 #else
 using System.Windows;
 #endif
@@ -23,7 +24,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Gets the UI element that this action is related to, if any.
         /// </summary>
-        public Control? SourceElement { get; }
+        public InputElement? SourceElement { get; }
 
         /// <summary>
         /// Create a new ActionKeyAction.

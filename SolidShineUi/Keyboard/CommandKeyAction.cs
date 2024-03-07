@@ -27,7 +27,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Gets the UI element that this action is related to, if any.
         /// </summary>
-        public Control? SourceElement { get; }
+        public InputElement? SourceElement { get; }
 
         /// <summary>
         /// Get the command parameter associated with this key action. When the command is executed, this parameter is also supplied.

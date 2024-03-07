@@ -382,7 +382,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// Get or set the element associated with this keyboard shortcut and action (such as a menu item if the action is associated with the command of a menu item). Having an element is not required.
         /// </summary>
 #if AVALONIA
-        public Control? SourceElement { get; set; } = null;
+        public InputElement? SourceElement { get; set; } = null;
 #elif NETCOREAPP
         public UIElement? SourceElement { get; set; } = null;
 #else

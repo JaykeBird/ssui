@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 #if AVALONIA
 using Avalonia.Controls;
+using Avalonia.Input;
 #else
 using System.Windows;
 #endif
@@ -30,7 +31,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// Get the UI element associated with the key action's activator, if any.
         /// </summary>
 #if AVALONIA
-        Control? SourceElement { get; }
+        InputElement? SourceElement { get; }
 #elif NETCOREAPP
         UIElement? SourceElement { get; }
 #else
