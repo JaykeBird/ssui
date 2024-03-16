@@ -19,6 +19,7 @@ namespace SsuiSampleAvalonia
             }
 
             base.OnFrameworkInitializationCompleted();
+
         }
     }
 }
