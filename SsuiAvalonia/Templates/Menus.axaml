@@ -41,6 +41,10 @@
                             <MenuItem Header="Online Help" />
                             <MenuItem Header="Keyboard Shortcuts" />
                             <Separator />
+                            <MenuItem Header="Markdown Help" />
+                            <Separator />
+                            <MenuItem Header="Website" />
+                            <Separator />
                             <MenuItem Header="About..." />
                         </MenuItem>
                     </flat:Menu.Items>
@@ -232,16 +236,16 @@
         </Style>
         <Style Selector="^:selected">
             <Style Selector="^ /template/ Border#PART_LayoutRoot">
-                <Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackgroundPointerOver}" />
+                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBrush}" />
             </Style>
             <Style Selector="^ /template/ ContentPresenter#PART_HeaderPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
             </Style>
             <Style Selector="^ /template/ TextBlock#PART_InputGestureText">
-                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPointerOver}" />
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
             </Style>
             <Style Selector="^ /template/ Path#PART_ChevronPath">
-                <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronPointerOver}" />
+                <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
             </Style>
         </Style>
 
@@ -249,13 +253,13 @@
         <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBrush}" />
             <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
-                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemForegroundPressed}" />
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
             </Style>
             <Style Selector="^ TextBlock#PART_InputGestureText">
-                <Setter Property="Foreground" Value="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForegroundPressed}" />
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
             </Style>
             <Style Selector="^ Path#PART_ChevronPath">
-                <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronPressed}" />
+                <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
             </Style>
         </Style>
 
@@ -270,7 +274,7 @@
                 <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=DisabledBrush}" />
             </Style>
             <Style Selector="^ /template/ Path#PART_ChevronPath">
-                <Setter Property="Fill" Value="{DynamicResource MenuFlyoutSubItemChevronDisabled}" />
+                <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=DisabledBrush}" />
             </Style>
         </Style>
 
