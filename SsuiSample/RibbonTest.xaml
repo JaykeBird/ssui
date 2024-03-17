@@ -56,7 +56,7 @@
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Test 2" >
                     <ribbon:RibbonButton Title="Button 1" StandardSize="Small" />
-                    <ribbon:RibbonComboBox Title="Combo" x:Name="ribbonCbb" StandardSize="Small" ShowIcon="False" />
+                    <ribbon:RibbonComboBox Title="Combo" x:Name="ribbonCbb" ShowIcon="False" />
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Empty" />
                 <ribbon:RibbonGroup Title="SM" ShowLauncher="True" >

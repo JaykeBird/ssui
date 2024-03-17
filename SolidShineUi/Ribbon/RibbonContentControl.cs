@@ -25,7 +25,7 @@ namespace SolidShineUi.Ribbon
 
         public static DependencyProperty StandardSizeProperty
             = DependencyProperty.Register("StandardSize", typeof(RibbonElementSize), typeof(RibbonContentControl),
-            new FrameworkPropertyMetadata(RibbonElementSize.Large));
+            new FrameworkPropertyMetadata(RibbonElementSize.Small));
 
         public RibbonElementSize CompactSize { get => (RibbonElementSize)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
