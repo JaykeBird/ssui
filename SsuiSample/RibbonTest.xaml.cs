@@ -18,6 +18,11 @@ namespace SsuiSample
         public RibbonTest()
         {
             InitializeComponent();
+
+            ribbonCbb.Items.Add("Item 1");
+            ribbonCbb.Items.Add("Item 2");
+            ribbonCbb.Items.Add("Item 3");
+            ribbonCbb.SelectedIndex = 0;
         }
 
 
