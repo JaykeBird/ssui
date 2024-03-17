@@ -14,72 +14,81 @@ namespace SolidShineUi.Ribbon
     /// A wrapper for displaying a control within a <see cref="RibbonGroup"/> other than any of the premade controls in this namespace.
     /// </summary>
     [ContentProperty("Content")]
-    public class RibbonCustomControl : Control, IRibbonItem
+    public class RibbonContentControl : Control, IRibbonItem
     {
+        static RibbonContentControl()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(RibbonContentControl), new FrameworkPropertyMetadata(typeof(RibbonContentControl)));
+        }
+
         public RibbonElementSize StandardSize { get => (RibbonElementSize)GetValue(StandardSizeProperty); set => SetValue(StandardSizeProperty, value); }
 
         public static DependencyProperty StandardSizeProperty
-            = DependencyProperty.Register("StandardSize", typeof(RibbonElementSize), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("StandardSize", typeof(RibbonElementSize), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(RibbonElementSize.Large));
 
         public RibbonElementSize CompactSize { get => (RibbonElementSize)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
         public static DependencyProperty CompactSizeProperty
-            = DependencyProperty.Register("CompactSize", typeof(RibbonElementSize), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("CompactSize", typeof(RibbonElementSize), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(RibbonElementSize.Small));
 
         public string AccessKey { get => (string)GetValue(AccessKeyProperty); set => SetValue(AccessKeyProperty, value); }
 
         public static DependencyProperty AccessKeyProperty
-            = DependencyProperty.Register("AccessKey", typeof(string), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("AccessKey", typeof(string), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata("I"));
 
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         public static DependencyProperty TitleProperty
-            = DependencyProperty.Register("Title", typeof(string), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("Title", typeof(string), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata("Item"));
 
         public bool ShowTitle { get => (bool)GetValue(ShowTitleProperty); set => SetValue(ShowTitleProperty, value); }
 
         public static DependencyProperty ShowTitleProperty
-            = DependencyProperty.Register("ShowTitle", typeof(bool), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("ShowTitle", typeof(bool), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(true));
 
         public bool ShowIcon { get => (bool)GetValue(ShowIconProperty); set => SetValue(ShowIconProperty, value); }
 
         public static DependencyProperty ShowIconProperty
-            = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set the large icon to use with this control. For <see cref="RibbonContentControl"/> (and all controls that are based on it),
+        /// this property actually does nothing, as the <c>LargeIcon</c> is never displayed on the Ribbon. Instead, only set <see cref="SmallIcon"/>.
+        /// </summary>
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
 
         public static DependencyProperty LargeIconProperty
-            = DependencyProperty.Register("LargeIcon", typeof(ImageSource), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("LargeIcon", typeof(ImageSource), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(null));
 
         public ImageSource SmallIcon { get => (ImageSource)GetValue(SmallIconProperty); set => SetValue(SmallIconProperty, value); }
 
         public static DependencyProperty SmallIconProperty
-            = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(null));
 
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
         public static DependencyProperty CompactOrderProperty
-            = DependencyProperty.Register("CompactOrder", typeof(int), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("CompactOrder", typeof(int), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(0));
 
         public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
 
         public static DependencyProperty IsCompactedProperty
-            = DependencyProperty.Register("IsCompacted", typeof(bool), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("IsCompacted", typeof(bool), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(false));
 
         public object Content { get => GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         public static DependencyProperty ContentProperty
-            = DependencyProperty.Register("Content", typeof(object), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("Content", typeof(object), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(null));
 
 
@@ -98,7 +107,7 @@ namespace SolidShineUi.Ribbon
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RibbonCustomControl),
+            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         /// <summary>
@@ -114,7 +123,7 @@ namespace SolidShineUi.Ribbon
             ColorScheme cs = e.NewValue as ColorScheme;
 #endif
 
-            if (d is RibbonCustomControl c)
+            if (d is RibbonContentControl c)
             {
                 c.ColorSchemeChanged?.Invoke(d, e);
                 c.ApplyColorScheme(cs);

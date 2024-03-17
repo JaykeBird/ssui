@@ -2818,14 +2818,13 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type ribbon:RibbonCustomControl}">
-        <Setter Property="Focusable" Value="True" />
+    <Style TargetType="{x:Type ribbon:RibbonContentControl}">
         <Setter Property="Height" Value="24" />
         <Setter Property="Width" Value="Auto" />
-        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Padding" Value="2,0" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ribbon:RibbonCustomControl" >
+                <ControlTemplate TargetType="ribbon:RibbonContentControl" >
                     <Grid Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -2834,14 +2833,26 @@
                             <ColumnDefinition Width="0" x:Name="colContentLeftSpace" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0" Source="{TemplateBinding SmallIcon}" Width="16" Height="16" VerticalAlignment="Center" />
-                        <TextBlock x:Name="txtTitle" VerticalAlignment="Center" Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="24" x:Name="PART_MainRow" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Image Grid.Column="0" x:Name="PART_Icon" Source="{TemplateBinding SmallIcon}" Width="16" Height="16" VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Setter Property="Opacity" Value="1.0" />
+                                    <Setter Property="Visibility" Value="{Binding Path=ShowIcon, Converter={StaticResource VisConverter}, 
+                                        RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock x:Name="PART_Title" Grid.Column="2" VerticalAlignment="Center" >
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}" >
                                     <Setter Property="Opacity" Value="1.0" />
                                     <Setter Property="Visibility" Value="{Binding Path=ShowTitle, Converter={StaticResource VisConverter}, 
-                                        RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCustomControl}}}" />
-                                    <Setter Property="Text" Value="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCustomControl}}}" />
+                                        RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                    <Setter Property="Text" Value="{Binding Path=Title, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
@@ -2849,19 +2860,90 @@
                             <ContentPresenter.Style>
                                 <Style TargetType="{x:Type ContentPresenter}" >
                                     <Setter Property="Opacity" Value="1.0" />
-                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCustomControl}}}" />
+                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 </Style>
                             </ContentPresenter.Style>
                         </ContentPresenter>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" >
+                            <Setter Property="Opacity" TargetName="PART_Title" Value="0.8" />
+                            <Setter Property="Opacity" TargetName="PART_Icon" Value="0.8" />
+                        </DataTrigger>
+                        <!-- move content presenter down to its own row if the size is Large -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding StandardSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Large" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Grid.Row" TargetName="cc" Value="1" />
+                            <Setter Property="Height" Value="96" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding StandardSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Content" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Grid.Row" TargetName="cc" Value="1" />
+                            <Setter Property="Height" Value="96" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CompactSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Large" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Grid.Row" TargetName="cc" Value="1" />
+                            <Setter Property="Height" Value="96" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CompactSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Content" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Grid.Row" TargetName="cc" Value="1" />
+                            <Setter Property="Height" Value="96" />
+                        </MultiDataTrigger>
+                        <!-- hide main row if both ShowTitle and ShowIcon are false -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding StandardSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Large" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                                <Condition Binding="{Binding ShowTitle, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                                <Condition Binding="{Binding ShowIcon, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Height" TargetName="PART_MainRow" Value="0" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding StandardSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Content" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                                <Condition Binding="{Binding ShowTitle, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                                <Condition Binding="{Binding ShowIcon, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Height" TargetName="PART_MainRow" Value="0" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CompactSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Large" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True" />
+                                <Condition Binding="{Binding ShowTitle, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                                <Condition Binding="{Binding ShowIcon, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Height" TargetName="PART_MainRow" Value="0" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CompactSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="Content" />
+                                <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True" />
+                                <Condition Binding="{Binding ShowTitle, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                                <Condition Binding="{Binding ShowIcon, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Height" TargetName="PART_MainRow" Value="0" />
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <!--<Style.Triggers>
-            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
-
-            </DataTrigger>
-        </Style.Triggers>-->
     </Style>
 
     <Style TargetType="{x:Type ribbon:RibbonFileMenu}">
