@@ -13,7 +13,7 @@ using System.Windows.Markup;
 namespace SolidShineUi.Ribbon
 {
     /// <summary>
-    /// A combo-box to display in a <see cref="RibbonGroup"/>.
+    /// A <see cref="ComboBox"/> to display in a <see cref="RibbonGroup"/>.
     /// </summary>
     [ContentProperty("Items")]
     public class RibbonComboBox : RibbonContentControl

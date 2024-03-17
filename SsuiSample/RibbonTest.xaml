@@ -55,7 +55,7 @@
                     <ribbon:RibbonButton Title="Find &amp; Select" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" />
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Test 2" >
-                    <ribbon:RibbonButton Title="Button 1" StandardSize="Small" />
+                    <ribbon:RibbonButton Title="Button 1" StandardSize="Small" SmallIcon="Resources/Images/SmileyColor.png" />
                     <ribbon:RibbonComboBox Title="Combo" x:Name="ribbonCbb" ShowIcon="False" SelectedIndex="0" >
                         <ComboBoxItem Content="Item 1" />
                         <ComboBoxItem Content="Item 2" />
@@ -63,10 +63,13 @@
                     </ribbon:RibbonComboBox>
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Empty" />
-                <ribbon:RibbonGroup Title="SM" ShowLauncher="True" >
+                <ribbon:RibbonGroup Title="SM" ShowLauncher="True" LauncherClick="RibbonGroup_LauncherClick" >
                     <ribbon:RibbonMenuButton Title="Solo Menu" StandardSize="Large" LargeIcon="Resources/Images/32/CopyColor.png" SmallIcon="Resources/Images/CopyColor.png">
                         <flat:ContextMenu>
-                            <MenuItem Header="Item 1" />
+                            <MenuItem Header="Click" />
+                            <MenuItem Header="that" />
+                            <MenuItem Header="dialog" />
+                            <MenuItem Header="launcher" />
                         </flat:ContextMenu>
                     </ribbon:RibbonMenuButton>
                 </ribbon:RibbonGroup>

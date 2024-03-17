@@ -126,5 +126,10 @@ namespace SsuiSample
 
             txtStatus.Text = sb.ToString();
         }
+
+        private void RibbonGroup_LauncherClick(object sender, EventArgs e)
+        {
+            MessageBox.Show("Yay, I've been clicked-ed!", "RibbonTest");
+        }
     }
 }
