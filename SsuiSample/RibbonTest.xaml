@@ -56,7 +56,11 @@
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Test 2" >
                     <ribbon:RibbonButton Title="Button 1" StandardSize="Small" />
-                    <ribbon:RibbonComboBox Title="Combo" x:Name="ribbonCbb" ShowIcon="False" />
+                    <ribbon:RibbonComboBox Title="Combo" x:Name="ribbonCbb" ShowIcon="False" SelectedIndex="0" >
+                        <ComboBoxItem Content="Item 1" />
+                        <ComboBoxItem Content="Item 2" />
+                        <ComboBoxItem Content="Item 3" />
+                    </ribbon:RibbonComboBox>
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Empty" />
                 <ribbon:RibbonGroup Title="SM" ShowLauncher="True" >

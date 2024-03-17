@@ -8,12 +8,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace SolidShineUi.Ribbon
 {
     /// <summary>
     /// A combo-box to display in a <see cref="RibbonGroup"/>.
     /// </summary>
+    [ContentProperty("Items")]
     public class RibbonComboBox : RibbonContentControl
     {
         private ComboBox comboBox;
