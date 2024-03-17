@@ -2763,6 +2763,7 @@
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}" >
                                     <Setter Property="Opacity" Value="1.0" />
+                                    <Setter Property="Visibility" Value="Visible" />
                                     <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
                                     <Setter Property="Text" Value="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
                                 </Style>
@@ -2785,6 +2786,20 @@
                                 <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StandardSize}" Value="IconOnly" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsCompacted}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="cc" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=CompactSize}" Value="IconOnly" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsCompacted}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="cc" Value="Collapsed" />
                         </MultiDataTrigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />

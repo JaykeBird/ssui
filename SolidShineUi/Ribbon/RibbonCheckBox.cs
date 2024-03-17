@@ -9,6 +9,9 @@ using System.Windows.Media;
 
 namespace SolidShineUi.Ribbon
 {
+    /// <summary>
+    /// A checkbox control to display in a <see cref="RibbonGroup"/>.
+    /// </summary>
     public class RibbonCheckBox : CheckBox, IRibbonItem
     {
         static RibbonCheckBox()
@@ -16,12 +19,29 @@ namespace SolidShineUi.Ribbon
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RibbonCheckBox), new FrameworkPropertyMetadata(typeof(RibbonCheckBox)));
         }
 
+        /// <summary>
+        /// Get or set the size to use for this control. 
+        /// For <see cref="RibbonCheckBox"/>, the only valid values are <c>Small</c> and <c>IconOnly</c>; all other values will be treated as <c>Small</c>.
+        /// </summary>
+        /// <remarks>
+        /// When the parent group is compacted, it'll request all controls within the group to use its <see cref="CompactSize"/> instead of its <see cref="StandardSize"/>.
+        /// </remarks>
         public RibbonElementSize StandardSize { get => (RibbonElementSize)GetValue(StandardSizeProperty); set => SetValue(StandardSizeProperty, value); }
 
         public static DependencyProperty StandardSizeProperty
             = DependencyProperty.Register("StandardSize", typeof(RibbonElementSize), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(RibbonElementSize.Large));
 
+
+        /// <summary>
+        /// Get or set the size to use for this control, when the parent group is being compacted.
+        /// For <see cref="RibbonCheckBox"/>, the only valid values are <c>Small</c> and <c>IconOnly</c>; all other values will be treated as <c>Small</c>.
+        /// </summary>
+        /// <remarks>
+        /// When the parent group is compacted, it'll request all controls within the group to use its <see cref="CompactSize"/> instead of its <see cref="StandardSize"/>.
+        /// For important and commonly used controls in a group, the <c>CompactSize</c> may still be same type as the <c>StandardSize</c>, but for less important or 
+        /// more infrequently used controls, it's recommended to go down a size value for <c>CompactSize</c>.
+        /// </remarks>
         public RibbonElementSize CompactSize { get => (RibbonElementSize)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
         public static DependencyProperty CompactSizeProperty
@@ -52,6 +72,10 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(null));
 
+        /// <summary>
+        /// Get or set if this control is currently being compacted (and thus should use <see cref="CompactSize"/> rather than <see cref="StandardSize"/>).
+        /// Generally, this shouldn't be set manually; instead, the parent <see cref="RibbonGroup"/> will set this for controls when the group itself is being compacted.
+        /// </summary>
         public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
 
         public static DependencyProperty IsCompactedProperty

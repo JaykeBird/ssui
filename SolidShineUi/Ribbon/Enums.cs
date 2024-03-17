@@ -48,6 +48,7 @@ namespace SolidShineUi.Ribbon
         Small = 2,
         /// <summary>
         /// Small icon and display no text. Multiple small elements can be displayed stacked together in the Ribbon's control area.
+        /// For some controls, this may not do anything, and it'll instead just render its <see cref="Small"/> size.
         /// </summary>
         IconOnly = 0,
     }
