@@ -11,7 +11,7 @@ using System.Windows.Media;
 namespace SolidShineUi.Ribbon
 {
     /// <summary>
-    /// A wrapper for displaying a control within a <see cref="Ribbon"/> that isn't one of the premade controls in this namespace.
+    /// A wrapper for displaying a control within a <see cref="RibbonGroup"/> other than any of the premade controls in this namespace.
     /// </summary>
     [ContentProperty("Content")]
     public class RibbonCustomControl : Control, IRibbonItem
@@ -44,6 +44,12 @@ namespace SolidShineUi.Ribbon
 
         public static DependencyProperty ShowTitleProperty
             = DependencyProperty.Register("ShowTitle", typeof(bool), typeof(RibbonCustomControl),
+            new FrameworkPropertyMetadata(true));
+
+        public bool ShowIcon { get => (bool)GetValue(ShowIconProperty); set => SetValue(ShowIconProperty, value); }
+
+        public static DependencyProperty ShowIconProperty
+            = DependencyProperty.Register("ShowIcon", typeof(bool), typeof(RibbonCustomControl),
             new FrameworkPropertyMetadata(true));
 
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
