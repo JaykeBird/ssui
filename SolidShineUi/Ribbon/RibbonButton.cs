@@ -9,6 +9,9 @@ using System.Windows.Media;
 
 namespace SolidShineUi.Ribbon
 {
+    /// <summary>
+    /// A button to display in a <see cref="RibbonGroup"/>.
+    /// </summary>
     public class RibbonButton : FlatButton, IRibbonItem
     {
         static RibbonButton()

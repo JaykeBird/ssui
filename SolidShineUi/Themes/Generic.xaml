@@ -2877,7 +2877,7 @@
                                 <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Grid.Row" TargetName="cc" Value="1" />
-                            <Setter Property="Height" Value="96" />
+                            <Setter Property="Height" Value="72" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -2885,7 +2885,7 @@
                                 <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Grid.Row" TargetName="cc" Value="1" />
-                            <Setter Property="Height" Value="96" />
+                            <Setter Property="Height" Value="72" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -2893,7 +2893,7 @@
                                 <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Grid.Row" TargetName="cc" Value="1" />
-                            <Setter Property="Height" Value="96" />
+                            <Setter Property="Height" Value="72" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -2901,7 +2901,7 @@
                                 <Condition Binding="{Binding IsCompacted, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Grid.Row" TargetName="cc" Value="1" />
-                            <Setter Property="Height" Value="96" />
+                            <Setter Property="Height" Value="72" />
                         </MultiDataTrigger>
                         <!-- hide main row if both ShowTitle and ShowIcon are false -->
                         <MultiDataTrigger>

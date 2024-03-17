@@ -28,6 +28,7 @@ namespace SolidShineUi.Ribbon
         /// </remarks>
         public RibbonElementSize StandardSize { get => (RibbonElementSize)GetValue(StandardSizeProperty); set => SetValue(StandardSizeProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="StandardSize"/>. See the related property for details.</summary>
         public static DependencyProperty StandardSizeProperty
             = DependencyProperty.Register("StandardSize", typeof(RibbonElementSize), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(RibbonElementSize.Large));
@@ -44,6 +45,7 @@ namespace SolidShineUi.Ribbon
         /// </remarks>
         public RibbonElementSize CompactSize { get => (RibbonElementSize)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="CompactSize"/>. See the related property for details.</summary>
         public static DependencyProperty CompactSizeProperty
             = DependencyProperty.Register("CompactSize", typeof(RibbonElementSize), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(RibbonElementSize.Small));
