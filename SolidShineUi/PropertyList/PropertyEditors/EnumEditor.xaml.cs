@@ -22,7 +22,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public List<Type> ValidTypes => (new[] {typeof(Enum)}).ToList();
+        public List<Type> ValidTypes => (new[] { typeof(Enum) }).ToList();
 
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
@@ -31,7 +31,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set { } }
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
+
+        /// <inheritdoc/>
+        public void ApplyColorScheme(ColorScheme cs) { }
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()

@@ -22,7 +22,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Create a NewDoubleSpinner.
+        /// Create a DoubleSpinner.
         /// </summary>
         public DoubleSpinner()
         {
