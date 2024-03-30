@@ -10,5 +10,6 @@
     <ResourceDictionary.MergedDictionaries>
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
+        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/MenuButton.axaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

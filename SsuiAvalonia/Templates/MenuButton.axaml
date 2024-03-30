@@ -1,0 +1,33 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:flat="clr-namespace:SolidShineUi" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!-- Add Resources Here -->
+    <Design.PreviewWith>
+        <StackPanel Margin="7" >
+            <flat:FlatButton SelectOnClick="True" >
+                <TextBlock >Button1</TextBlock>
+            </flat:FlatButton>
+            <flat:FlatButton IsEnabled="False" >
+                <TextBlock >Button2</TextBlock>
+            </flat:FlatButton>
+            <flat:FlatButton SelectOnClick="True" TransparentBack="True" >
+                <TextBlock >Button3</TextBlock>
+            </flat:FlatButton>
+            <flat:FlatButton IsEnabled="False" TransparentBack="True" >
+                <TextBlock >Button4</TextBlock>
+            </flat:FlatButton>
+            <flat:FlatRepeatButton>
+                <TextBlock >Button5</TextBlock>
+            </flat:FlatRepeatButton>
+        </StackPanel>
+    </Design.PreviewWith>
+
+    
+    
+</ResourceDictionary>
