@@ -11,13 +11,14 @@
 
     <!-- Add Resources Here -->
     <Design.PreviewWith>
-        <Border Margin="2,3,90,100">
+        <Border Margin="2,3,90,100" >
             <Grid RowDefinitions="Auto,1*" >
-                <flat:Menu HighlightSubitemBrush="Orange" PopupBorderBrush="Green" >
+                <!-- use clashing, bright colors so I can tell it's making a difference lol -->
+                <flat:Menu HighlightBrush="Purple" HighlightSubitemBrush="Orange" ClickBrush="Aqua" PopupBorderBrush="Green" FontSize="12" >
                     <flat:Menu.Items>
                         <MenuItem Header="Files" >
-                            <MenuItem Header="What" />
-                            <MenuItem Header="Wow!" >
+                            <MenuItem Header="What" InputGesture="Ctrl+G" />
+                            <MenuItem Header="Wow!" InputGesture="F3" >
                                 <MenuItem.Icon>
                                     <CheckBox IsChecked="True"/>
                                 </MenuItem.Icon>
@@ -62,10 +63,10 @@
                                   BorderThickness="0" Height="24"
                                   Background="Transparent"
                                   HighlightBrush="{TemplateBinding HighlightSubitemBrush}"
-                                  ClickBrush="{TemplateBinding HighlightBrush}"
+                                  ClickBrush="{TemplateBinding ClickBrush}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Center"
-                                  RenderTransform="{x:Null}"
+                                  Interval="120"
                                   ExecuteCommand="{Binding LineUp, RelativeSource={RelativeSource TemplatedParent}}">
                         <flat:FlatRepeatButton.IsVisible>
                             <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
@@ -90,10 +91,10 @@
                                   BorderThickness="0"
                                   Background="Transparent"
                                   HighlightBrush="{TemplateBinding HighlightSubitemBrush}"
-                                  ClickBrush="{TemplateBinding HighlightBrush}"
+                                  ClickBrush="{TemplateBinding ClickBrush}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Center"
-                                  RenderTransform="{x:Null}"
+                                  Interval="120"
                                   ExecuteCommand="{Binding LineDown, RelativeSource={RelativeSource TemplatedParent}}">
                         <flat:FlatRepeatButton.IsVisible>
                             <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
@@ -127,16 +128,21 @@
 
     <converters:PlatformKeyGestureConverter x:Key="KeyGestureConverter" />
     <x:Double x:Key="MenuFlyoutSubItemPopupHorizontalOffset">-4</x:Double>
-    <Thickness x:Key="MenuIconPresenterMargin">0,0,12,0</Thickness>
-    <Thickness x:Key="MenuInputGestureTextMargin">24,0,0,0</Thickness>
-    <StreamGeometry x:Key="MenuItemChevronPathData">M 1,0 10,10 l -9,10 -1,-1 L 8,10 -0,1 Z</StreamGeometry>
+    <x:Double x:Key="FlyoutThemeMaxWidth">456</x:Double>
+    <Thickness x:Key="MenuIconPresenterMargin">0,0,0,0</Thickness>
+    <Thickness x:Key="MenuFlyoutScrollerMargin">0,0,0,0</Thickness>
+    <Thickness x:Key="MenuInputGestureTextMargin">10,1,8,1</Thickness>
+    <Thickness x:Key="MenuItemPaddingStandard">4,2,4,2</Thickness>
+    <Thickness x:Key="MenuItemPaddingLarge">4,6,8,6</Thickness>
+    <Thickness x:Key="MenuFlyoutPresenterBorderThemeThickness">1,1,1,1</Thickness>
+    <Thickness x:Key="MenuFlyoutPresenterThemePadding">0,0,0,0</Thickness>
+    <!--<StreamGeometry x:Key="MenuItemChevronPathData">M 1,0 10,10 l -9,10 -1,-1 L 8,10 -0,1 Z</StreamGeometry>-->
 
     <ControlTheme x:Key="SsuiSubItem" TargetType="MenuItem">
         <Setter Property="Background" Value="#01000000" />
-        <!--<Setter Property="Background" Value="{DynamicResource MenuFlyoutItemBackground}" />-->
         <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
-        <Setter Property="Padding" Value="4,4,8,4" />
+        <Setter Property="Padding" Value="{StaticResource MenuItemPaddingStandard}" />
         <Setter Property="ItemContainerTheme" Value="{DynamicResource SsuiSubItem}" />
         <Setter Property="Template">
             <ControlTemplate>
@@ -154,14 +160,19 @@
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGT" />
                                 <ColumnDefinition Width="14" SharedSizeGroup="MenuItemChevron" />
                             </Grid.ColumnDefinitions>
-                            
+
                             <Border x:Name="Check" Grid.Column="0" Height="18" Width="18" HorizontalAlignment="Center"
-                                    UseLayoutRounding="True" VerticalAlignment="Center">
-                                <ContentControl x:Name="PART_IconPresenter"
-                                    Theme="{StaticResource FluentMenuItemIconTheme}"
-                                    Content="{TemplateBinding Icon}"
-                                    IsVisible="False"
-                                    Margin="{DynamicResource MenuIconPresenterMargin}" />
+                                    UseLayoutRounding="True" VerticalAlignment="Center" >
+                                <Grid>
+                                    <ContentControl x:Name="PART_IconPresenter"
+                                        Theme="{StaticResource FluentMenuItemIconTheme}"
+                                        Content="{TemplateBinding Icon}"
+                                        IsVisible="False"
+                                        Margin="{DynamicResource MenuIconPresenterMargin}" />
+                                    <Path x:Name="CheckMark" Height="10" Width="10" VerticalAlignment="Center" HorizontalAlignment="Center" IsVisible="False" StrokeThickness="0"
+                                        Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z"
+                                        Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
+                                </Grid>
                             </Border>
 
                             <ContentPresenter Name="PART_HeaderPresenter"
@@ -174,15 +185,15 @@
                             <TextBlock x:Name="PART_InputGestureText"
                                        Grid.Column="2"
                                        Classes="CaptionTextBlockStyle"
-                                       Margin="{DynamicResource MenuInputGestureTextMargin}"
+                                       Margin="{StaticResource MenuInputGestureTextMargin}"
                                        Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
-                                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                                       Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}"/>
                             <Path Name="PART_ChevronPath"
-                                  Stretch="Uniform"
+                                  Stretch="None"
                                   Width="6"
-                                  Height="12"
+                                  Height="8"
                                   Data="M0,0 L0,8 L4,4 z"
                                   Fill="{DynamicResource MenuFlyoutSubItemChevron}"
                                   Margin="4,0,6,0"
@@ -191,26 +202,26 @@
                         </Grid>
                     </Border>
                     <mnuh:FlatMenuPopup Name="PART_Popup"
-                           WindowManagerAddShadowHint="False"
+                           WindowManagerAddShadowHint="True"
                            MenuBackground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=MenuBackground}"
                            PopupBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=PopupBorderBrush}"
                            DisabledBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=DisabledBrush}"
                            HighlightSubitemBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBrush}"
                            HighlightBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightBrush}"
                            CheckedBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=CheckedBrush}"
+                           ClickBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=ClickBrush}"
                            MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=MenuCornerRadius}"
                            Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}"
                            MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
                            IsLightDismissEnabled="True"
                            IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
-                           Placement="RightEdgeAlignedBottom"
+                           Placement="RightEdgeAlignedTop"
                            OverlayInputPassThroughElement="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}">
                         <Border Background="{Binding #PART_Popup.MenuBackground}"
                                 BorderBrush="{Binding #PART_Popup.PopupBorderBrush}"
                                 BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
                                 Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                 MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-                                MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
                                 HorizontalAlignment="Stretch"
                                 CornerRadius="{Binding #PART_Popup.MenuCornerRadius}">
                             <mnuh:FlatMenuScrollViewer Theme="{StaticResource SsuiMenuScrollViewer}"
@@ -220,8 +231,10 @@
                                 HighlightSubitemBrush="{Binding #PART_Popup.HighlightSubitemBrush}"
                                 HighlightBrush="{Binding #PART_Popup.HighlightBrush}"
                                 CheckedBrush="{Binding #PART_Popup.CheckedBrush}"
+                                ClickBrush="{Binding #PART_Popup.ClickBrush}"
                                 MenuCornerRadius="{Binding #PART_Popup.MenuCornerRadius}"
-                                Foreground="{Binding #PART_Popup.Foreground}" >
+                                Foreground="{Binding #PART_Popup.Foreground}"
+                                Margin="2" > <!-- maybe in the future, let this margin be editable? -->
                                 <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"
                                                 Margin="{DynamicResource MenuFlyoutScrollerMargin}" Grid.IsSharedSizeScope="True" />
                             </mnuh:FlatMenuScrollViewer>
@@ -251,7 +264,7 @@
 
         <!--  Listen for PART_LayoutRoot:pointerover, so it will not be triggered when subitem is pressed  -->
         <Style Selector="^:pressed /template/ Border#PART_LayoutRoot:pointerover">
-            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBrush}" />
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=ClickBrush}" />
             <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
                 <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
             </Style>
@@ -294,7 +307,7 @@
             </Setter>
         </Style>
     </ControlTheme>
-    
+
     <!--<ControlTheme x:Key="SsuiSubSubItem" TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" />-->
 
     <!--<ControlTheme x:Key="{x:Type mnuh:FlatMenuPopup}" TargetType="mnuh:FlatMenuPopup" BasedOn="{StaticResource {x:Type Popup}}">
@@ -335,6 +348,7 @@
                                HighlightSubitemBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightSubitemBrush}"
                                HighlightBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBrush}"
                                CheckedBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=CheckedBrush}"
+                               ClickBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=ClickBrush}"
                                MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuCornerRadius}"
                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}"
                                MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
@@ -346,7 +360,6 @@
                                     BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
                                     Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
                                     MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
-                                    MinHeight="{DynamicResource MenuFlyoutThemeMinHeight}"
                                     HorizontalAlignment="Stretch" CornerRadius="{Binding #PART_Popup.MenuCornerRadius}">
                                 <mnuh:FlatMenuScrollViewer Theme="{StaticResource SsuiMenuScrollViewer}"
                                     MenuBackground="{Binding #PART_Popup.MenuBackground}"
@@ -355,8 +368,10 @@
                                     HighlightSubitemBrush="{Binding #PART_Popup.HighlightSubitemBrush}"
                                     HighlightBrush="{Binding #PART_Popup.HighlightBrush}"
                                     CheckedBrush="{Binding #PART_Popup.CheckedBrush}"
+                                    ClickBrush="{Binding #PART_Popup.ClickBrush}"
                                     MenuCornerRadius="{Binding #PART_Popup.MenuCornerRadius}"
-                                    Foreground="{Binding #PART_Popup.Foreground}" >
+                                    Foreground="{Binding #PART_Popup.Foreground}" 
+                                    Margin="2" > <!-- maybe in the future, let this margin be editable? -->
                                     <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"
                                                     Margin="{DynamicResource MenuFlyoutScrollerMargin}" Grid.IsSharedSizeScope="True" />
                                 </mnuh:FlatMenuScrollViewer>
@@ -371,12 +386,12 @@
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBrush}" />
         </Style>
     </ControlTheme>
-    
-    <ControlTheme x:Key="HorizontalMenuItem" TargetType="MenuItem" BasedOn="{StaticResource FlatTopLevelMenuItem}">
+
+    <!--<ControlTheme x:Key="HorizontalMenuItem" TargetType="MenuItem" BasedOn="{StaticResource FlatTopLevelMenuItem}">
         <Setter Property="Padding" Value="{DynamicResource HorizontalMenuFlyoutItemThemePaddingNarrow}" />
         <Setter Property="Margin" Value="{DynamicResource HorizontalMenuFlyoutItemMargin}" />
-    </ControlTheme>
-    
+    </ControlTheme>-->
+
     <ControlTheme x:Key="FluentMenuItemIconTheme" TargetType="ContentControl">
         <Setter Property="Width" Value="16" />
         <Setter Property="Height" Value="16" />
