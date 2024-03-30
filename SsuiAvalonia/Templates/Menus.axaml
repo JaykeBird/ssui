@@ -49,6 +49,17 @@
                             <MenuItem Header="About..." />
                         </MenuItem>
                     </flat:Menu.Items>
+                    <flat:Menu.ContextMenu>
+                        <flat:ContextMenu FontSize="12" HighlightSubitemBrush="Orange" ClickBrush="Aqua" >
+                            <MenuItem Header="Item 1" />
+                            <MenuItem Header="Item 2" />
+                            <Separator />
+                            <MenuItem Header="Subitems">
+                                <MenuItem Header="Item 1" />
+                                <MenuItem Header="Item 2" />
+                            </MenuItem>
+                        </flat:ContextMenu>
+                    </flat:Menu.ContextMenu>
                 </flat:Menu>
             </Grid>
         </Border>
@@ -448,6 +459,50 @@
                         </ItemsPresenter.ItemsPanel>
                     </ItemsPresenter>
                 </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type flat:ContextMenu}" TargetType="flat:ContextMenu">
+        <Setter Property="Background" Value="{TemplateBinding MenuBackground}" />
+        <Setter Property="BorderBrush" Value="{TemplateBinding PopupBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}" />
+        <Setter Property="CornerRadius" Value="{TemplateBinding MenuCornerRadius}" />
+        <Setter Property="MaxWidth" Value="{DynamicResource FlyoutThemeMaxWidth}" />
+        <!--<Setter Property="MinHeight" Value="{DynamicResource MenuFlyoutThemeMinHeight}" />-->
+        <Setter Property="Padding" Value="{DynamicResource MenuFlyoutPresenterThemePadding}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="WindowManagerAddShadowHint" Value="False" />
+        <Setter Property="ItemContainerTheme">
+            <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" x:DataType="MenuItem" />
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding MenuBackground}"
+                        BorderBrush="{TemplateBinding PopupBorderBrush}"
+                        BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
+                        Padding="{DynamicResource MenuFlyoutPresenterThemePadding}"
+                        MaxWidth="{DynamicResource FlyoutThemeMaxWidth}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        CornerRadius="{TemplateBinding MenuCornerRadius}">
+                    <mnuh:FlatMenuScrollViewer Theme="{StaticResource SsuiMenuScrollViewer}"
+                        MenuBackground="{TemplateBinding MenuBackground}"
+                        PopupBorderBrush="{TemplateBinding PopupBorderBrush}"
+                        DisabledBrush="{TemplateBinding DisabledBrush}"
+                        HighlightSubitemBrush="{TemplateBinding HighlightSubitemBrush}"
+                        HighlightBrush="{TemplateBinding HighlightBrush}"
+                        CheckedBrush="{TemplateBinding CheckedBrush}"
+                        ClickBrush="{TemplateBinding ClickBrush}"
+                        MenuCornerRadius="{TemplateBinding MenuCornerRadius}"
+                        Foreground="{TemplateBinding Foreground}"
+                        VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
+                        Margin="2" >
+                        <!-- maybe in the future, let this margin be editable? -->
+                        <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"
+                                        KeyboardNavigation.TabNavigation="Continue"
+                                        Margin="{DynamicResource MenuFlyoutScrollerMargin}" Grid.IsSharedSizeScope="True" />
+                    </mnuh:FlatMenuScrollViewer>
+                </Border>
             </ControlTemplate>
         </Setter>
     </ControlTheme>
