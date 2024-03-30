@@ -64,6 +64,7 @@ namespace SolidShineUi
             PopupBorderBrush = cs.BorderColor.ToBrush();
             HighlightBrush = cs.ThirdHighlightColor.ToBrush();
             HighlightSubitemBrush = cs.ThirdHighlightColor.ToBrush();
+            ClickBrush = cs.SecondHighlightColor.ToBrush();
             CheckedBrush = cs.SecondaryColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
 

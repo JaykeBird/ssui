@@ -2,6 +2,7 @@
 using Avalonia.Styling;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,10 @@ namespace SolidShineUi
     public class SolidShineUi : Styles
     {
         // based upon https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/FluentTheme.xaml.cs
+
+        //// added this in so that it works with the designer
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public SolidShineUi() { }
 
         /// <summary>
         /// Create a new SolidShineUI styles object.
