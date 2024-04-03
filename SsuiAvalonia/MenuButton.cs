@@ -27,7 +27,7 @@ namespace SolidShineUi
 
         private void OnColorSchemeChanged(ColorScheme newValue)
         {
-            //Menu?.ApplyColorScheme(cs);
+            Menu?.ApplyColorScheme(newValue);
         }
 
         private void MenuButton_Click(object? sender, RoutedEventArgs e)
@@ -39,7 +39,7 @@ namespace SolidShineUi
                 Menu.PlacementRect = MenuPlacementRectangle;
                 Menu.HorizontalOffset = MenuHorizontalOffset;
                 Menu.VerticalOffset = MenuVerticalOffset;
-                Menu.Open();
+                Menu.Open(this);
                 Menu.Closing += Menu_Closing;
                 Menu.Closed += Menu_Closed;
             }
