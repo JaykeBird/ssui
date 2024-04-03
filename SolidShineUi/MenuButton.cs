@@ -84,6 +84,20 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
         /// </summary>
+        /// <remarks>
+        /// When this is set to <c>false</c>, the menu will close when a menu item is selected, or when the user clicks outside of the menu or moves focus.
+        /// Due to the differences between how Avalonia and WPF handle their context menus, this functions a bit differently in the two versions when set to <c>true</c>.
+        /// <para/>
+        /// In the WPF version of Solid Shine UI, <c>StaysOpen</c> will keep the context menu open until a menu item is clicked (unless the menu item also has <c>StaysOpenOnClick</c>
+        /// set to true), but other methods to close the menu don't generally work (such as clicking outside of the menu). So the best ways to close the menu is to have a "Close" menu
+        /// item that doesn't have <c>StaysOpenOnClick</c> applied, or some other code or function that directly sets the menu's <c>IsOpen</c> property to <c>false</c>. You do not
+        /// need to explicitly change <c>StaysOpen</c> to <c>false</c> in order to allow the menu to close, so this value can remain unchanged as long as you want this behavior.
+        /// <para/>
+        /// In the Avalonia version of Solid Shine UI, <c>StaysOpen</c> will set the context menu to refuse to close; when the context menu is about to close, the MenuButton cancels 
+        /// that action. This also means that clicking any menu items will not close the menu, nor will setting the menu's <c>IsOpen</c> property to <c>false</c>.
+        /// Instead, to close the context menu, you will need to change <c>StaysOpen</c> back to <c>false</c> before you change <c>IsOpen</c> to <c>false</c> or click out of the menu,
+        /// and then you will need to re-set <c>StaysOpen</c> back to <c>true</c> whenever you want this behavior to occur again.
+        /// </remarks>
         [Category("Common")]
         public bool StaysOpen
         {
@@ -140,6 +154,27 @@ namespace SolidShineUi
         public static DependencyProperty MenuPlacementRectangleProperty
             = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(MenuButton),
             new FrameworkPropertyMetadata(Rect.Empty));
+
+        /// <summary>
+        /// Get or set how far offset the menu is horizontally (left or right) from its placement target/rectangle when it's opened.
+        /// </summary>
+        public double MenuHorizontalOffset { get => (double)GetValue(MenuHorizontalOffsetProperty); set => SetValue(MenuHorizontalOffsetProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuHorizontalOffset"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuHorizontalOffsetProperty
+            = DependencyProperty.Register(nameof(MenuHorizontalOffset), typeof(double), typeof(MenuButton),
+            new FrameworkPropertyMetadata(0.0));
+
+        /// <summary>
+        /// Get or set how far offset the menu is vertically (up or down) from its placement target/rectangle when it's opened.
+        /// </summary>
+        public double MenuVerticalOffset { get => (double)GetValue(MenuVerticalOffsetProperty); set => SetValue(MenuVerticalOffsetProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuVerticalOffset"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuVerticalOffsetProperty
+            = DependencyProperty.Register(nameof(MenuVerticalOffset), typeof(double), typeof(MenuButton),
+            new FrameworkPropertyMetadata(-1.0));
+
 
         #endregion
 
@@ -204,8 +239,8 @@ namespace SolidShineUi
                 Menu.Placement = MenuPlacement;
                 Menu.PlacementTarget = MenuPlacementTarget ?? this;
                 Menu.PlacementRectangle = MenuPlacementRectangle;
-                Menu.HorizontalOffset = 0;
-                Menu.VerticalOffset = -1;
+                Menu.HorizontalOffset = MenuHorizontalOffset;
+                Menu.VerticalOffset = MenuVerticalOffset;
                 Menu.IsOpen = true;
                 Menu.Closed += Menu_Closed;
             }
