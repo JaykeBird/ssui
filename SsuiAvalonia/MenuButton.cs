@@ -86,8 +86,6 @@ namespace SolidShineUi
             MenuClosed?.Invoke(this, e);
         }
 
-        #endregion
-
         private bool _staysOpen = false;
 
         /// <summary>
@@ -112,29 +110,6 @@ namespace SolidShineUi
         /// <summary>The backing direct property for <see cref="StaysOpen"/>. See the related property for details.</summary>
         public static readonly DirectProperty<MenuButton, bool> StaysOpenProperty
             = AvaloniaProperty.RegisterDirect<MenuButton, bool>(nameof(StaysOpen), (s) => s.StaysOpen, (s, v) => s.StaysOpen = v, unsetValue: false);
-
-        #region Menu Arrow
-
-        /// <summary>
-        /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
-        /// </summary>
-        public bool ShowMenuArrow { get => GetValue(ShowMenuArrowProperty); set => SetValue(ShowMenuArrowProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="ShowMenuArrow"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> ShowMenuArrowProperty
-            = AvaloniaProperty.Register<MenuButton, bool>(nameof(ShowMenuArrow), true);
-
-        /// <summary>
-        /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 
-        /// (via <see cref="Avalonia.Controls.ContentControl.HorizontalContentAlignment"/>).
-        /// </summary>
-        public bool KeepMenuArrowOnRight { get => GetValue(KeepMenuArrowOnRightProperty); set => SetValue(KeepMenuArrowOnRightProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="KeepMenuArrowOnRight"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> KeepMenuArrowOnRightProperty
-            = AvaloniaProperty.Register<MenuButton, bool>(nameof(KeepMenuArrowOnRight), false);
-
-        #endregion
 
         #region Placement
 
@@ -184,6 +159,31 @@ namespace SolidShineUi
         public static readonly StyledProperty<double> MenuVerticalOffsetProperty
             = AvaloniaProperty.Register<MenuButton, double>(nameof(MenuVerticalOffset), -1.0);
 
+
+        #endregion
+
+        #endregion
+
+        #region Menu Arrow
+
+        /// <summary>
+        /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
+        /// </summary>
+        public bool ShowMenuArrow { get => GetValue(ShowMenuArrowProperty); set => SetValue(ShowMenuArrowProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ShowMenuArrow"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> ShowMenuArrowProperty
+            = AvaloniaProperty.Register<MenuButton, bool>(nameof(ShowMenuArrow), true);
+
+        /// <summary>
+        /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 
+        /// (via <see cref="Avalonia.Controls.ContentControl.HorizontalContentAlignment"/>).
+        /// </summary>
+        public bool KeepMenuArrowOnRight { get => GetValue(KeepMenuArrowOnRightProperty); set => SetValue(KeepMenuArrowOnRightProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="KeepMenuArrowOnRight"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> KeepMenuArrowOnRightProperty
+            = AvaloniaProperty.Register<MenuButton, bool>(nameof(KeepMenuArrowOnRight), false);
 
         #endregion
 

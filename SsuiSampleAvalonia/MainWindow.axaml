@@ -58,7 +58,7 @@
                          Margin="10,0" Click="FlatButton_Click" >
             <TextBlock Text="HWHAT" />
         </flat:FlatButton>
-        <flat:FlatButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" IsEnabled="False" Height="24" 
-                         VerticalAlignment="Center" Margin="10,0" Content="Disabibled" />
+        <flat:MenuButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
+                         IsEnabled="False" Height="24" VerticalAlignment="Center" Margin="10,0" Content="Disabibled" />
     </Grid>
 </Window>
