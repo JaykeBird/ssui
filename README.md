@@ -212,7 +212,7 @@ For credits/attribution for when you use the library, please use one of the vers
 > 
 > https://jaykebird.com/software/ssui
 > 
-> Contains work by Manuel Schweigert, Pete Laker, Steve Lautenschlager, Richard Moss (Cyotek Ltd.), Warren Galyen (Mechanika Design), Yassine (Stopbyte), Hector Pulido, Sebastien Lambla, Nimgoble, and H.A. Sullivan. See website for more details.
+> Contains work by Manuel Schweigert, Pete Laker, Steve Lautenschlager, Richard Moss (Cyotek Ltd.), Warren Galyen (Mechanika Design), Yassine (Stopbyte), Hector Pulido, Sebastien Lambla, Nimgoble, H.A. Sullivan, and ControlzEx (batzen and punker76). See website for more details.
 >
 > Licensed under MIT License
 

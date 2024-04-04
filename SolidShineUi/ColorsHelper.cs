@@ -117,8 +117,8 @@ namespace SolidShineUi
                         throw new FormatException("Hex string is not in a correct format.", ex);
                     }
 
-                    // I don't support the 4-digit case here, as there's some minor ambiguity as to what it may mean
-                    // I can add 2-digit support at some point though (#45 is #454545)
+                // I don't support the 4-digit case here, as there's some minor ambiguity as to what it may mean
+                // I can add 2-digit support at some point though (#45 is #454545)
 
                 default:
                     //throw new ArgumentOutOfRangeException(nameof(hex), "The hex value must have a length of 3, 6, or 8, not including the '#' symbol.");
@@ -229,6 +229,30 @@ namespace SolidShineUi
             return Color.FromRgb(r, g, b);
         }
 
+        /// <summary>Convert a GDI+ ARGB integer that represent a color into a WPF/Avalonia Color struct.</summary>
+        /// <param name="color">The integer that represents the color. Its bits are in the format 0xAARRGGBB (with 1 byte dedicated to each value).</param>
+        /// <returns>A Color with the same values of the ARGB integer.</returns>
+        public static Color CreateFromArgbDword(uint color)
+        {
+            // from https://github.com/ControlzEx/ControlzEx/blob/develop/src/ControlzEx/Internal/Utilities.Wpf.cs
+
+            return CreateFromArgb(
+                (byte)((color & 0xFF000000) >> 24), // a
+                (byte)((color & 0x00FF0000) >> 16), // r
+                (byte)((color & 0x0000FF00) >> 8),  // g
+                (byte)((color & 0x000000FF) >> 0)); // b
+        }
+
+        /// <summary>
+        /// Convert a WPF/Avalonia color into an ARGB integer that can be used with GDI+.
+        /// </summary>
+        /// <param name="color">The color to convert.</param>
+        /// <returns>An ARGB integer, with the format 0xAARRGGBB (with 1 byte dedicated to each value).</returns>
+        public static uint ToArgbDword(Color color)
+        {
+            return (uint)((color.A << 24) + (color.R << 16) + (color.G << 8) + color.B);
+        }
+
         #endregion
 
         #region HSV Math (used for color schemes)
@@ -313,14 +337,7 @@ namespace SolidShineUi
             }
             else if (max == r)
             {
-                if ((g - b) < 0)
-                {
-                    hue = 360 + (60 * (((g - b) / delta) % 6));
-                }
-                else
-                {
-                    hue = 60 * (((g - b) / delta) % 6);
-                }
+                hue = 60 * (((g - b) / delta) % 6);
             }
             else if (max == g)
             {
@@ -333,12 +350,12 @@ namespace SolidShineUi
 
             if (hue < 0)
             {
-                Console.WriteLine("HUE UNDER 0: " + hue);
+                // Console.WriteLine("HUE UNDER 0: " + hue);
+                hue += 360;
             }
 
             saturation = (Math.Abs(max) < double.Epsilon) ? 0 : delta / max;
             value = max;
-
         }
 
         /// <summary>
@@ -413,12 +430,99 @@ namespace SolidShineUi
 
         #endregion
 
+        #region HSL conversion
+
+        // taken from https://github.com/ControlzEx/ControlzEx/blob/develop/src/ControlzEx/Theming/HSLColor.cs
+        // backed up by https://en.wikipedia.org/wiki/HSL_and_HSV#Formal_derivation
+
+        /// <summary>
+        /// Get the HSV values for a particular color.
+        /// </summary>
+        /// <param name="color">The color to convert to HSV.</param>
+        /// <param name="hue">The hue value of the color.</param>
+        /// <param name="saturation">The saturation value of the color.</param>
+        /// <param name="luminance">The luminance (also known as lightness) value of the color.</param>
+        public static void ToHSL(Color color, out double hue, out double saturation, out double luminance)
+        {
+            double r = Convert.ToDouble(color.R);
+            var g = Convert.ToDouble(color.G);
+            var b = Convert.ToDouble(color.B);
+
+            var min = Math.Min(r, Math.Min(g, b));
+            var max = Math.Max(r, Math.Max(g, b));
+            var delta = max - min;
+            if (delta == 0)
+            {
+                hue = 0;
+            }
+            else if (max == r)
+            {
+                hue = 60 * ((g - b) / delta) % 6;
+            }
+            else if (max == g)
+            {
+                hue = 60 * (((b - r) / delta) + 2);
+            }
+            else // (max == b)
+            {
+                hue = 60 * (((r - g) / delta) + 4);
+            }
+
+            if (hue < 0)
+            {
+                // Console.WriteLine("HUE UNDER 0: " + hue);
+                hue += 360;
+            }
+
+            luminance = ((1 / 2) * (max + min)) / 255;
+
+
+            if (CheckEqualViaEpsilon(luminance, 0) || CheckEqualViaEpsilon(luminance, 1))
+            {
+                saturation = 0;
+            }
+            else
+            {
+                saturation = delta / (255 * (1 - Math.Abs((2 * luminance) - 1)));
+            }
+
+            bool CheckEqualViaEpsilon(double val1, double val2)
+            {
+                return Math.Abs(val1 - val2) < double.Epsilon;
+            }
+        }
+
+        /// <summary>
+        /// Create a color based upon HSL values.
+        /// </summary>
+        /// <param name="hue">The hue of the color.</param>
+        /// <param name="saturation">The saturation of the color.</param>
+        /// <param name="luminance">The luminance of the color.</param>
+        /// <returns>Return a color that corresponds to these HSL values.</returns>
+        public static Color CreateFromHSL(double hue, double saturation, double luminance)
+        {
+            return CreateFromRgb(
+                GetColorComponent(0, hue, saturation, luminance),  // r
+                GetColorComponent(8, hue, saturation, luminance),  // g
+                GetColorComponent(4, hue, saturation, luminance)); // b
+
+            byte GetColorComponent(int n, double h, double s, double l)
+            {
+                double a = s * Math.Min(l, 1 - l);
+                double k = (n + (h / 30)) % 12;
+
+                return (byte)Math.Round(255 * (l - (a * Math.Max(-1, Math.Min(k - 3, Math.Min(9 - k, 1))))));
+            }
+        }
+
+        #endregion
+
         #region Color Resources
 
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 168FE5.</summary>
         public static Color Blue { get; } = CreateFromHex("168FE5"); // CornflowerBlue may work too
         /// <summary>A preselected color, good to use for a color scheme. Has hex string 00AEDB.</summary>
-        public static Color Cyan { get; } = CreateFromHex("00AEDB");        
+        public static Color Cyan { get; } = CreateFromHex("00AEDB");
         /// <summary>A preselected color. Has hex string 5C8ED3.</summary>
         public static Color GrayBlue { get; } = CreateFromHex("5C8ED3");
         /// <summary>A preselected color, good to use for a color scheme. Has hex string FFBE00.</summary>
@@ -561,12 +665,12 @@ namespace SolidShineUi
             }
         }
 
-//#if DEBUG
-//        public static List<Color> ListOfColors =
-//            new List<Color> { DarkBlue, Blue, Yellow, Orange, Red, SkyBlue, Pink, Green,
-//            Cyan, LightGreen, GrayGreen, LightViolet, Violet, Purple,
-//            Gray, RedBrown, Salmon, Brown, White, Black, LightGray, DarkGray, Olive};
-//#endif
+        //#if DEBUG
+        //        public static List<Color> ListOfColors =
+        //            new List<Color> { DarkBlue, Blue, Yellow, Orange, Red, SkyBlue, Pink, Green,
+        //            Cyan, LightGreen, GrayGreen, LightViolet, Violet, Purple,
+        //            Gray, RedBrown, Salmon, Brown, White, Black, LightGray, DarkGray, Olive};
+        //#endif
 
         #endregion
 
