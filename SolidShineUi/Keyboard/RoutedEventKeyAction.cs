@@ -3,17 +3,16 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 
 #if AVALONIA
 using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using System.Collections;
 #else
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
 #endif
 
 namespace SolidShineUi.KeyboardShortcuts
