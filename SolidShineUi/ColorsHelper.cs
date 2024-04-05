@@ -8,8 +8,6 @@ using Color = System.Windows.Media.Color;
 
 namespace SolidShineUi
 {
-
-
     /// <summary>
     /// Contains a collection of helper functions in relation to colors.
     /// </summary>
@@ -295,6 +293,13 @@ namespace SolidShineUi
         #endregion
 
         #region HSV conversion
+
+        // Avalonia does have its own version of these same HSV calculations, via the Color.ToHsv() function,
+        // but doing so creates a unique object (HsvColor) rather than outputting the 3 double values making up that color
+        // it's a minor difference if you want the 3 double values separately, or them all wrapped up in a neat struct
+        // ultimately, there should be no difference - the math is the same (and ironically all uses the same
+        // Wikpedia article as a reference), the only difference being extremely minor and semantic
+
         /// <summary>
         /// Get the HSV values for a particular color.
         /// </summary>
@@ -320,7 +325,14 @@ namespace SolidShineUi
             }
             else if (max == r)
             {
-                hue = 60 * (((g - b) / delta) % 6);
+                if ((g - b) < 0) // done to avoid having a negative number when doing the modulo
+                {
+                    hue = 360 + (60 * (((g - b) / delta) % 6));
+                }
+                else
+                {
+                    hue = 60 * (((g - b) / delta) % 6);
+                }
             }
             else if (max == g)
             {
@@ -413,6 +425,12 @@ namespace SolidShineUi
 
         #region HSL conversion
 
+        // Avalonia does have its own version of these same HSL calculations, via the Color.ToHsl() function,
+        // but doing so creates a unique object (HsvColor) rather than outputting the 3 double values making up that color
+        // it's a minor difference if you want the 3 double values separately, or them all wrapped up in a neat struct
+        // ultimately, there should be no difference - the math is the same (and ironically all uses the same
+        // Wikpedia article as a reference), the only difference being extremely minor and semantic
+
         // taken from https://github.com/ControlzEx/ControlzEx/blob/develop/src/ControlzEx/Theming/HSLColor.cs
         // backed up by https://en.wikipedia.org/wiki/HSL_and_HSV#Formal_derivation
 
@@ -438,7 +456,14 @@ namespace SolidShineUi
             }
             else if (max == r)
             {
-                hue = 60 * ((g - b) / delta) % 6;
+                if ((g - b) < 0) // done to avoid having a negative number when doing the modulo
+                {
+                    hue = 360 + (60 * (((g - b) / delta) % 6));
+                }
+                else
+                {
+                    hue = 60 * (((g - b) / delta) % 6);
+                }
             }
             else if (max == g)
             {
@@ -496,7 +521,7 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+#endregion
 
         #region Color Resources
 
