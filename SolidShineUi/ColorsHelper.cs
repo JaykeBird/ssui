@@ -124,30 +124,6 @@ namespace SolidShineUi
             }
         }
 
-        /// <summary>
-        /// Create a color based upon an OLE color value.
-        /// </summary>
-        /// <param name="oleColor">The OLE color value to translate.</param>
-        /// <returns>A color that is the translation of the OLE color value.</returns>
-        /// <remarks>
-        /// Most modern programs will not have much use or need for the OLE color value, but this does have use in older programs and certain parts of Microsoft Office.
-        /// <para/>
-        /// The Avalonia version of this function will not support the OLE color values that correspond to system colors, but other standard color values are supported.
-        /// </remarks>
-        public static Color CreateFromOle(int oleColor)
-        {
-#if AVALONIA
-            // https://stackoverflow.com/questions/2732375/how-to-translate-legacy-ole-colors-to-argb-with-net
-            int red = oleColor % 256;
-            int green = (oleColor / 256) % 256;
-            int blue = (oleColor / 65536) % 256;
-            return CreateFromRgb((byte)red, (byte)green, (byte)blue);
-#else
-            System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
-            return Color.FromArgb(c.A, c.R, c.G, c.B);
-#endif
-        }
-
         // TODO: perform benchmark to see if ToHexString or ToHexStringLegacy is faster
 
         //taken from http://www.cambiaresearch.com/articles/1/convert-dotnet-color-to-hex-string
@@ -198,6 +174,30 @@ namespace SolidShineUi
         public static string ToHexStringWithAlpha(Color color)
         {
             return color.A.ToString("X2") + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+        }
+
+        /// <summary>
+        /// Create a color based upon an OLE color value.
+        /// </summary>
+        /// <param name="oleColor">The OLE color value to translate.</param>
+        /// <returns>A color that is the translation of the OLE color value.</returns>
+        /// <remarks>
+        /// Most modern programs will not have much use or need for the OLE color value, but this does have use in older programs and certain parts of Microsoft Office.
+        /// <para/>
+        /// The Avalonia version of this function will not support the OLE color values that correspond to system colors, but other standard color values are supported.
+        /// </remarks>
+        public static Color CreateFromOle(int oleColor)
+        {
+#if AVALONIA
+            // https://stackoverflow.com/questions/2732375/how-to-translate-legacy-ole-colors-to-argb-with-net
+            int red = oleColor % 256;
+            int green = (oleColor / 256) % 256;
+            int blue = (oleColor / 65536) % 256;
+            return CreateFromRgb((byte)red, (byte)green, (byte)blue);
+#else
+            System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
+#endif
         }
 
         /// <summary>
@@ -340,6 +340,11 @@ namespace SolidShineUi
         /// <param name="hue">The hue value of the color.</param>
         /// <param name="saturation">The saturation value of the color.</param>
         /// <param name="value">The value (also known as brightness) value of the color.</param>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static void ToHSV(Color color, out double hue, out double saturation, out double value)
         {
             // taken from http://www.rapidtables.com/convert/color/rgb-to-hsv.htm
@@ -393,10 +398,13 @@ namespace SolidShineUi
         /// <param name="saturation">The saturation of the color.</param>
         /// <param name="value">The value of the color.</param>
         /// <returns>Return a color that corresponds to these HSV values.</returns>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static Color CreateFromHSV(double hue, double saturation, double value)
         {
-            // TODO: rely upon Avalonia's implementation in the Avalonia version
-
             // taken from https://en.wikipedia.org/wiki/HSL_and_HSV#Converting_to_RGB
 
             double c = value * saturation; // chroma
@@ -461,7 +469,7 @@ namespace SolidShineUi
         #region HSL conversion
 
         // Avalonia does have its own version of these same HSL calculations, via the Color.ToHsl() function,
-        // but doing so creates a unique object (HsvColor) rather than outputting the 3 double values making up that color
+        // but doing so creates a unique object (HslColor) rather than outputting the 3 double values making up that color
         // it's a minor difference if you want the 3 double values separately, or them all wrapped up in a neat struct
         // ultimately, there should be no difference - the math is the same (and ironically all uses the same
         // Wikpedia article as a reference), the only difference being extremely minor and semantic
@@ -470,12 +478,17 @@ namespace SolidShineUi
         // backed up by https://en.wikipedia.org/wiki/HSL_and_HSV#Formal_derivation
 
         /// <summary>
-        /// Get the HSV values for a particular color.
+        /// Get the HSL values for a particular color.
         /// </summary>
-        /// <param name="color">The color to convert to HSV.</param>
+        /// <param name="color">The color to convert to HSL.</param>
         /// <param name="hue">The hue value of the color.</param>
         /// <param name="saturation">The saturation value of the color.</param>
         /// <param name="luminance">The luminance (also known as lightness) value of the color.</param>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static void ToHSL(Color color, out double hue, out double saturation, out double luminance)
         {
             double r = Convert.ToDouble(color.R);
@@ -517,7 +530,6 @@ namespace SolidShineUi
 
             luminance = ((1 / 2) * (max + min)) / 255;
 
-
             if (CheckEqualViaEpsilon(luminance, 0) || CheckEqualViaEpsilon(luminance, 1))
             {
                 saturation = 0;
@@ -540,6 +552,11 @@ namespace SolidShineUi
         /// <param name="saturation">The saturation of the color.</param>
         /// <param name="luminance">The luminance of the color.</param>
         /// <returns>Return a color that corresponds to these HSL values.</returns>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static Color CreateFromHSL(double hue, double saturation, double luminance)
         {
             return CreateFromRgb(
