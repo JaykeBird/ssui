@@ -126,19 +126,29 @@ namespace SolidShineUi
             }
         }
 
-#if !AVALONIA
         /// <summary>
         /// Create a color based upon an OLE color value.
         /// </summary>
         /// <param name="oleColor">The OLE color value to translate.</param>
         /// <returns>A color that is the translation of the OLE color value.</returns>
-        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
+        /// <remarks>
+        /// Most modern programs will not have much use or need for the OLE color value, but this does have use in older programs and certain parts of Microsoft Office.
+        /// <para/>
+        /// The Avalonia version of this function will not support the OLE color values that correspond to system colors, but other standard color values are supported.
+        /// </remarks>
         public static Color CreateFromOle(int oleColor)
         {
+#if AVALONIA
+            // https://stackoverflow.com/questions/2732375/how-to-translate-legacy-ole-colors-to-argb-with-net
+            int red = oleColor % 256;
+            int green = (oleColor / 256) % 256;
+            int blue = (oleColor / 65536) % 256;
+            return CreateFromRgb((byte)red, (byte)green, (byte)blue);
+#else
             System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
             return Color.FromArgb(c.A, c.R, c.G, c.B);
-        }
 #endif
+        }
 
         // TODO: perform benchmark to see if ToHexString or ToHexStringLegacy is faster
 
@@ -170,7 +180,8 @@ namespace SolidShineUi
         //}
 
         /// <summary>
-        /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)"/> to keep the A value as well..
+        /// Returns an RGB hex triplet string that corresponds to this color. 
+        /// Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)"/> to keep the A value as well..
         /// </summary>
         /// <param name="color">The color to convert to a hex string.</param>
         public static string ToHexString(Color color)
@@ -191,20 +202,27 @@ namespace SolidShineUi
             return color.A.ToString("X2") + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
-#if !AVALONIA
         /// <summary>
         /// Get the OLE color value that translates to this color.
         /// </summary>
         /// <param name="color">The color to translate to an OLE color value.</param>
         /// <returns>A color that is the translation of the OLE color value.</returns>
-        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
+        /// <remarks>
+        /// Most modern programs will not have much use or need for the OLE color value, but this does have use in older programs and certain parts of Microsoft Office.
+        /// <para/>
+        /// The Avalonia version of this function will not support the OLE color values that correspond to system colors, but other standard color values are supported.
+        /// </remarks>
         public static int ToOleColor(Color color)
         {
+#if AVALONIA
+            // https://stackoverflow.com/questions/2732375/how-to-translate-legacy-ole-colors-to-argb-with-net
+            return color.R + (color.G * 256) + (color.B * 256 * 256);
+#else
             return ColorTranslator.ToOle(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
-        }
 #endif
+        }
 
-#endregion
+        #endregion
 
         #region Additional Functions
 
