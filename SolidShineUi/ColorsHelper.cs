@@ -1,16 +1,13 @@
 ﻿using System;
-
-#if AVALONIA
 using System.Globalization;
 using System.Collections.Generic;
 using System.Reflection;
+
+#if AVALONIA
 using Avalonia.Media;
 using Color = Avalonia.Media.Color;
 #else
 using System.Windows.Media;
-using System.Globalization;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Drawing;
 using Color = System.Windows.Media.Color;
 #endif
