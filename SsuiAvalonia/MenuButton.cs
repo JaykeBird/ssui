@@ -23,13 +23,6 @@ namespace SolidShineUi
             Click += MenuButton_Click;
         }
 
-        #region Color Scheme
-
-        private void OnColorSchemeChanged(ColorScheme newValue)
-        {
-            Menu?.ApplyColorScheme(newValue);
-        }
-
         private void MenuButton_Click(object? sender, RoutedEventArgs e)
         {
             if (Menu != null)
@@ -43,6 +36,13 @@ namespace SolidShineUi
                 Menu.Closing += Menu_Closing;
                 Menu.Closed += Menu_Closed;
             }
+        }
+
+        #region Color Scheme
+
+        private void OnColorSchemeChanged(ColorScheme newValue)
+        {
+            Menu?.ApplyColorScheme(newValue);
         }
 
         /// <inheritdoc/>

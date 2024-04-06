@@ -33,7 +33,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the <see cref="IsSelected"/> value is changed.
         /// </summary>
-        event EventHandler<ItemSelectionChangedEventArgs>? IsSelectedChanged;
+        event EventHandler<ItemSelectionChangedEventArgs> IsSelectedChanged;
 
         /// <summary>
         /// Set the <see cref="IsSelected"/> value for this control, while also providing additional information to pass along to the <see cref="IsSelectedChanged"/> event.

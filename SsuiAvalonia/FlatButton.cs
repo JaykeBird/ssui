@@ -329,7 +329,6 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="CanSelect"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> CanSelectProperty
             = AvaloniaProperty.Register<FlatButton, bool>("CanSelect", true);
-        // OnCanSelectChanged
 
         private void OnCanSelectChanged(AvaloniaPropertyChangedEventArgs e)
         {
@@ -432,7 +431,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the user clicks the button.
         /// </summary>
-        public event EventHandler<RoutedEventArgs>? Click
+        public event EventHandler<RoutedEventArgs> Click
         {
             add => AddHandler(ClickEvent, value);
             remove => RemoveHandler(ClickEvent, value);
@@ -441,7 +440,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the user clicks the button with the right mouse.
         /// </summary>
-        public event EventHandler<RoutedEventArgs>? RightClick
+        public event EventHandler<RoutedEventArgs> RightClick
         {
             add => AddHandler(RightClickEvent, value);
             remove => RemoveHandler(RightClickEvent, value);
@@ -450,7 +449,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the user clicks the button with the right mouse.
         /// </summary>
-        public event EventHandler<ItemSelectionChangedEventArgs>? IsSelectedChanged
+        public event EventHandler<ItemSelectionChangedEventArgs> IsSelectedChanged
         {
             add => AddHandler(IsSelectedChangedEvent, value);
             remove => RemoveHandler(IsSelectedChangedEvent, value);
@@ -459,7 +458,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the <see cref="CanSelect"/> property has changed.
         /// </summary>
-        public event EventHandler<RoutedEventArgs>? CanSelectChanged
+        public event EventHandler<RoutedEventArgs> CanSelectChanged
         {
             add => AddHandler(CanSelectChangedEvent, value);
             remove => RemoveHandler(CanSelectChangedEvent, value);
