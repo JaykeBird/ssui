@@ -21,6 +21,11 @@ namespace SolidShineUi
         bool SelectOnClick { get; set; }
 
         /// <summary>
+        /// Get or set if this control is selectable.
+        /// </summary>
+        bool CanSelect { get; set; }
+
+        /// <summary>
         /// Raised when the user clicks on this control.
         /// </summary>
         event EventHandler<RoutedEventArgs> Click;
@@ -104,7 +109,7 @@ namespace SolidShineUi
         /// </summary>
         Parent = 2,
         /// <summary>
-        /// The selection was changed because the <see cref="SelectableUserControl.CanSelect"/> property (or similar property) was changed.
+        /// The selection was changed because the <see cref="IClickSelectableControl.CanSelect"/> property (or similar property) was changed.
         /// </summary>
         DisableSelecting = 3,
         /// <summary>

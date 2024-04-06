@@ -308,7 +308,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Get a list of keyboard shortcuts registered to a certain method.
         /// </summary>
-        /// <param name="methodId">The name of the method. If you used <see cref="RoutedEventKeyAction.CreateListFromMenu(Menu)"/> to fill from a menu, the name will be the name of the MenuItem itself.</param>
+        /// <param name="methodId">The name of the method. If you used <see cref="RoutedEventKeyAction"/>'s <c>CreateListFromMenu</c> function to fill from a menu, the name will be the name of the MenuItem itself.</param>
         /// <returns></returns>
         public IEnumerable<KeyboardShortcut> GetShortcutsForMethod(string methodId)
         {

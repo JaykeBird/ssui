@@ -186,6 +186,20 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 #endif
 
+#if AVALONIA
+        /// <summary>
+        /// Creates a collection of CommandKeyAction actions, by loading the static properties of a class.
+        /// </summary>
+        /// <param name="commandsClass">The type of the class that contains the commands to load. The commands should be static properties in that type.</param>
+        /// <param name="commandParameter">The optional parameter to supply with the commands, to add on to the CommandKeyActions.</param>
+        /// <param name="commandTarget">The optional target for the commands, to add on to the CommandKeyActions.</param>
+        /// <remarks>
+        /// This method uses reflection to load the static properties of a class. 
+        /// This only looks at static properties (i.e. <c>public static RoutedCommand CommandName { get; }</c>), so commands stored as a field or a non-static property will not be found.
+        /// </remarks>
+        /// <returns>A list of CommandKeyActions, one for each static command property in this class.</returns>
+        public static KeyActionList LoadFromType(Type commandsClass, object? commandParameter = null, IInputElement? commandTarget = null)
+#else
         /// <summary>
         /// Creates a collection of CommandKeyAction actions, by loading the static properties of a class (such as <see cref="ApplicationCommands"/> or <see cref="FlatWindowCommands"/>).
         /// </summary>
@@ -201,6 +215,7 @@ namespace SolidShineUi.KeyboardShortcuts
         public static KeyActionList LoadFromType(Type commandsClass, object? commandParameter = null, IInputElement? commandTarget = null)
 #else
         public static KeyActionList LoadFromType(Type commandsClass, object commandParameter = null, IInputElement commandTarget = null)
+#endif
 #endif
         {
             KeyActionList kal = new KeyActionList();

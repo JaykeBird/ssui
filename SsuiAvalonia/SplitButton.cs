@@ -80,7 +80,7 @@ namespace SolidShineUi
 
         #region Apply Color Scheme
 
-        bool _internalAction = true;
+        //bool _internalAction = true;
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
@@ -112,7 +112,7 @@ namespace SolidShineUi
                 return;
             }
 
-            _internalAction = false;
+            //_internalAction = false;
 
             if (cs.IsHighContrast)
             {
