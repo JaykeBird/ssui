@@ -78,13 +78,13 @@ namespace SolidShineUi.Utils.MenuUtils
         /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> ClickBrushProperty = Menu.ClickBrushProperty.AddOwner<FlatMenuScrollViewer>();
 
-        /// <summary>
-        /// Get or set the foreground color to use for text and other elements in the menu.
-        /// </summary>
-        public IBrush? Foreground { get => GetValue(ForegroundProperty); set => SetValue(ForegroundProperty, value); }
+        ///// <summary>
+        ///// Get or set the foreground color to use for text and other elements in the menu.
+        ///// </summary>
+        //public IBrush? Foreground { get => GetValue(ForegroundProperty); set => SetValue(ForegroundProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="Foreground"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<IBrush?> ForegroundProperty = TemplatedControl.ForegroundProperty.AddOwner<FlatMenuScrollViewer>();
+        ///// <summary>The backing styled property for <see cref="Foreground"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<IBrush?> ForegroundProperty = TemplatedControl.ForegroundProperty.AddOwner<FlatMenuScrollViewer>();
 
         #endregion
 
