@@ -34,7 +34,14 @@
             </ribbon:Ribbon.FileMenu>
             <ribbon:RibbonTab Title="Home">
                 <ribbon:RibbonGroup Title="Editing" ShowLauncher="True" >
-                    <ribbon:RibbonButton Title="AutoSum" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png" />
+                    <ribbon:RibbonSplitButton Title="AutoSum" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png">
+                        <ribbon:RibbonSplitButton.Menu>
+                            <flat:ContextMenu>
+                                <MenuItem Header="Item 1" />
+                                <MenuItem Header="Item 2" />
+                            </flat:ContextMenu>
+                        </ribbon:RibbonSplitButton.Menu>
+                    </ribbon:RibbonSplitButton>
                     <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
                         <ribbon:RibbonMenuButton.Menu>
                             <flat:ContextMenu>

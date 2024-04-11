@@ -2673,6 +2673,245 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type ribbon:RibbonSplitButton}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="BorderSelectionThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ribbon:RibbonSplitButton}">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <Grid x:Name="btn_Cc" Margin="{TemplateBinding Padding}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="12" x:Name="colSmallMenu" />
+                                <!-- make this value editable? -->
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="32" x:Name="rowLargeMain" />
+                                <RowDefinition Height="34" x:Name="rowLargeMenu" />
+                            </Grid.RowDefinitions>
+                            <flat:FlatButton Margin="2,1,0,0" x:Name="PART_Main" TransparentBack="True" > <!-- Make margins uniform 1 when in large size -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16" x:Name="colImage" />
+                                        <ColumnDefinition Width="2" x:Name="colPadding" />
+                                        <ColumnDefinition Width="Auto" x:Name="colTitle" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image x:Name="Part_SmallIcon" Grid.Column="0" Source="{TemplateBinding SmallIcon}" Width="16" Height="16" VerticalAlignment="Center" />
+                                    <Image x:Name="Part_LargeIcon" Grid.Row="0" Source="{TemplateBinding LargeIcon}" Width="32" Height="32" HorizontalAlignment="Center" />
+                                    <TextBlock x:Name="Part_SmallTitle" Grid.Column="2" Text="{TemplateBinding Title}" VerticalAlignment="Center" />
+                                </Grid>
+                            </flat:FlatButton>
+                            <flat:FlatButton Margin="0" x:Name="PART_Menu" TransparentBack="True" >
+                                <StackPanel>
+                                    <Path x:Name="Part_SmallArrow" Width="8" Height="8" Data="M8,0 8,8 0,4 Z" />
+                                    <ributils:RibbonTwoLineText x:Name="TwoLineText" Text="{TemplateBinding Title}" HasTwoLines="True"    
+                                                  TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Center" ShowPath="True"
+                                                  LineHeight="14px" LineStackingStrategy="BlockLineHeight" Margin="1,1,1,0" Grid.Row="2" />
+                                </StackPanel>
+                            </flat:FlatButton>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- button element size states -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Visible" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="1" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Large" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Visible" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="1" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Small" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="2" />
+                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Collapsed" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="1" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="IconOnly" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Collapsed" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="1" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Visible" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="1" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Large" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Visible" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="1" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Small" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="2" />
+                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Collapsed" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="1" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="IconOnly" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_SmallIcon" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallArrow" Value="Visible" />
+                                <Setter Property="Visibility" TargetName="Part_SmallTitle" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="Part_LargeIcon" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="TwoLineText" Value="Collapsed" />
+                                <Setter Property="Grid.Column" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="PART_Main" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="PART_Menu" Value="1" />
+                                <Setter Property="Grid.Row" TargetName="PART_Menu" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <!-- other triggers from FlatButton -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <!--<Condition Property="TransparentBack" Value="False" />-->
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                                <!--<Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                                <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />-->
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <!--<Condition Property="TransparentBack" Value="True" />-->
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <!--<Setter Property="BorderThickness" TargetName="btn_Border" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />-->
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <!--<Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />-->
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <!--<Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />-->
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type ribbon:RibbonCheckBox}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Height" Value="24" />
