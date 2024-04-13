@@ -47,8 +47,6 @@ namespace SolidShineUi
 
             HorizontalContentAlignment = HorizontalAlignment.Center;
             VerticalContentAlignment = VerticalAlignment.Center;
-
-            Padding = new Thickness(5, 0, 5, 0);
         }
 
         #region Brushes
