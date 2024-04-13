@@ -175,6 +175,63 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
+
+        <Style Selector="^[MenuButtonPlacement=Right] /template/ flat|FlatButton#PART_Menu" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Right] /template/ Panel#PART_Sep" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Right] /template/ flat|FlatButton#PART_Main" >
+
+        </Style>
+        
+        <Style Selector="^[MenuButtonPlacement=Bottom] /template/ flat|FlatButton#PART_Menu" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Bottom] /template/ Panel#PART_Sep" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Bottom] /template/ flat|FlatButton#PART_Main" >
+
+        </Style>
+
+        <Style Selector="^[MenuButtonPlacement=Top] /template/ flat|FlatButton#PART_Menu" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Top] /template/ Panel#PART_Sep" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Top] /template/ flat|FlatButton#PART_Main" >
+
+        </Style>
+
+        <Style Selector="^[MenuButtonPlacement=Left] /template/ flat|FlatButton#PART_Menu" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Left] /template/ Panel#PART_Sep" >
+
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Left] /template/ flat|FlatButton#PART_Main" >
+            
+        </Style>
+
+        <Style Selector="^[MenuButtonPlacement=Hidden] /template/ flat|FlatButton#PART_Menu" >
+            <Setter Property="IsVisible" Value="False" />
+            <!--<Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteAll}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteAll}}" />-->
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Hidden] /template/ Panel#PART_Sep" >
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^[MenuButtonPlacement=Hidden] /template/ flat|FlatButton#PART_Main" >
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteAll}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteAll}}" />
+        </Style>
     </ControlTheme>
     
 </ResourceDictionary>
