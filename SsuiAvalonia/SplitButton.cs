@@ -69,6 +69,9 @@ namespace SolidShineUi
                     ApplyColorScheme(ColorScheme);
                     OnColorSchemeChanged(change);
                     break;
+                case nameof(CanSelect):
+                    OnCanSelectChanged(change);
+                    break;
             }
 
             base.OnPropertyChanged(change);
@@ -419,7 +422,7 @@ namespace SolidShineUi
                 Menu.PlacementRect = MenuPlacementRectangle;
                 Menu.HorizontalOffset = 0;
                 Menu.VerticalOffset = -1;
-                Menu.Open();
+                Menu.Open(this);
                 Menu.Closed += Menu_Closed;
             }
 

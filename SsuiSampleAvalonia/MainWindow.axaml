@@ -7,7 +7,7 @@
         xmlns:ssut="clr-namespace:SolidShineUi.Utils;assembly=SolidShineUi.Avalonia"
         x:Class="SsuiSampleAvalonia.MainWindow"
         Title="SsuiSampleAvalonia" FontSize="12" >
-    <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,20,40,200,1*" >
+    <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,20,20,40,200,1*" >
 
         <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" >
             <MenuItem Header="File">
@@ -25,7 +25,7 @@
                 <Separator />
                 <MenuItem Header="Close" />
                 <Separator />
-                <MenuItem Header="Exit" />
+                <MenuItem Header="Exit" x:Name="mnuExit" Click="mnuExit_Click" />
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Copy" />
@@ -60,5 +60,15 @@
         </flat:FlatButton>
         <flat:MenuButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
                          IsEnabled="False" Height="24" VerticalAlignment="Center" Margin="10,0" Content="Disabibled" />
+        <flat:SplitButton x:Name="btnSplit" Grid.Column="0" Grid.Row="3" Height="24" VerticalAlignment="Center"
+                 Margin="10,0" Click="FlatButton_Click" >
+            <TextBlock Text="Who" />
+            <flat:SplitButton.Menu>
+                <flat:ContextMenu>
+                    <MenuItem Header="Item 1" />
+                    <MenuItem Header="Item 2" />
+                </flat:ContextMenu>
+            </flat:SplitButton.Menu>
+        </flat:SplitButton>
     </Grid>
 </Window>
