@@ -44,7 +44,7 @@
                         </ribbon:RibbonSplitButton.Menu>
                     </ribbon:RibbonSplitButton>
                     <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" CompactSize="IconOnly" 
-                                             LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
+                                             LargeIcon="Resources/Images/32/StarColor.png" SmallIcon="Resources/Images/StarColor.png" >
                         <ribbon:RibbonMenuButton.Menu>
                             <flat:ContextMenu>
                                 <MenuItem Header="Item 1" />
@@ -63,7 +63,7 @@
                         </ribbon:RibbonMenuButton.Menu>
                     </ribbon:RibbonMenuButton>
                     <ribbon:RibbonButton Title="Find &amp; Select" StandardSize="Large" 
-                                         LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" />
+                                         LargeIcon="Resources/Images/32/SearchColor.png" SmallIcon="Resources/Images/SearchColor.png" />
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Test 2" >
                     <ribbon:RibbonButton Title="Button 1" StandardSize="Small" SmallIcon="Resources/Images/SmileyColor.png" />
@@ -146,7 +146,17 @@
                     <ribbon:RibbonButton Title="Switch Windows" StandardSize="Large" CompactSize="Large" />
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup CompactOrder="1" >
-                    <ribbon:RibbonMenuButton Title="Macros" StandardSize="Large" CompactSize="Large" />
+                    <ribbon:RibbonSplitButton Title="Macros" StandardSize="Large" CompactSize="Large"
+                                             LargeIcon="Resources/Images/32/WindowColor.png" SmallIcon="Resources/Images/WindowColor.png">
+                        <ribbon:RibbonSplitButton.Menu>
+                            <flat:ContextMenu>
+                                <MenuItem Header="View Macros" />
+                                <MenuItem Header="Record Macro" />
+                                <Separator />
+                                <MenuItem Header="Use Relative References" IsCheckable="True" />
+                            </flat:ContextMenu>
+                        </ribbon:RibbonSplitButton.Menu>
+                    </ribbon:RibbonSplitButton>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Title="Shape Format" IsContextual="True" ContextualColor="DarkOrange" Visibility="Collapsed" x:Name="tabContextual" >
