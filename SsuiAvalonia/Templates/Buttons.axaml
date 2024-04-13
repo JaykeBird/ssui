@@ -4,27 +4,36 @@
 					xmlns:flat="clr-namespace:SolidShineUi"
                     xmlns:utils="clr-namespace:SolidShineUi.Utils" >
     <!-- Add Resources Here -->
-	<Design.PreviewWith>
-		<StackPanel Margin="7" >
-			<flat:FlatButton SelectOnClick="True" >
-				<TextBlock >Button1</TextBlock>
-			</flat:FlatButton>
-			<flat:FlatButton IsEnabled="False" >
-				<TextBlock >Button2</TextBlock>
-			</flat:FlatButton>
-			<flat:FlatButton SelectOnClick="True" TransparentBack="True" >
-				<TextBlock >Button3</TextBlock>
-			</flat:FlatButton>
-			<flat:FlatButton IsEnabled="False" TransparentBack="True" >
-				<TextBlock >Button4</TextBlock>
-			</flat:FlatButton>
-            <flat:FlatRepeatButton>
-                <TextBlock >Button5</TextBlock>
-            </flat:FlatRepeatButton>
-            <flat:SplitButton Margin="0,5,0,0" Content="Content" />
-         </StackPanel>
-	</Design.PreviewWith>
-    
+    <Design.PreviewWith>
+        <StackPanel Orientation="Horizontal" Margin="1">
+            <StackPanel Margin="7" >
+                <flat:FlatButton SelectOnClick="True" >
+                    <TextBlock >Button1</TextBlock>
+                </flat:FlatButton>
+                <flat:FlatButton IsEnabled="False" >
+                    <TextBlock >Button2</TextBlock>
+                </flat:FlatButton>
+                <flat:FlatButton SelectOnClick="True" TransparentBack="True" >
+                    <TextBlock >Button3</TextBlock>
+                </flat:FlatButton>
+                <flat:FlatButton IsEnabled="False" TransparentBack="True" >
+                    <TextBlock >Button4</TextBlock>
+                </flat:FlatButton>
+                <flat:FlatRepeatButton>
+                    <TextBlock >Button5</TextBlock>
+                </flat:FlatRepeatButton>
+
+            </StackPanel>
+            <StackPanel Margin="7">
+                <flat:SplitButton Content="Split" />
+                <flat:SplitButton Content="Split" MenuButtonPlacement="Bottom" />
+                <flat:SplitButton Content="Split" MenuButtonPlacement="Left" />
+                <flat:SplitButton Content="Split" MenuButtonPlacement="Top" />
+                <flat:SplitButton Content="Split" MenuButtonPlacement="Hidden" />
+            </StackPanel>
+        </StackPanel>
+    </Design.PreviewWith>
+
     <utils:PartialCornerRadiusConverter x:Key="pcr" />
     <utils:PartialThicknessConverter x:Key="pth" />
 
@@ -40,9 +49,9 @@
     <system:Byte x:Key="byteTbTh">14</system:Byte>
     <system:Byte x:Key="byteLrTh">15</system:Byte>
 
-	<ControlTheme x:Key="{x:Type flat:FlatButton}" TargetType="flat:FlatButton">
-		<Setter Property="Focusable" Value="True" />
-		<Setter Property="MinHeight" Value="24" />
+    <ControlTheme x:Key="{x:Type flat:FlatButton}" TargetType="flat:FlatButton">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="MinHeight" Value="24" />
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
@@ -50,68 +59,68 @@
         <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-		<Setter Property="Template">
-			<ControlTemplate TargetType="{x:Type flat:FlatButton}">
-				<Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type flat:FlatButton}">
+                <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 						BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"
 						BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" >
-					<Border BorderThickness="0" x:Name="btn_DefaultIndicator">
-						<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-							<ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0" Content="{TemplateBinding Content}"
+                    <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0" Content="{TemplateBinding Content}"
 											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"  />
-							<!--<Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3" Visibility="Collapsed"
+                            <!--<Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3" Visibility="Collapsed"
 									   Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
 							</Rectangle>-->
-						</Grid>
-					</Border>
-				</Border>
-			</ControlTemplate>
-		</Setter>
+                        </Grid>
+                    </Border>
+                </Border>
+            </ControlTemplate>
+        </Setter>
 
-		<Style Selector="^[TransparentBack=true] /template/ Border#btn_Border" >
-			<Setter Property="Background" Value="#01000000" />
-			<Setter Property="BorderBrush" Value="#01000000" />
-		</Style>
+        <Style Selector="^[TransparentBack=true] /template/ Border#btn_Border" >
+            <Setter Property="Background" Value="#01000000" />
+            <Setter Property="BorderBrush" Value="#01000000" />
+        </Style>
 
-		<Style Selector="^[IsSelected=true] /template/ Border#btn_Border" >
-			<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
-			<Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectedBrush}" />
-			<Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness}" />
-		</Style>
+        <Style Selector="^[IsSelected=true] /template/ Border#btn_Border" >
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectedBrush}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness}" />
+        </Style>
 
         <!--<Style Selector="^[IsSelected=true][TransparentBack=true] /template/ Border#btn_Border" >
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
         </Style>-->
 
-		<Style Selector="^:disabled">
-			<Setter Property="Focusable" Value="False" />
-		</Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Focusable" Value="False" />
+        </Style>
 
-		<Style Selector="^:disabled /template/ ContentPresenter#btn_Cc">
-			<Setter Property="Opacity" Value="0.6" />
-		</Style>
+        <Style Selector="^:disabled /template/ ContentPresenter#btn_Cc">
+            <Setter Property="Opacity" Value="0.6" />
+        </Style>
 
-		<Style Selector="^:disabled /template/ Border#btn_Border" >
-			<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisabledBrush}" />
-			<Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
-		</Style>
+        <Style Selector="^:disabled /template/ Border#btn_Border" >
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisabledBrush}" />
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
 
-		<Style Selector="^[TransparentBack=true]:disabled /template/ Border#btn_Border" >
-			<Setter Property="Background" Value="#01000000" />
-			<Setter Property="BorderBrush" Value="#01000000" />
-		</Style>
-		
-		<Style Selector="^:pointerover /template/ Border#btn_Border">
-			<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
-			<Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
-		</Style>
+        <Style Selector="^[TransparentBack=true]:disabled /template/ Border#btn_Border" >
+            <Setter Property="Background" Value="#01000000" />
+            <Setter Property="BorderBrush" Value="#01000000" />
+        </Style>
 
-		<Style Selector="^[IsPressed=true] /template/ Border#btn_Border">
-			<Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClickBrush}" />
-			<Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
-		</Style>
-	</ControlTheme>
-    
+        <Style Selector="^:pointerover /template/ Border#btn_Border">
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
+        </Style>
+
+        <Style Selector="^[IsPressed=true] /template/ Border#btn_Border">
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClickBrush}" />
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
+        </Style>
+    </ControlTheme>
+
     <ControlTheme x:Key="{x:Type flat:FlatRepeatButton}" TargetType="flat:FlatRepeatButton" BasedOn="{StaticResource {x:Type flat:FlatButton}}" />
 
     <ControlTheme x:Key="{x:Type flat:SplitButton}" TargetType="flat:SplitButton">
@@ -147,27 +156,28 @@
                         <ContentPresenter x:Name="btn_Cc" Content="{TemplateBinding Content}" />
                     </flat:FlatButton>
                     <flat:FlatButton x:Name="PART_Menu" Grid.Row="1" Grid.Column="2"
-                         TransparentBack="{TemplateBinding TransparentBack}"
-                         BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}"
-                         BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}"
-                         BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
-                         ClickBrush="{TemplateBinding ClickBrush}"
-                         DisabledBrush="{TemplateBinding DisabledBrush}"
-                         HighlightBrush="{TemplateBinding HighlightBrush}"
-                         SelectedBrush="{TemplateBinding SelectedBrush}"
-                         Background="{TemplateBinding Background}"
-                         Foreground="{TemplateBinding Foreground}"
-                         IsSelected="{TemplateBinding IsSelected}"
-                         BorderThickness="{TemplateBinding BorderThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}"
-                         BorderSelectionThickness="{TemplateBinding BorderSelectionThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}"
-                         CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightCR}}">
+                             TransparentBack="{TemplateBinding TransparentBack}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}"
+                             BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}"
+                             BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
+                             ClickBrush="{TemplateBinding ClickBrush}"
+                             DisabledBrush="{TemplateBinding DisabledBrush}"
+                             HighlightBrush="{TemplateBinding HighlightBrush}"
+                             SelectedBrush="{TemplateBinding SelectedBrush}"
+                             Background="{TemplateBinding Background}"
+                             Foreground="{TemplateBinding Foreground}"
+                             IsSelected="{TemplateBinding IsSelected}"
+                             BorderThickness="{TemplateBinding BorderThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}"
+                             BorderSelectionThickness="{TemplateBinding BorderSelectionThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}"
+                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightCR}}">
                         <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                       Height="4" Width="8" Margin="0" Stretch="Fill" />
                     </flat:FlatButton>
-                    <Panel IsHitTestVisible="False" Grid.Row="1" Grid.Column="2"
+                    <Panel IsHitTestVisible="False" Grid.Row="1" Grid.Column="2" x:Name="PART_Sep"
                             HorizontalAlignment="Left" VerticalAlignment="Stretch"
                             Width="{TemplateBinding SeparatorThickness}"
+                            Height="NaN"
                             Background="{TemplateBinding SeparatorBrush}"
                             IsVisible="{TemplateBinding ShowSeparator}"
                             Margin="{TemplateBinding SeparatorEdgeMargin,
@@ -177,51 +187,131 @@
         </Setter>
 
         <Style Selector="^[MenuButtonPlacement=Right] /template/ flat|FlatButton#PART_Menu" >
-
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinHeight}" />
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MenuButtonSize}" />
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteRightCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Right] /template/ Panel#PART_Sep" >
-
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="Grid.Column" Value="2" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Height" Value="NaN" />
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorThickness}" />
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorEdgeMargin
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteTbTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Right] /template/ flat|FlatButton#PART_Main" >
-
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteLeftCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}" />
         </Style>
-        
-        <Style Selector="^[MenuButtonPlacement=Bottom] /template/ flat|FlatButton#PART_Menu" >
 
+        <Style Selector="^[MenuButtonPlacement=Bottom] /template/ flat|FlatButton#PART_Menu" >
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="1" />
+            <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MenuButtonSize}" />
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteBottomCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteBottomTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteBottomTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Bottom] /template/ Panel#PART_Sep" >
-
+            <Setter Property="Grid.Row" Value="2" />
+            <Setter Property="Grid.Column" Value="1" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorThickness}" />
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorEdgeMargin
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteLrTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Bottom] /template/ flat|FlatButton#PART_Main" >
-
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteTopCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteTopTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteTopTh}}" />
         </Style>
 
         <Style Selector="^[MenuButtonPlacement=Top] /template/ flat|FlatButton#PART_Menu" >
-
+            <Setter Property="Grid.Row" Value="0" />
+            <Setter Property="Grid.Column" Value="1" />
+            <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MenuButtonSize}" />
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteTopCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteTopTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteTopTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Top] /template/ Panel#PART_Sep" >
-
+            <Setter Property="Grid.Row" Value="0" />
+            <Setter Property="Grid.Column" Value="1" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorThickness}" />
+            <Setter Property="Width" Value="NaN" />
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorEdgeMargin
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteLrTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Top] /template/ flat|FlatButton#PART_Main" >
-
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteBottomCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteBottomTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteBottomTh}}" />
         </Style>
 
         <Style Selector="^[MenuButtonPlacement=Left] /template/ flat|FlatButton#PART_Menu" >
-
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinHeight}" />
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MenuButtonSize}" />
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteLeftCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Left] /template/ Panel#PART_Sep" >
-
+            <Setter Property="Grid.Row" Value="1" />
+            <Setter Property="Grid.Column" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Height" Value="NaN" />
+            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorThickness}" />
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SeparatorEdgeMargin
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteTbTh}}" />
         </Style>
         <Style Selector="^[MenuButtonPlacement=Left] /template/ flat|FlatButton#PART_Main" >
-            
+            <Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
+                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteRightCR}}" />
+            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}" />
         </Style>
 
         <Style Selector="^[MenuButtonPlacement=Hidden] /template/ flat|FlatButton#PART_Menu" >
             <Setter Property="IsVisible" Value="False" />
-            <!--<Setter Property="CornerRadius" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius
-                    , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteAll}}" />
-            <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
-                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteAll}}" />-->
         </Style>
         <Style Selector="^[MenuButtonPlacement=Hidden] /template/ Panel#PART_Sep" >
             <Setter Property="IsVisible" Value="False" />
@@ -231,7 +321,9 @@
                     , Converter={StaticResource pcr}, ConverterParameter={StaticResource byteAll}}" />
             <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness
                     , Converter={StaticResource pth}, ConverterParameter={StaticResource byteAll}}" />
+            <Setter Property="BorderSelectionThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness
+                    , Converter={StaticResource pth}, ConverterParameter={StaticResource byteAll}}" />
         </Style>
     </ControlTheme>
-    
+
 </ResourceDictionary>
