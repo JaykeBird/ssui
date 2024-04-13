@@ -30,39 +30,50 @@ namespace SolidShineUi.Ribbon
         /// </summary>
         public RibbonSplitButton()
         {
-            ColorSchemeChanged += RibbonSplitButton_ColorSchemeChanged;
+
         }
 
         #region Color Scheme
 
-        private void RibbonSplitButton_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-
-            Menu?.ApplyColorScheme(cs);
-        }
-
+        /// <summary>
+        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
         public ColorScheme ColorScheme { get => (ColorScheme)GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(RibbonSplitButton),
-            new FrameworkPropertyMetadata(new ColorScheme(), (d, e) => d.PerformAs<RibbonSplitButton>((o) => o.ColorSchemeChanged?.Invoke(o, e))));
+            new FrameworkPropertyMetadata(new ColorScheme(), (d, e) => d.PerformAs<RibbonSplitButton>((o) => o.OnColorSchemeChanged(e))));
+
+        /// <summary>
+        /// The backing routed event object for <see cref="ColorSchemeChanged"/>. Please see the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent ColorSchemeChangedEvent = EventManager.RegisterRoutedEvent(
+            nameof(ColorSchemeChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<ColorScheme>), typeof(RibbonSplitButton));
 
         /// <summary>
         /// Raised when the <see cref="ColorScheme"/> property is changed.
         /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-#endif
+        public event RoutedPropertyChangedEventHandler<ColorScheme> ColorSchemeChanged
+        {
+            add { AddHandler(ColorSchemeChangedEvent, value); }
+            remove { RemoveHandler(ColorSchemeChangedEvent, value); }
+        }
 
-        bool runApply = false;
+        private void OnColorSchemeChanged(DependencyPropertyChangedEventArgs e)
+        {
+            ColorScheme cs = (ColorScheme)e.NewValue;
+            ApplyColorScheme(cs);
+            Menu?.ApplyColorScheme(cs);
+
+            RoutedPropertyChangedEventArgs<ColorScheme> re = new RoutedPropertyChangedEventArgs<ColorScheme>
+                ((ColorScheme)e.OldValue, cs, ColorSchemeChangedEvent);
+            re.Source = this;
+            RaiseEvent(re);
+        }
+
+
+        bool runApply = true;
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
@@ -150,6 +161,9 @@ namespace SolidShineUi.Ribbon
                     ClickBrush = cs.ThirdHighlightColor.ToBrush();
                 }
             }
+
+            if (btnMain != null) { btnMain.ColorScheme = cs; }
+            if (btnMenu != null) { btnMenu.ColorScheme = cs; }
 
             runApply = true;
         }
@@ -374,7 +388,6 @@ namespace SolidShineUi.Ribbon
             new FrameworkPropertyMetadata(0));
 
         #endregion
-
 
         #region Border
 
