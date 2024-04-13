@@ -117,8 +117,13 @@
     <ControlTheme x:Key="{x:Type flat:SplitButton}" TargetType="flat:SplitButton">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="SeparatorThickness" Value="1" />
+        <Setter Property="SeparatorBrush" Value="Black" />
+        <Setter Property="SeparatorEdgeMargin" Value="3" />
+        <Setter Property="ShowSeparator" Value="True" />
         <Setter Property="TransparentBack" Value="False" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:SplitButton}" >
@@ -158,18 +163,15 @@
                          BorderSelectionThickness="{TemplateBinding BorderSelectionThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}"
                          CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightCR}}">
                         <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Height="5" Width="8" Margin="0" Stretch="Fill" />
+                                      Height="4" Width="8" Margin="0" Stretch="Fill" />
                     </flat:FlatButton>
-                    <Border IsHitTestVisible="False" Grid.Row="1" Grid.Column="2"
+                    <Panel IsHitTestVisible="False" Grid.Row="1" Grid.Column="2"
                             HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                            BorderThickness="{TemplateBinding SeparatorThickness,
-                            Converter={StaticResource pth} ConverterParameter={StaticResource byteAll}}"
-                            BorderBrush="{TemplateBinding SeparatorBrush}"
+                            Width="{TemplateBinding SeparatorThickness}"
+                            Background="{TemplateBinding SeparatorBrush}"
                             IsVisible="{TemplateBinding ShowSeparator}"
                             Margin="{TemplateBinding SeparatorEdgeMargin,
-                            Converter={StaticResource pth} ConverterParameter={StaticResource byteTbTh}}"
-                            Width="{TemplateBinding SeparatorThickness}"
-                            Height="NaN" />
+                            Converter={StaticResource pth} ConverterParameter={StaticResource byteTbTh}}" />
                 </Grid>
             </ControlTemplate>
         </Setter>
