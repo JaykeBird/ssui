@@ -14,7 +14,7 @@
         <Border Margin="2,3,90,100" >
             <Grid RowDefinitions="Auto,1*" >
                 <!-- use clashing, bright colors so I can tell it's making a difference lol -->
-                <flat:Menu HighlightBrush="Purple" HighlightSubitemBrush="Orange" ClickBrush="Aqua" PopupBorderBrush="Green" FontSize="12" >
+                <flat:Menu HighlightBrush="Purple" HighlightSubitemBrush="Orange" ClickBrush="Aqua" PopupBorderBrush="Green" >
                     <flat:Menu.Items>
                         <MenuItem Header="Files" >
                             <MenuItem Header="What" InputGesture="Ctrl+G" />
@@ -447,6 +447,7 @@
                 </Setter>
             </ControlTheme>
         </ControlTheme.Resources>-->
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="ItemContainerTheme" Value="{StaticResource FlatTopLevelMenuItem}" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:Menu}">
@@ -473,6 +474,7 @@
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutPresenterThemePadding}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="WindowManagerAddShadowHint" Value="False" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="ItemContainerTheme">
             <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" x:DataType="MenuItem" />
         </Setter>
