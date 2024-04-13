@@ -1,12 +1,15 @@
-﻿<flat:SelectableUserControl x:Class="SsuiSample.Resources.SeparatorItem"
+﻿<flat:SelectableUserControl x:Class="SsuiSample.Resources.SeparatorItem" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SsuiSample.Resources"
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
-             mc:Ignorable="d" Height="24" d:DesignWidth="800">
+             mc:Ignorable="d" Height="24" d:DesignWidth="800" SelectOnClick="False" >
     <Grid>
-        <Rectangle x:Name="rectSep" Grid.Column="1" HorizontalAlignment="Stretch" Stroke="Black" VerticalAlignment="Center" Height="1" Margin="5,0" />
+        <Rectangle x:Name="rectSep" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                   Height="{Binding ElementName=control, Path=SeparatorHeight, FallbackValue=1}" 
+                   Margin="{Binding ElementName=control, Path=SeparatorMargin, FallbackValue='5,0'}"
+                   Stroke="{Binding ElementName=control, Path=SeparatorBrush, FallbackValue=Black}" />
     </Grid>
 </flat:SelectableUserControl>
