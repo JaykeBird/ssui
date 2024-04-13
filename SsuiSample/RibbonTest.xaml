@@ -34,7 +34,8 @@
             </ribbon:Ribbon.FileMenu>
             <ribbon:RibbonTab Title="Home">
                 <ribbon:RibbonGroup Title="Editing" ShowLauncher="True" >
-                    <ribbon:RibbonSplitButton Title="AutoSum" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png">
+                    <ribbon:RibbonSplitButton Title="AutoSum" StandardSize="Small" CompactSize="IconOnly" 
+                                              LargeIcon="Resources/Images/32/ExcelXlsxColor.png" SmallIcon="Resources/Images/ExcelXlsxColor.png">
                         <ribbon:RibbonSplitButton.Menu>
                             <flat:ContextMenu>
                                 <MenuItem Header="Item 1" />
@@ -42,7 +43,8 @@
                             </flat:ContextMenu>
                         </ribbon:RibbonSplitButton.Menu>
                     </ribbon:RibbonSplitButton>
-                    <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
+                    <ribbon:RibbonMenuButton Title="Fill" StandardSize="Small" CompactSize="IconOnly" 
+                                             LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" >
                         <ribbon:RibbonMenuButton.Menu>
                             <flat:ContextMenu>
                                 <MenuItem Header="Item 1" />
@@ -51,7 +53,8 @@
                         </ribbon:RibbonMenuButton.Menu>
                     </ribbon:RibbonMenuButton>
                     <ribbon:RibbonButton Title="Clear" StandardSize="Small" CompactSize="IconOnly" LargeIcon="Resources/Images/32/DownloadColor.png" SmallIcon="Resources/Images/DownloadColor.png" />
-                    <ribbon:RibbonMenuButton Title="Sort &amp; Filter" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png">
+                    <ribbon:RibbonMenuButton Title="Sort &amp; Filter" StandardSize="Large" 
+                                             LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png">
                         <ribbon:RibbonMenuButton.Menu>
                             <flat:ContextMenu>
                                 <MenuItem Header="Item 1" />
@@ -59,7 +62,8 @@
                             </flat:ContextMenu>
                         </ribbon:RibbonMenuButton.Menu>
                     </ribbon:RibbonMenuButton>
-                    <ribbon:RibbonButton Title="Find &amp; Select" StandardSize="Large" LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" />
+                    <ribbon:RibbonButton Title="Find &amp; Select" StandardSize="Large" 
+                                         LargeIcon="Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" />
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Test 2" >
                     <ribbon:RibbonButton Title="Button 1" StandardSize="Small" SmallIcon="Resources/Images/SmileyColor.png" />
@@ -71,7 +75,8 @@
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Empty" />
                 <ribbon:RibbonGroup Title="SM" ShowLauncher="True" LauncherClick="RibbonGroup_LauncherClick" >
-                    <ribbon:RibbonMenuButton Title="Solo Menu" StandardSize="Large" LargeIcon="Resources/Images/32/CopyColor.png" SmallIcon="Resources/Images/CopyColor.png">
+                    <ribbon:RibbonMenuButton Title="Solo Menu" StandardSize="Large" CompactSize="Large"
+                                             LargeIcon="Resources/Images/32/CopyColor.png" SmallIcon="Resources/Images/CopyColor.png">
                         <flat:ContextMenu>
                             <MenuItem Header="Click" />
                             <MenuItem Header="that" />
@@ -110,7 +115,7 @@
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Show" CompactOrder="4" >
                     <ribbon:RibbonButton Title="Navigation" StandardSize="Large" CompactSize="Small" SelectOnClick="True" />
-                    <ribbon:RibbonCheckBox Title="Ruler" IsEnabled="{Binding ElementName=btnPageLayout, Path=IsSelected}" />
+                    <ribbon:RibbonCheckBox Title="Ruler" />
                     <ribbon:RibbonCheckBox Title="Gridlines" />
                     <ribbon:RibbonCheckBox Title="Formula Bar" />
                     <ribbon:RibbonCheckBox Title="Headings" />
