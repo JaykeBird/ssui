@@ -72,6 +72,7 @@
                         <ComboBoxItem Content="Item 2" />
                         <ComboBoxItem Content="Item 3" />
                     </ribbon:RibbonComboBox>
+                    <ribbon:RibbonTextBox Title="TextBox" x:Name="ribbonText" ShowIcon="False" Text="Noodles" />
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Empty" />
                 <ribbon:RibbonGroup Title="SM" ShowLauncher="True" LauncherClick="RibbonGroup_LauncherClick" >
