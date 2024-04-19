@@ -3111,6 +3111,7 @@
         <Setter Property="Height" Value="24" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Padding" Value="2,0" />
+        <Setter Property="Margin" Value="5,0,0,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ribbon:RibbonContentControl" >
