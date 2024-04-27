@@ -623,6 +623,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <remarks>
         /// See the <see cref="ArithmeticParser"/> class for more info about how expressions are parsed.
+        /// (For spinners that don't interact with numbers, this property does not do anything.)
         /// </remarks>
         [Category("Common")]
         public bool AcceptExpressions
@@ -716,6 +717,8 @@ namespace SolidShineUi.Utils
         /// <para/>
         /// For <see cref="DoubleSpinner"/>, this only modifies the integral (integer) part of the number; use the <see cref="DoubleSpinner.Decimals"/> property 
         /// for modifying how many numbers to display after the decimal point.
+        /// <para/>
+        /// For spinners that don't interact with numbers, this property will not do anything.
         /// </remarks>
         [Category("Common")]
         public int MinimumDigitCount
