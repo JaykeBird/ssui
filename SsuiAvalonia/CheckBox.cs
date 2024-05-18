@@ -1,7 +1,10 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -437,7 +440,257 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Click / Selection Handling
 
+        #region Base Variables
+
+        private bool _isPressed = false;
+        private bool _isRightPressed = false;
+
+        #endregion
+
+        #region Click Events
+
+        /// <summary>
+        /// Defines the <see cref="Click"/> event.
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
+            RoutedEvent.Register<CheckBox, RoutedEventArgs>(nameof(Click), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// Defines the <see cref="RightClick"/> event.
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> RightClickEvent =
+            RoutedEvent.Register<CheckBox, RoutedEventArgs>(nameof(RightClick), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// Raised when the user clicks the checkbox.
+        /// </summary>
+        public event EventHandler<RoutedEventArgs> Click
+        {
+            add => AddHandler(ClickEvent, value);
+            remove => RemoveHandler(ClickEvent, value);
+        }
+
+        /// <summary>
+        /// Raised when the user clicks the checkbox with the right mouse.
+        /// </summary>
+        public event EventHandler<RoutedEventArgs> RightClick
+        {
+            add => AddHandler(RightClickEvent, value);
+            remove => RemoveHandler(RightClickEvent, value);
+        }
+
+        #endregion
+
+        #region Click Properties
+
+        /// <summary>
+        /// The backing styled property for <see cref="ClickMode"/>. See the related property for details.
+        /// </summary>
+        public static readonly StyledProperty<ClickMode> ClickModeProperty
+            = AvaloniaProperty.Register<CheckBox, ClickMode>(nameof(ClickMode), ClickMode.Release);
+
+        /// <summary>
+        /// The backing direct property for <see cref="IsPressed"/>. See the related property for details.
+        /// </summary>
+        public static readonly DirectProperty<CheckBox, bool> IsPressedProperty
+            = AvaloniaProperty.RegisterDirect<CheckBox, bool>(nameof(IsPressed), (fb) => fb.IsPressed, unsetValue: false);
+
+        /// <summary>
+        /// The backing direct property for <see cref="IsRightPressed"/>. See the related property for details.
+        /// </summary>
+        public static readonly DirectProperty<CheckBox, bool> IsRightPressedProperty
+            = AvaloniaProperty.RegisterDirect<CheckBox, bool>(nameof(IsRightPressed), (fb) => fb.IsRightPressed, unsetValue: false);
+
+        /// <summary>
+        /// Gets or sets a value indicating how this checkbox should react to clicks.
+        /// </summary>
+        public ClickMode ClickMode
+        {
+            get => GetValue(ClickModeProperty);
+            set => SetValue(ClickModeProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this checkbox is currently being pressed down via the primary input.
+        /// </summary>
+        /// <remarks>
+        /// Primary input includes the left mouse checkbox, or a touch occurring with a pen on a tablet or a finger/stylus on a touchpad.
+        /// </remarks>
+        public bool IsPressed
+        {
+            get => _isPressed;
+            private set => SetAndRaise(IsPressedProperty, ref _isPressed, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this checkbox is currently being pressed down via the secondary input.
+        /// </summary>
+        /// <remarks>
+        /// Secondary input primarily refers to the right mouse checkbox, but other inputs could apply (such as holding a pen immediately above a tablet).
+        /// </remarks>
+        public bool IsRightPressed
+        {
+            get => _isRightPressed;
+            private set => SetAndRaise(IsRightPressedProperty, ref _isRightPressed, value);
+        }
+
+        #endregion
+
+        #region CheckBox Properties
+
+        /// <summary>
+        /// Gets or sets whether the checkbox should cycle through three states (rather than two) when clicked. 
+        /// The third state is the "Indeterminate" state, which can be checked via <see cref="IsIndeterminate"/> or <see cref="CheckState"/>.
+        /// </summary>
+        public bool TriStateClick { get => GetValue(TriStateClickProperty); set => SetValue(TriStateClickProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="TriStateClick"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> TriStateClickProperty
+            = AvaloniaProperty.Register<CheckBox, bool>(nameof(TriStateClick), false);
+
+        #endregion
+
+        #region Base Click Functions
+
+        /// <summary>
+        /// Perform a click programmatically. This control responds the same way as if it was clicked by the user.
+        /// </summary>
+        public void DoClick()
+        {
+            OnClick();
+        }
+
+        /// <summary>
+        /// Perform a click on this checkbox, raising the <see cref="Click"/> event and causing any automatic actions like <see cref="SelectOnClick"/> or executing <see cref="Command"/>.
+        /// </summary>
+        protected void OnClick()
+        {
+            if (TriStateClick)
+            {
+                if (IsChecked && IsIndeterminate)
+                {
+                    IsChecked = false;
+                }
+                else if (IsChecked && !IsIndeterminate)
+                {
+                    IsIndeterminate = true;
+                }
+                else
+                {
+                    IsChecked = true;
+                    IsIndeterminate = false;
+                }
+            }
+            else
+            {
+                IsChecked = !IsChecked;
+            }
+
+            RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
+            RaiseEvent(rre);
+        }
+
+        /// <summary>
+        /// Perform a right click on this checkbox, raising the <see cref="RightClick"/> event.
+        /// </summary>
+        protected void OnRightClick()
+        {
+            RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
+            RaiseEvent(rre);
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        /// <inheritdoc/>
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            base.OnPointerPressed(e);
+
+            var pointerProperties = e.GetCurrentPoint(this).Properties;
+
+            if (pointerProperties.IsRightButtonPressed)
+            {
+                RegisterRightPress();
+                // e.Handled = true; // don't want to override base right-clicking functionality
+            }
+            else if (pointerProperties.IsLeftButtonPressed)
+            {
+                RegisterPress();
+                e.Handled = true;
+            }
+        }
+
+        void RegisterPress()
+        {
+            IsPressed = true;
+            if (ClickMode == ClickMode.Press)
+            {
+                OnClick();
+            }
+        }
+
+        void RegisterRightPress()
+        {
+            IsRightPressed = true;
+            if (ClickMode == ClickMode.Press)
+            {
+                OnRightClick();
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
+        {
+            base.OnPointerReleased(e);
+
+            bool isInThis = this.GetVisualsAt(e.GetPosition(this)).Any(c => this == c || this.IsVisualAncestorOf(c));
+
+
+            if (IsPressed && e.InitialPressMouseButton == MouseButton.Left)
+            {
+                IsPressed = false;
+
+                if (ClickMode != ClickMode.Press && isInThis)
+                {
+                    e.Handled = true;
+                    OnClick();
+                }
+            }
+            else if (IsRightPressed && e.InitialPressMouseButton == MouseButton.Right)
+            {
+                IsRightPressed = false;
+
+                if (ClickMode != ClickMode.Press && isInThis)
+                {
+                    //e.Handled = true;
+                    OnRightClick();
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+        {
+            base.OnPointerCaptureLost(e);
+
+            IsPressed = false;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnLostFocus(RoutedEventArgs e)
+        {
+            base.OnLostFocus(e);
+
+            IsPressed = false;
+        }
+
+        #endregion
+
+        #endregion
     }
 
     /// <summary>
