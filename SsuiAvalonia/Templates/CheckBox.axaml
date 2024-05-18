@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:flat="clr-namespace:SolidShineUi" >
+                    xmlns:flat="clr-namespace:SolidShineUi" >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
@@ -9,10 +9,80 @@
 
     <!-- Add Resources Here -->
     <Design.PreviewWith>
-        <Border>
-            <TextBlock Text="Helo" />
-        </Border>    
+        <Border Margin="10" >
+            <flat:CheckBox TriStateClick="True" >
+                this is the checkbox?!?!
+            </flat:CheckBox>
+        </Border>
     </Design.PreviewWith>
 
+    <ControlTheme x:Key="{x:Type flat:CheckBox}" TargetType="flat:CheckBox">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Padding" Value="3,0,0,0" />
+        <Setter Property="Background" Value="#01000000" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type flat:CheckBox}">
+                <Grid Background="{TemplateBinding Background}" ColumnDefinitions="Auto,1*" >
+                    <Border x:Name="brdrChk" HorizontalAlignment="Left" Height="20" Margin="0,0"
+                            VerticalAlignment="Center" Width="20" 
+                            Background="{TemplateBinding CheckBackground}"
+                            BorderBrush="{TemplateBinding CheckBorderBrush}"
+                            BorderThickness="{TemplateBinding CheckBorderThickness}"
+                            CornerRadius="{TemplateBinding CheckBorderCornerRadius}" >
+                        <Grid Background="Transparent" x:Name="gridBkgd" >
+                            <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
+                                  Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                  Fill="{TemplateBinding CheckForeground}" IsVisible="False" />
+                            <Rectangle x:Name="markInd" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Fill="{TemplateBinding CheckForeground}" IsVisible="False" />
+                        </Grid>
+                    </Border>
+                    <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="1"
+                                      Content="{TemplateBinding Content}"
+                                      Opacity="1.0" Margin="{TemplateBinding Padding}" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:checked /template/ Path#markCheck">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:checked /template/ Border#brdrChk">
+            <Setter Property="BorderThickness" 
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CheckBorderSelectionThickness}" />
+        </Style>
+
+        <Style Selector="^:indeterminate /template/ Rectangle#markInd">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+
+        <Style Selector="^:indeterminate /template/ Border#brdrChk">
+            <Setter Property="BorderThickness" 
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CheckBorderSelectionThickness}" />
+        </Style>
+
+        <Style Selector="^:pointerover /template/ Border#brdrChk">
+            <Setter Property="BorderBrush"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
+        </Style>
+
+        <Style Selector="^:pointerover /template/ Grid#gridBkgd">
+            <Setter Property="Background"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BackgroundHighlightBrush}" />
+        </Style>
+
+        <Style Selector="^:pointerover /template/ Path#markCheck">
+            <Setter Property="Fill"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
+        </Style>
+
+        <Style Selector="^:pointerover /template/ Rectangle#markInd">
+            <Setter Property="Fill"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
+        </Style>
+        
+    </ControlTheme>
 
 </ResourceDictionary>

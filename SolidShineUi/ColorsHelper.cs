@@ -645,6 +645,9 @@ namespace SolidShineUi
         /// <summary>A color used in high contrast color schemes, which mirrors Windows's high contrast themes. Has hex string 900000.</summary>
         public static Color HighContrastRed { get; } = CreateFromHex("900000"); // 600000
 
+        /// <summary>A darker gray color used in some styles. Has hex string 464646.</summary>
+        public static Color DarkerGray { get; } = CreateFromHex("414141");
+
         /// <summary>
         /// Get a color from the X11 Color table (<c>System.Windows.Media.Colors</c>) with a particular name.
         /// </summary>

@@ -24,9 +24,12 @@ namespace SolidShineUi
     /// including either a full checkmark or an indeterminate mark (a square), and false only if there is no mark at all.
     /// Instead, use <see cref="IsIndeterminate"/> to check if the mark is an indeterminate mark, or use <see cref="CheckState"/> to get the current state as an enum.
     /// </remarks>
-    public class CheckBox : TemplatedControl
+    public class CheckBox : ContentControl
     {
 
+        /// <summary>
+        /// Create a new CheckBox.
+        /// </summary>
         public CheckBox()
         {
 
@@ -357,13 +360,13 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightBrushProperty
-            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(HighlightBrush), Colors.Black.ToBrush());
+            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(HighlightBrush), ColorsHelper.DarkerGray.ToBrush());
 
         public IBrush? BackgroundHighlightBrush { get => GetValue(BackgroundHighlightBrushProperty); set => SetValue(BackgroundHighlightBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BackgroundHighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BackgroundHighlightBrushProperty
-            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BackgroundHighlightBrush), null);
+            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BackgroundHighlightBrush), Color.FromArgb(16, 255, 255, 255).ToBrush());
 
         /// <summary>
         /// Get or set the brush to use for the background of the checkbox's box when it is disabled.
@@ -399,7 +402,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderHighlightBrushProperty
-            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BorderHighlightBrush), Colors.DimGray.ToBrush());
+            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BorderHighlightBrush), ColorsHelper.DarkerGray.ToBrush());
 
         public IBrush? CheckBorderBrush { get => GetValue(CheckBorderBrushProperty); set => SetValue(CheckBorderBrushProperty, value); }
 
