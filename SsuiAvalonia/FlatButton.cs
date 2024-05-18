@@ -19,11 +19,6 @@ namespace SolidShineUi
     public class FlatButton : ContentControl, IClickSelectableControl, ICommandSource
     {
 
-        static FlatButton()
-        {
-
-        }
-
         /// <summary>
         /// Create a FlatButton.
         /// </summary>
@@ -402,19 +397,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Events
-
-        /// <summary>
-        /// Defines the <see cref="Click"/> event.
-        /// </summary>
-        public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-            RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(Click), RoutingStrategies.Bubble);
-
-        /// <summary>
-        /// Defines the <see cref="RightClick"/> event.
-        /// </summary>
-        public static readonly RoutedEvent<RoutedEventArgs> RightClickEvent =
-            RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(RightClick), RoutingStrategies.Bubble);
+        #region Selection Events
 
         /// <summary>
         /// Defines the <see cref="IsSelectedChanged"/> event.
@@ -427,24 +410,6 @@ namespace SolidShineUi
         /// </summary>
         public static readonly RoutedEvent<RoutedEventArgs> CanSelectChangedEvent =
             RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(CanSelectChanged), RoutingStrategies.Bubble);
-
-        /// <summary>
-        /// Raised when the user clicks the button.
-        /// </summary>
-        public event EventHandler<RoutedEventArgs> Click
-        {
-            add => AddHandler(ClickEvent, value);
-            remove => RemoveHandler(ClickEvent, value);
-        }
-
-        /// <summary>
-        /// Raised when the user clicks the button with the right mouse.
-        /// </summary>
-        public event EventHandler<RoutedEventArgs> RightClick
-        {
-            add => AddHandler(RightClickEvent, value);
-            remove => RemoveHandler(RightClickEvent, value);
-        }
 
         /// <summary>
         /// Raised when the user clicks the button with the right mouse.
@@ -462,6 +427,40 @@ namespace SolidShineUi
         {
             add => AddHandler(CanSelectChangedEvent, value);
             remove => RemoveHandler(CanSelectChangedEvent, value);
+        }
+
+        #endregion
+
+        #region Click Events
+
+        /// <summary>
+        /// Defines the <see cref="Click"/> event.
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
+            RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(Click), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// Defines the <see cref="RightClick"/> event.
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> RightClickEvent =
+            RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(RightClick), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// Raised when the user clicks the button.
+        /// </summary>
+        public event EventHandler<RoutedEventArgs> Click
+        {
+            add => AddHandler(ClickEvent, value);
+            remove => RemoveHandler(ClickEvent, value);
+        }
+
+        /// <summary>
+        /// Raised when the user clicks the button with the right mouse.
+        /// </summary>
+        public event EventHandler<RoutedEventArgs> RightClick
+        {
+            add => AddHandler(RightClickEvent, value);
+            remove => RemoveHandler(RightClickEvent, value);
         }
 
         #endregion
@@ -504,6 +503,7 @@ namespace SolidShineUi
         public void CanExecuteChanged(object sender, EventArgs e)
         {
             // TODO: change if this is enabled??
+
 
             //throw new NotImplementedException();
         }
