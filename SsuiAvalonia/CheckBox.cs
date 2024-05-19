@@ -375,7 +375,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="BackgroundDisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BackgroundDisabledBrushProperty
-            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BackgroundDisabledBrush), Colors.LightGray.ToBrush());
+            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BackgroundDisabledBrush), ColorsHelper.CreateFromHex("c4d9d9d9").ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the border of the checkbox's box when it is disabled.
@@ -412,7 +412,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Border
+        #region Border / Content
 
         /// <summary>
         /// Get or set the thickness of the border of the check box.
@@ -440,6 +440,16 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="CheckBorderCornerRadius"/>. See the related property for details.</summary>
         public static readonly StyledProperty<CornerRadius> CheckBorderCornerRadiusProperty
             = AvaloniaProperty.Register<CheckBox, CornerRadius>(nameof(CheckBorderCornerRadius), new CornerRadius(0));
+
+        /// <summary>
+        /// Get or set if the content of this checkbox should be dimmed (opacity lowered) when the checkbox is disabled.
+        /// </summary>
+        public bool DimContentWhenDisabled { get => GetValue(DimContentWhenDisabledProperty); set => SetValue(DimContentWhenDisabledProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="DimContentWhenDisabled"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> DimContentWhenDisabledProperty
+            = AvaloniaProperty.Register<CheckBox, bool>(nameof(DimContentWhenDisabled), true);
+
 
         #endregion
 

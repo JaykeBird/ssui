@@ -10,8 +10,7 @@
     <!-- Add Resources Here -->
     <Design.PreviewWith>
         <StackPanel Margin="7,7,7,60" Width="110" >
-            <flat:MenuButton >
-                <TextBlock >Button1</TextBlock>
+            <flat:MenuButton Content="Button1" >
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Item 1" />
@@ -20,7 +19,7 @@
                 </flat:MenuButton.Menu>
             </flat:MenuButton>
             <flat:MenuButton KeepMenuArrowOnRight="True" >
-                <TextBlock >Button2</TextBlock>
+                <TextBlock>Button2</TextBlock>
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Item 1" />
@@ -29,13 +28,13 @@
                 </flat:MenuButton.Menu>
             </flat:MenuButton>
             <flat:MenuButton IsEnabled="False" >
-                <TextBlock >Button3</TextBlock>
+                <TextBlock>Button3</TextBlock>
             </flat:MenuButton>
             <flat:MenuButton IsEnabled="False" KeepMenuArrowOnRight="True" >
-                <TextBlock >Button4</TextBlock>
+                <TextBlock>Button4</TextBlock>
             </flat:MenuButton>
             <flat:MenuButton ShowMenuArrow="False" >
-                <TextBlock >Button5</TextBlock>
+                <TextBlock>Button5</TextBlock>
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
                         <MenuItem Header="Item 1" />

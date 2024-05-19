@@ -10,9 +10,12 @@
     <!-- Add Resources Here -->
     <Design.PreviewWith>
         <Border Margin="10" >
+            <StackPanel>
             <flat:CheckBox TriStateClick="True" >
                 this is the checkbox?!?!
             </flat:CheckBox>
+            <flat:CheckBox IsEnabled="False" Content="Can't click me!" IsChecked="True" />
+            </StackPanel>
         </Border>
     </Design.PreviewWith>
 
@@ -81,6 +84,30 @@
         <Style Selector="^:pointerover /template/ Rectangle#markInd">
             <Setter Property="Fill"
                     Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
+        </Style>
+
+        <Style Selector="^:disabled /template/ Border#brdrChk">
+            <Setter Property="BorderBrush"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
+
+        <Style Selector="^:disabled /template/ Grid#gridBkgd">
+            <Setter Property="Background"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BackgroundDisabledBrush}" />
+        </Style>
+
+        <Style Selector="^:disabled /template/ Path#markCheck">
+            <Setter Property="Fill"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CheckDisabledBrush}" />
+        </Style>
+
+        <Style Selector="^:disabled /template/ Rectangle#markInd">
+            <Setter Property="Fill"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CheckDisabledBrush}" />
+        </Style>
+
+        <Style Selector="^[DimContentWhenDisabled=true]:disabled /template/ ContentPresenter#cc">
+            <Setter Property="Opacity" Value="0.6" />
         </Style>
         
     </ControlTheme>
