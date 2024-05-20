@@ -91,7 +91,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get if this spinner's <c>Value</c> is currently equal to its <c>MinValue</c>. If true, the value cannot be decreased any more.
         /// </summary>
-        public bool IsAtMinValue { get => _isAtMinValue; private set => SetAndRaise(IsAtMinValueProperty, ref _isAtMinValue, value); }
+        public bool IsAtMinValue { get => _isAtMinValue; protected private set => SetAndRaise(IsAtMinValueProperty, ref _isAtMinValue, value); }
 
         /// <summary>The backing direct property for <see cref="IsAtMinValue"/>. See the related property for details.</summary>
         public static readonly DirectProperty<SpinnerBase, bool> IsAtMinValueProperty
@@ -100,7 +100,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get if this spinner's <c>Value</c> is currently equal to its <c>MaxValue</c>. If true, the value cannot be increased any more.
         /// </summary>
-        public bool IsAtMaxValue { get => _isAtMaxValue; private set => SetAndRaise(IsAtMaxValueProperty, ref _isAtMaxValue, value); }
+        public bool IsAtMaxValue { get => _isAtMaxValue; protected private set => SetAndRaise(IsAtMaxValueProperty, ref _isAtMaxValue, value); }
 
         /// <summary>The backing direct property for <see cref="IsAtMaxValue"/>. See the related property for details.</summary>
         public static readonly DirectProperty<SpinnerBase, bool> IsAtMaxValueProperty
@@ -487,7 +487,16 @@ namespace SolidShineUi.Utils
             UpdateUI();
             RaiseValueValidated(this);
         }
-        
+
+        /// <summary>
+        /// Validate MinValue and MaxValue, to make sure they're not impossibly out of bounds of each other. This should be overriden in controls that inherit this class, to 
+        /// perform actual validation on the value. This base function calls <see cref="ValidateValue"/>.
+        /// </summary>
+        protected virtual void ValidateMinMax()
+        {
+            ValidateValue();
+        }
+
         /// <summary>
         /// Handle the process of updating value properties. Should be overridden in classes that inherit this, in order to perform validation or other functions.
         /// </summary>
@@ -629,5 +638,80 @@ namespace SolidShineUi.Utils
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
+    /// </summary>
+    /// <typeparam name="T">The data type supported by the spinner.</typeparam>
+    /// <remarks>
+    /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
+    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="SpinnerBase"/>.
+    /// </remarks>
+    public abstract class NumericSpinnerBase<T> : SpinnerBase where T : IEquatable<T>, IComparable<T>
+    {
+        /// <summary>
+        /// Get or set the value of the spinner.
+        /// </summary>
+        public abstract T Value { get; set; }
+
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MinValue { get; set; }
+
+        /// <summary>
+        /// Get or set the maximum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// </summary>
+        public abstract T MaxValue { get; set; }
+
+        /// <summary>
+        /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
+        /// </summary>
+        public abstract T Step { get; set; }
+
+        /// <summary>
+        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        /// </summary>
+        protected override void ValidateValue()
+        {
+            T val = Value;
+            if (val.CompareTo(MinValue) < 0) val = MinValue;
+            if (val.CompareTo(MaxValue) > 0) val = MaxValue;
+            if (!val.Equals(Value)) Value = val;
+
+            base.ValidateValue();
+        }
+
+        /// <summary>
+        /// Validate <see cref="MinValue"/> and <see cref="MaxValue"/>, to make sure they're not impossibly out of bounds of each other.
+        /// </summary>
+        protected override void ValidateMinMax()
+        {
+            if (MinValue.CompareTo(MaxValue) > 0) MinValue = MaxValue;
+            if (MaxValue.CompareTo(MinValue) < 0) MaxValue = MinValue;
+
+            IsAtMinValue = Value.Equals(MinValue);
+            IsAtMaxValue = Value.Equals(MaxValue);
+
+            base.ValidateMinMax();
+        }
+
+        /// <inheritdoc/>
+        protected override void UpdateValue(AvaloniaPropertyChangedEventArgs e)
+        {
+            //int value = Value;
+
+            if (!advanceTimer.Enabled)
+            {
+                ValidateValue();
+
+                IsAtMinValue = Value.Equals(MinValue);
+                IsAtMaxValue = Value.Equals(MaxValue);
+            }
+            base.UpdateValue(e);
+        }
     }
 }
