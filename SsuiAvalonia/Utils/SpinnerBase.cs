@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Timers;
 using System.Threading.Tasks;
-using System.Windows;
 using Avalonia.Controls;
 using Avalonia.Media;
-using System.Windows.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia;
 using Avalonia.Input;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SolidShineUi.Utils
 {
     /// <summary>
     /// The base class for Solid Shine UI's spinner controls (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
     /// </summary>
+    /// <remarks>
+    /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
+    /// </remarks>
     public class SpinnerBase : Control
     {
 
