@@ -194,9 +194,9 @@ namespace SolidShineUi.Ribbon
         {
             if (e.NewValue is bool ua)
             {
-                if (d is SplitButton f)
+                if (d is RibbonSplitButton f)
                 {
-                    f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, ua);
+                    f.ApplyColorScheme(f.ColorScheme, ua);
                 }
             }
         }

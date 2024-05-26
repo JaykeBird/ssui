@@ -2931,16 +2931,16 @@
                                 <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />-->
                             </MultiTrigger.Setters>
                         </MultiTrigger>
-                        <MultiTrigger>
+                        <!--<MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsEnabled" Value="False" />
-                                <!--<Condition Property="TransparentBack" Value="True" />-->
+                                --><!--<Condition Property="TransparentBack" Value="True" />--><!--
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
                                 <Setter Property="Focusable" Value="False" />
                                 <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
                             </MultiTrigger.Setters>
-                        </MultiTrigger>
+                        </MultiTrigger>-->
                         <Trigger Property="IsSelected" Value="True">
                             <!--<Setter Property="BorderThickness" TargetName="btn_Border" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />-->
                         </Trigger>
