@@ -8,7 +8,7 @@
     xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
-    
+
     <!-- when first opening this file, it's recommended to collapse all elements first. this is a very big file lol -->
 
     <!--<ResourceDictionary.MergedDictionaries>
@@ -25,7 +25,7 @@
     <ssut:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
     <ssut:PartialThicknessConverter x:Key="PartialThConverter" />
     <ssut:CornerRadiusModifierConverter x:Key="CrModConverter" />
-    
+
     <system:Byte x:Key="byteRightCR">21</system:Byte>
     <system:Byte x:Key="byteLeftCR">10</system:Byte>
     <system:Byte x:Key="byteBottomCR">35</system:Byte>
@@ -3240,159 +3240,154 @@
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Height" Value="Auto" />
+        <Setter Property="MinWidth" Value="60" />
+        <Setter Property="Padding" Value="10,2,10,2" />
         <Setter Property="Width" Value="Auto" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:RibbonFileMenu}">
-                    <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{Binding Path=FileMenuButtonBackgroundBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                            </Style>
-                        </Border.Style>
-                        <Grid>
-                            <StackPanel Orientation="Horizontal" >
-                                <StackPanel.Style>
-                                    <Style TargetType="{x:Type StackPanel}">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                        <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                                        <!--<Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />-->
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True">
+                        <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                BorderThickness="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                Background="{Binding Path=ButtonBackgroundBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
+                            <Grid x:Name="grd_Button" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Setter Property="Background" Value="Transparent" />
                                     </Style>
-                                </StackPanel.Style>
-                                <TextBlock x:Name="btn_Txt" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}" >
-                                            <Setter Property="Opacity" Value="1.0" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" Value="False" >
-                                                    <Setter Property="Opacity" Value="0.6"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
+                                </Grid.Style>
+                                <StackPanel Orientation="Horizontal" >
+                                    <StackPanel.Style>
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="HorizontalAlignment" Value="Center" />
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                            <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                         </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <!--<ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" >
-                                        <ContentPresenter.Style>
-                                            <Style TargetType="{x:Type ContentPresenter}" >
-                                                <Setter Property="Opacity" Value="1.0" />      
+                                    </StackPanel.Style>
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="btn_Txt"
+                                               Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}" >
+                                                <Setter Property="Opacity" Value="1.0" />
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <Path Grid.Column="1" Data="M0,0 L8,0 4,4 z" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                            Height="5" Width="8" Margin="5,0,3,0" Stretch="Fill">
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Setter Property="Opacity" Value="1.0" />
+                                                <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" Value="False" >
+                                                    <DataTrigger Binding="{Binding ShowMenuArrow, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False" >
                                                         <Setter Property="Opacity" Value="0.6"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </ContentPresenter.Style>
-                                    </ContentPresenter>-->
-                                <Path Grid.Column="1" Data="M0,0 L8,0 4,4 z" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                            Height="5" Width="8" Margin="5,0,3,0" Stretch="Fill">
-                                    <Path.Style>
-                                        <Style TargetType="Path">
+                                        </Path.Style>
+                                    </Path>
+                                </StackPanel>
+                                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
+                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
                                             <Setter Property="Visibility" Value="Collapsed" />
-                                            <Setter Property="Opacity" Value="1.0" />
-                                            <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                                            <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ShowMenuArrow, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" Value="False" >
-                                                    <Setter Property="Opacity" Value="0.6"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
                                         </Style>
-                                    </Path.Style>
-                                </Path>
-                            </StackPanel>
-                            <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
-                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" >
-                                <Rectangle.Style>
-                                    <Style TargetType="Rectangle">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </Style>
-                                </Rectangle.Style>
-                            </Rectangle>
-                            <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}"
-                                    Placement="Bottom" HorizontalOffset="-1" x:Name="PART_Popup" Focusable="false" 
-                                    StaysOpen="{Binding Path=MenuStaysOpen, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}"
+                                    </Rectangle.Style>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                        <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                    Placement="Bottom" HorizontalOffset="-1" x:Name="PART_Popup" Focusable="False"
+                                    StaysOpen="{Binding Path=MenuStaysOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                     PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                                     AllowsTransparency="True">
-                                <Grid Margin="0,0,5,5">
-                                    <!--Border 2-->
-                                    <Border x:Name="SubMenuBorder"
+                            <Grid Margin="0,0,5,5" > <!-- needed to display the drop shadow effect -->
+                                <!--Menu Border-->
+                                <Border x:Name="SubMenuBorder"
                                             BorderBrush="{Binding Path=MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}"
                                             BorderThickness="1"
+                                            MaxHeight="{Binding Path=MenuMaxHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}"
+                                            MinHeight="{Binding Path=MenuMinHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}"
                                             Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}"
                                             SnapsToDevicePixels="True">
-                                        <Grid x:Name="SubMenu" Margin="2">
-                                            <Grid.Style>
-                                                <Style TargetType="Grid">
-                                                    <Setter Property="MaxHeight" Value="{Binding Path=MenuMaxHeight, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                                                </Style>
-                                            </Grid.Style>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" x:Name="colMain" MinWidth="10" />
-                                                <ColumnDefinition x:Name="colSecondary">
-                                                    <ColumnDefinition.Style>
-                                                        <Style TargetType="ColumnDefinition">
-                                                            <Setter Property="Width" Value="{Binding Path=SecondaryPanelWidth, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                                                        </Style>
-                                                    </ColumnDefinition.Style>
-                                                </ColumnDefinition>
-                                            </Grid.ColumnDefinitions>
-                                            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
-                                                <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}">
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" Orientation="Vertical" />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                </ItemsControl>
-                                            </ScrollViewer>
-                                            <Grid x:Name="PART_Secondary" Grid.Column="1"
-                                                 Background="{Binding Path=MenuSecondaryPanelBackground, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" >
-                                                <ContentPresenter x:Name="PART_Cc_Secondary" ContentSource="{Binding Path=SecondaryPanelContent,RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                                            </Grid>
-                                            <ScrollViewer Grid.Column="1" x:Name="PART_SecondaryMenu" VerticalScrollBarVisibility="Auto" >
-                                                <ScrollViewer.Style>
-                                                    <Style TargetType="ScrollViewer">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
+
+                                    <Grid x:Name="SubMenu" Margin="2"> <!-- actual File menu -->
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" x:Name="colMain" MinWidth="10" />
+                                            <ColumnDefinition Width="1" x:Name="colBorder" MinWidth="1" />
+                                            <ColumnDefinition x:Name="colSecondary">
+                                                <ColumnDefinition.Style>
+                                                    <Style TargetType="ColumnDefinition">
+                                                        <Setter Property="Width" Value="{Binding Path=SecondaryPanelWidth, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
                                                     </Style>
-                                                </ScrollViewer.Style>
-                                                <StackPanel KeyboardNavigation.DirectionalNavigation="Cycle" Orientation="Vertical" />
-                                            </ScrollViewer>
+                                                </ColumnDefinition.Style>
+                                            </ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                                            <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding Items}" Margin="0,0,3,0" >
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" Orientation="Vertical" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                        <Border Width="1" BorderThickness="1" Grid.Column="1" 
+                                                    BorderBrush="{Binding Path=PanelDividerBrush, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
+                                        <Grid x:Name="PART_Secondary" Grid.Column="2"
+                                                 Background="{Binding Path=MenuSecondaryPanelBackground, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" >
+                                            <ContentPresenter x:Name="PART_Cc_Secondary" ContentSource="{Binding Path=SecondaryPanelContent,RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
                                         </Grid>
-                                        <Border.Effect>
-                                            <DropShadowEffect ShadowDepth="2" Color="Black"/>
-                                        </Border.Effect>
-                                    </Border>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                    </Border>
+                                        <ScrollViewer Grid.Column="2" x:Name="PART_SecondaryMenu" VerticalScrollBarVisibility="Auto" >
+                                            <ScrollViewer.Style>
+                                                <Style TargetType="ScrollViewer">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Style>
+                                            </ScrollViewer.Style>
+                                            <StackPanel KeyboardNavigation.DirectionalNavigation="Cycle" Orientation="Vertical" />
+                                        </ScrollViewer>
+                                    </Grid>
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="2" Color="Black"/>
+                                    </Border.Effect>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Focusable" Value="False" />
                             <Setter Property="Opacity" TargetName="btn_Txt" Value="0.6" />
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                            <!--<Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />-->
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" 
+                                    Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True" >
-                            <Setter Property="Background" TargetName="btn_Border" 
-                                    Value="{Binding Path=FileMenuButtonHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                            <!--<Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />-->
+                            <Setter Property="Background" TargetName="grd_Button" 
+                                    Value="{Binding Path=ButtonHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" 
+                                    Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsMouseDown" Value="True">
-                            <Setter Property="Background" TargetName="btn_Border" 
-                                    Value="{Binding Path=FileMenuButtonClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonFileMenu}}}" />
-                            <!--<Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />-->
+                            <Setter Property="Background" TargetName="grd_Button" 
+                                    Value="{Binding Path=ButtonClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" 
+                                    Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True" >
                             <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
-                            <!--<Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />-->
+                            <!--<Setter Property="Background" TargetName="btn_Border" 
+                            Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" 
+                            Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />-->
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -3480,7 +3475,7 @@
                                     </flat:FlatButton>
                                 </Grid>
                             </Border>
-                            
+
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -3501,19 +3496,19 @@
                             </Style>
                         </Border.Style>
                         <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="FirstCol" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="Auto" SharedSizeGroup="RowTitle" />
-                        </Grid.RowDefinitions>
-                        <Image Source="{TemplateBinding SmallIcon}" Grid.Column="0" Grid.Row="0" x:Name="PART_SmallIcon" MaxHeight="16" MaxWidth="16" Margin="2" VerticalAlignment="Center" />
-                        <Image Source="{TemplateBinding LargeIcon}" Grid.Column="0" Grid.Row="0" x:Name="PART_LargeIcon" MaxHeight="32" MaxWidth="32" Margin="2,1" HorizontalAlignment="Center" />
-                        <ContentPresenter x:Name="PART_Content" />
-                        <TextBlock x:Name="PART_Header" Text="{TemplateBinding Title}" VerticalAlignment="Center" Margin="2,0" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="FirstCol" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="Auto" SharedSizeGroup="RowTitle" />
+                            </Grid.RowDefinitions>
+                            <Image Source="{TemplateBinding SmallIcon}" Grid.Column="0" Grid.Row="0" x:Name="PART_SmallIcon" MaxHeight="16" MaxWidth="16" Margin="2" VerticalAlignment="Center" />
+                            <Image Source="{TemplateBinding LargeIcon}" Grid.Column="0" Grid.Row="0" x:Name="PART_LargeIcon" MaxHeight="32" MaxWidth="32" Margin="2,1" HorizontalAlignment="Center" />
+                            <ContentPresenter x:Name="PART_Content" />
+                            <TextBlock x:Name="PART_Header" Text="{TemplateBinding Title}" VerticalAlignment="Center" Margin="2,0" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -3637,7 +3632,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="{x:Type flat:SplitButton}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinHeight" Value="24" />

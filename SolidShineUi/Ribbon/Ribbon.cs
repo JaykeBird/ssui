@@ -662,6 +662,20 @@ namespace SolidShineUi.Ribbon
             BorderBrush = cs.BorderColor.ToBrush();
             TabBarBackground = cs.BackgroundColor.ToBrush();
 
+            // TODO: replace applying the ColorScheme directly below with applying these yet-to-be-made properties
+            // to achieve this, I think I'll need to build for myself a small function that goes into each RibbonItem and each group,
+            // allowing me to change values as needed (in case users change the brush properties and don't use ColorScheme)
+
+            /*
+            SubitemBackground
+            SubitemHighlight
+            SubitemBorderBrush
+            SubitemClickBrush
+            SubitemBorderHighlight
+            SubitemSelectedBrush
+            SubitemBorderSelectedBrush
+             */
+
             foreach (RibbonTab tab in Items)
             {
                 foreach (RibbonGroup group in tab.Items)
@@ -673,6 +687,12 @@ namespace SolidShineUi.Ribbon
                         control.ColorScheme = ColorScheme;
                     }
                 }
+            }
+
+            // TODO: replace check for RibbonFileMenu with a check for a control that has a ColorScheme/SsuiTheme
+            if (FileMenu is RibbonFileMenu rfm)
+            {
+                rfm.ColorScheme = cs;
             }
         }
         #endregion
