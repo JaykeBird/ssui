@@ -32,6 +32,9 @@
                     <ribbon:RibbonButton StandardSize="Small" SmallIcon="Resources/Images/ExitColor.png" Title="Exit" />
                 </ribbon:RibbonFileMenu>
             </ribbon:Ribbon.FileMenu>
+            <!--<ribbon:Ribbon.TopRightElement>
+                <TextBlock Width="150" VerticalAlignment="Center" Text="Big element on the right!" />
+            </ribbon:Ribbon.TopRightElement>-->
             <ribbon:RibbonTab Title="Home">
                 <ribbon:RibbonGroup Title="Editing" ShowLauncher="True" >
                     <ribbon:RibbonSplitButton Title="AutoSum" StandardSize="Small" CompactSize="IconOnly" 

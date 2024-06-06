@@ -19,5 +19,10 @@ namespace SolidShineUi.Ribbon
         ///// <summary>A WPF command that when executed, will open or close a File menu in <see cref="RibbonFileMenu"/>.</summary>
         //public static RoutedCommand OpenCloseFileMenu { get; } = new RoutedCommand("OpenCloseFileMenu", typeof(RibbonCommands));
 
+
+        /// <summary>
+        /// A WPF command that when executed, will scroll the tab control's tab bar to the left or right.
+        /// </summary>
+        public static RoutedCommand MainBarScrollCommand { get; } = new RoutedCommand("MainBarScrollCommand", typeof(RibbonCommands));
     }
 }

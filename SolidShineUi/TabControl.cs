@@ -43,7 +43,7 @@ namespace SolidShineUi
             Items.SelectionChanged += items_SelectionChanged;
             Items.ItemRemoving += Items_ItemRemoving;
 
-            CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = ScrollButtonsVisible; }));
+            CommandBindings.Add(new CommandBinding(TabBarScrollCommand, OnScrollCommand, CanExecuteAlways));
 
             CommandBindings.Add(new CommandBinding(CloseCurrentTab, DoCloseCurrentTab, CanExecuteIfAnyTabSelected));
             CommandBindings.Add(new CommandBinding(CloseSpecificTab, DoCloseSpecificTab, CanExecuteIfTabPresent));

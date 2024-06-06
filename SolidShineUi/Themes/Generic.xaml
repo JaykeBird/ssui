@@ -1261,17 +1261,17 @@
                             </Border>
                             <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
-                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
-                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ColorConverter}}" />
+                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}" >
+                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>
                             <Border BorderThickness="0" Background="Transparent" x:Name="PART_RightHolder_Horizontal" Grid.Column="4" >
                                 <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding RightTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrRightElementParent" />
                             </Border>
                             <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="5" Padding="0" MinWidth="20" Width="20" TransparentBack="True" ToolTip="Tab List" ShowMenuArrow="False"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                             Visibility="{Binding ShowTabListMenu, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource VisConverter}}">
+                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}"
+                                             Visibility="{Binding ShowTabListMenu, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisConverter}}">
                                 <flat:MenuButton.Menu>
                                     <flat:ContextMenu ItemsSource="{TemplateBinding Items}">
                                         <flat:ContextMenu.ItemTemplate>
@@ -1812,7 +1812,7 @@
                                     <Style TargetType="{x:Type RowDefinition}">
                                         <Setter Property="Height" Value="1*" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                 <Setter Property="Height" Value="Auto" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -1824,7 +1824,7 @@
                                     <Style TargetType="{x:Type RowDefinition}">
                                         <Setter Property="Height" Value="Auto" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowOnlyTabs, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                            <DataTrigger Binding="{Binding ShowOnlyTabs, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                 <Setter Property="Height" Value="0" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -1836,7 +1836,7 @@
                                     <Style TargetType="{x:Type RowDefinition}">
                                         <Setter Property="Height" Value="Auto" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                 <Setter Property="Height" Value="1*" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -1853,7 +1853,7 @@
                                         <Style TargetType="ColumnDefinition">
                                             <Setter Property="Width" Value="0" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                                <DataTrigger Binding="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                     <Setter Property="Width" Value="20" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -1866,7 +1866,7 @@
                                         <Style TargetType="ColumnDefinition">
                                             <Setter Property="Width" Value="0" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                                <DataTrigger Binding="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                     <Setter Property="Width" Value="20" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -1893,10 +1893,10 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="1" Padding="1"
+                            <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="1" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
-                                             IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}">
+                                             IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, 
                                         AncestorType={x:Type ribbon:Ribbon}}, Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>
@@ -1919,7 +1919,7 @@
                                                                      AllowDataDragDrop="{Binding AllowDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
                                                                      ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
                                                                      ParentRibbon="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" />
-                                                <!-- AllowDragDrop="{Binding AllowControlReordering, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" -->
+                                                <!-- AllowDragDrop="{Binding AllowControlReordering, RelativeSource={RelativeSource TemplatedParent}}" -->
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -1930,7 +1930,7 @@
                                                 <Setter Property="BorderThickness" Value="0,1,0,0"  />
                                                 <Setter Property="VerticalAlignment" Value="Bottom" />
                                                 <!--<Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                                    <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                         <Setter Property="BorderThickness" Value="0,0,0,1" />
                                                         <Setter Property="VerticalAlignment" Value="Top" />
                                                     </DataTrigger>
@@ -1946,7 +1946,7 @@
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
                                         <Setter Property="VerticalAlignment" Value="Bottom" />
                                         <!--<Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                 <Setter Property="BorderThickness" Value="0,0,0,1" />
                                                 <Setter Property="VerticalAlignment" Value="Top" />
                                             </DataTrigger>
@@ -1956,9 +1956,9 @@
                             </Border>
                             <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
-                                             IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" >
-                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}, 
+                                             IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}" >
+                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource TemplatedParent}, 
                                     Converter={StaticResource ColorConverter}}" />
                             </flat:FlatButton>
                             <Border BorderThickness="0" Background="Transparent" x:Name="PART_RightHolder_Horizontal" Grid.Column="4" >
@@ -1973,24 +1973,96 @@
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="1,0,1,1"  />
                                         <!--<Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" Value="True">
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                                 <Setter Property="BorderThickness" Value="1,1,1,0" />
                                             </DataTrigger>
                                         </Style.Triggers>-->
                                     </Style>
                                 </Border.Style>
-                                <ScrollViewer x:Name="PART_MainScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="2" >
-                                    <ItemsControl Margin="1,0" Focusable="False" Height="{TemplateBinding MainBarHeight}" x:Name="PART_MainContent"
-                                                  ItemsSource="{Binding SelectedTab.Items, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" >
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel IsItemsHost="True" Orientation="Horizontal" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </ScrollViewer>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <!--<ColumnDefinition x:Name="colLeftElement" Width="Auto" />-->
+                                        <ColumnDefinition x:Name="colMainScrollLeft">
+                                            <ColumnDefinition.Style>
+                                                <Style TargetType="ColumnDefinition">
+                                                    <Setter Property="Width" Value="0" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                            <Setter Property="Width" Value="16" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ColumnDefinition.Style>
+                                        </ColumnDefinition>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition x:Name="colMainScrollRight" >
+                                            <ColumnDefinition.Style>
+                                                <Style TargetType="ColumnDefinition">
+                                                    <Setter Property="Width" Value="0" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                            <Setter Property="Width" Value="16" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ColumnDefinition.Style>
+                                        </ColumnDefinition>
+                                        <!--<ColumnDefinition x:Name="colRightElement" Width="Auto" />-->
+                                    </Grid.ColumnDefinitions>
 
-                                <!--<ContentPresenter x:Name="PART_ContentHost" ContentSource="{Binding Path=SelectedTabContent, RelativeSource={RelativeSource AncestorType={x:Type ribbon:Ribbon}}}" />-->
+                                    <DockPanel Grid.Column="0" Grid.ColumnSpan="3">
+                                        <Border DockPanel.Dock="Left">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Width" Value="0" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                            <Setter Property="Width" Value="16" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+                                        <ScrollViewer x:Name="PART_MainScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                                            <ItemsControl Margin="1,0" Focusable="False" Height="{TemplateBinding MainBarHeight}" x:Name="PART_MainContent"
+                                                  ItemsSource="{Binding SelectedTab.Items, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" >
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel IsItemsHost="True" Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                        <Border DockPanel.Dock="Right">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Width" Value="0" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                            <Setter Property="Width" Value="16" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+                                    </DockPanel>
+
+                                    <flat:FlatButton x:Name="btnMainScrollLeft" Grid.Column="0" Padding="1"
+                                             Command="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
+                                             IsEnabled="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Path Data="M6,0 L0,3 6,6 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, 
+                                        AncestorType={x:Type ribbon:Ribbon}}, Converter={StaticResource ColorConverter}}" />
+                                    </flat:FlatButton>
+                                    
+                                    <flat:FlatButton x:Name="btnMainScrollRight" Grid.Column="2" Padding="1"
+                                             Command="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
+                                             IsEnabled="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}" >
+                                        <Path Data="M0,0 L6,3 0,6 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource TemplatedParent}, 
+                                    Converter={StaticResource ColorConverter}}" />
+                                    </flat:FlatButton>
+                                </Grid>
                             </Border>
                         </Grid>
                     </Grid>
@@ -2934,7 +3006,9 @@
                         <!--<MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsEnabled" Value="False" />
-                                --><!--<Condition Property="TransparentBack" Value="True" />--><!--
+                                -->
+                        <!--<Condition Property="TransparentBack" Value="True" />-->
+                        <!--
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
                                 <Setter Property="Focusable" Value="False" />
@@ -3309,7 +3383,8 @@
                                     StaysOpen="{Binding Path=MenuStaysOpen, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                     PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
                                     AllowsTransparency="True">
-                            <Grid Margin="0,0,5,5" > <!-- needed to display the drop shadow effect -->
+                            <Grid Margin="0,0,5,5" >
+                                <!-- needed to display the drop shadow effect -->
                                 <!--Menu Border-->
                                 <Border x:Name="SubMenuBorder"
                                             BorderBrush="{Binding Path=MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}"
@@ -3319,7 +3394,8 @@
                                             Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type ribbon:RibbonFileMenu}}}"
                                             SnapsToDevicePixels="True">
 
-                                    <Grid x:Name="SubMenu" Margin="2"> <!-- actual File menu -->
+                                    <Grid x:Name="SubMenu" Margin="2">
+                                        <!-- actual File menu -->
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" x:Name="colMain" MinWidth="10" />
                                             <ColumnDefinition Width="1" x:Name="colBorder" MinWidth="1" />

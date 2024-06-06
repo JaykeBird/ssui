@@ -37,10 +37,8 @@ namespace SolidShineUi.Ribbon
         {
             SetValue(ItemsPropertyKey, new ObservableCollection<RibbonTab>());
 
-            //InternalShowTabsOnBottomChanged += tabControl_InternalShowTabsOnBottomChanged;
-
-            CommandBindings.Add(new CommandBinding(TabControl.TabBarScrollCommand, OnScrollCommand, (s, e) => { e.CanExecute = TabScrollButtonsVisible; }));
-
+            CommandBindings.Add(new CommandBinding(TabControl.TabBarScrollCommand, OnScrollCommand, CanExecuteAlways));
+            CommandBindings.Add(new CommandBinding(RibbonCommands.MainBarScrollCommand, OnMainScrollCommand, CanExecuteAlways));
 
             Loaded += Ribbon_Loaded;
             SizeChanged += Ribbon_SizeChanged;
@@ -58,6 +56,15 @@ namespace SolidShineUi.Ribbon
         }
 
         bool loadedFirstTab = false;
+
+
+        /// <summary>
+        /// The command in question is always able to be executed, regardless of the state of the object.
+        /// </summary>
+        private void CanExecuteAlways(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
 
         #endregion
 
@@ -84,13 +91,11 @@ namespace SolidShineUi.Ribbon
 #if NETCOREAPP
         ItemsControl? tabContainer = null;
         ScrollViewer? tabScrollContainer = null;
-        Border? mainBar = null;
         ItemsControl? mainContainer = null;
         ScrollViewer? mainScrollContainer = null;
 #else
         ItemsControl tabContainer = null;
         ScrollViewer tabScrollContainer = null;
-        Border mainBar = null;
         ItemsControl mainContainer = null;
         ScrollViewer mainScrollContainer = null;
 #endif
@@ -101,11 +106,10 @@ namespace SolidShineUi.Ribbon
             {
                 tabContainer = (ItemsControl)GetTemplateChild("PART_TabBar");
                 tabScrollContainer = (ScrollViewer)GetTemplateChild("PART_TabScroll");
-                mainBar = (Border)GetTemplateChild("PART_Content");
                 mainContainer = (ItemsControl)GetTemplateChild("PART_MainContent");
                 mainScrollContainer = (ScrollViewer)GetTemplateChild("PART_MainScroll");
 
-                if (tabContainer != null && tabScrollContainer != null && mainBar != null && mainContainer != null && mainScrollContainer != null)
+                if (tabContainer != null && tabScrollContainer != null && mainContainer != null && mainScrollContainer != null)
                 {
                     itemsLoaded = true;
                 }
@@ -116,7 +120,7 @@ namespace SolidShineUi.Ribbon
                     tabContainer.SizeChanged += tabBar_SizeChanged;
                 }
 
-                if (mainBar != null && mainContainer != null && mainScrollContainer != null)
+                if (mainContainer != null && mainScrollContainer != null)
                 {
                     mainScrollContainer.ScrollChanged += mv_ScrollChanged;
                     mainContainer.SizeChanged += mc_SizeChanged;
@@ -127,13 +131,12 @@ namespace SolidShineUi.Ribbon
 
         #region Tabs
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<RibbonTab>), typeof(Ribbon),
             new FrameworkPropertyMetadata(new ObservableCollection<RibbonTab>()));
 
+        /// <summary>The backing dependency property for <see cref="Items"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of tabs in this Ribbon. This Items property can be used to add and remove items.
@@ -185,6 +188,8 @@ namespace SolidShineUi.Ribbon
                     }
                 }
             }
+
+            CheckScrolling();
         }
 
 #if NETCOREAPP
@@ -447,17 +452,279 @@ namespace SolidShineUi.Ribbon
 
         #region Main Bar
 
+        /// <summary>
+        /// Get or set the height of the main bar (where the groups and commands are). The value should be between 24 and 96 pixels - use 24 for a single-line Ribbon, and 96 for a full-size Ribbon.
+        /// </summary>
         public double MainBarHeight { get => (double)GetValue(MainBarHeightProperty); set => SetValue(MainBarHeightProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="MainBarHeight"/>. See the related property for details.</summary>
         public static DependencyProperty MainBarHeightProperty
             = DependencyProperty.Register("MainBarHeight", typeof(double), typeof(Ribbon),
             new FrameworkPropertyMetadata(96.0));
 
+        #region Main Bar Scrolling / Resizing
+
+        #region Scroll Buttons
+
+        /// <summary>
+        /// Get if the scroll buttons are currently visible in the main (command area) bar of the Ribbon.
+        /// </summary>
+        /// <remarks>
+        /// You may encounter this being true when you shrink the size of the window or Ribbon, if the current tab has compacting disabled
+        /// (<see cref="RibbonTab.FitContentsToWidth"/> set to <c>false</c>), or if the current compacting isn't enough to get everything to fit on screen.
+        /// </remarks>
+        public bool MainScrollButtonsVisible { get => (bool)GetValue(MainScrollButtonsVisibleProperty); private set => SetValue(MainScrollButtonsVisiblePropertyKey, value); }
+
+        private static readonly DependencyPropertyKey MainScrollButtonsVisiblePropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(MainScrollButtonsVisible), typeof(bool), typeof(Ribbon),
+            new FrameworkPropertyMetadata(false));
+
+        /// <summary>The backing dependency property for <see cref="MainScrollButtonsVisible"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty MainScrollButtonsVisibleProperty = MainScrollButtonsVisiblePropertyKey.DependencyProperty;
+
         #endregion
 
-        #region Tab Bar
+        private void Ribbon_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (mainContainer == null) return;
 
-        //        #region ShowTabsOnBottom
+            if (e.WidthChanged)
+            {
+                // CheckGroupSizes(); // seems to give undesired results as it is simultaneously trying to compact and also uncompact
+
+                if (e.NewSize.Width < e.PreviousSize.Width)
+                {
+                    if (ActualWidth < mainContainer.ActualWidth + 2)
+                    {
+                        CompactGroups();
+                        CheckMainScrolling();
+                    }
+                }
+                else
+                {
+                    if (ActualWidth > mainContainer.ActualWidth + 2)
+                    {
+                        CheckMainScrolling();
+                        UncompactGroups();
+                    }
+                }
+
+                //CheckMainScrolling();
+            }
+
+            CheckScrolling();
+        }
+
+        void CheckGroupSizes()
+        {
+            if (mainContainer == null) return;
+            if (ActualWidth < mainContainer.ActualWidth + 2)
+            {
+                CompactGroups();
+            }
+            else
+            {
+                UncompactGroups();
+            }
+
+            CheckMainScrolling();
+        }
+
+        void CheckMainScrolling()
+        {
+            if (mainContainer == null || mainScrollContainer == null) return;
+
+            if (mainContainer.ActualWidth > mainScrollContainer.ViewportWidth)
+            {
+                MainScrollButtonsVisible = true;
+            }
+            else
+            {
+                MainScrollButtonsVisible = false;
+            }
+        }
+
+        /// <summary>
+        /// Force the Ribbon to remeasure the groups on the currently selected tab, and compact or uncompact groups as necessary to fit the Ribbon's width.
+        /// </summary>
+        /// <remarks>
+        /// The measuring and compacting occurs automatically when the Ribbon is resized, this would be a manually-forced remeasure.
+        /// The measuring includes a few calls to <see cref="UIElement.InvalidateMeasure"/>, which can cause CPU or GPU usage to increase
+        /// and potentially cause UI delays or stuttering, if this function is called too frequently.
+        /// </remarks>
+        public void MeasureAndCompactGroups()
+        {
+            CheckGroupSizes();
+        }
+
+        void CompactGroups()
+        {
+            // some logic at first
+            if (mainContainer == null) return;
+            if (SelectedTab == null) return;
+            if (SelectedTab.FitContentsToWidth == false) return;
+            if (SelectedTab.Items.Count == 0) return;
+
+            // get the list of groups, but sorted with the largest CompactOrder first
+            var groups = SelectedTab.Items.OrderByDescending(g => g.CompactOrder).ToList();
+            int selectedGroup = 0;
+            bool iconCompacting = false;
+            while (ActualWidth < mainContainer.ActualWidth + 2)
+            {
+                if (selectedGroup >= SelectedTab.Items.Count)
+                {
+                    // we've gone through all the groups, including getting them all down to an icon
+                    if (iconCompacting) break;
+                    else
+                    {
+                        // start again, but this time we'll actually compact groups down to just an icon
+                        iconCompacting = true;
+                        selectedGroup = 0;
+                    }
+                }
+
+                if (iconCompacting)
+                {
+                    // don't bother compacting groups with just 1 (or no) items down to an icon - this just makes for extra clicks for the user
+                    if (groups[selectedGroup].Items.Count < 2)
+                    {
+                        selectedGroup++;
+                        continue;
+                    }
+                    groups[selectedGroup].CompactSize = GroupSizeMode.IconOnly;
+                }
+                else
+                {
+                    groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
+                }
+
+                // forcing an UpdateLayout run may cause a small performance hit (especially if looping over multiple groups in a row), but at least it works - maybe there's a better way?
+                groups[selectedGroup].InvalidateMeasure();
+                groups[selectedGroup].UpdateLayout();
+
+                selectedGroup++;
+                // value put into breakpoint (set to log as message):
+                // changed {groups[selectedGroup].Title} to {groups[selectedGroup].CompactSize}, now {(ActualWidth < mainContainer.ActualWidth + 2) ? "this is still not good" : "now we are good" }
+            }
+        }
+
+        void UncompactGroups()
+        {
+            // some logic at first
+            if (mainContainer == null) return;
+            if (SelectedTab == null) return;
+            if (SelectedTab.FitContentsToWidth == false) return;
+            if (SelectedTab.Items.Count == 0) return;
+
+            // get the list of groups, but sorted with the smallest CompactOrder first
+            var groups = SelectedTab.Items.OrderBy(g => g.CompactOrder).ToList();
+            int selectedGroup = 0;
+            bool fullUncompacting = false;
+
+            while (ActualWidth > mainContainer.ActualWidth + 2)
+            {
+                if (selectedGroup >= SelectedTab.Items.Count)
+                {
+                    // we've gone through all the groups, including getting them all down to an icon
+                    if (fullUncompacting) break;
+                    else
+                    {
+                        // start again, but this time we'll actually compact groups down to just an icon
+                        fullUncompacting = true;
+                        selectedGroup = 0;
+                    }
+                }
+
+                if (fullUncompacting)
+                {
+                    // don't bother compacting groups with just 1 (or no) items down to an icon - this just makes for extra clicks for the user
+                    groups[selectedGroup].CompactSize = GroupSizeMode.Standard;
+                }
+                else
+                {
+                    groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
+                }
+
+                // forcing an UpdateLayout run may cause a small performance hit (especially if looping over multiple groups in a row), but at least it works - maybe there's a better way?
+                groups[selectedGroup].InvalidateMeasure();
+                groups[selectedGroup].UpdateLayout();
+
+                if (ActualWidth < mainContainer.ActualWidth + 2)
+                {
+                    // we've gone too far! go back!
+                    if (fullUncompacting)
+                    {
+                        groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
+                    }
+                    else
+                    {
+                        if (groups[selectedGroup].Items.Count < 2)
+                        {
+                            break;
+                        }
+                        groups[selectedGroup].CompactSize = GroupSizeMode.IconOnly;
+                    }
+                    break;
+                }
+
+                selectedGroup++;
+            }
+        }
+
+        private void OnMainScrollCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (mainScrollContainer == null) return;
+
+            double offset = mainScrollContainer.HorizontalOffset;
+
+            if (e.Parameter is TabScrollCommandAction a)
+            {
+                switch (a)
+                {
+                    case TabScrollCommandAction.Left:
+                        mainScrollContainer.ScrollToHorizontalOffset(Math.Max(offset - 40, 0));
+                        break;
+                    case TabScrollCommandAction.Right:
+                        mainScrollContainer.ScrollToHorizontalOffset(Math.Min(offset + 40, mainScrollContainer.ScrollableWidth));
+                        break;
+                    case TabScrollCommandAction.Home:
+                        mainScrollContainer.ScrollToHorizontalOffset(0);
+                        break;
+                    case TabScrollCommandAction.End:
+                        mainScrollContainer.ScrollToHorizontalOffset(mainScrollContainer.ScrollableWidth);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void mc_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+            {
+                // update resizing algorithm
+                // and also see if we can hide the scroll buttons
+                //CheckMainScrolling();
+            }
+        }
+
+        private void mv_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            // update scroll buttons as needed (if they are visible)
+            if (e.ViewportWidthChange > 0)
+            {
+                CheckMainScrolling();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Tab Bar Elements / Properties
+
+        #region ShowTabsOnBottom
 
         //#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         //        public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(Ribbon),
@@ -499,13 +766,14 @@ namespace SolidShineUi.Ribbon
         //        {
         //            ShowTabsOnBottomChanged?.Invoke(this, e);
         //        }
-        //        #endregion
+        #endregion
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        #region Main Properties
+
+        /// <summary>The backing dependency property for <see cref="FileMenu"/>. See the related property for details.</summary>
         public static readonly DependencyProperty FileMenuProperty = DependencyProperty.Register(
             "FileMenu", typeof(UIElement), typeof(Ribbon),
             new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the UI element to place in the top-left of the control, where the File menu usually is. Recommended to use a <see cref="RibbonFileMenu"/>.
@@ -522,11 +790,10 @@ namespace SolidShineUi.Ribbon
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="TopRightElement"/>. See the related property for details.</summary>
         public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
             "TopRightElement", typeof(UIElement), typeof(Ribbon),
             new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the UI element to place in the top-right of the control.
@@ -543,13 +810,158 @@ namespace SolidShineUi.Ribbon
             }
         }
 
+        /// <summary>
+        /// Get or set if only the tab bar should be visible. In this state, clicking on a tab will display its groups temporarily until a command is selected.
+        /// </summary>
         public bool ShowOnlyTabs { get => (bool)GetValue(ShowOnlyTabsProperty); set => SetValue(ShowOnlyTabsProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="ShowOnlyTabs"/>. See the related property for details.</summary>
         public static DependencyProperty ShowOnlyTabsProperty
             = DependencyProperty.Register("ShowOnlyTabs", typeof(bool), typeof(Ribbon),
             new FrameworkPropertyMetadata(false));
 
         #endregion
+
+        #region Setup RibbonTabDisplayItem / Tdi Event Handlers
+
+        /// <summary>
+        /// Set up a new RibbonTabDisplayItem that was added to this Ribbon.
+        /// This will set up the necessary event handlers and other properties to allow the RibbonTabDisplayItem to interact with the Ribbon.
+        /// </summary>
+        /// <param name="tdi">The RibbonTabDisplayItem to set up.</param>
+        internal protected void SetupTabDisplay(RibbonTabDisplayItem tdi)
+        {
+            //tdi.Click += tdi_Click;
+            tdi.RightClick += tdi_RightClick;
+            tdi.RequestSelect += tdi_RequestSelect;
+            tdi.TabItemDrop += tdi_TabItemDrop;
+
+            CheckScrolling();
+        }
+
+#if NETCOREAPP
+        private void tdi_RequestSelect(object? sender, EventArgs e)
+#else
+        private void tdi_RequestSelect(object sender, EventArgs e)
+#endif
+        {
+            if (sender is RibbonTabDisplayItem tdi)
+            {
+                SelectTab(tdi.TabItem);
+            }
+        }
+
+#if NETCOREAPP
+        private void tdi_RightClick(object? sender, EventArgs e)
+#else
+        private void tdi_RightClick(object sender, EventArgs e)
+#endif
+        {
+            if (sender is RibbonTabDisplayItem tdi)
+            {
+                // TODO: add on Ribbon context menu
+
+                //if (tdi.TabItem.TabContextMenu != null)
+                //{
+                //    ContextMenu cm = tdi.TabItem.TabContextMenu;
+                //    cm.ColorScheme = ColorScheme;
+                //    cm.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+                //    cm.IsOpen = true;
+                //}
+            }
+        }
+
+        #endregion
+
+        #region Tab Bar Scrolling
+
+        #region ScrollButtons
+
+        private static readonly DependencyPropertyKey TabScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("TabScrollButtonsVisible", typeof(bool), typeof(Ribbon),
+            new PropertyMetadata(false));
+
+        /// <summary>The backing dependency property for <see cref="TabScrollButtonsVisible"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TabScrollButtonsVisibleProperty = TabScrollButtonsVisiblePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get if the scroll buttons are currently visible in the tab bar.
+        /// </summary>
+        public bool TabScrollButtonsVisible
+        {
+            get { return (bool)GetValue(TabScrollButtonsVisibleProperty); }
+            private set { SetValue(TabScrollButtonsVisiblePropertyKey, value); }
+        }
+        #endregion
+
+        void CheckScrolling()
+        {
+            if (tabScrollContainer == null || tabContainer == null) return;
+
+            if (tabScrollContainer.ViewportWidth == 0)
+            {
+                return;
+            }
+
+            if (tabContainer.ActualWidth > tabScrollContainer.ViewportWidth)
+            {
+                TabScrollButtonsVisible = true;
+            }
+            else
+            {
+                TabScrollButtonsVisible = false;
+            }
+        }
+
+        private void OnScrollCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (tabScrollContainer == null) return;
+
+            double offset = tabScrollContainer.HorizontalOffset;
+
+            if (e.Parameter is TabScrollCommandAction a)
+            {
+                switch (a)
+                {
+                    case TabScrollCommandAction.Left:
+                        tabScrollContainer.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
+                        break;
+                    case TabScrollCommandAction.Right:
+                        tabScrollContainer.ScrollToHorizontalOffset(Math.Min(offset + 20, tabScrollContainer.ScrollableWidth));
+                        break;
+                    case TabScrollCommandAction.Home:
+                        tabScrollContainer.ScrollToHorizontalOffset(0);
+                        break;
+                    case TabScrollCommandAction.End:
+                        tabScrollContainer.ScrollToHorizontalOffset(tabScrollContainer.ScrollableWidth);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void tabBar_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // note that this both handles the TabControl changes and the internal ItemControl changes
+            if (e.WidthChanged)
+            {
+                CheckScrolling();
+            }
+        }
+
+        private void sv_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.ViewportWidthChange > 0)
+            {
+                CheckScrolling();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Reordering
 
         /// <summary>
         /// Get or set if tabs, groups, and controls are able to be re-arranged on this Ribbon. (Note that for 2.0, this will not be supported, and will be iterated upon further in later releases.)
@@ -560,6 +972,84 @@ namespace SolidShineUi.Ribbon
         private static DependencyProperty AllowControlReorderingProperty
             = DependencyProperty.Register("AllowControlReordering", typeof(bool), typeof(Ribbon),
             new FrameworkPropertyMetadata(false));
+
+        #region Tdi Drag & Drop
+
+        private void tdi_TabItemDrop(object sender, RibbonTabItemDropEventArgs e)
+        {
+            if (e.DroppedTabItem == e.SourceTabItem) return;
+            if (!Items.Contains(e.DroppedTabItem)) return;
+
+            _internalAction = true;
+#if NETCOREAPP
+            RibbonTab? selItem = SelectedTab;
+#else
+            RibbonTab selItem = SelectedTab;
+#endif
+            if (e.DroppedTabItem == selItem)
+            {
+                DeselectAllTabs();
+            }
+
+            Items.Remove(e.DroppedTabItem);
+            //if (Items.Contains(e.DroppedTabItem))
+            //{
+            //    Items.Remove(e.DroppedTabItem);
+            //}
+            //else
+            //{
+            //    // get source tab control and remove it from there before adding here
+            //}
+
+            int newIndex = e.PlaceBefore ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
+
+            if (newIndex == -1)
+            {
+                Items.Add(e.DroppedTabItem);
+            }
+            else
+            {
+                Items.Insert(newIndex, e.DroppedTabItem);
+            }
+
+            if (selItem != null)
+            {
+                SelectTab(selItem);
+            }
+
+            // fix to make sure the correct tab has the IsSelected state
+            //if (ic != null)
+            //{
+            //    for (int i = 0; i < ic.Items.Count; i++)
+            //    {
+            //        // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
+            //        // from https://stackoverflow.com/a/1876534/2987285
+            //        ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
+            //        c.ApplyTemplate();
+            //        //#if NETCOREAPP
+            //        //#else
+            //        //                    TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
+            //        //#endif
+            //        if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+            //        {
+            //            if (tb.TabItem != null && tb.TabItem == selItem)
+            //            {
+            //                tb.IsSelected = true;
+            //            }
+            //            else
+            //            {
+            //                tb.IsSelected = false;
+            //            }
+            //        }
+            //    }
+            //}
+
+            _internalAction = false;
+        }
+
+        #endregion
+
+        #endregion
 
         #region Brushes
 
@@ -697,414 +1187,7 @@ namespace SolidShineUi.Ribbon
         }
         #endregion
 
-        #region Setup RibbonTabDisplayItem / Tdi Event Handlers
 
-        /// <summary>
-        /// Set up a new RibbonTabDisplayItem that was added to this Ribbon.
-        /// This will set up the necessary event handlers and other properties to allow the RibbonTabDisplayItem to interact with the Ribbon.
-        /// </summary>
-        /// <param name="tdi">The RibbonTabDisplayItem to set up.</param>
-        internal protected void SetupTabDisplay(RibbonTabDisplayItem tdi)
-        {
-            tdi.Click += tdi_Click;
-            tdi.RightClick += tdi_RightClick;
-            tdi.RequestSelect += tdi_RequestSelect;
-            tdi.TabItemDrop += tdi_TabItemDrop;
-
-            //CheckScrolling();
-        }
-
-#if NETCOREAPP
-        private void tdi_RequestSelect(object? sender, EventArgs e)
-#else
-        private void tdi_RequestSelect(object sender, EventArgs e)
-#endif
-        {
-            if (sender is RibbonTabDisplayItem tdi)
-            {
-                SelectTab(tdi.TabItem);
-            }
-        }
-
-#if NETCOREAPP
-        private void tdi_RightClick(object? sender, EventArgs e)
-#else
-        private void tdi_RightClick(object sender, EventArgs e)
-#endif
-        {
-            if (sender is RibbonTabDisplayItem tdi)
-            {
-                // TODO: add on Ribbon context menu
-
-                //if (tdi.TabItem.TabContextMenu != null)
-                //{
-                //    ContextMenu cm = tdi.TabItem.TabContextMenu;
-                //    cm.ColorScheme = ColorScheme;
-                //    cm.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
-                //    cm.IsOpen = true;
-                //}
-            }
-        }
-
-        private void tdi_TabItemDrop(object sender, RibbonTabItemDropEventArgs e)
-        {
-            if (e.DroppedTabItem == e.SourceTabItem) return;
-            if (!Items.Contains(e.DroppedTabItem)) return;
-
-            _internalAction = true;
-#if NETCOREAPP
-            RibbonTab? selItem = SelectedTab;
-#else
-            RibbonTab selItem = SelectedTab;
-#endif
-            if (e.DroppedTabItem == selItem)
-            {
-                DeselectAllTabs();
-            }
-
-            Items.Remove(e.DroppedTabItem);
-            //if (Items.Contains(e.DroppedTabItem))
-            //{
-            //    Items.Remove(e.DroppedTabItem);
-            //}
-            //else
-            //{
-            //    // get source tab control and remove it from there before adding here
-            //}
-
-            int newIndex = e.PlaceBefore ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
-
-            if (newIndex == -1)
-            {
-                Items.Add(e.DroppedTabItem);
-            }
-            else
-            {
-                Items.Insert(newIndex, e.DroppedTabItem);
-            }
-
-            if (selItem != null)
-            {
-                SelectTab(selItem);
-            }
-
-            // fix to make sure the correct tab has the IsSelected state
-            //if (ic != null)
-            //{
-            //    for (int i = 0; i < ic.Items.Count; i++)
-            //    {
-            //        // I really dislike this roundabout way that I have to get the child items of an ItemsControl, but I guess this is how it is
-            //        // from https://stackoverflow.com/a/1876534/2987285
-            //        ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
-            //        c.ApplyTemplate();
-            //        //#if NETCOREAPP
-            //        //#else
-            //        //                    TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-            //        //#endif
-            //        if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
-            //        {
-            //            if (tb.TabItem != null && tb.TabItem == selItem)
-            //            {
-            //                tb.IsSelected = true;
-            //            }
-            //            else
-            //            {
-            //                tb.IsSelected = false;
-            //            }
-            //        }
-            //    }
-            //}
-
-            _internalAction = false;
-        }
-
-#if NETCOREAPP
-        private void tdi_Click(object? sender, EventArgs e)
-#else
-        private void tdi_Click(object sender, EventArgs e)
-#endif
-        {
-            //if (sender != null && sender is RibbonTabDisplayItem tdi)
-            //{
-            //    if (tdi.TabItem != null && tdi.CanSelect)
-            //    {
-            //        Items.Select(tdi.TabItem);
-            //    }
-            //}
-        }
-
-
-        #endregion
-
-        #region Tab Bar Scrolling
-
-        #region ScrollButtons
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
-        private static readonly DependencyPropertyKey TabScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("TabScrollButtonsVisible", typeof(bool), typeof(Ribbon),
-            new PropertyMetadata(false));
-
-        public static readonly DependencyProperty TabScrollButtonsVisibleProperty = TabScrollButtonsVisiblePropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get if the scroll buttons are currently visible in the tab bar.
-        /// </summary>
-        public bool TabScrollButtonsVisible
-        {
-            get { return (bool)GetValue(TabScrollButtonsVisibleProperty); }
-            private set { SetValue(TabScrollButtonsVisiblePropertyKey, value); }
-        }
-        #endregion
-
-        ///// <summary>
-        ///// A WPF command that when executed, will scroll the tab control's tab bar to the left or right.
-        ///// </summary>
-        //public static readonly RoutedCommand TabBarScrollCommand = new RoutedCommand("TabBarScrollCommand", typeof(Ribbon));
-
-        void CheckScrolling()
-        {
-            if (tabScrollContainer == null || tabContainer == null) return;
-
-            if (tabScrollContainer.ViewportWidth == 0)
-            {
-                return;
-            }
-
-            if (tabContainer.ActualWidth > tabScrollContainer.ViewportWidth)
-            {
-                TabScrollButtonsVisible = true;
-            }
-            else
-            {
-                TabScrollButtonsVisible = false;
-            }
-        }
-
-        private void OnScrollCommand(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (tabScrollContainer == null) return;
-
-            double offset = tabScrollContainer.HorizontalOffset;
-
-            if (e.Parameter is TabScrollCommandAction a)
-            {
-                switch (a)
-                {
-                    case TabScrollCommandAction.Left:
-                        tabScrollContainer.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
-                        break;
-                    case TabScrollCommandAction.Right:
-                        tabScrollContainer.ScrollToHorizontalOffset(Math.Min(offset + 20, tabScrollContainer.ScrollableWidth));
-                        break;
-                    case TabScrollCommandAction.Home:
-                        tabScrollContainer.ScrollToHorizontalOffset(0);
-                        break;
-                    case TabScrollCommandAction.End:
-                        tabScrollContainer.ScrollToHorizontalOffset(tabScrollContainer.ScrollableWidth);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        private void tabBar_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            // note that this both handles the TabControl changes and the internal ItemControl changes
-            if (e.WidthChanged)
-            {
-                CheckScrolling();
-            }
-        }
-
-        private void sv_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (e.ViewportWidthChange > 0)
-            {
-                CheckScrolling();
-            }
-        }
-
-        #endregion
-
-        #region Main Bar Scrolling
-
-        private void Ribbon_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (mainContainer == null) return;
-
-            if (e.WidthChanged)
-            {
-                if (e.NewSize.Width < e.PreviousSize.Width)
-                {
-                    if (ActualWidth < mainContainer.ActualWidth + 2)
-                    {
-                        CompactGroups();
-                    }
-                }
-                else
-                {
-                    if (ActualWidth > mainContainer.ActualWidth + 2)
-                    {
-                        UncompactGroups();
-                    }
-                }
-            }
-        }
-
-        void CheckGroupSizes()
-        {
-            if (mainContainer == null) return;
-            if (ActualWidth < mainContainer.ActualWidth + 2)
-            {
-                CompactGroups();
-            }
-            else
-            {
-                UncompactGroups();
-            }
-        }
-
-        /// <summary>
-        /// Force the Ribbon
-        /// </summary>
-        public void MeasureAndCompactGroups()
-        {
-            CheckGroupSizes();
-        }
-
-        void CompactGroups()
-        {
-            // some logic at first
-            if (mainContainer == null) return;
-            if (SelectedTab == null) return;
-            if (SelectedTab.FitContentsToWidth == false) return;
-            if (SelectedTab.Items.Count == 0) return;
-
-            // get the list of groups, but sorted with the largest CompactOrder first
-            var groups = SelectedTab.Items.OrderByDescending(g => g.CompactOrder).ToList();
-            int selectedGroup = 0;
-            bool iconCompacting = false;
-            while (ActualWidth < mainContainer.ActualWidth + 2)
-            {
-                if (selectedGroup >= SelectedTab.Items.Count)
-                {
-                    // we've gone through all the groups, including getting them all down to an icon
-                    if (iconCompacting) break;
-                    else
-                    {
-                        // start again, but this time we'll actually compact groups down to just an icon
-                        iconCompacting = true;
-                        selectedGroup = 0;
-                    }
-                }
-
-                if (iconCompacting)
-                {
-                    // don't bother compacting groups with just 1 (or no) items down to an icon - this just makes for extra clicks for the user
-                    if (groups[selectedGroup].Items.Count < 2)
-                    {
-                        selectedGroup++;
-                        continue;
-                    }
-                    groups[selectedGroup].CompactSize = GroupSizeMode.IconOnly;
-                }
-                else
-                {
-                    groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
-                }
-
-                // forcing an UpdateLayout run may cause a small performance hit (especially if looping over multiple groups in a row), but at least it works - maybe there's a better way?
-                groups[selectedGroup].InvalidateMeasure();
-                groups[selectedGroup].UpdateLayout();
-
-                selectedGroup++;
-                // value put into breakpoint (set to log as message):
-                // changed {groups[selectedGroup].Title} to {groups[selectedGroup].CompactSize}, now {(ActualWidth < mainContainer.ActualWidth + 2) ? "this is still not good" : "now we are good" }
-            }
-        }
-
-        void UncompactGroups()
-        {
-            // some logic at first
-            if (mainContainer == null) return;
-            if (SelectedTab == null) return;
-            if (SelectedTab.FitContentsToWidth == false) return;
-            if (SelectedTab.Items.Count == 0) return;
-
-            // get the list of groups, but sorted with the smallest CompactOrder first
-            var groups = SelectedTab.Items.OrderBy(g => g.CompactOrder).ToList();
-            int selectedGroup = 0;
-            bool fullUncompacting = false;
-
-            while (ActualWidth > mainContainer.ActualWidth + 2)
-            {
-                if (selectedGroup >= SelectedTab.Items.Count)
-                {
-                    // we've gone through all the groups, including getting them all down to an icon
-                    if (fullUncompacting) break;
-                    else
-                    {
-                        // start again, but this time we'll actually compact groups down to just an icon
-                        fullUncompacting = true;
-                        selectedGroup = 0;
-                    }
-                }
-
-                if (fullUncompacting)
-                {
-                    // don't bother compacting groups with just 1 (or no) items down to an icon - this just makes for extra clicks for the user
-                    groups[selectedGroup].CompactSize = GroupSizeMode.Standard;
-                }
-                else
-                {
-                    groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
-                }
-
-                // forcing an UpdateLayout run may cause a small performance hit (especially if looping over multiple groups in a row), but at least it works - maybe there's a better way?
-                groups[selectedGroup].InvalidateMeasure();
-                groups[selectedGroup].UpdateLayout();
-
-                if (ActualWidth < mainContainer.ActualWidth + 2)
-                {
-                    // we've gone too far! go back!
-                    if (fullUncompacting)
-                    {
-                        groups[selectedGroup].CompactSize = GroupSizeMode.Compact;
-                    }
-                    else
-                    {
-                        if (groups[selectedGroup].Items.Count < 2)
-                        {
-                            break;
-                        }
-                        groups[selectedGroup].CompactSize = GroupSizeMode.IconOnly;
-                    }
-                    break;
-                }
-
-                selectedGroup++;
-            }
-        }
-
-
-        private void mc_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (e.WidthChanged)
-            {
-                // update resizing algorithm
-                // and also see if we can hide the scroll buttons
-            }
-        }
-
-        private void mv_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            // update scroll buttons as needed (if they are visible)
-        }
-
-        #endregion
 
     }
 }
