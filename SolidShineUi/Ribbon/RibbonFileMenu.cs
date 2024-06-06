@@ -79,7 +79,7 @@ namespace SolidShineUi.Ribbon
         [Category("Common")]
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="Title"/>. See the related property for details.</summary>
         public static DependencyProperty TitleProperty
             = DependencyProperty.Register("Title", typeof(string), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata("File"));
@@ -89,7 +89,6 @@ namespace SolidShineUi.Ribbon
             new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
 
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of items in this File menu. This Items property can be used to add and remove items.

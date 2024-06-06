@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Controls.Ribbon;
 using System.Windows.Markup;
 using System.Windows.Media;
 
@@ -162,8 +161,8 @@ namespace SolidShineUi.Ribbon
                 }
             }
 
-            if (btnMain != null) { btnMain.ColorScheme = cs; }
-            if (btnMenu != null) { btnMenu.ColorScheme = cs; }
+            //if (btnMain != null) { btnMain.ColorScheme = cs; }
+            //if (btnMenu != null) { btnMenu.ColorScheme = cs; }
 
             runApply = true;
         }
