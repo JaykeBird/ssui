@@ -509,6 +509,14 @@ namespace SolidShineUi.Ribbon
             OnClick();
         }
 
+        public bool TransparentBack { get => (bool)GetValue(TransparentBackProperty); set => SetValue(TransparentBackProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TransparentBack"/>. See the related property for details.</summary>
+        public static DependencyProperty TransparentBackProperty
+            = DependencyProperty.Register(nameof(TransparentBack), typeof(bool), typeof(RibbonSplitButton),
+            new FrameworkPropertyMetadata(true));
+
+
         #endregion
 
         #region Menu

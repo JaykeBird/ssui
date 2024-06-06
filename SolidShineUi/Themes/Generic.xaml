@@ -2769,17 +2769,18 @@
                             <RowDefinition Height="34" x:Name="rowLargeMenu" />
                         </Grid.RowDefinitions>
                         <flat:FlatButton x:Name="PART_Main"
-                                         Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}"    
-                                         HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"  
-                                         BorderHighlightBrush="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         ClickBrush="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         SelectedBrush="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderSelectedBrush="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         DisabledBrush="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderDisabledBrush="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderThickness="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderSelectionThickness="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
+                                         TransparentBack="{Binding Path=TransparentBack, RelativeSource={RelativeSource TemplatedParent}}"
+                                         Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"    
+                                         HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"  
+                                         BorderHighlightBrush="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         ClickBrush="{Binding Path=ClickBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         SelectedBrush="{Binding Path=SelectedBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderSelectedBrush="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         DisabledBrush="{Binding Path=DisabledBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderDisabledBrush="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderThickness="{Binding Path=BorderThickness, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderSelectionThickness="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource TemplatedParent}}" >
                             <Grid Margin="{TemplateBinding Padding}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="16" x:Name="colImage" />
@@ -2791,17 +2792,18 @@
                             </Grid>
                         </flat:FlatButton>
                         <flat:FlatButton Margin="0" Padding="0" x:Name="PART_Menu"
-                                         Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}"    
-                                         HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"  
-                                         BorderHighlightBrush="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         ClickBrush="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         SelectedBrush="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderSelectedBrush="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         DisabledBrush="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderDisabledBrush="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderThickness="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         BorderSelectionThickness="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
+                                         TransparentBack="{Binding Path=TransparentBack, RelativeSource={RelativeSource TemplatedParent}}"
+                                         Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"    
+                                         HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"  
+                                         BorderHighlightBrush="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         ClickBrush="{Binding Path=ClickBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         SelectedBrush="{Binding Path=SelectedBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderSelectedBrush="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         DisabledBrush="{Binding Path=DisabledBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderDisabledBrush="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderThickness="{Binding Path=BorderThickness, RelativeSource={RelativeSource TemplatedParent}}"
+                                         BorderSelectionThickness="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource TemplatedParent}}" >
                             <StackPanel>
                                 <Path x:Name="Part_SmallArrow" Width="8" Height="6" Data="M0,0 8,0 4,6 Z" Fill="{TemplateBinding Foreground}" 
                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
