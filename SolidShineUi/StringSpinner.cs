@@ -134,7 +134,7 @@ namespace SolidShineUi
             UpdateValue(e);
         }
 
-#endregion
+        #endregion
 
         /// <inheritdoc/>
         protected override void DoStepDown()

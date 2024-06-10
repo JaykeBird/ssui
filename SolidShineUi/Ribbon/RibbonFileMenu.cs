@@ -88,6 +88,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
 
+        /// <summary>The backing dependency property for <see cref="Items"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         /// <summary>

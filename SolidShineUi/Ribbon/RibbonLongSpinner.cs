@@ -12,18 +12,18 @@ namespace SolidShineUi.Ribbon
 {
 
     /// <summary>
-    /// A <see cref="IntegerSpinner"/> to display in a <see cref="RibbonGroup"/>.
+    /// A <see cref="LongSpinner"/> to display in a <see cref="RibbonGroup"/>.
     /// </summary>
-    public class RibbonIntegerSpinner : RibbonSpinnerBase
+    public class RibbonLongSpinner : RibbonSpinnerBase
     {
-        private IntegerSpinner baseSpinner;
+        private LongSpinner baseSpinner;
 
         /// <summary>
-        /// Create a RibbonIntegerSpinner.
+        /// Create a RibbonLongSpinner.
         /// </summary>
-        public RibbonIntegerSpinner()
+        public RibbonLongSpinner()
         {
-            baseSpinner = new IntegerSpinner();
+            baseSpinner = new LongSpinner();
             Content = baseSpinner;
             BaseSpinner = baseSpinner;
 
@@ -59,7 +59,7 @@ namespace SolidShineUi.Ribbon
             SetBinding(BorderDisabledBrushProperty,
                 new Binding() { Source = baseSpinner, Mode = BindingMode.TwoWay, Path = new PropertyPath(nameof(BorderDisabledBrush)) });
 
-            // IntegerSpinner
+            // LongSpinner
             SetBinding(ValueProperty,
                 new Binding() { Source = baseSpinner, Mode = BindingMode.TwoWay, Path = new PropertyPath(nameof(Value)) });
             SetBinding(MinValueProperty,
@@ -91,14 +91,14 @@ namespace SolidShineUi.Ribbon
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(int), typeof(RibbonIntegerSpinner),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            "Value", typeof(long), typeof(RibbonLongSpinner),
+            new FrameworkPropertyMetadata(0L, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <inheritdoc/>
         [Category("Common")]
-        public int Value
+        public long Value
         {
-            get => (int)GetValue(ValueProperty);
+            get => (long)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
 
@@ -110,13 +110,13 @@ namespace SolidShineUi.Ribbon
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(int), typeof(RibbonIntegerSpinner), new PropertyMetadata(1));
+            "Step", typeof(long), typeof(RibbonLongSpinner), new PropertyMetadata(1L));
 
         /// <inheritdoc/>
         [Category("Common")]
-        public int Step
+        public long Step
         {
-            get => (int)GetValue(StepProperty);
+            get => (long)GetValue(StepProperty);
             set => SetValue(StepProperty, value);
         }
 
@@ -128,14 +128,14 @@ namespace SolidShineUi.Ribbon
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(int), typeof(RibbonIntegerSpinner),
-            new PropertyMetadata(int.MinValue));
+            "MinValue", typeof(long), typeof(RibbonLongSpinner),
+            new PropertyMetadata(long.MinValue));
 
         ///<inheritdoc/>
         [Category("Common")]
-        public int MinValue
+        public long MinValue
         {
-            get { return (int)GetValue(MinValueProperty); }
+            get { return (long)GetValue(MinValueProperty); }
             set
             {
                 if (value > MaxValue) { MaxValue = value; }
@@ -151,14 +151,14 @@ namespace SolidShineUi.Ribbon
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(int), typeof(RibbonIntegerSpinner),
-            new PropertyMetadata(int.MaxValue));
+            "MaxValue", typeof(long), typeof(RibbonLongSpinner),
+            new PropertyMetadata(long.MaxValue));
 
         ///<inheritdoc/>
         [Category("Common")]
-        public int MaxValue
+        public long MaxValue
         {
-            get { return (int)GetValue(MaxValueProperty); }
+            get { return (long)GetValue(MaxValueProperty); }
             set
             {
                 if (value < MinValue) { value = MinValue; }
@@ -175,14 +175,14 @@ namespace SolidShineUi.Ribbon
         /// The backing dependency property object for <see cref="DisplayAsHex"/>. Please see the related property for details.
         /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
-            "DisplayAsHex", typeof(bool), typeof(RibbonIntegerSpinner),
+            "DisplayAsHex", typeof(bool), typeof(RibbonLongSpinner),
             new PropertyMetadata(false));
 
         /// <summary>
         /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
         /// </summary>
         public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
-            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(RibbonIntegerSpinner));
+            "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(RibbonLongSpinner));
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.
@@ -229,16 +229,16 @@ namespace SolidShineUi.Ribbon
 
         /// <summary>The backing dependency property for <see cref="SpinnerWidth"/>. See the related property for details.</summary>
         public static DependencyProperty SpinnerWidthProperty
-            = DependencyProperty.Register(nameof(SpinnerWidth), typeof(double), typeof(RibbonIntegerSpinner),
+            = DependencyProperty.Register(nameof(SpinnerWidth), typeof(double), typeof(RibbonLongSpinner),
             new FrameworkPropertyMetadata(140));
 
         /// <summary>
         /// Get the base spinner object that is contained in this control.
         /// </summary>
-        public IntegerSpinner BaseSpinner { get => (IntegerSpinner)GetValue(BaseSpinnerProperty); private set => SetValue(BaseSpinnerPropertyKey, value); }
+        public LongSpinner BaseSpinner { get => (LongSpinner)GetValue(BaseSpinnerProperty); private set => SetValue(BaseSpinnerPropertyKey, value); }
 
         private static readonly DependencyPropertyKey BaseSpinnerPropertyKey
-            = DependencyProperty.RegisterReadOnly(nameof(BaseSpinner), typeof(IntegerSpinner), typeof(RibbonIntegerSpinner), new FrameworkPropertyMetadata());
+            = DependencyProperty.RegisterReadOnly(nameof(BaseSpinner), typeof(LongSpinner), typeof(RibbonLongSpinner), new FrameworkPropertyMetadata());
 
         /// <summary>The backing dependency property for <see cref="BaseSpinner"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BaseSpinnerProperty = BaseSpinnerPropertyKey.DependencyProperty;

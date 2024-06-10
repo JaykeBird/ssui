@@ -11,6 +11,44 @@ namespace SolidShineUi.Ribbon.Utils
     /// </summary>
     public abstract class RibbonSpinnerBase : RibbonContentControl
     {
+        /// <summary>
+        /// Create a RibbonSpinnerBase.
+        /// </summary>
+        public RibbonSpinnerBase()
+        {
+            ColorSchemeChanged += RibbonSpinnerBase_ColorSchemeChanged;
+        }
+
+        private void RibbonSpinnerBase_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is ColorScheme cs)
+            {
+                ApplySpinnerColorScheme(cs);
+            }
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        private void ApplySpinnerColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            BorderBrush = cs.BorderColor.ToBrush();
+            DisabledBrush = cs.LightDisabledColor.ToBrush();
+            BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+
+            ButtonBackground = cs.IsHighContrast ? cs.BackgroundColor.ToBrush() : cs.SecondaryColor.ToBrush();
+
+            ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            HighlightBrush = cs.HighlightColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+        }
 
         #region Events
 
