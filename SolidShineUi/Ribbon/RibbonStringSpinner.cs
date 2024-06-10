@@ -112,7 +112,7 @@ namespace SolidShineUi.Ribbon
         /// <summary>The backing dependency property for <see cref="SpinnerWidth"/>. See the related property for details.</summary>
         public static DependencyProperty SpinnerWidthProperty
             = DependencyProperty.Register(nameof(SpinnerWidth), typeof(double), typeof(RibbonStringSpinner),
-            new FrameworkPropertyMetadata(140));
+            new FrameworkPropertyMetadata(140.0));
 
         /// <summary>
         /// Get the base spinner object that is contained in this control.

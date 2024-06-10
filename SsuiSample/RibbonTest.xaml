@@ -6,6 +6,7 @@
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
              xmlns:ribbon="clr-namespace:SolidShineUi.Ribbon;assembly=SolidShineUi"
              xmlns:local="clr-namespace:SsuiSample"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -107,6 +108,23 @@
                 <ribbon:RibbonGroup Title="Small Boys">
                     <ribbon:RibbonButton Title="Button 2" StandardSize="Small" CompactSize="Small"  />
                     <ribbon:RibbonCheckBox Title="Check me!" StandardSize="Small" CompactSize="Small" />
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Title="Spinners">
+                    <ribbon:RibbonIntegerSpinner Title="Button 2" StandardSize="Small" CompactSize="Small" Value="15" SpinnerWidth="80" />
+                    <ribbon:RibbonDoubleSpinner Title="Check me!" StandardSize="Small" CompactSize="Small" Value="3.14" SpinnerWidth="80" />
+                    <ribbon:RibbonStringSpinner Title="Strings!" StandardSize="Small" CompactSize="Small" SpinnerWidth="80" >
+                        <ribbon:RibbonStringSpinner.Items>
+                            <sys:String>Elephant</sys:String>
+                            <sys:String>Penguin</sys:String>
+                            <sys:String>Lion</sys:String>
+                            <sys:String>Zebra</sys:String>
+                            <sys:String>Antelope</sys:String>
+                            <sys:String>Otter</sys:String>
+                            <sys:String>Monkey</sys:String>
+                            <sys:String>Dolphin</sys:String>
+                            <sys:String>Iguana</sys:String>
+                        </ribbon:RibbonStringSpinner.Items>
+                    </ribbon:RibbonStringSpinner>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Title="View" >
