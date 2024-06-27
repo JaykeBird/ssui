@@ -8,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia;
 using Avalonia.Input;
+using Avalonia.Controls.Primitives;
 
 namespace SolidShineUi.Utils
 {
@@ -17,7 +18,7 @@ namespace SolidShineUi.Utils
     /// <remarks>
     /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
     /// </remarks>
-    public class SpinnerBase : Control
+    public class SpinnerBase : TemplatedControl
     {
 
         /// <summary>
