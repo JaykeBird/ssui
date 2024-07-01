@@ -23,7 +23,10 @@ namespace SolidShineUi
         /// </summary>
         public IntegerSpinner()
         {
-
+            AddPropertyChangedTrigger(ValueProperty);
+            AddPropertyChangedTrigger(MinValueProperty);
+            AddPropertyChangedTrigger(MaxValueProperty);
+            //AddPropertyChangedTrigger(StepProperty);
         }
 
         #region Property Change Listener
@@ -35,7 +38,21 @@ namespace SolidShineUi
 
             switch (change.Property.Name)
             {
-                // TODO: add in listeners for each of the properties
+                case nameof(Value):
+                    UpdateValue(change);
+                    break;
+                case nameof(MaxValue):
+                    ValidateMinMax();
+                    RaiseMaxValueChanged(this, change);
+                    break;
+                case nameof(MinValue):
+                    ValidateMinMax();
+                    RaiseMinValueChanged(this, change);
+                    break;
+                case nameof(DisplayAsHex):
+                    UpdateUI();
+                    DisplayAsHexChanged?.Invoke(this, change);
+                    break;
             }
         }
 
@@ -74,6 +91,7 @@ namespace SolidShineUi
         public static readonly StyledProperty<int> MaxValueProperty
             = AvaloniaProperty.Register<IntegerSpinner, int>(nameof(MaxValue), int.MaxValue);
 
+        #region DisplayAsHex
 
         /// <summary>
         /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while this is set to <c>true</c>, <c>AcceptExpressions</c> is ignored.
@@ -91,6 +109,13 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="DisplayAsHex"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> DisplayAsHexProperty
             = AvaloniaProperty.Register<IntegerSpinner, bool>(nameof(DisplayAsHex), false);
+
+        /// <summary>
+        /// Raised when the DisplayAsHex property is changed.
+        /// </summary>
+        public event EventHandler<AvaloniaPropertyChangedEventArgs>? DisplayAsHexChanged;
+
+        #endregion
 
         #endregion
 
@@ -196,6 +221,10 @@ namespace SolidShineUi
             if (txtValue == null)
             {
                 return;
+            }
+            else
+            {
+                txtValue.Text ??= "";
             }
 
             _updateBox = false;

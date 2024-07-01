@@ -34,7 +34,7 @@ namespace SolidShineUi.Utils
             keyDownTimer.Elapsed += (s, e) => advanceTimer.Start();
             advanceTimer.Elapsed += AdvanceTimer_Elapsed;
 
-            PropertyChanged += (x, y) => ValidateValue();
+            //SpinnerPropertyChanged += (x, y) => ValidateValue();
         }
 
         private void SpinnerBase_Loaded(object? sender, RoutedEventArgs e)
@@ -147,6 +147,16 @@ namespace SolidShineUi.Utils
         public event EventHandler<AvaloniaPropertyChangedEventArgs>? ValueChanged;
 
         /// <summary>
+        /// Raised when the MinValue property is changed.
+        /// </summary>
+        public event EventHandler<AvaloniaPropertyChangedEventArgs>? MinValueChanged;
+
+        /// <summary>
+        /// Raised when the MaxValue property is changed.
+        /// </summary>
+        public event EventHandler<AvaloniaPropertyChangedEventArgs>? MaxValueChanged;
+
+        /// <summary>
         /// Raised when the Value property is validated, and changed to a valid value if needed.
         /// </summary>
         public event EventHandler? ValueValidated;
@@ -168,6 +178,26 @@ namespace SolidShineUi.Utils
         protected void RaiseValueValidated(object sender)
         {
             ValueValidated?.Invoke(sender, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Raise the <see cref="ValueChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Extra event data to provide to any event listeners.</param>
+        protected void RaiseMinValueChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            MinValueChanged?.Invoke(sender, e);
+        }
+
+        /// <summary>
+        /// Raise the <see cref="ValueChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Extra event data to provide to any event listeners.</param>
+        protected void RaiseMaxValueChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            MaxValueChanged?.Invoke(sender, e);
         }
 
         /// <summary>
