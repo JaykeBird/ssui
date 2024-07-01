@@ -1,0 +1,18 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:flat="clr-namespace:SolidShineUi" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Add Resources Here -->
+    <Design.PreviewWith>
+        <Border Margin="10" >
+            <StackPanel>
+                
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+</ResourceDictionary>
