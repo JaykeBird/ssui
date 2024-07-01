@@ -9,15 +9,16 @@ using System;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed.
+    /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only integer values are allowed, 
+    /// but larger numbers than what <see cref="IntegerSpinner"/> supports are allowed here (since numbers are stored as a <c>long</c>).
     /// </summary>
-    public class IntegerSpinner : NumericSpinnerBase<int>
+    public class LongSpinner : NumericSpinnerBase<long>
     {
-        
+
         /// <summary>
-        /// Create an IntegerSpinner.
+        /// Create a LongSpinner.
         /// </summary>
-        public IntegerSpinner()
+        public LongSpinner()
         {
             AddPropertyChangedTrigger(ValueProperty);
             AddPropertyChangedTrigger(MinValueProperty);
@@ -57,35 +58,35 @@ namespace SolidShineUi
         #region Properties
 
         /// <inheritdoc/>
-        public override int Value { get => GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
+        public override long Value { get => GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
 
         /// <summary>The backing styled property for <see cref="Value"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<int> ValueProperty
-            = AvaloniaProperty.Register<IntegerSpinner, int>(nameof(Value), 0);
+        public static readonly StyledProperty<long> ValueProperty
+            = AvaloniaProperty.Register<LongSpinner, long>(nameof(Value), 0L);
 
 
         /// <inheritdoc/>
-        public override int Step { get => GetValue(StepProperty); set => SetValue(StepProperty, value); }
+        public override long Step { get => GetValue(StepProperty); set => SetValue(StepProperty, value); }
 
         /// <summary>The backing styled property for <see cref="Step"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<int> StepProperty
-            = AvaloniaProperty.Register<IntegerSpinner, int>(nameof(Step), 1);
+        public static readonly StyledProperty<long> StepProperty
+            = AvaloniaProperty.Register<LongSpinner, long>(nameof(Step), 1L);
 
 
         /// <inheritdoc/>
-        public override int MinValue { get => GetValue(MinValueProperty); set => SetValue(MinValueProperty, value); }
+        public override long MinValue { get => GetValue(MinValueProperty); set => SetValue(MinValueProperty, value); }
 
         /// <summary>The backing styled property for <see cref="MinValue"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<int> MinValueProperty
-            = AvaloniaProperty.Register<IntegerSpinner, int>(nameof(MinValue), int.MinValue);
+        public static readonly StyledProperty<long> MinValueProperty
+            = AvaloniaProperty.Register<LongSpinner, long>(nameof(MinValue), long.MinValue);
 
 
         /// <inheritdoc/>
-        public override int MaxValue { get => GetValue(MaxValueProperty); set => SetValue(MaxValueProperty, value); }
+        public override long MaxValue { get => GetValue(MaxValueProperty); set => SetValue(MaxValueProperty, value); }
 
         /// <summary>The backing styled property for <see cref="MaxValue"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<int> MaxValueProperty
-            = AvaloniaProperty.Register<IntegerSpinner, int>(nameof(MaxValue), int.MaxValue);
+        public static readonly StyledProperty<long> MaxValueProperty
+            = AvaloniaProperty.Register<LongSpinner, long>(nameof(MaxValue), long.MaxValue);
 
         #region DisplayAsHex
 
@@ -104,7 +105,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="DisplayAsHex"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> DisplayAsHexProperty
-            = AvaloniaProperty.Register<IntegerSpinner, bool>(nameof(DisplayAsHex), false);
+            = AvaloniaProperty.Register<LongSpinner, bool>(nameof(DisplayAsHex), false);
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.
@@ -227,14 +228,14 @@ namespace SolidShineUi
             _updateBox = false;
             if (DisplayAsHex)
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out int newVal))
+                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out long newVal))
                 {
                     Value = newVal;
                 }
             }
             else
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out int newVal))
+                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out long newVal))
                 {
                     Value = newVal;
                 }
