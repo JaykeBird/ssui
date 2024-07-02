@@ -229,7 +229,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Raise the <see cref="ValueChanged"/> event.
+        /// Raise the <see cref="MinValueChanged"/> event.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">Extra event data to provide to any event listeners.</param>
@@ -239,7 +239,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Raise the <see cref="ValueChanged"/> event.
+        /// Raise the <see cref="MaxValueChanged"/> event.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">Extra event data to provide to any event listeners.</param>
