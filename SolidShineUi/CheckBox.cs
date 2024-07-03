@@ -51,6 +51,7 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
 
             SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
+            SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
 
             KeyboardNavigation.SetIsTabStop(this, true);
 
@@ -422,147 +423,96 @@ namespace SolidShineUi
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used for the background of the checkbox's box. This is not set via a color scheme.
+        /// Get or set the brush used for the background of the checkbox's box. This value is not modified by the <see cref="ColorScheme"/> property.
         /// </summary>
-        [Category("Brushes")]
-        public Brush CheckBackground
-        {
-            get => (Brush)GetValue(CheckBackgroundProperty);
-            set => SetValue(CheckBackgroundProperty, value);
-        }
-        
+        public Brush CheckBackground { get => (Brush)GetValue(CheckBackgroundProperty); set => SetValue(CheckBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CheckBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty CheckBackgroundProperty
+            = DependencyProperty.Register(nameof(CheckBackground), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(ColorsHelper.White.ToBrush()));
+
         /// <summary>
         /// Get or set the brush used for the check mark in the checkbox's box.
         /// </summary>
-        [Category("Brushes")]
-        public Brush CheckForeground
-        {
-            get => (Brush)GetValue(CheckForegroundProperty);
-            set => SetValue(CheckForegroundProperty, value);
-        }
+        public Brush CheckForeground { get => (Brush)GetValue(CheckForegroundProperty); set => SetValue(CheckForegroundProperty, value); }
 
-        //[Category("Brushes")]
-        //public Brush ClickBrush
-        //{
-        //    get => (Brush)GetValue(ClickBrushProperty);
-        //    set => SetValue(ClickBrushProperty, value);
-        //}
+        /// <summary>The backing dependency property for <see cref="CheckForeground"/>. See the related property for details.</summary>
+        public static DependencyProperty CheckForegroundProperty
+            = DependencyProperty.Register(nameof(CheckForeground), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(ColorsHelper.Black.ToBrush()));
 
-        //[Category("Brushes")]
-        //public Brush SelectedBrush
-        //{
-        //    get => (Brush)GetValue(SelectedBrushProperty);
-        //    set => SetValue(SelectedBrushProperty, value);
-        //}
+        /// <summary>
+        /// Get or set the brush used for the check mark in the checkbox's box, while the mouse is over the control or it has keyboard focus. 
+        /// </summary>
+        public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
-        //[Category("Brushes")]
-        //public Brush HighlightBrush
-        //{
-        //    get => (Brush)GetValue(HighlightBrushProperty);
-        //    set => SetValue(HighlightBrushProperty, value);
-        //}
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty HighlightBrushProperty
+            = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
+
+
+        /// <summary>
+        /// Get or set the brush used for the background of the checkbox's box, while the mouse is over the control or it has keyboard focus.
+        /// </summary>
+        public Brush BackgroundHighlightBrush { get => (Brush)GetValue(BackgroundHighlightBrushProperty); set => SetValue(BackgroundHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BackgroundHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty BackgroundHighlightBrushProperty
+            = DependencyProperty.Register(nameof(BackgroundHighlightBrush), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(ColorsHelper.WhiteLightHighlight.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the background of the checkbox's box when it is disabled.
         /// </summary>
-        [Category("Brushes")]
-        public Brush BackgroundDisabledBrush
-        {
-            get => (Brush)GetValue(BackgroundDisabledBrushProperty);
-            set => SetValue(BackgroundDisabledBrushProperty, value);
-        }
+        public Brush BackgroundDisabledBrush { get => (Brush)GetValue(BackgroundDisabledBrushProperty); set => SetValue(BackgroundDisabledBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BackgroundDisabledBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty BackgroundDisabledBrushProperty
+            = DependencyProperty.Register(nameof(BackgroundDisabledBrush), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("c4d9d9d9").ToBrush()));
 
         /// <summary>
         /// Get or set the brush used for the border of the checkbox's box when it is disabled.
         /// </summary>
-        [Category("Brushes")]
-        public Brush BorderDisabledBrush
-        {
-            get => (Brush)GetValue(BorderDisabledBrushProperty);
-            set => SetValue(BorderDisabledBrushProperty, value);
-        }
+        public Brush BorderDisabledBrush { get => (Brush)GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty BorderDisabledBrushProperty
+            = DependencyProperty.Register(nameof(BorderDisabledBrush), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush used for the check mark when the control is disabled.
         /// </summary>
-        [Category("Brushes")]
-        public Brush CheckDisabledBrush
-        {
-            get => (Brush)GetValue(CheckDisabledBrushProperty);
-            set => SetValue(CheckDisabledBrushProperty, value);
-        }
+        public Brush CheckDisabledBrush { get => (Brush)GetValue(CheckDisabledBrushProperty); set => SetValue(CheckDisabledBrushProperty, value); }
 
-        /// <summary>
-        /// Get or set the brush used for the border of the checkbox's box.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
+        /// <summary>The backing dependency property for <see cref="CheckDisabledBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty CheckDisabledBrushProperty
+            = DependencyProperty.Register(nameof(CheckDisabledBrush), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush used for the border of the checkbox's box, while the mouse is over the control or it has keyboard focus.
         /// </summary>
-        [Category("Brushes")]
-        public Brush BorderHighlightBrush
-        {
-            get => (Brush)GetValue(BorderHighlightBrushProperty);
-            set => SetValue(BorderHighlightBrushProperty, value);
-        }
+        public Brush BorderHighlightBrush { get => (Brush)GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
 
-        //[Category("Brushes")]
-        //public Brush BorderSelectedBrush
-        //{
-        //    get => (Brush)GetValue(BorderSelectedBrushProperty);
-        //    set => SetValue(BorderSelectedBrushProperty, value);
-        //}
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty BorderHighlightBrushProperty
+            = DependencyProperty.Register(nameof(BorderHighlightBrush), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty CheckBackgroundProperty = DependencyProperty.Register(
-            "CheckBackground", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
-        public static readonly DependencyProperty CheckForegroundProperty = DependencyProperty.Register(
-            "CheckForeground", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
+        //public Brush BorderSelectedBrush { get => (Brush)GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
 
-        //public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-        //    "ClickBrush", typeof(Brush), typeof(CheckBox),
-        //    new PropertyMetadata(Colors.Gainsboro.ToBrush()));
+        ///// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        //public static DependencyProperty BorderSelectedBrushProperty
+        //    = DependencyProperty.Register(nameof(BorderSelectedBrush), typeof(Brush), typeof(CheckBox),
+        //    new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
 
-        //public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-        //    "SelectedBrush", typeof(Brush), typeof(CheckBox),
-        //    new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
-        //public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-        //    "HighlightBrush", typeof(Brush), typeof(CheckBox),
-        //    new PropertyMetadata(Colors.LightGray.ToBrush()));
 
-        public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
-            "BackgroundDisabledBrush", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
-
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
-
-        public static readonly DependencyProperty CheckDisabledBrushProperty = DependencyProperty.Register(
-            "CheckDisabledBrush", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
-
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
-
-        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
-
-        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
         #endregion
 
         #region Border
