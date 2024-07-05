@@ -410,27 +410,28 @@ namespace SolidShineUi
 
             if (cs.IsHighContrast)
             {
-                //Background = cs.BackgroundColor.ToBrush();
+                // TODO: change how check foreground is figured out based upon the color scheme
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
-                CheckForeground = cs.ForegroundColor.ToBrush();
+                CheckForeground = ColorsHelper.Black.ToBrush();
+                HighlightBrush = ColorsHelper.Black.ToBrush();
+                BackgroundHighlightBrush = cs.HighlightColor.ToBrush();
+                BorderHighlightBrush = cs.BorderColor.ToBrush();
             }
             else
             {
-                //Background = Colors.White.ToBrush();
                 BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
                 CheckForeground = Colors.Black.ToBrush();
+                HighlightBrush = ColorsHelper.DarkerGray.ToBrush();
+                BackgroundHighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
+                BorderHighlightBrush = cs.HighlightColor.ToBrush();
             }
 
-            //Background = cs.SecondaryColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();
-            //HighlightBrush = cs.SecondHighlightColor.ToBrush();
             BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
             BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
             CheckDisabledBrush = cs.DarkDisabledColor.ToBrush();
-            //SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-            BorderHighlightBrush = cs.HighlightColor.ToBrush();
-            //BorderSelectedBrush = cs.SelectionColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
+            BorderSelectedBrush = cs.BorderColor.ToBrush();
         }
         #endregion
 
@@ -517,13 +518,15 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(BorderHighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush used for the border of the checkbox's box, while <see cref="IsChecked"/> is set to true.
+        /// </summary>
+        public Brush BorderSelectedBrush { get => (Brush)GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
 
-        //public Brush BorderSelectedBrush { get => (Brush)GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
-
-        ///// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
-        //public static DependencyProperty BorderSelectedBrushProperty
-        //    = DependencyProperty.Register(nameof(BorderSelectedBrush), typeof(Brush), typeof(CheckBox),
-        //    new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty BorderSelectedBrushProperty
+            = DependencyProperty.Register(nameof(BorderSelectedBrush), typeof(Brush), typeof(CheckBox),
+            new FrameworkPropertyMetadata(ColorsHelper.Black.ToBrush()));
 
 
 
