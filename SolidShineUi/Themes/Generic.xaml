@@ -715,7 +715,7 @@
                                 </Style>
                             </Border.Style>
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" RecognizesAccessKey="True" >
                                     <ContentPresenter.Style>
                                         <Style TargetType="{x:Type ContentPresenter}" >
                                             <Setter Property="Opacity" Value="1.0" />
@@ -842,16 +842,11 @@
                                                 <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                             </Style>
                                         </StackPanel.Style>
-                                        <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"
                                                           Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
                                             <ContentPresenter.Style>
                                                 <Style TargetType="{x:Type ContentPresenter}" >
                                                     <Setter Property="Opacity" Value="1.0" />
-                                                    <!--<Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
-                                                <Setter Property="Opacity" Value="0.6"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>-->
                                                 </Style>
                                             </ContentPresenter.Style>
                                         </ContentPresenter>
@@ -1792,7 +1787,7 @@
                                     <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </flat:FlatButton.Style>
-                            <ContentPresenter ContentSource="Content" />
+                            <ContentPresenter ContentSource="Content" RecognizesAccessKey="True" />
                         </flat:FlatButton>
                         <flat:FlatButton x:Name="PART_Menu" Padding="0"
                                          BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
