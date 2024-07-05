@@ -579,6 +579,25 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Placement
+
+        /// <summary>
+        /// Get or set the location to place the checkbox box within this control, in relation to the <c>Content</c>.
+        /// By default, it is to the left (right in RTL systems).
+        /// </summary>
+        /// <remarks>
+        /// Setting this property to <see cref="PlacementDirection.Hidden"/> will hide the checkbox box.
+        /// </remarks>
+        public PlacementDirection BoxPlacement { get => (PlacementDirection)GetValue(BoxPlacementProperty); set => SetValue(BoxPlacementProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BoxPlacement"/>. See the related property for details.</summary>
+        public static DependencyProperty BoxPlacementProperty
+            = DependencyProperty.Register(nameof(BoxPlacement), typeof(PlacementDirection), typeof(CheckBox),
+            new FrameworkPropertyMetadata(PlacementDirection.Left));
+
+
+        #endregion
+
         #region Click Handling
 
         #region Routed Events

@@ -960,10 +960,11 @@
 
     <Style TargetType="{x:Type flat:CheckBox}">
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="Height" Value="24" />
+        <Setter Property="MinHeight" Value="22" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Padding" Value="3,0" />
         <Setter Property="Background" Value="#01000000" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:CheckBox}" >
@@ -972,6 +973,7 @@
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="DockPanel.Dock" Value="Left" />
+                                    <Setter Property="Visibility" Value="Visible" />
                                     <Setter Property="Background" Value="{Binding Path=CheckBackground, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -1022,11 +1024,13 @@
                                 </Rectangle>
                             </Grid>
                         </Border>
-                        <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="2">
+                        <ContentPresenter x:Name="cc" RecognizesAccessKey="True" >
                             <ContentPresenter.Style>
                                 <Style TargetType="{x:Type ContentPresenter}" >
+                                    <Setter Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                                    <Setter Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}" />
                                     <Setter Property="Opacity" Value="1.0" />
-                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Style>
                             </ContentPresenter.Style>
                         </ContentPresenter>
@@ -1038,20 +1042,6 @@
                             <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
-                        <!--<MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Self}, TargetNullValue=False}" Value="False" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Self}, TargetNullValue=False}" Value="True" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </MultiDataTrigger>-->
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
@@ -1062,6 +1052,19 @@
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Right">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Right" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Top">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Top" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Bottom">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Bottom" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Hidden">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Left" />
+                            <Setter Property="Visibility" TargetName="brdrChk" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
