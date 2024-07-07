@@ -502,31 +502,4 @@ namespace SolidShineUi
             Item = item;
         }
     }
-
-    /// <summary>
-    /// Event arguments for when the current selection of a SelectableCollection is changed.
-    /// </summary>
-    /// <typeparam name="T">Represents the type of item in the collection.</typeparam>
-    public class SelectionChangedEventArgs<T> : CollectionSelectionChangedEventArgs
-    {
-        /// <summary>
-        /// Create a SelectionChangedEventArgs.
-        /// </summary>
-        /// <param name="removedItems">A list of items being removed.</param>
-        /// <param name="addedItems">A list of item being added.</param>
-        public SelectionChangedEventArgs(List<T> removedItems, List<T> addedItems) : base(removedItems, addedItems)
-        {
-            AddedItems = addedItems;
-            RemovedItems = removedItems;
-        }
-
-        /// <summary>
-        /// The list of items being added to the selection ("selected").
-        /// </summary>
-        public new List<T> AddedItems { get; private set; }
-        /// <summary>
-        /// The list of items being removed from the selection ("deselected").
-        /// </summary>
-        public new List<T> RemovedItems { get; private set; }
-    }
 }

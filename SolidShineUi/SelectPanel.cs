@@ -547,15 +547,16 @@ namespace SolidShineUi
 
         #region Routed Events
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A routed event object backing the related event. See the event itself for more details.
+        /// </summary>
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-            "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler<IClickSelectableControl>), typeof(SelectPanel));
 
         /// <summary>
         /// Raised when an item is selected or deselected in this list.
         /// </summary>
-        public event SelectionChangedEventHandler SelectionChanged
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
@@ -578,19 +579,21 @@ namespace SolidShineUi
             }
 #endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(SelectionChangedEvent, addedItems, removedItems);
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs = 
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(SelectionChangedEvent, addedItems, removedItems);
             RaiseEvent(newEventArgs);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A routed event object backing the related event. See the event itself for more details.
+        /// </summary>
         public static readonly RoutedEvent ItemsAddedEvent = EventManager.RegisterRoutedEvent(
-            "ItemsAdded", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ItemsAdded", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler<IClickSelectableControl>), typeof(SelectPanel));
 
         /// <summary>
-        /// Raised when an item is added to this list.
+        /// Raised when an item is added to the SelectPanel's items.
         /// </summary>
-        public event SelectionChangedEventHandler ItemsAdded
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsAdded
         {
             add { AddHandler(ItemsAddedEvent, value); }
             remove { RemoveHandler(ItemsAddedEvent, value); }
@@ -607,19 +610,21 @@ namespace SolidShineUi
             }
 #endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsAddedEvent, new List<IClickSelectableControl>(), addedItems);
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs = 
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(ItemsAddedEvent, new List<IClickSelectableControl>(), addedItems);
             RaiseEvent(newEventArgs);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A routed event object backing the related event. See the event itself for more details.
+        /// </summary>
         public static readonly RoutedEvent ItemsRemovedEvent = EventManager.RegisterRoutedEvent(
-            "ItemsRemoved", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ItemsRemoved", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler<IClickSelectableControl>), typeof(SelectPanel));
 
         /// <summary>
-        /// Raised when an item is removed from this list.
+        /// Raised when an item is removed from the SelectPanel's items.
         /// </summary>
-        public event SelectionChangedEventHandler ItemsRemoved
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsRemoved
         {
             add { AddHandler(ItemsRemovedEvent, value); }
             remove { RemoveHandler(ItemsRemovedEvent, value); }
@@ -636,7 +641,8 @@ namespace SolidShineUi
             }
 #endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsRemovedEvent, removedItems, new List<IClickSelectableControl>());
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs = 
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(ItemsRemovedEvent, removedItems, new List<IClickSelectableControl>());
             RaiseEvent(newEventArgs);
         }
 #endregion
