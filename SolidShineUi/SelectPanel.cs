@@ -84,9 +84,9 @@ namespace SolidShineUi
         /// <remarks>
         /// It is recommended to set this property to an <see cref="ObservableCollection{IClickSelectableControl}"/>, <see cref="SelectableCollection{IClickSelectableControl}"/>, 
         /// or <see cref="SelectableCollectionView{IClickSelectableControl}"/>.
-        /// If you use other IEnumerable types that do not also implement <see cref="INotifyCollectionChanged"/>, then this control's contents will not update automatically.
-        /// If you do not use a SelectableCollection or SelectableCollectionView, you may also need to implement your own code for handling the selection state of the items
-        /// in your collection.
+        /// If you use other IEnumerable types that do not implement <see cref="INotifyCollectionChanged"/>, then this control's contents will not update automatically.
+        /// If your collection doesn't support <see cref="ISelectableCollection"/>, you may need to implement your own code for handling the selection state of the items
+        /// in your collection (and certain functions in this control, such as <see cref="MultiSelect"/> or <see cref="RemoveSelectedItems"/>, may not work).
         /// </remarks>
         public IEnumerable<IClickSelectableControl> ItemsSource
         {
@@ -170,6 +170,8 @@ namespace SolidShineUi
 
         #region SelectableCollection handling
 
+        #region ItemsProperty
+
         bool _internalAction = false;
         
         private static readonly DependencyPropertyKey ItemsPropertyKey
@@ -185,7 +187,7 @@ namespace SolidShineUi
         /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
         /// </summary>
         /// <remarks>
-        /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead handle adding, removing, and selecting items through that property's value.
+        /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead modify/manage your items through that items source, rather than using this property.
         /// </remarks>
         [Category("Common")]
         public SelectableCollection<IClickSelectableControl> Items
@@ -194,14 +196,41 @@ namespace SolidShineUi
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
+        #endregion
+
+        #region Helper Methods
+
         /// <summary>
         /// Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.
         /// </summary>
+        /// <remarks>
+        /// If you're using <see cref="ItemsSource"/> to manage this control's items, this property will not function if <c>ItemsSource</c> is not an <see cref="ISelectableCollection"/>.
+        /// This warning does not apply if you're using the <see cref="Items"/> property, which is itself an <see cref="ISelectableCollection"/>.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">Thrown if the underlying <see cref="ISelectableCollection"/> in <see cref="ItemsSource"/> doesn't allow changing this value</exception>
         [Category("Common")]
         public bool MultiSelect
         {
-            get => Items.CanSelectMultiple;
-            set => Items.CanSelectMultiple = value;
+            get
+            {
+                if (ItemsSource is ISelectableCollection isl)
+                {
+                    return isl.CanSelectMultiple;
+                }
+                else
+                {
+                    // not really a selectable collection, so I don't really have any way of knowing - to be on the safe side, I'll return false
+                    return false;
+                }
+            }
+            set
+            {
+                if (ItemsSource is ISelectableCollection isl)
+                {
+                    isl.CanSelectMultiple = value;
+                    // some ISelectionCollection types may not allow this property to be changed, in theory
+                }
+            }
         }
 
         void RefreshVisualSelection()
@@ -219,6 +248,19 @@ namespace SolidShineUi
             _internalAction = false;
         }
 
+
+        void AddItemInternal(IClickSelectableControl item)
+        {
+            item.SelectedBrush = SelectedBrush;
+            item.HighlightBrush = HighlightBrush;
+            item.ClickBrush = ClickBrush;
+            item.IsSelectedChanged += Item_SelectionChanged;
+            item.ApplyColorScheme(ColorScheme);
+        }
+
+        #endregion
+
+        #region CollectionChanged / CollectionSelectionChanged
 #if NETCOREAPP
         private void Items_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -342,15 +384,18 @@ namespace SolidShineUi
 #endif
 
         }
-
-        void AddItemInternal(IClickSelectableControl item)
+        private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
-            item.SelectedBrush = SelectedBrush;
-            item.HighlightBrush = HighlightBrush;
-            item.ClickBrush = ClickBrush;
-            item.IsSelectedChanged += Item_SelectionChanged;
-            item.ApplyColorScheme(ColorScheme);
+            if (_internalAction) return;
+
+            RefreshVisualSelection();
+
+            RaiseSelectionChangedEvent(e.AddedItems.OfType<IClickSelectableControl>().ToList(), e.RemovedItems.OfType<IClickSelectableControl>().ToList());
         }
+
+        #endregion
+
+        #region Item Selection Changed
 
 #if NETCOREAPP
         private void Item_SelectionChanged(object? sender, ItemSelectionChangedEventArgs e)
@@ -394,14 +439,8 @@ namespace SolidShineUi
             }
         }
 
-        private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
-        {
-            if (_internalAction) return;
+        #endregion
 
-            RefreshVisualSelection();
-
-            RaiseSelectionChangedEvent(e.AddedItems.OfType<IClickSelectableControl>().ToList(), e.RemovedItems.OfType<IClickSelectableControl>().ToList());
-        }
         #endregion
 
         #region Color Scheme
@@ -1138,8 +1177,8 @@ namespace SolidShineUi
         /// Move all of the currently selected items up by one in the list.
         /// </summary>
         /// <remarks>
-        /// This will not function if you've set the ItemsSource property (and thus not using the Items property).
-        /// If you've set ItemsSource property to another collection, please use <see cref="MoveItemUp(int)"/>.
+        /// This will not function if you're using <see cref="ItemsSource"/> to manage the items in this control, rather than <see cref="Items"/>.
+        /// If you're using <c>ItemsSource</c>, please use <see cref="MoveItemUp(int)"/>.
         /// </remarks>
         public void MoveSelectedItemsUp()
         {
@@ -1200,8 +1239,8 @@ namespace SolidShineUi
         /// Move all of the currently selected items down by one in the list.
         /// </summary>
         /// <remarks>
-        /// This will not function if you've set the ItemsSource property (and thus not using the Items property).
-        /// If you've set ItemsSource property to another collection, please use <see cref="MoveItemDown(int)"/>.
+        /// This will not function if you're using <see cref="ItemsSource"/> to manage the items in this control, rather than <see cref="Items"/>.
+        /// If you're using <c>ItemsSource</c>, please use <see cref="MoveItemDown(int)"/>.
         /// </remarks>
         public void MoveSelectedItemsDown()
         {
@@ -1278,7 +1317,7 @@ namespace SolidShineUi
                         moveIndex = 0;
                     }
 
-                    if (ItemsSource is ISelectableCollection isc)
+                    if (ItemsSource is ISelectableCollection isc) // try to retain selection state
                     {
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
@@ -1337,7 +1376,7 @@ namespace SolidShineUi
                         moveIndex = (isl.Count - 1);
                     }
 
-                    if (ItemsSource is ISelectableCollection isc)
+                    if (ItemsSource is ISelectableCollection isc) // try to retain selection state
                     {
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
