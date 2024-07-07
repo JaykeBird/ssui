@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -93,21 +94,15 @@ namespace SolidShineUi
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IClickSelectableControl>), typeof(SelectPanel),
-                new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+                new PropertyMetadata((s, e) => s.PerformAs<SelectPanel>((sp) =>
+                sp.OnItemsSourceChanged((IEnumerable<IClickSelectableControl>)e.OldValue, (IEnumerable<IClickSelectableControl>)e.NewValue))));
 
-        private static void OnInternalItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (sender is SelectPanel sp)
-            {
-                sp.SelectPanel_InternalOnItemsSourceChanged((IEnumerable<IClickSelectableControl>)e.OldValue, (IEnumerable<IClickSelectableControl>)e.NewValue);
-            }
-        }
-
-        private void SelectPanel_InternalOnItemsSourceChanged(IEnumerable<IClickSelectableControl> oldValue, IEnumerable<IClickSelectableControl> newValue)
+        private void OnItemsSourceChanged(IEnumerable<IClickSelectableControl> oldValue, IEnumerable<IClickSelectableControl> newValue)
         {
             if (ItemsSource == null)
             {
@@ -411,11 +406,12 @@ namespace SolidShineUi
 
         #region Color Scheme
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanel),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -649,11 +645,14 @@ namespace SolidShineUi
 
         #region Visual Properties
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        #region Scrollbars
+
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
             = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar for this control.
@@ -665,11 +664,12 @@ namespace SolidShineUi
             set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty
             = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar for this control.
@@ -680,6 +680,8 @@ namespace SolidShineUi
             get { return (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty); }
             set { SetValue(VerticalScrollBarVisibilityProperty, value); }
         }
+
+        #endregion
 
         #region Brushes
 
@@ -765,49 +767,72 @@ namespace SolidShineUi
             set => SetValue(BorderBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.LightSalmon.ToBrush()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.MistyRose.ToBrush()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.Salmon.ToBrush()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
         #region Border
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(SelectPanel),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border around this control.
@@ -1355,16 +1380,17 @@ namespace SolidShineUi
 
         #endregion
 
-        #region ScrollViewer
+        #region AllowParentScrolling
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
             "AllowParentScrolling", typeof(bool), typeof(SelectPanel),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may disable any child items from scrolling.
+        /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may prevent any child items from scrolling.
         /// </summary>
         public bool AllowParentScrolling
         {
@@ -1395,9 +1421,11 @@ namespace SolidShineUi
                         _reentrantList.Add(previewEventArg);
                         originalSource?.RaiseEvent(previewEventArg);
                         _reentrantList.Remove(previewEventArg);
+
                         // at this point if no one else handled the event in our children, we do our job
 
-                        if (!previewEventArg.Handled && ((e.Delta > 0 && scrollControl.VerticalOffset == 0) || (e.Delta <= 0 && scrollControl.VerticalOffset >= scrollControl.ExtentHeight - scrollControl.ViewportHeight)))
+                        if (!previewEventArg.Handled && ((e.Delta > 0 && scrollControl.VerticalOffset == 0) || 
+                            (e.Delta <= 0 && scrollControl.VerticalOffset >= scrollControl.ExtentHeight - scrollControl.ViewportHeight)))
                         {
                             e.Handled = true;
                             var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
