@@ -450,11 +450,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        /// <summary>
-        /// This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.
-        /// </summary>
-        [Obsolete("This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.")]
-        public bool use_lbrdr = false;
+        private bool use_lbrdr = false;
         bool runApply = true;
 
         /// <summary>
@@ -463,7 +459,6 @@ namespace SolidShineUi
         /// </summary>
         public bool UseLighterBorder
         {
-#pragma warning disable CS0618 // Type or member is obsolete
             get
             {
                 return use_lbrdr;
@@ -473,7 +468,6 @@ namespace SolidShineUi
                 use_lbrdr = value;
                 if (runApply) ApplyColorScheme(ColorScheme, value);
             }
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -641,7 +635,7 @@ namespace SolidShineUi
                 new RoutedSelectionChangedEventArgs<IClickSelectableControl>(ItemsRemovedEvent, removedItems, new List<IClickSelectableControl>());
             RaiseEvent(newEventArgs);
         }
-#endregion
+        #endregion
 
         #region Visual Properties
 
