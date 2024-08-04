@@ -91,23 +91,6 @@ namespace SolidShineUi
             UpdateAppearance();
         }
 
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="hco">The high-contast color scheme to apply.</param>
-        public new void ApplyColorScheme(HighContrastOption hco)
-        {
-            ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
-
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-
-            UpdateAppearance();
-        }
-
         void UpdateAppearance()
         {
             base.ApplyColorScheme(ColorScheme);
