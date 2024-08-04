@@ -32,8 +32,8 @@
                                      DisplayAsHex="True" MinimumDigitCount="6" MinValue="0" MaxValue="16777215" ValueChanged="nud9_ValueChanged" Loaded="nud9_Loaded" />
                 <flat:DoubleSpinner x:Name="nud2" HorizontalAlignment="Left" Margin="21,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     Decimals="3" />
-                <flat:DoubleSpinner x:Name="nud2_Copy" HorizontalAlignment="Left" Margin="305,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
-                    Decimals="7" />
+                <flat:TimeSpinner x:Name="nudTime" HorizontalAlignment="Left" Margin="305,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                    Value="00:30:00" Step="00:00:15" />
                 <flat:DoubleSpinner x:Name="nud3" HorizontalAlignment="Left" Margin="21,198,0,0" VerticalAlignment="Top" Width="140" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     AcceptExpressions="True" />
                 <flat:DoubleSpinner x:Name="nud4" HorizontalAlignment="Left" Margin="20,262,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
@@ -43,7 +43,7 @@
                 <flat:IntegerSpinner x:Name="nud6" HorizontalAlignment="Left" Margin="434,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     MinValue="0" MaxValue="100" Step="1" IsEnabled="False" />
                 <TextBlock HorizontalAlignment="Left" Margin="434,59,0,0" Text="Disabled Spinner" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="304,118,0,0" Text="Double Spinner - Limited to 7 Decimal Points" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="304,118,0,0" Text="TimeSpinner" VerticalAlignment="Top"/>
                 <Border BorderBrush="Black" x:Name="brdrColor" BorderThickness="1" HorizontalAlignment="Left" Height="24" Margin="343,80,0,0" VerticalAlignment="Top" Width="24"/>
                 <flat:StringSpinner x:Name="nudString" HorizontalAlignment="Left" Margin="413,198,0,0" VerticalAlignment="Top" Width="150" ColorScheme="{Binding ColorScheme, ElementName=userControl}" >
                     <sys:String>Lemon</sys:String>
