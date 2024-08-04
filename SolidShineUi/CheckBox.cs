@@ -34,7 +34,9 @@ namespace SolidShineUi
         // on top of that, there was a limited selection of brush properties to be able to directly make the control I'd want it to be (such as the box background and foreground)
         // while styles or a custom template could've been used to make it how I would've wanted, at that point I would already be 50% of the way to making my own control
         // soooo that's pretty much what I did. and now I have all the features and customization I want, and practically none of the annoyances I had
-        // of course, 
+        // of course, by building my own control with its own slightly different way of doing things, this can make it harder for others to adapt and start using
+        // and in the grand scheme of ranking which existing controls to make your own version of, a CheckBox is probably pretty low on the priority list
+        // but given how often checkboxes are used in a UI, and the annoyances I was having, I think it was a worthwhile investment, and now I have exactly what I want
 
         static CheckBox()
         {
