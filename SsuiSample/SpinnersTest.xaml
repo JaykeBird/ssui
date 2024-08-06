@@ -16,25 +16,31 @@
         <ScrollViewer Margin="10,60,10,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
             <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Text="Integer Spinner" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="20,118,0,0" Text="Double Spinner - Limited to 3 Decimal Points" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="20,178,0,0" Text="Double Spinner - Arithmetic Expressions Accepted (try &quot;2/3+5&quot;)" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="21,238,0,0" Text="Double Spinner with WPF Slider" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="183,0,0,0" Text="Integer Spinner Steps by 5" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="373,0,0,0" Text="Long Spinner Steps by 100" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="19,60,0,0" Text="Integer Spinner - Display as Hex" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="248,60,0,0" Text="Integer Spinner - Color Hex" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="434,59,0,0" Text="Disabled Spinner" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="20,120,0,0" Text="Double Spinner - Limited to 3 Decimal Points" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="284,120,0,0" Text="TimeSpinner" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="414,120,0,0" Text="TimeSpinner - Up to 5 Days" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="20,178,0,0" Text="Double Spinner - Arithmetic Expressions Accepted (try &quot;2/3+5&quot;)" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="413,177,0,0" Text="String Spinner" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="21,238,0,0" Text="Double Spinner with WPF Slider" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nud1" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:IntegerSpinner x:Name="nud5" HorizontalAlignment="Left" Margin="183,20,0,0" VerticalAlignment="Top" Width="80" Step="5" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
                 <flat:LongSpinner x:Name="nud7" HorizontalAlignment="Left" Margin="373,20,0,0" VerticalAlignment="Top" Width="80" Step="100" MinimumDigitCount="4" 
                                      ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                <TextBlock HorizontalAlignment="Left" Margin="19,60,0,0" Text="Integer Spinner - Display as Hex" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nud8" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" DisplayAsHex="True" />
-                <TextBlock HorizontalAlignment="Left" Margin="248,60,0,0" Text="Integer Spinner - Color Hex" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nud9" HorizontalAlignment="Left" Margin="248,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}" 
                                      DisplayAsHex="True" MinimumDigitCount="6" MinValue="0" MaxValue="16777215" ValueChanged="nud9_ValueChanged" Loaded="nud9_Loaded" />
                 <flat:DoubleSpinner x:Name="nud2" HorizontalAlignment="Left" Margin="21,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     Decimals="3" />
-                <flat:TimeSpinner x:Name="nudTime" HorizontalAlignment="Left" Margin="305,138,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:TimeSpinner x:Name="nudTime" HorizontalAlignment="Left" Margin="285,140,0,0" VerticalAlignment="Top" Width="100" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     Value="00:30:00" Step="00:00:15" />
-                <flat:DoubleSpinner x:Name="nud3" HorizontalAlignment="Left" Margin="21,198,0,0" VerticalAlignment="Top" Width="140" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                <flat:TimeSpinner x:Name="nudTimeDays" HorizontalAlignment="Left" Margin="415,140,0,0" VerticalAlignment="Top" Width="120" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
+                    Step="01:00:00" MaxValue="5:23:59:59" MinValue="-5:23:59:59" Value="1:00:00:00.002" />
+                <flat:DoubleSpinner x:Name="nud3" HorizontalAlignment="Left" Margin="21,198,0,0" VerticalAlignment="Top" Width="180" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     AcceptExpressions="True" />
                 <flat:DoubleSpinner x:Name="nud4" HorizontalAlignment="Left" Margin="20,262,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     MinValue="0" MaxValue="100" Value="{Binding Value, ElementName=slider, Mode=TwoWay}" Step="1" />
@@ -42,8 +48,6 @@
                     Foreground="{Binding ColorScheme.BorderColor, Converter={StaticResource ctb}, ElementName=userControl}" />
                 <flat:IntegerSpinner x:Name="nud6" HorizontalAlignment="Left" Margin="434,80,0,0" VerticalAlignment="Top" Width="80" ColorScheme="{Binding ColorScheme, ElementName=userControl}"
                     MinValue="0" MaxValue="100" Step="1" IsEnabled="False" />
-                <TextBlock HorizontalAlignment="Left" Margin="434,59,0,0" Text="Disabled Spinner" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="304,118,0,0" Text="TimeSpinner" VerticalAlignment="Top"/>
                 <Border BorderBrush="Black" x:Name="brdrColor" BorderThickness="1" HorizontalAlignment="Left" Height="24" Margin="343,80,0,0" VerticalAlignment="Top" Width="24"/>
                 <flat:StringSpinner x:Name="nudString" HorizontalAlignment="Left" Margin="413,198,0,0" VerticalAlignment="Top" Width="150" ColorScheme="{Binding ColorScheme, ElementName=userControl}" >
                     <sys:String>Lemon</sys:String>
@@ -51,7 +55,6 @@
                     <sys:String>Size</sys:String>
                     <sys:String>Word</sys:String>
                 </flat:StringSpinner>
-                <TextBlock HorizontalAlignment="Left" Margin="413,177,0,0" Text="String Spinner" VerticalAlignment="Top"/>
 
             </Grid>
         </ScrollViewer>
