@@ -405,11 +405,7 @@ namespace SolidShineUi
             }
 
             _updateBox = false;
-            if (TimeSpan.TryParse(txtValue.Text, out TimeSpan ts))
-            {
-                Value = ts;
-            }
-            else if (int.TryParse(txtValue.Text, out int i))
+            if (int.TryParse(txtValue.Text, out int i))
             {
                 // deconstruct a TimeSpan from the int value
                 string text = txtValue.Text;
@@ -464,6 +460,10 @@ namespace SolidShineUi
                 {
                     Value = valVal;
                 }
+            }
+            else if (TimeSpan.TryParse(txtValue.Text, out TimeSpan ts))
+            {
+                Value = ts;
             }
             else
             {
