@@ -9,7 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*" x:Name="colTime" />
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
         <DatePicker x:Name="picker" SelectedDateChanged="picker_SelectedDateChanged" Grid.Column="0" />

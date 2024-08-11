@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Diagnostics;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -20,6 +21,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public TimeSpanEditor()
         {
             InitializeComponent();
+            mnuSetNull.IsEnabledChanged += MnuSetNull_IsEnabledChanged;
+        }
+
+        private void MnuSetNull_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+#if DEBUG
+            Debugger.Log(0, null, "SET NULL CHANGED");
+#endif
+            //throw new NotImplementedException();
         }
 
 #if NET6_0_OR_GREATER
@@ -69,11 +79,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 mnuCurrent.IsEnabled = value;
                 mnuNoon.IsEnabled = value;
                 mnuMidnight.IsEnabled = value;
-                mnuSetNull.IsEnabled = value;
+                mnuSetNull.IsEnabled = _nullsAllowed && value;
             }
         }
 
         Type _propType = typeof(TimeSpan);
+        bool _nullsAllowed = false;
 
 #if NETCOREAPP
         
@@ -84,18 +95,24 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public object? GetValue()
         {
             
+            if (_propType == typeof(TimeSpan?))
+            {
+                return mnuSetNull.IsChecked ? null : spinner.Value;
+            }
 #if NET6_0_OR_GREATER
-            if (_propType == typeof(TimeOnly))
+            else if (_propType == typeof(TimeOnly))
             {
                 return spinner.GetValueAsTimeOnly();
             }
+            else if (_propType == typeof(TimeOnly?))
+            {
+                return mnuSetNull.IsChecked ? null : spinner.GetValueAsTimeOnly();
+            }
+#endif
             else
             {
                 return spinner.Value;
             }
-#else
-            return spinner.Value;
-#endif
         }
 
         /// <inheritdoc/>
@@ -110,17 +127,40 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             LoadUi();
 
+            if (_propType == typeof(TimeSpan?))
+            {
+                TimeSpan? val = (TimeSpan?)value ?? null;
+                if (val == null)
+                {
+                    SetAsNull();
+                }
+                else
+                {
+                    spinner.Value = val.Value;
+                }
+            }
 #if NET6_0_OR_GREATER
-            if (value is TimeOnly ti)
+            else if (_propType == typeof(TimeOnly?))
+            {
+                TimeOnly? tin = (TimeOnly?)value ?? null;
+                if (tin == null)
+                {
+                    SetAsNull();
+                }
+                else
+                {
+                    spinner.SetValueFromTimeOnly(tin.Value);
+                }
+            }
+            else if (value is TimeOnly ti)
             {
                 spinner.SetValueFromTimeOnly(ti);
             }
+#else
             else
             {
                 spinner.Value = (TimeSpan)(value ?? TimeSpan.Zero);
             }
-#else
-            spinner.Value = (TimeSpan)(value ?? TimeSpan.Zero);
 #endif
         }
 #else
@@ -131,7 +171,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object GetValue()
         {
-            return spinner.Value;
+            if (_propType == typeof(TimeSpan?))
+            {
+                if (mnuSetNull.IsChecked)
+                {
+                    return null;
+                }
+                else
+                {
+                    return spinner.Value;
+                }
+            }
+            else
+            {
+                return spinner.Value;
+            }
         }
 
         /// <inheritdoc/>
@@ -146,11 +200,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             LoadUi();
             
+            if (_propType == typeof(TimeSpan?))
+            {
+                AllowNulls();
+            }
+
             spinner.Value = (TimeSpan)(value ?? TimeSpan.Zero);
         }
 #endif
 
-            void LoadUi()
+        void LoadUi()
         {
 #if NET6_0_OR_GREATER
             if (_propType == typeof(TimeSpan))
@@ -179,11 +238,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        void AllowNulls()
+        {
+            mnuSetNull.IsEnabled = true;
+            _nullsAllowed = true;
+        }
+
         void SetAsNull()
         {
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             spinner.IsEnabled = false;
+            _nullsAllowed = true;
         }
 
         void UnsetAsNull()

@@ -67,15 +67,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             get => picker.IsEnabled;
             set
             {
-                spinner.IsEnabled = !dateOnlyValue && value;
+                spinner.IsEnabled = value;
                 btnMenu.IsEnabled = value;
                 picker.IsEnabled = value;
             }
         }
 
         Type _propType = typeof(DateTime);
-        bool dateOnlyValue = false;
         bool _internalAction = false;
+        bool _nullAllowed = false;
 
 #if NETCOREAPP
 
@@ -121,23 +121,30 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             LoadUi();
 
-#if NET6_0_OR_GREATER
-            if (value is DateOnly da)
+            if (_propType == typeof(DateTime?))
             {
-                spinner.Visibility = Visibility.Collapsed;
-                dateOnlyValue = true;
-
-                picker.SelectedDate = da.ToDateTime(new TimeOnly(0, 0, 0));
+                DateTime? dtn = (DateTime?)value ?? null;
+                if (dtn.HasValue)
+                {
+                    spinner.Value = dtn.Value.TimeOfDay;
+                    picker.SelectedDate = dtn.Value.Date;
+                    AllowNulls();
+                }
+                else
+                {
+                    SetAsNull();
+                }
             }
-            if (value is DateOnly?)
+#if NET6_0_OR_GREATER
+            else if (_propType == typeof(DateOnly?))
             {
                 DateOnly? dan = (DateOnly?)value ?? null;
                 spinner.Visibility = Visibility.Collapsed;
-                dateOnlyValue = true;
+                colTime.Width = new GridLength(0);
 
                 if (dan.HasValue)
                 {
-                    mnuSetNull.IsEnabled = true;
+                    AllowNulls();
                     picker.SelectedDate = dan.Value.ToDateTime(new TimeOnly(0, 0, 0));
                 }
                 else
@@ -145,31 +152,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     SetAsNull();
                 }
             }
+            else if (value is DateOnly da)
+            {
+                spinner.Visibility = Visibility.Collapsed;
+                colTime.Width = new GridLength(0);
+
+                picker.SelectedDate = da.ToDateTime(new TimeOnly(0, 0, 0));
+            }
+#endif
             else if (value is DateTime dt)
             {
                 spinner.Value = dt.TimeOfDay;
                 picker.SelectedDate = dt.Date;
-            }
-#else
-            if (value is DateTime dt)
-            {
-                spinner.Value = dt.TimeOfDay;
-                picker.SelectedDate = dt.Date;
-            }
-#endif
-            else if (value is DateTime?)
-            {
-                DateTime? dtn = (DateTime?)value ?? null;
-                if (dtn.HasValue)
-                {
-                    spinner.Value = dtn.Value.TimeOfDay;
-                    picker.SelectedDate = dtn.Value.Date;
-                    mnuSetNull.IsEnabled = true;
-                }
-                else
-                {
-                    SetAsNull();
-                }
             }
             else
             {
@@ -215,7 +209,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     spinner.Value = dtn.Value.TimeOfDay;
                     picker.SelectedDate = dtn.Value.Date;
-                    mnuSetNull.IsEnabled = true;
+                    AllowNulls();
                 }
                 else
                 {
@@ -243,6 +237,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        void AllowNulls()
+        {
+            mnuSetNull.IsEnabled = true;
+            _nullAllowed = true;
+        }
+
         void SetAsNull()
         {
             _internalAction = true;
@@ -250,6 +250,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             mnuSetNull.IsChecked = true;
             picker.SelectedDate = null;
             spinner.IsEnabled = false;
+            _nullAllowed = true;
             _internalAction = false;
         }
 
@@ -308,11 +309,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void picker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!_internalAction) return;
+            if (_internalAction) return;
 
             if (picker.SelectedDate == null)
             {
-                SetAsNull();
+                if (_nullAllowed)
+                {
+                    SetAsNull();
+                }
+                else
+                {
+                    // just reset it to today
+                    picker.SelectedDate = DateTime.Today.Date;
+                }
             }
             else
             {

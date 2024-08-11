@@ -119,6 +119,7 @@ namespace SsuiSample
 #if NETCOREAPP
             public Rune RuneChar { get; set; } = new Rune('r');
 
+            public DateOnly ReallyOldDay { get; set; } = DateOnly.FromDayNumber(2614); // lol I dunno a random number
 
             public TimeOnly AfterNoon { get; set; } = new TimeOnly(12, 23, 40);
 #endif
