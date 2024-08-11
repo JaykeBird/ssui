@@ -1029,6 +1029,13 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Rune?), typeof(CharEditor));
 #endif
             RegisterEditor(typeof(Cursor), typeof(CursorEditor));
+            RegisterEditor(typeof(TimeSpan), typeof(TimeSpanEditor));
+            RegisterEditor(typeof(DateTime), typeof(DateTimeEditor));
+            RegisterEditor(typeof(DateTime?), typeof(DateTimeEditor));
+#if NET6_0_OR_GREATER
+            RegisterEditor(typeof(DateOnly), typeof(DateTimeEditor));
+            RegisterEditor(typeof(TimeOnly), typeof(TimeSpanEditor));
+#endif
         }
 
         #region Generator Property Editors / Editor Value Changed

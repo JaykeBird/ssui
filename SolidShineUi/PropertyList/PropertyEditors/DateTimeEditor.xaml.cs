@@ -24,10 +24,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 #if NET6_0_OR_GREATER
         /// <inheritdoc/>
-        public List<Type> ValidTypes => new List<Type> { typeof(DateTime), typeof(DateOnly) };
+        public List<Type> ValidTypes => new List<Type> { typeof(DateTime), typeof(DateOnly), typeof(DateTime?), typeof(DateOnly?) };
 #else
         /// <inheritdoc/>
-        public List<Type> ValidTypes => (new[] { typeof(DateTime) }).ToList();
+        public List<Type> ValidTypes => (new[] { typeof(DateTime), typeof(DateTime?) }).ToList();
 #endif
 
         /// <inheritdoc/>
@@ -81,33 +81,31 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
-        
+
         /// <inheritdoc/>
         public object? GetValue()
         {
-            if (_propType == typeof(DateTime))
-            {
-                if (picker.SelectedDate == null) return null;
-                else
-                {
 #if NET6_0_OR_GREATER
-                    return DateOnly.FromDateTime(picker.SelectedDate.Value).ToDateTime(spinner.GetValueAsTimeOnly());
-#else   
-                    return picker.SelectedDate.Value.Date.Add(spinner.Value);
-#endif
-                }
-            }
-#if NET6_0_OR_GREATER
-            else if (_propType == typeof(DateOnly))
+            if (_propType == typeof(DateOnly) || _propType == typeof(DateOnly?))
             {
                 if (picker.SelectedDate == null) return null;
                 else return DateOnly.FromDateTime(picker.SelectedDate.Value);
             }
-#endif
             else
             {
-                return spinner.Value;
+                if (picker.SelectedDate == null) return null;
+                else
+                {
+                    return picker.SelectedDate.Value.Date.Add(spinner.Value);
+                }
             }
+#else
+            if (picker.SelectedDate == null) return null;
+            else
+            {
+                return picker.SelectedDate.Value.Date.Add(spinner.Value);
+            }
+#endif
         }
 
 
@@ -126,19 +124,57 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NET6_0_OR_GREATER
             if (value is DateOnly da)
             {
-                spinner.IsEnabled = false;
+                spinner.Visibility = Visibility.Collapsed;
                 dateOnlyValue = true;
+
+                picker.SelectedDate = da.ToDateTime(new TimeOnly(0, 0, 0));
+            }
+            if (value is DateOnly?)
+            {
+                DateOnly? dan = (DateOnly?)value ?? null;
+                spinner.Visibility = Visibility.Collapsed;
+                dateOnlyValue = true;
+
+                if (dan.HasValue)
+                {
+                    mnuSetNull.IsEnabled = true;
+                    picker.SelectedDate = dan.Value.ToDateTime(new TimeOnly(0, 0, 0));
+                }
+                else
+                {
+                    SetAsNull();
+                }
             }
             else if (value is DateTime dt)
             {
                 spinner.Value = dt.TimeOfDay;
+                picker.SelectedDate = dt.Date;
             }
 #else
             if (value is DateTime dt)
             {
                 spinner.Value = dt.TimeOfDay;
+                picker.SelectedDate = dt.Date;
             }
 #endif
+            else if (value is DateTime?)
+            {
+                DateTime? dtn = (DateTime?)value ?? null;
+                if (dtn.HasValue)
+                {
+                    spinner.Value = dtn.Value.TimeOfDay;
+                    picker.SelectedDate = dtn.Value.Date;
+                    mnuSetNull.IsEnabled = true;
+                }
+                else
+                {
+                    SetAsNull();
+                }
+            }
+            else
+            {
+                SetAsNull();
+            }
         }
 #else
 
@@ -148,7 +184,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object GetValue()
         {
-            return picker.SelectedDate.Value.Date.Add(spinner.Value);
+            if (picker.SelectedDate == null) return null;
+            else
+            {
+                return picker.SelectedDate.Value.Date.Add(spinner.Value);
+            }
         }
 
         /// <inheritdoc/>
@@ -162,31 +202,38 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
 
             LoadUi();
-            
-            spinner.Value = (TimeSpan)(value ?? TimeSpan.Zero);
+
+            if (value is DateTime dt)
+            {
+                spinner.Value = dt.TimeOfDay;
+                picker.SelectedDate = dt.Date;
+            }
+            else if (value is DateTime?)
+            {
+                DateTime? dtn = (DateTime?)value ?? null;
+                if (dtn.HasValue)
+                {
+                    spinner.Value = dtn.Value.TimeOfDay;
+                    picker.SelectedDate = dtn.Value.Date;
+                    mnuSetNull.IsEnabled = true;
+                }
+                else
+                {
+                    SetAsNull();
+                }
+            }
+            else
+            {
+                SetAsNull();
+            }
         }
 #endif
 
         void LoadUi()
         {
-#if NET6_0_OR_GREATER
-            if (_propType == typeof(TimeSpan))
-            {
-                SetMaxMin(TimeSpan.MaxValue, TimeSpan.MinValue);
-            }
-            else if (_propType == typeof(TimeOnly))
-            {
-                SetMaxMin(TimeOnly.MinValue.ToTimeSpan(), TimeOnly.MaxValue.ToTimeSpan());
-            }
-#else
-            SetMaxMin(TimeSpan.MaxValue, TimeSpan.MinValue);
-#endif
-
-            void SetMaxMin(TimeSpan max, TimeSpan min)
-            {
-                spinner.MaxValue = max;
-                spinner.MinValue = min;
-            }
+            // 1 millisecond before 24:00:00
+            spinner.MaxValue = new TimeSpan(1, 0, 0, 0).Add(new TimeSpan(0, 0, 0, 0, -1));
+            spinner.MinValue = new TimeSpan(0, 0, 0);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
@@ -206,12 +253,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _internalAction = false;
         }
 
-        void UnsetAsNull()
+        void UnsetAsNull(bool setDate = true)
         {
             _internalAction = true;
             mnuSetNull.IsChecked = false;
-            picker.SelectedDate = DateTime.Today;
-            spinner.IsEnabled = !dateOnlyValue;
+            if (setDate) picker.SelectedDate = DateTime.Today;
+            spinner.IsEnabled = true;
             _internalAction = false;
         }
 
@@ -269,9 +316,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else
             {
-                mnuSetNull.IsChecked = false;
-                spinner.IsEnabled = !dateOnlyValue;
+                UnsetAsNull(false);
             }
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -13,7 +13,7 @@
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
         <DatePicker x:Name="picker" SelectedDateChanged="picker_SelectedDateChanged" Grid.Column="0" />
-        <flat:TimeSpinner x:Name="spinner" ValueChanged="intSpinner_ValueChanged" Grid.Column="1" />
+        <flat:TimeSpinner x:Name="spinner" ValueChanged="spinner_ValueChanged" Grid.Column="1" Margin="2,0,0,0" />
         <!-- Menu -->
         <flat:MenuButton x:Name="btnMenu" Grid.Column="2" ShowMenuArrow="False" TransparentBack="True" >
             <StackPanel Orientation="Horizontal">

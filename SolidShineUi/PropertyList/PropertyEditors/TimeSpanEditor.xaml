@@ -11,7 +11,7 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
-        <flat:TimeSpinner x:Name="spinner" ValueChanged="intSpinner_ValueChanged" />
+        <flat:TimeSpinner x:Name="spinner" ValueChanged="spinner_ValueChanged" />
         <!-- Menu -->
         <flat:MenuButton x:Name="btnMenu" Grid.Column="8" ShowMenuArrow="False" TransparentBack="True" >
             <StackPanel Orientation="Horizontal">
@@ -25,6 +25,7 @@
                     <MenuItem Header="Set to Noon" x:Name="mnuNoon" Click="mnuNoon_Click" />
                     <Separator />
                     <MenuItem Header="Set to Current Time" x:Name="mnuCurrent" Click="mnuCurrent_Click" />
+                    <MenuItem Header="Set to Current Time (no milliseconds)" x:Name="mnuCurrentShort" Click="mnuCurrentShort_Click" />
                     <Separator />
                     <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>

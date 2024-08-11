@@ -62,11 +62,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => spinner.IsEnabled;
+            get => mnuCurrent.IsEnabled;
             set
             {
                 spinner.IsEnabled = value;
-                btnMenu.IsEnabled = value;
+                mnuCurrent.IsEnabled = value;
+                mnuNoon.IsEnabled = value;
+                mnuMidnight.IsEnabled = value;
+                mnuSetNull.IsEnabled = value;
             }
         }
 
@@ -80,22 +83,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object? GetValue()
         {
-            if (_propType == typeof(TimeSpan))
-            {
-                return spinner.Value;
-            }
+            
 #if NET6_0_OR_GREATER
-            else if (_propType == typeof(TimeOnly))
+            if (_propType == typeof(TimeOnly))
             {
                 return spinner.GetValueAsTimeOnly();
             }
-#endif
             else
             {
                 return spinner.Value;
             }
+#else
+            return spinner.Value;
+#endif
         }
-        
+
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
         {
@@ -129,14 +131,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public object GetValue()
         {
-            if (_propType == typeof(TimeSpan))
-            {
-                return spinner.Value;
-            }
-            else
-            {
-                return spinner.Value;
-            }
+            return spinner.Value;
         }
 
         /// <inheritdoc/>
@@ -155,7 +150,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 #endif
 
-        void LoadUi()
+            void LoadUi()
         {
 #if NET6_0_OR_GREATER
             if (_propType == typeof(TimeSpan))
@@ -164,7 +159,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_propType == typeof(TimeOnly))
             {
-                SetMaxMin(TimeOnly.MinValue.ToTimeSpan(), TimeOnly.MaxValue.ToTimeSpan());
+                SetMaxMin(TimeOnly.MaxValue.ToTimeSpan(), TimeOnly.MinValue.ToTimeSpan());
             }
 #else
             SetMaxMin(TimeSpan.MaxValue, TimeSpan.MinValue);
@@ -237,6 +232,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnuCurrent_Click(object sender, RoutedEventArgs e)
         {
             spinner.Value = DateTime.Now.TimeOfDay;
+        }
+
+        private void mnuCurrentShort_Click(object sender, RoutedEventArgs e)
+        {
+            TimeSpan val = DateTime.Now.TimeOfDay;
+            spinner.Value = new TimeSpan(0, val.Hours, val.Minutes, val.Seconds);
         }
     }
 }
