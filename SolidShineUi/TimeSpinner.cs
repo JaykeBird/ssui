@@ -224,7 +224,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="Use12HourClock"/>. See the related property for details.</summary>
         public static DependencyProperty Use12HourClockProperty
             = DependencyProperty.Register(nameof(Use12HourClock), typeof(bool), typeof(TimeSpinner),
-            new FrameworkPropertyMetadata(false));
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<TimeSpinner>(t => t.UpdateUI())));
 
         #endregion
 
@@ -369,6 +369,17 @@ namespace SolidShineUi
                 {
                     TimeSpan newVal = Value - new TimeSpan(12, 0, 0);
                     sVal = newVal.ToString(DisplayFormatString) + " " + CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator;
+                }
+                else if (Value.Hours > 11)
+                {
+                    // check for between noon (12 PM) and 1 PM
+                    sVal += " " + CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator;
+                }
+                else if (Value.Hours == 0)
+                {
+                    // check for between midnight (12 AM) and 1 AM
+                    TimeSpan newVal = Value + new TimeSpan(12, 0, 0);
+                    sVal = newVal.ToString(DisplayFormatString) + " " + CultureInfo.CurrentUICulture.DateTimeFormat.AMDesignator;
                 }
                 else
                 {
