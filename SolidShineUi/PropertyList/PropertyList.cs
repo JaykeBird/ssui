@@ -136,6 +136,11 @@ namespace SolidShineUi.PropertyList
             base.OnApplyTemplate();
 
             LoadTemplateItems();
+
+            if (btnView != null && btnView.Menu != null)
+            {
+                btnView.Menu.ColorScheme = ColorScheme;
+            }
         }
 
         bool itemsLoaded = false;
@@ -145,9 +150,11 @@ namespace SolidShineUi.PropertyList
 #if NETCOREAPP
         StackPanel? stkProperties = null;
         TextBlock? txtType = null;
+        MenuButton? btnView = null;
 #else
         StackPanel stkProperties = null;
         TextBlock txtType = null;
+        MenuButton btnView = null;
 #endif
 
         void LoadTemplateItems()
@@ -156,8 +163,9 @@ namespace SolidShineUi.PropertyList
             {
                 stkProperties = (StackPanel)GetTemplateChild("PART_PropList");
                 txtType = (TextBlock)GetTemplateChild("PART_TypeLabel");
+                btnView = (MenuButton)GetTemplateChild("PART_ViewButton");
 
-                if (stkProperties != null && txtType != null)
+                if (stkProperties != null && txtType != null && btnView != null)
                 {
                     itemsLoaded = true;
                 }
@@ -248,6 +256,11 @@ namespace SolidShineUi.PropertyList
 
             //btnRefresh.ColorScheme = cs;
             //mnuView.ColorScheme = cs;
+
+            if (btnView != null && btnView.Menu != null)
+            {
+                btnView.Menu.ColorScheme = cs;
+            }
 
             //// set up icons
             // TODO: update control template to change icon colors based upon SsuiTheme
@@ -1607,24 +1620,26 @@ namespace SolidShineUi.PropertyList
         public static string PrettifyPropertyType(Type type, bool fullName = false)
         {
             string typeString = type.FullName ?? "(no type name)";
-            string baseName = type.Name;
+            string baseName = type.Name ?? "(no type name)";
 
             if (type.IsGenericType)
             {
                 var generics = type.GetGenericArguments();
 
-                if (typeString.StartsWith("System.Nullable"))
+                if (typeString.StartsWith("System.Nullable")) // used for nullable struct types (i.e. changing "Nullable<bool>" to just "bool?")
                 {
                     return (fullName ? generics[0].FullName : generics[0].Name) + "?";
                 }
 
-                string basebase = (fullName ? (type.GetGenericTypeDefinition().FullName ?? "System.Object") : baseName).Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("`4", "").Replace("`5", "");
+                // remove default display of a generic type that includes this apostrophe-number thing lol
+                string basebase = (fullName ? (type.GetGenericTypeDefinition().FullName ?? "System.Object") : baseName)
+                    .Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("`4", "").Replace("`5", "").Replace("`6", "");
 
-                if (generics.Length == 1)
+                if (generics.Length == 1) // if it's just 1 generic argument (i.e. "List<string>")
                 {
                     return basebase + "<" + (fullName ? generics[0].FullName : generics[0].Name) + ">";
                 }
-                else
+                else // more than 1 generic argument (i.e. "Dictionary<int, string>")
                 {
                     return basebase + "<" + string.Join(",", generics.Select(x => fullName ? x.FullName : x.Name)) + ">";
                 }

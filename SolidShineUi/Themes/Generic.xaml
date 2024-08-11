@@ -2032,7 +2032,7 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                             <flat:MenuButton Grid.Column="2" ColorScheme="{TemplateBinding ColorScheme}" Height="28" MinWidth="50"
                              TransparentBack="True" Visibility="{TemplateBinding ShowViewMenu, Converter={StaticResource VisConverter}}"
                              HighlightBrush="{TemplateBinding ButtonHighlightBrush}" 
-                             ClickBrush="{TemplateBinding ButtonClickBrush}"
+                             ClickBrush="{TemplateBinding ButtonClickBrush}" x:Name="PART_ViewButton"
                              BorderHighlightBrush="{TemplateBinding ButtonHighlightBorderBrush}" >
                                 <flat:MenuButton.Content>
                                     <TextBlock Text="{TemplateBinding ViewMenuLabel}" />
@@ -2442,7 +2442,6 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <Style TargetType="{x:Type flat:TimeSpinner}">
         <Setter Property="Focusable" Value="True" />
