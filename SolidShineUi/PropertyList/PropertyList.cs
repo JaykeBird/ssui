@@ -54,6 +54,7 @@ namespace SolidShineUi.PropertyList
             CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleInheritedProperties, DoToggleInheritedProperties, CanExecuteIfObjectLoaded));
             CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleReadOnlyProperties, DoToggleReadOnlyProperties, CanExecuteIfObjectLoaded));
             CommandBindings.Add(new CommandBinding(PropertyListCommands.ChangeGridlineBrush, DoEditGridlineBrush, CanExecuteAlways));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleTypesColumn, DoToggleTypesColumn, CanExecuteAlways));
 
             TopPanelForeground = Foreground;
             HeaderForeground = Foreground;
@@ -151,10 +152,12 @@ namespace SolidShineUi.PropertyList
         StackPanel? stkProperties = null;
         TextBlock? txtType = null;
         MenuButton? btnView = null;
+        ColumnDefinition? typesCol = null;
 #else
         StackPanel stkProperties = null;
         TextBlock txtType = null;
         MenuButton btnView = null;
+        ColumnDefinition typesCol = null;
 #endif
 
         void LoadTemplateItems()
@@ -164,8 +167,9 @@ namespace SolidShineUi.PropertyList
                 stkProperties = (StackPanel)GetTemplateChild("PART_PropList");
                 txtType = (TextBlock)GetTemplateChild("PART_TypeLabel");
                 btnView = (MenuButton)GetTemplateChild("PART_ViewButton");
+                typesCol = (ColumnDefinition)GetTemplateChild("PART_TypesCol");
 
-                if (stkProperties != null && txtType != null && btnView != null)
+                if (stkProperties != null && txtType != null && btnView != null && typesCol != null)
                 {
                     itemsLoaded = true;
                 }
@@ -849,23 +853,19 @@ namespace SolidShineUi.PropertyList
             FilterProperties();
         }
 
-        //private void mnuTypesCol_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (mnuTypesCol.IsChecked)
-        //    {
-        //        // hide column
-        //        colTypes.Width = new GridLength(0, GridUnitType.Pixel);
-        //        mnuTypesCol.IsChecked = false;
-        //        splTypes.Visibility = Visibility.Collapsed;
-        //    }
-        //    else
-        //    {
-        //        // show column
-        //        colTypes.Width = new GridLength(40, GridUnitType.Pixel);
-        //        mnuTypesCol.IsChecked = true;
-        //        splTypes.Visibility = Visibility.Visible;
-        //    }
-        //}
+        private void DoToggleTypesColumn(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ShowTypesColumn)
+            {
+                // hide column
+                ShowTypesColumn = false;
+            }
+            else
+            {
+                // show column
+                ShowTypesColumn = true;
+            }
+        }
 
         private void DoToggleInheritedProperties(object sender, ExecutedRoutedEventArgs e)
         {
@@ -1248,28 +1248,6 @@ namespace SolidShineUi.PropertyList
 
         #region Visual Elements
 
-#if NETCOREAPP
-        private void ColumnWidthChanged(object? sender, EventArgs e)
-        {
-            if (stkProperties == null) return;
-
-            foreach (UIElement? item in stkProperties.Children)
-            {
-#else
-        private void ColumnWidthChanged(object sender, EventArgs e)
-        {
-            if (stkProperties == null) return;
-
-            foreach (UIElement item in stkProperties.Children)
-            {
-#endif
-                if (item is PropertyEditorItem pei)
-                {
-                    //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
-                }
-            }
-        }
-
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             ReloadObject();
@@ -1607,6 +1585,33 @@ namespace SolidShineUi.PropertyList
             = DependencyProperty.Register("HeaderDividerBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
+        #endregion
+
+        #region Types Column
+
+        /// <summary>
+        /// Get or set if the Types column should be visible in the control.
+        /// </summary>
+        public bool ShowTypesColumn { get => (bool)GetValue(ShowTypesColumnProperty); set => SetValue(ShowTypesColumnProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowTypesColumn"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowTypesColumnProperty
+            = DependencyProperty.Register(nameof(ShowTypesColumn), typeof(bool), typeof(PropertyList),
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<PropertyList>((o) => o.UpdateTypesColumnSize())));
+
+        void UpdateTypesColumnSize()
+        {
+            if (typesCol == null) return;
+
+            if (ShowTypesColumn)
+            {
+                typesCol.Width = new GridLength(40, GridUnitType.Pixel);
+            }
+            else
+            {
+                typesCol.Width = new GridLength(0, GridUnitType.Pixel);
+            }
+        }
         #endregion
 
         #endregion

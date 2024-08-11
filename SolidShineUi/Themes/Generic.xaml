@@ -2047,7 +2047,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                         <MenuItem Header="Show Read-only Values" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
                                                   Command="{x:Static pl:PropertyListCommands.ToggleReadOnlyProperties}" />
                                         <Separator />
-                                        <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" IsEnabled="False" />
+                                        <MenuItem Header="Show Types Column" IsChecked="{TemplateBinding ShowTypesColumn}"
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleTypesColumn}" />
                                         <!--<Separator />
                                         <MenuItem Header="Show Gridlines" IsChecked="{TemplateBinding ShowGridlines}" 
                                                   Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />
@@ -2059,9 +2060,9 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                         </Grid>
                         <Grid Grid.Row="3" x:Name="grdHeader" Background="{TemplateBinding HeaderBackground}" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100" MinWidth="50" x:Name="colNames" SharedSizeGroup="plNames" />
-                                <ColumnDefinition Width="0" x:Name="colTypes" SharedSizeGroup="plTypes" />
-                                <ColumnDefinition Width="1*" x:Name="colValues" />
+                                <ColumnDefinition Width="100" MinWidth="50" SharedSizeGroup="plNames" />
+                                <ColumnDefinition Width="0" x:Name="PART_TypesCol" SharedSizeGroup="plTypes" />
+                                <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblName"
@@ -2070,8 +2071,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                     Background="{TemplateBinding HeaderDividerBrush}" />
                             <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblType"
                                     Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding TypeHeaderLabel}" />
-                            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Collapsed"
-                                    Background="{TemplateBinding HeaderDividerBrush}" x:Name="splTypes" />
+                            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Visible"
+                                    Background="{TemplateBinding HeaderDividerBrush}" x:Name="PART_TypesSplitter" />
                             <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblValue"
                                     Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding ValueHeaderLabel}" />
                         </Grid>
