@@ -303,7 +303,7 @@ namespace SolidShineUi
             }
         }
 
-        private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<TabItem> e)
+        private void Items_ItemRemoving(object sender, CancelableItemEventArgs<TabItem> e)
         {
             if (_internalAction) return;
             if (e.Item != null)
@@ -1111,7 +1111,7 @@ namespace SolidShineUi
     /// <summary>
     /// Event arguments for the TabClosing event in TabControl.
     /// </summary>
-    public class TabItemClosingEventArgs
+    public class TabItemClosingEventArgs : CancelEventArgs
     {
         /// <summary>
         /// Create a TabItemClosingEventArgs.
@@ -1126,11 +1126,6 @@ namespace SolidShineUi
         /// The TabItem being closed (and removed from the TabControl).
         /// </summary>
         public TabItem TabItem { get; private set; }
-
-        /// <summary>
-        /// Get or set if this operation should be cancelled. If <c>true</c>, this tab will not be closed and removed from the TabControl.
-        /// </summary>
-        public bool Cancel { get; set; } = false;
     }
 
     /// <summary>
