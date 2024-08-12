@@ -12,7 +12,7 @@ namespace SolidShineUi
     /// <summary>
     /// Available options for creating high-contrast color schemes. These are based upon color schemes available through Windows's High Contrast options.
     /// </summary>
-    public enum HighContrastOption
+    public enum HighContrastOption 
     {
         /// <summary>
         /// A white foreground on a black background.

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -516,11 +517,24 @@ namespace SolidShineUi
 
         #region Menu
 
+        /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuProperty
+            = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(SplitButton),
+            new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<SplitButton>((o) => o.OnMenuChanged(e))));
+
         /// <summary>
-        /// The backing dependency property for <see cref="Menu"/>. Please see the related property for more details.
+        /// Raised when the <see cref="Menu"/> property is changed.
         /// </summary>
-        public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(SplitButton),
-            new PropertyMetadata(null));
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? MenuChanged;
+#else
+        public event DependencyPropertyChangedEventHandler MenuChanged;
+#endif
+
+        private void OnMenuChanged(DependencyPropertyChangedEventArgs e)
+        {
+            MenuChanged?.Invoke(this, e);
+        }
 
 #if NETCOREAPP
         /// <summary>
@@ -534,9 +548,19 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// This event is raised when this SplitButton's menu is closed.
+        /// This event is raised when this SplitButton's menu is about to open.
         /// </summary>
-        public EventHandler? MenuClosed;
+        public event CancelEventHandler? MenuOpening;
+
+        /// <summary>
+        /// This event is raised when this SplitButton's menu has been opened.
+        /// </summary>
+        public event EventHandler? MenuOpened;
+
+        /// <summary>
+        /// This event is raised when this SplitButton's menu has been closed.
+        /// </summary>
+        public event EventHandler? MenuClosed;
 #else
         /// <summary>
         /// Get or set the menu that appears when the menu button is clicked.
@@ -549,9 +573,19 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// This event is raised when this SplitButton's menu is closed.
+        /// This event is raised when this SplitButton's menu is about to open.
         /// </summary>
-        public EventHandler MenuClosed;
+        public event CancelEventHandler MenuOpening;
+
+        /// <summary>
+        /// This event is raised when this SplitButton's menu has been opened.
+        /// </summary>
+        public event EventHandler MenuOpened;
+
+        /// <summary>
+        /// This event is raised when this SplitButton's menu has been closed.
+        /// </summary>
+        public event EventHandler MenuClosed;
 #endif
 
         /// <summary>
@@ -634,6 +668,12 @@ namespace SolidShineUi
         {
             if (Menu != null)
             {
+                // first, raise MenuOpening event
+                CancelEventArgs ce = new CancelEventArgs(false);
+                MenuOpening?.Invoke(this, ce);
+                if (ce.Cancel) return;
+
+                // then, set up the full menu and show it
                 Menu.Placement = MenuPlacement;
                 Menu.PlacementTarget = MenuPlacementTarget ?? this;
                 Menu.PlacementRectangle = MenuPlacementRectangle;
@@ -641,6 +681,9 @@ namespace SolidShineUi
                 Menu.VerticalOffset = -1;
                 Menu.IsOpen = true;
                 Menu.Closed += Menu_Closed;
+
+                // finally, we can raise the MenuOpened event
+                MenuOpened?.Invoke(this, EventArgs.Empty);
             }
 
             RoutedEventArgs rre = new RoutedEventArgs(MenuClickEvent);
@@ -795,7 +838,7 @@ namespace SolidShineUi
                 {
                     if (f._runSelChangeEvent)
                     {
-                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, SelectionChangeTrigger.CodeUnknown, null);
+                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, IsSelectedProperty, SelectionChangeTrigger.CodeUnknown, null);
                         f.RaiseEvent(re);
                     }
                 }
@@ -855,7 +898,7 @@ namespace SolidShineUi
             IsSelected = value;
             _runSelChangeEvent = true;
 
-            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, IsSelectedProperty, triggerMethod, triggerSource);
             RaiseEvent(re);
         }
 

@@ -54,6 +54,7 @@ namespace SolidShineUi.PropertyList
             CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleInheritedProperties, DoToggleInheritedProperties, CanExecuteIfObjectLoaded));
             CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleReadOnlyProperties, DoToggleReadOnlyProperties, CanExecuteIfObjectLoaded));
             CommandBindings.Add(new CommandBinding(PropertyListCommands.ChangeGridlineBrush, DoEditGridlineBrush, CanExecuteAlways));
+            CommandBindings.Add(new CommandBinding(PropertyListCommands.ToggleTypesColumn, DoToggleTypesColumn, CanExecuteAlways));
 
             TopPanelForeground = Foreground;
             HeaderForeground = Foreground;
@@ -136,6 +137,11 @@ namespace SolidShineUi.PropertyList
             base.OnApplyTemplate();
 
             LoadTemplateItems();
+
+            if (btnView != null && btnView.Menu != null)
+            {
+                btnView.Menu.ColorScheme = ColorScheme;
+            }
         }
 
         bool itemsLoaded = false;
@@ -145,9 +151,13 @@ namespace SolidShineUi.PropertyList
 #if NETCOREAPP
         StackPanel? stkProperties = null;
         TextBlock? txtType = null;
+        MenuButton? btnView = null;
+        ColumnDefinition? typesCol = null;
 #else
         StackPanel stkProperties = null;
         TextBlock txtType = null;
+        MenuButton btnView = null;
+        ColumnDefinition typesCol = null;
 #endif
 
         void LoadTemplateItems()
@@ -156,8 +166,10 @@ namespace SolidShineUi.PropertyList
             {
                 stkProperties = (StackPanel)GetTemplateChild("PART_PropList");
                 txtType = (TextBlock)GetTemplateChild("PART_TypeLabel");
+                btnView = (MenuButton)GetTemplateChild("PART_ViewButton");
+                typesCol = (ColumnDefinition)GetTemplateChild("PART_TypesCol");
 
-                if (stkProperties != null && txtType != null)
+                if (stkProperties != null && txtType != null && btnView != null && typesCol != null)
                 {
                     itemsLoaded = true;
                 }
@@ -248,6 +260,11 @@ namespace SolidShineUi.PropertyList
 
             //btnRefresh.ColorScheme = cs;
             //mnuView.ColorScheme = cs;
+
+            if (btnView != null && btnView.Menu != null)
+            {
+                btnView.Menu.ColorScheme = cs;
+            }
 
             //// set up icons
             // TODO: update control template to change icon colors based upon SsuiTheme
@@ -836,23 +853,19 @@ namespace SolidShineUi.PropertyList
             FilterProperties();
         }
 
-        //private void mnuTypesCol_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (mnuTypesCol.IsChecked)
-        //    {
-        //        // hide column
-        //        colTypes.Width = new GridLength(0, GridUnitType.Pixel);
-        //        mnuTypesCol.IsChecked = false;
-        //        splTypes.Visibility = Visibility.Collapsed;
-        //    }
-        //    else
-        //    {
-        //        // show column
-        //        colTypes.Width = new GridLength(40, GridUnitType.Pixel);
-        //        mnuTypesCol.IsChecked = true;
-        //        splTypes.Visibility = Visibility.Visible;
-        //    }
-        //}
+        private void DoToggleTypesColumn(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ShowTypesColumn)
+            {
+                // hide column
+                ShowTypesColumn = false;
+            }
+            else
+            {
+                // show column
+                ShowTypesColumn = true;
+            }
+        }
 
         private void DoToggleInheritedProperties(object sender, ExecutedRoutedEventArgs e)
         {
@@ -1029,6 +1042,16 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Rune?), typeof(CharEditor));
 #endif
             RegisterEditor(typeof(Cursor), typeof(CursorEditor));
+            RegisterEditor(typeof(TimeSpan), typeof(TimeSpanEditor));
+            RegisterEditor(typeof(TimeSpan?), typeof(TimeSpanEditor));
+            RegisterEditor(typeof(DateTime), typeof(DateTimeEditor));
+            RegisterEditor(typeof(DateTime?), typeof(DateTimeEditor));
+#if NET6_0_OR_GREATER
+            RegisterEditor(typeof(DateOnly), typeof(DateTimeEditor));
+            RegisterEditor(typeof(DateOnly?), typeof(DateTimeEditor));
+            RegisterEditor(typeof(TimeOnly), typeof(TimeSpanEditor));
+            RegisterEditor(typeof(TimeOnly?), typeof(TimeSpanEditor));
+#endif
         }
 
         #region Generator Property Editors / Editor Value Changed
@@ -1040,6 +1063,11 @@ namespace SolidShineUi.PropertyList
         void GeneratePropertyEditors(IEnumerable<PropertyInfo> properties)
         {
             if (stkProperties == null) return; // kinda need that if I'm gonna actually do anything
+
+            //foreach (object item in stkProperties.Children)
+            //{
+            //    RemoveLogicalChild(item);
+            //}
             stkProperties.Children.Clear();
 
             Type baseType = _baseObject?.GetType() ?? typeof(object);
@@ -1087,6 +1115,7 @@ namespace SolidShineUi.PropertyList
                 pei.ShowGridlines = ShowGridlines;
                 pei.GridlineBrush = GridlineBrush;
 
+                //AddLogicalChild(pei);
                 stkProperties.Children.Add(pei);
             }
         }
@@ -1224,28 +1253,6 @@ namespace SolidShineUi.PropertyList
 #endregion
 
         #region Visual Elements
-
-#if NETCOREAPP
-        private void ColumnWidthChanged(object? sender, EventArgs e)
-        {
-            if (stkProperties == null) return;
-
-            foreach (UIElement? item in stkProperties.Children)
-            {
-#else
-        private void ColumnWidthChanged(object sender, EventArgs e)
-        {
-            if (stkProperties == null) return;
-
-            foreach (UIElement item in stkProperties.Children)
-            {
-#endif
-                if (item is PropertyEditorItem pei)
-                {
-                    //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
-                }
-            }
-        }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
@@ -1586,6 +1593,33 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
+        #region Types Column
+
+        /// <summary>
+        /// Get or set if the Types column should be visible in the control.
+        /// </summary>
+        public bool ShowTypesColumn { get => (bool)GetValue(ShowTypesColumnProperty); set => SetValue(ShowTypesColumnProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowTypesColumn"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowTypesColumnProperty
+            = DependencyProperty.Register(nameof(ShowTypesColumn), typeof(bool), typeof(PropertyList),
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<PropertyList>((o) => o.UpdateTypesColumnSize())));
+
+        void UpdateTypesColumnSize()
+        {
+            if (typesCol == null) return;
+
+            if (ShowTypesColumn)
+            {
+                typesCol.Width = new GridLength(40, GridUnitType.Pixel);
+            }
+            else
+            {
+                typesCol.Width = new GridLength(0, GridUnitType.Pixel);
+            }
+        }
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -1597,24 +1631,26 @@ namespace SolidShineUi.PropertyList
         public static string PrettifyPropertyType(Type type, bool fullName = false)
         {
             string typeString = type.FullName ?? "(no type name)";
-            string baseName = type.Name;
+            string baseName = type.Name ?? "(no type name)";
 
             if (type.IsGenericType)
             {
                 var generics = type.GetGenericArguments();
 
-                if (typeString.StartsWith("System.Nullable"))
+                if (typeString.StartsWith("System.Nullable")) // used for nullable struct types (i.e. changing "Nullable<bool>" to just "bool?")
                 {
                     return (fullName ? generics[0].FullName : generics[0].Name) + "?";
                 }
 
-                string basebase = (fullName ? (type.GetGenericTypeDefinition().FullName ?? "System.Object") : baseName).Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("`4", "").Replace("`5", "");
+                // remove default display of a generic type that includes this apostrophe-number thing lol
+                string basebase = (fullName ? (type.GetGenericTypeDefinition().FullName ?? "System.Object") : baseName)
+                    .Replace("`1", "").Replace("`2", "").Replace("`3", "").Replace("`4", "").Replace("`5", "").Replace("`6", "");
 
-                if (generics.Length == 1)
+                if (generics.Length == 1) // if it's just 1 generic argument (i.e. "List<string>")
                 {
                     return basebase + "<" + (fullName ? generics[0].FullName : generics[0].Name) + ">";
                 }
-                else
+                else // more than 1 generic argument (i.e. "Dictionary<int, string>")
                 {
                     return basebase + "<" + string.Join(",", generics.Select(x => fullName ? x.FullName : x.Name)) + ">";
                 }

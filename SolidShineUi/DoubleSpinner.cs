@@ -147,18 +147,20 @@ namespace SolidShineUi
         /// A dependency property object backing the <see cref="Decimals"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty DecimalsProperty = DependencyProperty.Register(
-            "Decimals", typeof(int), typeof(DoubleSpinner), new PropertyMetadata(2));
+            "Decimals", typeof(byte), typeof(DoubleSpinner), new PropertyMetadata((byte)15));
 
         ///<summary>
         /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.
         ///</summary>
         ///<remarks>
-        /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 2.
+        /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 15.
+        /// Trailing zeros are not displayed if a value doesn't have the full decimal precision; instead, this property is more
+        /// meant to provide a built-in rounding feature as needed.
         ///</remarks>
         [Category("Common")]
-        public int Decimals
+        public byte Decimals
         {
-            get => (int)GetValue(DecimalsProperty);
+            get => (byte)GetValue(DecimalsProperty);
             set => SetValue(DecimalsProperty, value);
         }
 

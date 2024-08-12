@@ -11,7 +11,8 @@ namespace SolidShineUi
     /// </summary>
     /// <remarks>
     /// This is similar to the <see cref="System.Windows.Controls.Primitives.RepeatButton"/>. One major difference is that this activates a separate Execute event
-    /// over and over while this button is being pressed, rather than activating the Click event. This provides some finer control over 
+    /// over and over while this button is being pressed, rather than activating the Click event. This provides some finer control over when certain events or actions
+    /// are raised/performed (as you could have a separate action for Click and Execute, for example; if this is your scenario, please also see <see cref="ExecuteOnFirstClick"/>).
     /// </remarks>
     public class FlatRepeatButton : FlatButton
     {

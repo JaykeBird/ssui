@@ -354,7 +354,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             Close();
         }
 
-        private void selList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void selList_SelectionChanged(object sender, RoutedSelectionChangedEventArgs<IClickSelectableControl> e)
         {
             if (propList.Visibility == Visibility.Visible)
             {

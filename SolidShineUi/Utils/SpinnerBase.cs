@@ -623,6 +623,8 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <remarks>
         /// See the <see cref="ArithmeticParser"/> class for more info about how expressions are parsed.
+        /// (For spinners that don't interact with numbers (like <see cref="StringSpinner"/> or <see cref="TimeSpinner"/>), this property does not do anything.
+        /// For <see cref="IntegerSpinner"/> and <see cref="LongSpinner"/>, this is ignored if <c>DisplayAsHex</c> is set to <c>true</c>.)
         /// </remarks>
         [Category("Common")]
         public bool AcceptExpressions
@@ -716,6 +718,8 @@ namespace SolidShineUi.Utils
         /// <para/>
         /// For <see cref="DoubleSpinner"/>, this only modifies the integral (integer) part of the number; use the <see cref="DoubleSpinner.Decimals"/> property 
         /// for modifying how many numbers to display after the decimal point.
+        /// <para/>
+        /// For spinners that don't interact with numbers (like <see cref="StringSpinner"/> and <see cref="TimeSpinner"/>), this property will not do anything.
         /// </remarks>
         [Category("Common")]
         public int MinimumDigitCount
@@ -898,7 +902,9 @@ namespace SolidShineUi.Utils
         }
 
         #endregion
+    
     }
+
 
     /// <summary>
     /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
@@ -908,7 +914,22 @@ namespace SolidShineUi.Utils
     /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
     /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="SpinnerBase"/>.
     /// </remarks>
-    public abstract class NumericSpinnerBase<T> : SpinnerBase where T : IEquatable<T>, IComparable<T>
+    public abstract class NumericSpinnerBase<T> : NumericSpinnerBase<T, T> where T : IEquatable<T>, IComparable<T>
+    {
+
+    }
+
+    /// <summary>
+    /// A base class for Solid Shine UI's spinner controls that interact with numbers (such as <see cref="IntegerSpinner"/> and <see cref="DoubleSpinner"/>).
+    /// This particular base class should be used when a different data type is used for the <c>Step</c> property than the other value properties.
+    /// </summary>
+    /// <typeparam name="T">The data type supported by the spinner.</typeparam>
+    /// <typeparam name="TStep">The data type used for the <c>Step</c> property (if different from <typeparamref name="T"/>)</typeparam>
+    /// <remarks>
+    /// This provides some underlying logic (and enforces the existence of certain properties) for spinners that interact with numbers.
+    /// Spinner controls that don't interact with numbers should instead just inherit from <see cref="SpinnerBase"/>.
+    /// </remarks>
+    public abstract class NumericSpinnerBase<T, TStep> : SpinnerBase where T : IEquatable<T>, IComparable<T>
     {
         /// <summary>
         /// Get or set the value of the spinner.
@@ -930,7 +951,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
         /// </summary>
-        public abstract T Step { get; set; }
+        public abstract TStep Step { get; set; }
 
         /// <summary>
         /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.

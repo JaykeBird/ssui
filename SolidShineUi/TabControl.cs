@@ -82,11 +82,9 @@ namespace SolidShineUi
 #if NETCOREAPP
         ItemsControl? ic = null;
         ScrollViewer? sv = null;
-        Border? ch = null;
 #else
         ItemsControl ic = null;
         ScrollViewer sv = null;
-        Border ch = null;
 #endif
 
         void LoadTemplateItems()
@@ -95,9 +93,8 @@ namespace SolidShineUi
             {
                 ic = (ItemsControl)GetTemplateChild("PART_TabBar");
                 sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
-                ch = (Border)GetTemplateChild("PART_Content");
 
-                if (ic != null && sv != null && ch != null)
+                if (ic != null && sv != null)
                 {
                     sv.ScrollChanged += sv_ScrollChanged;
                     ic.SizeChanged += control_SizeChanged;
@@ -306,7 +303,7 @@ namespace SolidShineUi
             }
         }
 
-        private void Items_ItemRemoving(object sender, ItemRemovingEventArgs<TabItem> e)
+        private void Items_ItemRemoving(object sender, CancelableItemEventArgs<TabItem> e)
         {
             if (_internalAction) return;
             if (e.Item != null)
@@ -1114,7 +1111,7 @@ namespace SolidShineUi
     /// <summary>
     /// Event arguments for the TabClosing event in TabControl.
     /// </summary>
-    public class TabItemClosingEventArgs
+    public class TabItemClosingEventArgs : CancelEventArgs
     {
         /// <summary>
         /// Create a TabItemClosingEventArgs.
@@ -1129,11 +1126,6 @@ namespace SolidShineUi
         /// The TabItem being closed (and removed from the TabControl).
         /// </summary>
         public TabItem TabItem { get; private set; }
-
-        /// <summary>
-        /// Get or set if this operation should be cancelled. If <c>true</c>, this tab will not be closed and removed from the TabControl.
-        /// </summary>
-        public bool Cancel { get; set; } = false;
     }
 
     /// <summary>

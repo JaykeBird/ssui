@@ -119,6 +119,9 @@ namespace SsuiSample
 #if NETCOREAPP
             public Rune RuneChar { get; set; } = new Rune('r');
 
+            public DateOnly ReallyOldDay { get; set; } = DateOnly.FromDayNumber(2614); // lol I dunno a random number
+
+            public TimeOnly AfterNoon { get; set; } = new TimeOnly(12, 23, 40);
 #endif
 
             public Color? ColCol { get; set; } = Colors.Orange;
@@ -128,6 +131,8 @@ namespace SsuiSample
             public Thickness? NullThickness { get; set; } = null;
 
             public Version VerVersion { get; set; } = new Version(1, 9, 5);
+
+            public DateTime? OldTime { get; set; } = new DateTime(1981, 06, 12, 15, 16, 20);
         }
     }
 }

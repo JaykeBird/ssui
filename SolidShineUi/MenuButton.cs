@@ -1,10 +1,12 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace SolidShineUi
@@ -42,12 +44,26 @@ namespace SolidShineUi
         }
 
         #region Menu
+        
+        /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
+        public static DependencyProperty MenuProperty
+            = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(MenuButton),
+            new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<MenuButton>((o) => o.OnMenuChanged(e))));
 
         /// <summary>
-        /// The backing dependency property for <see cref="Menu"/>. See the related property for more details.
+        /// Raised when the <see cref="Menu"/> property is changed.
         /// </summary>
-        public static readonly DependencyProperty MenuProperty = DependencyProperty.Register("Menu", typeof(ContextMenu), typeof(MenuButton),
-            new PropertyMetadata(null));
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? MenuChanged;
+#else
+        public event DependencyPropertyChangedEventHandler MenuChanged;
+#endif
+
+        private void OnMenuChanged(DependencyPropertyChangedEventArgs e)
+        {
+            MenuChanged?.Invoke(this, e);
+        }
+
 
 #if NETCOREAPP
         /// <summary>
@@ -61,9 +77,20 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// This event is raised when this MenuButtons's menu is closed.
+        /// This event is raised when this MenuButton's menu is about to open.
         /// </summary>
-        public EventHandler? MenuClosed;
+        public event CancelEventHandler? MenuOpening;
+
+        /// <summary>
+        /// This event is raised when this MenuButton's menu has been opened.
+        /// </summary>
+        public event EventHandler? MenuOpened;
+
+        /// <summary>
+        /// This event is raised when this MenuButton's menu has been closed.
+        /// </summary>
+        public event EventHandler? MenuClosed;
+
 #else
         /// <summary>
         /// Get or set the menu that appears when the button is clicked.
@@ -76,9 +103,19 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// This event is raised when this MenuButtons's menu is closed.
+        /// This event is raised when this MenuButton's menu is about to open.
         /// </summary>
-        public EventHandler MenuClosed;
+        public event CancelEventHandler MenuOpening;
+
+        /// <summary>
+        /// This event is raised when this MenuButton's menu has been opened.
+        /// </summary>
+        public event EventHandler MenuOpened;
+
+        /// <summary>
+        /// This event is raised when this MenuButton's menu has been closed.
+        /// </summary>
+        public event EventHandler MenuClosed;
 #endif
 
         /// <summary>
@@ -206,7 +243,7 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 
-        /// (via <see cref="System.Windows.Controls.Control.HorizontalContentAlignment"/>).
+        /// (via <see cref="Control.HorizontalContentAlignment"/>).
         /// </summary>
         [Category("Common")]
         public bool KeepMenuArrowOnRight
@@ -236,6 +273,12 @@ namespace SolidShineUi
         {
             if (Menu != null)
             {
+                // first, raise MenuOpening event
+                CancelEventArgs ce = new CancelEventArgs(false);
+                MenuOpening?.Invoke(this, ce);
+                if (ce.Cancel) return;
+
+                // then, set up the full menu and show it
                 Menu.Placement = MenuPlacement;
                 Menu.PlacementTarget = MenuPlacementTarget ?? this;
                 Menu.PlacementRectangle = MenuPlacementRectangle;
@@ -243,6 +286,9 @@ namespace SolidShineUi
                 Menu.VerticalOffset = MenuVerticalOffset;
                 Menu.IsOpen = true;
                 Menu.Closed += Menu_Closed;
+
+                // finally, we can raise the MenuOpened event
+                MenuOpened?.Invoke(this, EventArgs.Empty);
             }
         }
     }

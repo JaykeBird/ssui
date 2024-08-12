@@ -122,19 +122,19 @@ namespace SsuiSample
 
         #region Select Panel Event Listeners
 
-        private void selPanel_ItemsAdded(object sender, CollectionSelectionChangedEventArgs e)
+        private void selPanel_ItemsAdded(object sender, RoutedSelectionChangedEventArgs<IClickSelectableControl> e)
         {
             lblTotalItems.Text = selPanel.Items.Count.ToString();
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();
         }
 
-        private void selPanel_ItemsRemoved(object sender, CollectionSelectionChangedEventArgs e)
+        private void selPanel_ItemsRemoved(object sender, RoutedSelectionChangedEventArgs<IClickSelectableControl> e)
         {
             lblTotalItems.Text = selPanel.Items.Count.ToString();
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();
         }
 
-        private void selPanel_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
+        private void selPanel_SelectionChanged(object sender, RoutedSelectionChangedEventArgs<IClickSelectableControl> e)
         {
             lblTotalItems.Text = selPanel.Items.Count.ToString();
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();

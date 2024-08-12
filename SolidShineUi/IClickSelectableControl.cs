@@ -115,6 +115,28 @@ namespace SolidShineUi
             TriggerSource = triggerSource;
         }
 
+        /// <summary>
+        /// Create a new ItemSelectionChangedEventArgs, with a related DependencyProperty.
+        /// </summary>
+        /// <param name="ev">the routed event associated with these routed event args</param>
+        /// <param name="oldValue">The old IsSelected value.</param>
+        /// <param name="newValue">The new IsSelected value.</param>
+        /// <param name="trigger">The trigger method that caused the value to be updated.</param>
+        /// <param name="triggerSource">The source object that updated the value (if available).</param>
+        /// <param name="sourceProperty">The dependency property related to this event change (if available).</param>
+#if NETCOREAPP
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, DependencyProperty? sourceProperty, SelectionChangeTrigger trigger, object? triggerSource = null) : base(ev, triggerSource)
+#else
+        public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, DependencyProperty sourceProperty, SelectionChangeTrigger trigger, object triggerSource = null) : base(ev, triggerSource)
+#endif
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
+            TriggerMethod = trigger;
+            TriggerSource = triggerSource;
+            Property = sourceProperty;
+        }
+
 
         /// <summary>
         /// The old value of the IsSelected property.
@@ -137,6 +159,16 @@ namespace SolidShineUi
 #else
         public object TriggerSource { get; private set; }
 #endif
+
+        /// <summary>
+        /// The dependency property related to this event, if applicable.
+        /// </summary>
+#if NETCOREAPP
+        public DependencyProperty? Property { get; private set; } = null;
+#else
+        public DependencyProperty Property { get; private set; } = null;
+#endif
+
     }
 
     /// <summary>

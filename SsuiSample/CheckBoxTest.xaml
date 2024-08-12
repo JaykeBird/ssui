@@ -18,12 +18,13 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,130,0,0" Text="Tri-state check box" VerticalAlignment="Top" />
         <flat:CheckBox x:Name="chkDisabled2" HorizontalAlignment="Left" Margin="275,150,0,0" VerticalAlignment="Top" IsEnabled="False" Content="Check box" CheckState="Checked" ColorScheme="{Binding ColorScheme, ElementName=control}" />
         <TextBlock HorizontalAlignment="Left" Margin="275,130,0,0" Text="Disabled checked check box" VerticalAlignment="Top"/>
-        <flat:CheckBox x:Name="chkContent" HorizontalAlignment="Left" Margin="20,220,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" >
+        <flat:CheckBox x:Name="chkContent" HorizontalAlignment="Left" Margin="20,220,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" HorizontalContentAlignment="Center" >
             <flat:FlatButton Width="120" Content="Button" ColorScheme="{Binding ColorScheme, ElementName=control}" />
         </flat:CheckBox>
         <TextBlock HorizontalAlignment="Left" Margin="20,200,0,0" Text="Check box with a button inside" VerticalAlignment="Top" />
-        <flat:CheckBox x:Name="chkLimited" HorizontalAlignment="Left" Margin="20,290,0,0" VerticalAlignment="Top" Content="Clicking on this text will do nothing" OnlyAllowCheckBoxClick="True" ColorScheme="{Binding ColorScheme, ElementName=control}" />
-        <TextBlock HorizontalAlignment="Left" Margin="20,270,0,0" Text="Check box, only clicking on box will activate" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,270,0,0" Text="Check box, with the check box placed on top" VerticalAlignment="Top" />
+        <flat:CheckBox x:Name="chkTop" HorizontalAlignment="Left" Margin="20,291,0,0" VerticalAlignment="Top" Padding="0"
+                       Content="This checkbox is on top of the text!" BoxPlacement="Top" ColorScheme="{Binding ColorScheme, ElementName=control}"/>
         <flat:CheckBox x:Name="chkColored" HorizontalAlignment="Left" Margin="20,375,0,0" VerticalAlignment="Top" Content="Check box" ColorScheme="{Binding ColorScheme, ElementName=control}"
                        BorderThickness="2" BorderSelectionThickness="3" CheckBackground="LightGreen" CornerRadius="3" />
         <TextBlock HorizontalAlignment="Left" Margin="20,355,0,0" Text="Check box with colors!" VerticalAlignment="Top"/>

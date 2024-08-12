@@ -557,7 +557,7 @@ namespace SolidShineUi
                 {
                     if (f._runSelChangeEvent)
                     {
-                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, SelectionChangeTrigger.CodeUnknown, null);
+                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, IsSelectedProperty, SelectionChangeTrigger.CodeUnknown, null);
                         f.RaiseEvent(re);
                     }
                 }
@@ -617,7 +617,7 @@ namespace SolidShineUi
             IsSelected = value;
             _runSelChangeEvent = true;
 
-            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, IsSelectedProperty, triggerMethod, triggerSource);
             RaiseEvent(re);
         }
         #endregion

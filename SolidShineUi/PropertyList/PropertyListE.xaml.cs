@@ -18,7 +18,9 @@ namespace SolidShineUi.PropertyList
 {
     /// <summary>
     /// A control that can display the properties and values of a .NET object, with support for live editing of many of them.
+    /// This is the old version used in the Solid Shine UI 1.9 releases; please transition to the new <see cref="PropertyList"/> control.
     /// </summary>
+    [Obsolete("This is the old ExperimentalPropertyList control used in Solid Shine UI 1.9; please transition to the new PropertyList control.")]
     public partial class ExperimentalPropertyList : UserControl
     {
         /// <summary>
