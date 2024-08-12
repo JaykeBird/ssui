@@ -82,11 +82,9 @@ namespace SolidShineUi
 #if NETCOREAPP
         ItemsControl? ic = null;
         ScrollViewer? sv = null;
-        Border? ch = null;
 #else
         ItemsControl ic = null;
         ScrollViewer sv = null;
-        Border ch = null;
 #endif
 
         void LoadTemplateItems()
@@ -95,9 +93,8 @@ namespace SolidShineUi
             {
                 ic = (ItemsControl)GetTemplateChild("PART_TabBar");
                 sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
-                ch = (Border)GetTemplateChild("PART_Content");
 
-                if (ic != null && sv != null && ch != null)
+                if (ic != null && sv != null)
                 {
                     sv.ScrollChanged += sv_ScrollChanged;
                     ic.SizeChanged += control_SizeChanged;

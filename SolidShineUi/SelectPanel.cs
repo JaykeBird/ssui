@@ -54,10 +54,8 @@ namespace SolidShineUi
         bool itemsLoaded = false;
 
 #if NETCOREAPP
-        ItemsControl? ic = null;
         ScrollViewer? sv = null;
 #else
-        ItemsControl ic = null;
         ScrollViewer sv = null;
 #endif
 
@@ -65,10 +63,9 @@ namespace SolidShineUi
         {
             if (!itemsLoaded)
             {
-                ic = (ItemsControl)GetTemplateChild("PART_Ic");
                 sv = (ScrollViewer)GetTemplateChild("PART_Sv");
 
-                if (ic != null && sv != null)
+                if (sv != null)
                 {
                     itemsLoaded = true;
                 }
