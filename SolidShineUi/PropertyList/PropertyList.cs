@@ -1063,6 +1063,11 @@ namespace SolidShineUi.PropertyList
         void GeneratePropertyEditors(IEnumerable<PropertyInfo> properties)
         {
             if (stkProperties == null) return; // kinda need that if I'm gonna actually do anything
+
+            //foreach (object item in stkProperties.Children)
+            //{
+            //    RemoveLogicalChild(item);
+            //}
             stkProperties.Children.Clear();
 
             Type baseType = _baseObject?.GetType() ?? typeof(object);
@@ -1110,6 +1115,7 @@ namespace SolidShineUi.PropertyList
                 pei.ShowGridlines = ShowGridlines;
                 pei.GridlineBrush = GridlineBrush;
 
+                //AddLogicalChild(pei);
                 stkProperties.Children.Add(pei);
             }
         }
