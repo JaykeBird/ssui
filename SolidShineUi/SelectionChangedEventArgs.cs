@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+#if AVALONIA
+using Avalonia.Interactivity;
+#else
 using System.Windows;
+#endif
 
 namespace SolidShineUi
 {

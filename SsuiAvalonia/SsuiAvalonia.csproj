@@ -36,6 +36,7 @@
     <Compile Include="..\SolidShineUi\Keyboard\RoutedEventKeyAction.cs" Link="Keyboard\RoutedEventKeyAction.cs" />
     <Compile Include="..\SolidShineUi\LinkTextBlock.cs" Link="LinkTextBlock.cs" />
     <Compile Include="..\SolidShineUi\SelectableCollection.cs" Link="SelectableCollection.cs" />
+    <Compile Include="..\SolidShineUi\SelectionChangedEventArgs.cs" Link="SelectionChangedEventArgs.cs" />
     <Compile Include="..\SolidShineUi\Utils\LimitableStringCollection.cs" Link="Utils\LimitableStringCollection.cs" />
     <Compile Include="..\SolidShineUi\Utils\PartialValueHelper.cs" Link="Utils\PartialValueHelper.cs" />
     <Compile Include="..\SolidShineUi\WildcardMatch.cs" Link="WildcardMatch.cs" />
