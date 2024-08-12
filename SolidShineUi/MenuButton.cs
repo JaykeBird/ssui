@@ -89,7 +89,7 @@ namespace SolidShineUi
         /// <summary>
         /// This event is raised when this MenuButton's menu has been closed.
         /// </summary>
-        public event RoutedEventHandler? MenuClosed;
+        public event EventHandler? MenuClosed;
 
 #else
         /// <summary>
@@ -115,7 +115,7 @@ namespace SolidShineUi
         /// <summary>
         /// This event is raised when this MenuButton's menu has been closed.
         /// </summary>
-        public event RoutedEventHandler MenuClosed;
+        public event EventHandler MenuClosed;
 #endif
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace SolidShineUi
 
         private void Menu_Closed(object sender, RoutedEventArgs e)
         {
-            MenuClosed?.Invoke(this, e);
+            MenuClosed?.Invoke(this, EventArgs.Empty);
         }
 
         #region Placement
