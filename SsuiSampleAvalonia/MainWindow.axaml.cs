@@ -12,13 +12,17 @@ namespace SsuiSampleAvalonia
     {
         ColorScheme cs = new ColorScheme(Avalonia.Media.Colors.CornflowerBlue);
 
+        public ColorScheme ColorScheme { get => GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
+            = AvaloniaProperty.Register<MainWindow, ColorScheme>(nameof(ColorScheme), new ColorScheme());
+
         public MainWindow()
         {
             InitializeComponent();
 
-            btnMain.ColorScheme = cs;
-            mnuMain.ColorScheme = cs;
-            btnSplit.ColorScheme = cs;
+            ColorScheme = cs;
             Background = cs.BackgroundColor.ToBrush();
 
             MenuItem mi = mnuNew;
