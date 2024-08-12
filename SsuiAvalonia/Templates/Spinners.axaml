@@ -13,7 +13,7 @@
             <StackPanel>
                 <flat:IntegerSpinner Value="25" />
                 <flat:LongSpinner Value="15" ShowArrows="False" />
-                <flat:DoubleSpinner Step="0.2" Decimals="2" />
+                <flat:DoubleSpinner Step="0.2" Decimals="1" Width="190" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>

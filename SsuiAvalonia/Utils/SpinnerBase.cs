@@ -337,6 +337,47 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #region ColorScheme
+
+        /// <summary>
+        /// Get or set the color scheme used for this spinner. For easier color scheme management, bind this to the window or larger control you're using.
+        /// </summary>
+        public ColorScheme ColorScheme { get => GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
+            = AvaloniaProperty.Register<SpinnerBase, ColorScheme>(nameof(ColorScheme), new ColorScheme());
+
+        void OnColorSchemeChange(AvaloniaPropertyChangedEventArgs e)
+        {
+            ApplyColorScheme(e.GetNewValue<ColorScheme>());
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            BorderBrush = cs.BorderColor.ToBrush();
+            DisabledBrush = cs.LightDisabledColor.ToBrush();
+            BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+
+            ButtonBackground = cs.IsHighContrast ? cs.BackgroundColor.ToBrush() : cs.SecondaryColor.ToBrush();
+
+            ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            HighlightBrush = cs.HighlightColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+        }
+
+        #endregion
+
         #region Properties
 
         #region Property Listeners
@@ -356,6 +397,9 @@ namespace SolidShineUi.Utils
                     break;
                 case nameof(RepeatDelay):
                     OnRepeatDelayChanged();
+                    break;
+                case nameof(ColorScheme):
+                    OnColorSchemeChange(change);
                     break;
             }
         }
