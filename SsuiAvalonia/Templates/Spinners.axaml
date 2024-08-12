@@ -1,18 +1,181 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:flat="clr-namespace:SolidShineUi" >
+                    xmlns:flat="clr-namespace:SolidShineUi"
+                    xmlns:ssut="clr-namespace:SolidShineUi.Utils" >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
-    </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary.MergedDictionaries>    
 
     <!-- Add Resources Here -->
     <Design.PreviewWith>
         <Border Margin="10" >
             <StackPanel>
-                
+                <flat:IntegerSpinner Value="15" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
+
+    <ssut:CornerRadiusModifierConverter x:Key="CrModConverter" />
+
+    <ControlTheme x:Key="{x:Type flat:IntegerSpinner}" TargetType="flat:IntegerSpinner">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type flat:IntegerSpinner}">
+                <Border x:Name="PART_SpinnerBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" >
+                    <!--<Border.OpacityMask>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Border Background="Black" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                                        CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource CrModConverter}, ConverterParameter=0.5}" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Border.OpacityMask>-->
+                    <Grid Background="{TemplateBinding Background}" >
+                        <Grid Margin="{TemplateBinding BorderThickness}" ColumnDefinitions="1*,Auto" >
+                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" MinHeight="18" CornerRadius="0" />
+                            <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" BorderBrush="{TemplateBinding BorderBrush}" >
+                                <Grid RowDefinitions="1*,1*" >
+                                    <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
+                                                 Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
+                                                 Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                 ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                        <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
+                                    </flat:FlatRepeatButton>
+                                    <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
+                                                 Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
+                                                 Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                 ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                        <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L8,0 L4,4 z" />
+                                    </flat:FlatRepeatButton>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <Border IsHitTestVisible="False" Grid.ColumnSpan="2" CornerRadius="{TemplateBinding CornerRadius}" x:Name="visBorder"
+                                BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <!--<ControlTemplate.Triggers>
+                        <Trigger Property="ShowArrows" Value="False">
+                            <Setter TargetName="colArrows" Property="Width" Value="0" />
+                            <Setter TargetName="PART_btnStepUp" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_btnStepDown" Property="IsEnabled" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>-->
+
+        <Style Selector="^[IsAtMaxValue=True] /template/ flat|FlatRepeatButton#PART_btnStepUp">
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^[IsAtMinValue=True] /template/ flat|FlatRepeatButton#PART_btnStepDown">
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^:disabled /template/ Border#PART_SpinnerBorder">
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
+        <Style Selector="^:disabled /template/ Border#brdr_Divider">
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
+        <Style Selector="^:disabled /template/ Border#visBorder">
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
+        <Style Selector="^[ShowArrows=False] /template/ flat|FlatRepeatButton#PART_btnStepUp">
+            <Setter Property="Width" Value="0" />
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^[ShowArrows=False] /template/ flat|FlatRepeatButton#PART_btnStepDown">
+            <Setter Property="Width" Value="0" />
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^[ShowArrows=False] /template/ Border#brdr_Divider">
+            <Setter Property="BorderThickness" Value="0,0,0,0" />
+        </Style>
+        
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type flat:LongSpinner}" TargetType="flat:LongSpinner">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type flat:LongSpinner}">
+                <Border x:Name="PART_SpinnerBorder" BorderBrush="{TemplateBinding BorderBrush}" >
+                    <!--<Border.OpacityMask>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Border Background="Black" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                                        CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource CrModConverter}, ConverterParameter=0.5}" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Border.OpacityMask>-->
+                    <Grid Background="{TemplateBinding Background}" >
+                        <Grid Margin="{TemplateBinding BorderThickness}" ColumnDefinitions="1*,Auto" >
+                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" />
+                            <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" BorderBrush="{TemplateBinding BorderBrush}" >
+                                <Grid RowDefinitions="1*,1*" >
+                                    <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
+                                                 Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
+                                                 Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                 ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                        <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
+                                    </flat:FlatRepeatButton>
+                                    <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
+                                                 Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
+                                                 Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                 ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                        <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L8,0 L4,4 z" />
+                                    </flat:FlatRepeatButton>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <Border IsHitTestVisible="False" Grid.ColumnSpan="2" CornerRadius="{TemplateBinding CornerRadius}" x:Name="visBorder"
+                                BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <!--<ControlTemplate.Triggers>
+                        <Trigger Property="ShowArrows" Value="False">
+                            <Setter TargetName="colArrows" Property="Width" Value="0" />
+                            <Setter TargetName="PART_btnStepUp" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_btnStepDown" Property="IsEnabled" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>-->
+
+        <Style Selector="^[IsAtMaxValue=True] /template/ flat|FlatRepeatButton#PART_btnStepUp">
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^[IsAtMinValue=True] /template/ flat|FlatRepeatButton#PART_btnStepDown">
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^:disabled /template/ Border#PART_SpinnerBorder">
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
+        <Style Selector="^:disabled /template/ Border#brdr_Divider">
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
+        <Style Selector="^:disabled /template/ Border#visBorder">
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+        </Style>
+        <Style Selector="^[ShowArrows=False] /template/ flat|FlatRepeatButton#PART_btnStepUp">
+            <Setter Property="Width" Value="0" />
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^[ShowArrows=False] /template/ flat|FlatRepeatButton#PART_btnStepDown">
+            <Setter Property="Width" Value="0" />
+            <Setter Property="IsEnabled" Value="False" />
+        </Style>
+        <Style Selector="^[ShowArrows=False] /template/ Border#brdr_Divider">
+            <Setter Property="BorderThickness" Value="0,0,0,0" />
+        </Style>
+
+    </ControlTheme>
 
 </ResourceDictionary>

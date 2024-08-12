@@ -119,6 +119,8 @@ namespace SolidShineUi
         #region Template IO
 
         TextBox? txtValue;
+        FlatRepeatButton? btnStepUp;
+        FlatRepeatButton? btnStepDown;
 
         bool itemsLoaded = false;
 
@@ -146,6 +148,13 @@ namespace SolidShineUi
 
                     itemsLoaded = true;
                 }
+
+                // Avalonia doesn't include a command system out of the box (usually I think most people rely upon Reactive), so for now, I'll need to call these events this way
+                btnStepUp = (FlatRepeatButton?)e.NameScope.Find("PART_btnStepUp");
+                btnStepDown = (FlatRepeatButton?)e.NameScope.Find("PART_btnStepDown");
+
+                if (btnStepUp != null) { btnStepUp.Execute += (s, e) => DoStepUp(); }
+                if (btnStepDown != null) { btnStepDown.Execute += (s, e) => DoStepDown(); }
             }
         }
 

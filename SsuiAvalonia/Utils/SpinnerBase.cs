@@ -77,7 +77,7 @@ namespace SolidShineUi.Utils
         //public static Command StepUp { get; } = new RoutedCommand("StepUp", typeof(SpinnerBase));
 
         ///// <summary>A WPF command that when executed, will decrease a spinner's value by its <c>Step</c> amount</summary>
-        //public static RoutedCommand StepDown { get; } = new RoutedCommand("StepDown", typeof(SpinnerBase));
+        //public static Command StepDown { get; } = new RoutedCommand("StepDown", typeof(SpinnerBase));
 
         #endregion
 
@@ -339,6 +339,29 @@ namespace SolidShineUi.Utils
 
         #region Properties
 
+        #region Property Listeners
+
+        /// <inheritdoc/>
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            switch (change.Property.Name)
+            {
+                case nameof(Interval):
+                    OnIntervalChanged();
+                    break;
+                case nameof(ShowArrows):
+                    OnShowArrowsChanged();
+                    break;
+                case nameof(RepeatDelay):
+                    OnRepeatDelayChanged();
+                    break;
+            }
+        }
+
+        #endregion
+
         #region RepeatDelayProperty
 
         /// <summary>
@@ -350,7 +373,6 @@ namespace SolidShineUi.Utils
         /// <summary>The backing styled property for <see cref="RepeatDelay"/>. See the related property for details.</summary>
         public static readonly StyledProperty<double> RepeatDelayProperty
             = AvaloniaProperty.Register<SpinnerBase, double>(nameof(RepeatDelay), 300.0);
-
 
         /// <summary>
         /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
@@ -379,41 +401,45 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-        #region CornerRadiusProperty
+        #region IntervalProperty
 
         /// <summary>
-        /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
+        /// Get or set the rate of repeatedly stepping up or down while a button is held, in milliseconds. Default is 50 milliseconds.
         /// </summary>
-        public static readonly RoutedEvent CornerRadiusChangedEvent = RoutedEvent.Register<SpinnerBase, RoutedEventArgs>(
-            "CornerRadiusChanged", RoutingStrategies.Bubble);
+        /// <remarks>
+        /// While holding down a button, once the <see cref="RepeatDelay"/> time period is reached, then stepping begins to occur repeatedly, at the rate
+        /// specified in this property. This continues until the button is no longer held, or the <c>MaxValue</c> or <c>MinValue</c> is reached.
+        /// </remarks>
+        [Category("Common")]
+        public int Interval { get => GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="Interval"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<int> IntervalProperty
+            = AvaloniaProperty.Register<SpinnerBase, int>(nameof(Interval), 50);
+
+        /// <summary>
+        /// The routed event object for the <see cref="IntervalChanged"/> event. See the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent IntervalChangedEvent = RoutedEvent.Register<SpinnerBase, RoutedEventArgs>(
+            "IntervalChanged", RoutingStrategies.Bubble);
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
         /// </summary>
-        public event EventHandler<RoutedEventArgs> CornerRadiusChanged
+        public event EventHandler<RoutedEventArgs> IntervalChanged
         {
-            add { AddHandler(CornerRadiusChangedEvent, value); }
-            remove { RemoveHandler(CornerRadiusChangedEvent, value); }
+            add { AddHandler(IntervalChangedEvent, value); }
+            remove { RemoveHandler(IntervalChangedEvent, value); }
         }
 
         /// <summary>
-        /// Update internal values based upon a change in the <see cref="CornerRadius"/> property.
+        /// Update internal values based upon a change in the <see cref="Interval"/> property.
         /// </summary>
-        protected virtual void OnCornerRadiusChanged()
+        protected virtual void OnIntervalChanged()
         {
-            RoutedEventArgs re = new RoutedEventArgs(CornerRadiusChangedEvent);
+            RoutedEventArgs re = new RoutedEventArgs(IntervalChangedEvent);
             RaiseEvent(re);
         }
-
-        /// <summary>
-        /// Get or set the corner radius to use around the corners of this control. Setting the corner radius to a value other than 0 displays rounded corners.
-        /// </summary>
-        [Category("Appearance")]
-        public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
-            = AvaloniaProperty.Register<SpinnerBase, CornerRadius>(nameof(CornerRadius), new CornerRadius(0));
 
         #endregion
 
@@ -431,7 +457,6 @@ namespace SolidShineUi.Utils
         /// <summary>The backing styled property for <see cref="AcceptExpressions"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> AcceptExpressionsProperty
             = AvaloniaProperty.Register<SpinnerBase, bool>(nameof(AcceptExpressions), true);
-
 
         #endregion
 
@@ -491,7 +516,6 @@ namespace SolidShineUi.Utils
         /// <summary>The backing styled property for <see cref="MinimumDigitCount"/>. See the related property for details.</summary>
         public static readonly StyledProperty<int> MinimumDigitCountProperty
             = AvaloniaProperty.Register<SpinnerBase, int>(nameof(MinimumDigitCount), 0, defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
-
 
         #endregion
 
