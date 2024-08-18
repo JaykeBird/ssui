@@ -38,7 +38,7 @@
                     </Border.OpacityMask>-->
                     <Grid Background="{TemplateBinding Background}" >
                         <Grid Margin="{TemplateBinding BorderThickness}" ColumnDefinitions="1*,Auto" >
-                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" MinHeight="18" CornerRadius="0" />
+                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Background="#01FFFFFF" MinHeight="18" CornerRadius="0" />
                             <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" BorderBrush="{TemplateBinding BorderBrush}" >
                                 <Grid RowDefinitions="1*,1*" >
                                     <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
@@ -112,7 +112,7 @@
                     </Border.OpacityMask>-->
                     <Grid Background="{TemplateBinding Background}" >
                         <Grid Margin="{TemplateBinding BorderThickness}" ColumnDefinitions="1*,Auto" >
-                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" MinHeight="18" CornerRadius="0" />
+                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Background="#01FFFFFF" MinHeight="18" CornerRadius="0" />
                             <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" BorderBrush="{TemplateBinding BorderBrush}" >
                                 <Grid RowDefinitions="1*,1*" >
                                     <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
@@ -186,7 +186,7 @@
                     </Border.OpacityMask>-->
                     <Grid Background="{TemplateBinding Background}" >
                         <Grid Margin="{TemplateBinding BorderThickness}" ColumnDefinitions="1*,Auto" >
-                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" MinHeight="18" CornerRadius="0" />
+                            <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Background="#01FFFFFF" MinHeight="18" CornerRadius="0" />
                             <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" BorderBrush="{TemplateBinding BorderBrush}" >
                                 <Grid RowDefinitions="1*,1*" >
                                     <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
