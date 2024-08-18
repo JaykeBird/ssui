@@ -236,18 +236,19 @@ namespace SolidShineUi
             _updateBox = false;
             if (DisplayAsHex)
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out int newVal))
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out int newVal)) // the inputted value is a valid int, so let's make it the new value
                 {
                     Value = newVal;
                 }
             }
             else
             {
-                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out int newVal))
+                if (int.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out int newVal)) // the inputted value is a valid int, so let's make it the new value
                 {
                     Value = newVal;
+                    // Note: the property change system won't run again if the updated Value is actually the same as the current Value (i.e. the property didn't actually change)
                 }
-                else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
+                else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text)) // okay... not a number... maybe it's a math expression?
                 {
                     try
                     {

@@ -380,7 +380,7 @@ namespace SolidShineUi.Utils
 
         #region Properties
 
-        #region Property Listeners
+        #region Property Change Listener
 
         /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -568,7 +568,8 @@ namespace SolidShineUi.Utils
         #region Base Functions
 
         /// <summary>
-        /// Update visual appearance, based upon internal values and the current state. This should be overridden in controls that inherit this class.
+        /// Update the spinner's appearance, most notably the value actually displayed in the text box, by taking into account the current state and values. 
+        /// This should be overridden in controls that inherit this class to provide actual functionality.
         /// </summary>
         protected virtual void UpdateUI()
         {
@@ -594,7 +595,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Handle the process of updating value properties. Should be overridden in classes that inherit this, in order to perform validation or other functions.
+        /// Handles the process of updating value properties. Should be overridden in classes that inherit this, in order to perform validation or other functions.
         /// </summary>
         /// <param name="e">Event args from the related <see cref="ValueChanged"/> event.</param>
         protected virtual void UpdateValue(AvaloniaPropertyChangedEventArgs e)
@@ -604,7 +605,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Increase the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
+        /// Increase the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class to provide actual functionality.
         /// </summary>
         protected virtual void DoStepUp()
         {
@@ -612,7 +613,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Decrease the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class.
+        /// Decrease the spinner's value by whatever the Step value is. Should be overridden in controls that inherit this class to provide actual functionality.
         /// </summary>
         protected virtual void DoStepDown()
         {
@@ -623,8 +624,45 @@ namespace SolidShineUi.Utils
 
         #region TextBox/Arrow Functions
 
+        ///// <summary>
+        ///// The text box that displays the current Value, and that users can type a new Value into.
+        ///// </summary>
+        //protected TextBox? txtValue;
+
+        ///// <summary>
+        ///// Set up and connect to the TextBox. This should be called in controls that inherit this class, in the section where the control applies its template.
+        ///// </summary>
+        ///// <param name="tb"></param>
+        //protected void SetTextBox(TextBox tb)
+        //{
+        //    txtValue = tb;
+
+        //    txtValue.TextChanged += txtValue_TextChanged;
+        //    txtValue.LostFocus += txtValue_LostFocus;
+        //    txtValue.KeyDown += (s, e) => TextBoxKeyDown(e);
+        //    txtValue.KeyUp += (s, e) => TextBoxKeyUp(e);
+        //}
+
+        //private void txtValue_LostFocus(object? sender, RoutedEventArgs e)
+        //{
+        //    ValidateValue();
+        //}
+
+        //private void txtValue_TextChanged(object? sender, TextChangedEventArgs e)
+        //{
+            
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //protected virtual void TextBoxChange()
+        //{
+
+        //}
+
         /// <summary>
-        /// Handle the functionality for pressing a key in the text box of a spinner control.
+        /// Handles the functionality for pressing a key in the text box of a spinner control.
         /// </summary>
         /// <param name="e">The KeyEventArgs for the related event (from the child object).</param>
         protected void TextBoxKeyDown(KeyEventArgs e)
@@ -647,7 +685,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Handle the functionality for releasing a key in the text box of a spinner control.
+        /// Handles the functionality for releasing a key in the text box of a spinner control.
         /// </summary>
         protected void TextBoxKeyUp(KeyEventArgs e)
         {

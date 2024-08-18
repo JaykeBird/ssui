@@ -176,21 +176,37 @@ namespace SolidShineUi
         /// <inheritdoc/>
         protected override void DoStepDown()
         {
-            if (Value >= MinValue) Value -= Step;
+            if (Value >= MinValue)
+            {
+                double newVal = Math.Round(Value - Step, Decimals);
+                if (newVal < MinValue)
+                {
+                    newVal = MinValue;
+                }
+                Value = newVal;
+            }
             else Value = MinValue;
         }
 
         /// <inheritdoc/>
         protected override void DoStepUp()
         {
-            if (Value <= MaxValue) Value += Step;
+            if (Value <= MaxValue)
+            {
+                double newVal = Math.Round(Value + Step, Decimals);
+                if (newVal > MaxValue)
+                {
+                    newVal = MaxValue;
+                }
+                Value = newVal;
+            }
             else Value = MaxValue;
         }
 
         /// <inheritdoc/>
         protected override void UpdateUI()
         {
-            base.UpdateUI();
+            base.UpdateUI(); // right now, SpinnerBase's UpdateUI does nothing, but I put this here just in case that changes in the future
 
             string digitDisplay = "G";
             if (MinimumDigitCount > 0) { digitDisplay = new string('0', MinimumDigitCount) + "." + new string('#', Decimals + 1); }
@@ -218,11 +234,12 @@ namespace SolidShineUi
             }
 
             _updateBox = false;
-            if (double.TryParse(txtValue.Text, out _))
+            if (double.TryParse(txtValue.Text, out _)) // the inputted value is a valid double, so let's make it the new value
             {
                 Value = Math.Round(double.Parse(txtValue.Text), Decimals);
+                // Note: the property change system won't run again if the updated Value is actually the same as the current Value (i.e. the property didn't actually change)
             }
-            else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text ?? ""))
+            else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text ?? "")) // okay... not a number... maybe it's a math expression?
             {
                 try
                 {

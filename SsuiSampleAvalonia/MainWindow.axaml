@@ -71,6 +71,7 @@
             </flat:SplitButton.Menu>
         </flat:SplitButton>
         
-        <flat:DoubleSpinner Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Height="24" VerticalAlignment="Stretch" Margin="10,0" x:Name="dbl" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+        <flat:DoubleSpinner Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Height="24" VerticalAlignment="Stretch" Margin="10,0" x:Name="dbl" 
+                            ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Step="0.2" Decimals="3" />
     </Grid>
 </Window>
