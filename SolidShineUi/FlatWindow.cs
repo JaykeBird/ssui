@@ -647,6 +647,7 @@ namespace SolidShineUi
         public void DisableMaximizeAction()
         {
             NativeMethods.DisableMaximizeAction(this);
+            CaptionDisplayType = CaptionDisplayType.RemoveMaximizeButton();
         }
 
         /// <summary>
@@ -656,6 +657,7 @@ namespace SolidShineUi
         public void DisableMinimizeAction()
         {
             NativeMethods.DisableMinimizeAction(this);
+            CaptionDisplayType = CaptionDisplayType.RemoveMinimizeButton();
         }
 
         /// <summary>
@@ -665,6 +667,8 @@ namespace SolidShineUi
         public void DisableMaximizeAndMinimizeActions()
         {
             NativeMethods.DisableMinimizeAndMaximizeActions(this);
+            CaptionDisplayType = CaptionDisplayType.RemoveMaximizeButton();
+            CaptionDisplayType = CaptionDisplayType.RemoveMinimizeButton();
         }
 
         /// <summary>
