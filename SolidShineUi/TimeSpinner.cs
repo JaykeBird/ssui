@@ -71,6 +71,8 @@ namespace SolidShineUi
         {
             // set up ValidateValue to run whenever these properties are updated (Value)
             AddPropertyChangedTrigger(ValueProperty, typeof(TimeSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(TimeSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(TimeSpinner));
 
             CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
             CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
