@@ -87,23 +87,23 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets the margin (spacing) around each of the caption buttons.
         /// </summary>
-        public Thickness MarginButton
+        public Thickness ButtonMargin
         {
             get
             {
-                return (Thickness) GetValue(MarginButtonProperty);
+                return (Thickness) GetValue(ButtonMarginProperty);
             }
             set
             {
-                SetValue(MarginButtonProperty, value);
+                SetValue(ButtonMarginProperty, value);
             }
         }
 
         /// <summary>
         /// The backing dependency property object for a related property. See that property for more details.
         /// </summary>
-        public static readonly DependencyProperty MarginButtonProperty = DependencyProperty.Register(
-             "MarginButton", typeof(Thickness), typeof(ChromeButtons));
+        public static readonly DependencyProperty ButtonMarginProperty = DependencyProperty.Register(
+             "ButtonMargin", typeof(Thickness), typeof(ChromeButtons));
         #endregion
 
         #region Caption Type
