@@ -77,10 +77,11 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty ButtonPaddingProperty = DependencyProperty.Register(
              "ButtonPadding", typeof(Thickness), typeof(ChromeButtons), new FrameworkPropertyMetadata(new Thickness(9, 7, 9, 7)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         // TODO: rename to ButtonMargin
         /// <summary>
@@ -91,7 +92,6 @@ namespace SolidShineUi
             get
             {
                 return (Thickness) GetValue(MarginButtonProperty);
-                
             }
             set
             {
@@ -99,40 +99,14 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty MarginButtonProperty = DependencyProperty.Register(
              "MarginButton", typeof(Thickness), typeof(ChromeButtons));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         #endregion
 
         #region Caption Type
-        /// <summary>
-        /// Determines which caption buttons will appear on a window.
-        /// </summary>
-        public enum CaptionType
-        {
-            /// <summary>
-            /// Display the close, maximize/restore, and minimize buttons.
-            /// </summary>
-            Full,
-            /// <summary>
-            /// Display only the close button.
-            /// </summary>
-            Close,
-            /// <summary>
-            /// Display only the close and minimize buttons.
-            /// </summary>
-            MinimizeClose,
-            /// <summary>
-            /// Display only the close and maximize/restore buttons.
-            /// </summary>
-            MaximizeClose,
-            /// <summary>
-            /// Do not display any caption buttons.
-            /// (Note that hiding caption buttons alone doesn't prevent users from being able to perform their actions via other methods.)
-            /// </summary>
-            None
-        }
 
         /// <summary>
         /// Gets or sets the visibility of the caption buttons, specifically which buttons should be visible.
@@ -154,11 +128,13 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty DisplayTypeProperty = DependencyProperty.Register(
             "DisplayType", typeof(CaptionType), typeof(ChromeButtons),
             new PropertyMetadata(CaptionType.Full));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         #endregion
 
         #region Brushes

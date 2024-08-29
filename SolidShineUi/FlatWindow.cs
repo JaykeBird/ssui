@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using static SolidShineUi.ChromeButtons;
 using System.Windows.Shell;
 //using Microsoft.Windows.Shell;
 using System.ComponentModel;
@@ -33,6 +32,8 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Maximized));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow, (_, e) => e.CanExecute = WindowState != WindowState.Normal));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
+
+            DependencyPropertyDescriptor.FromProperty(ResizeModeProperty, typeof(FlatWindow)).AddValueChanged(this, ResizeModeChanged);
         }
 
         #region Native Interop
@@ -226,7 +227,7 @@ namespace SolidShineUi
         {
             get => (CaptionType)GetValue(CaptionDisplayTypeProperty);
             set => SetValue(CaptionDisplayTypeProperty, value);
-            }
+        }
 
         /// <summary>
         /// Gets or sets the amount of padding to use with each of the caption buttons. A higher padding will make the buttons larger.
@@ -237,7 +238,7 @@ namespace SolidShineUi
         {
             get => (Thickness)GetValue(CaptionButtonPaddingProperty);
             set => SetValue(CaptionButtonPaddingProperty, value);
-            }
+        }
 
 #if NETCOREAPP
         private void ResizeModeChanged(object? sender, EventArgs e)
@@ -245,11 +246,18 @@ namespace SolidShineUi
         private void ResizeModeChanged(object sender, EventArgs e)
 #endif
         {
-            get
+            switch (ResizeMode)
             {
-                return captionHeight;
+                case ResizeMode.NoResize:
+                    CaptionDisplayType = CaptionType.Close;
+                    break;
+                case ResizeMode.CanMinimize:
+                    CaptionDisplayType = CaptionType.MinimizeClose;
+                    break;
+                default:
+                    break;
             }
-            }
+        }
 
         #endregion
 
@@ -270,7 +278,7 @@ namespace SolidShineUi
         {
             get => (UIElement)GetValue(TopRightElementProperty);
             set => SetValue(TopRightElementProperty, value);
-            }
+        }
 
         /// <summary>
         /// The backing dependency property object for a related property. See that property for more details.
@@ -304,10 +312,10 @@ namespace SolidShineUi
         /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
         /// </remarks>
         public bool ExcludeTopLeftElementFromChrome
-            {
+        {
             get => (bool)GetValue(ExcludeTopLeftElementFromChromeProperty);
             set => SetValue(ExcludeTopLeftElementFromChromeProperty, value);
-            }
+        }
 
         /// <summary>
         /// The backing dependency property object for a related property. See that property for more details.
@@ -324,10 +332,10 @@ namespace SolidShineUi
         /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
         /// </remarks>
         public bool ExcludeTopRightElementFromChrome
-            {
+        {
             get => (bool)GetValue(ExcludeTopRightElementFromChromeProperty);
             set => SetValue(ExcludeTopRightElementFromChromeProperty, value);
-            }
+        }
 
         #endregion
 
@@ -348,7 +356,7 @@ namespace SolidShineUi
         {
             get => (bool)GetValue(ShowTitleProperty);
             set => SetValue(ShowTitleProperty, value);
-            }
+        }
 
         /// <summary>
         /// The backing dependency property object for <see cref="ShowIcon"/>. See the related property for details.
@@ -365,7 +373,7 @@ namespace SolidShineUi
         {
             get => (bool)GetValue(ShowIconProperty);
             set => SetValue(ShowIconProperty, value);
-            }
+        }
 
         int captionHeight = 29;
 
@@ -397,7 +405,7 @@ namespace SolidShineUi
             };
 
             WindowChrome.SetWindowChrome(this, wc);
-            }
+        }
 
         #endregion
 
@@ -418,7 +426,7 @@ namespace SolidShineUi
         {
             get => (Thickness)GetValue(BorderThicknessProperty);
             set => SetValue(BorderThicknessProperty, value);
-            }
+        }
 
         #region Brushes
 
@@ -430,7 +438,7 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(SelectionBrushProperty);
             set => SetValue(SelectionBrushProperty, value);
-            }
+        }
 
         /// <summary>
         /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) has focus or has the mouse over it.
@@ -440,7 +448,7 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(HighlightBrushProperty);
             set => SetValue(HighlightBrushProperty, value);
-            }
+        }
 
         /// <summary>
         /// Get or set the background brush to use for the caption area (title bar). Use <c>ContentBackground</c> for the content area of the window.
@@ -450,7 +458,7 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(BackgroundProperty);
             set => SetValue(BackgroundProperty, value);
-            }
+        }
 
         /// <summary>
         /// Get or set the brush used for the icons of the caption buttons (in the top-right in non-RTL systems).
@@ -460,7 +468,7 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(CaptionButtonsBrushProperty);
             set => SetValue(CaptionButtonsBrushProperty, value);
-            }
+        }
 
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
@@ -480,7 +488,7 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(BorderBrushProperty);
             set => SetValue(BorderBrushProperty, value);
-            }
+        }
 
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar) when the window isn't focused/active. This has no effect if <c>ShowTitle</c> is false.
@@ -500,7 +508,7 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(InactiveBackgroundProperty);
             set => SetValue(InactiveBackgroundProperty, value);
-            }
+        }
 
         /// <summary>
         /// Get or set the brush used for the background of the content area of the window (where most content and controls are displayed).
@@ -510,7 +518,7 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(ContentBackgroundProperty);
             set => SetValue(ContentBackgroundProperty, value);
-            }
+        }
 
         /// <summary>
         /// The backing dependency property object for a related property. See that property for more details.
