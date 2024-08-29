@@ -447,20 +447,20 @@ namespace SolidShineUi
 
     /// <summary>
     /// Event arguments for an ItemAdding or ItemRemoving event. This is used for when an item is about to be added, or about to be removed.
-    /// This can be cancelled by setting the <c>Cancel</c> property to true in the event handler.
+    /// This can be cancelled by setting the <c>Cancel</c> property to <c>true</c> in the event handler.
     /// </summary>
-    /// <typeparam name="T">Represents the type of item being added.</typeparam>
+    /// <typeparam name="T">Represents the type of item being added/removed/edited.</typeparam>
     public class CancelableItemEventArgs<T> : CancelEventArgs
     {
         /// <summary>
-        /// The item being added.
+        /// The item being added/removed/edited.
         /// </summary>
         public T Item { get; private set; }
 
         /// <summary>
-        /// Create an ItemAddingEventArgs.
+        /// Create a CancelableItemEventArgs.
         /// </summary>
-        /// <param name="item">The item being added.</param>
+        /// <param name="item">The item being added/removed/edited.</param>
         public CancelableItemEventArgs(T item)
         {
             Item = item;
