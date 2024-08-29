@@ -145,15 +145,15 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used when a button is being clicked.
         /// </summary>
-        public Brush SelectionBrush
+        public Brush ClickBrush
         {
             get
             {
-                return (Brush) GetValue(SelectionBrushProperty);
+                return (Brush) GetValue(ClickBrushProperty);
             }
             set
             {
-                SetValue(SelectionBrushProperty, value);
+                SetValue(ClickBrushProperty, value);
             }
         }
 
@@ -175,7 +175,7 @@ namespace SolidShineUi
         /// <summary>
         /// The backing dependency property object for a related property. See that property for more details.
         /// </summary>
-        public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "SelectionBrush", typeof(Brush), typeof(ChromeButtons),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
@@ -192,7 +192,7 @@ namespace SolidShineUi
 
         private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ((Button) sender).Background = SelectionBrush;
+            ((Button) sender).Background = ClickBrush;
         }
 
         private void Button_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

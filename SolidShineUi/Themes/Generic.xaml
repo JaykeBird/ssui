@@ -133,7 +133,7 @@
                                     Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}"
                                     WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
                                         <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
-                                SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                 HighlightBrush="{Binding HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                 ButtonPadding="{Binding CaptionButtonPadding, RelativeSource={RelativeSource TemplatedParent}}"
                                 VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" ButtonMargin="0">
