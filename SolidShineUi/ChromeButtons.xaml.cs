@@ -176,7 +176,7 @@ namespace SolidShineUi
         /// The backing dependency property object for a related property. See that property for more details.
         /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "SelectionBrush", typeof(Brush), typeof(ChromeButtons),
+            "ClickBrush", typeof(Brush), typeof(ChromeButtons),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         /// <summary>

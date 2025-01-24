@@ -128,20 +128,20 @@ namespace SsuiSample
             {
                 if (!chkMinimize.IsChecked)
                 {
-                    fw.CaptionDisplayType = ChromeButtons.CaptionType.Close;
+                    fw.CaptionDisplayType = CaptionType.Close;
                 }
                 else
                 {
-                    fw.CaptionDisplayType = ChromeButtons.CaptionType.MinimizeClose;
+                    fw.CaptionDisplayType = CaptionType.MinimizeClose;
                 }
             }
             else if (!chkMinimize.IsChecked)
             {
-                fw.CaptionDisplayType = ChromeButtons.CaptionType.MaximizeClose;
+                fw.CaptionDisplayType = CaptionType.MaximizeClose;
             }
             else
             {
-                fw.CaptionDisplayType = ChromeButtons.CaptionType.Full;
+                fw.CaptionDisplayType = CaptionType.Full;
             }
 
             // set the window's title bar
