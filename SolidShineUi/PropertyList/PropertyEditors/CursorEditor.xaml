@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="SolidShineUi.PropertyList.PropertyEditors.CursorEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:flat="clr-namespace:SolidShineUi"
+             xmlns:local="clr-namespace:SolidShineUi.PropertyList.PropertyEditors"
+             mc:Ignorable="d" 
+             d:DesignHeight="24" d:DesignWidth="400">
+    <Grid UseLayoutRounding="True" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="28" />
+        </Grid.ColumnDefinitions>
+        <Image x:Name="imgItalic" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/SolidShineUi;component/Images/SelectColor.png" />
+        <flat:EnumComboBox x:Name="cbbCursors" Grid.Column="1" SelectionChanged="cbbCursors_SelectionChanged" SelectedIndex="2" Enum="{x:Type CursorType}" />
+        <Grid Grid.Column="1" x:Name="stkFile" Visibility="Collapsed" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="From File:" VerticalAlignment="Center" Margin="5,0" />
+            <flat:FileSelect Grid.Column="1" Padding="0" FileListPadding="4,-1" AllowMultipleFiles="False" FileFilter="*.ani;*.cur" x:Name="fs" 
+                             SelectionChanged="fs_SelectionChanged" MinHeight="24" Height="24" DisplayFilenames="True" ShowIcon="False" />
+        </Grid>
+        <TextBlock Grid.Column="1" x:Name="txtNull" Text="(set to null)" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" />
+        <!-- Menu -->
+        <flat:MenuButton x:Name="btnMenu" Grid.Column="3" ShowMenuArrow="False" TransparentBack="True" >
+            <StackPanel Orientation="Horizontal">
+                <Image Height="16" Width="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
+            </StackPanel>
+            <flat:MenuButton.Menu>
+                <flat:ContextMenu>
+                    <MenuItem Header="Select System Cursor" x:Name="mnuDropdown" Click="mnuDropdown_Click" IsChecked="True" />
+                    <MenuItem Header="Load Cursor From File" x:Name="mnuFileSelect" Click="mnuFileSelect_Click" />
+                    <Separator />
+                    <MenuItem Header="Set as Null" x:Name="mnuNull" Click="mnuNull_Click" />
+                </flat:ContextMenu>
+            </flat:MenuButton.Menu>
+        </flat:MenuButton>
+    </Grid>
+</UserControl>
