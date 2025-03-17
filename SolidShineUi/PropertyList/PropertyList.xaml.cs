@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Runtime.InteropServices;
 using System.Text;
 using SolidShineUi.Utils;
+using System.Windows.Input;
 
 namespace SolidShineUi.PropertyList
 {
@@ -918,15 +919,7 @@ namespace SolidShineUi.PropertyList
         private Dictionary<Type, Type> registeredEditors = new Dictionary<Type, Type>();
 
 
-#if (NETCOREAPP || NET45_OR_GREATER)
-        /// <summary>
-        /// Get a list of editors currently registered for each property type.
-        /// </summary>
-        /// <remarks>
-        /// The key of the dictionary is a property type. The corresponding value is the type of the editor that will handle viewing and editing that type.
-        /// </remarks>
-        public ReadOnlyDictionary<Type, Type> RegisteredPropertyEditors { get => new ReadOnlyDictionary<Type, Type>(registeredEditors); }
-#else
+#if NET40
         /// <summary>
         /// Get a list of editors currently registered for each property type.
         /// </summary>
@@ -936,6 +929,14 @@ namespace SolidShineUi.PropertyList
         /// .NET Framework 4.0 only: Note that this collection does not stay updated; any changes made to the base value does not stay updated.
         /// </remarks>
         public ReadOnlyCollection<KeyValuePair<Type, Type>> RegisteredPropertyEditors { get => new List<KeyValuePair<Type, Type>>(registeredEditors).AsReadOnly(); }
+#else
+        /// <summary>
+        /// Get a list of editors currently registered for each property type.
+        /// </summary>
+        /// <remarks>
+        /// The key of the dictionary is a property type. The corresponding value is the type of the editor that will handle viewing and editing that type.
+        /// </remarks>
+        public ReadOnlyDictionary<Type, Type> RegisteredPropertyEditors { get => new ReadOnlyDictionary<Type, Type>(registeredEditors); }
 #endif
 
         /// <summary>
@@ -1028,6 +1029,7 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Size?), typeof(SizeEditor));
             RegisterEditor(typeof(Point), typeof(PointEditor));
             RegisterEditor(typeof(Point?), typeof(PointEditor));
+            RegisterEditor(typeof(Cursor), typeof(CursorEditor));
             RegisterEditor(typeof(List<>), typeof(ListEditor));
             RegisterEditor(typeof(IEnumerable<>), typeof(EnumerableEditor));
             RegisterEditor(typeof(Version), typeof(VersionEditor));
