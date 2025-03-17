@@ -28,7 +28,9 @@ namespace SolidShineUi.Utils
 
             buffer = new byte[length];
 
+#pragma warning disable CA2022 // Avoid inexact read with 'Stream.Read' (not going to fix in code that I'll be removed)
             stream.Read(buffer, 0, buffer.Length);
+#pragma warning restore CA2022 // Avoid inexact read with 'Stream.Read'
 
             return Encoding.ASCII.GetString(buffer);
         }
@@ -63,7 +65,9 @@ namespace SolidShineUi.Utils
 
             buffer = new byte[length * 2];
 
+#pragma warning disable CA2022 // Avoid inexact read with 'Stream.Read' (not going to fix in code that I'll be removed)
             stream.Read(buffer, 0, buffer.Length);
+#pragma warning restore CA2022 // Avoid inexact read with 'Stream.Read'
 
             return Encoding.BigEndianUnicode.GetString(buffer);
         }

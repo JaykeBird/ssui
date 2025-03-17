@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using static SolidShineUi.ChromeButtons;
-using System.Windows.Shell;
-//using Microsoft.Windows.Shell;
 using System.ComponentModel;
 using System;
 using System.Windows.Input;
@@ -10,7 +8,12 @@ using System.Windows.Interop;
 using System.Diagnostics;
 using SolidShineUi.Utils;
 using System.Windows.Threading;
-//using Microsoft.Windows.Shell;
+
+#if NET40
+using Microsoft.Windows.Shell;
+#else
+using System.Windows.Shell;
+#endif
 
 namespace SolidShineUi
 {
@@ -89,22 +92,19 @@ namespace SolidShineUi
             //            GlassFrameThickness="0,0,0,1"/>
             //</Setter.Value>
 
-#if (NETCOREAPP || NET45_OR_GREATER)
+#if NET40
+
+            Microsoft.Windows.Shell.WindowChrome wc = new Microsoft.Windows.Shell.WindowChrome();
+#else
             WindowChrome wc = WindowChrome.GetWindowChrome(this) ?? new WindowChrome();
             wc.UseAeroCaptionButtons = false;
-#else
-            Microsoft.Windows.Shell.WindowChrome wc = new Microsoft.Windows.Shell.WindowChrome();
 #endif
             wc.ResizeBorderThickness = new Thickness(4.0);
             wc.CaptionHeight = height;
             wc.CornerRadius = new CornerRadius(0.0);
             wc.GlassFrameThickness = new Thickness(0, 0, 0, 1);
 
-#if (NETCOREAPP || NET45_OR_GREATER)
             WindowChrome.SetWindowChrome(this, wc);
-#else
-            Microsoft.Windows.Shell.WindowChrome.SetWindowChrome(this, wc);
-#endif
         }
 
         #region Native Interop

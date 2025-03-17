@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-#if (NETCOREAPP || NET45_OR_GREATER)
-using System.Windows.Shell;
-#else
+#if NET40
 using Microsoft.Windows.Shell;
+#else
+using System.Windows.Shell;
 #endif
 
 namespace SolidShineUi.Utils
@@ -67,10 +67,10 @@ namespace SolidShineUi.Utils
             {
                 if (e.NewValue is WindowChromeWrapper wcw)
                 {
-#if (NETCOREAPP || NET45_OR_GREATER)
-                    System.Windows.Shell.WindowChrome.SetWindowChrome(window, wcw.BaseWindowChromeObject);
-#else
+#if NET40
                     Microsoft.Windows.Shell.WindowChrome.SetWindowChrome(window, wcw.BaseWindowChromeObject);
+#else
+                    System.Windows.Shell.WindowChrome.SetWindowChrome(window, wcw.BaseWindowChromeObject);
 #endif
                 }
             }
