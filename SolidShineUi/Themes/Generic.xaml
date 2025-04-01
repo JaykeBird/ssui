@@ -476,6 +476,7 @@
                                                           ContentSource="Icon"/>
                                         </Grid>
                                     </Border>
+                                    
                                     <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}"
                                                       x:Name="HeaderHost" RecognizesAccessKey="True"
                                                       ContentSource="Header" VerticalAlignment="Center"/>
@@ -656,7 +657,7 @@
                         <Border Name="Border" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
                             BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
                                 BorderThickness="1" Padding="1" OpacityMask="{x:Null}" >
-                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.IsSharedSizeScope="True" >
                                 <ScrollViewer.Style>
                                     <Style TargetType="{x:Type ScrollViewer}">
                                         <Setter Property="VerticalScrollBarVisibility" Value="{Binding Path=VerticalScrollBarVisibility, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
