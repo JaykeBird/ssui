@@ -16,5 +16,7 @@ jobs:
     - name: Add Nuget Source
       run: dotnet nuget add source https://api.nuget.org/v3/index.json -n "nuget.org"
       continue-on-error: true
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
+    - name: Build SolidShineUi project
+      run: dotnet build .\SolidShineUi\SolidShineUi.csproj --configuration Release
+    - name: Build SsuiSample project
+      run: dotnet build SsuiSample --configuration Release
