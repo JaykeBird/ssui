@@ -169,18 +169,20 @@ namespace SsuiSample
 #pragma warning restore IDE0017 // Simplify object initialization
         #endregion
 
-        private void mnuRectEdit_Click(object sender, RoutedEventArgs e)
-        {
-            SolidShineUi.PropertyList.Dialogs.RectEditDialog red = new SolidShineUi.PropertyList.Dialogs.RectEditDialog(ColorScheme);
+        //private void mnuRectEdit_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SolidShineUi.PropertyList.Dialogs.RectEditDialog red = new SolidShineUi.PropertyList.Dialogs.RectEditDialog(ColorScheme);
 
-            red.SetRect(new Rect(50, 50, 20, 140));
-            red.ShowDialog();
+        //    red.SetRect(new Rect(50, 50, 20, 140));
+        //    red.Owner = this;
+        //    red.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        //    red.ShowDialog();
 
-            if (red.DialogResult)
-            {
-                MessageDialog md = new MessageDialog(ColorScheme);
-                md.ShowDialog(red.GetRect().ToString(), owner: this, title: "Rect Edit Result");
-            }
-        }
+        //    if (red.DialogResult)
+        //    {
+        //        MessageDialog md = new MessageDialog(ColorScheme);
+        //        md.ShowDialog(red.GetRect().ToString(), owner: this, title: "Rect Edit Result");
+        //    }
+        //}
     }
 }
