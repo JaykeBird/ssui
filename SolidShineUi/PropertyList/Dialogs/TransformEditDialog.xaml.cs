@@ -22,6 +22,16 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             InitializeComponent();
             SetupWindow();
+            SourceInitialized += TransformEditDialog_SourceInitialized;
+        }
+
+#if NETCOREAPP
+        private void TransformEditDialog_SourceInitialized(object? sender, EventArgs e)
+#else
+        private void TransformEditDialog_SourceInitialized(object sender, EventArgs e)
+#endif
+        {
+            DisableMinimizeAction();
         }
 
         bool singleEditMode = false;
