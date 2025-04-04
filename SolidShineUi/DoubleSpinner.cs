@@ -154,8 +154,8 @@ namespace SolidShineUi
         ///</summary>
         ///<remarks>
         /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 15.
-        /// Trailing zeros are not displayed if a value doesn't have the full decimal precision; instead, this property is more
-        /// meant to provide a built-in rounding feature as needed.
+        /// The spinner will modify and round the inputted value to make sure it only has at most this many decimal places.
+        /// Excess trailing zeroes are not displayed if a number doesn't need this many decimal places.
         ///</remarks>
         [Category("Common")]
         public byte Decimals
@@ -269,6 +269,7 @@ namespace SolidShineUi
         #endregion
 
         #region TextBox
+
         private void txtValue_TextChanged(object sender, TextChangedEventArgs e)
         {
             // raised when a new value is typed into the textbox
