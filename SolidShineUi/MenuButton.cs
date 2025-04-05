@@ -49,7 +49,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
         public static DependencyProperty MenuProperty
             = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(MenuButton),
-            new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<MenuButton>((o) => o.OnMenuChanged(e))));
+            new FrameworkPropertyMetadata(null, OnMenuChanged));
 
         /// <summary>
         /// Raised when the <see cref="Menu"/> property is changed.
@@ -60,9 +60,12 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler MenuChanged;
 #endif
 
-        private void OnMenuChanged(DependencyPropertyChangedEventArgs e)
+        private static void OnMenuChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            MenuChanged?.Invoke(this, e);
+            if (o is MenuButton mb)
+            {
+                mb.MenuChanged?.Invoke(mb, e);
+            }
         }
 
 
@@ -267,11 +270,6 @@ namespace SolidShineUi
                 // finally, we can raise the MenuOpened event
                 MenuOpened?.Invoke(this, EventArgs.Empty);
             }
-        }
-
-        private void Menu_Closed(object sender, RoutedEventArgs e)
-        {
-            MenuClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 }
