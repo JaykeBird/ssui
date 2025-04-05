@@ -520,7 +520,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
         public static DependencyProperty MenuProperty
             = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(SplitButton),
-            new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<SplitButton>((o) => o.OnMenuChanged(e))));
+            new FrameworkPropertyMetadata(null, OnMenuChanged));
 
         /// <summary>
         /// Raised when the <see cref="Menu"/> property is changed.
@@ -531,9 +531,12 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler MenuChanged;
 #endif
 
-        private void OnMenuChanged(DependencyPropertyChangedEventArgs e)
+        private static void OnMenuChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            MenuChanged?.Invoke(this, e);
+            if (o is SplitButton sp)
+            {
+                sp.MenuChanged?.Invoke(sp, e);
+            }
         }
 
 #if NETCOREAPP
