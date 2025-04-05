@@ -720,7 +720,7 @@
                                 </Style>
                             </Border.Style>
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}">
+                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" RecognizesAccessKey="True" >
                                     <ContentPresenter.Style>
                                         <Style TargetType="{x:Type ContentPresenter}" >
                                             <Setter Property="Opacity" Value="1.0" />
@@ -861,11 +861,12 @@
                                     <StackPanel Orientation="Horizontal" >
                                         <StackPanel.Style>
                                             <Style TargetType="{x:Type StackPanel}">
-                                                <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-                                                <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                                                <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
+                                                <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
                                             </Style>
                                         </StackPanel.Style>
-                                        <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
+                                        <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center"  RecognizesAccessKey="True"
+                                                          Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
                                             <ContentPresenter.Style>
                                                 <Style TargetType="{x:Type ContentPresenter}" >
                                                     <Setter Property="Opacity" Value="1.0" />
@@ -926,7 +927,7 @@
                                     </Path>
                                 </Grid>
                                 <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
-                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
+                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" >
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
                                             <Setter Property="Visibility" Value="Collapsed" />
@@ -1092,7 +1093,7 @@
                                 </Rectangle>
                             </Grid>
                         </Border>
-                        <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="2">
+                        <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="2" RecognizesAccessKey="True">
                             <ContentPresenter.Style>
                                 <Style TargetType="{x:Type ContentPresenter}" >
                                     <Setter Property="Opacity" Value="1.0" />
@@ -1589,7 +1590,7 @@
                             Background="{TemplateBinding Background}" >
                         <ScrollViewer x:Name="PART_Sv" Margin="{TemplateBinding Padding}"
                                       VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" >
-                            <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding ItemsSource}">
+                            <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding ItemsSource}" >
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Vertical" IsItemsHost="True" />
@@ -1844,7 +1845,7 @@
                                     <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </flat:FlatButton.Style>
-                            <ContentPresenter ContentSource="Content" />
+                            <ContentPresenter ContentSource="Content" RecognizesAccessKey="True" />
                         </flat:FlatButton>
                         <flat:FlatButton x:Name="PART_Menu" Padding="0"
                                          BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
