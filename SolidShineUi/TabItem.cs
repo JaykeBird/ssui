@@ -26,6 +26,47 @@ namespace SolidShineUi
 
         }
 
+        /// <summary>
+        /// Create a TabItem, with the title preset.
+        /// </summary>
+        /// <param name="title">The title of this tab.</param>
+        public TabItem(string title) : this()
+        {
+            Title = title;
+        }
+
+        /// <summary>
+        /// Create a TabItem, by copying the properties of an existing TabItem.
+        /// </summary>
+        /// <param name="other">The other TabItem to copy from.</param>
+        /// <remarks>
+        /// The values of the <see cref="Content"/> and <see cref="ExtraTabElement"/> properties are not copied over, as UI elements can only have 1 parent.
+        /// </remarks>
+        public TabItem(TabItem other) : this()
+        {
+            // I don't copy the Content or ExtraTabElement properties, since child UI elements can only have 1 parent
+            // instead, the user should clone these properties themselves or come up with their own solution
+
+            Title = other.Title;
+            IsDirty = other.IsDirty;
+            DisplayDirtyState = other.DisplayDirtyState;
+            CanClose = other.CanClose;
+            ShowIcon = other.ShowIcon;
+            CanSelect = other.CanSelect;
+            Icon = other.Icon;
+            TabBackground = other.TabBackground;
+            Padding = other.Padding;
+            Visibility = other.Visibility;
+            TabContextMenu = other.TabContextMenu;
+            AllowDrop = other.AllowDrop;
+            ToolTip = other.ToolTip;
+            FontSize = other.FontSize;
+            FontStyle = other.FontStyle;
+            FontFamily = other.FontFamily;
+            FontWeight = other.FontWeight;
+            FontStretch = other.FontStretch;
+        }
+
         #region Title
 
         /// <summary>
