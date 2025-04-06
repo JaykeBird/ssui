@@ -75,7 +75,7 @@ namespace SolidShineUi
             br.ViewportUnits = BrushMappingMode.Absolute;
             br.Viewport = new System.Windows.Rect(new System.Windows.Point(0, 0), new System.Windows.Size(image.Width, image.Height));
             br.TileMode = tile;
-            return new ImageBrush(image);
+            return br;
         }
 
         /// <summary>
@@ -86,12 +86,12 @@ namespace SolidShineUi
         /// <returns>An ImageBrush containing this image.</returns>
         public static ImageBrush CreateFromImage(Uri location, TileMode tile)
         {
-            ImageSource image = new BitmapImage(location);
+            BitmapImage image = new BitmapImage(location);
             ImageBrush br = new ImageBrush(image);
             br.ViewportUnits = BrushMappingMode.Absolute;
             br.Viewport = new System.Windows.Rect(new System.Windows.Point(0, 0), new System.Windows.Size(image.Width, image.Height));
             br.TileMode = tile;
-            return new ImageBrush(image);
+            return br;
         }
 
         /// <summary>
