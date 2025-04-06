@@ -198,12 +198,12 @@ namespace SolidShineUi.KeyboardShortcuts
 
 #if (NETCOREAPP || NET45_OR_GREATER)
         /// <summary>
-        /// Write a list of keyboard shortcuts to a file.
+        /// Write a list of keyboard shortcuts to a file asynchronously.
         /// </summary>
         /// <param name="registry">They keyboard shortcut registry to read from.</param>
         /// <param name="file">The file to write to.</param>
         /// <returns>The filename of the file written to. This should match the filename passed in.</returns>
-        public static async Task<string> WriteToFile(KeyRegistry registry, string file)
+        public static async Task<string> WriteToFileAsync(KeyRegistry registry, string file)
         {
             XmlWriter w = XmlWriter.Create(file, new XmlWriterSettings
             {
@@ -233,7 +233,8 @@ namespace SolidShineUi.KeyboardShortcuts
 
             return file;
         }
-#else
+#endif
+
         /// <summary>
         /// Write a list of keyboard shortcuts to a file.
         /// </summary>
@@ -269,7 +270,6 @@ namespace SolidShineUi.KeyboardShortcuts
 
             return file;
         }
-#endif
     }
 
     /// <summary>
