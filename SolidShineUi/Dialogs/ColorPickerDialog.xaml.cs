@@ -652,7 +652,7 @@ namespace SolidShineUi
                     break;
             }
 
-            foreach (SelectableUserControl item in colorList.Items)
+            foreach (IClickSelectableControl item in colorList.Items)
             {
                 if (item is ColorListItem cli)
                 {
@@ -770,12 +770,14 @@ namespace SolidShineUi
         public string InvertButtonLabel { get => btnInvert.Content.ToString() ?? ""; set => btnInvert.Content = value; }
 
         /// <summary>
-        /// Get or set the label to display on the "Invert" button in the Sliders tab; clicking this button inverts the current color. Default is "Invert".
+        /// Get or set the label to display on the "OK" button at the bottom of the dialog; 
+        /// clicking this button tells the calling window/parent to use the the changed color, and closes the dialog. Default is "OK".
         /// </summary>
         public string OkButtonLabel { get => btnOK.Content.ToString() ?? ""; set => btnOK.Content = value; }
 
         /// <summary>
-        /// Get or set the label to display on the "Invert" button in the Sliders tab; clicking this button inverts the current color. Default is "Invert".
+        /// Get or set the label to display on the "Cancel" button at the bottom of the dialog; 
+        /// clicking this button tells the calling window/parent to discard any changes, and closes the dialog. Default is "Cancel".
         /// </summary>
         public string CancelButtonLabel { get => btnCancel.Content.ToString() ?? ""; set => btnCancel.Content = value; }
 
