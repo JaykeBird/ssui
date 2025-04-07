@@ -719,7 +719,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     Text = "Matrix";
                 }
             }
-            else if (transform is TransformGroup tg)
+            else if (transform is TransformGroup)
             {
                 Text = "Transform Group";
             }

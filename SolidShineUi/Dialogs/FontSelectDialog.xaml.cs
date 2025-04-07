@@ -704,6 +704,7 @@ namespace SolidShineUi
             set => txtPreview.Text = value;
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter
         private void txtWeight_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (lstWeight == null)
@@ -723,6 +724,7 @@ namespace SolidShineUi
                 }
             }
         }
+#pragma warning restore IDE0060 // Remove unused parameter
 
         private void lstWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

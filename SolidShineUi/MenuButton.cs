@@ -186,11 +186,10 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ShowMenuArrow"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
             "ShowMenuArrow", typeof(bool), typeof(MenuButton),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
@@ -202,11 +201,10 @@ namespace SolidShineUi
             set => SetValue(ShowMenuArrowProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="KeepMenuArrowOnRight"/>. See the related property for details.</summary>
         public static readonly DependencyProperty KeepMenuArrowOnRightProperty = DependencyProperty.Register(
             "KeepMenuArrowOnRight", typeof(bool), typeof(MenuButton),
             new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 

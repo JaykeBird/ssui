@@ -191,11 +191,10 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindow),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -697,43 +696,51 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>The backing dependency property for <see cref="SelectionBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
             "SelectionBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="Background"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>The backing dependency property for <see cref="CaptionButtonsBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CaptionButtonsBrushProperty = DependencyProperty.Register(
             "CaptionButtonsBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>The backing dependency property for <see cref="CaptionTextBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CaptionTextBrushProperty = DependencyProperty.Register(
             "CaptionTextBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>The backing dependency property for <see cref="InactiveTextBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty InactiveTextBrushProperty = DependencyProperty.Register(
             "InactiveTextBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>The backing dependency property for <see cref="InactiveBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty InactiveBackgroundProperty = DependencyProperty.Register(
             "InactiveBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>The backing dependency property for <see cref="ContentBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
             "ContentBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 

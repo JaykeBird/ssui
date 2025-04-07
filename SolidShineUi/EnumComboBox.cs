@@ -52,7 +52,7 @@ namespace SolidShineUi
             }
         }
 
-        private void OnEnumChanged(DependencyPropertyChangedEventArgs e)
+        private void OnEnumChanged(DependencyPropertyChangedEventArgs _)
         {
             if (Enum.BaseType != typeof(Enum))
             {

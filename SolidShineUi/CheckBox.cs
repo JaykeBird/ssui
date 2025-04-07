@@ -89,11 +89,9 @@ namespace SolidShineUi
         public static readonly RoutedCommand CheckBoxClickCommand = new RoutedCommand();
 
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing routed event for <see cref="CheckBoxClick"/>. See the related event for details.</summary>
         public static readonly RoutedEvent CheckBoxClickEvent = EventManager.RegisterRoutedEvent(
             "CheckBoxClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// An event that raises only when the checkbox itself is clicked.
@@ -120,10 +118,10 @@ namespace SolidShineUi
         //private byte sel = 0;
 
         #region Routed Events
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>The backing routed event for <see cref="CheckChanged"/>. See the related event for details.</summary>
         public static readonly RoutedEvent CheckChangedEvent = EventManager.RegisterRoutedEvent(
             "CheckChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed, either to Checked, Indeterminate, or Unchecked.
@@ -134,10 +132,9 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckChangedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing routed event for <see cref="Checked"/>. See the related property for details.</summary>
         public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent(
             "Checked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed to Checked.
@@ -148,10 +145,9 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing routed event for <see cref="Unchecked"/>. See the related event for details.</summary>
         public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent(
             "Unchecked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed to Unchecked.
@@ -162,10 +158,9 @@ namespace SolidShineUi
             remove { RemoveHandler(UncheckedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing routed event for <see cref="Indeterminate"/>. See the related event for details.</summary>
         public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent(
             "Indeterminate", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CheckState property is changed to Indeterminate.
@@ -177,15 +172,15 @@ namespace SolidShineUi
         }
         #endregion
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="IsChecked"/>. See the related property for details.</summary>
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
             "IsChecked", typeof(bool), typeof(CheckBox),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsCheckedChanged)));
 
+        /// <summary>The backing dependency property for <see cref="IsIndeterminate"/>. See the related property for details.</summary>
         public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register(
             "IsIndeterminate", typeof(bool), typeof(CheckBox),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalIsIndeterminateChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
@@ -218,7 +213,8 @@ namespace SolidShineUi
         private CheckState state;
 
         /// <summary>
-        /// Get or set the state of the checkbox, via a CheckState enum. Can be set via this property or via the IsChecked and IsIndeterminate properties.
+        /// Get or set the state of the checkbox, via a CheckState enum. Can be set via this property,
+        /// or via the <see cref="IsChecked"/> and <see cref="IsIndeterminate"/> properties.
         /// </summary>
         public CheckState CheckState
         {
@@ -572,11 +568,12 @@ namespace SolidShineUi
         //    set => SetValue(BorderSelectedBrushProperty, value);
         //}
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="CheckBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CheckBackgroundProperty = DependencyProperty.Register(
             "CheckBackground", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>The backing dependency property for <see cref="CheckForeground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CheckForegroundProperty = DependencyProperty.Register(
             "CheckForeground", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
@@ -593,45 +590,53 @@ namespace SolidShineUi
         //    "HighlightBrush", typeof(Brush), typeof(CheckBox),
         //    new PropertyMetadata(Colors.LightGray.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="BackgroundDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for <see cref="CheckDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CheckDisabledBrushProperty = DependencyProperty.Register(
             "CheckDisabledBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
             "BorderHighlightBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(CheckBox),
-            new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
+        ///// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
+        //    "BorderSelectedBrush", typeof(Brush), typeof(CheckBox),
+        //    new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
         #endregion
 
         #region Border
 
+        /// <summary>The backing dependency property for <see cref="BorderThickness"/>. See the related property for details.</summary>
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(CheckBox),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(CheckBox),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(CheckBox),
             new PropertyMetadata(new CornerRadius(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border of the check box.
