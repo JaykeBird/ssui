@@ -1074,7 +1074,9 @@ namespace SolidShineUi
         ///<summary>
         /// Get or set if this tab is visible in the UI.
         ///</summary>
+        ///<remarks>This will be removed in version 2.0. Please use <see cref="Visibility"/> instead.</remarks>
         [Category("Appearance")]
+        [Obsolete("This will be removed in version 2.0. Please use Visibility instead.")]
         public bool IsVisible
         {
             get
