@@ -18,7 +18,8 @@
             </Grid.RowDefinitions>
             <Border Background="#44FFFFFF" BorderThickness="1" BorderBrush="#55000000" Margin="20,10,20,20">
                 <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabChanged="tabControl_TabChanged"
-                                 TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" HorizontalTabBarHeight="{Binding ElementName=nudTabBarHeight, Path=Value}" >
+                                 TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" HorizontalTabBarHeight="{Binding ElementName=nudTabBarHeight, Path=Value}"
+                                 ShowTabsOnBottom="{Binding ElementName=chkBottom, Path=IsChecked}" ShowTabListMenu="{Binding ElementName=chkTlm, Path=IsChecked}" >
                     <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png" AllowDrop="True" ToolTip="This is a ToolTip"
                                       DragEnter="TabItem_DragEnter" DragOver="TabItem_DragOver" DragLeave="TabItem_DragLeave" Drop="TabItem_Drop" >
                         <flat:TabItem.TabContextMenu>
@@ -62,9 +63,9 @@
             </StackPanel>
             <ScrollViewer Grid.Row="2" Margin="20,0" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" >
-                    <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged"
+                    <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" 
                                    ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" />
-                    <flat:CheckBox Content="Show tab list menu" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkTlm" CheckChanged="chkTlm_CheckChanged"
+                    <flat:CheckBox Content="Show tab list menu" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkTlm" 
                                    ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" IsChecked="True" />
                     <TextBlock Margin="10,0,5,0" Text="Minimum tab width:" VerticalAlignment="Center" />
                     <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
