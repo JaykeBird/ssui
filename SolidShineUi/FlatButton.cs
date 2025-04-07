@@ -521,7 +521,12 @@ namespace SolidShineUi
         /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
         /// </summary>
         /// <param name="hco">The high-contrast color scheme to apply.</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
+        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. 
+        /// This can also be achieved with the <c>TransparentBack</c> property.</param>
+        /// <remarks>
+        /// This method will be removed in version 2.0. Instead, use <see cref="ApplyColorScheme(ColorScheme)"/> and use
+        /// <see cref="ColorScheme.GetHighContrastScheme(HighContrastOption)"/> to acquire the high contrast theme.
+        /// </remarks>
         [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
             "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
         public void ApplyColorScheme(HighContrastOption hco, bool transparentBack = false)
