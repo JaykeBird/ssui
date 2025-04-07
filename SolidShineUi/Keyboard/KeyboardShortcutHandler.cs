@@ -96,18 +96,18 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <param name="file">the path of the file to write to</param>
         public async Task WriteShortcutsToFileAsync(string file)
         {
-            await KeyboardShortcutsIo.WriteToFile(KeyRegistry, file);
+            await KeyboardShortcutsIo.WriteToFileAsync(KeyRegistry, file);
         }
-#else
+#endif
+
         /// <summary>
         /// Write the currently registered keyboard shortcuts to a file, which can be loaded in later.
         /// </summary>
         /// <param name="file">the path of the file to write to</param>
-        public void WriteShortcutsToFileAsync(string file)
+        public void WriteShortcutsToFile(string file)
         {
             KeyboardShortcutsIo.WriteToFile(KeyRegistry, file);
         }
-#endif
 
         ///// <summary>
         ///// Set if menu items should display the keyboard shortcut combinations directly in the user interface.
