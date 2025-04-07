@@ -1148,10 +1148,13 @@
 
     <Style TargetType="{x:Type flat:TabControl}">
         <Setter Property="Focusable" Value="True" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:TabControl}">
-                    <Grid>
+                    <Grid Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" x:Name="rowTabsTop" />
                             <RowDefinition Height="1*" x:Name="rowContent"/>
@@ -1211,7 +1214,7 @@
                                     Tag="{Binding LeftTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrLeftElementParent" />
                             </Border>
                             <Border x:Name="brdrScrollLeft" Grid.Column="0" Grid.ColumnSpan="2" 
-                                    BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
+                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1230,7 +1233,7 @@
                                              IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}">
                                 <Path Data="M8,0 L0,4 8,8 z" 
-                                      Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
+                                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" />
                             </flat:FlatButton>
                             <ScrollViewer x:Name="PART_TabScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="2" >
                                 <Grid Margin="0">
@@ -1256,7 +1259,7 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <Border Grid.Column="1" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
+                                    <Border Grid.Column="1" BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}">
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1273,7 +1276,7 @@
                                 </Grid>
                             </ScrollViewer>
                             <Border x:Name="brdrScrollRight" Grid.Column="3" Grid.ColumnSpan="3" 
-                                    BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
+                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1292,7 +1295,7 @@
                                              IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                              ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" >
                                 <Path Data="M0,0 L8,4 0,8 z" 
-                                      Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
+                                      Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" />
                             </flat:FlatButton>
                             <Border BorderThickness="0" Background="Transparent" x:Name="PART_RightHolder_Horizontal" Grid.Column="4" >
                                 <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
@@ -1566,7 +1569,8 @@
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="1" >
-                            <Border x:Name="PART_Content" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
+                            <Border x:Name="PART_Content" BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"
+                                    Background="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}" >
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="1,0,1,1"  />
