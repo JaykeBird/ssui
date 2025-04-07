@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace SolidShineUi
 {
@@ -806,6 +807,15 @@ namespace SolidShineUi
         #region Color Scheme
 
         /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
+        /// <summary>
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
@@ -819,14 +829,14 @@ namespace SolidShineUi
         /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            if (d is TabControl w)
+            if (e.NewValue is ColorScheme cs)
             {
-                w.ApplyColorScheme((e.NewValue as ColorScheme)!);
+                if (d is TabControl t)
+                {
+                    t.ColorSchemeChanged?.Invoke(t, e);
+                    t.ApplyColorScheme(cs);
+                }
             }
-#else
-            (d as TabControl).ApplyColorScheme(e.NewValue as ColorScheme);
-#endif
         }
 
         /// <summary>
@@ -850,7 +860,28 @@ namespace SolidShineUi
                 ColorScheme = cs;
                 return;
             }
+
+            BorderBrush = cs.BorderColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+            ContentAreaBackground = cs.BackgroundColor.ToBrush();
+            // Background = cs.BackgroundColor.ToBrush();
         }
+        #endregion
+
+        #region ContentAreaBackground
+
+        /// <summary>
+        /// Get or set the background used for the content area of the TabControl.
+        /// </summary>
+        public Brush ContentAreaBackground { get => (Brush)GetValue(ContentAreaBackgroundProperty); set => SetValue(ContentAreaBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty ContentAreaBackgroundProperty
+            = DependencyProperty.Register(nameof(ContentAreaBackground), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        #endregion
+
         #endregion
 
         #region Setup TabDisplayItem / Tdi Event Handlers
