@@ -104,8 +104,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get the selected item of the EnumComboBox, returned as a value of that enum.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">the enum type to get the item as</typeparam>
+        /// <exception cref="ArgumentException">Thrown if the selected item is not contained in <typeparamref name="T"/></exception>
         public T SelectedEnumValueAsEnum<T>()
         {
             if (System.Enum.IsDefined(typeof(T), SelectedItem))
