@@ -123,20 +123,46 @@ namespace SolidShineUi.Utils
         #endregion
 
         #region Brushes / Border
+
         /// <summary>
         /// Get or set the brush for the background while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it has keyboard focus).
         /// </summary>
-        public Brush HighlightBrush { get; set; } = new SolidColorBrush(Colors.LightGray);
+        public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty HighlightBrushProperty
+            = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
         /// <summary>
         /// Get or set the brush for the border while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it had keyboard focus).
         /// </summary>
-        public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
+        public Brush BorderHighlightBrush { get => (Brush)GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty BorderHighlightBrushProperty
+            = DependencyProperty.Register(nameof(BorderHighlightBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
         /// <summary>
         /// Get or set the brush for the border of this control.
         /// </summary>
-        public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
+        public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
 
-        //public Brush CloseBrush { get; set; } = new SolidColorBrush(Colors.Black);
+        /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty TabBorderBrushProperty
+            = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close glyph in this control.
+        /// </summary>
+        public Brush CloseBrush { get => (Brush)GetValue(CloseBrushProperty); set => SetValue(CloseBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CloseBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty CloseBrushProperty
+            = DependencyProperty.Register(nameof(CloseBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
         //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
 
@@ -474,14 +500,13 @@ namespace SolidShineUi.Utils
         /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            if (d is TabDisplayItem w)
+            if (e.NewValue is ColorScheme cs)
             {
-                w.ApplyColorScheme((e.NewValue as ColorScheme)!);
+                if (d is TabDisplayItem tdi)
+                {
+                    tdi.ApplyColorScheme(cs);
+                }
             }
-#else
-            (d as TabDisplayItem).ApplyColorScheme(e.NewValue as ColorScheme);
-#endif
         }
 
         /// <summary>
@@ -508,18 +533,18 @@ namespace SolidShineUi.Utils
             if (cs.IsHighContrast)
             {
                 Background = cs.BackgroundColor.ToBrush();
-                BorderBrush = cs.BorderColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
                 HighlightBrush = cs.HighlightColor.ToBrush();
                 BorderHighlightBrush = cs.BorderColor.ToBrush();
-                pathClose.Fill = cs.BorderColor.ToBrush();
+                CloseBrush = cs.BorderColor.ToBrush();
             }
             else
             {
                 Background = cs.ThirdHighlightColor.ToBrush();
-                BorderBrush = cs.BorderColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
                 HighlightBrush = cs.SecondHighlightColor.ToBrush();
                 BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                pathClose.Fill = cs.ForegroundColor.ToBrush();
+                CloseBrush = cs.ForegroundColor.ToBrush();
             }
 
             if (highlighting)
@@ -530,7 +555,7 @@ namespace SolidShineUi.Utils
             else
             {
                 border.Background = Background;
-                border.BorderBrush = BorderBrush;
+                border.BorderBrush = TabBorderBrush;
             }
         }
         #endregion
@@ -675,7 +700,7 @@ namespace SolidShineUi.Utils
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
             border.Background = Background;
-            border.BorderBrush = BorderBrush;
+            border.BorderBrush = TabBorderBrush;
             highlighting = false;
 
             initiatingClick = false;
@@ -684,7 +709,7 @@ namespace SolidShineUi.Utils
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             border.Background = Background;
-            border.BorderBrush = BorderBrush;
+            border.BorderBrush = TabBorderBrush;
             highlighting = false;
 
             initiatingClick = false;
@@ -695,7 +720,7 @@ namespace SolidShineUi.Utils
             if (!IsKeyboardFocused)
             {
                 border.Background = Background;
-                border.BorderBrush = BorderBrush;
+                border.BorderBrush = TabBorderBrush;
                 highlighting = false;
             }
 
@@ -915,6 +940,7 @@ namespace SolidShineUi.Utils
         #endregion
 
         #region Drag border event handlers
+
         private void brdrDragLeft_DragEnter(object sender, DragEventArgs e)
         {
             brdrDragLeft.BorderThickness = new Thickness(5, 0, 0, 0);
