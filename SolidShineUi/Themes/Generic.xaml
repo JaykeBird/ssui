@@ -1078,6 +1078,7 @@
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:TabControl}">

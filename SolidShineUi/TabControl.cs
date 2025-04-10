@@ -868,7 +868,7 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region ContentAreaBackground
+        #region Brushes
 
         /// <summary>
         /// Get or set the background used for the content area of the TabControl.
@@ -878,6 +878,66 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
         public static DependencyProperty ContentAreaBackgroundProperty
             = DependencyProperty.Register(nameof(ContentAreaBackground), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the background of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// </summary>
+        public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty TabHighlightBrushProperty
+            = DependencyProperty.Register(nameof(TabHighlightBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the borders of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// </summary>
+        public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty TabBorderHighlightBrushProperty
+            = DependencyProperty.Register(nameof(TabBorderHighlightBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the borders of tabs. This is different from the <see cref="Control.BorderBrush"/> used for the rest of the TabControl.
+        /// </summary>
+        public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty TabBorderBrushProperty
+            = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close glyph used in the tabs (where <see cref="TabItem.CanClose"/> is set to <c>true</c>).
+        /// </summary>
+        public Brush TabCloseBrush { get => (Brush)GetValue(TabCloseBrushProperty); set => SetValue(TabCloseBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabCloseBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty TabCloseBrushProperty
+            = DependencyProperty.Register(nameof(TabCloseBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the background of a tab. Individual tabs can overwrite their backgrounds by changing <see cref="TabItem.TabBackground"/>.
+        /// </summary>
+        public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty TabBackgroundProperty
+            = DependencyProperty.Register(nameof(TabBackground), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the background of a selected tab.
+        /// </summary>
+        public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty SelectedTabBackgroundProperty
+            = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
         #endregion

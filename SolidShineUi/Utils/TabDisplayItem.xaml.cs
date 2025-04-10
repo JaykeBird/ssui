@@ -163,6 +163,27 @@ namespace SolidShineUi.Utils
         public static DependencyProperty CloseBrushProperty
             = DependencyProperty.Register(nameof(CloseBrush), typeof(Brush), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+        
+        ///// <summary>
+        ///// Get or set the background for the tab; this can be replaced by <see cref="SelectedTabBackground"/> or overlapped by <see cref="TabBackground"/>.
+        ///// </summary>
+        //public Brush BaseBackground { get => (Brush)GetValue(BaseBackgroundProperty); set => SetValue(BaseBackgroundProperty, value); }
+
+        ///// <summary>The backing dependency property for <see cref="BaseBackground"/>. See the related property for details.</summary>
+        //public static DependencyProperty BaseBackgroundProperty
+        //    = DependencyProperty.Register(nameof(BaseBackground), typeof(Brush), typeof(TabDisplayItem),
+        //    new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+
+        /// <summary>
+        /// Get or set the background for the tab while it is selected (<see cref="IsSelected"/> is <c>true</c>).
+        /// </summary>
+        public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty SelectedTabBackgroundProperty
+            = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
         //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
 
