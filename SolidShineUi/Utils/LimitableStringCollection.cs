@@ -28,9 +28,12 @@ namespace SolidShineUi.Utils
             MaxCount = maxCount;
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The event handler for <see cref="ItemAdding"/> event, with the ability to cancel adding in the item.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public delegate void ItemAddingStringEventHandler(object sender, ItemAddingStringEventArgs e);
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised prior to an item being added to this collection, with the ability to cancel adding the item.
@@ -92,6 +95,7 @@ namespace SolidShineUi.Utils
             }
             base.Add(item);
         }
+
         /// <summary>
         /// Insert an object into the collection at the specified index.
         /// </summary>
@@ -118,7 +122,7 @@ namespace SolidShineUi.Utils
     }
 
     /// <summary>
-    /// The event arguments for the ItemAdding event of the LimitableStringCollection.
+    /// The event arguments for the ItemAdding event of the <see cref="LimitableStringCollection"/>.
     /// </summary>
     public class ItemAddingStringEventArgs : EventArgs
     {

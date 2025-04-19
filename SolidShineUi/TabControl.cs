@@ -1209,13 +1209,13 @@ namespace SolidShineUi
 
         #region ScrollButtons
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
         private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("ScrollButtonsVisible", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false));
 
+        /// <summary>
+        /// The read-only dependency property for the <see cref="ScrollButtonsVisible"/> property. See that related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ScrollButtonsVisibleProperty = ScrollButtonsVisiblePropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get if the scroll buttons are currently visible in the tab bar.
@@ -1302,7 +1302,7 @@ namespace SolidShineUi
     /// <summary>
     /// Event arguments for the TabClosing event in TabControl.
     /// </summary>
-    public class TabItemClosingEventArgs
+    public class TabItemClosingEventArgs : EventArgs
     {
         /// <summary>
         /// Create a TabItemClosingEventArgs.
@@ -1327,7 +1327,7 @@ namespace SolidShineUi
     /// <summary>
     /// Event arguments for the TabChanged event in TabControl.
     /// </summary>
-    public class TabItemChangeEventArgs
+    public class TabItemChangeEventArgs : EventArgs
     {
         /// <summary>
         /// Create a TabItemChangeEventArgs.
