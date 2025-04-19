@@ -7,6 +7,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.ComponentModel;
 using SolidShineUi.Utils;
+using System.Windows.Controls;
 
 namespace SolidShineUi
 {
@@ -682,6 +683,75 @@ namespace SolidShineUi
         {
             get { return (UIElement)GetValue(ExtraTabElementProperty); }
             set { SetValue(ExtraTabElementProperty, value); }
+        }
+
+        #endregion
+
+        #region Font Properties
+
+        /// <summary>The backing dependency property for <see cref="FontSize"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontSizeProperty = Control.FontSizeProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font size to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public double FontSize
+        {
+            get => (double)GetValue(FontSizeProperty);
+            set => SetValue(FontSizeProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontFamily"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontFamilyProperty = Control.FontFamilyProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font family to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontFamily FontFamily
+        {
+            get => (FontFamily)GetValue(FontFamilyProperty);
+            set => SetValue(FontFamilyProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontStyle"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontStyleProperty = Control.FontStyleProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font style to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontStyle FontStyle
+        {
+            get => (FontStyle)GetValue(FontStyleProperty);
+            set => SetValue(FontStyleProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontStretch"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontStretchProperty = Control.FontStretchProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font stretch to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontStretch FontStretch
+        {
+            get => (FontStretch)GetValue(FontStretchProperty);
+            set => SetValue(FontStretchProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontWeight"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontWeightProperty = Control.FontWeightProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font weight to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontWeight FontWeight
+        {
+            get => (FontWeight)GetValue(FontWeightProperty);
+            set => SetValue(FontWeightProperty, value);
         }
 
         #endregion

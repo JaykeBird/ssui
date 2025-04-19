@@ -268,5 +268,50 @@ namespace SsuiSample
                 item.Visibility = Visibility.Visible;
             }
         }
+
+        private void mnuFont_Click(object sender, RoutedEventArgs e)
+        {
+            if (changingTab) return;
+            if (tabControl.SelectedTab == null) return;
+
+            TabItem ti = tabControl.SelectedTab;
+
+            FontSelectDialog fsd = new FontSelectDialog
+            {
+                ColorScheme = ColorScheme,
+                Owner = Window.GetWindow(this),
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+
+                SelectedFontFamily = ti.FontFamily,
+                SelectedFontSize = ti.FontSize,
+                SelectedFontStyle = ti.FontStyle,
+                SelectedFontWeight = ti.FontWeight,
+                PreviewText = ti.Title,
+                ShowDecorations = false
+            };
+
+            fsd.ShowDialog();
+
+            if (fsd.DialogResult)
+            {
+                ti.FontFamily = fsd.SelectedFontFamily;
+                ti.FontSize = fsd.SelectedFontSize;
+                ti.FontStyle = fsd.SelectedFontStyle;
+                ti.FontWeight = fsd.SelectedFontWeight;
+            }
+        }
+
+        private void mnuFontReset_Click(object sender, RoutedEventArgs e)
+        {
+            if (changingTab) return;
+            if (tabControl.SelectedTab == null) return;
+
+            TabItem ti = tabControl.SelectedTab;
+
+            ti.ClearValue(FontFamilyProperty);
+            ti.ClearValue(FontSizeProperty);
+            ti.ClearValue(FontStyleProperty);
+            ti.ClearValue(FontWeightProperty);
+        }
     }
 }
