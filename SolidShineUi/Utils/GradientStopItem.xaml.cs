@@ -9,7 +9,7 @@ using System.Windows.Media;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// Interaction logic for GradientStopItem.xaml
+    /// A control used to display a <see cref="System.Windows.Media.GradientStop"/> within a <see cref="GradientBar"/> control.
     /// </summary>
     public partial class GradientStopItem : UserControl
     {
@@ -130,15 +130,42 @@ namespace SolidShineUi.Utils
             set => SetValue(StopSelectedFillProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="StopFill"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty StopFillProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(GradientStopItem),
+            nameof(StopFill), typeof(Brush), typeof(GradientStopItem),
             new PropertyMetadata(Colors.White.ToBrush()));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="StopSelectedFill"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty StopSelectedFillProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(GradientStopItem),
+            nameof(StopSelectedFill), typeof(Brush), typeof(GradientStopItem),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
-#pragma warning restore CS1591
+
+        /// <summary>
+        /// Get or set the brush to use for the border around the edge of the control.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopBorderBrush { get => (Brush)GetValue(StopBorderBrushProperty); set => SetValue(StopBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="StopBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty StopBorderBrushProperty
+            = DependencyProperty.Register(nameof(StopBorderBrush), typeof(Brush), typeof(GradientStopItem),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the border, while the control is highlighted (focus, mouse-over, etc.).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopBorderHighlightBrush { get => (Brush)GetValue(StopBorderHighlightBrushProperty); set => SetValue(StopBorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="StopBorderHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty StopBorderHighlightBrushProperty
+            = DependencyProperty.Register(nameof(StopBorderHighlightBrush), typeof(Brush), typeof(GradientStopItem),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
 
         private void Highlight()
         {
