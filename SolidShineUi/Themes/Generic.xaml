@@ -1081,7 +1081,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:TabControl}">
-                    <Grid Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" >
+                    <Grid Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" x:Name="rowTabsTop" />
                             <RowDefinition Height="1*" x:Name="rowContent"/>
@@ -1141,13 +1141,13 @@
                                     Tag="{Binding LeftTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrLeftElementParent" />
                             </Border>
                             <Border x:Name="brdrScrollLeft" Grid.Column="0" Grid.ColumnSpan="2" 
-                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}">
+                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
                                         <Setter Property="VerticalAlignment" Value="Bottom" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" Value="True">
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
                                                 <Setter Property="BorderThickness" Value="0,0,0,1" />
                                                 <Setter Property="VerticalAlignment" Value="Top" />
                                             </DataTrigger>
@@ -1185,7 +1185,7 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <Border Grid.Column="1" BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}">
+                                    <Border Grid.Column="1" BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1202,7 +1202,7 @@
                                 </Grid>
                             </ScrollViewer>
                             <Border x:Name="brdrScrollRight" Grid.Column="3" Grid.ColumnSpan="3" 
-                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}">
+                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
