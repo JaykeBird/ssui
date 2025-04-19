@@ -836,21 +836,5 @@ namespace SolidShineUi
         internal protected event EventHandler BringIntoViewRequested;
 #endif
 
-        ///<summary>
-        /// Get or set if this tab is visible in the UI.
-        ///</summary>
-        [Category("Appearance")]
-        public bool IsVisible
-        {
-            get
-            {
-                return Visibility == Visibility.Visible;
-            }
-            set
-            {
-                Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
-
     }
 }
