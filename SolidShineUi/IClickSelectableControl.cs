@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -9,6 +10,9 @@ namespace SolidShineUi
     /// <summary>
     /// A base interface defining the common clicking and selecting methods and events used in Solid Shine UI controls.
     /// </summary>
+    /// <remarks>
+    /// It is expected that this interface will be applied to a control/object that inherits from <see cref="FrameworkElement"/>.
+    /// </remarks>
     public interface IClickSelectableControl : IFrameworkInputElement
     {
         /// <summary>
@@ -166,11 +170,6 @@ namespace SolidShineUi
         object Tag { get; set; }
 
         /// <summary>
-        /// Gets or sets the cursor that displays when the mouse pointer is over this element. This may return null to use the default or current cursor.
-        /// </summary>
-        Cursor Cursor { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this element is enabled in the user interface (UI).
         /// </summary>
         new bool IsEnabled { get; set; }
@@ -238,17 +237,8 @@ namespace SolidShineUi
         /// </summary>
         void SetValue(DependencyProperty dp, object value);
 
-        /// <summary>
-        /// Enforces that the calling thread has access to this DispatcherObject.
-        /// </summary>
-        void VerifyAccess();
-
-        /// <summary>
-        /// Determines whether the calling thread has access to this DispatcherObject.
-        /// </summary>
-        bool CheckAccess();
-
         #endregion
+
     }
 
 
