@@ -30,7 +30,13 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// The underlying WindowChrome object that actually holds the data for a particular window.
         /// </summary>
-        public WindowChrome BaseWindowChromeObject { get; set; } = new WindowChrome();
+        public WindowChrome BaseWindowChromeObject { get => (WindowChrome)GetValue(BaseWindowChromeObjectProperty); set => SetValue(BaseWindowChromeObjectProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BaseWindowChromeObject"/>. See the related property for details.</summary>
+        public static DependencyProperty BaseWindowChromeObjectProperty
+            = DependencyProperty.Register(nameof(BaseWindowChromeObject), typeof(WindowChrome), typeof(WindowChromeWrapper),
+            new FrameworkPropertyMetadata(new WindowChrome()));
+
 
         #region Attached Properties
 
@@ -122,11 +128,11 @@ namespace SolidShineUi.Utils
         /// <exception cref="ArgumentException">thrown if the inputted object is not a <see cref="DependencyObject"/></exception>
         public static bool GetIsHitTestVisibleInChrome(IInputElement inputElement)
         {
-            VerifyIsNotNull(inputElement, "inputElement");
+            VerifyIsNotNull(inputElement, nameof(inputElement));
             var dobj = inputElement as DependencyObject;
             if (dobj == null)
             {
-                throw new ArgumentException("The element must be a DependencyObject", "inputElement");
+                throw new ArgumentException("The element must be a DependencyObject", nameof(inputElement));
             }
             object htv = dobj.GetValue(IsHitTestVisibleInChromeProperty);
             bool wb = WindowChrome.GetIsHitTestVisibleInChrome(inputElement);
@@ -148,11 +154,11 @@ namespace SolidShineUi.Utils
         /// <exception cref="ArgumentException">thrown if the inputted object is not a <see cref="DependencyObject"/></exception>
         public static void SetIsHitTestVisibleInChrome(IInputElement inputElement, bool hitTestVisible)
         {
-            VerifyIsNotNull(inputElement, "inputElement");
+            VerifyIsNotNull(inputElement, nameof(inputElement));
             var dobj = inputElement as DependencyObject;
             if (dobj == null)
             {
-                throw new ArgumentException("The element must be a DependencyObject", "inputElement");
+                throw new ArgumentException("The element must be a DependencyObject", nameof(inputElement));
             }
             dobj.SetValue(IsHitTestVisibleInChromeProperty, hitTestVisible);
             WindowChrome.SetIsHitTestVisibleInChrome(inputElement, hitTestVisible);
