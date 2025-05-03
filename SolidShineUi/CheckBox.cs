@@ -463,6 +463,7 @@ namespace SolidShineUi
             CheckDisabledBrush = cs.DarkDisabledColor.ToBrush();
             //SelectedBrush = cs.ThirdHighlightColor.ToBrush();
             BorderHighlightBrush = cs.HighlightColor.ToBrush();
+            BorderSelectedBrush = cs.BorderColor.ToBrush();
             //BorderSelectedBrush = cs.SelectionColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
         }
@@ -561,12 +562,15 @@ namespace SolidShineUi
             set => SetValue(BorderHighlightBrushProperty, value);
         }
 
-        //[Category("Brushes")]
-        //public Brush BorderSelectedBrush
-        //{
-        //    get => (Brush)GetValue(BorderSelectedBrushProperty);
-        //    set => SetValue(BorderSelectedBrushProperty, value);
-        //}
+        /// <summary>
+        /// Get or set the brush used for the border of the checkbox's box, while the checkbox is checked (<see cref="IsChecked"/> is true).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush BorderSelectedBrush
+        {
+            get => (Brush)GetValue(BorderSelectedBrushProperty);
+            set => SetValue(BorderSelectedBrushProperty, value);
+        }
 
         /// <summary>The backing dependency property for <see cref="CheckBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CheckBackgroundProperty = DependencyProperty.Register(
@@ -615,10 +619,10 @@ namespace SolidShineUi
             "BorderHighlightBrush", typeof(Brush), typeof(CheckBox),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-        ///// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
-        //public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-        //    "BorderSelectedBrush", typeof(Brush), typeof(CheckBox),
-        //    new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
+            "BorderSelectedBrush", typeof(Brush), typeof(CheckBox),
+            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
         #endregion
 
         #region Border

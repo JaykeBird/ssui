@@ -1042,6 +1042,7 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True">
                                             <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
                                         </DataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
