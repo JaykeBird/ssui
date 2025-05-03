@@ -27,15 +27,36 @@ namespace SolidShineUi.Utils
         /// </summary>
         public static Thickness GlassFrameCompleteThickness { get { return new Thickness(-1); } }
 
+        WindowChrome _baseObject = new WindowChrome();
+
         /// <summary>
         /// The underlying WindowChrome object that actually holds the data for a particular window.
         /// </summary>
-        public WindowChrome BaseWindowChromeObject { get => (WindowChrome)GetValue(BaseWindowChromeObjectProperty); set => SetValue(BaseWindowChromeObjectProperty, value); }
+        public WindowChrome BaseWindowChromeObject
+        {
+            get { ReadPreamble(); return _baseObject; }
+            set
+            {
+                if (IsFrozen)
+                {
+                    throw new InvalidOperationException("Current object is frozen");
+                }
+                else
+                {
+                    WritePreamble();
+                    WindowChrome oldVal = _baseObject;
+                    _baseObject = value;
+                    OnFreezablePropertyChanged(oldVal, value);
+                    WritePostscript();
+                }
+            }
+        }
+        //public WindowChrome BaseWindowChromeObject { get => (WindowChrome)GetValue(BaseWindowChromeObjectProperty); set => SetValue(BaseWindowChromeObjectProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="BaseWindowChromeObject"/>. See the related property for details.</summary>
-        public static DependencyProperty BaseWindowChromeObjectProperty
-            = DependencyProperty.Register(nameof(BaseWindowChromeObject), typeof(WindowChrome), typeof(WindowChromeWrapper),
-            new FrameworkPropertyMetadata(new WindowChrome()));
+        ///// <summary>The backing dependency property for <see cref="BaseWindowChromeObject"/>. See the related property for details.</summary>
+        //public static DependencyProperty BaseWindowChromeObjectProperty
+        //    = DependencyProperty.Register(nameof(BaseWindowChromeObject), typeof(WindowChrome), typeof(WindowChromeWrapper),
+        //    new FrameworkPropertyMetadata(new WindowChrome()));
 
 
         #region Attached Properties
@@ -236,11 +257,83 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #region Freezable Overrides
+
         /// <inheritdoc/>
         protected override Freezable CreateInstanceCore()
         {
             return new WindowChromeWrapper();
         }
+        
+        /// <inheritdoc/>
+        protected override void CloneCore(Freezable sourceFreezable)
+        {
+            base.CloneCore(sourceFreezable);
+#if NETCOREAPP
+            WindowChrome? o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.Clone();
+#else
+            WindowChrome o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.Clone();
+#endif
+            if (o != null)
+            {
+                BaseWindowChromeObject = o;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void CloneCurrentValueCore(Freezable sourceFreezable)
+        {
+            base.CloneCurrentValueCore(sourceFreezable);
+#if NETCOREAPP
+            WindowChrome? o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.CloneCurrentValue();
+#else
+            WindowChrome o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.CloneCurrentValue();
+#endif
+            if (o != null)
+            {
+                BaseWindowChromeObject = o;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override bool FreezeCore(bool isChecking)
+        {
+            bool val = base.FreezeCore(isChecking);
+            bool val2 = Freeze(BaseWindowChromeObject, isChecking);
+            return val & val2;
+        }
+
+        /// <inheritdoc/>
+        protected override void GetAsFrozenCore(Freezable sourceFreezable)
+        {
+            base.GetAsFrozenCore(sourceFreezable);
+#if NETCOREAPP
+            WindowChrome? o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.GetAsFrozen();
+#else
+            WindowChrome o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.GetAsFrozen();
+#endif
+            if (o != null)
+            {
+                BaseWindowChromeObject = o;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void GetCurrentValueAsFrozenCore(Freezable sourceFreezable)
+        {
+            base.GetCurrentValueAsFrozenCore(sourceFreezable);
+#if NETCOREAPP
+            WindowChrome? o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.GetCurrentValueAsFrozen();
+#else
+            WindowChrome o = (WindowChrome)((WindowChromeWrapper)sourceFreezable).BaseWindowChromeObject.GetCurrentValueAsFrozen();
+#endif
+            if (o != null)
+            {
+                BaseWindowChromeObject = o;
+            }
+        }
+
+        #endregion
 
         static void VerifyIsNotNull(object obj, string name)
         {
