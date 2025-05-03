@@ -402,6 +402,7 @@ namespace SolidShineUi
             {
                 lstWeight.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
                 lblWeight.Visibility = value ? Visibility.Visible : Visibility.Collapsed; //(Visibility)btv.Convert(value, typeof(Visibility), null, null);
+                txtWeight.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
