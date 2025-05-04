@@ -493,10 +493,12 @@ namespace SolidShineUi
                 if (value)
                 {
                     lblText.UnderlineOnHighlight = true;
+                    lblText.Focusable = true;
                 }
                 else
                 {
                     lblText.UnderlineOnHighlight = false;
+                    lblText.Focusable = false;
                 }
             }
         }
