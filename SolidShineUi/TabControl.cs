@@ -965,6 +965,25 @@ namespace SolidShineUi
             Foreground = cs.ForegroundColor.ToBrush();
             ContentAreaBackground = cs.BackgroundColor.ToBrush();
             // Background = cs.BackgroundColor.ToBrush();
+
+            if (cs.IsHighContrast)
+            {
+                TabBackground = cs.BackgroundColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
+                TabHighlightBrush = cs.HighlightColor.ToBrush();
+                TabBorderHighlightBrush = cs.BorderColor.ToBrush();
+                SelectedTabBackground = cs.BackgroundColor.ToBrush();
+                TabCloseBrush = cs.BorderColor.ToBrush();
+            }
+            else
+            {
+                TabBackground = cs.ThirdHighlightColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
+                TabHighlightBrush = cs.SecondHighlightColor.ToBrush();
+                TabBorderHighlightBrush = cs.HighlightColor.ToBrush();
+                SelectedTabBackground = cs.BackgroundColor.ToBrush();
+                TabCloseBrush = cs.ForegroundColor.ToBrush();
+            }
         }
         #endregion
 

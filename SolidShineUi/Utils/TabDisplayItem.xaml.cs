@@ -29,6 +29,7 @@ namespace SolidShineUi.Utils
             //}
             //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            border.Background = IsSelected ? SelectedTabBackground : Background;
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -57,6 +58,7 @@ namespace SolidShineUi.Utils
             //}
             //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            border.Background = IsSelected ? SelectedTabBackground : Background;
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -65,6 +67,8 @@ namespace SolidShineUi.Utils
 
             InternalParentChanged += tdi_InternalParentChanged;
             InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
+            InternalShowTabsOnBottomChanged += tdi_InternalShowTabsOnBottomChanged;
+            InternalTabItemChanged += tdi_InternalTabItemChanged;
             InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
@@ -152,7 +156,29 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabDisplayItem),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), OnInternalTabBorderBrushChanged));
+
+        private static void OnInternalTabBorderBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem s)
+            {
+                s.InternalTabBorderBrushChanged();
+            }
+        }
+
+        private void InternalTabBorderBrushChanged()
+        {
+            if (highlighting)
+            {
+                //border.Background = HighlightBrush;
+                border.BorderBrush = BorderHighlightBrush;
+            }
+            else
+            {
+                //border.Background = IsSelected ? SelectedTabBackground : Background;
+                border.BorderBrush = TabBorderBrush;
+            }
+        }
 
         /// <summary>
         /// Get or set the brush used for the close glyph in this control.
@@ -229,6 +255,7 @@ namespace SolidShineUi.Utils
 #endif
         {
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            border.Background = IsSelected ? SelectedTabBackground : Background;
         }
 
         //#region Icon
@@ -337,6 +364,7 @@ namespace SolidShineUi.Utils
         private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            border.Background = IsSelected ? SelectedTabBackground : Background;
         }
 
         #endregion
@@ -575,7 +603,7 @@ namespace SolidShineUi.Utils
             }
             else
             {
-                border.Background = Background;
+                border.Background = IsSelected ? SelectedTabBackground : Background;
                 border.BorderBrush = TabBorderBrush;
             }
         }
@@ -720,7 +748,7 @@ namespace SolidShineUi.Utils
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            border.Background = Background;
+            border.Background = IsSelected ? SelectedTabBackground : Background;
             border.BorderBrush = TabBorderBrush;
             highlighting = false;
 
@@ -729,7 +757,7 @@ namespace SolidShineUi.Utils
 
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            border.Background = Background;
+            border.Background = IsSelected ? SelectedTabBackground : Background;
             border.BorderBrush = TabBorderBrush;
             highlighting = false;
 
@@ -740,7 +768,7 @@ namespace SolidShineUi.Utils
         {
             if (!IsKeyboardFocused)
             {
-                border.Background = Background;
+                border.Background = IsSelected ? SelectedTabBackground : Background;
                 border.BorderBrush = TabBorderBrush;
                 highlighting = false;
             }

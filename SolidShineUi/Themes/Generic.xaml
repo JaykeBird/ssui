@@ -1278,10 +1278,16 @@
                                                 <ssut:TabDisplayItem x:Name="PART_TabItem"
                                                                      Visibility="{Binding Visibility}" TabItem="{Binding .}" AllowDataDragDrop="{Binding AllowDrop}" ToolTip="{Binding ToolTip}"
                                                                      CanSelect="{Binding CanSelect}" TabBackground="{Binding TabBackground}"
-                                                                     ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      ShowTabsOnBottom="{Binding ShowTabsOnBottom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      AllowDragDrop="{Binding AllowTabDragDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     HighlightBrush="{Binding TabHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     BorderHighlightBrush="{Binding TabBorderHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     TabBorderBrush="{Binding TabBorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     SelectedTabBackground="{Binding SelectedTabBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     CloseBrush="{Binding TabCloseBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     Background="{Binding TabBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      ParentTabControl="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" />
+                                                <!-- ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" -->
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -1572,7 +1578,7 @@
                             </flat:MenuButton>
                         </Grid>
 
-                        <Grid Margin="0,0,0,0" x:Name="grdVerticalTabs" Grid.Column="0" Grid.Row="1" Visibility="Collapsed" >
+                        <!--<Grid Margin="0,0,0,0" x:Name="grdVerticalTabs" Grid.Column="0" Grid.Row="1" Visibility="Collapsed" >
                             <ItemsControl x:Name="PART_VerticalTabBar" ItemsSource="{TemplateBinding Items}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -1583,8 +1589,7 @@
                                     <DataTemplate>
                                         <ssut:TabDisplayItem x:Name="PART_TabItem"
                                                                      Visibility="{Binding Visibility}" TabItem="{Binding .}" AllowDataDragDrop="{Binding AllowDrop}" ToolTip="{Binding ToolTip}"
-                                                                     CanSelect="{Binding CanSelect}" TabBackground="{Binding TabBackground}" FontWeight="{Binding FontWeight}"
-                                                                     FontSize="{Binding FontSize}" FontFamily="{Binding FontFamily}" FontStretch="{Binding FontStretch}" FontStyle="{Binding FontStyle}"
+                                                                     CanSelect="{Binding CanSelect}" TabBackground="{Binding TabBackground}"
                                                                      ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      ShowTabsOnBottom="{Binding ShowTabsOnBottom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      AllowDragDrop="{Binding AllowTabDragDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
@@ -1592,7 +1597,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                        </Grid>
+                        </Grid>-->
 
                         <Grid Grid.Row="1" Grid.Column="1" >
                             <Border x:Name="PART_Content" BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"
