@@ -264,7 +264,7 @@ namespace SolidShineUi
         /// <remarks>
         /// This event will be renamed/replaced with <see cref="IsSelectedChanged"/> in version 2.0, so please adjust your code to use that event now.
         /// </remarks>
-        [Obsolete("This event is replaced with " + nameof(IsSelectedChanged) + " in future versions. Please transition to using that event.")]
+        [Obsolete("This event is being replaced with " + nameof(IsSelectedChanged) + " in future versions. Please transition to using that event.")]
         public event ItemSelectionChangedEventHandler? SelectionChanged;
         /// <summary>
         /// Raised if the CanSelect property is changed.
@@ -281,7 +281,7 @@ namespace SolidShineUi
         /// <remarks>
         /// This event will be renamed/replaced with <see cref="IsSelectedChanged"/> in version 2.0, so please adjust your code to use that event now.
         /// </remarks>
-        [Obsolete("This event is replaced with " + nameof(IsSelectedChanged) + " in future versions. Please transition to using that event.")]
+        [Obsolete("This event is being replaced with " + nameof(IsSelectedChanged) + " in future versions. Please transition to using that event.")]
         public event ItemSelectionChangedEventHandler SelectionChanged;
         /// <summary>
         /// Raised if the CanSelect property is changed.

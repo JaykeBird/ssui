@@ -547,13 +547,14 @@ namespace SolidShineUi
 
         #region Routed Events
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The routed event backing the <see cref="SelectionChanged"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Raised when an item is selected or deselected in this list.
+        /// Raised when an item is selected or deselected in this control.
         /// </summary>
         public event SelectionChangedEventHandler SelectionChanged
         {
@@ -582,13 +583,14 @@ namespace SolidShineUi
             RaiseEvent(newEventArgs);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The routed event backing the <see cref="ItemsAdded"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent ItemsAddedEvent = EventManager.RegisterRoutedEvent(
             "ItemsAdded", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Raised when an item is added to this list.
+        /// Raised when an item is added to this control.
         /// </summary>
         public event SelectionChangedEventHandler ItemsAdded
         {
@@ -611,13 +613,14 @@ namespace SolidShineUi
             RaiseEvent(newEventArgs);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The routed event backing the <see cref="ItemsRemoved"/> event. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent ItemsRemovedEvent = EventManager.RegisterRoutedEvent(
             "ItemsRemoved", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Raised when an item is removed from this list.
+        /// Raised when an item is removed from this control.
         /// </summary>
         public event SelectionChangedEventHandler ItemsRemoved
         {
