@@ -14,9 +14,9 @@
             <ColumnDefinition Width="Auto" x:Name="colRightText" />
         </Grid.ColumnDefinitions>
         <Image x:Name="image" Grid.Column="2" Margin="4"/>
-        <local:CheckBox Grid.Column="1" Margin="2,0" x:Name="chkSel" />
+        <local:CheckBox Grid.Column="1" Margin="2,0" x:Name="chkSel" IsEnabled="False" />
         <local:ClickSelectTextBox x:Name="txtText" Grid.Column="3" HorizontalAlignment="Stretch" Margin="1,0,0,0" VerticalAlignment="Center" Text="Item Text" Visibility="Collapsed" KeyDown="txtText_KeyDown" SelectOnFocus="True" />
-        <local:LinkTextBlock x:Name="lblText" Grid.Column="3" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="Itemg Text" 
+        <local:LinkTextBlock x:Name="lblText" Grid.Column="3" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="Item Text" 
                              UnderlineOnHighlight="False" Click="lblText_Click" Focusable="False"
                              TextBrush="{Binding Foreground, ElementName=selectableUserControl}" HighlightBrush="{Binding Foreground, ElementName=selectableUserControl}" Foreground="{Binding Foreground, ElementName=selectableUserControl}" />
         <TextBlock x:Name="lblRightText" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Center" />

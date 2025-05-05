@@ -11,8 +11,9 @@ using System.Windows.Controls;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A standard selectable control that can be used with a SelectPanel. This has a number of customization options out of the box,
+    /// A standard selectable control that can be used with a <see cref="SelectPanel"/>. This has a number of customization options out of the box,
     /// including being able to set left-aligned and right-aligned text, an image, and also indent the contents to mimic the appearance of a tree view.
+    /// If <see cref="AllowTextEditing"/> is set to true, users can even edit the text within the item.
     /// </summary>
     public partial class SelectableItem : SelectableUserControl
     {
@@ -87,6 +88,7 @@ namespace SolidShineUi
         private void SelectableItem_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             lblText.IsEnabled = IsEnabled;
+            chkSel.IsEnabled = IsEnabled;
         }
 
         /// <summary>
@@ -119,10 +121,12 @@ namespace SolidShineUi
                 if (value)
                 {
                     colCheck.Width = new GridLength(24);
+                    chkSel.IsEnabled = true;
                 }
                 else
                 {
                     colCheck.Width = new GridLength(0);
+                    chkSel.IsEnabled = false;
                 }
             }
         }
@@ -158,8 +162,12 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set if the checkbox's value should be changed if this control is selected (and vice-versa). Default is true
+        /// Get or set if the checkbox's value should be changed if this control is selected (and vice-versa). By default, this value is <c>true</c>.
         /// </summary>
+        /// <remarks>
+        /// When <c>true</c>, changing the checkstate will also change whether this control is selected.
+        /// When <c>false</c>, the checkstate can be changed without affecting whether this control is selected or not.
+        /// </remarks>
         public bool MatchCheckboxValueToSelect { get; set; } = true;
 
         bool updatingCheck = false;
@@ -449,10 +457,11 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The routed event object backing the related event. See <see cref="TextChanged"/> for more details.
+        /// </summary>
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
             "TextChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<string>), typeof(SelectableItem));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the Text property is changed, either via updating the property or via the the user's text editing view.
@@ -497,6 +506,8 @@ namespace SolidShineUi
                 }
                 else
                 {
+                    // if currently editing, just kick out of it
+                    CancelEdit();
                     lblText.UnderlineOnHighlight = false;
                     lblText.Focusable = false;
                 }
@@ -512,6 +523,15 @@ namespace SolidShineUi
         }
 
         bool _editMode = false;
+
+        /// <summary>
+        /// Get if this control is currently in text edit mode.
+        /// </summary>
+        /// <remarks>
+        /// To activate text edit mode, make sure <see cref="AllowTextEditing"/> is set to true, and then the user can click on the text, 
+        /// or it can be activated via the <see cref="DisplayEditText"/> method.
+        /// </remarks>
+        public bool IsCurrentlyEditingText { get { return _editMode; } }
 
         /// <summary>
         /// Display the text editing view to the user. This is the same as the user clicking on the text while <c>AllowTextEditing</c> is set to true.
@@ -532,7 +552,8 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Confirm the user's edit to the text, as changed via the text editing view. Also exits the text editing view. This can only be called when in the text editing view.
+        /// Confirm the user's edit to the text, as changed via the text editing view. Also exits the text editing view. 
+        /// This can only be called when in the text editing view.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if this item is not in the text editing view.</exception>
         public void ConfirmEdit()
