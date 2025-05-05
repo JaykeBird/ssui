@@ -55,13 +55,11 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Border x:Name="btnUp" x:FieldModifier="private" Grid.Column="2" Grid.Row="0" Height="auto" BorderThickness="0"
-                                Focusable="True" KeyboardNavigation.IsTabStop="True"
                                 MouseEnter="btnUp_MouseEnter" MouseLeave="btnUp_MouseLeave" MouseDown="btnUp_MouseDown" MouseUp="btnUp_MouseUp"
                                 TouchDown="btnUp_TouchDown" TouchUp="btnUp_TouchUp" StylusDown="btnUp_StylusDown" StylusUp="btnUp_StylusUp" >
                         <Path x:Name="pathUp" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Black" Data="M4,0 L0,4 L8,4 z"/>
                     </Border>
                     <Border x:Name="btnDown" x:FieldModifier="private" Grid.Column="2" Grid.Row="1" Height="auto" BorderThickness="0"
-                                Focusable="True" KeyboardNavigation.IsTabStop="True"
                                 MouseEnter="btnDown_MouseEnter" MouseLeave="btnDown_MouseLeave" MouseDown="btnDown_MouseDown" MouseUp="btnDown_MouseUp"
                                 TouchDown="btnDown_TouchDown" TouchUp="btnDown_TouchUp" StylusDown="btnDown_StylusDown" StylusUp="btnDown_StylusUp" >
                         <Path x:Name="pathDown" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="Black" Data="M0,0 L8,0 L4,4 z"/>
