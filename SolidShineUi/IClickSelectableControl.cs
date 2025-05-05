@@ -89,153 +89,154 @@ namespace SolidShineUi
         /// Get or set the background brush used for this control, while it is selected (and isn't being clicked).
         /// </summary>
         Brush SelectedBrush { get; set; }
+
         #endregion
 
         #region Extra Control Properties
 
-        // these are properties I'm expecting all implementers to already have, since they're probably implementing this on a
-        // class inheriting from FrameworkElement - however, I don't want to introduce too many properties, thouugh, because
-        // I'd rather not bog down this interface too much, and instead point users to instead explicitly cast to the element
-        // that they're wanting to use. still, I can implement a couple common/useful things here
+        //// these are properties I'm expecting all implementers to already have, since they're probably implementing this on a
+        //// class inheriting from FrameworkElement - however, I don't want to introduce too many properties, thouugh, because
+        //// I'd rather not bog down this interface too much, and instead point users to instead explicitly cast to the element
+        //// that they're wanting to use. still, I can implement a couple common/useful things here
 
-        /// <summary>
-        /// Gets or sets the user interface (UI) visibility of this element.
-        /// </summary>
-        Visibility Visibility { get; set; }
+        ///// <summary>
+        ///// Gets or sets the user interface (UI) visibility of this element.
+        ///// </summary>
+        //Visibility Visibility { get; set; }
 
-        /// <summary>
-        /// Gets or sets the opacity factor applied to the entire UIElement when it is rendered in the user interface (UI).
-        /// 0.0 is completely transparent, 1.0 is completely opaque.
-        /// </summary>
-        double Opacity { get; set; }
+        ///// <summary>
+        ///// Gets or sets the opacity factor applied to the entire UIElement when it is rendered in the user interface (UI).
+        ///// 0.0 is completely transparent, 1.0 is completely opaque.
+        ///// </summary>
+        //double Opacity { get; set; }
 
-        /// <summary>
-        /// Get or set if this element is visible for hit testing.
-        /// </summary>
-        bool IsHitTestVisible { get; set; }
+        ///// <summary>
+        ///// Get or set if this element is visible for hit testing.
+        ///// </summary>
+        //bool IsHitTestVisible { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value that determines whether rendering for this element should use device-specific pixel settings during rendering.
-        /// </summary>
-        bool SnapsToDevicePixels { get; set; }
+        ///// <summary>
+        ///// Gets or sets a value that determines whether rendering for this element should use device-specific pixel settings during rendering.
+        ///// </summary>
+        //bool SnapsToDevicePixels { get; set; }
 
-        /// <summary>
-        /// Get or set the margins of this element, indicating how distant it is from the bounds of the parent control.
-        /// </summary>
-        Thickness Margin { get; set; }
+        ///// <summary>
+        ///// Get or set the margins of this element, indicating how distant it is from the bounds of the parent control.
+        ///// </summary>
+        //Thickness Margin { get; set; }
 
-        /// <summary>
-        /// Gets or sets the suggested height of the element.
-        /// </summary>
-        double Height { get; set; }
+        ///// <summary>
+        ///// Gets or sets the suggested height of the element.
+        ///// </summary>
+        //double Height { get; set; }
 
-        /// <summary>
-        /// Gets or sets the suggested width of the element.
-        /// </summary>
-        double Width { get; set; }
+        ///// <summary>
+        ///// Gets or sets the suggested width of the element.
+        ///// </summary>
+        //double Width { get; set; }
 
-        /// <summary>
-        /// Get or set how this element is aligned along the horizontal axis (X-axis).
-        /// </summary>
-        HorizontalAlignment HorizontalAlignment { get; set; }
+        ///// <summary>
+        ///// Get or set how this element is aligned along the horizontal axis (X-axis).
+        ///// </summary>
+        //HorizontalAlignment HorizontalAlignment { get; set; }
 
-        /// <summary>
-        /// Get or set how this element is aligned along the vertical axis (Y-axis).
-        /// </summary>
-        VerticalAlignment VerticalAlignment { get; set; }
+        ///// <summary>
+        ///// Get or set how this element is aligned along the vertical axis (Y-axis).
+        ///// </summary>
+        //VerticalAlignment VerticalAlignment { get; set; }
 
-        /// <summary>
-        /// Gets or sets the minimum height constraint of the element.
-        /// </summary>
-        double MinHeight { get; set; }
+        ///// <summary>
+        ///// Gets or sets the minimum height constraint of the element.
+        ///// </summary>
+        //double MinHeight { get; set; }
 
-        /// <summary>
-        /// Gets or sets the minimum width constraint of the element.
-        /// </summary>
-        double MinWidth { get; set; }
+        ///// <summary>
+        ///// Gets or sets the minimum width constraint of the element.
+        ///// </summary>
+        //double MinWidth { get; set; }
 
-        /// <summary>
-        /// Gets or sets the maximum height constraint of the element.
-        /// </summary>
-        double MaxHeight { get; set; }
+        ///// <summary>
+        ///// Gets or sets the maximum height constraint of the element.
+        ///// </summary>
+        //double MaxHeight { get; set; }
 
-        /// <summary>
-        /// Gets or sets the maximum width constraint of the element.
-        /// </summary>
-        double MaxWidth { get; set; }
+        ///// <summary>
+        ///// Gets or sets the maximum width constraint of the element.
+        ///// </summary>
+        //double MaxWidth { get; set; }
 
-        /// <summary>
-        /// Gets or sets an arbitrary object value that can be used to store custom information about this element. This may return null if no object is set.
-        /// </summary>
-        object Tag { get; set; }
+        ///// <summary>
+        ///// Gets or sets an arbitrary object value that can be used to store custom information about this element. This may return null if no object is set.
+        ///// </summary>
+        //object Tag { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this element is enabled in the user interface (UI).
-        /// </summary>
-        new bool IsEnabled { get; set; }
+        ///// <summary>
+        ///// Gets or sets a value indicating whether this element is enabled in the user interface (UI).
+        ///// </summary>
+        //new bool IsEnabled { get; set; }
 
-        /// <summary>
-        /// Get if this element currently has logical focus. Use <see cref="IInputElement.IsKeyboardFocused"/> to check if this has keyboard focus.
-        /// </summary>
-        bool IsFocused { get; }
+        ///// <summary>
+        ///// Get if this element currently has logical focus. Use <see cref="IInputElement.IsKeyboardFocused"/> to check if this has keyboard focus.
+        ///// </summary>
+        //bool IsFocused { get; }
 
-        /// <summary>
-        /// Gets or sets transform information that affects the rendering position of this element.
-        /// </summary>
-        Transform RenderTransform { get; set; }
+        ///// <summary>
+        ///// Gets or sets transform information that affects the rendering position of this element.
+        ///// </summary>
+        //Transform RenderTransform { get; set; }
 
-        /// <summary>
-        /// Gets or sets a graphics transformation that should apply to this element when layout is performed.
-        /// </summary>
-        Transform LayoutTransform { get; set; }
+        ///// <summary>
+        ///// Gets or sets a graphics transformation that should apply to this element when layout is performed.
+        ///// </summary>
+        //Transform LayoutTransform { get; set; }
 
-        /// <summary>
-        /// Gets or sets the tool-tip object that is displayed for this element in the user interface (UI).
-        /// </summary>
-        object ToolTip { get; set; }
+        ///// <summary>
+        ///// Gets or sets the tool-tip object that is displayed for this element in the user interface (UI).
+        ///// </summary>
+        //object ToolTip { get; set; }
 
-        // DependencyObject methods/properties
+        //// DependencyObject methods/properties
 
-        /// <summary>
-        /// Gets the Dispatcher this DispatcherObject is associated with.
-        /// </summary>
-        Dispatcher Dispatcher { get; }
+        ///// <summary>
+        ///// Gets the Dispatcher this DispatcherObject is associated with.
+        ///// </summary>
+        //Dispatcher Dispatcher { get; }
 
-        /// <summary>
-        /// Gets a value that indicates whether this instance is currently sealed (read-only).
-        /// </summary>
-        bool IsSealed { get; }
+        ///// <summary>
+        ///// Gets a value that indicates whether this instance is currently sealed (read-only).
+        ///// </summary>
+        //bool IsSealed { get; }
 
-        /// <summary>
-        /// Clears the local value of a property. The property to be cleared is specified by a DependencyProperty identifier.
-        /// </summary>
-        void ClearValue(DependencyProperty dp);
+        ///// <summary>
+        ///// Clears the local value of a property. The property to be cleared is specified by a DependencyProperty identifier.
+        ///// </summary>
+        //void ClearValue(DependencyProperty dp);
 
-        /// <summary>
-        /// Coerces the value of the specified dependency property. This is accomplished by invoking any CoerceValueCallback 
-        /// function specified in property metadata for the dependency property as it exists on the calling DependencyObject.
-        /// </summary>
-        void CoerceValue(DependencyProperty dp);
+        ///// <summary>
+        ///// Coerces the value of the specified dependency property. This is accomplished by invoking any CoerceValueCallback 
+        ///// function specified in property metadata for the dependency property as it exists on the calling DependencyObject.
+        ///// </summary>
+        //void CoerceValue(DependencyProperty dp);
 
-        /// <summary>
-        /// Creates a specialized enumerator for determining which dependency properties have locally set values on this DependencyObject.
-        /// </summary>
-        LocalValueEnumerator GetLocalValueEnumerator();
+        ///// <summary>
+        ///// Creates a specialized enumerator for determining which dependency properties have locally set values on this DependencyObject.
+        ///// </summary>
+        //LocalValueEnumerator GetLocalValueEnumerator();
 
-        /// <summary>
-        /// Returns the current effective value of a dependency property on this instance of a DependencyObject.
-        /// </summary>
-        object GetValue(DependencyProperty dp);
+        ///// <summary>
+        ///// Returns the current effective value of a dependency property on this instance of a DependencyObject.
+        ///// </summary>
+        //object GetValue(DependencyProperty dp);
 
-        /// <summary>
-        /// Re-evaluates the effective value for the specified dependency property.
-        /// </summary>
-        void InvalidateProperty(DependencyProperty dp);
+        ///// <summary>
+        ///// Re-evaluates the effective value for the specified dependency property.
+        ///// </summary>
+        //void InvalidateProperty(DependencyProperty dp);
 
-        /// <summary>
-        /// Sets the local value of a dependency property, specified by its dependency property identifier.
-        /// </summary>
-        void SetValue(DependencyProperty dp, object value);
+        ///// <summary>
+        ///// Sets the local value of a dependency property, specified by its dependency property identifier.
+        ///// </summary>
+        //void SetValue(DependencyProperty dp, object value);
 
         #endregion
 
