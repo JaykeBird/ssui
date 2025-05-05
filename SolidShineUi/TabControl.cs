@@ -966,6 +966,8 @@ namespace SolidShineUi
             ContentAreaBackground = cs.BackgroundColor.ToBrush();
             // Background = cs.BackgroundColor.ToBrush();
 
+            ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
+
             if (cs.IsHighContrast)
             {
                 TabBackground = cs.BackgroundColor.ToBrush();
@@ -974,6 +976,9 @@ namespace SolidShineUi
                 TabBorderHighlightBrush = cs.BorderColor.ToBrush();
                 SelectedTabBackground = cs.BackgroundColor.ToBrush();
                 TabCloseBrush = cs.BorderColor.ToBrush();
+
+                ButtonHighlightBackground = cs.HighlightColor.ToBrush();
+                ButtonHighlightBorderBrush = cs.BorderColor.ToBrush();
             }
             else
             {
@@ -983,6 +988,9 @@ namespace SolidShineUi
                 TabBorderHighlightBrush = cs.HighlightColor.ToBrush();
                 SelectedTabBackground = cs.BackgroundColor.ToBrush();
                 TabCloseBrush = cs.ForegroundColor.ToBrush();
+
+                ButtonHighlightBackground = cs.SecondHighlightColor.ToBrush();
+                ButtonHighlightBorderBrush = cs.HighlightColor.ToBrush();
             }
         }
         #endregion
@@ -1007,7 +1015,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabHighlightBrush), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
 
         /// <summary>
         /// Get or set the brush used for the borders of a tab while it is highlighted (i.e. mouse over, keyboard focus).
@@ -1058,6 +1066,37 @@ namespace SolidShineUi
         public static DependencyProperty SelectedTabBackgroundProperty
             = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// </summary>
+        public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBackgroundProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBackground), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.Silver.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// </summary>
+        public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBorderBrushProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for buttons in the TabControl, when they are being clicked (i.e. mouse down, key down).
+        /// </summary>
+        public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonClickBrushProperty
+            = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
 
         #endregion
 

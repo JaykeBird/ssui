@@ -189,17 +189,6 @@ namespace SolidShineUi.Utils
         public static DependencyProperty CloseBrushProperty
             = DependencyProperty.Register(nameof(CloseBrush), typeof(Brush), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
-        
-        ///// <summary>
-        ///// Get or set the background for the tab; this can be replaced by <see cref="SelectedTabBackground"/> or overlapped by <see cref="TabBackground"/>.
-        ///// </summary>
-        //public Brush BaseBackground { get => (Brush)GetValue(BaseBackgroundProperty); set => SetValue(BaseBackgroundProperty, value); }
-
-        ///// <summary>The backing dependency property for <see cref="BaseBackground"/>. See the related property for details.</summary>
-        //public static DependencyProperty BaseBackgroundProperty
-        //    = DependencyProperty.Register(nameof(BaseBackground), typeof(Brush), typeof(TabDisplayItem),
-        //    new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
-
 
         /// <summary>
         /// Get or set the background for the tab while it is selected (<see cref="IsSelected"/> is <c>true</c>).
@@ -210,6 +199,36 @@ namespace SolidShineUi.Utils
         public static DependencyProperty SelectedTabBackgroundProperty
             = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close button, when it is highlighted (i.e. mouse over).
+        /// </summary>
+        public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBackgroundProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBackground), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.Silver.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close button, when it is highlighted (i.e. mouse over).
+        /// </summary>
+        public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBorderBrushProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close button, when it is being clicked (i.e. mouse down, key down).
+        /// </summary>
+        public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonClickBrushProperty
+            = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
 
         //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
 
@@ -245,31 +264,8 @@ namespace SolidShineUi.Utils
         #endregion
 
         private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+
         #endregion
-
-
-#if NETCOREAPP
-        private void tab_IsSelectedChanged(object? sender, EventArgs e)
-#else
-        private void tab_IsSelectedChanged(object sender, EventArgs e)
-#endif
-        {
-            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-            border.Background = IsSelected ? SelectedTabBackground : Background;
-        }
-
-        //#region Icon
-
-        //public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabDisplayItem),
-        //    new PropertyMetadata(null));
-
-        //public ImageSource Icon
-        //{
-        //    get { return (ImageSource)GetValue(IconProperty); }
-        //    set { SetValue(IconProperty, value); }
-        //}
-
-        //#endregion
 
         #region CanSelect
 
@@ -289,18 +285,6 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        //#region Title
-
-        //public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabDisplayItem),
-        //    new PropertyMetadata("New Tab"));
-
-        //public string Title
-        //{
-        //    get { return (string)GetValue(TitleProperty); }
-        //    set { SetValue(TitleProperty, value); }
-        //}
-        //#endregion
-
         #region IsDirty
 
         /// <summary>
@@ -317,7 +301,36 @@ namespace SolidShineUi.Utils
             get { return (bool)GetValue(IsDirtyProperty); }
             set { SetValue(IsDirtyProperty, value); }
         }
+
         #endregion
+
+        #region Commented Out Code
+
+        //#region Icon
+
+        //public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabDisplayItem),
+        //    new PropertyMetadata(null));
+
+        //public ImageSource Icon
+        //{
+        //    get { return (ImageSource)GetValue(IconProperty); }
+        //    set { SetValue(IconProperty, value); }
+        //}
+
+        //#endregion
+
+
+        //#region Title
+
+        //public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabDisplayItem),
+        //    new PropertyMetadata("New Tab"));
+
+        //public string Title
+        //{
+        //    get { return (string)GetValue(TitleProperty); }
+        //    set { SetValue(TitleProperty, value); }
+        //}
+        //#endregion
 
         //#region CanClose
 
@@ -330,6 +343,8 @@ namespace SolidShineUi.Utils
         //    set { SetValue(CanCloseProperty, value); }
         //}
         //#endregion
+
+        #endregion
 
         #region IsSelected
 
@@ -362,6 +377,16 @@ namespace SolidShineUi.Utils
         protected event DependencyPropertyChangedEventHandler InternalIsSelectedChanged;
 
         private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            border.Background = IsSelected ? SelectedTabBackground : Background;
+        }
+
+#if NETCOREAPP
+        private void tab_IsSelectedChanged(object? sender, EventArgs e)
+#else
+        private void tab_IsSelectedChanged(object sender, EventArgs e)
+#endif
         {
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
             border.Background = IsSelected ? SelectedTabBackground : Background;
@@ -491,13 +516,7 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            RequestClose?.Invoke(this, e);
-        }
-
         #region ParentTabControl
-
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
@@ -790,6 +809,11 @@ namespace SolidShineUi.Utils
             }
         }
 
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            RequestClose?.Invoke(this, e);
+        }
+
         #region Drag and Drop
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -1066,7 +1090,8 @@ namespace SolidShineUi.Utils
         public TabItem DroppedTabItem { get; private set; }
 
         /// <summary>
-        /// Get whether the dropped TabItem should be put before or after the source TabItem. (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in the future.)
+        /// Get whether the dropped TabItem should be put before or after the source TabItem. 
+        /// (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in the future.)
         /// </summary>
         [Obsolete("Please use the PlaceBefore property instead going forward. This property will be removed in a future version.", false)]
         public bool Before { get; private set; }
