@@ -89,7 +89,7 @@ namespace SolidShineUi
         /// Get or set the background brush used for this control, while it is selected (and isn't being clicked).
         /// </summary>
         Brush SelectedBrush { get; set; }
-
+        
         #endregion
 
         #region Extra Control Properties
