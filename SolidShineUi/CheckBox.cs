@@ -875,7 +875,10 @@ namespace SolidShineUi
         {
             if (e.Key == Key.Enter || e.Key == Key.Space)
             {
+                // special handling for OnlyAllowCheckBoxClic, to allow this to be clicked via the keyboard
+                if (OnlyAllowCheckBoxClick) checkBoxClick = true;
                 PerformClick();
+                if (OnlyAllowCheckBoxClick) checkBoxClick = false;
             }
             else if (e.Key == Key.Apps)
             {
