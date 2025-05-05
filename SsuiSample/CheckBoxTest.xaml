@@ -19,7 +19,7 @@
         <flat:CheckBox x:Name="chkDisabled2" HorizontalAlignment="Left" Margin="275,150,0,0" VerticalAlignment="Top" IsEnabled="False" Content="Check box" CheckState="Checked" ColorScheme="{Binding ColorScheme, ElementName=control}" />
         <TextBlock HorizontalAlignment="Left" Margin="275,130,0,0" Text="Disabled checked check box" VerticalAlignment="Top"/>
         <flat:CheckBox x:Name="chkContent" HorizontalAlignment="Left" Margin="20,220,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" >
-            <flat:FlatButton Width="120" Content="Button" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+            <flat:FlatButton Width="120" Content="Button" ColorScheme="{Binding ColorScheme, ElementName=control}" HighlightOnKeyboardFocus="True" />
         </flat:CheckBox>
         <TextBlock HorizontalAlignment="Left" Margin="20,200,0,0" Text="Check box with a button inside" VerticalAlignment="Top" />
         <flat:CheckBox x:Name="chkLimited" HorizontalAlignment="Left" Margin="20,290,0,0" VerticalAlignment="Top" Content="Clicking on this text will do nothing" OnlyAllowCheckBoxClick="True" ColorScheme="{Binding ColorScheme, ElementName=control}" />
