@@ -18,6 +18,7 @@
     <!--<ssut:FileSelectSingleTitleConverter x:Key="FileSelectSstConverter" />-->
     <ssut:FilePathToIconConverter x:Key="FileIconConverter" />
     <ssut:IconSizeConverter x:Key="IconSizeConverter" />
+    <ssut:DebugOutputValueConverter x:Key="Output" />
 
     <ssut:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
     <ssut:PartialThicknessConverter x:Key="PartialThConverter" />
@@ -1357,9 +1358,9 @@
                                     Tag="{Binding RightTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrRightElementParent" />
                             </Border>
                             <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="5" Padding="0" MinWidth="20" Width="20" TransparentBack="True" ToolTip="Tab List" ShowMenuArrow="False"
-                                             ClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                             HighlightBrush="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                             BorderHighlightBrush="{Binding ButtonHighlightBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             ClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource Output}, ConverterParameter='Click'}"
+                                             HighlightBrush="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource Output}, ConverterParameter='Hl'}"
+                                             BorderHighlightBrush="{Binding ButtonHighlightBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource Output}, ConverterParameter='Hlbr'}"
                                              Visibility="{Binding ShowTabListMenu, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}, Converter={StaticResource VisConverter}}">
                                 <flat:MenuButton.Menu>
                                     <flat:ContextMenu ItemsSource="{TemplateBinding Items}">

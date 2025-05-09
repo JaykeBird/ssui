@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.ComponentModel;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Diagnostics;
+using System.Windows.Data;
 
 namespace SolidShineUi
 {
@@ -89,10 +91,16 @@ namespace SolidShineUi
 #if NETCOREAPP
         ItemsControl? ic = null;
         ScrollViewer? sv = null;
+        MenuButton? tlm = null;
+        FlatButton? bsl = null;
+        FlatButton? bsr = null;
         //Border? ch = null;
 #else
         ItemsControl ic = null;
         ScrollViewer sv = null;
+        MenuButton tlm = null;
+        FlatButton bsl = null;
+        FlatButton bsr = null;
         //Border ch = null;
 #endif
 
@@ -102,6 +110,9 @@ namespace SolidShineUi
             {
                 ic = (ItemsControl)GetTemplateChild("PART_TabBar");
                 sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
+                tlm = (MenuButton)GetTemplateChild("PART_TabMenu");
+                bsl = (FlatButton)GetTemplateChild("btnScrollLeft");
+                bsr = (FlatButton)GetTemplateChild("btnScrollRight");
                 //ch = (Border)GetTemplateChild("PART_Content");
 
                 if (ic != null && sv != null)// && ch != null)
@@ -109,6 +120,27 @@ namespace SolidShineUi
                     sv.ScrollChanged += sv_ScrollChanged;
                     ic.SizeChanged += control_SizeChanged;
                     itemsLoaded = true;
+                }
+
+                if (tlm != null)
+                {
+                    tlm.HighlightBrush = ButtonHighlightBackground;
+                    tlm.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    tlm.ClickBrush = ButtonClickBrush;
+                }
+
+                if (bsl != null)
+                {
+                    bsl.HighlightBrush = ButtonHighlightBackground;
+                    bsl.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    bsl.ClickBrush = ButtonClickBrush;
+                }
+
+                if (bsr != null)
+                {
+                    bsr.HighlightBrush = ButtonHighlightBackground;
+                    bsr.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    bsr.ClickBrush = ButtonClickBrush;
                 }
             }
         }
@@ -966,6 +998,11 @@ namespace SolidShineUi
             ContentAreaBackground = cs.BackgroundColor.ToBrush();
             // Background = cs.BackgroundColor.ToBrush();
 
+            //Debug.WriteLine(cs.ThirdHighlightColor.ToString());
+            //Debug.WriteLine(cs.SecondHighlightColor.ToString());
+            //Debug.WriteLine(cs.HighlightColor.ToString());
+            //Debug.WriteLine("========================");
+
             ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
 
             if (cs.IsHighContrast)
@@ -1075,7 +1112,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
         public static DependencyProperty ButtonHighlightBackgroundProperty
             = DependencyProperty.Register(nameof(ButtonHighlightBackground), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.Silver.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Silver.ToBrush(), OnHighlightBrushUpdate));
 
         /// <summary>
         /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (i.e. mouse over).
@@ -1085,7 +1122,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty ButtonHighlightBorderBrushProperty
             = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), OnHighlightBorderBrushUpdate));
 
         /// <summary>
         /// Get or set the brush used for buttons in the TabControl, when they are being clicked (i.e. mouse down, key down).
@@ -1095,8 +1132,38 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
         public static DependencyProperty ButtonClickBrushProperty
             = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush(), OnClickBrushUpdate));
 
+
+        private static void OnClickBrushUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc && e.NewValue is Brush b && tc.tlm != null)
+            {
+                if (tc.tlm != null) tc.tlm.ClickBrush = b;
+                if (tc.bsr != null) tc.bsr.ClickBrush = b;
+                if (tc.bsl != null) tc.bsl.ClickBrush = b;
+            }
+        }
+
+        private static void OnHighlightBrushUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc && e.NewValue is Brush b)
+            {
+                if (tc.tlm != null) tc.tlm.HighlightBrush = b;
+                if (tc.bsr != null) tc.bsr.HighlightBrush = b;
+                if (tc.bsl != null) tc.bsl.HighlightBrush = b;
+            }
+        }
+
+        private static void OnHighlightBorderBrushUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc && e.NewValue is Brush b)
+            {
+                if (tc.tlm != null) tc.tlm.BorderHighlightBrush = b;
+                if (tc.bsr != null) tc.bsr.BorderHighlightBrush = b;
+                if (tc.bsl != null) tc.bsl.BorderHighlightBrush = b;
+            }
+        }
 
         #endregion
 
