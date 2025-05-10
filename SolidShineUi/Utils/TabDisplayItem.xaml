@@ -19,7 +19,22 @@
         <local:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>
-        <Border BorderThickness="1,1,1,0" BorderBrush="Black" x:Name="border" Focusable="{Binding ElementName=control, Path=TabItem.CanSelect}" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
+        <Border BorderThickness="1,1,1,0" x:Name="border" Focusable="{Binding ElementName=control, Path=TabItem.CanSelect}" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="{Binding ElementName=control, Path=TabBorderBrush, FallbackValue=Black}" />
+                    <Setter Property="Background" Value="{Binding ElementName=control, Path=Background, FallbackValue=White}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=control, Path=IsSelected}" Value="True">
+                            <Setter Property="Background" Value="{Binding ElementName=control, Path=SelectedTabBackground, FallbackValue=Gainsboro}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=control, Path=IsHighlighted}" Value="True">
+                            <Setter Property="BorderBrush" Value="{Binding ElementName=control, Path=BorderHighlightBrush, FallbackValue=DarkGray}" />
+                            <Setter Property="Background" Value="{Binding ElementName=control, Path=HighlightBrush, FallbackValue=LightGray}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <Border BorderThickness="0" x:Name="brdrInnerColor" Background="{Binding ElementName=control, Path=TabBackground}" />
         </Border>
         <Border BorderThickness="1">
