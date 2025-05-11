@@ -18,6 +18,8 @@ namespace SsuiSample
         public TabControlTest()
         {
             InitializeComponent();
+
+            pl.LoadObject(tabControl);
         }
 
         #region ColorScheme
@@ -301,6 +303,23 @@ namespace SsuiSample
             ti.ClearValue(FontSizeProperty);
             ti.ClearValue(FontStyleProperty);
             ti.ClearValue(FontWeightProperty);
+        }
+
+        private void btnProperties_Click(object sender, RoutedEventArgs e)
+        {
+            popProps.PlacementTarget = btnProperties;
+
+            if (popProps.IsOpen)
+            {
+                btnProperties.Content = "Show Property List";
+                popProps.IsOpen = false;
+            }
+            else
+            {
+                btnProperties.Content = "Hide Property List";
+                pl.ReloadObject();
+                popProps.IsOpen = true;
+            }
         }
     }
 }
