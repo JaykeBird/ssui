@@ -723,10 +723,9 @@ namespace SolidShineUi
 
         #region LeftTabBarElement and RightTabBarElement
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property object for the related property. See <see cref="LeftTabBarElement"/> for details.</summary>
         public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
             new FrameworkPropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the element to display on the left side of the tab bar.
@@ -737,10 +736,9 @@ namespace SolidShineUi
             set { SetValue(LeftTabBarElementProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property object for the related property. See <see cref="RightTabBarElement"/> for details.</summary>
         public static readonly DependencyProperty RightTabBarElementProperty = DependencyProperty.Register("RightTabBarElement", typeof(UIElement), typeof(TabControl),
             new FrameworkPropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).
@@ -1037,6 +1035,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the background used for the content area of the TabControl.
         /// </summary>
+        [Category("Brushes")]
         public Brush ContentAreaBackground { get => (Brush)GetValue(ContentAreaBackgroundProperty); set => SetValue(ContentAreaBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
@@ -1047,6 +1046,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the background of a tab while it is highlighted (i.e. mouse over, keyboard focus).
         /// </summary>
+        [Category("Brushes")]
         public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
@@ -1057,6 +1057,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the borders of a tab while it is highlighted (i.e. mouse over, keyboard focus).
         /// </summary>
+        [Category("Brushes")]
         public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
@@ -1067,6 +1068,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the borders of tabs. This is different from the <see cref="Control.BorderBrush"/> used for the rest of the TabControl.
         /// </summary>
+        [Category("Brushes")]
         public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
@@ -1077,6 +1079,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the close glyph used in the tabs (where <see cref="TabItem.CanClose"/> is set to <c>true</c>).
         /// </summary>
+        [Category("Brushes")]
         public Brush TabCloseBrush { get => (Brush)GetValue(TabCloseBrushProperty); set => SetValue(TabCloseBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabCloseBrush"/>. See the related property for details.</summary>
@@ -1087,6 +1090,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the background of a tab. Individual tabs can overwrite their backgrounds by changing <see cref="TabItem.TabBackground"/>.
         /// </summary>
+        [Category("Brushes")]
         public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBackground"/>. See the related property for details.</summary>
@@ -1097,6 +1101,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the background of a selected tab.
         /// </summary>
+        [Category("Brushes")]
         public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
@@ -1107,6 +1112,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for buttons in the TabControl, when they are highlighted (i.e. mouse over).
         /// </summary>
+        [Category("Brushes")]
         public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
@@ -1117,6 +1123,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (i.e. mouse over).
         /// </summary>
+        [Category("Brushes")]
         public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
@@ -1127,6 +1134,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for buttons in the TabControl, when they are being clicked (i.e. mouse down, key down).
         /// </summary>
+        [Category("Brushes")]
         public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
@@ -1142,6 +1150,7 @@ namespace SolidShineUi
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
@@ -1155,9 +1164,23 @@ namespace SolidShineUi
                         tlm.Menu.BorderBrush = BorderBrush;
                     }
                 }
+
+                InternalUpdateChildBrushes(e);
+            }
+            else if (e.Property == BackgroundProperty)
+            {
+                InternalUpdateChildBrushes(e);
+            }
+            else if (e.Property == ForegroundProperty)
+            {
+                InternalUpdateChildBrushes(e);
             }
         }
 
+        /// <summary>
+        /// Called when a brush property is updated in the TabControl.
+        /// </summary>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> related to the property change.</param>
         protected virtual void InternalUpdateChildBrushes(DependencyPropertyChangedEventArgs e)
         {
 
