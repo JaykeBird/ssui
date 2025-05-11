@@ -195,6 +195,13 @@ namespace SsuiSample
                 {
                     precolor = si.Color;
                 }
+                else if (ti.TabBackground is LinearGradientBrush lg)
+                {
+                    if (lg.GradientStops.Count > 0)
+                    {
+                        precolor = lg.GradientStops[0].Color;
+                    }
+                }
                 ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
                 cpd.ShowDialog();
                 if (cpd.DialogResult)
@@ -213,6 +220,13 @@ namespace SsuiSample
                 if (ti.TabBackground is SolidColorBrush si)
                 {
                     precolor = si.Color;
+                }
+                else if (ti.TabBackground is LinearGradientBrush lg)
+                {
+                    if (lg.GradientStops.Count > 0)
+                    {
+                        precolor = lg.GradientStops[0].Color;
+                    }
                 }
                 ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
                 cpd.ShowDialog();
