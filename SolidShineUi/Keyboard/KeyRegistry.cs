@@ -77,6 +77,21 @@ namespace SolidShineUi.KeyboardShortcuts
         private Dictionary<Key, KeyboardShortcut> Ksr_CtrlAltShift = new Dictionary<Key, KeyboardShortcut>();
 
         /// <summary>
+        /// Get or set if shortcuts can be created and registered using all possible keys while certain modifiers aren't pressed. Default is <c>false</c>.
+        /// </summary>
+        /// <remarks>
+        /// This is meant to prevent users from activating keyboard shortcuts while they are typing text (for example, if a shortcut is registered
+        /// for pressing just the "G" key, and then a user types the word "egg" into a text box, that keyboard shortcut may unintentionally get
+        /// activated twice). This should be kept as <c>false</c> in programs that heavily feature or rely upon text input, but can be allowed
+        /// (by changing this to <c>true</c>) in other programs that have little to no text input.
+        /// <para/>
+        /// While this is <c>false</c>, keyboard shortcuts that have no modifier, only the Shift modifier, or only the Alt modifier and that doesn't have one of the
+        /// preallowed safe keys listed in <see cref="UnmodifiedSafeKeys"/>, then the shortcut is silently not added. (Shift and Alt is included here too
+        /// to prevent shortcuts while a user is holding down the Shift key to capitalize a letter, or the Alt key to enter an Alt key code).
+        /// </remarks>
+        public bool AllowAllNonModifiedKeysInShortcuts { get; set; } = false;
+
+        /// <summary>
         /// Register a keyboard shortcut with the registry.
         /// </summary>
         /// <param name="kc">The keyboard shortcut to register.</param>
@@ -84,7 +99,8 @@ namespace SolidShineUi.KeyboardShortcuts
         {
             if (Ksr_All.Any(ks => ks.KeyString == kc.KeyString))
             {
-                throw new ArgumentException("Cannot add this shortcut as an existing shortcut already uses this keyboard combination and key. Unregister the existing shortcut first before registering this one.", nameof(kc));
+                throw new ArgumentException("Cannot add this shortcut as an existing shortcut already uses this keyboard combination and key. " +
+                    "Unregister the existing shortcut first before registering this one.", nameof(kc));
             }
 
             Ksr_All.Add(kc);
@@ -92,24 +108,36 @@ namespace SolidShineUi.KeyboardShortcuts
             switch (kc.Combination)
             {
                 case KeyboardCombination.None:
-                    if (UnmodifiedSafeKeys.Contains(kc.Key))
+                    if (UnmodifiedSafeKeys.Contains(kc.Key) || AllowAllNonModifiedKeysInShortcuts)
                     {
                         Ksr_None.Add(kc.Key, kc);
+                    }
+                    else
+                    {
+                        return;
                     }
                     break;
                 case KeyboardCombination.Ctrl:
                     Ksr_Ctrl.Add(kc.Key, kc);
                     break;
                 case KeyboardCombination.Alt:
-                    if (UnmodifiedSafeKeys.Contains(kc.Key))
+                    if (UnmodifiedSafeKeys.Contains(kc.Key) || AllowAllNonModifiedKeysInShortcuts)
                     {
                         Ksr_Alt.Add(kc.Key, kc);
                     }
+                    else
+                    {
+                        return;
+                    }
                     break;
                 case KeyboardCombination.Shift:
-                    if (UnmodifiedSafeKeys.Contains(kc.Key))
+                    if (UnmodifiedSafeKeys.Contains(kc.Key) || AllowAllNonModifiedKeysInShortcuts)
                     {
                         Ksr_Shift.Add(kc.Key, kc);
+                    }
+                    else
+                    {
+                        return;
                     }
                     break;
                 case KeyboardCombination.AltShift:
@@ -304,7 +332,8 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Get a list of keyboard shortcuts registered to a certain method.
         /// </summary>
-        /// <param name="methodId">The name of the method. If you used <see cref="RoutedEventKeyAction.CreateListFromMenu(Menu)"/> to fill from a menu, the name will be the name of the MenuItem itself.</param>
+        /// <param name="methodId">The name of the method. If you used <see cref="RoutedEventKeyAction.CreateListFromMenu(Menu)"/> to fill from a menu, 
+        /// the name will be the name of the MenuItem itself.</param>
         /// <returns></returns>
         public IEnumerable<KeyboardShortcut> GetShortcutsForMethod(string methodId)
         {
@@ -316,7 +345,8 @@ namespace SolidShineUi.KeyboardShortcuts
         /// </summary>
         /// <param name="key">The key for this shortcut.</param>
         /// <param name="combination">The combination of modifier keys to have pressed for this shortcut.</param>
-        /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
+        /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), 
+        /// and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
 #if NETCOREAPP
         public (IKeyAction?, string) GetActionForKey(KeyboardCombination combination, Key key)
 #else
@@ -371,7 +401,8 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <param name="shift">Set if the Shift key is part of this shortcut.</param>
         /// <param name="alt">Set if the Alt key is part of this shortcut.</param>
         /// <param name="ctrl">Set if the Ctrl key is part of this shortcut.</param>
-        /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
+        /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), 
+        /// and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
 #if NETCOREAPP
         public (IKeyAction?, string) GetActionForKey(Key key, bool shift, bool alt, bool ctrl)
 #else
@@ -484,7 +515,8 @@ namespace SolidShineUi.KeyboardShortcuts
     }
 
     /// <summary>
-    /// A key registry that has a master key registry that it syncs up with. Useful in scenarios where you want to have multiple layers of shortcuts, with only some layers being applicable at certain points.
+    /// A key registry that has a master key registry that it syncs up with. Useful in scenarios where you want to have multiple layers of shortcuts, 
+    /// with only some layers being applicable at certain points.
     /// </summary>
     public class SubKeyRegistry : KeyRegistry
     {
