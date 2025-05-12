@@ -122,21 +122,6 @@ namespace SolidShineUi
         public static readonly StyledProperty<TimeSpan> MaxValueProperty
             = AvaloniaProperty.Register<TimeSpinner, TimeSpan>(nameof(MaxValue), new TimeSpan(23, 59, 59));
 
-        ///<summary>
-        /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.
-        ///</summary>
-        ///<remarks>
-        /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 15.
-        /// Trailing zeros are not displayed if a value doesn't have the full decimal precision; instead, this property is more
-        /// meant to provide a built-in rounding feature as needed.
-        ///</remarks>
-        public byte Decimals { get => GetValue(DecimalsProperty); set => SetValue(DecimalsProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="Decimals"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<byte> DecimalsProperty
-            = AvaloniaProperty.Register<DoubleSpinner, byte>(nameof(Decimals), 15);
-
-
         /// <summary>
         /// Get or set how the <see cref="Value"/> is displayed in the text box. This can be used to customize how values are displayed.
         /// </summary>
@@ -256,7 +241,8 @@ namespace SolidShineUi
                     itemsLoaded = true;
                 }
 
-                // Avalonia doesn't include a command system out of the box (usually I think most people rely upon Reactive), so for now, I'll need to call these events this way
+                // Avalonia doesn't include a command system out of the box
+                // (usually I think most people rely upon Reactive), so for now, I'll need to call these events this way
                 btnStepUp = (FlatRepeatButton?)e.NameScope.Find("PART_btnStepUp");
                 btnStepDown = (FlatRepeatButton?)e.NameScope.Find("PART_btnStepDown");
 
@@ -356,6 +342,9 @@ namespace SolidShineUi
         #endregion
 
         #region TextBox
+
+        private static readonly string[] dtTimeFormats = new string[] { "t", "T" };
+
         private void txtValue_TextChanged(object? sender, TextChangedEventArgs e)
         {
             // raised when a new value is typed into the textbox
@@ -367,7 +356,6 @@ namespace SolidShineUi
             }
 
             _updateBox = false;
-            string[] dtTimeFormats = { "t", "T" };
 
             if (int.TryParse(txtValue.Text, out int i))
             {
