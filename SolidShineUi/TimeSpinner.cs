@@ -16,31 +16,32 @@ namespace SolidShineUi
     /// A control that allows you to select or enter a time.
     /// </summary>
     /// <remarks>
-    /// This is built on the same logic as <see cref="IntegerSpinner"/> or <see cref="TimeSpinner"/>, but for the purpose of having a list of strings that can be selected from.
-    /// This is inspired by the <c>DomainUpDown</c> control in Windows Forms. If considering this control, please also compare this to the experience with WPF's <c>ComboBox</c>
-    /// to see what will be the better user experience; this control has the limitation where users aren't able to see the full list of items at one time.
+    /// While by default it will only accept values between 00:00 and 23:59, this control can handle all valid <see cref="TimeSpan"/> values.
+    /// <para/>
+    /// As the appearance of time values can vary from culture to culture, this control relies on what the current UI culture is to
+    /// display time correctly. To use a non-culture-dependent value, change the <see cref="DisplayFormatString"/> value to <c>"c"</c> and set
+    /// <see cref="Use12HourClock"/> to <c>false</c>.
     /// </remarks>
-    [ContentProperty("Items")]
     public class TimeSpinner : NumericSpinnerBase<TimeSpan>
     {
 
         // As has been well discussed, for most of .NET's existence, there hasn't really been a great "time" struct or data type present
-        // while DateTime has been the go-to for working with date and time values, it suffers from being designed around representing a specific date and time,
+        // while DateTime has been the go-to for working with date and time values, it suffers from being designed around representing a specific date AND time,
         // rather than representing only a date or only a time - leading to programs needing to handle disregarding the portions of a DateTime it doesn't need
-        // in other words, DateTime is great, but it's a tool that does a lot of things when sometimes you only need something that does only some things
+        // overall, DateTime is great, but it's a tool that does a lot of things when sometimes you only need something that does only some things
         // there's a few other time-related structs that are out there, but each tends to have their own minor issues or problems
         // one of these other structs is TimeSpan, which as you can tell by its name alone, seems built to indicate a period of time, rather than a single point
-        // which as you can see, is the one that I opted to use here - for a couple of reasons
+        // which as you can see, TimeSpan is the one that I opted to use here - for a couple of reasons
         //
-        // firstly, I didn't want to have a full DateTime for this class when it wouldn't be managing dates at all
+        // firstly, I didn't want to have a full DateTime for this control when it wouldn't be managing dates at all
         // obviously, I can disregard or strip out the date values at various input points, which was my plan, but this would also be a lot of validation/checking
-        // and with how large and complex of a structure DateTime can be, I worry there'll be instances where the date doesn't end up stripped and it leads to
-        // more problems down the road... while DateTime would've been an obvious choice here, I was hesitant about it all the while
+        // and with how complex of a structure DateTime can be, I worry there'll be instances where the date doesn't end up stripped and it leads to
+        // more problems down the road... while DateTime was my first thought here, I was very hesitant about it
         // 
         // secondly (and adding on to the previous point), TimeSpan doesn't really have a date component - it does have a "Days" property, but that doesn't
         // translate to any specific date. instead, the "Days" property is more meant to represent a period of time longer than 24 hours
         //
-        // thirdly, TimeSpan operates well with DateTime and, more importantly, with .NET 6's TimeOnly struct
+        // thirdly, TimeSpan inter-operates well with DateTime and, more importantly, with .NET 6's TimeOnly struct
         // TimeSpans can be added into a DateTime, and can be extracted from a DateTime by using its "TimeOfDay" property - not the most straightforward
         // conversions, granted, but given that the two are designed to solve different problems, this is really the best that can be done
         // TimeSpan can also be directly converted to and from a TimeOnly using the FromTimeSpan and ToTimeSpan methods
@@ -49,6 +50,11 @@ namespace SolidShineUi
         // control, the problem is that it was added in .NET 6, meaning earlier versions of .NET and all of the .NET Framework do not have access to it
         // this is insurmountable for a library that is designed to work with both .NET and also the .NET Framework - so TimeOnly is pretty much out
         // fortunately, as mentioned in the previous point, there are methods for direct conversion between TimeSpan and TimeOnly
+        // 
+        // fifthly, having a control that is built to handle TimeSpan values seems kind of nice to have - while building the TimeSpinner was done out of the fact
+        // that WPF includes a DatePicker out of the box but nothing for selecting a time, the TimeSpinner now has more of a purpose beyond just being a complement
+        // for the DatePicker. The TimeSpinner can handle and represent all TimeSpan values, making this useful in other situations where a TimeSpan is used
+        // this also applies to the PropertyList control, where now I can just use a TimeSpinner to represent any TimeSpan values in there
         // 
         // finally, I know that third-party libraries exist, such as NodaTime, which include their own time-only data types (or something equivalent to that)
         // but since having SolidShineUi with no extra dependencies is a major goal of mine, that rules out that option for me as well
@@ -65,6 +71,8 @@ namespace SolidShineUi
         {
             // set up ValidateValue to run whenever these properties are updated (Value)
             AddPropertyChangedTrigger(ValueProperty, typeof(TimeSpinner));
+            AddPropertyChangedTrigger(MinValueProperty, typeof(TimeSpinner));
+            AddPropertyChangedTrigger(MaxValueProperty, typeof(TimeSpinner));
 
             CommandBindings.Add(new CommandBinding(StepUp, (o, e) => DoStepUp(), (o, e) => e.CanExecute = !IsAtMaxValue));
             CommandBindings.Add(new CommandBinding(StepDown, (o, e) => DoStepDown(), (o, e) => e.CanExecute = !IsAtMinValue));
@@ -405,6 +413,9 @@ namespace SolidShineUi
         #endregion
 
         #region TextBox
+
+        private static readonly string[] dtTimeFormats = new string[] { "t", "T" };
+
         private void txtValue_TextChanged(object sender, TextChangedEventArgs e)
         {
             // raised when a new value is typed into the textbox
@@ -475,6 +486,10 @@ namespace SolidShineUi
             else if (TimeSpan.TryParse(txtValue.Text, out TimeSpan ts))
             {
                 Value = ts;
+            }
+            else if (DateTime.TryParseExact(txtValue.Text, dtTimeFormats, null, DateTimeStyles.AllowWhiteSpaces, out DateTime dt))
+            {
+                Value = dt.TimeOfDay;
             }
             else
             {

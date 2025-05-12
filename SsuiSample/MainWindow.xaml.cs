@@ -22,6 +22,7 @@ namespace SsuiSample
         public MainWindow()
         {
             InitializeComponent();
+            //SourceInitialized += MainWindow_SourceInitialized;
             ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
             SetupSidebar();
             KeyDown += (s, e) =>
@@ -39,6 +40,13 @@ namespace SsuiSample
                     }
                 }
             };
+        }
+
+        private void MainWindow_SourceInitialized(object sender, EventArgs e)
+        {
+//#if NET8_0
+//            SsuiWindows11Interop.FlatWindowInterop.RenderWindowsCaptionButtons(this);
+//#endif
         }
 
         private bool TestIfPointIsMaximizeButton(Point p)

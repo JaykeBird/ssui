@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using static SolidShineUi.ChromeButtons;
 using System.Windows.Shell;
 //using Microsoft.Windows.Shell;
 using System.ComponentModel;
@@ -33,6 +32,8 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Maximize, OnMaximizeWindow, (_, e) => e.CanExecute = WindowState != WindowState.Maximized));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.Restore, OnRestoreWindow, (_, e) => e.CanExecute = WindowState != WindowState.Normal));
             CommandBindings.Add(new CommandBinding(FlatWindowCommands.DisplaySystemMenu, OnShowSystemMenu, (_, e) => e.CanExecute = WindowState != WindowState.Minimized));
+
+            DependencyPropertyDescriptor.FromProperty(ResizeModeProperty, typeof(FlatWindow)).AddValueChanged(this, ResizeModeChanged);
         }
 
         #region Native Interop
@@ -196,19 +197,23 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region Layout/Appearance Properties
+        #region Caption Bar Appearance
 
-        int captionHeight = 29;
+        #region Caption Buttons
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
             "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
             new PropertyMetadata(CaptionType.Full));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty CaptionButtonPaddingProperty = DependencyProperty.Register(
             "CaptionButtonPadding", typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(9, 7, 9, 7)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the visibility of the caption buttons (close, maximize, minimize). The actions may still be available via other methods even if the buttons are hidden.
@@ -217,33 +222,160 @@ namespace SolidShineUi
         /// Use the <c>DisableMinimizeAction</c> and <c>DisableMaximizeAction</c> methods to further prevent the user from being able to minimize or maximize the window.
         /// The standard <c>ResizeMode</c> property works as well.
         /// </remarks>
+        [Category("Appearance")]
         public CaptionType CaptionDisplayType
         {
-            get
-            {
-                return (CaptionType)GetValue(CaptionDisplayTypeProperty);
-            }
-            set
-            {
-                SetValue(CaptionDisplayTypeProperty, value);
-            }
+            get => (CaptionType)GetValue(CaptionDisplayTypeProperty);
+            set => SetValue(CaptionDisplayTypeProperty, value);
         }
 
         /// <summary>
         /// Gets or sets the amount of padding to use with each of the caption buttons. A higher padding will make the buttons larger.
         /// </summary>
         /// <remarks>The default value is (9,7,9,7).</remarks>
+        [Category("Appearance")]
         public Thickness CaptionButtonPadding
         {
-            get
+            get => (Thickness)GetValue(CaptionButtonPaddingProperty);
+            set => SetValue(CaptionButtonPaddingProperty, value);
+        }
+
+#if NETCOREAPP
+        private void ResizeModeChanged(object? sender, EventArgs e)
+#else
+        private void ResizeModeChanged(object sender, EventArgs e)
+#endif
+        {
+            switch (ResizeMode)
             {
-                return (Thickness)GetValue(CaptionButtonPaddingProperty);
-            }
-            set
-            {
-                SetValue(CaptionButtonPaddingProperty, value);
+                case ResizeMode.NoResize:
+                    CaptionDisplayType = CaptionType.Close;
+                    break;
+                case ResizeMode.CanMinimize:
+                    CaptionDisplayType = CaptionType.MinimizeClose;
+                    break;
+                default:
+                    break;
             }
         }
+
+        #endregion
+
+        #region TopRight/TopLeft elements
+
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
+            "TopRightElement", typeof(UIElement), typeof(FlatWindow),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the UI element to place in the top-right of the window, to the left of the caption buttons.
+        /// </summary>
+        [Category("Appearance")]
+        public UIElement TopRightElement
+        {
+            get => (UIElement)GetValue(TopRightElementProperty);
+            set => SetValue(TopRightElementProperty, value);
+        }
+
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
+            "TopLeftElement", typeof(UIElement), typeof(FlatWindow),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the UI element to place in the top-left corner of the window.
+        /// </summary>
+        [Category("Appearance")]
+        public UIElement TopLeftElement
+        {
+            get => (UIElement)GetValue(TopLeftElementProperty);
+            set => SetValue(TopLeftElementProperty, value);
+        }
+
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
+            "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set if the top-left element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
+        /// </summary>
+        /// <remarks>
+        /// This changes the IsHitTestVisibleInChrome property for the top-left element. If set to true, the element can be interacted with.
+        /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
+        /// </remarks>
+        public bool ExcludeTopLeftElementFromChrome
+        {
+            get => (bool)GetValue(ExcludeTopLeftElementFromChromeProperty);
+            set => SetValue(ExcludeTopLeftElementFromChromeProperty, value);
+        }
+
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty ExcludeTopRightElementFromChromeProperty = DependencyProperty.Register(
+            "ExcludeTopRightElementFromChrome", typeof(bool), typeof(FlatWindow),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set if the top-right element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
+        /// </summary>
+        /// <remarks>
+        /// This changes the IsHitTestVisibleInChrome property for the top-right element. If set to true, the element can be interacted with.
+        /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
+        /// </remarks>
+        public bool ExcludeTopRightElementFromChrome
+        {
+            get => (bool)GetValue(ExcludeTopRightElementFromChromeProperty);
+            set => SetValue(ExcludeTopRightElementFromChromeProperty, value);
+        }
+
+        #endregion
+
+        #region Other Caption Options
+
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
+            "ShowTitle", typeof(bool), typeof(FlatWindow),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set if the <see cref="Window.Title"/> should be displayed at the top of the window.
+        /// </summary>
+        [Category("Appearance")]
+        public bool ShowTitle
+        {
+            get => (bool)GetValue(ShowTitleProperty);
+            set => SetValue(ShowTitleProperty, value);
+        }
+
+        /// <summary>
+        /// The backing dependency property object for <see cref="ShowIcon"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
+            "ShowIcon", typeof(bool), typeof(FlatWindow),
+            new PropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set if the <see cref="Window.Icon"/> should be displayed at the top-left of the window.
+        /// </summary>
+        [Category("Appearance")]
+        public bool ShowIcon
+        {
+            get => (bool)GetValue(ShowIconProperty);
+            set => SetValue(ShowIconProperty, value);
+        }
+
+        int captionHeight = 29;
 
         /// <summary>
         /// Get or set the height of the caption (title bar) area of the window. Default is 29.
@@ -275,192 +407,16 @@ namespace SolidShineUi
             WindowChrome.SetWindowChrome(this, wc);
         }
 
-        //void ChangeChromeCornerRadius(CornerRadius radius)
-        //{
-        //    // note to self: if updating this method, make sure this matches the WindowChrome settings in the Generic.xaml file.
-        //    WindowChrome wc = new WindowChrome
-        //    {
-        //        CaptionHeight = captionHeight,
-        //        CornerRadius = radius,
-        //        ResizeBorderThickness = new Thickness(4),
-        //        GlassFrameThickness = new Thickness(0, 0, 0, 1)
-        //    };
+        #endregion
 
-        //    WindowChrome.SetWindowChrome(this, wc);
-        //}
-
-
-        //public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        //    "CornerRadius", typeof(CornerRadius), typeof(FlatWindow),
-        //    new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
-
-        ///// <summary>
-        ///// Get or set the corner radius (or radii) to use for the window and its border. Can be used to created rounded corners for windows (this should apply regardless of what version of Windows is being used).
-        ///// </summary>
-        //[Category("Appearance")]
-        //public CornerRadius CornerRadius
-        //{
-        //    get => (CornerRadius)GetValue(CornerRadiusProperty);
-        //    set => SetValue(CornerRadiusProperty, value);
-        //}
-
-        //protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
-
-        //private void flatWindow_InternalCornerRadiusChanged(object sender, DependencyPropertyChangedEventArgs e)
-        //{
-        //    ChangeChromeCornerRadius(CornerRadius);
-        //}
-
-        //private static void OnInternalCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is FlatWindow f)
-        //    {
-        //        f.InternalCornerRadiusChanged?.Invoke(f, e);
-        //    }
-        //}
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
-            "TopRightElement", typeof(UIElement), typeof(FlatWindow),
-            new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        #endregion
 
         /// <summary>
-        /// Gets or sets the UI element to place in the top-right of the window, to the left of the caption buttons.
+        /// The backing dependency property object for a related property. See that property for more details.
         /// </summary>
-        public UIElement TopRightElement
-        {
-            get
-            {
-                return (UIElement)GetValue(TopRightElementProperty);
-            }
-            set
-            {
-                SetValue(TopRightElementProperty, value);
-            }
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
-            "TopLeftElement", typeof(UIElement), typeof(FlatWindow),
-            new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Gets or sets the UI element to place in the top-left corner of the window.
-        /// </summary>
-        public UIElement TopLeftElement
-        {
-            get
-            {
-                return (UIElement)GetValue(TopLeftElementProperty);
-            }
-            set
-            {
-                SetValue(TopLeftElementProperty, value);
-            }
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
-            "ShowTitle", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set if the <see cref="Window.Title"/> should be displayed at the top of the window.
-        /// </summary>
-        [Category("Appearance")]
-        public bool ShowTitle
-        {
-            get
-            {
-                return (bool)GetValue(ShowTitleProperty);
-            }
-            set
-            {
-                SetValue(ShowTitleProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// The backing dependency property object for <see cref="ShowIcon"/>. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
-            "ShowIcon", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
-
-        /// <summary>
-        /// Get or set if the <see cref="Window.Icon"/> should be displayed at the top-left of the window.
-        /// </summary>
-        [Category("Appearance")]
-        public bool ShowIcon
-        {
-            get
-            {
-                return (bool)GetValue(ShowIconProperty);
-            }
-            set
-            {
-                SetValue(ShowIconProperty, value);
-            }
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
-            "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set if the top-left element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
-        /// </summary>
-        /// <remarks>
-        /// This changes the IsHitTestVisibleInChrome property for the top-left element. If set to true, the element can be interacted with.
-        /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
-        /// </remarks>
-        public bool ExcludeTopLeftElementFromChrome
-        {
-            get
-            {
-                return (bool)GetValue(ExcludeTopLeftElementFromChromeProperty);
-            }
-            set
-            {
-                SetValue(ExcludeTopLeftElementFromChromeProperty, value);
-            }
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty ExcludeTopRightElementFromChromeProperty = DependencyProperty.Register(
-            "ExcludeTopRightElementFromChrome", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set if the top-right element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
-        /// </summary>
-        /// <remarks>
-        /// This changes the IsHitTestVisibleInChrome property for the top-right element. If set to true, the element can be interacted with.
-        /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
-        /// </remarks>
-        public bool ExcludeTopRightElementFromChrome
-        {
-            get
-            {
-                return (bool)GetValue(ExcludeTopRightElementFromChromeProperty);
-            }
-            set
-            {
-                SetValue(ExcludeTopRightElementFromChromeProperty, value);
-            }
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static readonly new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(1)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border of the window. Setting the thickness to 0 means the border is not visible.
@@ -468,192 +424,164 @@ namespace SolidShineUi
         [Category("Appearance")]
         public new Thickness BorderThickness
         {
-            get
-            {
-                return (Thickness)GetValue(BorderThicknessProperty);
-            }
-            set
-            {
-                SetValue(BorderThicknessProperty, value);
-            }
+            get => (Thickness)GetValue(BorderThicknessProperty);
+            set => SetValue(BorderThicknessProperty, value);
         }
-
-        #endregion
 
         #region Brushes
 
         /// <summary>
         /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) is being clicked.
         /// </summary>
+        [Category("Brushes")]
         public Brush SelectionBrush
         {
-            get
-            {
-                return (Brush)GetValue(SelectionBrushProperty);
-            }
-            set
-            {
-                SetValue(SelectionBrushProperty, value);
-            }
+            get => (Brush)GetValue(SelectionBrushProperty);
+            set => SetValue(SelectionBrushProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) has focus or has the mouse over it.
         /// </summary>
+        [Category("Brushes")]
         public Brush HighlightBrush
         {
-            get
-            {
-                return (Brush)GetValue(HighlightBrushProperty);
-            }
-            set
-            {
-                SetValue(HighlightBrushProperty, value);
-            }
+            get => (Brush)GetValue(HighlightBrushProperty);
+            set => SetValue(HighlightBrushProperty, value);
         }
 
         /// <summary>
         /// Get or set the background brush to use for the caption area (title bar). Use <c>ContentBackground</c> for the content area of the window.
         /// </summary>
+        [Category("Brushes")]
         public new Brush Background
         {
-            get
-            {
-                return (Brush)GetValue(BackgroundProperty);
-            }
-            set
-            {
-                SetValue(BackgroundProperty, value);
-            }
+            get => (Brush)GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used for the icons of the caption buttons (in the top-right in non-RTL systems).
         /// </summary>
+        [Category("Brushes")]
         public Brush CaptionButtonsBrush
         {
-            get
-            {
-                return (Brush)GetValue(CaptionButtonsBrushProperty);
-            }
-            set
-            {
-                SetValue(CaptionButtonsBrushProperty, value);
-            }
+            get => (Brush)GetValue(CaptionButtonsBrushProperty);
+            set => SetValue(CaptionButtonsBrushProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
+        [Category("Brushes")]
         public Brush CaptionTextBrush
         {
-            get
-            {
-                return (Brush)GetValue(CaptionTextBrushProperty);
-            }
-            set
-            {
-                SetValue(CaptionTextBrushProperty, value);
-            }
+            get => (Brush)GetValue(CaptionTextBrushProperty);
+            set => SetValue(CaptionTextBrushProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used for the border around the window.
         /// </summary>
+        [Category("Brushes")]
         public new Brush BorderBrush
         {
-            get
-            {
-                return (Brush)GetValue(BorderBrushProperty);
-            }
-            set
-            {
-                SetValue(BorderBrushProperty, value);
-            }
+            get => (Brush)GetValue(BorderBrushProperty);
+            set => SetValue(BorderBrushProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar) when the window isn't focused/active. This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
+        [Category("Brushes")]
         public Brush InactiveTextBrush
         {
-            get
-            {
-                return (Brush)GetValue(InactiveTextBrushProperty);
-            }
-            set
-            {
-                SetValue(InactiveTextBrushProperty, value);
-            }
+            get => (Brush)GetValue(InactiveTextBrushProperty);
+            set => SetValue(InactiveTextBrushProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used for the caption area (title bar) when the window isn't focused/active. This does not change the color of the content area of the window.
         /// </summary>
+        [Category("Brushes")]
         public Brush InactiveBackground
         {
-            get
-            {
-                return (Brush)GetValue(InactiveBackgroundProperty);
-            }
-            set
-            {
-                SetValue(InactiveBackgroundProperty, value);
-            }
+            get => (Brush)GetValue(InactiveBackgroundProperty);
+            set => SetValue(InactiveBackgroundProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used for the background of the content area of the window (where most content and controls are displayed).
         /// </summary>
+        [Category("Brushes")]
         public Brush ContentBackground
         {
-            get
-            {
-                return (Brush)GetValue(ContentBackgroundProperty);
-            }
-            set
-            {
-                SetValue(ContentBackgroundProperty, value);
-            }
+            get => (Brush)GetValue(ContentBackgroundProperty);
+            set => SetValue(ContentBackgroundProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
             "SelectionBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty CaptionButtonsBrushProperty = DependencyProperty.Register(
             "CaptionButtonsBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty CaptionTextBrushProperty = DependencyProperty.Register(
             "CaptionTextBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty InactiveTextBrushProperty = DependencyProperty.Register(
             "InactiveTextBrush", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty InactiveBackgroundProperty = DependencyProperty.Register(
             "InactiveBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
             "ContentBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -719,6 +647,7 @@ namespace SolidShineUi
         public void DisableMaximizeAction()
         {
             NativeMethods.DisableMaximizeAction(this);
+            CaptionDisplayType = CaptionDisplayType.RemoveMaximizeButton();
         }
 
         /// <summary>
@@ -728,6 +657,7 @@ namespace SolidShineUi
         public void DisableMinimizeAction()
         {
             NativeMethods.DisableMinimizeAction(this);
+            CaptionDisplayType = CaptionDisplayType.RemoveMinimizeButton();
         }
 
         /// <summary>
@@ -737,6 +667,8 @@ namespace SolidShineUi
         public void DisableMaximizeAndMinimizeActions()
         {
             NativeMethods.DisableMinimizeAndMaximizeActions(this);
+            CaptionDisplayType = CaptionDisplayType.RemoveMaximizeButton();
+            CaptionDisplayType = CaptionDisplayType.RemoveMinimizeButton();
         }
 
         /// <summary>

@@ -70,6 +70,6 @@
         <Border BorderThickness="1" VerticalAlignment="Top" Height="1" Margin="10,0" BorderBrush="Black" Grid.Row="2" Grid.ColumnSpan="2"/>
         <flat:FlatButton x:Name="btnShowProperties" Content="Show Property List" HorizontalAlignment="Right" Margin="0,10,32,0" Grid.Row="2" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Click="btnShowProperties_Click" Visibility="Collapsed" />
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="6" Background="{Binding ColorScheme.ThirdHighlightColor, Converter={StaticResource ctb}, ElementName=control}" />
-        <PropertyList:ExperimentalPropertyList x:Name="propList" Grid.Column="1" HorizontalAlignment="Stretch" Margin="6,0,0,0" Grid.Row="1" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <PropertyList:PropertyList x:Name="propList" Grid.Column="1" HorizontalAlignment="Stretch" Margin="6,0,0,0" Grid.Row="1" ColorScheme="{Binding ColorScheme, ElementName=control}" />
     </Grid>
 </UserControl>
