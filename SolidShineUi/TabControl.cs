@@ -83,9 +83,17 @@ namespace SolidShineUi
 #if NETCOREAPP
         ItemsControl? ic = null;
         ScrollViewer? sv = null;
+
+        MenuButton? tlm = null;
+        FlatButton? bsl = null;
+        FlatButton? bsr = null;
 #else
         ItemsControl ic = null;
         ScrollViewer sv = null;
+
+        MenuButton tlm = null;
+        FlatButton bsl = null;
+        FlatButton bsr = null;
 #endif
 
         void LoadTemplateItems()
@@ -94,12 +102,36 @@ namespace SolidShineUi
             {
                 ic = (ItemsControl)GetTemplateChild("PART_TabBar");
                 sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
+                tlm = (MenuButton)GetTemplateChild("PART_TabMenu");
+                bsl = (FlatButton)GetTemplateChild("btnScrollLeft");
+                bsr = (FlatButton)GetTemplateChild("btnScrollRight");
 
                 if (ic != null && sv != null)
                 {
                     sv.ScrollChanged += sv_ScrollChanged;
                     ic.SizeChanged += control_SizeChanged;
                     itemsLoaded = true;
+                }
+
+                if (tlm != null)
+                {
+                    tlm.HighlightBrush = ButtonHighlightBackground;
+                    tlm.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    tlm.ClickBrush = ButtonClickBrush;
+                }
+
+                if (bsl != null)
+                {
+                    bsl.HighlightBrush = ButtonHighlightBackground;
+                    bsl.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    bsl.ClickBrush = ButtonClickBrush;
+                }
+
+                if (bsr != null)
+                {
+                    bsr.HighlightBrush = ButtonHighlightBackground;
+                    bsr.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    bsr.ClickBrush = ButtonClickBrush;
                 }
             }
         }
