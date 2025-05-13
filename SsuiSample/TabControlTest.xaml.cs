@@ -18,6 +18,8 @@ namespace SsuiSample
         public TabControlTest()
         {
             InitializeComponent();
+
+            pl.LoadObject(tabControl);
         }
 
         #region ColorScheme
@@ -204,6 +206,13 @@ namespace SsuiSample
                 {
                     precolor = si.Color;
                 }
+                else if (ti.TabBackground is LinearGradientBrush lg)
+                {
+                    if (lg.GradientStops.Count > 0)
+                    {
+                        precolor = lg.GradientStops[0].Color;
+                    }
+                }
                 ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
                 cpd.ShowDialog();
                 if (cpd.DialogResult)
@@ -222,6 +231,13 @@ namespace SsuiSample
                 if (ti.TabBackground is SolidColorBrush si)
                 {
                     precolor = si.Color;
+                }
+                else if (ti.TabBackground is LinearGradientBrush lg)
+                {
+                    if (lg.GradientStops.Count > 0)
+                    {
+                        precolor = lg.GradientStops[0].Color;
+                    }
                 }
                 ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
                 cpd.ShowDialog();
@@ -266,6 +282,68 @@ namespace SsuiSample
             foreach (TabItem item in tabControl.Items)
             {
                 item.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void mnuFont_Click(object sender, RoutedEventArgs e)
+        {
+            if (changingTab) return;
+            if (tabControl.SelectedTab == null) return;
+
+            TabItem ti = tabControl.SelectedTab;
+
+            FontSelectDialog fsd = new FontSelectDialog
+            {
+                ColorScheme = ColorScheme,
+                Owner = Window.GetWindow(this),
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+
+                SelectedFontFamily = ti.FontFamily,
+                SelectedFontSize = ti.FontSize,
+                SelectedFontStyle = ti.FontStyle,
+                SelectedFontWeight = ti.FontWeight,
+                PreviewText = ti.Title,
+                ShowDecorations = false
+            };
+
+            fsd.ShowDialog();
+
+            if (fsd.DialogResult)
+            {
+                ti.FontFamily = fsd.SelectedFontFamily;
+                ti.FontSize = fsd.SelectedFontSize;
+                ti.FontStyle = fsd.SelectedFontStyle;
+                ti.FontWeight = fsd.SelectedFontWeight;
+            }
+        }
+
+        private void mnuFontReset_Click(object sender, RoutedEventArgs e)
+        {
+            if (changingTab) return;
+            if (tabControl.SelectedTab == null) return;
+
+            TabItem ti = tabControl.SelectedTab;
+
+            ti.ClearValue(FontFamilyProperty);
+            ti.ClearValue(FontSizeProperty);
+            ti.ClearValue(FontStyleProperty);
+            ti.ClearValue(FontWeightProperty);
+        }
+
+        private void btnProperties_Click(object sender, RoutedEventArgs e)
+        {
+            popProps.PlacementTarget = btnProperties;
+
+            if (popProps.IsOpen)
+            {
+                btnProperties.Content = "Show Property List";
+                popProps.IsOpen = false;
+            }
+            else
+            {
+                btnProperties.Content = "Hide Property List";
+                pl.ReloadObject();
+                popProps.IsOpen = true;
             }
         }
     }

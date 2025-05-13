@@ -7,6 +7,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.ComponentModel;
 using SolidShineUi.Utils;
+using System.Windows.Controls;
 
 namespace SolidShineUi
 {
@@ -23,6 +24,47 @@ namespace SolidShineUi
         public TabItem()
         {
 
+        }
+
+        /// <summary>
+        /// Create a TabItem, with the title preset.
+        /// </summary>
+        /// <param name="title">The title of this tab.</param>
+        public TabItem(string title) : this()
+        {
+            Title = title;
+        }
+
+        /// <summary>
+        /// Create a TabItem, by copying the properties of an existing TabItem.
+        /// </summary>
+        /// <param name="other">The other TabItem to copy from.</param>
+        /// <remarks>
+        /// The values of the <see cref="Content"/> and <see cref="ExtraTabElement"/> properties are not copied over, as UI elements can only have 1 parent.
+        /// </remarks>
+        public TabItem(TabItem other) : this()
+        {
+            // I don't copy the Content or ExtraTabElement properties, since child UI elements can only have 1 parent
+            // instead, the user should clone these properties themselves or come up with their own solution
+
+            Title = other.Title;
+            IsDirty = other.IsDirty;
+            DisplayDirtyState = other.DisplayDirtyState;
+            CanClose = other.CanClose;
+            ShowIcon = other.ShowIcon;
+            CanSelect = other.CanSelect;
+            Icon = other.Icon;
+            TabBackground = other.TabBackground;
+            Padding = other.Padding;
+            Visibility = other.Visibility;
+            TabContextMenu = other.TabContextMenu;
+            AllowDrop = other.AllowDrop;
+            ToolTip = other.ToolTip;
+            FontSize = other.FontSize;
+            FontStyle = other.FontStyle;
+            FontFamily = other.FontFamily;
+            FontWeight = other.FontWeight;
+            FontStretch = other.FontStretch;
         }
 
         #region Title
@@ -686,6 +728,75 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Font Properties
+
+        /// <summary>The backing dependency property for <see cref="FontSize"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontSizeProperty = Control.FontSizeProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font size to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public double FontSize
+        {
+            get => (double)GetValue(FontSizeProperty);
+            set => SetValue(FontSizeProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontFamily"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontFamilyProperty = Control.FontFamilyProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font family to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontFamily FontFamily
+        {
+            get => (FontFamily)GetValue(FontFamilyProperty);
+            set => SetValue(FontFamilyProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontStyle"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontStyleProperty = Control.FontStyleProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font style to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontStyle FontStyle
+        {
+            get => (FontStyle)GetValue(FontStyleProperty);
+            set => SetValue(FontStyleProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontStretch"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontStretchProperty = Control.FontStretchProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font stretch to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontStretch FontStretch
+        {
+            get => (FontStretch)GetValue(FontStretchProperty);
+            set => SetValue(FontStretchProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="FontWeight"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty FontWeightProperty = Control.FontWeightProperty.AddOwner(typeof(TabItem));
+
+        /// <summary>
+        /// Get or set the font weight to use for the <see cref="Title"/> and other text in the TabItem.
+        /// </summary>
+        [Category("Appearance")]
+        public FontWeight FontWeight
+        {
+            get => (FontWeight)GetValue(FontWeightProperty);
+            set => SetValue(FontWeightProperty, value);
+        }
+
+        #endregion
+
         /// <summary>
         /// Close this tab (and remove it from the TabControl), if it is currently in a TabControl.
         /// </summary>
@@ -724,22 +835,6 @@ namespace SolidShineUi
         /// </summary>
         internal protected event EventHandler BringIntoViewRequested;
 #endif
-
-        ///<summary>
-        /// Get or set if this tab is visible in the UI.
-        ///</summary>
-        [Category("Appearance")]
-        public bool IsVisible
-        {
-            get
-            {
-                return Visibility == Visibility.Visible;
-            }
-            set
-            {
-                Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
 
     }
 }

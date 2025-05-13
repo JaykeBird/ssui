@@ -107,7 +107,7 @@ namespace SsuiSample
             public string TestString { get; set; } = "noodles";
 
             [PropertyListHide]
-            public double DoubleNumber { get; set; } = 3.6;
+            public double HiddenNumber { get; set; } = 3.6;
 
             public decimal ActualDecimal { get; set; } = 7.3m;
 
@@ -133,6 +133,8 @@ namespace SsuiSample
             public Version VerVersion { get; set; } = new Version(1, 9, 5);
 
             public DateTime? OldTime { get; set; } = new DateTime(1981, 06, 12, 15, 16, 20);
+
+            public Rect BoxBox { get; set; } = new Rect(5, 5, 10, 10);
         }
     }
 }

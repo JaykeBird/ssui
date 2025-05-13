@@ -9,7 +9,7 @@ using static SolidShineUi.Utils.IconLoader;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// A property editor for editing <see cref="Guid"/> editors.
+    /// A property editor for editing <see cref="Guid"/> values.
     /// </summary>
     public partial class GuidEditor : UserControl, IPropertyEditor
     {
@@ -176,6 +176,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             sid.ColorScheme = _cs;
             sid.Owner = Window.GetWindow(this);
+            sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             sid.ShowDialog();
             if (sid.DialogResult)

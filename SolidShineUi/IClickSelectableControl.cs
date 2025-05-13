@@ -7,7 +7,10 @@ namespace SolidShineUi
     /// <summary>
     /// A base interface defining the common clicking and selecting methods and events used in Solid Shine UI controls.
     /// </summary>
-    public interface IClickSelectableControl : IInputElement
+    /// <remarks>
+    /// It is expected that this interface will be applied to a control/object that inherits from <see cref="FrameworkElement"/>.
+    /// </remarks>
+    public interface IClickSelectableControl : IFrameworkInputElement
     {
         /// <summary>
         /// Get or set the selection status of this control. Selected controls often have a different visual appearance as well.
@@ -65,6 +68,11 @@ namespace SolidShineUi
         Brush Background { get; set; }
 
         /// <summary>
+        /// Get or set the foreground brush used for this control.
+        /// </summary>
+        Brush Foreground { get; set; }
+
+        /// <summary>
         /// Get or set the background brush used for this control, while it has the mouse over it or has keyboard focus.
         /// </summary>
         Brush HighlightBrush { get; set; }
@@ -78,6 +86,7 @@ namespace SolidShineUi
         /// Get or set the background brush used for this control, while it is selected (and isn't being clicked).
         /// </summary>
         Brush SelectedBrush { get; set; }
+
         #endregion
     }
 
