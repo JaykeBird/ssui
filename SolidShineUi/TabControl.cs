@@ -1077,8 +1077,6 @@ namespace SolidShineUi
 
         #endregion
 
-        #endregion
-
         #region Setup TabDisplayItem / Tdi Event Handlers
 
         /// <summary>
