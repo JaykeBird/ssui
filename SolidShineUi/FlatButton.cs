@@ -472,7 +472,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
         public static DependencyProperty HighlightOnKeyboardFocusProperty
             = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(FlatButton),
-            new FrameworkPropertyMetadata(false));
+            new FrameworkPropertyMetadata(true));
 
         #endregion
 
