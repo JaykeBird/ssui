@@ -1231,7 +1231,7 @@
                             </Border>
                             <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
-                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}}"
+                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                              ClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                              HighlightBrush="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                              BorderHighlightBrush="{Binding ButtonHighlightBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" >

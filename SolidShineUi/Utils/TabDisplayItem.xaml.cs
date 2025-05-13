@@ -386,15 +386,15 @@ namespace SolidShineUi.Utils
             //border.Background = IsSelected ? SelectedTabBackground : Background;
         }
 
-#if NETCOREAPP
-        private void tab_IsSelectedChanged(object? sender, EventArgs e)
-#else
-        private void tab_IsSelectedChanged(object sender, EventArgs e)
-#endif
-        {
-            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-            //border.Background = IsSelected ? SelectedTabBackground : Background;
-        }
+//#if NETCOREAPP
+//        private void tab_IsSelectedChanged(object? sender, EventArgs e)
+//#else
+//        private void tab_IsSelectedChanged(object sender, EventArgs e)
+//#endif
+//        {
+//            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+//            //border.Background = IsSelected ? SelectedTabBackground : Background;
+//        }
 
         #endregion
 
