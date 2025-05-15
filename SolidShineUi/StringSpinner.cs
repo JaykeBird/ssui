@@ -10,7 +10,7 @@ namespace SolidShineUi
 {
 
     /// <summary>
-    /// A control that allows you to select a string from a larger list, by using up and down buttons.
+    /// A control that allows you to select a string by using up and down buttons.
     /// </summary>
     /// <remarks>
     /// This is built on the same logic as <see cref="IntegerSpinner"/> or <see cref="DoubleSpinner"/>, but for the purpose of having a list of strings that can be selected from.
