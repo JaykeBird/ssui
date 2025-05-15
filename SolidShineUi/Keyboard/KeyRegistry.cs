@@ -44,7 +44,7 @@ namespace SolidShineUi.KeyboardShortcuts
     public class KeyRegistry
     {
 
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         /// <summary>
         /// Raised when a shortcut is added (registered) to this KeyRegistry.
         /// </summary>
@@ -299,7 +299,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <returns>True if the shortcut was found and removed; false if there is no shortcut with this particular key and modifier key combination.</returns>
         public bool UnregisterKeyShortcut(KeyboardCombination combination, Key key)
         {
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
             KeyboardShortcut? ks = (from KeyboardShortcut kc in Ksr_All
                                    where kc.Key == key
                                    where kc.Combination == combination
@@ -333,13 +333,21 @@ namespace SolidShineUi.KeyboardShortcuts
         //    }
         //}
 
+#if AVALONIA
+        /// <summary>
+        /// Get a list of keyboard shortcuts registered to a certain method.
+        /// </summary>
+        /// <param name="methodId">The name of the method. If you used <see cref="RoutedEventKeyAction.CreateListFromMenu(Avalonia.Controls.Menu)"/> to fill from a menu, 
+        /// the name will be the name of the MenuItem itself.</param>
+        public IEnumerable<KeyboardShortcut> GetShortcutsForMethod(string methodId)
+#else
         /// <summary>
         /// Get a list of keyboard shortcuts registered to a certain method.
         /// </summary>
         /// <param name="methodId">The name of the method. If you used <see cref="RoutedEventKeyAction.CreateListFromMenu(Menu)"/> to fill from a menu, 
         /// the name will be the name of the MenuItem itself.</param>
-        /// <returns></returns>
         public IEnumerable<KeyboardShortcut> GetShortcutsForMethod(string methodId)
+#endif
         {
             return from KeyboardShortcut kc in Ksr_All where kc.MethodId == methodId select kc;
         }
@@ -351,7 +359,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <param name="combination">The combination of modifier keys to have pressed for this shortcut.</param>
         /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), 
         /// and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public (IKeyAction?, string) GetActionForKey(KeyboardCombination combination, Key key)
 #else
         public (IKeyAction, string) GetActionForKey(KeyboardCombination combination, Key key)
@@ -407,7 +415,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <param name="ctrl">Set if the Ctrl key is part of this shortcut.</param>
         /// <returns>A Tuple containing the IKeyAction associated with this shortcut, if there is one (null if there is not), 
         /// and a friendly string that displays the keyboard combination to press (i.e. "Ctrl+Alt+V").</returns>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public (IKeyAction?, string) GetActionForKey(Key key, bool shift, bool alt, bool ctrl)
 #else
         public (IKeyAction, string) GetActionForKey(Key key, bool shift, bool alt, bool ctrl)

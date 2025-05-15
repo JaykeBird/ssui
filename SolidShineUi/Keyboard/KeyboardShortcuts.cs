@@ -88,7 +88,7 @@ namespace SolidShineUi.KeyboardShortcuts
                 {
                     //xr.ReadStartElement("ks");
 
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
                     string? c = xr.GetAttribute("comb");
                     string? k = xr.GetAttribute("keyid");
                     string? m = xr.GetAttribute("action");
@@ -112,7 +112,7 @@ namespace SolidShineUi.KeyboardShortcuts
                         // from https://docs.microsoft.com/en-us/dotnet/api/system.windows.input.key?view=net-5.0 (the middle column)
                         if (int.TryParse(k, out int kv))
                         {
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
                             IKeyAction? a = null;
 #else
                             IKeyAction a = null;
@@ -153,7 +153,7 @@ namespace SolidShineUi.KeyboardShortcuts
                             // again from https://docs.microsoft.com/en-us/dotnet/api/system.windows.input.key?view=net-5.0 (the left column)
                             if (Enum.TryParse(k, out Key kz))
                             {
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
                                 IKeyAction? a = null;
 #else
                                 IKeyAction a = null;

@@ -576,7 +576,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Perform a click on this checkbox, raising the <see cref="Click"/> event and causing any automatic actions like <see cref="SelectOnClick"/> or executing <see cref="Command"/>.
+        /// Perform a click on this checkbox, raising the <see cref="Click"/> event and causing any automatic actions like changing the CheckState.
         /// </summary>
         protected void OnClick()
         {

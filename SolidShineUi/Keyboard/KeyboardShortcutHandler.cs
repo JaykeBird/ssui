@@ -164,7 +164,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
             // secondly, check for keyboard shortcuts!
 
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
             (IKeyAction? m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
 #else
             (IKeyAction m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
