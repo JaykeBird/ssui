@@ -53,7 +53,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised before an item is removed, to give the ability to cancel removing this item.
         /// </summary>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public event CancelableItemEventHandler? ItemRemoving;
 #else
         public event CancelableItemEventHandler ItemRemoving;
@@ -62,7 +62,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised before an item is added, to give the ability to cancel adding this item.
         /// </summary>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public event CancelableItemEventHandler? ItemAdding;
 #else
         public event CancelableItemEventHandler ItemAdding;
@@ -438,7 +438,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the selection is changed in any way, including additions, removals, and the selection being cleared.
         /// </summary>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public event SelectionChangedEventHandler? SelectionChanged;
 #else
         public event SelectionChangedEventHandler SelectionChanged;

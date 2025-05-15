@@ -31,7 +31,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Raised prior to an item being added to this collection, with the ability to cancel adding the item.
         /// </summary>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public event ItemAddingStringEventHandler? ItemAdding;
 #else
         public event ItemAddingStringEventHandler ItemAdding;

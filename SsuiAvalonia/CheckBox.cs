@@ -356,12 +356,18 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> CheckForegroundProperty
             = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(CheckForeground), Colors.Black.ToBrush());
 
+        /// <summary>
+        /// Get or set the brush to use while the checkbox is highlighted (i.e. mouse over, keyboard focus).
+        /// </summary>
         public IBrush? HighlightBrush { get => GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightBrushProperty
             = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(HighlightBrush), ColorsHelper.DarkerGray.ToBrush());
 
+        /// <summary>
+        /// Get or set the brush to use for the background while the checkbox is highlighted (i.e. mouse over, keyboard focus).
+        /// </summary>
         public IBrush? BackgroundHighlightBrush { get => GetValue(BackgroundHighlightBrushProperty); set => SetValue(BackgroundHighlightBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BackgroundHighlightBrush"/>. See the related property for details.</summary>
@@ -396,7 +402,7 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(CheckDisabledBrush), Colors.DarkGray.ToBrush());
 
         /// <summary>
-        /// Get or set the brush used for the border of the checkbox's box, while the mouse is over the control or it has keyboard focus.
+        /// Get or set the brush used for the border of the checkbox's box, while the checkbox is highlighted (i.e. mouse over, keyboard focus).
         /// </summary>
         public IBrush? BorderHighlightBrush { get => GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
 
@@ -404,6 +410,9 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> BorderHighlightBrushProperty
             = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BorderHighlightBrush), ColorsHelper.DarkerGray.ToBrush());
 
+        /// <summary>
+        /// Get or set the brush to use for the border of the checkbox's box.
+        /// </summary>
         public IBrush? CheckBorderBrush { get => GetValue(CheckBorderBrushProperty); set => SetValue(CheckBorderBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="CheckBorderBrush"/>. See the related property for details.</summary>

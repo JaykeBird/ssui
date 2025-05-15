@@ -132,7 +132,7 @@ namespace SolidShineUi
         /// <param name="newValue">The new IsSelected value.</param>
         /// <param name="trigger">The trigger method that caused the value to be updated.</param>
         /// <param name="triggerSource">The source object that updated the value (if available).</param>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object? triggerSource = null) : base(ev, triggerSource)
 #else
         public ItemSelectionChangedEventArgs(RoutedEvent ev, bool oldValue, bool newValue, SelectionChangeTrigger trigger, object triggerSource = null) : base(ev, triggerSource)
@@ -161,7 +161,7 @@ namespace SolidShineUi
         /// <summary>
         /// The object that caused the update to occur, if available.
         /// </summary>
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         public object? TriggerSource { get; private set; }
 #else
         public object TriggerSource { get; private set; }

@@ -55,7 +55,7 @@ namespace SolidShineUi
             }
             else
             {
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
                 return new List<string>();
 #else
                 return null;

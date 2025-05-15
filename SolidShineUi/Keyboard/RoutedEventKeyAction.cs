@@ -112,11 +112,7 @@ namespace SolidShineUi.KeyboardShortcuts
         {
             KeyActionList rekya = new KeyActionList();
 
-#if NETCOREAPP
             foreach (object? element in m.Items)
-#else
-            foreach (object element in m.Items)
-#endif
             {
                 if (element is MenuItem mi && element != null)
                 {
