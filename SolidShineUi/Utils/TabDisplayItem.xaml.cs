@@ -29,6 +29,7 @@ namespace SolidShineUi.Utils
             //}
             //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            //border.Background = IsSelected ? SelectedTabBackground : Background;
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -57,6 +58,7 @@ namespace SolidShineUi.Utils
             //}
             //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            //border.Background = IsSelected ? SelectedTabBackground : Background;
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -154,6 +156,20 @@ namespace SolidShineUi.Utils
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
+        private void InternalTabBorderBrushChanged()
+        {
+            //if (highlighting)
+            //{
+            //    //border.Background = HighlightBrush;
+            //    border.BorderBrush = BorderHighlightBrush;
+            //}
+            //else
+            //{
+            //    //border.Background = IsSelected ? SelectedTabBackground : Background;
+            //    border.BorderBrush = TabBorderBrush;
+            //}
+        }
+
         /// <summary>
         /// Get or set the brush used for the close glyph in this control.
         /// </summary>
@@ -184,6 +200,36 @@ namespace SolidShineUi.Utils
         public static DependencyProperty SelectedTabBackgroundProperty
             = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabDisplayItem),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close button, when it is highlighted (i.e. mouse over).
+        /// </summary>
+        public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBackgroundProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBackground), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.Silver.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close button, when it is highlighted (i.e. mouse over).
+        /// </summary>
+        public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBorderBrushProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the close button, when it is being clicked (i.e. mouse down, key down).
+        /// </summary>
+        public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonClickBrushProperty
+            = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
 
         //private Brush _innerColor = new SolidColorBrush(Colors.Transparent);
 
@@ -337,7 +383,18 @@ namespace SolidShineUi.Utils
         private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            //border.Background = IsSelected ? SelectedTabBackground : Background;
         }
+
+//#if NETCOREAPP
+//        private void tab_IsSelectedChanged(object? sender, EventArgs e)
+//#else
+//        private void tab_IsSelectedChanged(object sender, EventArgs e)
+//#endif
+//        {
+//            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+//            //border.Background = IsSelected ? SelectedTabBackground : Background;
+//        }
 
         #endregion
 
@@ -568,48 +625,37 @@ namespace SolidShineUi.Utils
                 CloseBrush = cs.ForegroundColor.ToBrush();
             }
 
-            if (highlighting)
-            {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-            }
-            else
-            {
-                border.Background = Background;
-                border.BorderBrush = TabBorderBrush;
-            }
+            //if (highlighting)
+            //{
+            //    border.Background = HighlightBrush;
+            //    border.BorderBrush = BorderHighlightBrush;
+            //}
+            //else
+            //{
+            //    border.Background = IsSelected ? SelectedTabBackground : Background;
+            //    border.BorderBrush = TabBorderBrush;
+            //}
         }
         #endregion
 
         #region Click Handling
 
         #region Variables/Properties
+
         bool initiatingClick = false;
 
-        //bool sel = false;
+        /// <summary>
+        /// Get if this TabDisplayItem is currently highlighted (i.e. has focus or mouse over).
+        /// </summary>
+        public bool IsHighlighted { get => (bool)GetValue(IsHighlightedProperty); private set => SetValue(IsHighlightedPropertyKey, value); }
 
-        //public bool IsSelected
-        //{
-        //    get
-        //    {
-        //        return sel;
-        //    }
-        //    set
-        //    {
-        //        sel = value;
+        private static readonly DependencyPropertyKey IsHighlightedPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(IsHighlighted), typeof(bool), typeof(TabDisplayItem),
+            new FrameworkPropertyMetadata(false));
 
-        //        if (sel)
-        //        {
-        //            border.Background = SelectionBrush;
-        //        }
-        //        else
-        //        {
-        //            border.Background = Background;
-        //        }
+        /// <summary>The backing dependency property for <see cref="IsHighlighted"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty IsHighlightedProperty = IsHighlightedPropertyKey.DependencyProperty;
 
-        //        SelectionChanged?.Invoke(this, EventArgs.Empty);
-        //    }
-        //}
 
         #endregion
 
@@ -686,15 +732,18 @@ namespace SolidShineUi.Utils
         #endregion
 
         #region Focus Events
-        bool highlighting = false;
+
+        // bool highlighting = false;
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
         {
             if (IsEnabled && CanSelect)
             {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-                highlighting = true;
+                IsHighlighted = true;
+
+                //border.Background = HighlightBrush;
+                //border.BorderBrush = BorderHighlightBrush;
+                //highlighting = true;
             }
         }
 
@@ -702,9 +751,11 @@ namespace SolidShineUi.Utils
         {
             if (IsEnabled && CanSelect)
             {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-                highlighting = true;
+                IsHighlighted = true;
+
+                //border.Background = HighlightBrush;
+                //border.BorderBrush = BorderHighlightBrush;
+                //highlighting = true;
             }
         }
 
@@ -712,27 +763,32 @@ namespace SolidShineUi.Utils
         {
             if (IsEnabled && CanSelect)
             {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-                highlighting = true;
+                IsHighlighted = true;
+
+                //border.Background = HighlightBrush;
+                //border.BorderBrush = BorderHighlightBrush;
+                //highlighting = true;
             }
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            border.Background = Background;
-            border.BorderBrush = TabBorderBrush;
-            highlighting = false;
 
+            //border.Background = IsSelected ? SelectedTabBackground : Background;
+            //border.BorderBrush = TabBorderBrush;
+            //highlighting = false;
+
+            IsHighlighted = false;
             initiatingClick = false;
         }
 
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            border.Background = Background;
-            border.BorderBrush = TabBorderBrush;
-            highlighting = false;
+            //border.Background = IsSelected ? SelectedTabBackground : Background;
+            //border.BorderBrush = TabBorderBrush;
+            //highlighting = false;
 
+            IsHighlighted = false;
             initiatingClick = false;
         }
 
@@ -740,9 +796,10 @@ namespace SolidShineUi.Utils
         {
             if (!IsKeyboardFocused)
             {
-                border.Background = Background;
-                border.BorderBrush = TabBorderBrush;
-                highlighting = false;
+            //    border.Background = IsSelected ? SelectedTabBackground : Background;
+            //    border.BorderBrush = TabBorderBrush;
+            //    highlighting = false;
+                IsHighlighted = false;
             }
 
             initiatingClick = false;
@@ -1038,7 +1095,8 @@ namespace SolidShineUi.Utils
         public TabItem DroppedTabItem { get; private set; }
 
         /// <summary>
-        /// Get whether the dropped TabItem should be put before or after the source TabItem. (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in the future.)
+        /// Get whether the dropped TabItem should be put before or after the source TabItem. 
+        /// (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in the future.)
         /// </summary>
         [Obsolete("Please use the PlaceBefore property instead going forward. This property will be removed in a future version.", false)]
         public bool Before { get; private set; }

@@ -5,8 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SsuiSample"
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+             xmlns:pl="clr-namespace:SolidShineUi.PropertyList;assembly=SolidShineUi"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <flat:ColorToBrushConverter x:Key="ctb" />
+    </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Tab Control Test" FontSize="16" VerticalAlignment="Top"/>
         <Grid Margin="10,60,10,0">
@@ -18,7 +22,8 @@
             </Grid.RowDefinitions>
             <Border Background="#44FFFFFF" BorderThickness="1" BorderBrush="#55000000" Margin="20,10,20,20">
                 <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabChanged="tabControl_TabChanged"
-                                 TabMinWidth="{Binding ElementName=nudTabWidth, Path=Value}" HorizontalTabBarHeight="{Binding ElementName=nudTabBarHeight, Path=Value}" >
+                                 TabMinWidth="{Binding ElementName=nudTabWidth, Mode=TwoWay, Path=Value}" HorizontalTabBarHeight="{Binding ElementName=nudTabBarHeight, Mode=TwoWay, Path=Value}"
+                                 ShowTabsOnBottom="{Binding ElementName=chkBottom, Mode=TwoWay, Path=IsChecked}" ShowTabListMenu="{Binding ElementName=chkTlm, Mode=TwoWay, Path=IsChecked}" >
                     <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png" AllowDrop="True" ToolTip="This is a ToolTip"
                                       DragEnter="TabItem_DragEnter" DragOver="TabItem_DragOver" DragLeave="TabItem_DragLeave" Drop="TabItem_Drop" >
                         <flat:TabItem.TabContextMenu>
@@ -60,11 +65,11 @@
                     </flat:MenuButton.Menu>
                 </flat:MenuButton>
             </StackPanel>
-            <ScrollViewer Grid.Row="2" Margin="20,0" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
+            <ScrollViewer Grid.Row="2" Margin="10,0" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" >
-                    <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" CheckChanged="chkBottom_CheckChanged"
+                    <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" 
                                    ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" />
-                    <flat:CheckBox Content="Show tab list menu" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkTlm" CheckChanged="chkTlm_CheckChanged"
+                    <flat:CheckBox Content="Show tab list menu" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkTlm" 
                                    ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" IsChecked="True" />
                     <TextBlock Margin="10,0,5,0" Text="Minimum tab width:" VerticalAlignment="Center" />
                     <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
@@ -77,6 +82,13 @@
             </ScrollViewer>
             <TextBlock Grid.Row="3" VerticalAlignment="Center" Margin="10,0" x:Name="txtStatus" />
         </Grid>
-
+        <flat:FlatButton x:Name="btnProperties" Click="btnProperties_Click" MinWidth="120" ColorScheme="{Binding ColorScheme, ElementName=userControl}" 
+                         Content="Show Property List" Margin="0,24,30,0" HorizontalAlignment="Right" Width="80" Height="24" VerticalAlignment="Top" />
+        <Popup x:Name="popProps" Placement="Bottom" >
+            <Border x:Name="border" BorderThickness="1" BorderBrush="{Binding ColorScheme.BorderColor, ElementName=userControl, Converter={StaticResource ctb}}" >
+                <pl:ExperimentalPropertyList x:Name="pl" ColorScheme="{Binding ColorScheme, ElementName=userControl}" 
+                                         ShowInheritedProperties="False" Height="400" />
+            </Border>
+        </Popup>
     </Grid>
 </UserControl>

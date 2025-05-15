@@ -83,9 +83,17 @@ namespace SolidShineUi
 #if NETCOREAPP
         ItemsControl? ic = null;
         ScrollViewer? sv = null;
+
+        MenuButton? tlm = null;
+        FlatButton? bsl = null;
+        FlatButton? bsr = null;
 #else
         ItemsControl ic = null;
         ScrollViewer sv = null;
+
+        MenuButton tlm = null;
+        FlatButton bsl = null;
+        FlatButton bsr = null;
 #endif
 
         void LoadTemplateItems()
@@ -94,12 +102,36 @@ namespace SolidShineUi
             {
                 ic = (ItemsControl)GetTemplateChild("PART_TabBar");
                 sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
+                tlm = (MenuButton)GetTemplateChild("PART_TabMenu");
+                bsl = (FlatButton)GetTemplateChild("btnScrollLeft");
+                bsr = (FlatButton)GetTemplateChild("btnScrollRight");
 
                 if (ic != null && sv != null)
                 {
                     sv.ScrollChanged += sv_ScrollChanged;
                     ic.SizeChanged += control_SizeChanged;
                     itemsLoaded = true;
+                }
+
+                if (tlm != null)
+                {
+                    tlm.HighlightBrush = ButtonHighlightBackground;
+                    tlm.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    tlm.ClickBrush = ButtonClickBrush;
+                }
+
+                if (bsl != null)
+                {
+                    bsl.HighlightBrush = ButtonHighlightBackground;
+                    bsl.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    bsl.ClickBrush = ButtonClickBrush;
+                }
+
+                if (bsr != null)
+                {
+                    bsr.HighlightBrush = ButtonHighlightBackground;
+                    bsr.BorderHighlightBrush = ButtonHighlightBorderBrush;
+                    bsr.ClickBrush = ButtonClickBrush;
                 }
             }
         }
@@ -634,10 +666,9 @@ namespace SolidShineUi
 
         #region LeftTabBarElement and RightTabBarElement
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property object for the related property. See <see cref="LeftTabBarElement"/> for details.</summary>
         public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
             new FrameworkPropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the element to display on the left side of the tab bar.
@@ -648,10 +679,9 @@ namespace SolidShineUi
             set { SetValue(LeftTabBarElementProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property object for the related property. See <see cref="RightTabBarElement"/> for details.</summary>
         public static readonly DependencyProperty RightTabBarElementProperty = DependencyProperty.Register("RightTabBarElement", typeof(UIElement), typeof(TabControl),
             new FrameworkPropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).
@@ -865,6 +895,38 @@ namespace SolidShineUi
             Foreground = cs.ForegroundColor.ToBrush();
             ContentAreaBackground = cs.BackgroundColor.ToBrush();
             // Background = cs.BackgroundColor.ToBrush();
+
+            //Debug.WriteLine(cs.ThirdHighlightColor.ToString());
+            //Debug.WriteLine(cs.SecondHighlightColor.ToString());
+            //Debug.WriteLine(cs.HighlightColor.ToString());
+            //Debug.WriteLine("========================");
+
+            ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
+
+            if (cs.IsHighContrast)
+            {
+                TabBackground = cs.BackgroundColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
+                TabHighlightBrush = cs.HighlightColor.ToBrush();
+                TabBorderHighlightBrush = cs.BorderColor.ToBrush();
+                SelectedTabBackground = cs.BackgroundColor.ToBrush();
+                TabCloseBrush = cs.BorderColor.ToBrush();
+
+                ButtonHighlightBackground = cs.HighlightColor.ToBrush();
+                ButtonHighlightBorderBrush = cs.BorderColor.ToBrush();
+            }
+            else
+            {
+                TabBackground = cs.ThirdHighlightColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
+                TabHighlightBrush = cs.SecondHighlightColor.ToBrush();
+                TabBorderHighlightBrush = cs.HighlightColor.ToBrush();
+                SelectedTabBackground = cs.BackgroundColor.ToBrush();
+                TabCloseBrush = cs.ForegroundColor.ToBrush();
+
+                ButtonHighlightBackground = cs.SecondHighlightColor.ToBrush();
+                ButtonHighlightBorderBrush = cs.HighlightColor.ToBrush();
+            }
         }
         #endregion
 
@@ -873,72 +935,209 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the background used for the content area of the TabControl.
         /// </summary>
+        [Category("Brushes")]
         public Brush ContentAreaBackground { get => (Brush)GetValue(ContentAreaBackgroundProperty); set => SetValue(ContentAreaBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
         public static DependencyProperty ContentAreaBackgroundProperty
             = DependencyProperty.Register(nameof(ContentAreaBackground), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnContentAreaBackgroundUpdate));
 
         /// <summary>
         /// Get or set the brush used for the background of a tab while it is highlighted (i.e. mouse over, keyboard focus).
         /// </summary>
+        [Category("Brushes")]
         public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabHighlightBrush), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
         /// Get or set the brush used for the borders of a tab while it is highlighted (i.e. mouse over, keyboard focus).
         /// </summary>
+        [Category("Brushes")]
         public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabBorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabBorderHighlightBrush), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
         /// Get or set the brush used for the borders of tabs. This is different from the <see cref="Control.BorderBrush"/> used for the rest of the TabControl.
         /// </summary>
+        [Category("Brushes")]
         public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
         /// Get or set the brush used for the close glyph used in the tabs (where <see cref="TabItem.CanClose"/> is set to <c>true</c>).
         /// </summary>
+        [Category("Brushes")]
         public Brush TabCloseBrush { get => (Brush)GetValue(TabCloseBrushProperty); set => SetValue(TabCloseBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabCloseBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabCloseBrushProperty
             = DependencyProperty.Register(nameof(TabCloseBrush), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
         /// Get or set the brush used for the background of a tab. Individual tabs can overwrite their backgrounds by changing <see cref="TabItem.TabBackground"/>.
         /// </summary>
+        [Category("Brushes")]
         public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBackground"/>. See the related property for details.</summary>
         public static DependencyProperty TabBackgroundProperty
             = DependencyProperty.Register(nameof(TabBackground), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
         /// Get or set the brush used for the background of a selected tab.
         /// </summary>
+        [Category("Brushes")]
         public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
         public static DependencyProperty SelectedTabBackgroundProperty
             = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabControl),
-            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
+
+        /// <summary>
+        /// Get or set the brush used for buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBackgroundProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBackground), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.Silver.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBrushUpdate));
+
+        /// <summary>
+        /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonHighlightBorderBrushProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBorderBrushUpdate));
+
+        /// <summary>
+        /// Get or set the brush used for buttons in the TabControl, when they are being clicked (i.e. mouse down, key down).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty ButtonClickBrushProperty
+            = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(TabControl),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnClickBrushUpdate));
+
+        private static void UpdateChildBrushes(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc)
+            {
+                tc.InternalUpdateChildBrushes(e);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.Property == BorderBrushProperty)
+            {
+                if (tlm != null)
+                {
+                    if (tlm.Menu != null)
+                    {
+                        // tlm.Menu.Background = ContentAreaBackground;
+                        tlm.Menu.BorderBrush = BorderBrush;
+                    }
+                }
+
+                InternalUpdateChildBrushes(e);
+            }
+            else if (e.Property == BackgroundProperty)
+            {
+                InternalUpdateChildBrushes(e);
+            }
+            else if (e.Property == ForegroundProperty)
+            {
+                InternalUpdateChildBrushes(e);
+            }
+        }
+
+        /// <summary>
+        /// Called when a brush property is updated in the TabControl.
+        /// </summary>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> related to the property change.</param>
+        protected virtual void InternalUpdateChildBrushes(DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        private static void OnContentAreaBackgroundUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc)
+            {
+                if (tc.tlm != null)
+                {
+                    if (tc.tlm.Menu != null)
+                    {
+                        tc.tlm.Menu.MenuBackground = tc.ContentAreaBackground;
+                        // tc.tlm.Menu.BorderBrush = BorderBrush;
+                    }
+                }
+
+                tc.InternalUpdateChildBrushes(e);
+            }
+        }
+
+        private static void OnClickBrushUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc && e.NewValue is Brush b && tc.tlm != null)
+            {
+                if (tc.tlm != null) tc.tlm.ClickBrush = b;
+                if (tc.bsr != null) tc.bsr.ClickBrush = b;
+                if (tc.bsl != null) tc.bsl.ClickBrush = b;
+            }
+
+            UpdateChildBrushes(d, e);
+        }
+
+        private static void OnHighlightBrushUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc && e.NewValue is Brush b)
+            {
+                if (tc.tlm != null) tc.tlm.HighlightBrush = b;
+                if (tc.bsr != null) tc.bsr.HighlightBrush = b;
+                if (tc.bsl != null) tc.bsl.HighlightBrush = b;
+            }
+
+            UpdateChildBrushes(d, e);
+        }
+
+        private static void OnHighlightBorderBrushUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabControl tc && e.NewValue is Brush b)
+            {
+                if (tc.tlm != null) tc.tlm.BorderHighlightBrush = b;
+                if (tc.bsr != null) tc.bsr.BorderHighlightBrush = b;
+                if (tc.bsl != null) tc.bsl.BorderHighlightBrush = b;
+            }
+
+            UpdateChildBrushes(d, e);
+        }
 
         #endregion
 
@@ -1107,13 +1306,13 @@ namespace SolidShineUi
 
         #region ScrollButtons
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
         private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("ScrollButtonsVisible", typeof(bool), typeof(TabControl),
             new PropertyMetadata(false));
 
+        /// <summary>
+        /// The read-only dependency property for the <see cref="ScrollButtonsVisible"/> property. See that related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ScrollButtonsVisibleProperty = ScrollButtonsVisiblePropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get if the scroll buttons are currently visible in the tab bar.
@@ -1220,7 +1419,7 @@ namespace SolidShineUi
     /// <summary>
     /// Event arguments for the TabChanged event in TabControl.
     /// </summary>
-    public class TabItemChangeEventArgs
+    public class TabItemChangeEventArgs : EventArgs
     {
         /// <summary>
         /// Create a TabItemChangeEventArgs.

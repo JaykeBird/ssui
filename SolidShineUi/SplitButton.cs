@@ -652,6 +652,21 @@ namespace SolidShineUi
 
         #endregion
 
+        #region HighlightOnKeyboardFocus
+
+        /// <summary>
+        /// Get or set if the button should be highlighted (using the <see cref="HighlightBrush"/> and <see cref="BorderHighlightBrush"/>)
+        /// when it has keyboard focus. If <c>false</c>, only the keyboard focus outline appears, and highlighting only occurs on mouse/stylus over.
+        /// </summary>
+        public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
+        public static DependencyProperty HighlightOnKeyboardFocusProperty
+            = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(SplitButton),
+            new FrameworkPropertyMetadata(false));
+
+        #endregion
+
         #region Button Handling
 
         private void btnMenu_RightClick(object sender, RoutedEventArgs e)

@@ -18,6 +18,8 @@ namespace SsuiSample
         public TabControlTest()
         {
             InitializeComponent();
+
+            pl.LoadObject(tabControl);
         }
 
         #region ColorScheme
@@ -204,6 +206,13 @@ namespace SsuiSample
                 {
                     precolor = si.Color;
                 }
+                else if (ti.TabBackground is LinearGradientBrush lg)
+                {
+                    if (lg.GradientStops.Count > 0)
+                    {
+                        precolor = lg.GradientStops[0].Color;
+                    }
+                }
                 ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
                 cpd.ShowDialog();
                 if (cpd.DialogResult)
@@ -222,6 +231,13 @@ namespace SsuiSample
                 if (ti.TabBackground is SolidColorBrush si)
                 {
                     precolor = si.Color;
+                }
+                else if (ti.TabBackground is LinearGradientBrush lg)
+                {
+                    if (lg.GradientStops.Count > 0)
+                    {
+                        precolor = lg.GradientStops[0].Color;
+                    }
                 }
                 ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
                 cpd.ShowDialog();
@@ -312,6 +328,23 @@ namespace SsuiSample
             ti.ClearValue(FontSizeProperty);
             ti.ClearValue(FontStyleProperty);
             ti.ClearValue(FontWeightProperty);
+        }
+
+        private void btnProperties_Click(object sender, RoutedEventArgs e)
+        {
+            popProps.PlacementTarget = btnProperties;
+
+            if (popProps.IsOpen)
+            {
+                btnProperties.Content = "Show Property List";
+                popProps.IsOpen = false;
+            }
+            else
+            {
+                btnProperties.Content = "Hide Property List";
+                pl.ReloadObject();
+                popProps.IsOpen = true;
+            }
         }
     }
 }
