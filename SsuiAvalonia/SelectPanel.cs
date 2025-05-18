@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Metadata;
 using System;
@@ -19,9 +20,9 @@ namespace SolidShineUi
     /// <summary>
     /// A ListBox-like control that can be used to select and interact with multiple items, with extra functionality and a visual style that matches the rest of the Solid Shine UI controls.
     /// </summary>
-    [TemplatePart(true, "PART_Sv", typeof(ScrollViewer))]
     public class SelectPanel : TemplatedControl
     {
+        // [TemplatePart(true, "PART_Sv", typeof(ScrollViewer))]
 
         public SelectPanel()
         {
@@ -30,6 +31,8 @@ namespace SolidShineUi
         }
 
         bool _internalAction = false;
+        bool runApply = true;
+        private bool use_lbrdr = false;
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
@@ -198,7 +201,9 @@ namespace SolidShineUi
                 if (ItemsSource is ISelectableCollection isl)
                 {
                     //isl.CanSelectMultiple = value;
-                    SetAndRaise(MultiSelectProperty, ref isl.CanSelectMultiple, value);
+                    bool _multiple = false;
+                    SetAndRaise(MultiSelectProperty, ref _multiple, value);
+                    isl.CanSelectMultiple = _multiple;
                 }
             }
         }
@@ -326,7 +331,8 @@ namespace SolidShineUi
 
                     if (item.IsSelected && !isl.IsSelected(item))
                     {
-                        if (isl.CanSelectMultiple && (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || e.TriggerMethod == SelectionChangeTrigger.CheckBox))
+                        //if (isl.CanSelectMultiple && (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || e.TriggerMethod == SelectionChangeTrigger.CheckBox))
+                        if (isl.CanSelectMultiple && e.TriggerMethod == SelectionChangeTrigger.CheckBox)
                         {
                             isl.AddToSelection(item);
                         }
@@ -355,6 +361,65 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Routed Events
+
+        public static readonly RoutedEvent<RoutedSelectionChangedEventArgs<IClickSelectableControl>> SelectionChangedEvent =
+            RoutedEvent.Register<RoutedSelectionChangedEventArgs<IClickSelectableControl>>(nameof(SelectionChanged), RoutingStrategies.Bubble, typeof(SelectPanel));
+
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> SelectionChanged
+        {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
+
+        void RaiseSelectionChangedEvent(List<IClickSelectableControl> addedItems, List<IClickSelectableControl> removedItems)
+        {
+            addedItems ??= new List<IClickSelectableControl>();
+            removedItems ??= new List<IClickSelectableControl>();
+
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs =
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(SelectionChangedEvent, addedItems, removedItems);
+            RaiseEvent(newEventArgs);
+        }
+
+        public static readonly RoutedEvent<RoutedSelectionChangedEventArgs<IClickSelectableControl>> ItemsAddedEvent =
+            RoutedEvent.Register<RoutedSelectionChangedEventArgs<IClickSelectableControl>>(nameof(ItemsAdded), RoutingStrategies.Bubble, typeof(SelectPanel));
+
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsAdded
+        {
+            add { AddHandler(ItemsAddedEvent, value); }
+            remove { RemoveHandler(ItemsAddedEvent, value); }
+        }
+
+        void RaiseItemsAddedEvent(List<IClickSelectableControl> addedItems)
+        {
+            addedItems ??= new List<IClickSelectableControl>();
+
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs =
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(ItemsAddedEvent, new List<IClickSelectableControl>(), addedItems);
+            RaiseEvent(newEventArgs);
+        }
+
+        public static readonly RoutedEvent<RoutedSelectionChangedEventArgs<IClickSelectableControl>> ItemsRemovedEvent =
+            RoutedEvent.Register<RoutedSelectionChangedEventArgs<IClickSelectableControl>>(nameof(ItemsRemoved), RoutingStrategies.Bubble, typeof(SelectPanel));
+
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsRemoved
+        {
+            add { AddHandler(ItemsRemovedEvent, value); }
+            remove { RemoveHandler(ItemsRemovedEvent, value); }
+        }
+
+        void RaiseItemsRemovedEvent(List<IClickSelectableControl> removedItems)
+        {
+            removedItems ??= new List<IClickSelectableControl>();
+
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs =
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(ItemsRemovedEvent, removedItems, new List<IClickSelectableControl>());
+            RaiseEvent(newEventArgs);
+        }
+
+        #endregion
+
         #region Visual Properties
 
         #region ColorScheme
@@ -367,7 +432,7 @@ namespace SolidShineUi
 
         private void OnColorSchemeChanged(AvaloniaPropertyChangedEventArgs e)
         {
-            ApplyColorScheme(cs);
+            ApplyColorScheme(e.GetNewValue<ColorScheme>());
             ColorSchemeChanged?.Invoke(this, e);
         }
 
@@ -438,7 +503,7 @@ namespace SolidShineUi
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
-        public event EventArgs<AvaloniaPropertyChangedEventArgs>? ColorSchemeChanged;
+        public event EventHandler<AvaloniaPropertyChangedEventArgs>? ColorSchemeChanged;
 
         #endregion
 
@@ -851,26 +916,27 @@ namespace SolidShineUi
                 {
                     if (!e.Handled && sender != null && !_reentrantList.Contains(e))
                     {
-                        var previewEventArg = new PointerWheelEventArgs(sender, e.Pointer, this, e.GetCurrentPoint(this), 
+                        var previewEventArg = new PointerWheelEventArgs(sender, e.Pointer, this, e.GetCurrentPoint(this).Position, 
                             e.Timestamp, new PointerPointProperties(), e.KeyModifiers, e.Delta)
                         {
-                            RoutedEvent = ScrollViewer.PointerWheelChangedEvent,
+                            RoutedEvent = InputElement.PointerWheelChangedEvent,
                             Source = sender
                         };
 
-                        var originalSource = (e.OriginalSource as Control) ?? null;
+                        var originalSource = (e.Source as Control) ?? null;
                         _reentrantList.Add(previewEventArg);
                         originalSource?.RaiseEvent(previewEventArg);
                         _reentrantList.Remove(previewEventArg);
 
                         // at this point if no one else handled the event in our children, we do our job
 
-                        if (!previewEventArg.Handled && ((e.Delta > 0 && scrollControl.VerticalOffset == 0) ||
-                            (e.Delta <= 0 && scrollControl.VerticalOffset >= scrollControl.ExtentHeight - scrollControl.ViewportHeight)))
+                        if (!previewEventArg.Handled && ((e.Delta.Length > 0 && scrollControl.Offset.Y == 0) ||
+                            (e.Delta.Length <= 0 && scrollControl.Offset.Y >= scrollControl.Extent.Height - scrollControl.Viewport.Height)))
                         {
                             e.Handled = true;
-                            var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-                            eventArg.RoutedEvent = MouseWheelEvent;
+                            var eventArg = new PointerWheelEventArgs(sender, e.Pointer, this, e.GetCurrentPoint(this).Position, 
+                                e.Timestamp, new PointerPointProperties(), e.KeyModifiers, e.Delta);
+                            eventArg.RoutedEvent = InputElement.PointerWheelChangedEvent;
                             eventArg.Source = sender;
                             var parent = (((Control)sender).Parent as Control) ?? null;
                             parent?.RaiseEvent(eventArg);
