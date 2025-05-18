@@ -20,7 +20,7 @@ namespace SolidShineUi
     /// <summary>
     /// A ListBox-like control that can be used to select and interact with multiple items, with extra functionality and a visual style that matches the rest of the Solid Shine UI controls.
     /// </summary>
-    public class SelectPanel : TemplatedControl
+    public class SelectPanel : TemplatedControl, IAddChild
     {
         // [TemplatePart(true, "PART_Sv", typeof(ScrollViewer))]
 
@@ -238,6 +238,15 @@ namespace SolidShineUi
             item.ClickBrush = ClickBrush;
             item.IsSelectedChanged += Item_SelectionChanged;
             item.ApplyColorScheme(ColorScheme);
+        }
+
+        /// <inheritdoc/>
+        public void AddChild(object child)
+        {
+            if (child is IClickSelectableControl icl)
+            {
+                Items.Add(icl);
+            }
         }
 
         #endregion

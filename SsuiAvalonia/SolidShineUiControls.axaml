@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <Border Padding="20">
-            <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
 
@@ -12,5 +11,6 @@
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/MenuButton.axaml" />
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Spinners.axaml" />
+		<MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/SelectPanel.axaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

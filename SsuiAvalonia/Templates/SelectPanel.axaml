@@ -1,0 +1,67 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:flat="clr-namespace:SolidShineUi" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Design.PreviewWith>
+        <Border Margin="10" >
+			<flat:SelectPanel>
+				<flat:FlatButton TransparentBack="True" Content="Lemon" />
+				<flat:FlatButton TransparentBack="True" Content="Lime" />
+			</flat:SelectPanel>
+        </Border>
+    </Design.PreviewWith>
+
+
+    <ControlTheme x:Key="{x:Type flat:SelectPanel}" TargetType="flat:SelectPanel">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type flat:SelectPanel}">
+				<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}"
+						Background="{TemplateBinding Background}">
+					<ScrollViewer x:Name="PART_Sv" Margin="{TemplateBinding Padding}"
+								  VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}">
+						<ItemsPresenter x:Name="PART_Ic" >
+							<ItemsPresenter.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Vertical" />
+								</ItemsPanelTemplate>
+							</ItemsPresenter.ItemsPanel>
+						</ItemsPresenter>
+					</ScrollViewer> 
+				</Border> 
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <!-- 
+    <Style TargetType="{x:Type flat:SelectPanel}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:SelectPanel}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}"
+                            Background="{TemplateBinding Background}" >
+                        <ScrollViewer x:Name="PART_Sv" Margin="{TemplateBinding Padding}"
+                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}" >
+                            <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding ItemsSource}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    -->
+</ResourceDictionary>
