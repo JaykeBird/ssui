@@ -61,7 +61,4 @@
     <!--<PackageReference Include="Avalonia.Themes.Simple" Version="11.0.6" />
 	<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />-->
    </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Keyboard\" />
-  </ItemGroup>
 </Project>
