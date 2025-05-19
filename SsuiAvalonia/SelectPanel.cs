@@ -173,11 +173,28 @@ namespace SolidShineUi
         private SelectableCollection<IClickSelectableControl> _items = new SelectableCollection<IClickSelectableControl>();
 
         [Content]
-        public SelectableCollection<IClickSelectableControl> Items { get => _items; private set => SetAndRaise(ItemsProperty, ref _items, value); }
+        public SelectableCollection<IClickSelectableControl> Items
+        {
+            get => _items;
+            set
+            {
+                // have to do this weird roundabout way because Avalonia's system doesn't like having a content property that can't be set
+                // however, for item controls like this, we don't want others to be able to set this, so instead I mask the changes
+                // and simply just add the relevant items into the actual Items structure instead
+                SelectableCollection<IClickSelectableControl> newItems = new SelectableCollection<IClickSelectableControl>(_items);
+                foreach (IClickSelectableControl item in value)
+                {
+                    _items.Add(item);
+                }
+                SetAndRaise(ItemsProperty, ref newItems, value);
+
+            }
+        }
 
         /// <summary>The backing direct property for <see cref="Items"/>. See the related property for details.</summary>
         public static readonly DirectProperty<SelectPanel, SelectableCollection<IClickSelectableControl>> ItemsProperty
-            = AvaloniaProperty.RegisterDirect<SelectPanel, SelectableCollection<IClickSelectableControl>>(nameof(Items), (s) => s.Items, unsetValue: new SelectableCollection<IClickSelectableControl>());
+            = AvaloniaProperty.RegisterDirect<SelectPanel, SelectableCollection<IClickSelectableControl>>(nameof(Items), (s) => s.Items, (s, e) => s.Items = e,
+                unsetValue: new SelectableCollection<IClickSelectableControl>());
 
         #endregion
 
@@ -243,9 +260,9 @@ namespace SolidShineUi
         /// <inheritdoc/>
         public void AddChild(object child)
         {
-            if (child is IClickSelectableControl icl)
+            if (child is IClickSelectableControl icl && ItemsSource is IList ill)
             {
-                Items.Add(icl);
+                ill.Add(child);
             }
         }
 

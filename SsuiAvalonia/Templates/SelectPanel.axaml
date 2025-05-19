@@ -8,18 +8,19 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Design.PreviewWith>
-        <Border Margin="10" >
-			<flat:SelectPanel>
-				<flat:FlatButton TransparentBack="True" Content="Lemon" />
-				<flat:FlatButton TransparentBack="True" Content="Lime" />
+		<Border Background="LightGray" Height="200" Width="160">
+			<flat:SelectPanel Margin="10" MultiSelect="True" >
+				<flat:FlatButton TransparentBack="True" Content="Lemon" HorizontalContentAlignment="Left" SelectOnClick="True" />
+				<flat:FlatButton TransparentBack="True" Content="Lime" HorizontalContentAlignment="Left" SelectOnClick="True" />
 			</flat:SelectPanel>
-        </Border>
+		</Border>
     </Design.PreviewWith>
 
 
     <ControlTheme x:Key="{x:Type flat:SelectPanel}" TargetType="flat:SelectPanel">
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
+		<Setter Property="BorderThickness" Value="1" />
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:SelectPanel}">
@@ -27,13 +28,13 @@
 						Background="{TemplateBinding Background}">
 					<ScrollViewer x:Name="PART_Sv" Margin="{TemplateBinding Padding}"
 								  VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}">
-						<ItemsPresenter x:Name="PART_Ic" >
-							<ItemsPresenter.ItemsPanel>
+						<ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding ItemsSource}" >
+							<ItemsControl.ItemsPanel>
 								<ItemsPanelTemplate>
 									<StackPanel Orientation="Vertical" />
 								</ItemsPanelTemplate>
-							</ItemsPresenter.ItemsPanel>
-						</ItemsPresenter>
+							</ItemsControl.ItemsPanel>
+						</ItemsControl>
 					</ScrollViewer> 
 				</Border> 
             </ControlTemplate>
