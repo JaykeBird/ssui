@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SolidShineUi
@@ -24,16 +23,20 @@ namespace SolidShineUi
     {
         // [TemplatePart(true, "PART_Sv", typeof(ScrollViewer))]
 
+        /// <summary>
+        /// Create a SelectPanel.
+        /// </summary>
         public SelectPanel()
         {
             SetValue(ItemsProperty, new SelectableCollection<IClickSelectableControl>());
             SetValue(ItemsSourceProperty, Items);
         }
 
-        bool _internalAction = false;
+        bool _internalAction = false; 
         bool runApply = true;
         private bool use_lbrdr = false;
 
+        /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
@@ -54,6 +57,7 @@ namespace SolidShineUi
 
         #region Template IO
 
+        /// <inheritdoc/>
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
@@ -75,8 +79,8 @@ namespace SolidShineUi
                 {
                     itemsLoaded = true;
 
-                    sv.AddHandler(ScrollViewer.PointerWheelChangedEvent, HandlePreviewMouseWheel, Avalonia.Interactivity.RoutingStrategies.Tunnel, true);
-                    sv.Unloaded += (s, _) => sv.RemoveHandler(ScrollViewer.PointerWheelChangedEvent, HandlePreviewMouseWheel);
+                    //sv.AddHandler(ScrollViewer.PointerWheelChangedEvent, HandlePreviewMouseWheel, Avalonia.Interactivity.RoutingStrategies.Tunnel, true);
+                    //sv.Unloaded += (s, _) => sv.RemoveHandler(ScrollViewer.PointerWheelChangedEvent, HandlePreviewMouseWheel);
                 }
             }
         }
@@ -172,6 +176,12 @@ namespace SolidShineUi
 
         private SelectableCollection<IClickSelectableControl> _items = new SelectableCollection<IClickSelectableControl>();
 
+        /// <summary>
+        /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
+        /// </summary>
+        /// <remarks>
+        /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead modify/manage your items through that items source, rather than using this property.
+        /// </remarks>
         [Content]
         public SelectableCollection<IClickSelectableControl> Items
         {
@@ -200,6 +210,14 @@ namespace SolidShineUi
 
         #region MultiSelect
 
+        /// <summary>
+        /// Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.
+        /// </summary>
+        /// <remarks>
+        /// If you're using <see cref="ItemsSource"/> to manage this control's items, this property will not function if <c>ItemsSource</c> is not an <see cref="ISelectableCollection"/>.
+        /// This warning does not apply if you're using the <see cref="Items"/> property, which is itself an <see cref="ISelectableCollection"/>.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">Thrown if the underlying <see cref="ISelectableCollection"/> in <see cref="ItemsSource"/> doesn't allow changing this value</exception>
         public bool MultiSelect
         { 
             get
@@ -389,9 +407,13 @@ namespace SolidShineUi
 
         #region Routed Events
 
+        /// <summary>The backing routed event object for an event. See the related event for details.</summary>
         public static readonly RoutedEvent<RoutedSelectionChangedEventArgs<IClickSelectableControl>> SelectionChangedEvent =
             RoutedEvent.Register<RoutedSelectionChangedEventArgs<IClickSelectableControl>>(nameof(SelectionChanged), RoutingStrategies.Bubble, typeof(SelectPanel));
 
+        /// <summary>
+        /// Raised when an item is selected or deselected in this list.
+        /// </summary>
         public event RoutedSelectionChangedEventHandler<IClickSelectableControl> SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
@@ -408,9 +430,13 @@ namespace SolidShineUi
             RaiseEvent(newEventArgs);
         }
 
+        /// <summary>The backing routed event object for an event. See the related event for details.</summary>
         public static readonly RoutedEvent<RoutedSelectionChangedEventArgs<IClickSelectableControl>> ItemsAddedEvent =
             RoutedEvent.Register<RoutedSelectionChangedEventArgs<IClickSelectableControl>>(nameof(ItemsAdded), RoutingStrategies.Bubble, typeof(SelectPanel));
 
+        /// <summary>
+        /// A routed event object backing the related event. See the event itself for more details.
+        /// </summary>
         public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsAdded
         {
             add { AddHandler(ItemsAddedEvent, value); }
@@ -426,9 +452,13 @@ namespace SolidShineUi
             RaiseEvent(newEventArgs);
         }
 
+        /// <summary>The backing routed event object for an event. See the related event for details.</summary>
         public static readonly RoutedEvent<RoutedSelectionChangedEventArgs<IClickSelectableControl>> ItemsRemovedEvent =
             RoutedEvent.Register<RoutedSelectionChangedEventArgs<IClickSelectableControl>>(nameof(ItemsRemoved), RoutingStrategies.Bubble, typeof(SelectPanel));
 
+        /// <summary>
+        /// Raised when an item is removed from the SelectPanel's items.
+        /// </summary>
         public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsRemoved
         {
             add { AddHandler(ItemsRemovedEvent, value); }
@@ -450,6 +480,9 @@ namespace SolidShineUi
 
         #region ColorScheme
 
+        /// <summary>
+        /// Get or set the color scheme to apply to the control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
         public ColorScheme ColorScheme { get => GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
 
         /// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
@@ -535,13 +568,18 @@ namespace SolidShineUi
 
         #region ScrollBars
 
+        /// <summary>
+        /// Get or set the appearance of the horizontal scroll bar for this control.
+        /// </summary>
         public ScrollBarVisibility HorizontalScrollBarVisibility { get => GetValue(HorizontalScrollBarVisibilityProperty); set => SetValue(HorizontalScrollBarVisibilityProperty, value); }
 
         /// <summary>The backing styled property for <see cref="HorizontalScrollBarVisibility"/>. See the related property for details.</summary>
         public static readonly StyledProperty<ScrollBarVisibility> HorizontalScrollBarVisibilityProperty
             = AvaloniaProperty.Register<SelectPanel, ScrollBarVisibility>(nameof(HorizontalScrollBarVisibility), ScrollBarVisibility.Disabled);
 
-
+        /// <summary>
+        /// Get or set the appearance of the vertical scroll bar for this control.
+        /// </summary>
         public ScrollBarVisibility VerticalScrollBarVisibility { get => GetValue(VerticalScrollBarVisibilityProperty); set => SetValue(VerticalScrollBarVisibilityProperty, value); }
 
         /// <summary>The backing styled property for <see cref="VerticalScrollBarVisibility"/>. See the related property for details.</summary>
@@ -552,6 +590,9 @@ namespace SolidShineUi
 
         #region Brushes
 
+        /// <summary>
+        /// Get or set the brush used when an item in this control is being clicked.
+        /// </summary>
         public IBrush ClickBrush { get => GetValue(ClickBrushProperty); set => SetValue(ClickBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
@@ -559,6 +600,9 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<SelectPanel, IBrush>(nameof(ClickBrush), Colors.LightSalmon.ToBrush());
 
 
+        /// <summary>
+        /// Get or set the brush used when an item in this control is selected.
+        /// </summary>
         public IBrush SelectedBrush { get => GetValue(SelectedBrushProperty); set => SetValue(SelectedBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
@@ -566,6 +610,9 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<SelectPanel, IBrush>(nameof(SelectedBrush), Colors.MistyRose.ToBrush());
 
 
+        /// <summary>
+        /// Get or set the brush used when an item in this control is highlighted (i.e. has the mouse over it or has keyboard focus).
+        /// </summary>
         public IBrush HighlightBrush { get => GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
@@ -573,6 +620,9 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<SelectPanel, IBrush>(nameof(HighlightBrush), Colors.Salmon.ToBrush());
 
 
+        /// <summary>
+        /// Get or set the brush used for the background when this control is disabled.
+        /// </summary>
         public IBrush DisabledBrush { get => GetValue(DisabledBrushProperty); set => SetValue(DisabledBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
@@ -580,6 +630,9 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<SelectPanel, IBrush>(nameof(DisabledBrush), Colors.Gray.ToBrush());
 
 
+        /// <summary>
+        /// Get or set the brush used for the border when this control is disabled.
+        /// </summary>
         public IBrush BorderDisabledBrush { get => GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
@@ -588,12 +641,20 @@ namespace SolidShineUi
 
         #endregion
 
-        public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+        ///// <summary>
+        ///// Get or set the corner radius (or radii) to use for the control's border. Setting the corners to 0 means there is no rounding; square corners are used.
+        ///// Any corners with a higher number will be rounded.
+        ///// </summary>
+        //public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
-            = AvaloniaProperty.Register<SelectPanel, CornerRadius>(nameof(CornerRadius), new CornerRadius(0));
+        ///// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
+        //    = AvaloniaProperty.Register<SelectPanel, CornerRadius>(nameof(CornerRadius), new CornerRadius(0));
 
+        /// <summary>
+        /// Use a lighter border color when applying color schemes. Note that this does not apply in high-contrast mode,
+        /// nor does it apply if you are not using color schemes to set this control's appearance.
+        /// </summary>
         public bool UseLighterBorder { get => GetValue(UseLighterBorderProperty); set => SetValue(UseLighterBorderProperty, value); }
 
         /// <summary>The backing styled property for <see cref="UseLighterBorder"/>. See the related property for details.</summary>
@@ -921,56 +982,56 @@ namespace SolidShineUi
 
         #region AllowParentScrolling
 
-        public bool AllowParentScrolling { get => GetValue(AllowParentScrollingProperty); set => SetValue(AllowParentScrollingProperty, value); }
+        //public bool AllowParentScrolling { get => GetValue(AllowParentScrollingProperty); set => SetValue(AllowParentScrollingProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="AllowParentScrolling"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> AllowParentScrollingProperty
-            = AvaloniaProperty.Register<SelectPanel, bool>(nameof(AllowParentScrolling), true);
+        ///// <summary>The backing styled property for <see cref="AllowParentScrolling"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<bool> AllowParentScrollingProperty
+        //    = AvaloniaProperty.Register<SelectPanel, bool>(nameof(AllowParentScrolling), true);
 
-        // source: https://serialseb.com/blog/2007/09/03/wpf-tips-6-preventing-scrollviewer-from/
-        // author: Sebastien Lambla
+        //// source: https://serialseb.com/blog/2007/09/03/wpf-tips-6-preventing-scrollviewer-from/
+        //// author: Sebastien Lambla
 
-        private static List<PointerWheelEventArgs> _reentrantList = new List<PointerWheelEventArgs>();
+        //private static List<PointerWheelEventArgs> _reentrantList = new List<PointerWheelEventArgs>();
 
-        // lol not sure if this works on Avalonia, we'll see what happens
+        //// lol not sure if this works on Avalonia, we'll see what happens
 
-        private void HandlePreviewMouseWheel(object sender, PointerWheelEventArgs e)
-        {
-            if (AllowParentScrolling)
-            {
-                if (sender is ScrollViewer scrollControl)
-                {
-                    if (!e.Handled && sender != null && !_reentrantList.Contains(e))
-                    {
-                        var previewEventArg = new PointerWheelEventArgs(sender, e.Pointer, this, e.GetCurrentPoint(this).Position, 
-                            e.Timestamp, new PointerPointProperties(), e.KeyModifiers, e.Delta)
-                        {
-                            RoutedEvent = InputElement.PointerWheelChangedEvent,
-                            Source = sender
-                        };
+        //private void HandlePreviewMouseWheel(object sender, PointerWheelEventArgs e)
+        //{
+        //    if (AllowParentScrolling)
+        //    {
+        //        if (sender is ScrollViewer scrollControl)
+        //        {
+        //            if (!e.Handled && sender != null && !_reentrantList.Contains(e))
+        //            {
+        //                var previewEventArg = new PointerWheelEventArgs(sender, e.Pointer, this, e.GetCurrentPoint(this).Position, 
+        //                    e.Timestamp, new PointerPointProperties(), e.KeyModifiers, e.Delta)
+        //                {
+        //                    RoutedEvent = InputElement.PointerWheelChangedEvent,
+        //                    Source = sender
+        //                };
 
-                        var originalSource = (e.Source as Control) ?? null;
-                        _reentrantList.Add(previewEventArg);
-                        originalSource?.RaiseEvent(previewEventArg);
-                        _reentrantList.Remove(previewEventArg);
+        //                var originalSource = (e.Source as Control) ?? null;
+        //                _reentrantList.Add(previewEventArg);
+        //                originalSource?.RaiseEvent(previewEventArg);
+        //                _reentrantList.Remove(previewEventArg);
 
-                        // at this point if no one else handled the event in our children, we do our job
+        //                // at this point if no one else handled the event in our children, we do our job
 
-                        if (!previewEventArg.Handled && ((e.Delta.Length > 0 && scrollControl.Offset.Y == 0) ||
-                            (e.Delta.Length <= 0 && scrollControl.Offset.Y >= scrollControl.Extent.Height - scrollControl.Viewport.Height)))
-                        {
-                            e.Handled = true;
-                            var eventArg = new PointerWheelEventArgs(sender, e.Pointer, this, e.GetCurrentPoint(this).Position, 
-                                e.Timestamp, new PointerPointProperties(), e.KeyModifiers, e.Delta);
-                            eventArg.RoutedEvent = InputElement.PointerWheelChangedEvent;
-                            eventArg.Source = sender;
-                            var parent = (((Control)sender).Parent as Control) ?? null;
-                            parent?.RaiseEvent(eventArg);
-                        }
-                    }
-                }
-            }
-        }
+        //                if (!previewEventArg.Handled && ((e.Delta.Length > 0 && scrollControl.Offset.Y == 0) ||
+        //                    (e.Delta.Length <= 0 && scrollControl.Offset.Y >= scrollControl.Extent.Height - scrollControl.Viewport.Height)))
+        //                {
+        //                    e.Handled = true;
+        //                    var eventArg = new PointerWheelEventArgs(sender, e.Pointer, this, e.GetCurrentPoint(this).Position, 
+        //                        e.Timestamp, new PointerPointProperties(), e.KeyModifiers, e.Delta);
+        //                    eventArg.RoutedEvent = InputElement.PointerWheelChangedEvent;
+        //                    eventArg.Source = sender;
+        //                    var parent = (((Control)sender).Parent as Control) ?? null;
+        //                    parent?.RaiseEvent(eventArg);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         #endregion
     }
