@@ -96,7 +96,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <returns></returns>
         public async Task WriteShortcutsToFileAsync(string file)
         {
-            await KeyboardShortcutsIo.WriteToFile(KeyRegistry, file);
+            await KeyboardShortcutsIo.WriteToFileAsync(KeyRegistry, file);
         }
 
         ///// <summary>

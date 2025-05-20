@@ -79,7 +79,7 @@ namespace SolidShineUi.Utils
         public new void Add(string item)
         {
             if (Contains(item)) return;
-            ItemAddingEventArgs<string> e = new ItemAddingEventArgs<string>(item);
+            CancelableItemEventArgs<string> e = new CancelableItemEventArgs<string>(item);
             ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             if (MaxCount >= 0 && Count >= MaxCount)
@@ -101,7 +101,7 @@ namespace SolidShineUi.Utils
         public new void Insert(int index, string item)
         {
             if (Contains(item)) return;
-            ItemAddingEventArgs<string> e = new ItemAddingEventArgs<string>(item);
+            CancelableItemEventArgs<string> e = new CancelableItemEventArgs<string>(item);
             ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             if (MaxCount >= 0 && Count >= MaxCount)
@@ -118,6 +118,6 @@ namespace SolidShineUi.Utils
     /// </summary>
     /// <param name="sender">the object that raised this event</param>
     /// <param name="e">the event args associated with this event</param>
-    public delegate void ItemAddingStringEventHandler(object sender, ItemAddingEventArgs<string> e);
+    public delegate void ItemAddingStringEventHandler(object sender, CancelableItemEventArgs<string> e);
 
 }

@@ -137,10 +137,10 @@
                                     Tag="{Binding TopRightElement, RelativeSource={RelativeSource TemplatedParent}}"
                                     WindowChrome.IsHitTestVisibleInChrome="{Binding ExcludeTopRightElementFromChrome, RelativeSource={RelativeSource TemplatedParent}}" />
                                         <flat:ChromeButtons DisplayType="{Binding CaptionDisplayType, RelativeSource={RelativeSource TemplatedParent}}"
-                                SelectionBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
+                                ClickBrush="{Binding SelectionBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                 HighlightBrush="{Binding HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                 ButtonPadding="{Binding CaptionButtonPadding, RelativeSource={RelativeSource TemplatedParent}}"
-                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" MarginButton="0">
+                                VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True" x:Name="PART_Buttons" FontSize="16" ButtonMargin="0">
                                             <flat:ChromeButtons.Style>
                                                 <Style TargetType="flat:ChromeButtons">
                                                     <Setter Property="Foreground" Value="{Binding Path=CaptionButtonsBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatWindow}}}" />
@@ -488,6 +488,7 @@
                                                           ContentSource="Icon"/>
                                         </Grid>
                                     </Border>
+                                    
                                     <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}"
                                                       x:Name="HeaderHost" RecognizesAccessKey="True"
                                                       ContentSource="Header" VerticalAlignment="Center"/>
@@ -668,7 +669,7 @@
                         <Border Name="Border" Background="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
                             BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"
                                 BorderThickness="1" Padding="1" OpacityMask="{x:Null}" >
-                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" Grid.IsSharedSizeScope="True" >
                                 <ScrollViewer.Style>
                                     <Style TargetType="{x:Type ScrollViewer}">
                                         <Setter Property="VerticalScrollBarVisibility" Value="{Binding Path=VerticalScrollBarVisibility, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
@@ -720,7 +721,7 @@
                                 </Style>
                             </Border.Style>
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" RecognizesAccessKey="True" >
                                     <ContentPresenter.Style>
                                         <Style TargetType="{x:Type ContentPresenter}" >
                                             <Setter Property="Opacity" Value="1.0" />
@@ -778,6 +779,18 @@
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="HighlightOnKeyboardFocus" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsStylusOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>
                         <!--<Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -786,6 +799,17 @@
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="IsMouseDown" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </MultiTrigger>
+                        <!--<Trigger Property="IsFocused" Value="True" >
+                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                        </Trigger>-->
                         <Trigger Property="IsKeyboardFocused" Value="True" >
                             <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
                         </Trigger>
@@ -848,16 +872,11 @@
                                                 <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                             </Style>
                                         </StackPanel.Style>
-                                        <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        <ContentPresenter x:Name="btn_Cc" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"
                                                           Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
                                             <ContentPresenter.Style>
                                                 <Style TargetType="{x:Type ContentPresenter}" >
                                                     <Setter Property="Opacity" Value="1.0" />
-                                                    <!--<Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
-                                                <Setter Property="Opacity" Value="0.6"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>-->
                                                 </Style>
                                             </ContentPresenter.Style>
                                         </ContentPresenter>
@@ -947,10 +966,30 @@
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
+                        <Trigger Property="IsStylusOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="HighlightOnKeyboardFocus" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </MultiTrigger>
                         <Trigger Property="IsMouseDown" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="IsMouseDown" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                        </MultiTrigger>
                         <!--<Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
@@ -966,80 +1005,44 @@
 
     <Style TargetType="{x:Type flat:CheckBox}">
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="Height" Value="24" />
+        <Setter Property="MinHeight" Value="22" />
         <Setter Property="Width" Value="Auto" />
-        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Padding" Value="3,0" />
+        <Setter Property="Background" Value="#01000000" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="flat:CheckBox" >
-                    <Grid Background="{TemplateBinding Background}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="3" x:Name="colLeftSpace"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border x:Name="brdrChk" HorizontalAlignment="Left" Height="20" Margin="0,0" VerticalAlignment="Center" Width="20">
-                            <Border.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" Command="{x:Static flat:CheckBox.CheckBoxClickCommand}" />
-                            </Border.InputBindings>
+                <ControlTemplate TargetType="{x:Type flat:CheckBox}" >
+                    <DockPanel Background="{TemplateBinding Background}">
+                        <Border x:Name="brdrChk" HorizontalAlignment="Center" Height="20" Margin="0,0" VerticalAlignment="Center" Width="20">
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="Background" Value="{Binding Path=CheckBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                    <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                    <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                    <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                    <Setter Property="DockPanel.Dock" Value="Left" />
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Setter Property="Background" Value="{Binding Path=CheckBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True">
-                                            <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                        <DataTrigger Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                            <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </DataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}, Path=OnlyAllowCheckBoxClick}" Value="True" />
-                                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}, TargetNullValue=False}" Value="False" />
-                                            </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter Property="BorderBrush" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
-                                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
-                                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}, TargetNullValue=False}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Background" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                        </MultiDataTrigger>
                                     </Style.Triggers>
-                                    <!--<Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
-                                        </DataTrigger>
-                                        -->
-                                    <!--<DataTrigger Binding="{Binding IsSelected, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" >
-                                            <Setter Property="Background" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                            <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                        </DataTrigger>-->
-                                    <!--<MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsMouseOver" Value="True" />
-                                            </MultiTrigger.Conditions>
-                                        </MultiTrigger>-->
-                                    <!--
-                                    </Style.Triggers>-->
                                 </Style>
                             </Border.Style>
-                            <Grid>
-                                <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                            <Grid Background="Transparent" x:Name="gridBkgd" >
+                                <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z" 
+                                      Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
                                     <Path.Style>
                                         <Style TargetType="Path">
-                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource TemplatedParent}}" />
                                             <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
-                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" />
+                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True" />
+                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="False" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </MultiDataTrigger>
@@ -1050,13 +1053,13 @@
                                 <Rectangle x:Name="markInd" Fill="Black" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" >
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource TemplatedParent}}" />
                                             <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
-                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="True" />
+                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True" />
+                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </MultiDataTrigger>
@@ -1066,47 +1069,47 @@
                                 </Rectangle>
                             </Grid>
                         </Border>
-                        <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="2">
+                        <ContentPresenter x:Name="cc" RecognizesAccessKey="True" >
                             <ContentPresenter.Style>
                                 <Style TargetType="{x:Type ContentPresenter}" >
+                                    <Setter Property="VerticalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                                    <Setter Property="HorizontalAlignment" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}" />
                                     <Setter Property="Opacity" Value="1.0" />
-                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                                    <!--<Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:CheckBox}}}" Value="False" >
-                                            <Setter Property="Opacity" Value="0.6"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>-->
+                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Style>
                             </ContentPresenter.Style>
                         </ContentPresenter>
-                    </Grid>
+                    </DockPanel>
                     <ControlTemplate.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=Self}}" Value="False" />
-                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="False" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=Self}}" Value="False" />
-                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="True" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                        </MultiDataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Background" TargetName="gridBkgd" Value="{Binding Path=BackgroundHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Focusable" Value="False" />
                             <Setter Property="Opacity" TargetName="cc" Value="0.6" />
-                            <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BackgroundDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
-                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:CheckBox}}}" />
+                            <Setter Property="Background" TargetName="gridBkgd" Value="{Binding Path=BackgroundDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Right">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Right" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Top">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Top" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Bottom">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Bottom" />
+                        </Trigger>
+                        <Trigger Property="BoxPlacement" Value="Hidden">
+                            <Setter Property="DockPanel.Dock" TargetName="brdrChk" Value="Left" />
+                            <Setter Property="Visibility" TargetName="brdrChk" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -1121,10 +1124,14 @@
 
     <Style TargetType="{x:Type flat:TabControl}">
         <Setter Property="Focusable" Value="True" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:TabControl}">
-                    <Grid>
+                    <Grid Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" x:Name="rowTabsTop" />
                             <RowDefinition Height="1*" x:Name="rowContent"/>
@@ -1184,13 +1191,13 @@
                                     Tag="{Binding LeftTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrLeftElementParent" />
                             </Border>
                             <Border x:Name="brdrScrollLeft" Grid.Column="0" Grid.ColumnSpan="2" 
-                                    BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ColorConverter}}">
+                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
                                         <Setter Property="VerticalAlignment" Value="Bottom" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" Value="True">
+                                            <DataTrigger Binding="{Binding ShowTabsOnBottom, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
                                                 <Setter Property="BorderThickness" Value="0,0,0,1" />
                                                 <Setter Property="VerticalAlignment" Value="Top" />
                                             </DataTrigger>
@@ -1200,9 +1207,12 @@
                             </Border>
                             <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="1" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
-                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ColorConverter}}" />
+                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                             ClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             HighlightBrush="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             BorderHighlightBrush="{Binding ButtonHighlightBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <Path Data="M8,0 L0,4 8,8 z" 
+                                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             </flat:FlatButton>
                             <ScrollViewer x:Name="PART_TabScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="2" >
                                 <Grid Margin="0">
@@ -1221,14 +1231,23 @@
                                                 <ssut:TabDisplayItem x:Name="PART_TabItem"
                                                                      Visibility="{Binding Visibility}" TabItem="{Binding .}" AllowDataDragDrop="{Binding AllowDrop}" ToolTip="{Binding ToolTip}"
                                                                      CanSelect="{Binding CanSelect}" TabBackground="{Binding TabBackground}"
-                                                                     ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      ShowTabsOnBottom="{Binding ShowTabsOnBottom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      AllowDragDrop="{Binding AllowTabDragDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     HighlightBrush="{Binding TabHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     BorderHighlightBrush="{Binding TabBorderHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     TabBorderBrush="{Binding TabBorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     SelectedTabBackground="{Binding SelectedTabBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     ButtonClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     ButtonHighlightBackground="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     ButtonHighlightBorderBrush="{Binding ButtonHighlightBorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     CloseBrush="{Binding TabCloseBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                                     Background="{Binding TabBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                                      ParentTabControl="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" />
+                                                <!-- ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" -->
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <Border Grid.Column="1" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ColorConverter}}">
+                                    <Border Grid.Column="1" BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1245,7 +1264,7 @@
                                 </Grid>
                             </ScrollViewer>
                             <Border x:Name="brdrScrollRight" Grid.Column="3" Grid.ColumnSpan="3" 
-                                    BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ColorConverter}}">
+                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="0,1,0,0"  />
@@ -1261,19 +1280,23 @@
                             </Border>
                             <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
-                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}" >
-                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorConverter}}" />
+                                             IsEnabled="{Binding ScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             ClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             HighlightBrush="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             BorderHighlightBrush="{Binding ButtonHighlightBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
+                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             </flat:FlatButton>
                             <Border BorderThickness="0" Background="Transparent" x:Name="PART_RightHolder_Horizontal" Grid.Column="4" >
                                 <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding RightTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrRightElementParent" />
                             </Border>
                             <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="5" Padding="0" MinWidth="20" Width="20" TransparentBack="True" ToolTip="Tab List" ShowMenuArrow="False"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}"
-                                             Visibility="{Binding ShowTabListMenu, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisConverter}}">
+                                             ClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             HighlightBrush="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             BorderHighlightBrush="{Binding ButtonHighlightBorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                             Visibility="{Binding ShowTabListMenu, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource VisConverter}}">
                                 <flat:MenuButton.Menu>
-                                    <flat:ContextMenu ItemsSource="{TemplateBinding Items}">
+                                    <flat:ContextMenu ItemsSource="{TemplateBinding Items}" >
                                         <flat:ContextMenu.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock IsEnabled="{Binding CanSelect}">
@@ -1361,8 +1384,8 @@
                                                                             <!--Border 2-->
                                                                             <Border x:Name="SubMenuBorder"
                                                     BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"
-                                                    Background="{Binding Path=ColorScheme.LightBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"
-                                                    BorderThickness="1"  SnapsToDevicePixels="True">
+                                                    BorderThickness="1" Background="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"
+                                                    SnapsToDevicePixels="True">
                                                                                 <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
                                                                                     <StackPanel IsItemsHost="True"
                                                                 KeyboardNavigation.DirectionalNavigation="Cycle"/>
@@ -1374,9 +1397,8 @@
                                                                             <!--Border 3-->
                                                                             <Border Margin="1,-5,1,0" x:Name="TransitionBorder" Width="0" Height="7"
                                                     VerticalAlignment="Top" HorizontalAlignment="Left"
-                                                    Background="{Binding Path=ColorScheme.LightBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"
-                                                    BorderBrush="{Binding Path=ColorScheme.LightBackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"
-                                                    SnapsToDevicePixels="False" BorderThickness="1,0" />
+                                                    Background="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}" SnapsToDevicePixels="False"
+                                                    BorderThickness="1,0" BorderBrush="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                         </Grid>
                                                                     </Popup>
                                                                 </Grid>
@@ -1406,8 +1428,7 @@
                                                                     <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1,1,1,1"/>
                                                                     <Setter TargetName="SubMenu" Property="Margin" Value="2,3,2,2"/>
                                                                     <Setter TargetName="TransitionBorder" Property="Width" Value="{Binding ActualWidth, ElementName=Grid}"/>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.LightBackgroundColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                     <Setter Property="UseLayoutRounding" Value="True" />
                                                                 </Trigger>
                                                                 <Trigger Property="Role" Value="TopLevelItem">
@@ -1418,8 +1439,7 @@
                                                                     <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
                                                                     <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed"/>
                                                                     <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.LightBackgroundColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                 </Trigger>
                                                                 <Trigger Property="Role" Value="SubmenuHeader">
                                                                     <!-- menu item with subitems -->
@@ -1429,8 +1449,7 @@
                                                                     <Setter TargetName="Icon" Property="UseLayoutRounding" Value="True" />
                                                                     <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
                                                                     <Setter TargetName="Border" Property="MinHeight" Value="22"/>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.LightBackgroundColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                 </Trigger>
                                                                 <Trigger Property="Role" Value="SubmenuItem">
                                                                     <!-- menu item -->
@@ -1441,50 +1460,43 @@
                                                                     <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
                                                                     <Setter TargetName="Border" Property="MinHeight" Value="22"/>
                                                                     <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.LightBackgroundColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                 </Trigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
                                                                         <Condition Property="IsHighlighted" Value="true"/>
                                                                         <Condition Property="Role" Value="TopLevelHeader"/>
                                                                     </MultiTrigger.Conditions>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.ThirdHighlightColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                 </MultiTrigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
                                                                         <Condition Property="IsHighlighted" Value="true"/>
                                                                         <Condition Property="Role" Value="TopLevelItem"/>
                                                                     </MultiTrigger.Conditions>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.ThirdHighlightColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ButtonHighlightBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                 </MultiTrigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
                                                                         <Condition Property="IsHighlighted" Value="true"/>
                                                                         <Condition Property="Role" Value="SubmenuHeader"/>
                                                                     </MultiTrigger.Conditions>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.ThirdHighlightColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ButtonHighlightBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                 </MultiTrigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
                                                                         <Condition Property="IsHighlighted" Value="true"/>
                                                                         <Condition Property="Role" Value="SubmenuItem"/>
                                                                     </MultiTrigger.Conditions>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.ThirdHighlightColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ButtonHighlightBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                 </MultiTrigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
                                                                         <Condition Property="IsSubmenuOpen" Value="true"/>
                                                                         <Condition Property="Role" Value="TopLevelHeader"/>
                                                                     </MultiTrigger.Conditions>
-                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ColorScheme.LightBackgroundColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
-                                                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding Path=ColorScheme.BorderColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}"/>
+                                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
+                                                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"/>
                                                                     <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
                                                                 </MultiTrigger>
                                                                 <!--<Trigger Property="IsSubmenuOpen" Value="true">
@@ -1504,8 +1516,7 @@
                                                                         <Condition Property="IsChecked" Value="true" />
                                                                         <Condition Property="Role" Value="SubmenuItem" />
                                                                     </MultiTrigger.Conditions>
-                                                                    <Setter TargetName="Check" Property="Background" Value="{Binding Path=ColorScheme.LightBackgroundColor, 
-                                                                        RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}" />
+                                                                    <Setter TargetName="Check" Property="Background" Value="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}" />
                                                                 </MultiTrigger>
                                                                 <MultiTrigger>
                                                                     <MultiTrigger.Conditions>
@@ -1550,7 +1561,8 @@
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="1" >
-                            <Border x:Name="PART_Content" BorderBrush="{Binding Path=ColorScheme.BorderColor, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}, Converter={StaticResource ColorConverter}}">
+                            <Border x:Name="PART_Content" BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}"
+                                    Background="{Binding Path=ContentAreaBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:TabControl}}}" >
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="1,0,1,1"  />
@@ -3712,7 +3724,7 @@
     </Style>
 
     <Style TargetType="{x:Type flat:SplitButton}">
-        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Focusable" Value="False" />
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3729,12 +3741,12 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <flat:FlatButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1" 
+                        <flat:FlatButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1"
                                          BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                          SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
-                                         IsSelected="{TemplateBinding IsSelected}">
+                                         IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
                             <flat:FlatButton.Style>
                                 <Style TargetType="flat:FlatButton">
                                     <Setter Property="Grid.Row" Value="1" />
@@ -3749,14 +3761,14 @@
                                     <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </flat:FlatButton.Style>
-                            <ContentPresenter ContentSource="Content" />
+                            <ContentPresenter ContentSource="Content" RecognizesAccessKey="True" />
                         </flat:FlatButton>
                         <flat:FlatButton x:Name="PART_Menu" Padding="0"
                                          BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                          SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
-                                         IsSelected="{TemplateBinding IsSelected}">
+                                         IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
                             <flat:FlatButton.Style>
                                 <Style TargetType="flat:FlatButton">
                                     <Setter Property="Grid.Row" Value="1" />
@@ -3994,7 +4006,7 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                             <flat:MenuButton Grid.Column="2" ColorScheme="{TemplateBinding ColorScheme}" Height="28" MinWidth="50"
                              TransparentBack="True" Visibility="{TemplateBinding ShowViewMenu, Converter={StaticResource VisConverter}}"
                              HighlightBrush="{TemplateBinding ButtonHighlightBrush}" 
-                             ClickBrush="{TemplateBinding ButtonClickBrush}"
+                             ClickBrush="{TemplateBinding ButtonClickBrush}" x:Name="PART_ViewButton"
                              BorderHighlightBrush="{TemplateBinding ButtonHighlightBorderBrush}" >
                                 <flat:MenuButton.Content>
                                     <TextBlock Text="{TemplateBinding ViewMenuLabel}" />
@@ -4009,7 +4021,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                         <MenuItem Header="Show Read-only Values" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
                                                   Command="{x:Static pl:PropertyListCommands.ToggleReadOnlyProperties}" />
                                         <Separator />
-                                        <MenuItem Header="Show Types Column" x:Name="mnuTypesCol" IsEnabled="False" />
+                                        <MenuItem Header="Show Types Column" IsChecked="{TemplateBinding ShowTypesColumn}"
+                                                  Command="{x:Static pl:PropertyListCommands.ToggleTypesColumn}" />
                                         <!--<Separator />
                                         <MenuItem Header="Show Gridlines" IsChecked="{TemplateBinding ShowGridlines}" 
                                                   Command="{x:Static pl:PropertyListCommands.ToggleGridlines}" />
@@ -4021,9 +4034,9 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                         </Grid>
                         <Grid Grid.Row="3" x:Name="grdHeader" Background="{TemplateBinding HeaderBackground}" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100" MinWidth="50" x:Name="colNames" SharedSizeGroup="plNames" />
-                                <ColumnDefinition Width="0" x:Name="colTypes" SharedSizeGroup="plTypes" />
-                                <ColumnDefinition Width="1*" x:Name="colValues" />
+                                <ColumnDefinition Width="100" MinWidth="50" SharedSizeGroup="plNames" />
+                                <ColumnDefinition Width="0" x:Name="PART_TypesCol" SharedSizeGroup="plTypes" />
+                                <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="{Binding Source={x:Static SystemParameters.VerticalScrollBarWidth}}" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblName"
@@ -4032,8 +4045,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                     Background="{TemplateBinding HeaderDividerBrush}" />
                             <TextBlock Grid.Column="1" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblType"
                                     Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding TypeHeaderLabel}" />
-                            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Collapsed"
-                                    Background="{TemplateBinding HeaderDividerBrush}" x:Name="splTypes" />
+                            <GridSplitter Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2" Visibility="Visible"
+                                    Background="{TemplateBinding HeaderDividerBrush}" x:Name="PART_TypesSplitter" />
                             <TextBlock Grid.Column="2" Margin="2,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="lblValue"
                                     Foreground="{TemplateBinding HeaderForeground}" Text="{TemplateBinding ValueHeaderLabel}" />
                         </Grid>
@@ -4344,6 +4357,95 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                                 </Grid.ColumnDefinitions>
                                 <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF"
                                          flat:AutoCompleteBehavior.AutoCompleteStringComparison="Ordinal" flat:AutoCompleteBehavior.AutoCompleteItemsSource="{TemplateBinding Items}" />
+                                <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" >
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
+                                                     Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
+                                                     Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                     ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
+                                        </flat:FlatRepeatButton>
+                                        <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
+                                                     Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
+                                                     Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                                     ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
+                                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L8,0 L4,4 z" />
+                                        </flat:FlatRepeatButton>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            <Border IsHitTestVisible="False" Grid.ColumnSpan="2" CornerRadius="{TemplateBinding CornerRadius}" x:Name="visBorder"
+                                    BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}" >
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsAtMaxValue" Value="True">
+                            <Setter TargetName="PART_btnStepUp" Property="IsEnabled" Value="False" />
+                        </Trigger>
+                        <Trigger Property="IsAtMinValue" Value="True">
+                            <Setter TargetName="PART_btnStepDown" Property="IsEnabled" Value="False" />
+                        </Trigger>
+                        <Trigger Property="ShowArrows" Value="False">
+                            <Setter TargetName="colArrows" Property="Width" Value="0" />
+                            <Setter TargetName="PART_btnStepUp" Property="IsEnabled" Value="False" />
+                            <Setter TargetName="PART_btnStepDown" Property="IsEnabled" Value="False" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_SpinnerBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+                            <Setter TargetName="brdr_Divider" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+                            <Setter TargetName="visBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type flat:TimeSpinner}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:TimeSpinner}">
+                    <Border x:Name="PART_SpinnerBorder" >
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" />
+                            </Style>
+                        </Border.Style>
+                        <Border.OpacityMask>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Border SnapsToDevicePixels="True" Background="Black" Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}"
+                                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={StaticResource CrModConverter}, ConverterParameter=0.5}" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Border.OpacityMask>
+                        <Grid Background="{TemplateBinding Background}" >
+                            <Grid Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="20" x:Name="colArrows" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="PART_Text" BorderThickness="0" Padding="3,1" VerticalContentAlignment="Center" Text="0" Background="#01FFFFFF" />
                                 <Border BorderThickness="1,0,0,0" Grid.Column="1" x:Name="brdr_Divider" >
                                     <Border.Style>
                                         <Style TargetType="Border">

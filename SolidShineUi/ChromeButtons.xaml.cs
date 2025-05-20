@@ -27,6 +27,7 @@ namespace SolidShineUi
         }
 
         #region Window Interop (Button Click Handling)
+
         void CaptionButtonsLoaded(object sender, RoutedEventArgs e)
         {
             _parent = GetTopParent();
@@ -58,11 +59,13 @@ namespace SolidShineUi
         {
             return Window.GetWindow(this);
         }
+
         #endregion
 
         #region Layout Properties
+
         /// <summary>
-        /// Gets or sets the internal padding in each of the caption buttons.
+        /// Gets or sets the internal padding in each of the caption buttons. Default value is (9, 7, 9, 7).
         /// </summary>
         public Thickness ButtonPadding
         {
@@ -77,62 +80,36 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty ButtonPaddingProperty = DependencyProperty.Register(
              "ButtonPadding", typeof(Thickness), typeof(ChromeButtons), new FrameworkPropertyMetadata(new Thickness(9, 7, 9, 7)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-        // TODO: rename to ButtonMargin
         /// <summary>
         /// Gets or sets the margin (spacing) around each of the caption buttons.
         /// </summary>
-        public Thickness MarginButton
+        public Thickness ButtonMargin
         {
             get
             {
-                return (Thickness) GetValue(MarginButtonProperty);
-                
+                return (Thickness) GetValue(ButtonMarginProperty);
             }
             set
             {
-                SetValue(MarginButtonProperty, value);
+                SetValue(ButtonMarginProperty, value);
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty MarginButtonProperty = DependencyProperty.Register(
-             "MarginButton", typeof(Thickness), typeof(ChromeButtons));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty ButtonMarginProperty = DependencyProperty.Register(
+             "ButtonMargin", typeof(Thickness), typeof(ChromeButtons));
+
         #endregion
 
         #region Caption Type
-        /// <summary>
-        /// Determines which caption buttons will appear on a window.
-        /// </summary>
-        public enum CaptionType
-        {
-            /// <summary>
-            /// Display the close, maximize/restore, and minimize buttons.
-            /// </summary>
-            Full,
-            /// <summary>
-            /// Display only the close button.
-            /// </summary>
-            Close,
-            /// <summary>
-            /// Display only the close and minimize buttons.
-            /// </summary>
-            MinimizeClose,
-            /// <summary>
-            /// Display only the close and maximize/restore buttons.
-            /// </summary>
-            MaximizeClose,
-            /// <summary>
-            /// Do not display any caption buttons.
-            /// (Note that hiding caption buttons alone doesn't prevent users from being able to perform their actions via other methods.)
-            /// </summary>
-            None
-        }
 
         /// <summary>
         /// Gets or sets the visibility of the caption buttons, specifically which buttons should be visible.
@@ -154,26 +131,29 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty DisplayTypeProperty = DependencyProperty.Register(
             "DisplayType", typeof(CaptionType), typeof(ChromeButtons),
             new PropertyMetadata(CaptionType.Full));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        
         #endregion
 
         #region Brushes
         /// <summary>
         /// Get or set the brush used when a button is being clicked.
         /// </summary>
-        public Brush SelectionBrush
+        public Brush ClickBrush
         {
             get
             {
-                return (Brush) GetValue(SelectionBrushProperty);
+                return (Brush) GetValue(ClickBrushProperty);
             }
             set
             {
-                SetValue(SelectionBrushProperty, value);
+                SetValue(ClickBrushProperty, value);
             }
         }
 
@@ -192,21 +172,27 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
-            "SelectionBrush", typeof(Brush), typeof(ChromeButtons),
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+            "ClickBrush", typeof(Brush), typeof(ChromeButtons),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// The backing dependency property object for a related property. See that property for more details.
+        /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(ChromeButtons),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        #endregion
 
+        #region Mouse Event Handling (update brushes)
         bool mouseEntered = false;
 
         private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ((Button) sender).Background = SelectionBrush;
+            ((Button) sender).Background = ClickBrush;
         }
 
         private void Button_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -232,6 +218,5 @@ namespace SolidShineUi
             }
         }
         #endregion
-
     }
 }

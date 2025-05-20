@@ -44,5 +44,10 @@ namespace SolidShineUi.PropertyList
         /// <remarks>See also <see cref="PropertyList.ShowReadOnlyProperties"/> property.</remarks>
         public static RoutedCommand ToggleReadOnlyProperties { get; } = new RoutedCommand("ToggleReadOnlyProperties", typeof(PropertyListCommands));
 
+
+        /// <summary>A WPF command that when executed, will show or hide the Types column in a PropertyList.</summary>
+        /// <remarks>See also <see cref="PropertyList.ShowReadOnlyProperties"/> property.</remarks>
+        public static RoutedCommand ToggleTypesColumn { get; } = new RoutedCommand("ToggleInheritedProperties", typeof(PropertyListCommands));
+
     }
 }

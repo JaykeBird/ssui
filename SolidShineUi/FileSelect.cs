@@ -51,6 +51,7 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(OpenContainingFolders, OnOpenFilesContainingFolders, CanExecuteIfNotEmpty));
             CommandBindings.Add(new CommandBinding(RemoveSelectedFile, OnRemoveSelectedFile, CanExecuteIfFilePresent));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OnBrowseForFile, CanExecuteAlways));
+            CommandBindings.Add(new CommandBinding(SelectFile, OnSelectFileCommand, CanExecuteAlways));
         }
 
         #region Drag-Drop events
@@ -510,6 +511,8 @@ namespace SolidShineUi
         public static readonly RoutedCommand OpenContainingFolders = new RoutedCommand();
         /// <summary>A WPF command that when executed, removes the specific file passed in through the command parameter. Only executable if the file is present in the list of selected files.</summary>
         public static readonly RoutedCommand RemoveSelectedFile = new RoutedCommand();
+        /// <summary>A WPF command that when executed, adds a specified file to be selected in this control. Pass the filename(s) as the command's parameter.</summary>
+        public static readonly RoutedCommand SelectFile = new RoutedCommand();
 
         private void OnBrowseForFile(object sender, ExecutedRoutedEventArgs e)
         {
@@ -520,6 +523,18 @@ namespace SolidShineUi
         private void OnClearSelectedFiles(object sender, ExecutedRoutedEventArgs e)
         {
             SelectedFiles.Clear();
+        }
+
+        private void OnSelectFileCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is string s)
+            {
+                SelectFiles(s);
+            }
+            else if (e.Parameter is IEnumerable<string> ie)
+            {
+                SelectFiles(ie);
+            }
         }
 
         private void CanExecuteAlways(object sender, CanExecuteRoutedEventArgs e)
@@ -781,7 +796,7 @@ namespace SolidShineUi
             private set { SetValue(SelectedFilesPropertyKey, value); }
         }
 
-        private void SelectedFiles_AddingItem(object sender, ItemAddingEventArgs<string> e)
+        private void SelectedFiles_AddingItem(object sender, CancelableItemEventArgs<string> e)
         {
             if (!File.Exists(e.Item) && FileMustExist || !FileMatchesFilter(e.Item, FileFilter.Split(FILTER_DELIMITER)))
             {

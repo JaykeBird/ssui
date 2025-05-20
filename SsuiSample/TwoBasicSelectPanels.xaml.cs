@@ -18,6 +18,7 @@ namespace SsuiSample
         {
             InitializeComponent();
 
+            // the second SelectPanel, basic2, serves as a way to test ItemsSource with a stored SelectableCollection
             // for testing/trying with a SelectableCollectionView, uncomment the below text
 
             //var lcv = new SelectableCollectionView<SelectableUserControl>((Collection<SelectableUserControl>)Resources["selList"]);
@@ -84,10 +85,13 @@ namespace SsuiSample
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             basic1.Items.Clear();
-            basic2.Items.Clear();
+
+            var list = (SelectableListItemCollection)Resources["selList"];
+            list.Clear();
         }
     }
 
+    // WPF's XAML doesn't support generics, so this is just a basic wrapper so that I can use it as a Resource in XAML
     internal class SelectableListItemCollection : SelectableCollection<SelectableUserControl>
     {
 

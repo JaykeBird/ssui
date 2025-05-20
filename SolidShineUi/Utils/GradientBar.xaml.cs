@@ -77,6 +77,9 @@ namespace SolidShineUi.Utils
             eleGradient.Background = new LinearGradientBrush(_stops, 0.0);
         }
 
+        /// <summary>
+        /// Clears the existing gradient stop items, and re-renders them. This applies the correct positioning and brushes.
+        /// </summary>
         void RenderStops()
         {
             GradientStop selStop = new GradientStop();
@@ -103,6 +106,10 @@ namespace SolidShineUi.Utils
             gsi.Margin = new Thickness(stop.Offset * brdrGradient.ActualWidth, 0, 0, 0);
             gsi.HorizontalAlignment = HorizontalAlignment.Left;
             gsi.VerticalAlignment = VerticalAlignment.Center;
+            gsi.StopFill = StopFill;
+            gsi.StopSelectedFill = StopSelectedFill;
+            gsi.StopBorderBrush = StopBorderBrush;
+            gsi.StopBorderHighlightBrush = StopBorderHighlightBrush;
             gsi.Click += gsi_Click;
             gsi.IsSelected = false;
 
@@ -112,7 +119,65 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
+        #region GradientStopItem Brushes
+
+        /// <summary>
+        /// Get or set the brush used for the background of the gradient stop items in the editor.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopFill { get => (Brush)GetValue(StopFillProperty); set => SetValue(StopFillProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="StopFill"/>. See the related property for details.</summary>
+        public static DependencyProperty StopFillProperty
+            = DependencyProperty.Register(nameof(StopFill), typeof(Brush), typeof(GradientBar),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush(), OnStopBrushesChanged));
+
+        /// <summary>
+        /// Get or set the brush used for the background of the currently selected gradient stop item in the editor.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopSelectedFill { get => (Brush)GetValue(StopSelectedFillProperty); set => SetValue(StopSelectedFillProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="StopSelectedFill"/>. See the related property for details.</summary>
+        public static DependencyProperty StopSelectedFillProperty
+            = DependencyProperty.Register(nameof(StopSelectedFill), typeof(Brush), typeof(GradientBar),
+            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush(), OnStopBrushesChanged));
+
+
+        /// <summary>
+        /// Get or set the brush used for the border of the gradient stop items in the editor.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopBorderBrush { get => (Brush)GetValue(StopBorderBrushProperty); set => SetValue(StopBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="StopBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty StopBorderBrushProperty
+            = DependencyProperty.Register(nameof(StopBorderBrush), typeof(Brush), typeof(GradientBar),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), OnStopBrushesChanged));
+
+        /// <summary>
+        /// Get or set the brush used for the background of the gradient stop items in the editor, while they are highlighted (i.e. focus, mouse-over).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush StopBorderHighlightBrush { get => (Brush)GetValue(StopBorderHighlightBrushProperty); set => SetValue(StopBorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="StopBorderHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty StopBorderHighlightBrushProperty
+            = DependencyProperty.Register(nameof(StopBorderHighlightBrush), typeof(Brush), typeof(GradientBar),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), OnStopBrushesChanged));
+
+        private static void OnStopBrushesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is GradientBar o)
+            {
+                o.RenderStops();
+            }
+        }
+
+        #endregion
+
         #region ColorScheme
+
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -122,11 +187,10 @@ namespace SolidShineUi.Utils
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(GradientBar),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -135,16 +199,13 @@ namespace SolidShineUi.Utils
         /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-
-            if (d is GradientBar s)
+            if (e.NewValue is ColorScheme cs)
             {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
+                if (d is GradientBar s)
+                {
+                    s.ColorSchemeChanged?.Invoke(d, e);
+                    s.ApplyColorScheme(cs);
+                }
             }
         }
 
@@ -228,7 +289,10 @@ namespace SolidShineUi.Utils
             nudOpacity.Value = _selected.Color.A;
         }
 
-        void Deselect()
+        /// <summary>
+        /// Deselect all gradient stops, so no stops are selected.
+        /// </summary>
+        public void Deselect()
         {
             _selected = null;
             btnDelete.IsEnabled = false;
@@ -246,7 +310,10 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <param name="gs">the gradient stop to edit</param>
         /// <exception cref="ArgumentException">thrown if this gradient stop isn't in this gradient bar</exception>
-        /// <remarks>Use <see cref="GradientStops"/> to get a list of the stops currently in this gradient bar</remarks>
+        /// <remarks>
+        /// Use <see cref="GradientStops"/> to get a list of the stops currently in this gradient bar;
+        /// use <see cref="Deselect"/> to deselect all gradient stops.
+        /// </remarks>
         public void SelectStop(GradientStop gs)
         {
             if (_stops.Contains(gs))
@@ -273,7 +340,10 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <param name="index">the index of the gradient stop to edit</param>
         /// <exception cref="ArgumentOutOfRangeException">thrown if the index is less than 0 OR if the index is above the number of gradient stops in the editor</exception>
-        /// <remarks>Use <see cref="GradientStops"/> to get a list of the stops currently in this gradient bar</remarks>
+        /// <remarks>
+        /// Use <see cref="GradientStops"/> to get a list of the stops currently in this gradient bar;
+        /// use <see cref="Deselect"/> to deselect all gradient stops.
+        /// </remarks>
         public void SelectStop(int index)
         {
             if (index >= _stops.Count || index < 0)
@@ -297,8 +367,10 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get the gradient stop that is currently selected, or returns <c>null</c> if no gradient stop is selected.
+        /// Get or set the gradient stop that is currently selected, or returns <c>null</c> if no gradient stop is selected.
         /// </summary>
+        /// <exception cref="ArgumentNullException">thrown if attempting to set this property to <c>null</c>; use <see cref="Deselect"/> instead</exception>
+        /// <exception cref="ArgumentException">thrown if attempting to set this property to a <see cref="GradientStop"/> that isn't in this editor</exception>
 #if NETCOREAPP
         public GradientStop? SelectedGradientStop
 #else
@@ -308,6 +380,11 @@ namespace SolidShineUi.Utils
             get
             {
                 return _selected?.GradientStop;
+            }
+            set
+            {
+                if (value == null) throw new ArgumentNullException(nameof(value));
+                SelectStop(value);
             }
         }
 #endregion
@@ -329,59 +406,16 @@ namespace SolidShineUi.Utils
 
         #region Editor
 
+        #region Editor Functions
+
         /// <summary>
-        /// Raised when the SelectedGradientStop is changed.
+        /// Select the gradient stop to the left of the currently selected gradient stop.
         /// </summary>
-#if NETCOREAPP
-        public event EventHandler? GradientChanged;
-#else
-        public event EventHandler GradientChanged;
-#endif
-
-        //void UpdateStopOffset(GradientStop stop, double offset)
-        //{
-        //    foreach (GradientStopItem item in grdStops.Children)
-        //    {
-        //        if (item.GradientStop == stop)
-        //        {
-        //            item.Offset = offset;
-        //            item.GradientStop.Offset = offset;
-        //        }
-        //    }
-
-        //    SortStops();
-        //    RenderBar();
-        //    RenderStops();
-        //    GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
-        //}
-
-        void UpdateStopOffset(GradientStopItem stop, double offset)
+        /// <remarks>
+        /// If no stop is currently selected, this tries to select the left-most stop.
+        /// </remarks>
+        public void SelectNextLeft()
         {
-            if (stop == null) return;
-
-            stop.Offset = offset;
-            stop.GradientStop.Offset = offset;
-
-            SortStops();
-            RenderBar();
-            RenderStops();
-            GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
-        }
-
-        void CountStops()
-        {
-            if (_stops.Count > 1)
-            {
-                btnDelete.IsEnabled = true;
-            }
-            else
-            {
-                btnDelete.IsEnabled = false;
-            }
-        }
-
-        private void btnNextLeft_Click(object sender, RoutedEventArgs e)
-        {  
             // somehow the grdStops.Children collection changes while the button is being pressed???
             // I'm not wanting to figure out what's going on, so this is the solution I came up with
             List<GradientStopItem> items = new List<GradientStopItem>();
@@ -394,9 +428,9 @@ namespace SolidShineUi.Utils
                 if (item == null) continue;
 
                 items.Add(item);
-            }
+            } // now we have a copy of the collection
 
-            if (_selected == null)
+            if (_selected == null) // nothing is selected right now
             {
                 if (_stops.Count > 1)
                 {
@@ -427,7 +461,13 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private void btnNextRight_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Select the gradient stop to the right of the currently selected gradient stop.
+        /// </summary>
+        /// <remarks>
+        /// If no stop is currently selected, this tries to select the right-most stop.
+        /// </remarks>
+        public void SelectNextRight()
         {
             // somehow the grdStops.Children collection changes while the button is being pressed???
             // I'm not wanting to figure out what's going on, so this is the solution I came up with
@@ -441,9 +481,9 @@ namespace SolidShineUi.Utils
                 if (item == null) continue;
 
                 items.Add(item);
-            }
+            } // now we have a copy of the collection
 
-            if (_selected == null)
+            if (_selected == null) // nothing is selected right now
             {
                 if (_stops.Count > 1)
                 {
@@ -462,7 +502,7 @@ namespace SolidShineUi.Utils
                 int index = _stops.IndexOf(_selected.GradientStop);
                 if (index < _stops.Count - 1)
                 {
-                    // find the next stop to the left
+                    // find the next stop to the right
                     GradientStop gsn = _stops[index + 1];
                     foreach (GradientStopItem item in items)
                     {
@@ -475,7 +515,13 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Delete the currently selected stop.
+        /// </summary>
+        /// <remarks>
+        /// If there are 1 or no stops, or no stop is currently selected, this does nothing.
+        /// </remarks>
+        public void Delete()
         {
             if (_stops.Count <= 1) return;
 
@@ -485,11 +531,17 @@ namespace SolidShineUi.Utils
                 _stops.Remove(_selected.GradientStop);
                 Deselect();
                 CountStops();
-                GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
+                GradientChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private void btnAddStop_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Adds a new gradient stop onto the gradient bar.
+        /// </summary>
+        /// <remarks>
+        /// If a gradient stop is currently selected, this will add a stop that is halfway between the current stop and the one to its left.
+        /// </remarks>
+        public void AddStop()
         {
             double offset = 0.5;
             Color color = Colors.DimGray;
@@ -525,9 +577,13 @@ namespace SolidShineUi.Utils
             RenderBar();
             SelectStop(gsi);
             CountStops();
-            GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
+            GradientChanged?.Invoke(this, EventArgs.Empty);
         }
-        private void btnSwap_Click(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// Reverses the order of all the stops in the gradient (so the left-most stop becomes the right-most, and vice versa).
+        /// </summary>
+        public void Swap()
         {
 #if NETCOREAPP
             GradientStop? gsi = null;
@@ -567,6 +623,137 @@ namespace SolidShineUi.Utils
             }
         }
 
+        /// <summary>
+        /// Update the currently selected stop with a new value.
+        /// </summary>
+        /// <param name="offset">the offset value to change it to</param>
+        /// <remarks>This affects the currently selected stop, which you can access via <see cref="SelectedGradientStop"/></remarks>
+        public void UpdateSelectedStop(double offset)
+        {
+            if (_selected == null) return;
+            else UpdateSelectedStop(offset, _selected.Color);
+        }
+
+        /// <summary>
+        /// Update the currently selected stop with a new value.
+        /// </summary>
+        /// <param name="color">the color value to change it to</param>
+        /// <remarks>This affects the currently selected stop, which you can access via <see cref="SelectedGradientStop"/></remarks>
+        public void UpdateSelectedStop(Color color)
+        {
+            if (_selected == null) return;
+            else UpdateSelectedStop(_selected.Offset, color);
+        }
+
+        /// <summary>
+        /// Update the currently selected stop with a new value.
+        /// </summary>
+        /// <param name="offset">the offset value to change it to</param>
+        /// <param name="color">the color value to change it to</param>
+        /// <remarks>This affects the currently selected stop, which you can access via <see cref="SelectedGradientStop"/></remarks>
+        public void UpdateSelectedStop(double offset, Color color)
+        {
+            if (_selected == null) return;
+            else
+            {
+                if (offset != _selected.Offset)
+                {
+                    UpdateStopOffset(_selected, offset);
+                }
+
+                if (color != _selected.Color)
+                {
+                    _selected.Color = color;
+                    _selected.GradientStop.Color = color;
+
+                    RenderBar();
+                    RenderStops();
+                }
+                GradientChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Raised when the SelectedGradientStop is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event EventHandler? GradientChanged;
+#else
+        public event EventHandler GradientChanged;
+#endif
+
+        //void UpdateStopOffset(GradientStop stop, double offset)
+        //{
+        //    foreach (GradientStopItem item in grdStops.Children)
+        //    {
+        //        if (item.GradientStop == stop)
+        //        {
+        //            item.Offset = offset;
+        //            item.GradientStop.Offset = offset;
+        //        }
+        //    }
+
+        //    SortStops();
+        //    RenderBar();
+        //    RenderStops();
+        //    GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
+        //}
+
+        void UpdateStopOffset(GradientStopItem stop, double offset)
+        {
+            if (stop == null) return;
+
+            stop.Offset = offset;
+            stop.GradientStop.Offset = offset;
+
+            SortStops();
+            RenderBar();
+            RenderStops();
+            GradientChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Checks if there are enough stops to have the delete button enabled.
+        /// </summary>
+        void CountStops()
+        {
+            if (_stops.Count > 1)
+            {
+                btnDelete.IsEnabled = true;
+            }
+            else
+            {
+                btnDelete.IsEnabled = false;
+            }
+        }
+
+        private void btnNextLeft_Click(object sender, RoutedEventArgs e)
+        {
+            SelectNextLeft();
+        }
+
+        private void btnNextRight_Click(object sender, RoutedEventArgs e)
+        {
+            SelectNextRight();
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            Delete();
+        }
+
+        private void btnAddStop_Click(object sender, RoutedEventArgs e)
+        {
+            AddStop();
+        }
+
+        private void btnSwap_Click(object sender, RoutedEventArgs e)
+        {
+            Swap();
+        }
+
 #pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable IDE0060 // Remove unused parameter
         private void nudOffset_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -593,7 +780,7 @@ namespace SolidShineUi.Utils
 
                 RenderBar();
                 RenderStops();
-                GradientChanged?.DynamicInvoke(this, EventArgs.Empty);
+                GradientChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }

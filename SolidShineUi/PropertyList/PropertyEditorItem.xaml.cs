@@ -10,7 +10,7 @@ namespace SolidShineUi.PropertyList
 {
     /// <summary>
     /// A control hosting a visual representation of an object's property, including the property's name, type, and (where possible) an editor control for editing the property.
-    /// This is meant for use with the <see cref="ExperimentalPropertyList"/>, not generally for use directly by itself.
+    /// This is meant for use with the <see cref="PropertyList"/>, not generally for use directly by itself.
     /// </summary>
     [Localizability(LocalizationCategory.ListBox)]
     public partial class PropertyEditorItem : UserControl
@@ -120,7 +120,7 @@ namespace SolidShineUi.PropertyList
         /// Load in a property to show in this PropertyEditorItem, with (if possible) a IPropertyEditor control to allow editing the property value.
         /// </summary>
         /// <param name="property">The information about this property being shown. This is used to fill most data in this control.</param>
-        /// <param name="value">The value of the property, in regards to the object being observed in the parent <see cref="ExperimentalPropertyList"/>.</param>
+        /// <param name="value">The value of the property, in regards to the object being observed in the parent <see cref="PropertyList"/>.</param>
         /// <param name="editor">The IPropertyEditor control, if present, that is useable for editing the value of this property.</param>
 #if NETCOREAPP
         public void LoadProperty(PropertyInfo property, object? value, IPropertyEditor? editor)
@@ -131,8 +131,8 @@ namespace SolidShineUi.PropertyList
             PropertyInfo = property;
             PropertyName = property.Name;
             PropertyType = property.PropertyType;
-            PropertyTypeText = ExperimentalPropertyList.PrettifyPropertyType(property.PropertyType);
-            txtType.ToolTip = ExperimentalPropertyList.PrettifyPropertyType(property.PropertyType, true);
+            PropertyTypeText = PropertyList.PrettifyPropertyType(property.PropertyType);
+            txtType.ToolTip = PropertyList.PrettifyPropertyType(property.PropertyType, true);
             PropertyValue = value;
             IsReadOnly = !property.CanWrite;
             //var propVal = property.GetCustomAttribute<DescriptionAttribute>();

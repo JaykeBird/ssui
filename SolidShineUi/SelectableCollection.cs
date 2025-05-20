@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
 namespace SolidShineUi
@@ -42,35 +43,28 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Represents a handler for the event <see cref="ItemRemoving"/>.
+        /// Represents a handler for the event <see cref="ItemAdding"/> or <see cref="ItemRemoving"/>.
         /// </summary>
         /// <param name="sender">The source object of the event.</param>
-        /// <param name="e">The event arguments, containing the item being removed and the ability to cancel the removal.</param>
-        public delegate void ItemRemovingEventHandler(object sender, ItemRemovingEventArgs<T> e);
-
-        /// <summary>
-        /// Represents a handler for the event <see cref="ItemAdding"/>.
-        /// </summary>
-        /// <param name="sender">The source object of the event.</param>
-        /// <param name="e">The event arguments, containing the item being added and the ability to cancel the addition.</param>
-        public delegate void ItemAddingEventHandler(object sender, ItemAddingEventArgs<T> e);
+        /// <param name="e">The event arguments, containing the item in question and the ability to cancel the action.</param>
+        public delegate void CancelableItemEventHandler(object sender, CancelableItemEventArgs<T> e);
 
         /// <summary>
         /// Raised before an item is removed, to give the ability to cancel removing this item.
         /// </summary>
 #if NETCOREAPP
-        public event ItemRemovingEventHandler? ItemRemoving;
+        public event CancelableItemEventHandler? ItemRemoving;
 #else
-        public event ItemRemovingEventHandler ItemRemoving;
+        public event CancelableItemEventHandler ItemRemoving;
 #endif
-        
+
         /// <summary>
         /// Raised before an item is added, to give the ability to cancel adding this item.
         /// </summary>
 #if NETCOREAPP
-        public event ItemAddingEventHandler? ItemAdding;
+        public event CancelableItemEventHandler? ItemAdding;
 #else
-        public event ItemAddingEventHandler ItemAdding;
+        public event CancelableItemEventHandler ItemAdding;
 #endif
 
         /// <summary>
@@ -80,7 +74,7 @@ namespace SolidShineUi
         public new void Add(T item)
         {
             //if (Contains(item)) return;
-            ItemAddingEventArgs<T> e = new ItemAddingEventArgs<T>(item);
+            CancelableItemEventArgs<T> e = new CancelableItemEventArgs<T>(item);
             ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             base.Add(item);
@@ -94,7 +88,7 @@ namespace SolidShineUi
         public new void Insert(int index, T item)
         {
             //if (Contains(item)) return;
-            ItemAddingEventArgs<T> e = new ItemAddingEventArgs<T>(item);
+            CancelableItemEventArgs<T> e = new CancelableItemEventArgs<T>(item);
             ItemAdding?.Invoke(this, e);
             if (e.Cancel) return;
             base.Insert(index, item);
@@ -107,7 +101,7 @@ namespace SolidShineUi
         /// <returns><c>true</c> if the item is removed, otherwise <c>false</c>. It may be <c>false</c> if the item isn't actually in the collection or if the removal was cancelled via the ItemRemoving event.</returns>
         public new bool Remove(T item)
         {
-            ItemRemovingEventArgs<T> te = new ItemRemovingEventArgs<T>(item);
+            CancelableItemEventArgs<T> te = new CancelableItemEventArgs<T>(item);
 
             ItemRemoving?.Invoke(this, te);
 
@@ -129,7 +123,7 @@ namespace SolidShineUi
         {
             T t = this[index];
 
-            ItemRemovingEventArgs<T> te = new ItemRemovingEventArgs<T>(t);
+            CancelableItemEventArgs<T> te = new CancelableItemEventArgs<T>(t);
 
             ItemRemoving?.Invoke(this, te);
 
@@ -149,7 +143,7 @@ namespace SolidShineUi
         {
             T t = this[index];
 
-            ItemRemovingEventArgs<T> te = new ItemRemovingEventArgs<T>(t);
+            CancelableItemEventArgs<T> te = new CancelableItemEventArgs<T>(t);
 
             ItemRemoving?.Invoke(this, te);
 
@@ -452,81 +446,24 @@ namespace SolidShineUi
     }
 
     /// <summary>
-    /// Event arguments for an ItemRemoving event. This is used for when an item is about to be removed.
+    /// Event arguments for an ItemAdding or ItemRemoving event. This is used for when an item is about to be added, or about to be removed.
+    /// This can be cancelled by setting the <c>Cancel</c> property to <c>true</c> in the event handler.
     /// </summary>
-    /// <typeparam name="T">Represents the type of item being removed.</typeparam>
-    public class ItemRemovingEventArgs<T>
+    /// <typeparam name="T">Represents the type of item being added/removed/edited.</typeparam>
+    public class CancelableItemEventArgs<T> : CancelEventArgs
     {
         /// <summary>
-        /// Create an ItemRemovingEventArgs.
-        /// </summary>
-        /// <param name="item">The item being removed.</param>
-        public ItemRemovingEventArgs(T item)
-        {
-            Item = item;
-        }
-
-        /// <summary>
-        /// The item being removed.
+        /// The item being added/removed/edited.
         /// </summary>
         public T Item { get; private set; }
 
         /// <summary>
-        /// Get or set if the removal of this item should be cancelled. If true, the item will not be removed.
+        /// Create a CancelableItemEventArgs.
         /// </summary>
-        public bool Cancel { get; set; } = false;
-    }
-
-    /// <summary>
-    /// Event arguments for an ItemAdding event. This is used for when an item is about to be added.
-    /// </summary>
-    /// <typeparam name="T">Represents the type of item being added.</typeparam>
-    public class ItemAddingEventArgs<T> : EventArgs
-    {
-        /// <summary>
-        /// The item being added.
-        /// </summary>
-        public T Item { get; private set; }
-
-        /// <summary>
-        /// Get or set if the addition of this item should be cancelled. If true, the item will not be added.
-        /// </summary>
-        public bool Cancel { get; set; } = false;
-
-        /// <summary>
-        /// Create an ItemAddingEventArgs.
-        /// </summary>
-        /// <param name="item">The item being added.</param>
-        public ItemAddingEventArgs(T item)
+        /// <param name="item">The item being added/removed/edited.</param>
+        public CancelableItemEventArgs(T item)
         {
             Item = item;
         }
-    }
-
-    /// <summary>
-    /// Event arguments for when the current selection of a SelectableCollection is changed.
-    /// </summary>
-    /// <typeparam name="T">Represents the type of item in the collection.</typeparam>
-    public class SelectionChangedEventArgs<T> : CollectionSelectionChangedEventArgs
-    {
-        /// <summary>
-        /// Create a SelectionChangedEventArgs.
-        /// </summary>
-        /// <param name="removedItems">A list of items being removed.</param>
-        /// <param name="addedItems">A list of item being added.</param>
-        public SelectionChangedEventArgs(List<T> removedItems, List<T> addedItems) : base(removedItems, addedItems)
-        {
-            AddedItems = addedItems;
-            RemovedItems = removedItems;
-        }
-
-        /// <summary>
-        /// The list of items being added to the selection ("selected").
-        /// </summary>
-        public new List<T> AddedItems { get; private set; }
-        /// <summary>
-        /// The list of items being removed from the selection ("deselected").
-        /// </summary>
-        public new List<T> RemovedItems { get; private set; }
     }
 }

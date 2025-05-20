@@ -87,13 +87,85 @@ namespace SolidShineUi.Utils
             = DependencyProperty.Register("ButtonDisabledBrush", typeof(Brush), typeof(RectEdit),
             new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
 
+        ///// <summary>
+        ///// Get or set the border brush to use with the spinner controls in this editor, when the spinners are disabled.
+        ///// </summary>
+        //public Brush SpinnerBorderDisabledBrush { get => (Brush)GetValue(SpinnerBorderDisabledBrushProperty); set => SetValue(SpinnerBorderDisabledBrushProperty, value); }
 
+        ///// <summary>The backing dependency property for <see cref="SpinnerBorderDisabledBrush"/>. See the related property for details.</summary>
+        //public static DependencyProperty SpinnerBorderDisabledBrushProperty
+        //    = DependencyProperty.Register(nameof(SpinnerBorderDisabledBrush), typeof(Brush), typeof(RectEdit),
+        //    new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        #endregion
+
+        #region ColorScheme
+
+        /// <summary>
+        /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
+        public ColorScheme ColorScheme { get => (ColorScheme)GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
+        public static DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(RectEdit),
+            new FrameworkPropertyMetadata(new ColorScheme(), (d, e) => d.PerformAs<RectEdit>((o) => o.OnApplyColorScheme(e))));
+
+        private void OnApplyColorScheme(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is ColorScheme cs)
+            {
+                ApplyColorScheme(cs);
+            }
+            ColorSchemeChanged?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            SpinnerBorderBrush = cs.BorderColor.ToBrush();
+            ButtonBackground = cs.IsHighContrast ? cs.BackgroundColor.ToBrush() : cs.SecondaryColor.ToBrush();
+            ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
+            ButtonDisabledBrush = cs.LightDisabledColor.ToBrush();
+            ButtonHighlightBrush = cs.HighlightColor.ToBrush();
+            StrokeColor = cs.BorderColor.ToBrush();
+
+            // from SpinnerBase.cs:
+            //
+            //BorderBrush = cs.BorderColor.ToBrush();
+            //DisabledBrush = cs.LightDisabledColor.ToBrush();
+            //BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+
+            //ButtonBackground = cs.IsHighContrast ? cs.BackgroundColor.ToBrush() : cs.SecondaryColor.ToBrush();
+
+            //ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            //HighlightBrush = cs.HighlightColor.ToBrush();
+            //Foreground = cs.ForegroundColor.ToBrush();
+        }
+
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
         #endregion
 
         #region MeasureType
 
         /// <summary>
-        /// Get or set if the "Measure by" combo box should be displayed at the top of the 
+        /// Get or set if the "Measure by" combo box should be displayed at the top of the control.
         /// </summary>
         public bool ShowMeasureTypeOptions { get => (bool)GetValue(ShowMeasureTypeOptionsProperty); set => SetValue(ShowMeasureTypeOptionsProperty, value); }
 

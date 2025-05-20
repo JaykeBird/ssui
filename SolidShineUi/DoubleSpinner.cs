@@ -147,18 +147,20 @@ namespace SolidShineUi
         /// A dependency property object backing the <see cref="Decimals"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty DecimalsProperty = DependencyProperty.Register(
-            "Decimals", typeof(int), typeof(DoubleSpinner), new PropertyMetadata(2));
+            "Decimals", typeof(byte), typeof(DoubleSpinner), new PropertyMetadata((byte)15));
 
         ///<summary>
         /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.
         ///</summary>
         ///<remarks>
-        /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 2.
+        /// This must be a value between 0 (which means round up to an integer number) and 15, inclusive. The default value is 15.
+        /// The spinner will modify and round the inputted value to make sure it only has at most this many decimal places.
+        /// Excess trailing zeroes are not displayed if a number doesn't need this many decimal places.
         ///</remarks>
         [Category("Common")]
-        public int Decimals
+        public byte Decimals
         {
-            get => (int)GetValue(DecimalsProperty);
+            get => (byte)GetValue(DecimalsProperty);
             set => SetValue(DecimalsProperty, value);
         }
 
@@ -267,6 +269,7 @@ namespace SolidShineUi
         #endregion
 
         #region TextBox
+
         private void txtValue_TextChanged(object sender, TextChangedEventArgs e)
         {
             // raised when a new value is typed into the textbox

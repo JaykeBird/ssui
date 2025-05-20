@@ -18,7 +18,9 @@ namespace SolidShineUi.PropertyList
 {
     /// <summary>
     /// A control that can display the properties and values of a .NET object, with support for live editing of many of them.
+    /// This is the old version used in the Solid Shine UI 1.9 releases; please transition to the new <see cref="PropertyList"/> control.
     /// </summary>
+    [Obsolete("This is the old ExperimentalPropertyList control used in Solid Shine UI 1.9; please transition to the new PropertyList control.")]
     public partial class ExperimentalPropertyList : UserControl
     {
         /// <summary>
@@ -214,20 +216,27 @@ namespace SolidShineUi.PropertyList
             {
                 _isReloading = true;
 
-                string _oldFilter = _filterString;
-                string _displName = ObjectDisplayName;
-                bool _oldInherits = _showInherited;
-                bool _oldReadOnly = _showReadOnly;
+                //string _oldFilter = _filterString;
+                //string _displName = ObjectDisplayName;
+                //bool _oldInherits = _showInherited;
+                //bool _oldReadOnly = _showReadOnly;
 
                 LoadObject(_baseObject);
 
-                if (!resetViewSettings)
+                if (resetViewSettings)
                 {
-                    _showReadOnly = _oldReadOnly;
-                    _showInherited = _oldInherits;
-                    ObjectDisplayName = _displName;
-                    FilterProperties(_oldFilter);
+                    _showReadOnly = true;
+                    _showInherited = true;
+                    FilterProperties("");
                 }
+
+                //if (!resetViewSettings)
+                //{
+                //    _showReadOnly = _oldReadOnly;
+                //    _showInherited = _oldInherits;
+                //    ObjectDisplayName = _displName;
+                //    FilterProperties(_oldFilter);
+                //}
                 _isReloading = false;
             }
         }
@@ -290,12 +299,14 @@ namespace SolidShineUi.PropertyList
 
             LoadPropertyList(properties);
 
-            txtFilter.Text = "";
-            _filterString = "";
-            _showInherited = true;
-            mnuShowInherited.IsChecked = true;
-            _showReadOnly = true;
-            mnuShowReadOnly.IsChecked = true;
+            FilterProperties(txtFilter.Text);
+
+            //txtFilter.Text = "";
+            //_filterString = "";
+            //_showInherited = true;
+            //mnuShowInherited.IsChecked = true;
+            //_showReadOnly = true;
+            //mnuShowReadOnly.IsChecked = true;
 
             btnRefresh.IsEnabled = true;
 
@@ -513,6 +524,23 @@ namespace SolidShineUi.PropertyList
         [Category("Common")]
         public PropertyListDisplayFlags DisplayOptions { get; set; } = PropertyListDisplayFlags.HidePropertyListHide;
 
+        /// <summary>
+        /// Get or set the string to use for filtering the properties. Only properties that match this filter text will be displayed,
+        /// or use <c>null</c> or an empty string for no filtering.
+        /// </summary>
+        /// <remarks>
+        /// If the first character is <c>@</c>, then only the property names will be matched. Otherwise, the property names or types may be matched.
+        /// <para/>
+        /// For version 2.0, this will be the only supported way to set or edit the filter text.
+        /// Setting this value will call <see cref="FilterProperties(string)"/> to filter out properties that don't match this text.
+        /// </remarks>
+        [Category("Common")]
+        public string FilterText
+        {
+            get => _filterString;
+            set => FilterProperties(value);
+        }
+
         private bool _showInherited = true;
         private bool _showReadOnly = true;
 
@@ -632,6 +660,9 @@ namespace SolidShineUi.PropertyList
         /// <param name="filter">
         /// The filter text to apply. Use <c>null</c> or an empty string to not apply a filter. Start the string with "@" to only filter by property name only (not name or type).
         /// </param>
+        /// <remarks>
+        /// For version 2.0, this function will no longer be available. Please instead transition to using <see cref="FilterText"/>.
+        /// </remarks>
 #if NETCOREAPP
         public void FilterProperties(string? filter)
 #else

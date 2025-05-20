@@ -143,66 +143,47 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="Background"/>. See the related property for details.</summary>
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.White.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
             "BorderHighlightBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
             "BorderSelectedBrush", typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
@@ -220,13 +201,21 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        /// <summary>
-        /// The backing dependency property for <see cref="ColorScheme"/>. See the related dependency property for details.
-        /// </summary>
+
+        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatButton),
             new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
+
+        //bool use_transp = false;
+        //bool use_accent = false;
+
+        /// <summary>
+        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is ColorScheme cs)
@@ -428,16 +417,12 @@ namespace SolidShineUi
             "BorderThickness", typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(1)));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(2)));
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
             new PropertyMetadata(new CornerRadius(0)));
@@ -471,6 +456,21 @@ namespace SolidShineUi
             get => (CornerRadius)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
+
+        #endregion
+
+        #region HighlightOnKeyboardFocus
+
+        /// <summary>
+        /// Get or set if the button should be highlighted (using the <see cref="HighlightBrush"/> and <see cref="BorderHighlightBrush"/>)
+        /// when it has keyboard focus. If <c>false</c>, only the keyboard focus outline appears, and highlighting only occurs on mouse/stylus over.
+        /// </summary>
+        public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
+        public static DependencyProperty HighlightOnKeyboardFocusProperty
+            = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(FlatButton),
+            new FrameworkPropertyMetadata(true));
 
         #endregion
 
@@ -545,6 +545,11 @@ namespace SolidShineUi
             "IsSelected", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
 
+        /// <summary>
+        /// Perform an action when a property of an object has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
         private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is bool se)
@@ -555,7 +560,7 @@ namespace SolidShineUi
                 {
                     if (f._runSelChangeEvent)
                     {
-                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, SelectionChangeTrigger.CodeUnknown, null);
+                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, se, IsSelectedProperty, SelectionChangeTrigger.CodeUnknown, null);
                         f.RaiseEvent(re);
                     }
                 }
@@ -563,12 +568,15 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Gets or sets whether this button is selected. This property (combined with <c>SelectOnClick</c>) allows the button to function like a ToggleButton.
+        /// Gets or sets whether this button is selected. This property (combined with <see cref="SelectOnClick"/>) allows the button to function like a ToggleButton.
         /// </summary>
         /// <remarks>
         /// A selected button will have a slightly different visual appearance to differentiate it as being selected. This will include, by default, the border being a bit thicker.
         /// This can be changed via the <see cref="BorderSelectionThickness"/> property. You can also directly edit the brushes used via the <see cref="SelectedBrush"/> and
         /// <see cref="BorderSelectedBrush"/> properties.
+        /// <para />
+        /// To listen to changes to this property, use <see cref="IsSelectedChanged"/>, rather than listening to the <c>Click</c> event, as other actions could change this 
+        /// property rather than just clicking it.
         /// </remarks>
         public bool IsSelected
         {
@@ -615,13 +623,13 @@ namespace SolidShineUi
             IsSelected = value;
             _runSelChangeEvent = true;
 
-            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, IsSelectedProperty, triggerMethod, triggerSource);
             RaiseEvent(re);
         }
         #endregion
 
         /// <summary>
-        /// The backing dependency property for <see cref="SelectOnClick"/>. See the related dependency property for details.
+        /// The backing dependency property object for the <see cref="SelectOnClick"/> property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
             "SelectOnClick", typeof(bool), typeof(FlatButton), new PropertyMetadata(false));
@@ -630,9 +638,10 @@ namespace SolidShineUi
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
         /// </summary>
         /// <remarks>
-        /// While this is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton). A selected button will, by default, have some visual
-        /// differences to help make it look distinct from unselected buttons. The button's <c>Click</c> event will still be raised while this property is set to <c>true</c>, occurring after 
-        /// the <c>IsSelected</c> property has already changed (it is not recommended to use <c>Click</c> to detect changes in <c>IsSelected</c>; instead, use <see cref="IsSelectedChanged"/>).
+        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton). A selected button will, by default, have some visual
+        /// differences to help make it look distinct from unselected buttons. The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
+        /// IsSelected property has already changed. While you could use the Click event to check when the button's IsSelected property is changed, it is better to use the IsSelectedChanged event,
+        /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
         /// </remarks>
         [Category("Common")]
         public bool SelectOnClick
@@ -788,8 +797,9 @@ namespace SolidShineUi
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Get or set if this button is the default button in the dialog or window it is located in. May not currently function correctly.
+        /// Get or set if this button is the default button in the dialog or window it is located in. Due to limitations in WPF, this actually does not work.
         /// </summary>
+        [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
         public bool IsDefault
         {
             get => (bool)GetValue(IsDefaultProperty);
@@ -798,7 +808,7 @@ namespace SolidShineUi
 
         private static void OnIsDefaultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is FlatButton b)
+            if (d is FlatButton)
             {
                 //if (b.FocusChangedHandler == null)
                 //{
@@ -806,18 +816,18 @@ namespace SolidShineUi
                 //}
 
 
-                if ((bool)e.NewValue)
-                {
-                    AccessKeyManager.Register("\x000D", b);
-                    //KeyboardNavigation.FocusChanged += b.FocusChangedHandler;
-                    b.UpdateIsDefaulted(Keyboard.FocusedElement);
-                }
-                else
-                {
-                    AccessKeyManager.Unregister("\x000D", b);
-                    //KeyboardNavigation.FocusChanged -= b.FocusChangedHandler;
-                    b.UpdateIsDefaulted(null);
-                }
+                //if ((bool)e.NewValue)
+                //{
+                //    AccessKeyManager.Register("\x000D", b);
+                //    KeyboardNavigation.FocusChanged += b.FocusChangedHandler;
+                //    b.UpdateIsDefaulted(Keyboard.FocusedElement);
+                //}
+                //else
+                //{
+                //    AccessKeyManager.Unregister("\x000D", b);
+                //    KeyboardNavigation.FocusChanged -= b.FocusChangedHandler;
+                //    b.UpdateIsDefaulted(null);
+                //}
             }
         }
 
@@ -831,8 +841,9 @@ namespace SolidShineUi
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Specifies whether or not this button is the button that would be invoked when Enter is pressed.
+        /// Specifies whether or not this button is the button that would be invoked when Enter is pressed. Due to limitations in WPF, this actually does not work.
         /// </summary>
+        [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
         public bool IsDefaulted
         {
             get
@@ -853,11 +864,13 @@ namespace SolidShineUi
 #endif
         {
             // If it's not a default button, or nothing is focused, or it's disabled then it's not defaulted.
+#pragma warning disable CS0618 // Type or member is obsolete
             if (!IsDefault || focus == null || !IsEnabled)
             {
                 SetValue(IsDefaultedPropertyKey, false);
                 return;
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             if (focus is DependencyObject focusDO)
             {

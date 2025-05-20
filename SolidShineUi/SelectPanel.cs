@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -53,10 +54,8 @@ namespace SolidShineUi
         bool itemsLoaded = false;
 
 #if NETCOREAPP
-        ItemsControl? ic = null;
         ScrollViewer? sv = null;
 #else
-        ItemsControl ic = null;
         ScrollViewer sv = null;
 #endif
 
@@ -64,10 +63,9 @@ namespace SolidShineUi
         {
             if (!itemsLoaded)
             {
-                ic = (ItemsControl)GetTemplateChild("PART_Ic");
                 sv = (ScrollViewer)GetTemplateChild("PART_Sv");
 
-                if (ic != null && sv != null)
+                if (sv != null)
                 {
                     itemsLoaded = true;
                 }
@@ -83,9 +81,9 @@ namespace SolidShineUi
         /// <remarks>
         /// It is recommended to set this property to an <see cref="ObservableCollection{IClickSelectableControl}"/>, <see cref="SelectableCollection{IClickSelectableControl}"/>, 
         /// or <see cref="SelectableCollectionView{IClickSelectableControl}"/>.
-        /// If you use other IEnumerable types that do not also implement <see cref="INotifyCollectionChanged"/>, then this control's contents will not update automatically.
-        /// If you do not use a SelectableCollection or SelectableCollectionView, you may also need to implement your own code for handling the selection state of the items
-        /// in your collection.
+        /// If you use other IEnumerable types that do not implement <see cref="INotifyCollectionChanged"/>, then this control's contents will not update automatically.
+        /// If your collection doesn't support <see cref="ISelectableCollection"/>, you may need to implement your own code for handling the selection state of the items
+        /// in your collection (and certain functions in this control, such as <see cref="MultiSelect"/> or <see cref="RemoveSelectedItems"/>, may not work).
         /// </remarks>
         public IEnumerable<IClickSelectableControl> ItemsSource
         {
@@ -93,21 +91,15 @@ namespace SolidShineUi
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IClickSelectableControl>), typeof(SelectPanel),
-                new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+                new PropertyMetadata((s, e) => s.PerformAs<SelectPanel>((sp) =>
+                sp.OnItemsSourceChanged((IEnumerable<IClickSelectableControl>)e.OldValue, (IEnumerable<IClickSelectableControl>)e.NewValue))));
 
-        private static void OnInternalItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (sender is SelectPanel sp)
-            {
-                sp.SelectPanel_InternalOnItemsSourceChanged((IEnumerable<IClickSelectableControl>)e.OldValue, (IEnumerable<IClickSelectableControl>)e.NewValue);
-            }
-        }
-
-        private void SelectPanel_InternalOnItemsSourceChanged(IEnumerable<IClickSelectableControl> oldValue, IEnumerable<IClickSelectableControl> newValue)
+        private void OnItemsSourceChanged(IEnumerable<IClickSelectableControl> oldValue, IEnumerable<IClickSelectableControl> newValue)
         {
             if (ItemsSource == null)
             {
@@ -175,6 +167,8 @@ namespace SolidShineUi
 
         #region SelectableCollection handling
 
+        #region ItemsProperty
+
         bool _internalAction = false;
         
         private static readonly DependencyPropertyKey ItemsPropertyKey
@@ -190,7 +184,7 @@ namespace SolidShineUi
         /// Get or set the list of items in this SelectPanel. This Items property can be used to add items, remove items, and also select items via the Select method.
         /// </summary>
         /// <remarks>
-        /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead handle adding, removing, and selecting items through that property's value.
+        /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead modify/manage your items through that items source, rather than using this property.
         /// </remarks>
         [Category("Common")]
         public SelectableCollection<IClickSelectableControl> Items
@@ -199,14 +193,41 @@ namespace SolidShineUi
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
+        #endregion
+
+        #region Helper Methods
+
         /// <summary>
         /// Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.
         /// </summary>
+        /// <remarks>
+        /// If you're using <see cref="ItemsSource"/> to manage this control's items, this property will not function if <c>ItemsSource</c> is not an <see cref="ISelectableCollection"/>.
+        /// This warning does not apply if you're using the <see cref="Items"/> property, which is itself an <see cref="ISelectableCollection"/>.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">Thrown if the underlying <see cref="ISelectableCollection"/> in <see cref="ItemsSource"/> doesn't allow changing this value</exception>
         [Category("Common")]
         public bool MultiSelect
         {
-            get => Items.CanSelectMultiple;
-            set => Items.CanSelectMultiple = value;
+            get
+            {
+                if (ItemsSource is ISelectableCollection isl)
+                {
+                    return isl.CanSelectMultiple;
+                }
+                else
+                {
+                    // not really a selectable collection, so I don't really have any way of knowing - to be on the safe side, I'll return false
+                    return false;
+                }
+            }
+            set
+            {
+                if (ItemsSource is ISelectableCollection isl)
+                {
+                    isl.CanSelectMultiple = value;
+                    // some ISelectionCollection types may not allow this property to be changed, in theory
+                }
+            }
         }
 
         void RefreshVisualSelection()
@@ -224,6 +245,19 @@ namespace SolidShineUi
             _internalAction = false;
         }
 
+
+        void AddItemInternal(IClickSelectableControl item)
+        {
+            item.SelectedBrush = SelectedBrush;
+            item.HighlightBrush = HighlightBrush;
+            item.ClickBrush = ClickBrush;
+            item.IsSelectedChanged += Item_SelectionChanged;
+            item.ApplyColorScheme(ColorScheme);
+        }
+
+        #endregion
+
+        #region CollectionChanged / CollectionSelectionChanged
 #if NETCOREAPP
         private void Items_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -347,15 +381,18 @@ namespace SolidShineUi
 #endif
 
         }
-
-        void AddItemInternal(IClickSelectableControl item)
+        private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
-            item.SelectedBrush = SelectedBrush;
-            item.HighlightBrush = HighlightBrush;
-            item.ClickBrush = ClickBrush;
-            item.IsSelectedChanged += Item_SelectionChanged;
-            item.ApplyColorScheme(ColorScheme);
+            if (_internalAction) return;
+
+            RefreshVisualSelection();
+
+            RaiseSelectionChangedEvent(e.AddedItems.OfType<IClickSelectableControl>().ToList(), e.RemovedItems.OfType<IClickSelectableControl>().ToList());
         }
+
+        #endregion
+
+        #region Item Selection Changed
 
 #if NETCOREAPP
         private void Item_SelectionChanged(object? sender, ItemSelectionChangedEventArgs e)
@@ -399,23 +436,18 @@ namespace SolidShineUi
             }
         }
 
-        private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
-        {
-            if (_internalAction) return;
+        #endregion
 
-            RefreshVisualSelection();
-
-            RaiseSelectionChangedEvent(e.AddedItems.OfType<IClickSelectableControl>().ToList(), e.RemovedItems.OfType<IClickSelectableControl>().ToList());
-        }
         #endregion
 
         #region Color Scheme
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanel),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -454,11 +486,7 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-        /// <summary>
-        /// This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.
-        /// </summary>
-        [Obsolete("This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.")]
-        public bool use_lbrdr = false;
+        private bool use_lbrdr = false;
         bool runApply = true;
 
         /// <summary>
@@ -467,7 +495,6 @@ namespace SolidShineUi
         /// </summary>
         public bool UseLighterBorder
         {
-#pragma warning disable CS0618 // Type or member is obsolete
             get
             {
                 return use_lbrdr;
@@ -477,7 +504,6 @@ namespace SolidShineUi
                 use_lbrdr = value;
                 if (runApply) ApplyColorScheme(ColorScheme, value);
             }
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -547,15 +573,16 @@ namespace SolidShineUi
 
         #region Routed Events
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A routed event object backing the related event. See the event itself for more details.
+        /// </summary>
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-            "SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler<IClickSelectableControl>), typeof(SelectPanel));
 
         /// <summary>
         /// Raised when an item is selected or deselected in this list.
         /// </summary>
-        public event SelectionChangedEventHandler SelectionChanged
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
@@ -578,19 +605,21 @@ namespace SolidShineUi
             }
 #endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(SelectionChangedEvent, addedItems, removedItems);
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs = 
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(SelectionChangedEvent, addedItems, removedItems);
             RaiseEvent(newEventArgs);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A routed event object backing the related event. See the event itself for more details.
+        /// </summary>
         public static readonly RoutedEvent ItemsAddedEvent = EventManager.RegisterRoutedEvent(
-            "ItemsAdded", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ItemsAdded", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler<IClickSelectableControl>), typeof(SelectPanel));
 
         /// <summary>
-        /// Raised when an item is added to this list.
+        /// Raised when an item is added to the SelectPanel's items.
         /// </summary>
-        public event SelectionChangedEventHandler ItemsAdded
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsAdded
         {
             add { AddHandler(ItemsAddedEvent, value); }
             remove { RemoveHandler(ItemsAddedEvent, value); }
@@ -607,19 +636,21 @@ namespace SolidShineUi
             }
 #endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsAddedEvent, new List<IClickSelectableControl>(), addedItems);
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs = 
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(ItemsAddedEvent, new List<IClickSelectableControl>(), addedItems);
             RaiseEvent(newEventArgs);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A routed event object backing the related event. See the event itself for more details.
+        /// </summary>
         public static readonly RoutedEvent ItemsRemovedEvent = EventManager.RegisterRoutedEvent(
-            "ItemsRemoved", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(SelectPanel));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ItemsRemoved", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler<IClickSelectableControl>), typeof(SelectPanel));
 
         /// <summary>
-        /// Raised when an item is removed from this list.
+        /// Raised when an item is removed from the SelectPanel's items.
         /// </summary>
-        public event SelectionChangedEventHandler ItemsRemoved
+        public event RoutedSelectionChangedEventHandler<IClickSelectableControl> ItemsRemoved
         {
             add { AddHandler(ItemsRemovedEvent, value); }
             remove { RemoveHandler(ItemsRemovedEvent, value); }
@@ -636,18 +667,22 @@ namespace SolidShineUi
             }
 #endif
 
-            SelectionChangedEventArgs newEventArgs = new SelectionChangedEventArgs(ItemsRemovedEvent, removedItems, new List<IClickSelectableControl>());
+            RoutedSelectionChangedEventArgs<IClickSelectableControl> newEventArgs = 
+                new RoutedSelectionChangedEventArgs<IClickSelectableControl>(ItemsRemovedEvent, removedItems, new List<IClickSelectableControl>());
             RaiseEvent(newEventArgs);
         }
-#endregion
+        #endregion
 
         #region Visual Properties
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        #region Scrollbars
+
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
             = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar for this control.
@@ -659,11 +694,12 @@ namespace SolidShineUi
             set { SetValue(HorizontalScrollBarVisibilityProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty
             = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar for this control.
@@ -674,6 +710,8 @@ namespace SolidShineUi
             get { return (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty); }
             set { SetValue(VerticalScrollBarVisibilityProperty, value); }
         }
+
+        #endregion
 
         #region Brushes
 
@@ -759,49 +797,72 @@ namespace SolidShineUi
             set => SetValue(BorderBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.LightSalmon.ToBrush()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.MistyRose.ToBrush()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(Colors.Salmon.ToBrush()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
         #region Border
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(SelectPanel),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border around this control.
@@ -1113,8 +1174,8 @@ namespace SolidShineUi
         /// Move all of the currently selected items up by one in the list.
         /// </summary>
         /// <remarks>
-        /// This will not function if you've set the ItemsSource property (and thus not using the Items property).
-        /// If you've set ItemsSource property to another collection, please use <see cref="MoveItemUp(int)"/>.
+        /// This will not function if you're using <see cref="ItemsSource"/> to manage the items in this control, rather than <see cref="Items"/>.
+        /// If you're using <c>ItemsSource</c>, please use <see cref="MoveItemUp(int)"/>.
         /// </remarks>
         public void MoveSelectedItemsUp()
         {
@@ -1175,8 +1236,8 @@ namespace SolidShineUi
         /// Move all of the currently selected items down by one in the list.
         /// </summary>
         /// <remarks>
-        /// This will not function if you've set the ItemsSource property (and thus not using the Items property).
-        /// If you've set ItemsSource property to another collection, please use <see cref="MoveItemDown(int)"/>.
+        /// This will not function if you're using <see cref="ItemsSource"/> to manage the items in this control, rather than <see cref="Items"/>.
+        /// If you're using <c>ItemsSource</c>, please use <see cref="MoveItemDown(int)"/>.
         /// </remarks>
         public void MoveSelectedItemsDown()
         {
@@ -1253,7 +1314,7 @@ namespace SolidShineUi
                         moveIndex = 0;
                     }
 
-                    if (ItemsSource is ISelectableCollection isc)
+                    if (ItemsSource is ISelectableCollection isc) // try to retain selection state
                     {
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
@@ -1312,7 +1373,7 @@ namespace SolidShineUi
                         moveIndex = (isl.Count - 1);
                     }
 
-                    if (ItemsSource is ISelectableCollection isc)
+                    if (ItemsSource is ISelectableCollection isc) // try to retain selection state
                     {
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
@@ -1349,16 +1410,17 @@ namespace SolidShineUi
 
         #endregion
 
-        #region ScrollViewer
+        #region AllowParentScrolling
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
             "AllowParentScrolling", typeof(bool), typeof(SelectPanel),
             new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
-        /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may disable any child items from scrolling.
+        /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may prevent any child items from scrolling.
         /// </summary>
         public bool AllowParentScrolling
         {
@@ -1389,9 +1451,11 @@ namespace SolidShineUi
                         _reentrantList.Add(previewEventArg);
                         originalSource?.RaiseEvent(previewEventArg);
                         _reentrantList.Remove(previewEventArg);
+
                         // at this point if no one else handled the event in our children, we do our job
 
-                        if (!previewEventArg.Handled && ((e.Delta > 0 && scrollControl.VerticalOffset == 0) || (e.Delta <= 0 && scrollControl.VerticalOffset >= scrollControl.ExtentHeight - scrollControl.ViewportHeight)))
+                        if (!previewEventArg.Handled && ((e.Delta > 0 && scrollControl.VerticalOffset == 0) || 
+                            (e.Delta <= 0 && scrollControl.VerticalOffset >= scrollControl.ExtentHeight - scrollControl.ViewportHeight)))
                         {
                             e.Handled = true;
                             var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);

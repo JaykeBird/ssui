@@ -157,38 +157,4 @@ namespace SolidShineUi
 #endif
 
     }
-
-    /// <summary>
-    /// Represents a handler for the SelectionChanged event.
-    /// </summary>
-    /// <param name="sender">The source object of the event.</param>
-    /// <param name="e">The event arguments, containing the list of items being added or removed from the selection.</param>
-    public delegate void SelectionChangedEventHandler(object sender, CollectionSelectionChangedEventArgs e);
-
-    /// <summary>
-    /// A non-generic version of SelectionChangedEventArgs. This can be more generally used in other situations, and implemented by ISelectableCollection.
-    /// </summary>
-    public class CollectionSelectionChangedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Create a SelectionChangedEventArgs.
-        /// </summary>
-        /// <param name="removedItems">The list of items to be removed.</param>
-        /// <param name="addedItems">The list of items to be added.</param>
-        public CollectionSelectionChangedEventArgs(ICollection removedItems, ICollection addedItems)
-        {
-            AddedItems = addedItems;
-            RemovedItems = removedItems;
-        }
-
-        /// <summary>
-        /// The list of items being added to the selection ("selected").
-        /// </summary>
-        public ICollection AddedItems { get; private set; }
-        /// <summary>
-        /// The list of items being removed from the selection ("deselected").
-        /// </summary>
-        public ICollection RemovedItems { get; private set; }
-
-    }
 }
