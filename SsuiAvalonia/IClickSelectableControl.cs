@@ -80,6 +80,11 @@ namespace SolidShineUi
         /// Get or set the background brush used for this control, while it is selected (and isn't being clicked).
         /// </summary>
         IBrush? SelectedBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the foreground brush used for this control (used for text, for example).
+        /// </summary>
+        IBrush? Foreground { get; set; }
         #endregion
     }
 
