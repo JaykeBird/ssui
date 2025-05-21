@@ -50,7 +50,7 @@ namespace SolidShineUi
         {
             Padding = new Thickness(5, 0, 0, 0);
 
-            //CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
+            CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
 
             SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
             SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
@@ -363,7 +363,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(CheckBox),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
