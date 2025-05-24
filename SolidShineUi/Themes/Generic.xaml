@@ -2126,13 +2126,25 @@
                                         Height="8" Width="8" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" />
                         </flat:FlatButton>
 
-                        <Image Grid.Row="0" Grid.Column="0" Margin="2,3,2,1" Source="{TemplateBinding GroupIcon}" Width="16" Height="16" HorizontalAlignment="Center" x:Name="PART_GroupImage">
-                            <Image.Style>
-                                <Style TargetType="{x:Type Image}">
+                        <Grid Grid.Row="0" Grid.Column="0" Margin="6,1,6,0" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              x:Name="PART_Collapsed" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" /> <!-- Image row -->
+                                <RowDefinition Height="Auto" MinHeight="20" /> <!-- Title row -->
+                                <RowDefinition Height="8" /> <!-- Arrow row -->
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0" Margin="2,3,2,1" Source="{TemplateBinding GroupIcon}" Width="16" Height="16" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="PART_GroupImage"/>
+                            <TextBlock Text="{TemplateBinding Title}" HorizontalAlignment="Center" Grid.Row="1" />
+                            <Path Grid.Row="2" Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"
+                                  HorizontalAlignment="Center" />
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </Style>
-                            </Image.Style>
-                        </Image>
+                            </Grid.Style>
+                        </Grid>
+
 
                         <Border Grid.Column="2" Grid.RowSpan="2" BorderBrush="{TemplateBinding GroupSeparatorBrush}" BorderThickness="1" Width="{TemplateBinding GroupSeparatorWidth}"
                                 Visibility="{TemplateBinding ShowGroupSeparator, Converter={StaticResource VisConverter}}" Margin="0,3" />
@@ -2186,6 +2198,12 @@
                                     <Path Grid.Column="1" Data="M8,0 L8,8 0,8 L1,7 L7,7 L7,1 z" HorizontalAlignment="Left" VerticalAlignment="Center"
                                         Height="8" Width="8" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" />
                                 </flat:FlatButton>
+
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </Style>
+                                </Grid.Style>
                             </Grid>
                         </Border>
                     </Grid>
@@ -2206,7 +2224,8 @@
                             <Setter Property="Visibility" TargetName="btn_InlineLauncher" Value="Visible" />
                         </MultiTrigger>
                         <Trigger Property="IsCollapsed" Value="True">
-                            <Setter Property="Visibility" TargetName="PART_GroupImage" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="PART_Collapsed" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="PART_Header" Value="Collapsed" />
                             <Setter Property="Visibility" TargetName="PART_Ic" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>

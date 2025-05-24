@@ -69,7 +69,7 @@
                     <ribbon:RibbonButton Title="Find &amp; Select" StandardSize="Large" 
                                          LargeIcon="Resources/Images/32/SearchColor.png" SmallIcon="Resources/Images/SearchColor.png" />
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Title="Test 2" >
+                <ribbon:RibbonGroup Title="Test 2" GroupIcon="Resources/Images/SmileyColor.png" >
                     <ribbon:RibbonButton Title="Button 1" StandardSize="Small" SmallIcon="Resources/Images/SmileyColor.png" />
                     <ribbon:RibbonComboBox Title="Combo" x:Name="ribbonCbb" SmallIcon="Resources/Images/StarColor.png" SelectedIndex="0" >
                         <ComboBoxItem Content="Item 1" />
@@ -135,7 +135,7 @@
                     <ribbon:RibbonButton Title="Page Layout" StandardSize="Large" CompactSize="Small" SelectOnClick="True" x:Name="btnPageLayout" IsSelected="False" />
                     <ribbon:RibbonButton Title="Custom Views" StandardSize="Large" CompactSize="Small" SelectOnClick="True" IsEnabled="False" />
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Title="Show" CompactOrder="4" >
+                <ribbon:RibbonGroup Title="Show" CompactOrder="4" GroupIcon="Resources/Images/SearchColor.png" >
                     <ribbon:RibbonButton Title="Navigation" StandardSize="Large" CompactSize="Small" SelectOnClick="True" />
                     <ribbon:RibbonCheckBox Title="Ruler" />
                     <ribbon:RibbonCheckBox Title="Gridlines" />
@@ -147,7 +147,7 @@
                     <ribbon:RibbonButton Title="100%" StandardSize="Large" CompactSize="Small" />
                     <ribbon:RibbonButton Title="Zoom to Selection" StandardSize="Large" CompactSize="Small" />
                 </ribbon:RibbonGroup>
-                <ribbon:RibbonGroup Title="Window" CompactOrder="100" >
+                <ribbon:RibbonGroup Title="Window" CompactOrder="100" GroupIcon="/Resources/Images/WindowColor.png" >
                     <ribbon:RibbonButton Title="New Window" StandardSize="Large" CompactSize="Small" />
                     <ribbon:RibbonButton Title="Arrange All" StandardSize="Large" CompactSize="Small" />
                     <ribbon:RibbonMenuButton Title="Freeze Panes" StandardSize="Large" CompactSize="Small">
