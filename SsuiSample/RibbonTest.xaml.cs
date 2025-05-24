@@ -127,6 +127,15 @@ namespace SsuiSample
             txtStatus.Text = sb.ToString();
         }
 
+        private void mnuSizeStatus_Click(object sender, RoutedEventArgs e)
+        {
+#if DEBUG
+            txtStatus.Text = ribbon.GetSizeStatuses();
+#else
+            txtStatus.Text = "(not in debug mode)";
+#endif
+        }
+
         private void RibbonGroup_LauncherClick(object sender, EventArgs e)
         {
             MessageBox.Show("Yay, I've been clicked-ed!", "RibbonTest");

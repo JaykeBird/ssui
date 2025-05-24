@@ -488,7 +488,7 @@
                                                           ContentSource="Icon"/>
                                         </Grid>
                                     </Border>
-                                    
+
                                     <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}"
                                                       x:Name="HeaderHost" RecognizesAccessKey="True"
                                                       ContentSource="Header" VerticalAlignment="Center"/>
@@ -1980,7 +1980,7 @@
                         </Grid>
 
                         <Grid Grid.Row="1" >
-                            <Border x:Name="PART_Content" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding MainBarBackground}" >
+                            <Border x:Name="PART_MainBar" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding MainBarBackground}" >
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderThickness" Value="1,0,1,1"  />
@@ -2022,20 +2022,32 @@
                                         <!--<ColumnDefinition x:Name="colRightElement" Width="Auto" />-->
                                     </Grid.ColumnDefinitions>
 
-                                    <DockPanel Grid.Column="0" Grid.ColumnSpan="3">
-                                        <Border DockPanel.Dock="Left">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="Width" Value="0" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                                            <Setter Property="Width" Value="16" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                        </Border>
-                                        <ScrollViewer x:Name="PART_MainScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                                    <ScrollViewer Grid.Column="1" x:Name="PART_MainScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                                        <DockPanel Grid.Column="0" Grid.ColumnSpan="3">
+                                            <Border DockPanel.Dock="Left">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Width" Value="0" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                                <Setter Property="Width" Value="16" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                            </Border>
+                                            <Border DockPanel.Dock="Right">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Width" Value="0" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                                                <Setter Property="Width" Value="16" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                            </Border>
                                             <ItemsControl Margin="1,0" Focusable="False" Height="{TemplateBinding MainBarHeight}" x:Name="PART_MainContent"
                                                   ItemsSource="{Binding SelectedTab.Items, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" >
                                                 <ItemsControl.ItemsPanel>
@@ -2044,20 +2056,8 @@
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
                                             </ItemsControl>
-                                        </ScrollViewer>
-                                        <Border DockPanel.Dock="Right">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="Width" Value="0" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
-                                                            <Setter Property="Width" Value="16" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                        </Border>
-                                    </DockPanel>
+                                        </DockPanel>
+                                    </ScrollViewer>
 
                                     <flat:FlatButton x:Name="btnMainScrollLeft" Grid.Column="0" Padding="1"
                                              Command="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
@@ -2066,7 +2066,7 @@
                                         <Path Data="M6,0 L0,3 6,6 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, 
                                         AncestorType={x:Type ribbon:Ribbon}}, Converter={StaticResource ColorConverter}}" />
                                     </flat:FlatButton>
-                                    
+
                                     <flat:FlatButton x:Name="btnMainScrollRight" Grid.Column="2" Padding="1"
                                              Command="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
                                              IsEnabled="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"

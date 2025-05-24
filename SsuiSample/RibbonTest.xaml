@@ -204,6 +204,7 @@
                 <flat:ContextMenu>
                     <MenuItem Header="Ribbon/Tab Widths" Click="mnuWidths_Click" />
                     <MenuItem Header="Group Compact Status" Click="mnuGroupsCompacted_Click" />
+                    <MenuItem Header="Ribbon Size Status" Click="mnuSizeStatus_Click" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>
         </flat:MenuButton>

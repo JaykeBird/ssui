@@ -93,11 +93,13 @@ namespace SolidShineUi.Ribbon
         ScrollViewer? tabScrollContainer = null;
         ItemsControl? mainContainer = null;
         ScrollViewer? mainScrollContainer = null;
+        Border? mainBar = null;
 #else
         ItemsControl tabContainer = null;
         ScrollViewer tabScrollContainer = null;
         ItemsControl mainContainer = null;
         ScrollViewer mainScrollContainer = null;
+        Border mainBar = null;
 #endif
 
         void LoadTemplateItems()
@@ -108,8 +110,10 @@ namespace SolidShineUi.Ribbon
                 tabScrollContainer = (ScrollViewer)GetTemplateChild("PART_TabScroll");
                 mainContainer = (ItemsControl)GetTemplateChild("PART_MainContent");
                 mainScrollContainer = (ScrollViewer)GetTemplateChild("PART_MainScroll");
+                mainBar = (Border)GetTemplateChild("PART_MainBar");
 
-                if (tabContainer != null && tabScrollContainer != null && mainContainer != null && mainScrollContainer != null)
+                if (tabContainer != null && tabScrollContainer != null && mainContainer != null &&
+                    mainScrollContainer != null && mainBar != null)
                 {
                     itemsLoaded = true;
                 }
@@ -492,7 +496,7 @@ namespace SolidShineUi.Ribbon
             {
                 // CheckGroupSizes(); // seems to give undesired results as it is simultaneously trying to compact and also uncompact
 
-                if (e.NewSize.Width < e.PreviousSize.Width)
+                if (e.NewSize.Width < e.PreviousSize.Width) // getting smaller
                 {
                     if (ActualWidth < mainContainer.ActualWidth + 2)
                     {
@@ -500,12 +504,13 @@ namespace SolidShineUi.Ribbon
                         CheckMainScrolling();
                     }
                 }
-                else
+                else // getting bigger
                 {
                     if (ActualWidth > mainContainer.ActualWidth + 2)
                     {
                         CheckMainScrolling();
                         UncompactGroups();
+                        CheckMainScrolling();
                     }
                 }
 
@@ -532,9 +537,13 @@ namespace SolidShineUi.Ribbon
 
         void CheckMainScrolling()
         {
-            if (mainContainer == null || mainScrollContainer == null) return;
+            if (mainContainer == null || mainScrollContainer == null || mainBar == null) return;
 
-            if (mainContainer.ActualWidth > mainScrollContainer.ViewportWidth)
+            if (mainContainer.ActualWidth < mainBar.ActualWidth + 32)
+            {
+                MainScrollButtonsVisible = false;
+            }
+            else if (mainContainer.ActualWidth > mainScrollContainer.ViewportWidth)
             {
                 MainScrollButtonsVisible = true;
             }
@@ -1188,6 +1197,21 @@ namespace SolidShineUi.Ribbon
         #endregion
 
 
+#if DEBUG
+
+        /// <summary>
+        /// Get a status string indicating the size and status of elements inside this Ribbon. Used for debugging.
+        /// </summary>
+        public string GetSizeStatuses()
+        {
+            return "main container: " + (mainContainer?.ActualWidth.ToString() ?? "(not defined)") + "\n"
+                + "main scroll actual: " + (mainScrollContainer?.ActualWidth.ToString() ?? "(not defined)") + "\n"
+                + "main scroll viewport: " + (mainScrollContainer?.ViewportWidth.ToString() ?? "(not defined)") + "\n"
+                + "main bar: " + (mainBar?.ActualWidth.ToString() ?? "(not defined)") + "\n"
+                + "show scroll buttons: " + MainScrollButtonsVisible.ToString();
+        }
+
+#endif
 
     }
 }
