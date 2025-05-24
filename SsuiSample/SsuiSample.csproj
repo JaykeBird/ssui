@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFrameworks>net462;net4.8;net6.0-windows;net7.0-windows</TargetFrameworks>
+		<TargetFrameworks>net462;net4.8;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
 		<ApplicationIcon>..\Icons\Icon.ico</ApplicationIcon>
 	</PropertyGroup>
@@ -17,7 +17,7 @@
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows' ">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0-windows' ">
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0-windows' ">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
@@ -36,10 +36,5 @@
     <!--<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0-windows10.0.19041.0' ">
       <ProjectReference Include="..\SsuiWindows11Interop\SsuiWindows11Interop.csproj" />
     </ItemGroup>-->
-
-    
-  <ItemGroup>
-    <Resource Include="Resources\Icon.ico" />
-  </ItemGroup>
 
 </Project>
