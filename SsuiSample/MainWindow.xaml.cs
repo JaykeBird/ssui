@@ -132,7 +132,7 @@ namespace SsuiSample
 
         private void si_Click(object sender, RoutedEventArgs e)
         {
-            string name = (sender as SelectableItem).Tag as string;
+            string name = (sender as SelectableItem)?.Tag as string ?? "";
 
             foreach (UserControl item in grdTests.Children)
             {

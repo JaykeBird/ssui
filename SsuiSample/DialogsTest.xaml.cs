@@ -127,7 +127,12 @@ namespace SsuiSample
 
         private void btnSetColor_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, (txtSampleText.Foreground as SolidColorBrush).Color);
+            Color c = Colors.Black;
+            if (txtSampleText.Foreground is SolidColorBrush sc)
+            {
+                c = sc.Color;
+            }
+            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, c);
 
             // by default, these are all set to true, but I'll list them here so you can play with them if desired
             cpd.ShowImageTab = true;

@@ -16,7 +16,7 @@ namespace SsuiSample
             InitializeComponent();
 
             lblNetVersion.Text = "Running on .NET version " + Environment.Version;
-            lblSsuiVersion.Text = "For SolidShineUI version " + Assembly.GetAssembly(typeof(FlatWindow)).GetName().Version;
+            lblSsuiVersion.Text = "For SolidShineUI version " + (Assembly.GetAssembly(typeof(FlatWindow))?.GetName().Version?.ToString() ?? "unknown version");
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
