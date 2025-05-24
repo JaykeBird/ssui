@@ -363,7 +363,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                 if (lei.ItemValue != null)
                 {
                     propList.LoadObject(lei.ItemValue);
-                    if (propList.ObjectDisplayName == ExperimentalPropertyList.NO_NAME)
+                    if (propList.ObjectDisplayName == PropertyList.NO_NAME)
                     {
                         propList.ObjectDisplayName = "Item " + lei.ItemIndex;
                     }
