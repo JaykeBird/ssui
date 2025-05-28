@@ -31,7 +31,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => btnEdit.IsEnabled; set => btnEdit.IsEnabled = value; }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
         public ColorScheme ColorScheme { set => ApplyColorScheme(value); }

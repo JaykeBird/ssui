@@ -52,9 +52,9 @@ namespace SolidShineUi.PropertyList
         void ApplyColorScheme(ColorScheme cs);
 
         /// <summary>
-        /// Set the parent PropertyList control for this IPropertyEditor. This allows the IPropertyEditor to connect to the PropertyList directly, to get info or set certain values.
+        /// Set the parent host control for this IPropertyEditor. This allows the IPropertyEditor to connect to the host directly, to get info or set certain values.
         /// </summary>
-        ExperimentalPropertyList ParentPropertyList { set; }
+        void SetHostControl(IPropertyEditorHost host);
 
         /// <summary>
         /// Raised when the value is changed, by changing the data in this editor control.

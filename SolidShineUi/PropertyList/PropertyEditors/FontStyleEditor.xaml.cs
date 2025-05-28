@@ -32,7 +32,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => cbbStyles.IsEnabled; set => cbbStyles.IsEnabled = value; }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
         public ColorScheme ColorScheme

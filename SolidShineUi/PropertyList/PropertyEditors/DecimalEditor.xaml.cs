@@ -29,13 +29,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
         private ColorScheme _cs = new ColorScheme();
+
+
 #if NETCOREAPP
-        private ExperimentalPropertyList? _parent = null;
+        private IPropertyEditorHost? _host = null;
 #else
-        private ExperimentalPropertyList _parent = null;
+        private IPropertyEditorHost _host = null;
 #endif
 
         /// <inheritdoc/>
@@ -197,7 +199,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             StringInputDialog sid = new StringInputDialog(_cs, "Set Decimal", "Enter in the exact decimal value to use:", _internalValue.ToString());
             sid.ValidationFunction = (s) => { return decimal.TryParse(s, out _); };
             sid.ValidationFailureString = "Not a valid decimal value";
-            if (_parent != null) sid.Owner = Window.GetWindow(_parent);
+            if (_host != null) sid.Owner = _host.GetWindow();
             sid.ShowDialog();
             if (sid.DialogResult)
             {
