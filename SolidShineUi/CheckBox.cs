@@ -104,9 +104,9 @@ namespace SolidShineUi
         //    checkBoxClick = false;
         //}
 
-        /// <summary>
-        /// Gets or sets whether clicking should only occur when the checkbox's box is clicked, and not the rest of the control.
-        /// </summary>
+        ///// <summary>
+        ///// Gets or sets whether clicking should only occur when the checkbox's box is clicked, and not the rest of the control.
+        ///// </summary>
         //[Category("Common")]
         //public bool OnlyAllowCheckBoxClick { get => (bool)GetValue(OnlyAllowCheckBoxClickProperty); set => SetValue(OnlyAllowCheckBoxClickProperty, value); }
 
@@ -195,8 +195,12 @@ namespace SolidShineUi
             new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<CheckBox>((c) => c.IndeterminateChanged()))));
 
         /// <summary>
-        /// Get or set if the check box is checked. (Note: if in the Indeterminate state, it will still return true as checked.)
+        /// Get or set if the check box is checked (or indeterminate).
         /// </summary>
+        /// <remarks>
+        /// While <see cref="IsIndeterminate"/> is true, this will also be true. Check <see cref="IsIndeterminate"/> to differentiate between the checked or 
+        /// indeterminate states, or use <see cref="CheckState"/> to get the state as an enum.
+        /// </remarks>
         public bool IsChecked
         {
             get => (bool)GetValue(IsCheckedProperty);
@@ -204,49 +208,63 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set if the check box is in the Indeterminate state. 
+        /// Get or set if the check box is in the Indeterminate state.
         /// </summary>
+        /// <remarks>
+        /// By default, when the user clicks on the checkbox, it'll only toggle between being checked or unchecked, and not set to the indeterminate state.
+        /// This can be enabled by setting <see cref="TriStateClick"/> to <c>true</c>.
+        /// <para/>
+        /// While this property is true, <see cref="IsChecked"/> will also be true. Check this property to differentiate between the checked or 
+        /// indeterminate states, or use <see cref="CheckState"/> to get the state as an enum.
+        /// </remarks>
         public bool IsIndeterminate
         {
             get => (bool)GetValue(IsIndeterminateProperty);
             set => SetValue(IsIndeterminateProperty, value);
         }
 
-        private CheckState state;
-
         /// <summary>
-        /// Get or set the state of the checkbox, via a CheckState enum. Can be set via this property or via the IsChecked and IsIndeterminate properties.
+        /// Get or set the state of the checkbox, via a CheckState enum. This describes the exact state of the checkbox.
         /// </summary>
-        public CheckState CheckState
+        public CheckState CheckState { get => (CheckState)GetValue(CheckStateProperty); set => SetValue(CheckStateProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CheckState"/>. See the related property for details.</summary>
+        public static DependencyProperty CheckStateProperty
+            = DependencyProperty.Register(nameof(CheckState), typeof(CheckState), typeof(CheckBox),
+            new FrameworkPropertyMetadata(CheckState.Unchecked, (d, e) => d.PerformAs<CheckBox>((o) => o.OnCheckStateChanged(e))));
+
+        private void OnCheckStateChanged(DependencyPropertyChangedEventArgs e)
         {
-            get { return state; }
-            set
+            if (e.NewValue is CheckState newVal) { }
+            else
             {
-                state = value;
-                if (updateBoolValues)
+                newVal = CheckState.Unchecked;
+            }
+
+            if (updateBoolValues)
+            {
+                switch (newVal)
                 {
-                    switch (state)
-                    {
-                        case CheckState.Unchecked:
-                            IsChecked = false;
-                            IsIndeterminate = false;
-                            break;
-                        case CheckState.Checked:
-                            IsChecked = true;
-                            IsIndeterminate = false;
-                            break;
-                        case CheckState.Indeterminate:
-                            IsChecked = true;
-                            IsIndeterminate = true;
-                            break;
-                        default:
-                            IsChecked = false;
-                            IsIndeterminate = false;
-                            break;
-                    }
+                    case CheckState.Unchecked:
+                        IsChecked = false;
+                        IsIndeterminate = false;
+                        break;
+                    case CheckState.Checked:
+                        IsChecked = true;
+                        IsIndeterminate = false;
+                        break;
+                    case CheckState.Indeterminate:
+                        IsChecked = true;
+                        IsIndeterminate = true;
+                        break;
+                    default:
+                        IsChecked = false;
+                        IsIndeterminate = false;
+                        break;
                 }
             }
         }
+
         #endregion
 
         bool raiseChangedEvent = true;
