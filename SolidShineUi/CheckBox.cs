@@ -12,13 +12,31 @@ using System.Windows.Media;
 
 namespace SolidShineUi
 {
+    // Usage of a CheckBox is good to indicate selection (such as, checking specific items from a list of checkboxes to select those items).
+    // The IsChecked value is just a bool, so this can be useful for situations where you need to present an option that's stored as a bool.
+
     /// <summary>
-    /// A CheckBox control with more customization over the appearance, and a larger box for a more touch-friendly UI.
+    /// A control that can display content alongside a large, touch-friendly checkbox, which users are able to check or uncheck. Provides more customization than the standard WPF CheckBox.
     /// </summary>
+    /// <remarks>
+    /// Unlike the standard WPF CheckBox, a nullable bool (<c>bool?</c>) is not used for <see cref="IsChecked"/>; instead, <c>IsChecked</c> will return true if there is any mark,
+    /// including either a full checkmark or an indeterminate mark (a square), and false only if there is no mark at all.
+    /// Instead, use <see cref="IsIndeterminate"/> to check if the mark is an indeterminate mark, or use <see cref="CheckState"/> to get the current state as an enum.
+    /// </remarks>
     [DefaultEvent(nameof(CheckChanged))]
     [Localizability(LocalizationCategory.CheckBox)]
     public class CheckBox : ContentControl
     {
+        // in my personal experience, I've run into difficulties and annoyances with the standard WPF CheckBox
+        // while I understand the usage of nullable bool for IsChecked, to cover the potential of it being an indeterminate mark, I've personally never used tri-state checkboxes
+        // all the checkboxes I've directly implemented have all been only two-state (checked or unchecked), so the extra unwrapping to do to get that raw value was annoying
+        // on top of that, there was a limited selection of brush properties to be able to directly make the control I'd want it to be (such as the box background and foreground)
+        // while styles or a custom template could've been used to make it how I would've wanted, at that point I would already be 50% of the way to making my own control
+        // soooo that's pretty much what I did. and now I have all the features and customization I want, and practically none of the annoyances I had
+        // of course, by building my own control with its own slightly different way of doing things, this can make it harder for others to adapt and start using
+        // and in the grand scheme of ranking which existing controls to make your own version of, a CheckBox is probably pretty low on the priority list
+        // but given how often checkboxes are used in a UI, and the annoyances I was having, I think it was a worthwhile investment, and now I have exactly what I want
+
         static CheckBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CheckBox), new FrameworkPropertyMetadata(typeof(CheckBox)));
@@ -193,8 +211,12 @@ namespace SolidShineUi
         protected event DependencyPropertyChangedEventHandler InternalIsIndeterminateChanged;
 
         /// <summary>
-        /// Get or set if the check box is checked. (Note: if in the Indeterminate state, it will still return true as checked.)
+        /// Get or set if the check box is checked (or indeterminate).
         /// </summary>
+        /// <remarks>
+        /// While <see cref="IsIndeterminate"/> is true, this will also be true. Check <see cref="IsIndeterminate"/> to differentiate between the checked or 
+        /// indeterminate states, or use <see cref="CheckState"/> to get the state as an enum.
+        /// </remarks>
         public bool IsChecked
         {
             get => (bool)GetValue(IsCheckedProperty);
@@ -202,50 +224,64 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set if the check box is in the Indeterminate state. 
+        /// Get or set if the check box is in the Indeterminate state.
         /// </summary>
+        /// <remarks>
+        /// By default, when the user clicks on the checkbox, it'll only toggle between being checked or unchecked, and not set to the indeterminate state.
+        /// This can be enabled by setting <see cref="TriStateClick"/> to <c>true</c>.
+        /// <para/>
+        /// While this property is true, <see cref="IsChecked"/> will also be true. Check this property to differentiate between the checked or 
+        /// indeterminate states, or use <see cref="CheckState"/> to get the state as an enum.
+        /// </remarks>
         public bool IsIndeterminate
         {
             get => (bool)GetValue(IsIndeterminateProperty);
             set => SetValue(IsIndeterminateProperty, value);
         }
 
-        private CheckState state;
-
         /// <summary>
-        /// Get or set the state of the checkbox, via a CheckState enum. Can be set via this property,
-        /// or via the <see cref="IsChecked"/> and <see cref="IsIndeterminate"/> properties.
+        /// Get or set the state of the checkbox, via a CheckState enum. This describes the exact state of the checkbox.
         /// </summary>
-        public CheckState CheckState
+        public CheckState CheckState { get => (CheckState)GetValue(CheckStateProperty); set => SetValue(CheckStateProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CheckState"/>. See the related property for details.</summary>
+        public static DependencyProperty CheckStateProperty
+            = DependencyProperty.Register(nameof(CheckState), typeof(CheckState), typeof(CheckBox),
+            new FrameworkPropertyMetadata(CheckState.Unchecked, (d, e) => d.PerformAs<CheckBox>((o) => o.OnCheckStateChanged(e))));
+
+        private void OnCheckStateChanged(DependencyPropertyChangedEventArgs e)
         {
-            get { return state; }
-            set
+            if (e.NewValue is CheckState newVal) { }
+            else
             {
-                state = value;
-                if (updateBoolValues)
+                newVal = CheckState.Unchecked;
+            }
+
+            if (updateBoolValues)
+            {
+                switch (newVal)
                 {
-                    switch (state)
-                    {
-                        case CheckState.Unchecked:
-                            IsChecked = false;
-                            IsIndeterminate = false;
-                            break;
-                        case CheckState.Checked:
-                            IsChecked = true;
-                            IsIndeterminate = false;
-                            break;
-                        case CheckState.Indeterminate:
-                            IsChecked = true;
-                            IsIndeterminate = true;
-                            break;
-                        default:
-                            IsChecked = false;
-                            IsIndeterminate = false;
-                            break;
-                    }
+                    case CheckState.Unchecked:
+                        IsChecked = false;
+                        IsIndeterminate = false;
+                        break;
+                    case CheckState.Checked:
+                        IsChecked = true;
+                        IsIndeterminate = false;
+                        break;
+                    case CheckState.Indeterminate:
+                        IsChecked = true;
+                        IsIndeterminate = true;
+                        break;
+                    default:
+                        IsChecked = false;
+                        IsIndeterminate = false;
+                        break;
                 }
             }
         }
+
+        #endregion
 
         bool raiseChangedEvent = true;
         bool updateBoolValues = true;
