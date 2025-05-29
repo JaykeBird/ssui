@@ -34,7 +34,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
         /// <inheritdoc/>
         public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
@@ -73,12 +73,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
 #if NETCOREAPP
+        IPropertyEditorHost? _host = null;
+
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
         /// <inheritdoc/>
         public object? GetValue()
 #else
+        IPropertyEditorHost _host = null;
+
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
 
@@ -166,7 +170,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             RectEditDialog red = new RectEditDialog(_cs);
             red.SetRect(rect);
-            red.Owner = Window.GetWindow(this);
+            red.Owner = _host?.GetWindow();
             red.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             red.ShowDialog();
 

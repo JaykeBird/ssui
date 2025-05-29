@@ -21,7 +21,7 @@ namespace SolidShineUi.PropertyList
     /// This is the old version used in the Solid Shine UI 1.9 releases; please transition to the new <see cref="PropertyList"/> control.
     /// </summary>
     [Obsolete("This is the old ExperimentalPropertyList control used in Solid Shine UI 1.9; please transition to the new PropertyList control.")]
-    public partial class ExperimentalPropertyList : UserControl
+    public partial class ExperimentalPropertyList : UserControl, IPropertyEditorHost
     {
         /// <summary>
         /// Create a PropertyList.
@@ -451,8 +451,8 @@ namespace SolidShineUi.PropertyList
 
                 if (ipe != null)
                 {
-                    ipe.ColorScheme = ColorScheme;
-                    ipe.ParentPropertyList = this;
+                    ipe.ApplyColorScheme(ColorScheme);
+                    ipe.SetHostControl(this);
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
 
@@ -1034,7 +1034,7 @@ namespace SolidShineUi.PropertyList
         /// Create a new IPropertyEditor object appropriate for the passed-in type. This is based upon what types are registered in this PropertyList control.
         /// </summary>
         /// <param name="propType">The type for which to get a IPropertyEditor for.</param>
-        /// <returns></returns>
+        /// <returns>An IPropertyEditor that can be used for editing the type, if available; <c>null</c> otherwise</returns>
 #if NETCOREAPP
         public IPropertyEditor? CreateEditorForType(Type propType)
 #else
@@ -1434,6 +1434,16 @@ namespace SolidShineUi.PropertyList
             {
                 return fullName ? typeString : baseName;
             }
+        }
+
+        /// <inheritdoc/>
+#if NETCOREAPP
+        public Window? GetWindow()
+#else
+        public Window GetWindow()
+#endif
+        {
+            return Window.GetWindow(this);
         }
     }
 }

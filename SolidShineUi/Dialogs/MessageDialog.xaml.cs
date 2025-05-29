@@ -564,61 +564,62 @@ namespace SolidShineUi
                 stkExtraButtons.Margin = new Thickness(70, 10, 20, 10);
             }
 
-            switch (defaultButton)
-            {
-                case MessageDialogResult.OK:
-                    if (btnOK.Visibility == Visibility.Visible)
-                    {
-                        btnOK.IsDefault = true;
-                    }
-                    else
-                    {
-                        btnCancel.IsDefault = true;
-                    }
-                    break;
-                case MessageDialogResult.Discard:
-                    btnDiscard.IsDefault = true;
-                    break;
-                case MessageDialogResult.Cancel:
-                    btnCancel.IsDefault = true;
-                    break;
-                case MessageDialogResult.Extra1:
-                    if (extraButton1.Visibility == Visibility.Visible)
-                    {
-                        extraButton1.IsDefault = true;
-                        btnCancel.IsDefault = false;
-                        btnOK.IsDefault = false;
-                    }
-                    else
-                    {
-                        btnCancel.IsDefault = true;
-                    }
-                    break;
-                case MessageDialogResult.Extra2:
-                    if (extraButton2.Visibility == Visibility.Visible)
-                    {
-                        extraButton2.IsDefault = true;
-                        btnCancel.IsDefault = false;
-                        btnOK.IsDefault = false;
-                    }
-                    else
-                    {
-                        btnCancel.IsDefault = true;
-                    }
-                    break;
-                case MessageDialogResult.Extra3:
-                    if (extraButton3.Visibility == Visibility.Visible)
-                    {
-                        extraButton3.IsDefault = true;
-                        btnCancel.IsDefault = false;
-                        btnOK.IsDefault = false;
-                    }
-                    else
-                    {
-                        btnCancel.IsDefault = true;
-                    }
-                    break;
-            }
+            // TODO: use defaultButton value to instead handle Enter or Space key press
+            //switch (defaultButton)
+            //{
+            //    case MessageDialogResult.OK:
+            //        if (btnOK.Visibility == Visibility.Visible)
+            //        {
+            //            btnOK.IsDefault = true;
+            //        }
+            //        else
+            //        {
+            //            btnCancel.IsDefault = true;
+            //        }
+            //        break;
+            //    case MessageDialogResult.Discard:
+            //        btnDiscard.IsDefault = true;
+            //        break;
+            //    case MessageDialogResult.Cancel:
+            //        btnCancel.IsDefault = true;
+            //        break;
+            //    case MessageDialogResult.Extra1:
+            //        if (extraButton1.Visibility == Visibility.Visible)
+            //        {
+            //            extraButton1.IsDefault = true;
+            //            btnCancel.IsDefault = false;
+            //            btnOK.IsDefault = false;
+            //        }
+            //        else
+            //        {
+            //            btnCancel.IsDefault = true;
+            //        }
+            //        break;
+            //    case MessageDialogResult.Extra2:
+            //        if (extraButton2.Visibility == Visibility.Visible)
+            //        {
+            //            extraButton2.IsDefault = true;
+            //            btnCancel.IsDefault = false;
+            //            btnOK.IsDefault = false;
+            //        }
+            //        else
+            //        {
+            //            btnCancel.IsDefault = true;
+            //        }
+            //        break;
+            //    case MessageDialogResult.Extra3:
+            //        if (extraButton3.Visibility == Visibility.Visible)
+            //        {
+            //            extraButton3.IsDefault = true;
+            //            btnCancel.IsDefault = false;
+            //            btnOK.IsDefault = false;
+            //        }
+            //        else
+            //        {
+            //            btnCancel.IsDefault = true;
+            //        }
+            //        break;
+            //}
 
             if (Owner != null)
             {

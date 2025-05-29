@@ -44,7 +44,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         Type? editorType = null;
 
         /// <summary>the parent PropertyList control</summary>
-        ExperimentalPropertyList? parentList = null;
+        IPropertyEditorHost? parentList = null;
 #else
         /// <summary>the type of the items contained in the list (i.e. a <c>List&lt;string&gt;</c> has a baseType <c>string</c>)</summary>
         Type baseType = null;
@@ -53,7 +53,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         Type editorType = null;
 
         /// <summary>the parent PropertyList control</summary>
-        ExperimentalPropertyList parentList = null;
+        IPropertyEditorHost parentList = null;
 #endif
 
         int count = -1;
@@ -274,7 +274,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                     editor.ColorScheme = ColorScheme;
                     if (parentList != null)
                     {
-                        editor.ParentPropertyList = parentList;
+                        editor.SetHostControl(parentList);
                     }
                 }
             }

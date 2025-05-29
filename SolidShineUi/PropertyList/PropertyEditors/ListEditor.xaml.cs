@@ -37,7 +37,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => _writable; set { _writable = value; mnuEmptyGuid.IsEnabled = value; } }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
+        public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
 
         ColorScheme _cs = new ColorScheme();
 
@@ -69,7 +69,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NETCOREAPP
         IList? listVal;
 
-        ExperimentalPropertyList? _parent = null;
+        IPropertyEditorHost? _parent = null;
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
@@ -82,7 +82,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #else
         IList listVal;
         
-        ExperimentalPropertyList _parent = null;
+        IPropertyEditorHost _parent = null;
         
         /// <inheritdoc/>
         public event EventHandler ValueChanged;

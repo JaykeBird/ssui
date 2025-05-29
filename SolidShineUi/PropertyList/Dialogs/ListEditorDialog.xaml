@@ -33,7 +33,7 @@
         <Border Grid.Column="1" Grid.Row="2" Margin="13,0,20,0" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush}"
                 Background="{Binding ElementName=window, Path=ColorScheme.LightBackgroundColor, Converter={StaticResource ctb}}" >
             <Grid>
-                <pl:ExperimentalPropertyList x:Name="propList" ShowReloadButton="False" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+                <pl:PropertyList x:Name="propList" ShowReloadButton="False" ColorScheme="{Binding ColorScheme, ElementName=window}" />
                 <TextBlock x:Name="txtAvailableEditor" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="10,0"
                            Text="For this type, values can be directly edited in the left-side pane." Visibility="Collapsed" />
             </Grid>

@@ -25,7 +25,7 @@ namespace SolidShineUi.PropertyList
     /// 
     [DefaultEvent(nameof(LoadedObjectChanged))]
     [Localizability(LocalizationCategory.ListBox)]
-    public class PropertyList : Control
+    public class PropertyList : Control, IPropertyEditorHost
     {
 
         static PropertyList()
@@ -1106,7 +1106,8 @@ namespace SolidShineUi.PropertyList
 
                 if (ipe != null)
                 {
-                    ipe.ColorScheme = ColorScheme;
+                    ipe.ApplyColorScheme(ColorScheme);
+                    ipe.SetHostControl(this);
                     //ipe.ParentPropertyList = this;
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
@@ -1155,11 +1156,12 @@ namespace SolidShineUi.PropertyList
         #endregion
 
         #region CreateEditorForType
+
         /// <summary>
         /// Create a new IPropertyEditor object appropriate for the passed-in type. This is based upon what types are registered in this PropertyList control.
         /// </summary>
         /// <param name="propType">The type for which to get a IPropertyEditor for.</param>
-        /// <returns></returns>
+        /// <returns>An IPropertyEditor that can be used for editing the type, if available; <c>null</c> otherwise</returns>
 #if NETCOREAPP
         public IPropertyEditor? CreateEditorForType(Type propType)
 #else
@@ -1661,6 +1663,16 @@ namespace SolidShineUi.PropertyList
             {
                 return fullName ? typeString : baseName;
             }
+        }
+
+        /// <inheritdoc/>
+#if NETCOREAPP
+        public Window? GetWindow()
+#else
+        public Window GetWindow()
+#endif
+        {
+            return Window.GetWindow(this);
         }
     }
 }

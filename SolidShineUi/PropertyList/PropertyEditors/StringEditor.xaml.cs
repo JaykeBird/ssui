@@ -26,10 +26,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
+        public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
 
         ColorScheme _cs = new ColorScheme();
-        ExperimentalPropertyList _parent = new ExperimentalPropertyList();
+
+#if NETCOREAPP
+        IPropertyEditorHost? _parent = null;
+#else
+        IPropertyEditorHost _parent = null;
+#endif
 
         /// <inheritdoc/>
         public ColorScheme ColorScheme

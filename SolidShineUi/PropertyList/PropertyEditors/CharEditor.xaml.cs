@@ -41,10 +41,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { /* _parent = value; */ } }
+        public void SetHostControl(IPropertyEditorHost host) { /* _parent = host; */ }
 
         ColorScheme _cs = new ColorScheme();
-        //ExperimentalPropertyList _parent = null;
+        //IPropertyEditorHost _parent = null;
 
         /// <inheritdoc/>
         public ColorScheme ColorScheme

@@ -31,13 +31,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parentPropertyList = value; } }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
         ColorScheme _cs = new ColorScheme();
 #if NETCOREAPP
-        ExperimentalPropertyList? _parentPropertyList = null;
+        IPropertyEditorHost? _host = null;
 #else
-        ExperimentalPropertyList _parentPropertyList = null;
+        IPropertyEditorHost _host = null;
 #endif
         Color _col = Colors.White;
 
@@ -205,9 +205,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnuColor_Click(object sender, RoutedEventArgs e)
         {
             ColorPickerDialog cpd = new ColorPickerDialog(_cs, _col);
-            if (_parentPropertyList != null)
+            if (_host != null)
             {
-                cpd.Owner = Window.GetWindow(_parentPropertyList);
+                cpd.Owner = _host.GetWindow();
             }
 
             cpd.ShowDialog();
