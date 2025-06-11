@@ -21,7 +21,7 @@ namespace SolidShineUi
     [ContentProperty("Items")]
     [DefaultEvent(nameof(SelectionChanged))]
     [Localizability(LocalizationCategory.ListBox)]
-    public class SelectPanel : Control
+    public class SelectPanel : ThemedControl
     {
         static SelectPanel()
         {
@@ -570,6 +570,41 @@ namespace SolidShineUi
             }
         }
         #endregion
+
+        #region SsuiTheme
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            SsuiTheme subitemTheme = ssuiTheme;
+            SsuiTheme mainTheme = ssuiTheme;
+
+            if (ssuiTheme is SsuiAppTheme sat)
+            {
+                if (useAccentTheme)
+                {
+                    mainTheme = sat.AccentTheme;
+                }
+
+                if (sat.UseSubitemThemeWithPanels)
+                {
+                    // subitems should use the subitem theme
+                    subitemTheme = sat.SubitemTheme;
+                }
+                else if (useAccentTheme)
+                {
+                    subitemTheme = sat.AccentTheme;
+                }
+            }
+
+            // apply brushes using mainTheme
+
+            // apply subitem brushes using subitemTheme
+        }
+
+#endregion
 
         #region Routed Events
 
