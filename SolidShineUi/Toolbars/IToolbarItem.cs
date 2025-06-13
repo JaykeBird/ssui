@@ -32,20 +32,26 @@ namespace SolidShineUi.Toolbars
         /// <summary>
         /// Get or set the icon to use with this command when large icons are being used.
         /// </summary>
+        /// <remarks>
+        /// For Ribbons, the large icon should be 32x32 in size.
+        /// </remarks>
         ImageSource LargeIcon { get; set; }
-        
+
         /// <summary>
         /// Get or set the icon to use with this command when small icons are being used.
         /// </summary>
+        /// <remarks>
+        /// For Ribbons, the small icon should be 16x16 in size.
+        /// </remarks>
         ImageSource SmallIcon { get; set; }
 
         /// <summary>
-        /// Get or set the priority for hiding or compacting this command, when the toolbar it is on is too wide to be displayed in full.
+        /// Get or set the priority for hiding or compacting this command, when the toolbar or Ribbon it is on is too wide to be displayed in full in its container.
         /// </summary>
         int CompactOrder { get; set; }
 
         /// <summary>
-        /// Get or set the ColorScheme to use for setting the appearance of this command on the toolbar.
+        /// Get or set the ColorScheme to use for setting the appearance of this command on the toolbar or Ribbon.
         /// </summary>
         ColorScheme ColorScheme { get; set; }
     }

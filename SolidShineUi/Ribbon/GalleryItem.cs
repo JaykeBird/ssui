@@ -127,9 +127,13 @@ namespace SolidShineUi.Ribbon
 
         #region Gallery Item Appearance
 
+        /// <summary>
+        /// A property to control the layout and appearance of the GalleryItem within a <see cref="Gallery"/>. Used internally.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public GalleryItemLayout LayoutType { get => (GalleryItemLayout)GetValue(LayoutTypeProperty); set => SetValue(LayoutTypeProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="LayoutType"/>. See the related property for details.</summary>
+        /// <summary>The backing dependency property for <see cref="LayoutType"/>. Used internally.</summary>
         public static DependencyProperty LayoutTypeProperty
             = DependencyProperty.Register("LayoutType", typeof(GalleryItemLayout), typeof(GalleryItem),
             new FrameworkPropertyMetadata(GalleryItemLayout.LargeIconAndText));

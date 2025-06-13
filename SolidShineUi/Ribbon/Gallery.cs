@@ -40,6 +40,7 @@ namespace SolidShineUi.Ribbon
 
         #region IRibbonItem implementations
 
+        /// <inheritdoc/>
         public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="IsCompacted"/>. See the related property for details.</summary>
@@ -47,6 +48,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("IsCompacted", typeof(bool), typeof(Gallery),
             new FrameworkPropertyMetadata(false));
 
+        /// <inheritdoc/>
         public RibbonElementSize StandardSize { get => (RibbonElementSize)GetValue(StandardSizeProperty); set => SetValue(StandardSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StandardSize"/>. See the related property for details.</summary>
@@ -54,6 +56,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("StandardSize", typeof(RibbonElementSize), typeof(Gallery),
             new FrameworkPropertyMetadata(RibbonElementSize.Content));
 
+        /// <inheritdoc/>
         public RibbonElementSize CompactSize { get => (RibbonElementSize)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CompactSize"/>. See the related property for details.</summary>
@@ -61,6 +64,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("CompactSize", typeof(RibbonElementSize), typeof(Gallery),
             new FrameworkPropertyMetadata(RibbonElementSize.Small));
 
+        /// <inheritdoc/>
         public string AccessKey { get => (string)GetValue(AccessKeyProperty); set => SetValue(AccessKeyProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="AccessKey"/>. See the related property for details.</summary>
@@ -68,6 +72,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("AccessKey", typeof(string), typeof(Gallery),
             new FrameworkPropertyMetadata("G"));
 
+        /// <inheritdoc/>
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Title"/>. See the related property for details.</summary>
@@ -75,6 +80,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("Title", typeof(string), typeof(Gallery),
             new FrameworkPropertyMetadata("Gallery"));
 
+        /// <inheritdoc/>
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="LargeIcon"/>. See the related property for details.</summary>
@@ -82,6 +88,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("LargeIcon", typeof(ImageSource), typeof(Gallery),
             new FrameworkPropertyMetadata(null));
 
+        /// <inheritdoc/>
         public ImageSource SmallIcon { get => (ImageSource)GetValue(SmallIconProperty); set => SetValue(SmallIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SmallIcon"/>. See the related property for details.</summary>
@@ -89,6 +96,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(Gallery),
             new FrameworkPropertyMetadata(null));
 
+        /// <inheritdoc/>
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CompactOrder"/>. See the related property for details.</summary>
@@ -262,6 +270,9 @@ namespace SolidShineUi.Ribbon
             else return false;
         }
 
+        /// <summary>
+        /// Get or set the max number of items that can be displayed within the Ribbon.
+        /// </summary>
         public int MaxItemsDisplayed { get => (int)GetValue(MaxItemsDisplayedProperty); set => SetValue(MaxItemsDisplayedProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MaxItemsDisplayed"/>. See the related property for details.</summary>
@@ -269,6 +280,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("MaxItemsDisplayed", typeof(int), typeof(Gallery),
             new FrameworkPropertyMetadata(9));
 
+        /// <summary>
+        /// The maximum width of the <see cref="Items"/> in this control. This sets the <c>MaxWidth</c> property for all child items.
+        /// </summary>
         public double MaxItemWidth { get => (double)GetValue(MaxItemWidthProperty); set => SetValue(MaxItemWidthProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MaxItemWidth"/>. See the related property for details.</summary>

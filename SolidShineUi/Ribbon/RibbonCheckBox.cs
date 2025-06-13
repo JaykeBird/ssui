@@ -49,43 +49,51 @@ namespace SolidShineUi.Ribbon
         public static DependencyProperty CompactSizeProperty
             = DependencyProperty.Register("CompactSize", typeof(RibbonElementSize), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(RibbonElementSize.Small));
-
+        
+        /// <inheritdoc/>
         public string AccessKey { get => (string)GetValue(AccessKeyProperty); set => SetValue(AccessKeyProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="AccessKey"/>. See the related property for details.</summary>
         public static DependencyProperty AccessKeyProperty
             = DependencyProperty.Register("AccessKey", typeof(string), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata("C"));
 
+        /// <inheritdoc/>
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="Title"/>. See the related property for details.</summary>
         public static DependencyProperty TitleProperty
             = DependencyProperty.Register("Title", typeof(string), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata("Check"));
 
+        /// <inheritdoc/>
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="LargeIcon"/>. See the related property for details.</summary>
         public static DependencyProperty LargeIconProperty
             = DependencyProperty.Register("LargeIcon", typeof(ImageSource), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(null));
 
+        /// <inheritdoc/>
         public ImageSource SmallIcon { get => (ImageSource)GetValue(SmallIconProperty); set => SetValue(SmallIconProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="SmallIcon"/>. See the related property for details.</summary>
         public static DependencyProperty SmallIconProperty
             = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(null));
 
-        /// <summary>
-        /// Get or set if this control is currently being compacted (and thus should use <see cref="CompactSize"/> rather than <see cref="StandardSize"/>).
-        /// Generally, this shouldn't be set manually; instead, the parent <see cref="RibbonGroup"/> will set this for controls when the group itself is being compacted.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="IsCompacted"/>. See the related property for details.</summary>
         public static DependencyProperty IsCompactedProperty
             = DependencyProperty.Register("IsCompacted", typeof(bool), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(false));
 
+        /// <inheritdoc/>
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="CompactOrder"/>. See the related property for details.</summary>
         public static DependencyProperty CompactOrderProperty
             = DependencyProperty.Register("CompactOrder", typeof(int), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(0));

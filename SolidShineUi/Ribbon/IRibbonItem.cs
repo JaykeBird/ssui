@@ -13,7 +13,9 @@ namespace SolidShineUi.Ribbon
     public interface IRibbonItem : IToolbarItem
     {
         /// <summary>
-        /// Get or set if the item is currently in its compacted state.
+        /// Get or set if this control is currently being compacted (and thus should use <see cref="CompactSize"/> rather than <see cref="StandardSize"/>).
+        /// Generally, this shouldn't be set manually; instead, the <see cref="RibbonGroup"/> hosting the control will set this for controls when the 
+        /// group itself is being compacted.
         /// </summary>
         bool IsCompacted { get; set; }
 

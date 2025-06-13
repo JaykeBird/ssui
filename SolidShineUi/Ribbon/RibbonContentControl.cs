@@ -55,6 +55,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("CompactSize", typeof(RibbonElementSize), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(RibbonElementSize.Small));
 
+        /// <inheritdoc/>
         public string AccessKey { get => (string)GetValue(AccessKeyProperty); set => SetValue(AccessKeyProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="AccessKey"/>. See the related property for details.</summary>
@@ -64,7 +65,9 @@ namespace SolidShineUi.Ribbon
 
         /// <summary>
         /// Get or set the title to display for this control.
-        /// This is displayed to the left of the control, and can be hidden via <see cref="ShowTitle"/>.
+        /// This is displayed to the left of the control, it is recommended to set this even if you don't want to display the title
+        /// (as it'll be used in other places in the UI). Use <see cref="ShowTitle"/> if you want to hide the title appearing
+        /// next to the control.
         /// </summary>
         /// <remarks>
         /// Standard convention is to end the title with a colon to indicate it's referring to the content next to it,
@@ -133,6 +136,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(null));
 
+        /// <inheritdoc/>
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CompactOrder"/>. See the related property for details.</summary>
@@ -140,10 +144,7 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("CompactOrder", typeof(int), typeof(RibbonContentControl),
             new FrameworkPropertyMetadata(0));
 
-        /// <summary>
-        /// Get or set if this control is currently being compacted (and thus should use <see cref="CompactSize"/> rather than <see cref="StandardSize"/>).
-        /// Generally, this shouldn't be set manually; instead, the parent <see cref="RibbonGroup"/> will set this for controls when the group itself is being compacted.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="IsCompacted"/>. See the related property for details.</summary>

@@ -346,20 +346,23 @@ namespace SolidShineUi.Ribbon
             }
         }
 
+        /// <summary>
+        /// Get or set the index of the tab that is currently selected in this <see cref="Ribbon"/>.
+        /// </summary>
+        /// <remarks>
+        /// Use <see cref="Items"/> for a list of the tabs in this Ribbon. Tabs can also be selected by using <c>Items.Select(<i>tabItemName</i>)</c>.
+        /// </remarks>
         public int SelectedIndex { get => (int)GetValue(SelectedIndexProperty); set => SetValue(SelectedIndexProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="SelectedIndex"/>. See the related property for details.</summary>
         public static DependencyProperty SelectedIndexProperty
             = DependencyProperty.Register("SelectedIndex", typeof(int), typeof(Ribbon),
-            new FrameworkPropertyMetadata(-1, new PropertyChangedCallback((d, e) =>
-            {
-                if (d is Ribbon r)
-                {
-                    r.OnSelectedIndexChange();
-                }
-            }
-            )));
+            new FrameworkPropertyMetadata(-1, (d, e) => d.PerformAs<Ribbon>((r) => r.OnSelectedIndexChange())));
 
-        protected void OnSelectedIndexChange()
+        /// <summary>
+        /// Raised when <see cref="SelectedIndex"/> is changed.
+        /// </summary>
+        void OnSelectedIndexChange()
         {
             _internalIndexSet = true;
 

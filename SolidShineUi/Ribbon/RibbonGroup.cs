@@ -76,6 +76,10 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// Get or set the list of items in this RibbonGroup's expanded panel. This Items property can be used to add and remove items. If there are no items, the expanded panel will not be shown.
         /// </summary>
+        /// <remarks>
+        /// The expanded panel can display additional items that are related to the other items and name of this group, but don't need to be accessed regularly. This takes inspiration from
+        /// a similar feature present in the Ribbon present in some of Autodesk's software.
+        /// </remarks>
         [Category("Common")]
         public ObservableCollection<IRibbonItem> ExpandedItems
         {
@@ -83,14 +87,32 @@ namespace SolidShineUi.Ribbon
             private set { SetValue(ExpandedItemsPropertyKey, value); }
         }
 
+        /// <summary>
+        /// Get or set if the expanded panel is open for this RibbonGroup. Use <see cref="ExpandedItems"/> to add items to the expanded panel; 
+        /// this property does nothing if there are no items. You can keep the expanded panel open using <see cref="IsExpanderPinned"/>.
+        /// </summary>
+        /// <remarks>
+        /// The expanded panel can display additional items that are related to the other items and name of this group, but don't need to be accessed regularly. This takes inspiration from
+        /// a similar feature present in the Ribbon present in some of Autodesk's software.
+        /// </remarks>
         public bool HasExpanderOpen { get => (bool)GetValue(HasExpanderOpenProperty); set => SetValue(HasExpanderOpenProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="HasExpanderOpen"/>. See the related property for details.</summary>
         public static DependencyProperty HasExpanderOpenProperty
             = DependencyProperty.Register("HasExpanderOpen", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(false));
 
+        /// <summary>
+        /// Get or set if the expanded panel is open and currently pinned for this RibbonGroup. Use <see cref="ExpandedItems"/> to add items to the expanded panel; 
+        /// this property does nothing if there are no items. While this is <c>true</c>, the expanded panel will remain open.
+        /// </summary>
+        /// <remarks>
+        /// The expanded panel can display additional items that are related to the other items and name of this group, but don't need to be accessed regularly. This takes inspiration from
+        /// a similar feature present in the Ribbon present in some of Autodesk's software.
+        /// </remarks>
         public bool IsExpanderPinned { get => (bool)GetValue(IsExpanderPinnedProperty); set => SetValue(IsExpanderPinnedProperty, value); }
 
+        /// <summary>The backing dependency property for <see cref="IsExpanderPinned"/>. See the related property for details.</summary>
         public static DependencyProperty IsExpanderPinnedProperty
             = DependencyProperty.Register("IsExpanderPinned", typeof(bool), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(false));
