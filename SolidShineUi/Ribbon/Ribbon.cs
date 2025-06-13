@@ -409,7 +409,13 @@ namespace SolidShineUi.Ribbon
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
         private static readonly DependencyPropertyKey SelectedTabPropertyKey
-            = DependencyProperty.RegisterReadOnly("SelectedTab", typeof(RibbonTab), typeof(Ribbon), new FrameworkPropertyMetadata(null));
+            = DependencyProperty.RegisterReadOnly("SelectedTab", typeof(RibbonTab), typeof(Ribbon), 
+                new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<Ribbon>((r) => r.OnSelectedTabChange(e))));
+
+        void OnSelectedTabChange(DependencyPropertyChangedEventArgs e)
+        {
+            SelectedTabChanged?.Invoke(this, e);
+        }
 
 #if NETCOREAPP
         /// <summary>
@@ -426,7 +432,7 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// Raised when the tab currently selected is changed.
         /// </summary>
-        public event TabItemChangeEventHandler? SelectedTabChanged;
+        public event DependencyPropertyChangedEventHandler? SelectedTabChanged;
         /// <summary>
         /// Raised when all tabs are closed at once (via <c>Items.Clear()</c>).
         /// </summary>
@@ -446,7 +452,7 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// Raised when the tab currently selected is changed.
         /// </summary>
-        public event TabItemChangeEventHandler SelectedTabChanged;
+        public event DependencyPropertyChangedEventHandler SelectedTabChanged;
         /// <summary>
         /// Raised when all tabs are closed at once (via <c>Items.Clear()</c>).
         /// </summary>
