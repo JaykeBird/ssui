@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 
@@ -32,10 +34,16 @@ namespace SolidShineUi.Ribbon
         public Gallery()
         {
             Padding = new Thickness(1);
+            SetValue(ItemsPropertyKey, new ObservableCollection<GalleryItem>());
+            SetValue(DisplayedItemsPropertyKey, new List<GalleryItem>());
             Items.CollectionChanged += Items_CollectionChanged;
 
-            DisplayedItems = new ListCollectionView(Items);
-            DisplayedItems.Filter = FilterItems;
+            SetDisplayedItems(0);
+            //DisplayedItems.Filter = FilterItems;
+
+            CommandBindings.Add(new CommandBinding(RibbonCommands.GalleryScrollUp, OnGalleryScrollUp, CanExecuteIfCanScrollUp));
+            CommandBindings.Add(new CommandBinding(RibbonCommands.GalleryScrollDown, OnGalleryScrollDown, CanExecuteIfCanScrollDown));
+            CommandBindings.Add(new CommandBinding(RibbonCommands.GalleryMenuExpand, OnGalleryExpand, CanExecuteIfHasItems));
         }
 
         #region IRibbonItem implementations
@@ -106,6 +114,119 @@ namespace SolidShineUi.Ribbon
 
         #endregion
 
+        #region Command Handling
+
+        void OnGalleryScrollUp(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (currentInitialValue > MaxItemsDisplayed) currentInitialValue -= MaxItemsDisplayed;
+            else currentInitialValue = 0;
+
+            SetDisplayedItems(currentInitialValue);
+        }
+
+        void OnGalleryScrollDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (Items.Count - currentInitialValue > MaxItemsDisplayed) currentInitialValue += MaxItemsDisplayed;
+            else currentInitialValue = Items.Count - MaxItemsDisplayed; // <--- this part might not be necessary
+
+            SetDisplayedItems(currentInitialValue);
+        }
+
+        void OnGalleryExpand(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (popMenu != null)
+            {
+                popMenu.IsOpen = true;
+            }
+        }
+
+        /// <summary>
+        /// The command in question is always able to be executed, regardless of the state of the object.
+        /// </summary>
+        private void CanExecuteAlways(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /// <summary>
+        /// The command in question is able to be executed if there are at least 1 item in <see cref="Items"/>.
+        /// </summary>
+        private void CanExecuteIfHasItems(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Items.Any();
+        }
+
+        /// <summary>
+        /// The command in question is able to be executed if the <see cref="currentInitialValue"/> is greater than 0. 
+        /// </summary>
+        private void CanExecuteIfCanScrollUp(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = currentInitialValue > 0;
+        }
+
+        /// <summary>
+        /// The command in question is able to be executed if the <see cref="currentInitialValue"/> can be increased by an interval of <see cref="MaxItemsDisplayed"/>.
+        /// </summary>
+        private void CanExecuteIfCanScrollDown(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Items.Count - currentInitialValue > MaxItemsDisplayed;
+        }
+
+        ///// <summary>
+        ///// The command in question is able to execute, if at least one tab is selected.
+        ///// </summary>
+        //private void CanExecuteIfAnyTabSelected(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    e.CanExecute = SelectedTab != null;
+        //}
+
+        #endregion
+
+        #region Template IO
+
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            LoadTemplateItems();
+
+            if (popMenu != null)
+            {
+                popMenu.PlacementTarget = this;
+
+                if (popMenu.Child is Border b)
+                {
+                    b.SetBinding(BackgroundProperty, new Binding(nameof(Background)) { Source = this });
+                    b.SetBinding(BorderBrushProperty, new Binding(nameof(BorderBrush)) { Source = this });
+                    b.SetBinding(BorderThicknessProperty, new Binding(nameof(BorderThickness)) { Source = this });
+                }
+            }
+        }
+
+        bool itemsLoaded = false;
+
+#if NETCOREAPP
+        Popup? popMenu = null;
+#else
+        Popup popMenu = null;
+#endif
+
+        void LoadTemplateItems()
+        {
+            if (!itemsLoaded)
+            {
+                popMenu = (Popup)GetTemplateChild("PART_Popup");
+
+                if (popMenu != null)
+                {
+                    itemsLoaded = true;
+                }
+            }
+        }
+
+        #endregion
+
         #region Color Scheme
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -173,7 +294,18 @@ namespace SolidShineUi.Ribbon
             UpdateSubitemColors();
 
         }
+
+        void UpdateSubitemColors()
+        {
+            foreach (var item in Items)
+            {
+                item.ColorScheme = ColorScheme;
+            }
+        }
+
         #endregion
+
+        #region Items
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
             = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<GalleryItem>), typeof(Gallery),
@@ -194,17 +326,6 @@ namespace SolidShineUi.Ribbon
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
-        private static readonly DependencyPropertyKey DisplayedItemsPropertyKey
-            = DependencyProperty.RegisterReadOnly("DisplayedItems", typeof(ListCollectionView), typeof(Gallery), new FrameworkPropertyMetadata());
-
-        /// <summary>
-        /// Get the handler that displays the items from <see cref="Items"/> that are currently visible in the Ribbon.
-        /// </summary>
-        public ListCollectionView DisplayedItems { get => (ListCollectionView)GetValue(DisplayedItemsProperty); private set => SetValue(DisplayedItemsPropertyKey, value); }
-
-        /// <summary>The backing dependency property for <see cref="DisplayedItems"/>. See the related property for details.</summary>
-        public static DependencyProperty DisplayedItemsProperty = DisplayedItemsPropertyKey.DependencyProperty;
-
 #if NETCOREAPP
         private void Items_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 #else
@@ -220,11 +341,70 @@ namespace SolidShineUi.Ribbon
                     if (item is GalleryItem gi)
                     {
                         gi.ColorScheme = ColorScheme;
-                        gi.LayoutType = ItemLayout;
+                        gi.SetValue(GalleryItem.LayoutTypeProperty, ItemLayout);
                     }
                 }
             }
+
+            // reset the DisplayedItems property
+
+            // first, let's check if we now have an invalid value
+            if (currentInitialValue > Items.Count)
+            {
+                // reset it back to 0
+                currentInitialValue = 0;
+            }
+            SetDisplayedItems(currentInitialValue);
         }
+
+        #endregion
+
+        #region DisplayedItems
+
+        int currentInitialValue = 0;
+
+        private static readonly DependencyPropertyKey DisplayedItemsPropertyKey
+            = DependencyProperty.RegisterReadOnly("DisplayedItems", typeof(List<GalleryItem>), typeof(Gallery),
+                new FrameworkPropertyMetadata(new List<GalleryItem>()));
+
+        /// <summary>
+        /// Get the list of the items from <see cref="Items"/> that are currently visible in the Ribbon.
+        /// </summary>
+        public List<GalleryItem> DisplayedItems { get => (List<GalleryItem>)GetValue(DisplayedItemsProperty); private set => SetValue(DisplayedItemsPropertyKey, value); }
+
+        /// <summary>The backing dependency property for <see cref="DisplayedItems"/>. See the related property for details.</summary>
+        public static DependencyProperty DisplayedItemsProperty = DisplayedItemsPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Sets the <see cref="DisplayedItems"/> property, to display a subset of <see cref="Items"/>, 
+        /// starting at an <paramref name="initialValue"/> and counting the next <see cref="MaxItemsDisplayed"/> number of items.
+        /// </summary>
+        /// <param name="initialValue">the index of the first value to display and count from</param>
+        /// <remarks>
+        /// If the number of items remaining between <paramref name="initialValue"/> and the max count of <see cref="Items"/> is
+        /// less than <see cref="MaxItemsDisplayed"/>, then this will limit it down to display the last remaining items.
+        /// </remarks>
+        void SetDisplayedItems(int initialValue)
+        {
+            if (initialValue >= Items.Count || initialValue < 0) return; // validate initial value, don't change anything if invalid
+
+            // we'll try to display the max number of items starting at that initial value,
+            // but if the max number would go beyond the actual number of items to display, then we need
+            // to clamp it to the actual number of items remaining
+            int count = MaxItemsDisplayed;
+            if (initialValue + count >= Items.Count)
+            {
+                count = Items.Count - initialValue; // clamp the count to the actual remaining number of items available
+            }
+
+            // okay, now that we've calculated that, let's set the DisplayedItems property
+            DisplayedItems.Clear();
+            DisplayedItems = Items.ToList().GetRange(initialValue, count);
+        }
+
+        #endregion
+
+        #region ItemLayout
 
         /// <summary>
         /// Get or set the layout to use for displaying <see cref="GalleryItem"/> objects within this Gallery.
@@ -232,7 +412,7 @@ namespace SolidShineUi.Ribbon
         /// <remarks>
         /// Certain layouts, such as <see cref="GalleryItemLayout.LargeIconAndText"/> will take up the full height of the Gallery, and so each <see cref="GalleryItem"/> is displayed
         /// side by side. Others, such as <see cref="GalleryItemLayout.SmallIconAndText"/> may allow multiple GalleryItems to be displayed on top of each other. Thus, the smaller layouts
-        /// are more beneficial if you have a large number of options in this Gallery that you want to display.
+        /// are more beneficial if you have a large number of options in this Gallery that you want to display, and don't need a large space to preview/display each one.
         /// <para/>
         /// Please be mindful about the type of content you want to display in this Gallery, and also the height of the Ribbon that this Gallery will be in, to set which layout option
         /// you want to use. Some layout options, such as <see cref="GalleryItemLayout.SmallContentOnly"/> or <see cref="GalleryItemLayout.LargeContentOnly"/> allow you to set some
@@ -249,26 +429,20 @@ namespace SolidShineUi.Ribbon
         {
             foreach (var item in Items)
             {
-                item.LayoutType = ItemLayout;
+                item.SetValue(GalleryItem.LayoutTypeProperty, ItemLayout);
             }
         }
 
-        void UpdateSubitemColors()
-        {
-            foreach (var item in Items)
-            {
-                item.ColorScheme = ColorScheme;
-            }
-        }
+        #endregion
 
-        bool FilterItems(object item)
-        {
-            if (item is GalleryItem i)
-            {
-                return true;
-            }
-            else return false;
-        }
+        //bool FilterItems(object item)
+        //{
+        //    if (item is GalleryItem i)
+        //    {
+        //        return true;
+        //    }
+        //    else return false;
+        //}
 
         /// <summary>
         /// Get or set the max number of items that can be displayed within the Ribbon.
@@ -278,10 +452,19 @@ namespace SolidShineUi.Ribbon
         /// <summary>The backing dependency property for <see cref="MaxItemsDisplayed"/>. See the related property for details.</summary>
         public static DependencyProperty MaxItemsDisplayedProperty
             = DependencyProperty.Register("MaxItemsDisplayed", typeof(int), typeof(Gallery),
-            new FrameworkPropertyMetadata(9));
+            new FrameworkPropertyMetadata(6, (d, e) => d.PerformAs<Gallery>((o) => o.OnMaxItemsDisplayedChanged(e))));
+
+        private void OnMaxItemsDisplayedChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (MaxItemsDisplayed <= 0) // need to make sure this isn't a negative value
+            {
+                MaxItemsDisplayed = 1;
+            }
+            SetDisplayedItems(currentInitialValue);
+        }
 
         /// <summary>
-        /// The maximum width of the <see cref="Items"/> in this control. This sets the <c>MaxWidth</c> property for all child items.
+        /// Get or set the maximum width of the <see cref="Items"/> in this control. This sets the <c>MaxWidth</c> property for all child items.
         /// </summary>
         public double MaxItemWidth { get => (double)GetValue(MaxItemWidthProperty); set => SetValue(MaxItemWidthProperty, value); }
 
@@ -291,8 +474,30 @@ namespace SolidShineUi.Ribbon
             new FrameworkPropertyMetadata(150.0));
 
         /// <summary>
+        /// Get or set the maximum width of the full menu of all the <see cref="Items"/>.
+        /// </summary>
+        public double MaxExpandedMenuWidth { get => (double)GetValue(MaxExpandedMenuWidthProperty); set => SetValue(MaxExpandedMenuWidthProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MaxExpandedMenuWidth"/>. See the related property for details.</summary>
+        public static DependencyProperty MaxExpandedMenuWidthProperty
+            = DependencyProperty.Register(nameof(MaxExpandedMenuWidth), typeof(double), typeof(Gallery),
+            new FrameworkPropertyMetadata(300.0));
+
+        /// <summary>
+        /// Get or set the maximum height of the full menu of all the <see cref="Items"/>.
+        /// </summary>
+        public double MaxExpandedMenuHeight { get => (double)GetValue(MaxExpandedMenuHeightProperty); set => SetValue(MaxExpandedMenuHeightProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MaxExpandedMenuHeight"/>. See the related property for details.</summary>
+        public static DependencyProperty MaxExpandedMenuHeightProperty
+            = DependencyProperty.Register(nameof(MaxExpandedMenuHeight), typeof(double), typeof(Gallery),
+            new FrameworkPropertyMetadata(192.0));
+
+
+
+        /// <summary>
         /// Get or set if scrolling buttons should be displayed on the options on the right side. If <c>true</c>, then users can scroll through all the items in this Gallery
-        /// without needing to use the expand button to display the whole menu.
+        /// without needing to use the expand button to display the whole menu. If <c>false</c>, then only the expand button is visible next to the gallery.
         /// </summary>
         public bool DisplayScrollButtons { get => (bool)GetValue(DisplayScrollButtonsProperty); set => SetValue(DisplayScrollButtonsProperty, value); }
 

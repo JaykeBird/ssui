@@ -3510,7 +3510,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:Gallery}">
-                    <Border BorderThickness="1" Margin="1" BorderBrush="{TemplateBinding BorderBrush}" >
+                    <Border BorderThickness="1" Margin="1" BorderBrush="{TemplateBinding BorderBrush}" MinWidth="{TemplateBinding MaxItemWidth}" >
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
@@ -3533,7 +3533,7 @@
                             </ributils:RibbonGroupItemsControl>
 
                             <Border BorderThickness="1,0,0,0" BorderBrush="{TemplateBinding BorderBrush}" Grid.Column="1" >
-                                <Grid Margin="0,1">
+                                <Grid Margin="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -3541,14 +3541,15 @@
                                     </Grid.RowDefinitions>
 
                                     <flat:FlatButton Grid.Row="0" TransparentBack="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="22"
-                                                     Visibility="{TemplateBinding DisplayScrollButtons, Converter={StaticResource VisConverter}}" Padding="0" >
-
+                                                     ColorScheme="{TemplateBinding ColorScheme}" HighlightOnKeyboardFocus="False" BorderThickness="0"
+                                                     Visibility="{TemplateBinding DisplayScrollButtons, Converter={StaticResource VisConverter}}" Padding="0"
+                                                     Command="{x:Static ribbon:RibbonCommands.GalleryScrollUp}" >
                                         <Path Grid.Column="1" Data="M0,6 6,6 3,0 Z" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                            Height="6" Width="6" Margin="5,0,3,0" Stretch="Fill">
+                                            Margin="4,0,4,0" Height="6" Width="8" Stretch="Fill" x:Name="btnScrUp" >
                                             <Path.Style>
                                                 <Style TargetType="Path">
                                                     <Setter Property="Visibility" Value="Visible" />
-                                                    <Setter Property="Opacity" Value="1.0" />
+                                                    <Setter Property="Opacity" Value="0.7" />
                                                     <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                     <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                 </Style>
@@ -3556,37 +3557,72 @@
                                         </Path>
                                     </flat:FlatButton>
                                     <flat:FlatButton Grid.Row="1" TransparentBack="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinHeight="22"
-                                                     Visibility="{TemplateBinding DisplayScrollButtons, Converter={StaticResource VisConverter}}" Padding="0" >
+                                                     ColorScheme="{TemplateBinding ColorScheme}" HighlightOnKeyboardFocus="False" BorderThickness="0"
+                                                     Visibility="{TemplateBinding DisplayScrollButtons, Converter={StaticResource VisConverter}}" Padding="0"
+                                                     Command="{x:Static ribbon:RibbonCommands.GalleryScrollDown}" >
                                         <Path Grid.Column="1" Data="M0,0 6,0 3,6 Z" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                            Margin="5,0,3,0" Stretch="Fill" Height="6" Width="6" >
+                                            Margin="4,0,4,0" Stretch="Fill" Height="6" Width="8" x:Name="pthScrDown" >
                                             <Path.Style>
                                                 <Style TargetType="Path">
                                                     <Setter Property="Visibility" Value="Visible" />
-                                                    <Setter Property="Opacity" Value="1.0" />
+                                                    <Setter Property="Opacity" Value="0.7" />
                                                     <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                     <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                 </Style>
                                             </Path.Style>
                                         </Path>
                                     </flat:FlatButton>
-                                    <flat:FlatButton Grid.Row="2" TransparentBack="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="0" >
-                                        <Path Grid.Column="1" Data="M0,0 6,0 3,6 Z" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                            Margin="5,0,3,0" Stretch="Fill" Height="6" Width="6" >
-                                            <Path.Style>
-                                                <Style TargetType="Path">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Setter Property="Opacity" Value="1.0" />
-                                                    <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                                    <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                                </Style>
-                                            </Path.Style>
-                                        </Path>
+                                    <flat:FlatButton Grid.Row="2" TransparentBack="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="0"
+                                                     ColorScheme="{TemplateBinding ColorScheme}" HighlightOnKeyboardFocus="False" UseLayoutRounding="True" BorderThickness="0"
+                                                     Command="{x:Static ribbon:RibbonCommands.GalleryMenuExpand}" >
+                                        <DockPanel UseLayoutRounding="True">
+                                            <Border DockPanel.Dock="Top" BorderThickness="1" Height="1" Width="8" x:Name="brdrMenuBtn" >
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Setter Property="Opacity" Value="0.7" />
+                                                        <Setter Property="BorderBrush" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                    </Style>
+                                                </Border.Style>
+                                            </Border>
+                                            <Path Grid.Column="1" Data="M0,0 6,0 3,6 Z" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                Margin="4,2,4,0" Stretch="Fill" Height="6" Width="8" x:Name="pthMenuBtn" >
+                                                <Path.Style>
+                                                    <Style TargetType="Path">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Setter Property="Opacity" Value="0.7" />
+                                                        <Setter Property="Fill" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                        <Setter Property="Stroke" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                        </DockPanel>
                                     </flat:FlatButton>
                                 </Grid>
                             </Border>
 
+                            <Popup x:Name="PART_Popup" Placement="Relative" StaysOpen="False"
+                                   MaxWidth="{TemplateBinding MaxExpandedMenuWidth}" MaxHeight="{TemplateBinding MaxExpandedMenuHeight}" >
+                                <Border >
+                                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                                        <ributils:RibbonGroupItemsControl x:Name="PART_PopExpand" ItemsSource="{TemplateBinding Items}" Margin="{TemplateBinding Padding}" Focusable="False" >
+                                            <ributils:RibbonGroupItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ributils:RibbonGroupItemsControl.ItemsPanel>
+                                        </ributils:RibbonGroupItemsControl>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
                         </Grid>
                     </Border>
+
+                    <!--<ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{TemplateBinding Background}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

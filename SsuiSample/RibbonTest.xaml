@@ -91,12 +91,16 @@
                     </ribbon:RibbonMenuButton>
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Gallery">
-                    <ribbon:Gallery ItemLayout="SmallIconAndContent" >
+                    <ribbon:Gallery ItemLayout="SmallIconAndContent" MaxItemsDisplayed="6" >
                         <ribbon:GalleryItem SmallIcon="Resources/Images/CopyColor.png" LargeIcon="Resources/Images/32/CopyColor.png" Title="Copy" />
                         <ribbon:GalleryItem SmallIcon="Resources/Images/SaveColor.png" LargeIcon="Resources/Images/32/SaveColor.png" Title="Wow" />
                         <ribbon:GalleryItem SmallIcon="Resources/Images/SmileyColor.png" Title="Yay" />
                         <ribbon:GalleryItem SmallIcon="Resources/Images/DownloadColor.png" LargeIcon="Resources/Images/32/DownloadColor.png" Title="Link" />
-                        <ribbon:GalleryItem SmallIcon="Resources/Images/DownloadColor.png" LargeIcon="Resources/Images/32/DownloadColor.png" Title="Link" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/DownloadColor.png" LargeIcon="Resources/Images/32/DownloadColor.png" Title="Link 2" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/StarColor.png" LargeIcon="Resources/Images/32/StarColor.png" Title="Star" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/WindowColor.png" LargeIcon="Resources/Images/32/WindowColor.png" Title="Window" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/WindowColor.png" LargeIcon="Resources/Images/32/WindowColor.png" Title="Window 2" />
+                        <ribbon:GalleryItem SmallIcon="Resources/Images/StarColor.png" LargeIcon="Resources/Images/32/StarColor.png" Title="Star 2" />
                     </ribbon:Gallery>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>

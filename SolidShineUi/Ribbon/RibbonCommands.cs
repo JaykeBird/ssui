@@ -21,8 +21,23 @@ namespace SolidShineUi.Ribbon
 
 
         /// <summary>
-        /// A WPF command that when executed, will scroll the tab control's tab bar to the left or right.
+        /// A WPF command that when executed, will scroll the Ribbon's main bar to the left or right.
         /// </summary>
         public static RoutedCommand MainBarScrollCommand { get; } = new RoutedCommand("MainBarScrollCommand", typeof(RibbonCommands));
+
+        /// <summary>
+        /// A WPF command that when executed, will scroll the in-Ribbon viewing section of a Gallery.
+        /// </summary>
+        public static RoutedCommand GalleryScrollUp { get; } = new RoutedCommand("GalleryScrollUp", typeof(RibbonCommands));
+
+        /// <summary>
+        /// A WPF command that when executed, will scroll the in-Ribbon viewing section of a Gallery.
+        /// </summary>
+        public static RoutedCommand GalleryScrollDown { get; } = new RoutedCommand("GalleryScrollDown", typeof(RibbonCommands));
+
+        /// <summary>
+        /// A WPF command that when executed, will cause a Gallery to open its menu and display all of the contained options.
+        /// </summary>
+        public static RoutedCommand GalleryMenuExpand { get; } = new RoutedCommand("GalleryMenuExpand", typeof(RibbonCommands));
     }
 }
