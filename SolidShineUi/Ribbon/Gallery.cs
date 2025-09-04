@@ -201,7 +201,20 @@ namespace SolidShineUi.Ribbon
                     b.SetBinding(BorderBrushProperty, new Binding(nameof(BorderBrush)) { Source = this });
                     b.SetBinding(BorderThicknessProperty, new Binding(nameof(BorderThickness)) { Source = this });
                 }
+
+                popMenu.Closed += PopMenu_Closed;
             }
+        }
+
+#if NETCOREAPP
+        private void PopMenu_Closed(object? sender, EventArgs e)
+#else
+        private void PopMenu_Closed(object sender, EventArgs e)
+#endif
+        {
+            ExpandedMenuItems.Clear();
+            ExpandedMenuItems = new List<GalleryItem>();
+            SetDisplayedItems(currentInitialValue);
         }
 
         bool itemsLoaded = false;
@@ -225,7 +238,7 @@ namespace SolidShineUi.Ribbon
             }
         }
 
-        #endregion
+#endregion
 
         #region Color Scheme
         /// <summary>
@@ -355,6 +368,13 @@ namespace SolidShineUi.Ribbon
                 currentInitialValue = 0;
             }
             SetDisplayedItems(currentInitialValue);
+
+            if (popMenu?.IsOpen ?? false)
+            {
+                DisplayedItems.Clear();
+                DisplayedItems = new List<GalleryItem>();
+                ExpandedMenuItems = new List<GalleryItem>(Items);
+            }
         }
 
         #endregion
@@ -370,9 +390,11 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// Get the list of the items from <see cref="Items"/> that are currently visible in the Ribbon.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public List<GalleryItem> DisplayedItems { get => (List<GalleryItem>)GetValue(DisplayedItemsProperty); private set => SetValue(DisplayedItemsPropertyKey, value); }
 
         /// <summary>The backing dependency property for <see cref="DisplayedItems"/>. See the related property for details.</summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static DependencyProperty DisplayedItemsProperty = DisplayedItemsPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -401,6 +423,23 @@ namespace SolidShineUi.Ribbon
             DisplayedItems.Clear();
             DisplayedItems = Items.ToList().GetRange(initialValue, count);
         }
+
+        #endregion
+
+        #region ExpandedMenuItems
+
+        /// <summary>
+        /// Get or set the list of items that are displayed in the expanded menu. This should be a copy of <see cref="Items"/>. This is used internally.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public List<GalleryItem> ExpandedMenuItems { get => (List<GalleryItem>)GetValue(ExpandedMenuItemsProperty); set => SetValue(ExpandedMenuItemsProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ExpandedMenuItems"/>. See the related property for details.</summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static DependencyProperty ExpandedMenuItemsProperty
+            = DependencyProperty.Register(nameof(ExpandedMenuItems), typeof(List<GalleryItem>), typeof(Gallery),
+            new FrameworkPropertyMetadata(new List<GalleryItem>()));
+
 
         #endregion
 
