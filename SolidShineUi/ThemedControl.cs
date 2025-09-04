@@ -48,6 +48,10 @@ namespace SolidShineUi
 
         #region SsuiTheme Property
 
+        // references to follow up on this:
+        // https://github.com/dotnet/wpf/blob/8223378b6fdddd3ae4e0577e90d9953b5469f076/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/FrameworkElement.cs#L3623
+        // https://github.com/dotnet/wpf/blob/8223378b6fdddd3ae4e0577e90d9953b5469f076/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Documents/Block.cs#L253
+
         /// <summary>
         /// Get or set the theme to apply to the appearance of this control.
         /// </summary>
