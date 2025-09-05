@@ -228,19 +228,6 @@ namespace SolidShineUi.Utils
             // border.Background = IsSelected ? SelectedTabBackground : Background;
         }
 
-        //#region Icon
-
-        //public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TabDisplayItem),
-        //    new PropertyMetadata(null));
-
-        //public ImageSource Icon
-        //{
-        //    get { return (ImageSource)GetValue(IconProperty); }
-        //    set { SetValue(IconProperty, value); }
-        //}
-
-        //#endregion
-
         #region CanSelect
 
         /// <summary>
@@ -259,18 +246,6 @@ namespace SolidShineUi.Utils
         }
         #endregion
 
-        //#region Title
-
-        //public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(TabDisplayItem),
-        //    new PropertyMetadata("New Tab"));
-
-        //public string Title
-        //{
-        //    get { return (string)GetValue(TitleProperty); }
-        //    set { SetValue(TitleProperty, value); }
-        //}
-        //#endregion
-
         #region IsDirty
 
         /// <summary>
@@ -288,18 +263,6 @@ namespace SolidShineUi.Utils
             set { SetValue(IsDirtyProperty, value); }
         }
         #endregion
-
-        //#region CanClose
-
-        //public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register("CanClose", typeof(bool), typeof(TabDisplayItem),
-        //    new PropertyMetadata(true));
-
-        //public bool CanClose
-        //{
-        //    get { return (bool)GetValue(CanCloseProperty); }
-        //    set { SetValue(CanCloseProperty, value); }
-        //}
-        //#endregion
 
         #region IsSelected
 
@@ -327,16 +290,6 @@ namespace SolidShineUi.Utils
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
             // border.Background = IsSelected ? SelectedTabBackground : Background;
         }
-
-//#if NETCOREAPP
-//        private void tab_IsSelectedChanged(object? sender, EventArgs e)
-//#else
-//        private void tab_IsSelectedChanged(object sender, EventArgs e)
-//#endif
-//        {
-//            border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-//            //border.Background = IsSelected ? SelectedTabBackground : Background;
-//        }
 
         #endregion
 
