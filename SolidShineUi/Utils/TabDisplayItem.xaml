@@ -57,8 +57,14 @@
                     <Image x:Name="imgIcon" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" Width="16" Source="{Binding ElementName=control, Path=TabItem.Icon}" UseLayoutRounding="True"
                        Visibility="{Binding ElementName=control, Path=TabItem.ShowIcon, Converter={StaticResource btv}}" />
                     <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,0,0" >
-                        <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title}" />
-                        <TextBlock x:Name="lblDirty" HorizontalAlignment="Left" VerticalAlignment="Center" Text="*">
+                        <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ElementName=control, Path=TabItem.Title}"
+                                   FontSize="{Binding TabItem.FontSize, ElementName=control}" FontFamily="{Binding TabItem.FontFamily, ElementName=control}"
+                                   FontStyle="{Binding TabItem.FontStyle, ElementName=control}" FontWeight="{Binding TabItem.FontWeight, ElementName=control}"
+                                   FontStretch="{Binding TabItem.FontStretch, ElementName=control}" />
+                        <TextBlock x:Name="lblDirty" HorizontalAlignment="Left" VerticalAlignment="Center" Text="*"
+                                   FontSize="{Binding TabItem.FontSize, ElementName=control}" FontFamily="{Binding TabItem.FontFamily, ElementName=control}"
+                                   FontStyle="{Binding TabItem.FontStyle, ElementName=control}" FontWeight="{Binding TabItem.FontWeight, ElementName=control}"
+                                   FontStretch="{Binding TabItem.FontStretch, ElementName=control}" >
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Visibility" Value="Collapsed" />
