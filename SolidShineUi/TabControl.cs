@@ -139,12 +139,13 @@ namespace SolidShineUi
 
         #region SelectableCollection handling
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<TabItem>), typeof(TabControl),
             new FrameworkPropertyMetadata(new SelectableCollection<TabItem>()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
@@ -263,7 +264,7 @@ namespace SolidShineUi
                         //                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
                         //#else
                         //#endif
-                        if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+                        if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                         {
                             if (tb.TabItem != null && tb.TabItem == newItem)
                             {
@@ -763,7 +764,7 @@ namespace SolidShineUi
                     ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                     c.ApplyTemplate();
 
-                    if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+                    if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                     {
                         tb.MinWidth = (double)e.NewValue;
                     }
@@ -1144,11 +1145,17 @@ namespace SolidShineUi
         #region Setup TabDisplayItem / Tdi Event Handlers
 
         /// <summary>
-        /// Set up a new TabDisplayItem that was added to this TabControl.
-        /// This will set up the necessary event handlers and other properties to allow the TabDisplayItem to interact with the TabControl.
+        /// Set up a new ITabDisplayItem that was added to this TabControl.
+        /// This will set up the necessary event handlers and other properties to allow the ITabDisplayItem to interact with the TabControl.
         /// </summary>
-        /// <param name="tdi">The TabDisplayItem to set up.</param>
-        internal protected void SetupTabDisplay(TabDisplayItem tdi)
+        /// <param name="tdi">The ITabDisplayItem to set up.</param>
+        /// <remarks>
+        /// This is used internally for handling tabs, and calling this should be avoided except from within your own 
+        /// <see cref="ITabDisplayItem"/> control.
+        /// <para/>
+        /// To add a tab to a <see cref="TabControl"/>, use <c>Items.Add</c>.
+        /// </remarks>
+        public void RegisterTabDisplayItem(ITabDisplayItem tdi)
         {
             tdi.RequestClose += tdi_RequestClose;
             tdi.Click += tdi_Click;
@@ -1165,7 +1172,7 @@ namespace SolidShineUi
         private void tdi_RightClick(object sender, EventArgs e)
 #endif
         {
-            if (sender is TabDisplayItem tdi)
+            if (sender is ITabDisplayItem tdi)
             {
                 if (tdi.TabItem.TabContextMenu != null)
                 {
@@ -1233,7 +1240,7 @@ namespace SolidShineUi
                     //#else
                     //                    TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
                     //#endif
-                    if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+                    if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                     {
                         if (tb.TabItem != null && tb.TabItem == selItem)
                         {
@@ -1256,7 +1263,7 @@ namespace SolidShineUi
         private void tdi_Click(object sender, EventArgs e)
 #endif
         {
-            if (sender != null && sender is TabDisplayItem tdi)
+            if (sender != null && sender is ITabDisplayItem tdi)
             {
                 if (tdi.TabItem != null && tdi.CanSelect)
                 {
@@ -1273,7 +1280,7 @@ namespace SolidShineUi
         private void tdi_RequestClose(object sender, EventArgs e)
 #endif
         {
-            if (sender != null && sender is TabDisplayItem tdi)
+            if (sender != null && sender is ITabDisplayItem tdi)
             {
                 if (tdi.TabItem != null)
                 {

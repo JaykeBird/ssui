@@ -11,7 +11,7 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// A visual rendering of a <see cref="SolidShineUi.TabItem" />, to display in a <see cref="TabControl"/>.
     /// </summary>
-    public partial class TabDisplayItem : UserControl
+    public partial class TabDisplayItem : UserControl, ITabDisplayItem
     {
 
         #region Constructors
@@ -116,12 +116,6 @@ namespace SolidShineUi.Utils
         public event TabItemDropEventHandler TabItemDrop;
 #endif
 
-        /// <summary>
-        /// A delegate to be used with events regarding dropping a TabItem into a TabControl.
-        /// </summary>
-        /// <param name="sender">The object where the event was raised.</param>
-        /// <param name="e">The event arguments associated with this event.</param>
-        public delegate void TabItemDropEventHandler(object sender, TabItemDropEventArgs e);
         #endregion
 
         #region Brushes / Border
@@ -359,12 +353,16 @@ namespace SolidShineUi.Utils
             new PropertyMetadata(false, OnIsSelectedChanged));
 
         /// <summary>
-        /// Get or set if this tab is selected. A selected tab will have visual differences to show that it is selected.
+        /// Get or set if this tab is displayed as selected. A selected tab will have visual differences to show that it is selected.
         /// </summary>
+        /// <remarks>
+        /// This will only change the visual appearance of this TabDisplayItem, this does not change the actual selection or affect any logic.
+        /// Use other methods, such as the <c>Select</c> method in <see cref="TabControl.Items"/> to actually select a tab in a TabControl.
+        /// </remarks>
         public bool IsSelected
         {
             get { return (bool)GetValue(IsSelectedProperty); }
-            internal protected set { SetValue(IsSelectedProperty, value); }
+            set { SetValue(IsSelectedProperty, value); }
         }
 
         private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -408,7 +406,8 @@ namespace SolidShineUi.Utils
             new PropertyMetadata(null, new PropertyChangedCallback(OnInternalTabItemChanged)));
 
         /// <summary>
-        /// The TabItem that this TabDisplayItem is representing. It is not advisable to change this property after the control is loaded; instead, just create a new TabDisplayItem.
+        /// The TabItem that this TabDisplayItem is representing. It is not advisable to change this property after the control is loaded; 
+        /// instead, just create a new TabDisplayItem.
         /// </summary>
         public TabItem TabItem
         {
@@ -555,9 +554,10 @@ namespace SolidShineUi.Utils
                 s.InternalParentChanged?.Invoke(s, e);
             }
         }
+
         private void tdi_InternalParentChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ParentTabControl?.SetupTabDisplay(this);
+            ParentTabControl?.RegisterTabDisplayItem(this);
         }
 
         #endregion
@@ -821,10 +821,11 @@ namespace SolidShineUi.Utils
 
         #region Drag and Drop
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the <see cref="AllowDragDrop"/> property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the tab can be dragged and dropped.
@@ -835,10 +836,11 @@ namespace SolidShineUi.Utils
             set { SetValue(AllowDragDropProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the <see cref="AllowDataDragDrop"/> property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty AllowDataDragDropProperty = DependencyProperty.Register("AllowDataDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if data can be dropped onto this TabDisplayItem.
@@ -1078,9 +1080,6 @@ namespace SolidShineUi.Utils
         {
             SourceTabItem = sourceTabItem;
             DroppedTabItem = droppedTabItem;
-#pragma warning disable CS0618 // Type or member is obsolete
-            Before = before;
-#pragma warning restore CS0618 // Type or member is obsolete
             PlaceBefore = before;
         }
 
@@ -1095,15 +1094,69 @@ namespace SolidShineUi.Utils
         public TabItem DroppedTabItem { get; private set; }
 
         /// <summary>
-        /// Get whether the dropped TabItem should be put before or after the source TabItem. 
-        /// (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in the future.)
-        /// </summary>
-        [Obsolete("Please use the PlaceBefore property instead going forward. This property will be removed in a future version.", false)]
-        public bool Before { get; private set; }
-
-        /// <summary>
         /// Get whether the dropped TabItem should be put before or after the source TabItem.
         /// </summary>
         public bool PlaceBefore { get; private set; }
+    }
+
+    /// <summary>
+    /// A delegate to be used with events regarding dropping a TabItem into a TabControl.
+    /// </summary>
+    /// <param name="sender">The object where the event was raised.</param>
+    /// <param name="e">The event arguments associated with this event.</param>
+    public delegate void TabItemDropEventHandler(object sender, TabItemDropEventArgs e);
+
+
+    /// <summary>
+    /// An interface for a control that can be displayed within a <see cref="TabControl"/>.
+    /// </summary>
+    /// <remarks>
+    /// This should be used for when you want to create your own appearance and template for a <see cref="TabControl"/>,
+    /// and want to create your own control for visualizing tabs, rather than using the built-in <see cref="TabDisplayItem"/>.
+    /// </remarks>
+    public interface ITabDisplayItem
+    {
+
+        /// <summary>
+        /// The TabItem that this TabDisplayItem is representing.
+        /// </summary>
+        TabItem TabItem { get; }
+
+        /// <summary>
+        /// Get or set if this tab is displayed as selected. A selected tab will have visual differences to show that it is selected.
+        /// </summary>
+        /// <remarks>
+        /// This will only change the visual appearance of this TabDisplayItem, this does not change the actual selection or affect any logic.
+        /// Use other methods, such as the <c>Select</c> method in <see cref="TabControl.Items"/> to actually select a tab in a TabControl.
+        /// </remarks>
+        bool IsSelected { get; set; }
+
+
+        /// <summary>
+        /// The minimum width of the tab display item.
+        /// </summary>
+        double MinWidth { get; set; }
+
+        /// <summary>
+        /// Get or set if this tab display item can be selected.
+        /// </summary>
+        bool CanSelect { get; set; }
+
+        /// <summary>
+        /// Raised when the Close button is clicked, and this tab wants to be closed.
+        /// </summary>
+        event EventHandler RequestClose;
+        /// <summary>
+        /// Raised when the control is clicked.
+        /// </summary>
+        event EventHandler Click;
+        /// <summary>
+        /// Raised when the control is right-clicked.
+        /// </summary>
+        event EventHandler RightClick;
+        /// <summary>
+        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
+        /// </summary>
+        event TabItemDropEventHandler TabItemDrop;
     }
 }
