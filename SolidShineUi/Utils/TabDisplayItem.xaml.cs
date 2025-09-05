@@ -29,7 +29,7 @@ namespace SolidShineUi.Utils
             //}
             //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-            //border.Background = IsSelected ? SelectedTabBackground : Background;
+            // border.Background = IsSelected ? SelectedTabBackground : Background;
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -58,7 +58,7 @@ namespace SolidShineUi.Utils
             //}
             //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-            //border.Background = IsSelected ? SelectedTabBackground : Background;
+            // border.Background = IsSelected ? SelectedTabBackground : Background;
 
             //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
             //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
@@ -67,6 +67,8 @@ namespace SolidShineUi.Utils
 
             InternalParentChanged += tdi_InternalParentChanged;
             InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
+            InternalShowTabsOnBottomChanged += tdi_InternalShowTabsOnBottomChanged;
+            InternalTabItemChanged += tdi_InternalTabItemChanged;
             InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
@@ -148,11 +150,19 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabDisplayItem),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), OnInternalTabBorderBrushChanged));
+
+        private static void OnInternalTabBorderBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TabDisplayItem s)
+            {
+                s.InternalTabBorderBrushChanged();
+            }
+        }
 
         private void InternalTabBorderBrushChanged()
         {
-            //if (highlighting)
+            //if (IsHighlighted)
             //{
             //    //border.Background = HighlightBrush;
             //    border.BorderBrush = BorderHighlightBrush;
@@ -269,6 +279,7 @@ namespace SolidShineUi.Utils
 #endif
         {
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
+            // border.Background = IsSelected ? SelectedTabBackground : Background;
         }
 
         //#region Icon
@@ -381,7 +392,7 @@ namespace SolidShineUi.Utils
         private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-            //border.Background = IsSelected ? SelectedTabBackground : Background;
+            // border.Background = IsSelected ? SelectedTabBackground : Background;
         }
 
 //#if NETCOREAPP
@@ -625,7 +636,7 @@ namespace SolidShineUi.Utils
                 CloseBrush = cs.ForegroundColor.ToBrush();
             }
 
-            //if (highlighting)
+            //if (IsHighlighted)
             //{
             //    border.Background = HighlightBrush;
             //    border.BorderBrush = BorderHighlightBrush;
@@ -733,6 +744,7 @@ namespace SolidShineUi.Utils
 
         #region Focus Events
 
+        // use IsHighlighted instead
         // bool highlighting = false;
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
@@ -822,7 +834,7 @@ namespace SolidShineUi.Utils
         #region Drag and Drop
 
         /// <summary>
-        /// A dependency property object backing the <see cref="AllowDragDrop"/> property. See the property itself for more details.
+        /// A dependency property object backing the related property. See <see cref="AllowDragDrop"/> for more details.
         /// </summary>
         public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
@@ -837,7 +849,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// A dependency property object backing the <see cref="AllowDataDragDrop"/> property. See the property itself for more details.
+        /// A dependency property object backing the related property. See <see cref="AllowDataDragDrop"/> for more details.
         /// </summary>
         public static readonly DependencyProperty AllowDataDragDropProperty = DependencyProperty.Register("AllowDataDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
