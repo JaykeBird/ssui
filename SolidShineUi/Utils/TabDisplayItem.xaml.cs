@@ -23,24 +23,7 @@ namespace SolidShineUi.Utils
             InitializeComponent();
             //TabItem = new TabItem();
 
-            //if (tab.Icon != null)
-            //{
-            //    imgIcon.Source = tab.Icon;
-            //}
-            //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-            // border.Background = IsSelected ? SelectedTabBackground : Background;
-
-            //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
-            //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
-
-            //tab.IsSelectedChanged += tab_IsSelectedChanged;
-
-            InternalParentChanged += tdi_InternalParentChanged;
-            InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
-            InternalShowTabsOnBottomChanged += tdi_InternalShowTabsOnBottomChanged;
-            InternalTabItemChanged += tdi_InternalTabItemChanged;
-            InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
         /// <summary>
@@ -52,24 +35,7 @@ namespace SolidShineUi.Utils
             InitializeComponent();
             TabItem = tab;
 
-            //if (tab.Icon != null)
-            //{
-            //    imgIcon.Source = tab.Icon;
-            //}
-            //lblTitle.Text = tab.Title;
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
-            // border.Background = IsSelected ? SelectedTabBackground : Background;
-
-            //btnClose.Visibility = tab.CanClose ? Visibility.Visible : Visibility.Collapsed;
-            //colClose.Width = tab.CanClose ? new GridLength(18) : new GridLength(0);
-
-            //tab.IsSelectedChanged += tab_IsSelectedChanged;
-
-            InternalParentChanged += tdi_InternalParentChanged;
-            InternalIsSelectedChanged += tdi_InternalIsSelectedChanged;
-            InternalShowTabsOnBottomChanged += tdi_InternalShowTabsOnBottomChanged;
-            InternalTabItemChanged += tdi_InternalTabItemChanged;
-            InternalTabBackgroundChanged += tdi_InternalTabBackgroundChanged;
         }
 
         private void control_Loaded(object sender, RoutedEventArgs e)
@@ -150,17 +116,9 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabDisplayItem),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), OnInternalTabBorderBrushChanged));
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), (d, e) => d.PerformAs<TabDisplayItem>(o => o.OnTabBorderBrushChanged(o, e))));
 
-        private static void OnInternalTabBorderBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TabDisplayItem s)
-            {
-                s.InternalTabBorderBrushChanged();
-            }
-        }
-
-        private void InternalTabBorderBrushChanged()
+        private void OnTabBorderBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //if (IsHighlighted)
             //{
@@ -243,29 +201,17 @@ namespace SolidShineUi.Utils
         /// </summary>
         public static readonly DependencyProperty TabBackgroundProperty = DependencyProperty.Register(
             "TabBackground", typeof(Brush), typeof(TabDisplayItem),
-            new PropertyMetadata(new SolidColorBrush(Colors.Transparent), new PropertyChangedCallback(OnInternalTabBackgroundChanged)));
+            new PropertyMetadata(new SolidColorBrush(Colors.Transparent), (d, e) => d.PerformAs<TabDisplayItem>(s => s.OnTabBackgroundChanged(s, e))));
 
         /// <summary>
         /// Get or set the brush used for the custom background of this tab. Taken from <see cref="TabItem.TabBackground"/>.
         /// </summary>
         public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
-        private static void OnInternalTabBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TabDisplayItem s)
-            {
-                s.InternalTabBackgroundChanged?.Invoke(s, e);
-            }
-        }
-        private void tdi_InternalTabBackgroundChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnTabBackgroundChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             
         }
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalTabBackgroundChanged;
         #endregion
 
         private Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
@@ -361,7 +307,7 @@ namespace SolidShineUi.Utils
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(TabDisplayItem),
-            new PropertyMetadata(false, OnIsSelectedChanged));
+            new PropertyMetadata(false, (d, e) => d.PerformAs<TabDisplayItem>(i => i.OnIsSelectedChanged(i, e))));
 
         /// <summary>
         /// Get or set if this tab is displayed as selected. A selected tab will have visual differences to show that it is selected.
@@ -376,20 +322,7 @@ namespace SolidShineUi.Utils
             set { SetValue(IsSelectedProperty, value); }
         }
 
-        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TabDisplayItem i)
-            {
-                i.InternalIsSelectedChanged?.Invoke(i, e);
-            }
-        }
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalIsSelectedChanged;
-
-        private void tdi_InternalIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             border.BorderThickness = IsSelected ? TabBorderThickSelected : new Thickness(1, 1, 1, 1);
             // border.Background = IsSelected ? SelectedTabBackground : Background;
@@ -414,7 +347,7 @@ namespace SolidShineUi.Utils
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty TabItemProperty = DependencyProperty.Register("TabItem", typeof(TabItem), typeof(TabDisplayItem),
-            new PropertyMetadata(null, new PropertyChangedCallback(OnInternalTabItemChanged)));
+            new PropertyMetadata(null, (d, e) => d.PerformAs<TabDisplayItem>(s => s.OnTabItemChanged(s, e))));
 
         /// <summary>
         /// The TabItem that this TabDisplayItem is representing. It is not advisable to change this property after the control is loaded; 
@@ -426,49 +359,37 @@ namespace SolidShineUi.Utils
             set { SetValue(TabItemProperty, value); }
         }
 
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-#if NETCOREAPP
-        protected event DependencyPropertyChangedEventHandler? InternalTabItemChanged;
-#else
-        protected event DependencyPropertyChangedEventHandler InternalTabItemChanged;
-#endif
-
-        private static void OnInternalTabItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void OnTabItemChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TabDisplayItem s)
+            if (e.NewValue is TabItem nti)
             {
-                s.InternalTabItemChanged?.Invoke(s, e);
+                nti.RequestTabClosing += TabItem_TabClosing;
+                nti.BringIntoViewRequested += TabItem_BringIntoViewRequested;
             }
-        }
 
-        private void tdi_InternalTabItemChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (TabItem != null)
+            if (e.OldValue is TabItem ti)
             {
-                TabItem.RequestTabClosing += TabItem_InternalTabClosing;
-                TabItem.BringIntoViewRequested += TabItem_InternalBringIntoViewRequested;
+                ti.RequestTabClosing -= TabItem_TabClosing;
+                ti.BringIntoViewRequested -= TabItem_BringIntoViewRequested;
             }
         }
 
 #if NETCOREAPP
-        private void TabItem_InternalBringIntoViewRequested(object? sender, EventArgs e)
+        private void TabItem_BringIntoViewRequested(object? sender, EventArgs e)
 #else
-        private void TabItem_InternalBringIntoViewRequested(object sender, EventArgs e)
+        private void TabItem_BringIntoViewRequested(object sender, EventArgs e)
 #endif
         {
             BringIntoView();
         }
 
 #if NETCOREAPP
-        private void TabItem_InternalTabClosing(object? sender, EventArgs e)
+        private void TabItem_TabClosing(object? sender, EventArgs e)
 #else
-        private void TabItem_InternalTabClosing(object sender, EventArgs e)
+        private void TabItem_TabClosing(object sender, EventArgs e)
 #endif
         {
             RequestClose?.Invoke(this, e);
-            //throw new NotImplementedException();
         }
         #endregion
 
@@ -478,7 +399,7 @@ namespace SolidShineUi.Utils
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty ShowTabsOnBottomProperty = DependencyProperty.Register("ShowTabsOnBottom", typeof(bool), typeof(TabDisplayItem),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnInternalShowTabsOnBottomChanged)));
+            new PropertyMetadata(false, (d, e) => d.PerformAs<TabDisplayItem>(s => s.OnShowTabsOnBottomChanged(s, e))));
 
         /// <summary>
         /// Get or set if the parent tab control has its ShowTabsOnBottom property set.
@@ -492,23 +413,7 @@ namespace SolidShineUi.Utils
             set { SetValue(ShowTabsOnBottomProperty, value); }
         }
 
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-#if NETCOREAPP
-        protected event DependencyPropertyChangedEventHandler? InternalShowTabsOnBottomChanged;
-#else
-        protected event DependencyPropertyChangedEventHandler InternalShowTabsOnBottomChanged;
-#endif
-
-        private static void OnInternalShowTabsOnBottomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TabDisplayItem s)
-            {
-                s.InternalShowTabsOnBottomChanged?.Invoke(s, e);
-            }
-        }
-        private void tdi_InternalShowTabsOnBottomChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnShowTabsOnBottomChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (ShowTabsOnBottom)
             {
@@ -542,7 +447,7 @@ namespace SolidShineUi.Utils
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty ParentTabControlProperty = DependencyProperty.Register("ParentTabControl", typeof(TabControl), typeof(TabDisplayItem),
-            new PropertyMetadata(null, OnInternalParentChanged));
+            new PropertyMetadata(null, (d, e) => d.PerformAs<TabDisplayItem>(s => s.OnParentChanged(s, e))));
 
         /// <summary>
         /// Get or set the parent TabControl item that holds this tab item.
@@ -553,20 +458,7 @@ namespace SolidShineUi.Utils
             set { SetValue(ParentTabControlProperty, value); }
         }
 
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalParentChanged;
-
-        private static void OnInternalParentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TabDisplayItem s)
-            {
-                s.InternalParentChanged?.Invoke(s, e);
-            }
-        }
-
-        private void tdi_InternalParentChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnParentChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ParentTabControl?.RegisterTabDisplayItem(this);
         }
@@ -580,14 +472,14 @@ namespace SolidShineUi.Utils
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// Perform an action when the ColorScheme property has changed.
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is ColorScheme cs)
             {
