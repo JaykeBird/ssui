@@ -42,7 +42,27 @@ namespace SolidShineUi
         /// <param name="cs">the ColorScheme object to adapt from</param>
         public SsuiTheme(ColorScheme cs)
         {
+            // TODO: detect if it's a high contrast theme
+            // if so, bring out a SsuiTheme high contrast theme
 
+            BaseBackground = cs.BackgroundColor.ToBrush();
+            BorderBrush = cs.BorderColor.ToBrush();
+            CheckBrush = cs.ForegroundColor.ToBrush();
+            ClickBrush = cs.SecondHighlightColor.ToBrush();
+            ControlBackground = cs.SecondaryColor.ToBrush();
+            ControlPopBrush = cs.SelectionColor.ToBrush();
+            ControlSatBackground = cs.MainColor.ToBrush();
+            DisabledBackground = cs.LightDisabledColor.ToBrush();
+            DisabledBorderBrush = cs.DarkDisabledColor.ToBrush();
+            DisabledForeground = cs.DarkDisabledColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+            HighlightBrush = cs.ThirdHighlightColor.ToBrush();
+            HighlightBorderBrush = cs.HighlightColor.ToBrush();
+            HighlightForeground = cs.ForegroundColor.ToBrush();
+            LightBorderBrush = cs.HighlightColor.ToBrush();
+            PanelBackground = cs.LightBackgroundColor.ToBrush();
+            SelectedBackgroundBrush = cs.ThirdHighlightColor.ToBrush();
+            SelectedBorderBrush = cs.SelectionColor.ToBrush();
         }
 
         void CreatePalette(Color baseColor)
@@ -76,7 +96,14 @@ namespace SolidShineUi
             //WindowInactiveColor = baseColor;
             HighlightBorderBrush = AddValue(h, s, v, vc1).ToBrush();
             SelectedBorderBrush = AddValue(h, s, v, vc2).ToBrush();
+            ControlPopBrush = AddValue(h, s, v, vc2).ToBrush();
             BorderBrush = AddValue(h, s, v, vc3).ToBrush();
+            LightBorderBrush = AddValue(h, s, v, vc1).ToBrush();
+
+            // for the disabled brushes, we'll use the default values of the dependency properties
+
+            // next, we'll create a couple brushes by making sure the saturation is within a few bounds
+            // and then using either the actual saturation or the bounded value for these brushes
 
             if (s > ssc)
             {
@@ -98,30 +125,45 @@ namespace SolidShineUi
 
             if (s > sec)
             {
-                HighlightBrush = AddValue(h, sec, v, t3).ToBrush(); // 6 - Second Highlight Color
+                SelectedBackgroundBrush = AddValue(h, sec, v, t3).ToBrush(); // 6 - Second Highlight Color
+                ClickBrush = AddValue(h, sec, v, t3).ToBrush();
             }
             else
             {
-                HighlightBrush = AddValue(h, s, v, t3).ToBrush(); // 6
+                SelectedBackgroundBrush = AddValue(h, s, v, t3).ToBrush(); // 6
+                ClickBrush = AddValue(h, s, v, t3).ToBrush();
             }
 
             if (s > stc)
             {
-                SelectedBackgroundBrush = AddValue(h, stc, v, t3).ToBrush(); // 7 - Menu Highlight Color
+                HighlightBrush = AddValue(h, stc, v, t3).ToBrush(); // 7 - Menu Highlight Color
             }
             else
             {
-                SelectedBackgroundBrush = AddValue(h, s, v, t3).ToBrush(); // 7
+                HighlightBrush = AddValue(h, s, v, t3).ToBrush(); // 7
             }
 
             if (s > sbc)
             {
                 PanelBackground = AddValue(h, sbc, v, t4).ToBrush(); // 8 - Menu Background Color
+
             }
             else
             {
                 PanelBackground = AddValue(h, s, v, t4).ToBrush(); // 8
             }
+
+            // finally, we'll want to check the foreground against the base background,
+            float bBase = GetColorBrightness(((SolidColorBrush)BaseBackground).Color);
+            Foreground = (bBase < 0.55 ? Colors.White : Colors.Black).ToBrush();
+
+            // the highlight foreground against the highlight brush,
+            float bHigh = GetColorBrightness(((SolidColorBrush)HighlightBrush).Color);
+            HighlightForeground = (bHigh < 0.55 ? Colors.White : Colors.Black).ToBrush();
+
+            // and the check brush against the panel background
+            float bPane = GetColorBrightness(((SolidColorBrush)PanelBackground).Color);
+            CheckBrush = (bPane < 0.55 ? Colors.White : Colors.Black).ToBrush();
 
             Color AddValue(double ch, double cs, double cv, double add)
             {
@@ -139,6 +181,12 @@ namespace SolidShineUi
                 }
 
                 return ColorsHelper.CreateFromHSV(ch, cs, cv);
+            }
+
+            // from https://stackoverflow.com/a/50541212/2987285
+            float GetColorBrightness(Color c)
+            {
+                return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f;
             }
         }
 
@@ -164,7 +212,7 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
         /// <summary>
-        /// Get or set the brush to use for the background of an entire underlying surface, pane, window, or area, or for
+        /// Get or set the brush to use for the background of an entire underlying surface, pane, window, or area. This can also be used for
         /// the background of controls that should neither "pop out" or "sink in" to the underlying background.
         /// </summary>
         public Brush BaseBackground { get => (Brush)GetValue(BaseBackgroundProperty); set => SetValue(BaseBackgroundProperty, value); }
@@ -213,7 +261,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="DisabledBackground"/>. See the related property for details.</summary>
         public static DependencyProperty DisabledBackgroundProperty
             = DependencyProperty.Register(nameof(DisabledBackground), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("F5F5F5")));
 
         /// <summary>
         /// Get or set the brush to use for the borders around the edges of disabled SSUI-themed controls.
@@ -223,7 +271,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="DisabledBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty DisabledBorderBrushProperty
             = DependencyProperty.Register(nameof(DisabledBorderBrush), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("AAAAAF")));
 
         /// <summary>
         /// Get or set the brush to use for the foreground elements of disabled SSUI-themed controls.
@@ -233,7 +281,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="DisabledForeground"/>. See the related property for details.</summary>
         public static DependencyProperty DisabledForegroundProperty
             = DependencyProperty.Register(nameof(DisabledForeground), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("AAAAAF")));
 
         /// <summary>
         /// Get or set the brush to use for when a SSUI-themed control is highlighted (e.g. mouse over, keyboard focus).
@@ -348,7 +396,9 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(new CornerRadius(0)));
 
-
+        /// <summary>
+        /// Get or set the variation to use for image-based icons in various SSUI-themed controls, such as <see cref="PropertyList.PropertyList"/>.
+        /// </summary>
         public IconVariation IconVariation { get => (IconVariation)GetValue(IconVariationProperty); set => SetValue(IconVariationProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="IconVariation"/>. See the related property for details.</summary>
@@ -386,7 +436,9 @@ namespace SolidShineUi
         /// <remarks>For best results, use a color that is not too dark or too light.</remarks>
         public SsuiAppTheme(Color baseColor) : base(baseColor)
         {
-
+            CreateWindowPalette(baseColor);
+            AccentTheme = new SsuiTheme(baseColor);
+            SubitemTheme = new SsuiTheme(baseColor);
         }
 
         /// <summary>
@@ -400,7 +452,9 @@ namespace SolidShineUi
         /// </remarks>
         public SsuiAppTheme(Color baseColor, Color accentColor) : base(baseColor)
         {
-
+            CreateWindowPalette(baseColor);
+            AccentTheme = new SsuiTheme(accentColor);
+            SubitemTheme = new SsuiTheme(baseColor);
         }
 
         /// <summary>
@@ -418,7 +472,9 @@ namespace SolidShineUi
         /// </remarks>
         public SsuiAppTheme(Color baseColor, Color accentColor, Color subItemColor) : base(baseColor)
         {
-
+            CreateWindowPalette(baseColor);
+            AccentTheme = new SsuiTheme(accentColor);
+            SubitemTheme = new SsuiTheme(subItemColor);
         }
 
         /// <summary>
@@ -427,7 +483,85 @@ namespace SolidShineUi
         /// <param name="cs">the ColorScheme object to adapt from</param>
         public SsuiAppTheme(ColorScheme cs) : base(cs)
         {
+            WindowTitleBackground = cs.WindowTitleBarColor.ToBrush();
+            WindowInactiveBackground = cs.WindowInactiveColor.ToBrush();
+            WindowTitleForeground = cs.WindowTitleBarTextColor.ToBrush();
+            WindowCaptionsBackground = cs.WindowTitleBarColor.ToBrush();
+            WindowCaptionsForeground = cs.WindowTitleBarTextColor.ToBrush();
+            WindowCaptionsHighlight = cs.HighlightColor.ToBrush();
+            WindowCaptionsClickBrush = cs.SelectionColor.ToBrush();
+            WindowCaptionsHighlightForeground = cs.WindowTitleBarTextColor.ToBrush();
+            WindowBackground = cs.BackgroundColor.ToBrush();
 
+            AccentTheme = new SsuiTheme(cs.AccentMainColor);
+            SubitemTheme = new SsuiTheme(cs.MainColor);
+        }
+
+        void CreateWindowPalette(Color baseColor)
+        {
+            // this palette building system works by pretty much taking the HSV values of the base color
+            // and making alternate colors by changing the value by various amounts
+            // and then creating clamps/bounds on saturation to prevent colors going too light
+
+            ColorsHelper.ToHSV(baseColor, out double h, out double s, out double v);
+
+            // the amount to decrease the base color's value by for creating some other key colors
+            double vc1 = -0.12;
+            double vc2 = -0.2;
+
+            double t2 = 0.45;
+
+            // some saturation bounds to prevent colors becoming too light or weird
+            double sc = 0.059;
+
+            WindowTitleBackground = baseColor.ToBrush();
+            WindowCaptionsBackground = baseColor.ToBrush();
+            WindowInactiveBackground = baseColor.ToBrush();
+            WindowCaptionsHighlight = AddValue(h, s, v, vc1).ToBrush();
+            WindowCaptionsClickBrush = AddValue(h, s, v, vc2).ToBrush();
+
+            // finally, we'll want to check the foreground against the base background,
+            float bBase = GetColorBrightness(baseColor);
+            Color fore = (bBase < 0.55 ? Colors.White : Colors.Black);
+
+            WindowTitleForeground = fore.ToBrush();
+            WindowCaptionsForeground = fore.ToBrush();
+            WindowCaptionsHighlightForeground = fore.ToBrush();
+
+            // next, we'll create a couple brushes by making sure the saturation is within a few bounds
+            // and then using either the actual saturation or the bounded value for these brushes
+
+            if (s > sc)
+            {
+                WindowBackground = AddValue(h, sc, v, t2).ToBrush(); // 5 - Background Color
+            }
+            else
+            {
+                WindowBackground = AddValue(h, s, v, t2).ToBrush(); // 5
+            }
+
+            Color AddValue(double ch, double cs, double cv, double add)
+            {
+                if (cv + add < 0)
+                {
+                    cv = 0;
+                }
+                else if (cv + add > 1)
+                {
+                    cv = 1;
+                }
+                else
+                {
+                    cv += add;
+                }
+
+                return ColorsHelper.CreateFromHSV(ch, cs, cv);
+            }
+
+            float GetColorBrightness(Color c)
+            {
+                return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f;
+            }
         }
 
         /// <summary>
@@ -438,7 +572,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="WindowTitleBackground"/>. See the related property for details.</summary>
         public static DependencyProperty WindowTitleBackgroundProperty
             = DependencyProperty.Register(nameof(WindowTitleBackground), typeof(Brush), typeof(SsuiAppTheme),
-            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the foreground elements of the title bar area of a SSUI-themed window. (i.e. the window title text).
@@ -451,6 +585,17 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>
+        /// Get or set the brush to use for the background of the title bar area of a SSUI-themed window while it is inactive (not focused).
+        /// </summary>
+        public Brush WindowInactiveBackground { get => (Brush)GetValue(WindowInactiveBackgroundProperty); set => SetValue(WindowInactiveBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="WindowInactiveBackground"/>. See the related property for details.</summary>
+        public static DependencyProperty WindowInactiveBackgroundProperty
+            = DependencyProperty.Register(nameof(WindowInactiveBackground), typeof(Brush), typeof(SsuiAppTheme),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+
+        /// <summary>
         /// Get or set the brush to use for the background of the window caption controls in the top corner of a SSUI-themed window.
         /// </summary>
         public Brush WindowCaptionsBackground { get => (Brush)GetValue(WindowCaptionsBackgroundProperty); set => SetValue(WindowCaptionsBackgroundProperty, value); }
@@ -458,7 +603,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="WindowCaptionsBackground"/>. See the related property for details.</summary>
         public static DependencyProperty WindowCaptionsBackgroundProperty
             = DependencyProperty.Register(nameof(WindowCaptionsBackground), typeof(Brush), typeof(SsuiAppTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the symbols of the window caption controls in the top corner of a SSUI-themed window.
@@ -478,7 +623,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="WindowCaptionsHighlight"/>. See the related property for details.</summary>
         public static DependencyProperty WindowCaptionsHighlightProperty
             = DependencyProperty.Register(nameof(WindowCaptionsHighlight), typeof(Brush), typeof(SsuiAppTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the symbols of a window caption control while it is highlighted (e.g. mouse over, keyboard focus).
@@ -498,7 +643,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="WindowCaptionsClickBrush"/>. See the related property for details.</summary>
         public static DependencyProperty WindowCaptionsClickBrushProperty
             = DependencyProperty.Register(nameof(WindowCaptionsClickBrush), typeof(Brush), typeof(SsuiAppTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the background of the content area of a SSUI-themed window.
@@ -508,7 +653,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="WindowBackground"/>. See the related property for details.</summary>
         public static DependencyProperty WindowBackgroundProperty
             = DependencyProperty.Register(nameof(WindowBackground), typeof(Brush), typeof(SsuiAppTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
         /// <summary>
         /// Get or set the theme to use for controls that are set to use accent brushes.
