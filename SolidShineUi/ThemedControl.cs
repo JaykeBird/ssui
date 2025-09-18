@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,8 +20,8 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ThemedControl), new FrameworkPropertyMetadata(typeof(ThemedControl)));
         }
 
-        DependencyPropertyDescriptor ddd;
-        EventHandler themeChange;
+        //DependencyPropertyDescriptor ddd;
+        //EventHandler themeChange;
 
         /// <summary>
         /// Create a ThemedControl.
@@ -33,18 +32,18 @@ namespace SolidShineUi
             //
             // according to this, this might be a memory leak issue, so I've added on a finalizer to hopefully counteract that
             // https://agsmith.wordpress.com/2008/04/07/propertydescriptor-addvaluechanged-alternative/
-            ddd = DependencyPropertyDescriptor.FromProperty(SsuiThemeProperty, typeof(ThemedControl));
-            themeChange = (s, e) => OnSsuiThemeChanged();
-            ddd.AddValueChanged(this, themeChange);
+            //ddd = DependencyPropertyDescriptor.FromProperty(SsuiThemeProperty, typeof(ThemedControl));
+            //themeChange = (s, e) => ApplyAndRaiseTheme();
+            //ddd.AddValueChanged(this, themeChange);
         }
 
-        /// <summary>
-        /// Finalizer for ThemedControl.
-        /// </summary>
-        ~ThemedControl()
-        {
-            ddd.RemoveValueChanged(this, themeChange);
-        }
+        ///// <summary>
+        ///// Finalizer for ThemedControl.
+        ///// </summary>
+        //~ThemedControl()
+        //{
+        //    ddd.RemoveValueChanged(this, themeChange);
+        //}
 
         #region SsuiTheme Property
 
@@ -60,7 +59,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SsuiThemeProperty
             = DependencyProperty.RegisterAttached(nameof(SsuiTheme), typeof(SsuiTheme), typeof(ThemedControl),
-            new FrameworkPropertyMetadata(new SsuiTheme(), FrameworkPropertyMetadataOptions.Inherits));
+            new FrameworkPropertyMetadata(new SsuiTheme(), FrameworkPropertyMetadataOptions.Inherits, OnSsuiThemeChanged));
 
         /// <summary>
         /// Get the <see cref="SsuiTheme"/> value applied to the specified framework element.
@@ -99,12 +98,27 @@ namespace SolidShineUi
             remove { RemoveHandler(SsuiThemeChangedEvent, value); }
         }
 
-        private void OnSsuiThemeChanged()
+        private static void OnSsuiThemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is ThemedControl tc)
+            {
+                tc.ApplyAndRaiseTheme();
+            }
+            else if (sender is ThemedContentControl tcc)
+            {
+                //// update the SsuiTheme property for the ThemedContentControl
+                //tcc.SsuiTheme = (SsuiTheme)e.NewValue;
+                tcc.ApplyAndRaiseTheme();
+            }
+        }
+
+        /// <summary>
+        /// Update the control's appearance by using <see cref="ApplySsuiTheme(SsuiTheme)"/> and then raise the <see cref="SsuiThemeChanged"/> event.
+        /// </summary>
+        internal protected void ApplyAndRaiseTheme()
         {
             ApplySsuiTheme(SsuiTheme);
 
-            //RoutedPropertyChangedEventArgs<SsuiTheme> re = new RoutedPropertyChangedEventArgs<SsuiTheme>
-            //    ((SsuiTheme)e.OldValue, (SsuiTheme)e.NewValue, SsuiThemeChangedEvent);
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeChangedEvent, this);
             RaiseEvent(re);
         }
@@ -315,25 +329,25 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SsuiThemeProperty = ThemedControl.SsuiThemeProperty.AddOwner(typeof(ThemedContentControl));
 
-        /// <summary>
-        /// Get the <see cref="SsuiTheme"/> value applied to the specified framework element.
-        /// </summary>
-        /// <param name="tc">the element to get the <see cref="ThemedControl.SsuiThemeProperty"/> value of</param>
-        /// <returns></returns>
-        public static SsuiTheme GetSsuiThemeProperty(FrameworkElement tc)
-        {
-            return (SsuiTheme)tc.GetValue(ThemedControl.SsuiThemeProperty);
-        }
+        ///// <summary>
+        ///// Get the <see cref="SsuiTheme"/> value applied to the specified framework element.
+        ///// </summary>
+        ///// <param name="tc">the element to get the <see cref="ThemedControl.SsuiThemeProperty"/> value of</param>
+        ///// <returns></returns>
+        //public static SsuiTheme GetSsuiThemeProperty(FrameworkElement tc)
+        //{
+        //    return (SsuiTheme)tc.GetValue(ThemedControl.SsuiThemeProperty);
+        //}
 
-        /// <summary>
-        /// Set the <see cref="SsuiTheme"/> value for a specified framework element.
-        /// </summary>
-        /// <param name="tc"></param>
-        /// <param name="value"></param>
-        public static void SetSsuiThemeProperty(FrameworkElement tc, SsuiTheme value)
-        {
-            tc.SetValue(ThemedControl.SsuiThemeProperty, value);
-        }
+        ///// <summary>
+        ///// Set the <see cref="SsuiTheme"/> value for a specified framework element.
+        ///// </summary>
+        ///// <param name="tc"></param>
+        ///// <param name="value"></param>
+        //public static void SetSsuiThemeProperty(FrameworkElement tc, SsuiTheme value)
+        //{
+        //    tc.SetValue(ThemedControl.SsuiThemeProperty, value);
+        //}
 
         /// <summary>
         /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
@@ -350,16 +364,16 @@ namespace SolidShineUi
             remove { RemoveHandler(SsuiThemeChangedEvent, value); }
         }
 
-        private void OnSsuiThemeChanged()
+        /// <summary>
+        /// Update the control's appearance by using <see cref="ApplySsuiTheme(SsuiTheme)"/> and then raise the <see cref="SsuiThemeChanged"/> event.
+        /// </summary>
+        protected internal void ApplyAndRaiseTheme()
         {
             ApplySsuiTheme(SsuiTheme);
 
-            //RoutedPropertyChangedEventArgs<SsuiTheme> re = new RoutedPropertyChangedEventArgs<SsuiTheme>
-            //    ((SsuiTheme)e.OldValue, (SsuiTheme)e.NewValue, SsuiThemeChangedEvent);
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeChangedEvent, this);
             RaiseEvent(re);
         }
-
 
         #region UseLightBorder
 
