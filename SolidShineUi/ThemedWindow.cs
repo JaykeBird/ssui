@@ -17,11 +17,13 @@ namespace SolidShineUi
     /// </remarks>
     public class ThemedWindow : Window
     {
-
+        /// <summary>
+        /// Create a ThemedWindow.
+        /// </summary>
         public ThemedWindow() : base()
         {
-
-            SetBinding(ThemedControl.SsuiThemeProperty, new Binding("SsuiTheme") { Source = this, Mode = BindingMode.OneWay });
+            // set a binding so that the attached property for this window will be updated whenever we change SsuiTheme
+            SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this, Mode = BindingMode.OneWay });
         }
 
         /// <summary>
@@ -80,7 +82,7 @@ namespace SolidShineUi
         /// Apply a <see cref="SsuiAppTheme"/> to this window. This applies a consistent appearance to this window and child controls.
         /// </summary>
         /// <param name="ssuiTheme">the theme value to apply</param>
-        public void ApplySsuiTheme(SsuiAppTheme ssuiTheme)
+        public virtual void ApplySsuiTheme(SsuiAppTheme ssuiTheme)
         {
             if (ssuiTheme != SsuiTheme)
             {

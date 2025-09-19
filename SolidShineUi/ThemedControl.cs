@@ -289,7 +289,7 @@ namespace SolidShineUi
         /// </exception>
         protected BindingExpressionBase ApplyBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
         {
-            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) || ssuiThemeProperty.OwnerType != typeof(SsuiAppTheme))
+            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && ssuiThemeProperty.OwnerType != typeof(SsuiAppTheme))
             {
                 throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
             }

@@ -14,7 +14,7 @@ namespace SolidShineUi
     /// A WPF window that has a custom, flat style and additional functionality.
     /// </summary>
     [Localizability(LocalizationCategory.None)]
-    public class FlatWindow : Window
+    public class FlatWindow : ThemedWindow
     {
         static FlatWindow()
         {
@@ -175,26 +175,57 @@ namespace SolidShineUi
                 return;
             }
 
-            if (cs.IsHighContrast)
-            {
-                HighContrastMode = true;
-                InactiveTextBrush = cs.WindowTitleBarTextColor.ToBrush();
-            }
-            else
-            {
-                InactiveTextBrush = ColorsHelper.CreateFromHex("#505050").ToBrush();
-            }
+            // instead, let's move everything on to the SsuiTheme
+            SsuiTheme = new SsuiAppTheme(cs);
 
-            Background = cs.WindowTitleBarColor.ToBrush();
-            InactiveBackground = cs.WindowInactiveColor.ToBrush();
-            CaptionButtonsBrush = cs.WindowTitleBarTextColor.ToBrush();
-            CaptionTextBrush = cs.WindowTitleBarTextColor.ToBrush();
-            BorderBrush = cs.BorderColor.ToBrush();
-            HighlightBrush = cs.HighlightColor.ToBrush();
-            SelectionBrush = cs.SelectionColor.ToBrush();
-            Foreground = cs.ForegroundColor.ToBrush();
-            ContentBackground = cs.BackgroundColor.ToBrush();
+            //if (cs.IsHighContrast)
+            //{
+            //    HighContrastMode = true;
+            //    InactiveTextBrush = cs.WindowTitleBarTextColor.ToBrush();
+            //}
+            //else
+            //{
+            //    InactiveTextBrush = ColorsHelper.CreateFromHex("#505050").ToBrush();
+            //}
+
+            //Background = cs.WindowTitleBarColor.ToBrush();
+            //InactiveBackground = cs.WindowInactiveColor.ToBrush();
+            //CaptionButtonsBrush = cs.WindowTitleBarTextColor.ToBrush();
+            //CaptionTextBrush = cs.WindowTitleBarTextColor.ToBrush();
+            //BorderBrush = cs.BorderColor.ToBrush();
+            //HighlightBrush = cs.HighlightColor.ToBrush();
+            //SelectionBrush = cs.SelectionColor.ToBrush();
+            //Foreground = cs.ForegroundColor.ToBrush();
+            //ContentBackground = cs.BackgroundColor.ToBrush();
         }
+
+        /// <inheritdoc/>
+        public override void ApplySsuiTheme(SsuiAppTheme ssuiTheme)
+        {
+            base.ApplySsuiTheme(ssuiTheme);
+
+            //if (ssuiTheme.IsHighContrast)
+            //{
+            //    HighContrastMode = true;
+            //    InactiveTextBrush = cs.WindowTitleBarTextColor.ToBrush();
+            //}
+            //else
+            //{
+            //    InactiveTextBrush = ColorsHelper.CreateFromHex("#505050").ToBrush();
+            //}
+
+            Background = ssuiTheme.WindowTitleBackground;
+            InactiveBackground = ssuiTheme.WindowInactiveBackground;
+            CaptionButtonsBrush = ssuiTheme.WindowCaptionsForeground;
+            CaptionTextBrush = ssuiTheme.WindowTitleForeground;
+            InactiveTextBrush = ssuiTheme.WindowTitleForeground;
+            BorderBrush = ssuiTheme.BorderBrush;
+            HighlightBrush = ssuiTheme.WindowCaptionsHighlight;
+            SelectionBrush = ssuiTheme.WindowCaptionsClickBrush;
+            Foreground = ssuiTheme.Foreground;
+            ContentBackground = ssuiTheme.WindowBackground;
+        }
+
         #endregion
 
         #region Caption Bar Appearance

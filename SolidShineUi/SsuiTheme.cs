@@ -261,7 +261,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="DisabledBackground"/>. See the related property for details.</summary>
         public static DependencyProperty DisabledBackgroundProperty
             = DependencyProperty.Register(nameof(DisabledBackground), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("F5F5F5")));
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("F5F5F5").ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the borders around the edges of disabled SSUI-themed controls.
@@ -271,7 +271,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="DisabledBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty DisabledBorderBrushProperty
             = DependencyProperty.Register(nameof(DisabledBorderBrush), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("AAAAAF")));
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("AAAAAF").ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the foreground elements of disabled SSUI-themed controls.
@@ -281,7 +281,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="DisabledForeground"/>. See the related property for details.</summary>
         public static DependencyProperty DisabledForegroundProperty
             = DependencyProperty.Register(nameof(DisabledForeground), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("AAAAAF")));
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("AAAAAF").ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for when a SSUI-themed control is highlighted (e.g. mouse over, keyboard focus).
