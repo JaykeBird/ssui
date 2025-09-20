@@ -215,11 +215,11 @@ namespace SolidShineUi
             //}
 
             Background = ssuiTheme.WindowTitleBackground;
-            InactiveBackground = ssuiTheme.WindowInactiveBackground;
-            CaptionButtonsBrush = ssuiTheme.WindowCaptionsForeground;
             CaptionTextBrush = ssuiTheme.WindowTitleForeground;
-            InactiveTextBrush = ssuiTheme.WindowTitleForeground;
+            InactiveBackground = ssuiTheme.WindowInactiveBackground;
+            InactiveTextBrush = ssuiTheme.WindowInactiveForeground;
             BorderBrush = ssuiTheme.BorderBrush;
+            CaptionButtonsBrush = ssuiTheme.WindowCaptionsForeground;
             HighlightBrush = ssuiTheme.WindowCaptionsHighlight;
             SelectionBrush = ssuiTheme.WindowCaptionsClickBrush;
             Foreground = ssuiTheme.Foreground;

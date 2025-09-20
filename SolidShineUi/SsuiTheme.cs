@@ -575,7 +575,7 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
 
         /// <summary>
-        /// Get or set the brush to use for the foreground elements of the title bar area of a SSUI-themed window. (i.e. the window title text).
+        /// Get or set the brush to use for the foreground elements of the title bar area of a SSUI-themed window. (e.g. the window title text).
         /// </summary>
         public Brush WindowTitleForeground { get => (Brush)GetValue(WindowTitleForegroundProperty); set => SetValue(WindowTitleForegroundProperty, value); }
 
@@ -592,7 +592,17 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="WindowInactiveBackground"/>. See the related property for details.</summary>
         public static DependencyProperty WindowInactiveBackgroundProperty
             = DependencyProperty.Register(nameof(WindowInactiveBackground), typeof(Brush), typeof(SsuiAppTheme),
-            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the foreground elements of the title bar area of a SSUI-themed window while it is inactive (not focused).
+        /// </summary>
+        public Brush WindowInactiveForeground { get => (Brush)GetValue(WindowInactiveForegroundProperty); set => SetValue(WindowInactiveForegroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="WindowInactiveForeground"/>. See the related property for details.</summary>
+        public static DependencyProperty WindowInactiveForegroundProperty
+            = DependencyProperty.Register(nameof(WindowInactiveForeground), typeof(Brush), typeof(SsuiAppTheme),
+            new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("#505050").ToBrush()));
 
 
         /// <summary>
