@@ -176,6 +176,7 @@ namespace SolidShineUi
             base.OnApplyTemplate();
 
             LoadTemplateItems();
+            UpdateUI(); // this will make sure the text box is primed with the current Value
         }
 
         bool itemsLoaded = false;

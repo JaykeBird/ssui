@@ -50,6 +50,14 @@ namespace SolidShineUi.Utils
         private void NewSpinnerBase_Loaded(object sender, RoutedEventArgs e)
         {
             // doesn't work in constructor, apparently
+            InternalValidateValue();
+        }
+
+        /// <summary>
+        /// Call <see cref="ValidateValue"/> without raising the changed event. This will also call <see cref="UpdateUI"/> and raise <see cref="ValueValidated"/>.
+        /// </summary>
+        protected void InternalValidateValue()
+        {
             _raiseChangedEvent = false;
             ValidateValue();
             _raiseChangedEvent = true;
@@ -954,7 +962,7 @@ namespace SolidShineUi.Utils
         public abstract TStep Step { get; set; }
 
         /// <summary>
-        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>.
+        /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>. This will also update the UI.
         /// </summary>
         protected override void ValidateValue()
         {
