@@ -301,7 +301,12 @@ namespace SolidShineUi
 
             buffer = new byte[length * 2];
 
-            stream.Read(buffer, 0, buffer.Length);
+            int actuallyRead = stream.Read(buffer, 0, buffer.Length);
+
+            if (buffer.Length != actuallyRead) // if the amount of data read from the stream isn't actually of size "length"
+            {
+                Array.Resize(ref buffer, actuallyRead);
+            }
 
             return Encoding.BigEndianUnicode.GetString(buffer);
         }
