@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.Utils
 {
@@ -196,7 +190,7 @@ namespace SolidShineUi.Utils
         /// <para/>
         /// This can be changed within the control by the user if <see cref="ShowMeasureTypeOptions"/> is set to <c>true</c>.
         /// </remarks>
-        [Category("Behavior")]
+        [Category("Common")]
         public RectEditMeasureType MeasureType { get => (RectEditMeasureType)GetValue(MeasureTypeProperty); set => SetValue(MeasureTypeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MeasureType"/>. See the related property for details.</summary>
@@ -391,6 +385,19 @@ namespace SolidShineUi.Utils
             {
                 return new Rect(new Point(nudPoint1X.Value, nudPoint1Y.Value), new Point(nudPoint2X.Value, nudPoint2Y.Value));
             }
+        }
+
+        /// <summary>
+        /// Get or set the current value displayed in the editor.
+        /// </summary>
+        /// <remarks>
+        /// Internally, this just calls <see cref="GetRect"/> and <see cref="LoadRect(Rect)"/>.
+        /// </remarks>
+        [Category("Common")]
+        public Rect Value
+        {
+            get => GetRect();
+            set => LoadRect(value);
         }
 
         #endregion
