@@ -86,8 +86,7 @@
                          Content="Show Property List" Margin="0,24,30,0" HorizontalAlignment="Right" Width="80" Height="24" VerticalAlignment="Top" />
         <Popup x:Name="popProps" Placement="Bottom" >
             <Border x:Name="border" BorderThickness="1" BorderBrush="{Binding ColorScheme.BorderColor, ElementName=userControl, Converter={StaticResource ctb}}" >
-                <pl:ExperimentalPropertyList x:Name="pl" ColorScheme="{Binding ColorScheme, ElementName=userControl}" 
-                                         ShowInheritedProperties="False" Height="400" />
+                <pl:PropertyList x:Name="pl" ColorScheme="{Binding ColorScheme, ElementName=userControl}" ShowInheritedProperties="False" Height="400" />
             </Border>
         </Popup>
     </Grid>
