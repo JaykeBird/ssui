@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -167,6 +168,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set if the "Measure by" combo box should be displayed at the top of the control.
         /// </summary>
+        [Category("Appearance")]
         public bool ShowMeasureTypeOptions { get => (bool)GetValue(ShowMeasureTypeOptionsProperty); set => SetValue(ShowMeasureTypeOptionsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowMeasureTypeOptions"/>. See the related property for details.</summary>
@@ -175,20 +177,32 @@ namespace SolidShineUi.Utils
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
+        /// Get or set the height of the padding area between the measure type combo box and the actual rectangle-editing area. Default value is 7.
+        /// </summary>
+        [Category("Appearance")]
+        public double MeasureTypeOptionsPadding { get => (double)GetValue(MeasureTypeOptionsPaddingProperty); set => SetValue(MeasureTypeOptionsPaddingProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MeasureTypeOptionsPadding"/>. See the related property for details.</summary>
+        public static DependencyProperty MeasureTypeOptionsPaddingProperty
+            = DependencyProperty.Register(nameof(MeasureTypeOptionsPadding), typeof(double), typeof(RectEdit),
+            new FrameworkPropertyMetadata(7.0));
+
+        /// <summary>
         /// Get or set how to measure the users inputs to create a <see cref="Rect"/>. By default, this is <see cref="RectEditMeasureType.OriginAndSize"/>.
         /// </summary>
         /// <remarks>
         /// A <see cref="Rect"/> can be created by either setting the top-left point and then the rectangle's size, or by setting the top-left and bottom-right points,
         /// and creating a rectangle with those points as opposite corners. With this property, it can be changed which method the user uses.
         /// <para/>
-        /// This can be changed by the user if <see cref="ShowMeasureTypeOptions"/> is set to <c>true</c>.
+        /// This can be changed within the control by the user if <see cref="ShowMeasureTypeOptions"/> is set to <c>true</c>.
         /// </remarks>
+        [Category("Behavior")]
         public RectEditMeasureType MeasureType { get => (RectEditMeasureType)GetValue(MeasureTypeProperty); set => SetValue(MeasureTypeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MeasureType"/>. See the related property for details.</summary>
         public static DependencyProperty MeasureTypeProperty
             = DependencyProperty.Register("MeasureType", typeof(RectEditMeasureType), typeof(RectEdit),
-            new FrameworkPropertyMetadata(RectEditMeasureType.OriginAndSize, OnInternalMeasureTypeChanged));
+            new FrameworkPropertyMetadata(RectEditMeasureType.OriginAndSize, (d, e) => d.PerformAs<RectEdit>(o => o.OnMeasureTypeChanged(e))));
 
         /// <summary>
         /// Raisede when <see cref="MeasureType"/> changed.
@@ -198,14 +212,6 @@ namespace SolidShineUi.Utils
 #else
         public event DependencyPropertyChangedEventHandler MeasureTypeChanged;
 #endif
-
-        private static void OnInternalMeasureTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is RectEdit r)
-            {
-                r.OnMeasureTypeChanged(e);
-            }
-        }
 
         bool _internalAction = false;
 
@@ -338,9 +344,9 @@ namespace SolidShineUi.Utils
                 nudPoint2Y.MinValue = double.MinValue;
             }
 
-            void SetNud(DoubleSpinner ds, bool value)
+            void SetNud(DoubleSpinner ds, bool limitMax)
             {
-                if (value)
+                if (limitMax)
                 {
                     ds.MaxValue = 1;
                     ds.Step = 0.05;
@@ -386,6 +392,67 @@ namespace SolidShineUi.Utils
                 return new Rect(new Point(nudPoint1X.Value, nudPoint1Y.Value), new Point(nudPoint2X.Value, nudPoint2Y.Value));
             }
         }
+
+        #endregion
+
+        #region Text Strings
+
+        /// <summary>
+        /// Get or set the text to display next to the measure type options combo box. Default value is "Measure by:".
+        /// </summary>
+        [Category("Appearance")]
+        public string MeasureByText { get => (string)GetValue(MeasureByTextProperty); set => SetValue(MeasureByTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MeasureByText"/>. See the related property for details.</summary>
+        public static DependencyProperty MeasureByTextProperty
+            = DependencyProperty.Register(nameof(MeasureByText), typeof(string), typeof(RectEdit),
+            new FrameworkPropertyMetadata("Measure by:"));
+
+        /// <summary>
+        /// Get or set the text to display next to the width input for the Rect. Default value is "Width:".
+        /// </summary>
+        [Category("Appearance")]
+        public string WidthText { get => (string)GetValue(WidthTextProperty); set => SetValue(WidthTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="WidthText"/>. See the related property for details.</summary>
+        public static DependencyProperty WidthTextProperty
+            = DependencyProperty.Register(nameof(WidthText), typeof(string), typeof(RectEdit),
+            new FrameworkPropertyMetadata("Width:"));
+
+        /// <summary>
+        /// Get or set the text to display next to the height input for the Rect. Default value is "Height:".
+        /// </summary>
+        [Category("Appearance")]
+        public string HeightText { get => (string)GetValue(HeightTextProperty); set => SetValue(HeightTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="HeightText"/>. See the related property for details.</summary>
+        public static DependencyProperty HeightTextProperty
+            = DependencyProperty.Register(nameof(HeightText), typeof(string), typeof(RectEdit),
+            new FrameworkPropertyMetadata("Height:"));
+
+        /// <summary>
+        /// Get or set the text to display in the measure options bombo box for the "origin and size" option. Default value is "Origin + Size".
+        /// </summary>
+        [Category("Appearance")]
+        public string OriginAndSizeText { get => (string)GetValue(OriginAndSizeTextProperty); set => SetValue(OriginAndSizeTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="OriginAndSizeText"/>. See the related property for details.</summary>
+        public static DependencyProperty OriginAndSizeTextProperty
+            = DependencyProperty.Register(nameof(OriginAndSizeText), typeof(string), typeof(RectEdit),
+            new FrameworkPropertyMetadata("Origin + Size"));
+
+        /// <summary>
+        /// Get or set the text to display in the measure options combo box for the "two points" option. Default value is "2 Points".
+        /// </summary>
+        [Category("Appearance")]
+        public string TwoPointsText { get => (string)GetValue(TwoPointsTextProperty); set => SetValue(TwoPointsTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TwoPointsText"/>. See the related property for details.</summary>
+        public static DependencyProperty TwoPointsTextProperty
+            = DependencyProperty.Register(nameof(TwoPointsText), typeof(string), typeof(RectEdit),
+            new FrameworkPropertyMetadata("2 Points"));
+
+
 
         #endregion
 

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SolidShineUi.Utils"
              xmlns:flat="clr-namespace:SolidShineUi"
-             mc:Ignorable="d" Height="145" Width="250" MinHeight="130" MinWidth="230" >
+             mc:Ignorable="d" d:DesignHeight="150" d:DesignWidth="250" MinHeight="130" MinWidth="230" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
     </UserControl.Resources>
@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="5"/>
+            <RowDefinition x:Name="rowPadding" Height="{Binding ElementName=control, Path=MeasureTypeOptionsPadding, FallbackValue=7}" />
             <RowDefinition Height="1*" MinHeight="24" />
             <RowDefinition Height="8"/>
             <RowDefinition Height="4*"/>
@@ -46,10 +46,11 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" VerticalAlignment="Center" MinHeight="24" Orientation="Horizontal" x:Name="stkMeasureOption"
                     Visibility="{Binding ElementName=control, Path=ShowMeasureTypeOptions, Converter={StaticResource btv}}" >
-            <TextBlock VerticalAlignment="Center" Margin="2,0,4,0" >Measure by:</TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="2,0,4,0"
+                       Text="{Binding ElementName=control, Path=MeasureByText, FallbackValue='Measure by:'}" />
             <ComboBox x:Name="cbbMeasure" MinWidth="100" SelectedIndex="0" SelectionChanged="cbbMeasure_SelectionChanged" >
-                <ComboBoxItem>Origin + Size</ComboBoxItem>
-                <ComboBoxItem>2 Points</ComboBoxItem>
+                <ComboBoxItem Content="{Binding ElementName=control, Path=OriginAndSizeText, FallbackValue='Origin + Size'}" />
+                <ComboBoxItem Content="{Binding ElementName=control, Path=TwoPointsText, FallbackValue='2 Points'}" />
             </ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" MinHeight="24" Orientation="Horizontal" >
@@ -64,13 +65,15 @@
             <TextBlock VerticalAlignment="Center" Margin="3,0,1,0" >)</TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="24" Orientation="Horizontal" x:Name="stkWidth" >
-            <TextBlock VerticalAlignment="Center" Margin="2,0,4,0" >Width:</TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="2,0,4,0" 
+                       Text="{Binding ElementName=control, Path=WidthText, FallbackValue='Width:'}" />
             <flat:DoubleSpinner MinWidth="60" Step="1" x:Name="nudWidth" MinValue="0" BorderBrush="{Binding ElementName=control, Path=SpinnerBorderBrush}"
                                 DisabledBrush="{Binding ElementName=control, Path=ButtonDisabledBrush}" ButtonBackground="{Binding ElementName=control, Path=ButtonBackground}"
                                 ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}" HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" />
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.RowSpan="3" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="24" Orientation="Vertical" x:Name="stkHeight" >
-            <TextBlock VerticalAlignment="Center" Margin="0,3" >Height:</TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="0,3" 
+                       Text="{Binding ElementName=control, Path=HeightText, FallbackValue='Height:'}" />
             <flat:DoubleSpinner MinWidth="60" Step="1" x:Name="nudHeight" MinValue="0" BorderBrush="{Binding ElementName=control, Path=SpinnerBorderBrush}"
                                 DisabledBrush="{Binding ElementName=control, Path=ButtonDisabledBrush}" ButtonBackground="{Binding ElementName=control, Path=ButtonBackground}"
                                 ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}" HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" />
