@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Diagnostics;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -104,12 +104,10 @@ namespace SolidShineUi
         #endregion
 
         #region Color Scheme
-        /// <summary>
-        /// Get if the window's color scheme is a high contrast theme (and thus, the window is displaying high-contrast colors).
-        /// </summary>
-        public bool HighContrastMode { get; private set; } = false;
-
-        // TODO: add different color for inactive window caption (especially for High Contrast Mode)
+        ///// <summary>
+        ///// Get if the window's color scheme is a high contrast theme (and thus, the window is displaying high-contrast colors).
+        ///// </summary>
+        //public bool HighContrastMode { get; private set; } = false;
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -120,11 +118,12 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property object for <see cref="ColorScheme"/>. See the related property for details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindow),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -141,17 +140,6 @@ namespace SolidShineUi
                     w.ColorSchemeChanged?.Invoke(d, e);
                 }
             }
-
-            //#if NETCOREAPP
-            //            if (d is FlatWindow w)
-            //            {
-            //                w.ApplyColorScheme((e.NewValue as ColorScheme));
-            //                w.ColorSchemeChanged?.Invoke(w, e);
-            //            }
-            //#else
-            //            (d as FlatWindow).ApplyColorScheme(e.NewValue as ColorScheme);
-            //            (d as FlatWindow).ColorSchemeChanged?.Invoke(
-            //#endif
         }
 
         /// <summary>
@@ -214,15 +202,16 @@ namespace SolidShineUi
             //    InactiveTextBrush = ColorsHelper.CreateFromHex("#505050").ToBrush();
             //}
 
-            Background = ssuiTheme.WindowTitleBackground;
-            CaptionTextBrush = ssuiTheme.WindowTitleForeground;
+            CaptionBarBackground = ssuiTheme.WindowTitleBackground;
+            CaptionBarForeground = ssuiTheme.WindowTitleForeground;
             InactiveBackground = ssuiTheme.WindowInactiveBackground;
-            InactiveTextBrush = ssuiTheme.WindowInactiveForeground;
+            InactiveForeground = ssuiTheme.WindowInactiveForeground;
             BorderBrush = ssuiTheme.BorderBrush;
-            CaptionButtonsBrush = ssuiTheme.WindowCaptionsForeground;
-            HighlightBrush = ssuiTheme.WindowCaptionsHighlight;
-            SelectionBrush = ssuiTheme.WindowCaptionsClickBrush;
+            CaptionButtonsForeground = ssuiTheme.WindowCaptionsForeground;
+            CaptionButtonsHighlightBrush = ssuiTheme.WindowCaptionsHighlight;
+            CaptionButtonsClickBrush = ssuiTheme.WindowCaptionsClickBrush;
             Foreground = ssuiTheme.Foreground;
+            Background = ssuiTheme.WindowBackground;
             ContentBackground = ssuiTheme.WindowBackground;
         }
 
@@ -233,25 +222,12 @@ namespace SolidShineUi
         #region Caption Buttons
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
-        /// </summary>
-        public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
-            "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
-            new PropertyMetadata(CaptionType.Full));
-
-        /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
-        /// </summary>
-        public static readonly DependencyProperty CaptionButtonPaddingProperty = DependencyProperty.Register(
-            "CaptionButtonPadding", typeof(Thickness), typeof(FlatWindow),
-            new PropertyMetadata(new Thickness(9, 7, 9, 7)));
-
-        /// <summary>
-        /// Gets or sets the visibility of the caption buttons (close, maximize, minimize). The actions may still be available via other methods even if the buttons are hidden.
+        /// Gets or sets the visibility of the caption buttons (close, maximize, minimize). 
+        /// The actions may still be available via other methods even if the buttons are hidden.
         /// </summary>
         /// <remarks>
-        /// Use the <c>DisableMinimizeAction</c> and <c>DisableMaximizeAction</c> methods to further prevent the user from being able to minimize or maximize the window.
-        /// The standard <c>ResizeMode</c> property works as well.
+        /// Use the <c>DisableMinimizeAction</c> and <c>DisableMaximizeAction</c> methods to further prevent the user from being 
+        /// able to minimize or maximize the window. The <c>ResizeMode</c> property can also be used to prevent certain actions.
         /// </remarks>
         [Category("Appearance")]
         public CaptionType CaptionDisplayType
@@ -261,15 +237,29 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// The backing dependency property object for <see cref="CaptionDisplayType"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
+            "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
+            new PropertyMetadata(CaptionType.Full));
+
+        /// <summary>
         /// Gets or sets the amount of padding to use with each of the caption buttons. A higher padding will make the buttons larger.
         /// </summary>
-        /// <remarks>The default value is (9,7,9,7).</remarks>
+        /// <remarks>The default value is (12,7,12,7).</remarks>
         [Category("Appearance")]
         public Thickness CaptionButtonPadding
         {
             get => (Thickness)GetValue(CaptionButtonPaddingProperty);
             set => SetValue(CaptionButtonPaddingProperty, value);
         }
+
+        /// <summary>
+        /// The backing dependency property object for <see cref="CaptionButtonPadding"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty CaptionButtonPaddingProperty = DependencyProperty.Register(
+            "CaptionButtonPadding", typeof(Thickness), typeof(FlatWindow),
+            new PropertyMetadata(new Thickness(12, 7, 12, 7)));
 
 #if NETCOREAPP
         private void ResizeModeChanged(object? sender, EventArgs e)
@@ -286,6 +276,7 @@ namespace SolidShineUi
                     CaptionDisplayType = CaptionType.MinimizeClose;
                     break;
                 default:
+                    CaptionDisplayType = CaptionType.Full;
                     break;
             }
         }
@@ -295,10 +286,10 @@ namespace SolidShineUi
         #region TopRight/TopLeft elements
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="TopRightElement"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
-            "TopRightElement", typeof(UIElement), typeof(FlatWindow),
+            nameof(TopRightElement), typeof(UIElement), typeof(FlatWindow),
             new PropertyMetadata(null));
 
         /// <summary>
@@ -312,10 +303,10 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="TopLeftElement"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
-            "TopLeftElement", typeof(UIElement), typeof(FlatWindow),
+            nameof(TopLeftElement), typeof(UIElement), typeof(FlatWindow),
             new PropertyMetadata(null));
 
         /// <summary>
@@ -329,10 +320,10 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="ExcludeTopLeftElementFromChrome"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
-            "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow),
+            nameof(ExcludeTopLeftElementFromChrome), typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
 
         /// <summary>
@@ -349,10 +340,10 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="ExcludeTopRightElementFromChrome"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ExcludeTopRightElementFromChromeProperty = DependencyProperty.Register(
-            "ExcludeTopRightElementFromChrome", typeof(bool), typeof(FlatWindow),
+            nameof(ExcludeTopRightElementFromChrome), typeof(bool), typeof(FlatWindow),
             new PropertyMetadata(true));
 
         /// <summary>
@@ -373,7 +364,7 @@ namespace SolidShineUi
         #region Other Caption Options
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="ShowTitle"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
             "ShowTitle", typeof(bool), typeof(FlatWindow),
@@ -397,7 +388,7 @@ namespace SolidShineUi
             new PropertyMetadata(true));
 
         /// <summary>
-        /// Get or set if the <see cref="Window.Icon"/> should be displayed at the top-left of the window.
+        /// Get or set if the <see cref="Window.Icon"/> should be displayed at the top of the window.
         /// </summary>
         [Category("Appearance")]
         public bool ShowIcon
@@ -406,23 +397,15 @@ namespace SolidShineUi
             set => SetValue(ShowIconProperty, value);
         }
 
-        int captionHeight = 29;
-
         /// <summary>
         /// Get or set the height of the caption (title bar) area of the window. Default is 29.
         /// </summary>
-        public int CaptionHeight
-        {
-            get
-            {
-                return captionHeight;
-            }
-            set
-            {
-                captionHeight = value;
-                ResizeCaptionHeight(value);
-            }
-        }
+        public int CaptionHeight { get => (int)GetValue(CaptionHeightProperty); set => SetValue(CaptionHeightProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CaptionHeight"/>. See the related property for details.</summary>
+        public static DependencyProperty CaptionHeightProperty
+            = DependencyProperty.Register(nameof(CaptionHeight), typeof(int), typeof(FlatWindow),
+            new FrameworkPropertyMetadata(29, (d, e) => d.PerformAs<FlatWindow, int>(e.NewValue, (o, n) => o.ResizeCaptionHeight(n))));
 
         void ResizeCaptionHeight(int height)
         {
@@ -442,97 +425,74 @@ namespace SolidShineUi
 
         #endregion
 
-        /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
-        /// </summary>
-        public static readonly new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(FlatWindow),
-            new PropertyMetadata(new Thickness(1)));
-
-        /// <summary>
-        /// Get or set the thickness of the border of the window. Setting the thickness to 0 means the border is not visible.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
-
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) is being clicked.
+        /// Get or set the brush used when one of the caption buttons (minimize, restore, close) is being clicked.
         /// </summary>
         [Category("Brushes")]
-        public Brush SelectionBrush
+        public Brush CaptionButtonsClickBrush
         {
-            get => (Brush)GetValue(SelectionBrushProperty);
-            set => SetValue(SelectionBrushProperty, value);
+            get => (Brush)GetValue(CaptionButtonsClickBrushProperty);
+            set => SetValue(CaptionButtonsClickBrushProperty, value);
         }
 
         /// <summary>
-        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) has focus or has the mouse over it.
+        /// Get or set the brush used when one of the caption buttons (minimize, restore, close) has focus or has the mouse over it.
         /// </summary>
         [Category("Brushes")]
-        public Brush HighlightBrush
+        public Brush CaptionButtonsHighlightBrush
         {
-            get => (Brush)GetValue(HighlightBrushProperty);
-            set => SetValue(HighlightBrushProperty, value);
+            get => (Brush)GetValue(CaptionButtonsHighlightBrushProperty);
+            set => SetValue(CaptionButtonsHighlightBrushProperty, value);
         }
 
         /// <summary>
-        /// Get or set the background brush to use for the caption area (title bar). Use <c>ContentBackground</c> for the content area of the window.
+        /// Get or set the background brush to use for the caption area (title bar).
         /// </summary>
+        /// <remarks>
+        /// Use <c>ContentBackground</c> for the content area of the window, or set this to <c>null</c> and use <c>Background</c> to
+        /// set the background for the entire window.
+        /// </remarks>
         [Category("Brushes")]
-        public new Brush Background
+        public Brush CaptionBarBackground
         {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
+            get => (Brush)GetValue(CaptionBarBackgroundProperty);
+            set => SetValue(CaptionBarBackgroundProperty, value);
         }
 
         /// <summary>
-        /// Get or set the brush used for the icons of the caption buttons (in the top-right in non-RTL systems).
+        /// Get or set the brush used for the icons of the caption buttons (minimize, restore, close).
         /// </summary>
         [Category("Brushes")]
-        public Brush CaptionButtonsBrush
+        public Brush CaptionButtonsForeground
         {
-            get => (Brush)GetValue(CaptionButtonsBrushProperty);
-            set => SetValue(CaptionButtonsBrushProperty, value);
+            get => (Brush)GetValue(CaptionButtonsForegroundProperty);
+            set => SetValue(CaptionButtonsForegroundProperty, value);
         }
 
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
         [Category("Brushes")]
-        public Brush CaptionTextBrush
+        public Brush CaptionBarForeground
         {
-            get => (Brush)GetValue(CaptionTextBrushProperty);
-            set => SetValue(CaptionTextBrushProperty, value);
+            get => (Brush)GetValue(CaptionBarForegroundProperty);
+            set => SetValue(CaptionBarForegroundProperty, value);
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around the window.
+        /// Get or set the brush used for the text in the caption area (title bar) and caption buttons when the window isn't focused/active.
         /// </summary>
         [Category("Brushes")]
-        public new Brush BorderBrush
+        public Brush InactiveForeground
         {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
+            get => (Brush)GetValue(InactiveForegroundProperty);
+            set => SetValue(InactiveForegroundProperty, value);
         }
 
         /// <summary>
-        /// Get or set the brush used for the text in the caption area (title bar) when the window isn't focused/active. This has no effect if <c>ShowTitle</c> is false.
-        /// </summary>
-        [Category("Brushes")]
-        public Brush InactiveTextBrush
-        {
-            get => (Brush)GetValue(InactiveTextBrushProperty);
-            set => SetValue(InactiveTextBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the caption area (title bar) when the window isn't focused/active. This does not change the color of the content area of the window.
+        /// Get or set the brush used for the caption area (title bar) when the window isn't focused/active.
         /// </summary>
         [Category("Brushes")]
         public Brush InactiveBackground
@@ -544,6 +504,10 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the background of the content area of the window (where most content and controls are displayed).
         /// </summary>
+        /// <remarks>
+        /// Use <c>CaptionBarBackground</c> for the title bar of the window, or set this to <c>null</c> and use <c>Background</c> to
+        /// set the background for the entire window.
+        /// </remarks>
         [Category("Brushes")]
         public Brush ContentBackground
         {
@@ -552,66 +516,59 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="CaptionButtonsClickBrush"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
-            "SelectionBrush", typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty CaptionButtonsClickBrushProperty = DependencyProperty.Register(
+            nameof(CaptionButtonsClickBrush), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="CaptionButtonsHighlightBrush"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty CaptionButtonsHighlightBrushProperty = DependencyProperty.Register(
+            nameof(CaptionButtonsHighlightBrush), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="CaptionBarBackground"/>. See the related property for details.
         /// </summary>
-        public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty CaptionBarBackgroundProperty = DependencyProperty.Register(
+            nameof(CaptionBarBackground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="CaptionButtonsForeground"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty CaptionButtonsBrushProperty = DependencyProperty.Register(
-            "CaptionButtonsBrush", typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty CaptionButtonsForegroundProperty = DependencyProperty.Register(
+            nameof(CaptionButtonsForeground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="CaptionBarForeground"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty CaptionTextBrushProperty = DependencyProperty.Register(
-            "CaptionTextBrush", typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty CaptionBarForegroundProperty = DependencyProperty.Register(
+            nameof(CaptionBarForeground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="InactiveForeground"/>. See the related property for details.
         /// </summary>
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
-
-        /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
-        /// </summary>
-        public static readonly DependencyProperty InactiveTextBrushProperty = DependencyProperty.Register(
-            "InactiveTextBrush", typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty InactiveForegroundProperty = DependencyProperty.Register(
+            nameof(InactiveForeground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="InactiveBackground"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty InactiveBackgroundProperty = DependencyProperty.Register(
-            "InactiveBackground", typeof(Brush), typeof(FlatWindow),
+            nameof(InactiveBackground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         /// <summary>
-        /// The backing dependency property object for a related property. See that property for more details.
+        /// The backing dependency property object for <see cref="ContentBackground"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
-            "ContentBackground", typeof(Brush), typeof(FlatWindow),
+            nameof(ContentBackground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         #endregion
