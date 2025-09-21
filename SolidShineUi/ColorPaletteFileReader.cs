@@ -311,13 +311,13 @@ namespace SolidShineUi
 
             buffer = new byte[length * 2];
 
-#if NET7_0_OR_GREATER
-            stream.ReadExactly(buffer);
-#else
-#pragma warning disable CA2022 // Avoid inexact read with 'Stream.Read' (not present in .NET 6 or older)
-            stream.Read(buffer, 0, buffer.Length);
-#pragma warning restore CA2022 // Avoid inexact read with 'Stream.Read'
-#endif
+            int actuallyRead = stream.Read(buffer, 0, buffer.Length);
+
+            if (buffer.Length != actuallyRead) // if the amount of data read from the stream isn't actually of size "length"
+            {
+                Array.Resize(ref buffer, actuallyRead);
+            }
+
             return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
