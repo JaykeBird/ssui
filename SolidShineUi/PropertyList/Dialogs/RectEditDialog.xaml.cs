@@ -12,7 +12,7 @@ namespace SolidShineUi.PropertyList.Dialogs
     public partial class RectEditDialog : FlatWindow
     {
 
-        bool _internalAction = false;
+        // bool _internalAction = false;
 
         #region Window Actions / constructors
 

@@ -55,11 +55,11 @@
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" MinHeight="24" Orientation="Horizontal" >
             <TextBlock VerticalAlignment="Center" Margin="1,0,3,0" >( X</TextBlock>
-            <flat:DoubleSpinner MinWidth="60" Step="1" x:Name="nudPoint1X" BorderBrush="{Binding ElementName=control, Path=SpinnerBorderBrush}"
+            <flat:DoubleSpinner MinWidth="60" MaxWidth="120" Step="1" x:Name="nudPoint1X" BorderBrush="{Binding ElementName=control, Path=SpinnerBorderBrush}"
                                 DisabledBrush="{Binding ElementName=control, Path=ButtonDisabledBrush}" ButtonBackground="{Binding ElementName=control, Path=ButtonBackground}"
                                 ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}" HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" />
             <TextBlock VerticalAlignment="Center" Margin="3,0" >, Y</TextBlock>
-            <flat:DoubleSpinner MinWidth="60" Step="1" x:Name="nudPoint1Y" BorderBrush="{Binding ElementName=control, Path=SpinnerBorderBrush}"
+            <flat:DoubleSpinner MinWidth="60" MaxWidth="120" Step="1" x:Name="nudPoint1Y" BorderBrush="{Binding ElementName=control, Path=SpinnerBorderBrush}"
                                 DisabledBrush="{Binding ElementName=control, Path=ButtonDisabledBrush}" ButtonBackground="{Binding ElementName=control, Path=ButtonBackground}"
                                 ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}" HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBrush}" />
             <TextBlock VerticalAlignment="Center" Margin="3,0,1,0" >)</TextBlock>
