@@ -50,7 +50,7 @@ namespace SolidShineUi
 
         private static readonly DependencyPropertyKey ValuePropertyKey
             = DependencyProperty.RegisterReadOnly(nameof(Value), typeof(string), typeof(StringSpinner),
-            new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<StringSpinner>((s) => s.OnValueChanged(s, e))));
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, (d, e) => d.PerformAs<StringSpinner>((s) => s.OnValueChanged(s, e))));
 
         /// <summary>The backing dependency property for <see cref="Value"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ValueProperty = ValuePropertyKey.DependencyProperty;

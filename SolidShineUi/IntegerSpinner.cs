@@ -40,7 +40,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(int), typeof(IntegerSpinner),
-            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, OnValueChanged));
 
         /// <inheritdoc/>
         [Category("Common")]

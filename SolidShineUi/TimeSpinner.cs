@@ -87,7 +87,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(TimeSpan), typeof(TimeSpinner),
-            new FrameworkPropertyMetadata(new TimeSpan(12, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            new FrameworkPropertyMetadata(new TimeSpan(12, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, OnValueChanged));
 
         /// <inheritdoc/>
         [Category("Common")]
