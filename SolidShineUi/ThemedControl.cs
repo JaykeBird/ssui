@@ -245,25 +245,15 @@ namespace SolidShineUi
         {
             if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
             {
-                ApplyBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
                 // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
             }
             else
             {
-                var bb = ApplyBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
                 // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
             }
         }
-
-        ///// <summary>
-        ///// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
-        ///// </summary>
-        ///// <param name="brushProperty">the property on this control to bind</param>
-        ///// <param name="ssuiThemePropertyName">the name of the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
-        //protected void ApplyBinding(DependencyProperty brushProperty, string ssuiThemePropertyName)
-        //{
-        //    SetBinding(brushProperty, new Binding(ssuiThemePropertyName) { Source = SsuiTheme });
-        //}
 
         /// <summary>
         /// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
@@ -273,9 +263,9 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
         /// </exception>
-        protected BindingExpressionBase ApplyBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
         {
-            return ApplyBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
+            return ApplyThemeBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
         }
 
         /// <summary>
@@ -287,9 +277,9 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
         /// </exception>
-        protected BindingExpressionBase ApplyBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
         {
-            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && ssuiThemeProperty.OwnerType != typeof(SsuiAppTheme))
+            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
             {
                 throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
             }
@@ -495,25 +485,15 @@ namespace SolidShineUi
         {
             if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
             {
-                ApplyBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
                 // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
             }
             else
             {
-                var bb = ApplyBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
                 // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
             }
         }
-
-        ///// <summary>
-        ///// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
-        ///// </summary>
-        ///// <param name="brushProperty">the property on this control to bind</param>
-        ///// <param name="ssuiThemePropertyName">the name of the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
-        //protected void ApplyBinding(DependencyProperty brushProperty, string ssuiThemePropertyName)
-        //{
-        //    SetBinding(brushProperty, new Binding(ssuiThemePropertyName) { Source = SsuiTheme });
-        //}
 
         /// <summary>
         /// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
@@ -523,9 +503,9 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
         /// </exception>
-        protected BindingExpressionBase ApplyBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
         {
-            return ApplyBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
+            return ApplyThemeBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
         }
 
         /// <summary>
@@ -537,9 +517,9 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
         /// </exception>
-        protected BindingExpressionBase ApplyBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
         {
-            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) || ssuiThemeProperty.OwnerType != typeof(SsuiAppTheme))
+            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
             {
                 throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
             }
