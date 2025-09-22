@@ -188,9 +188,9 @@ namespace SolidShineUi
         }
 
         /// <inheritdoc/>
-        public override void ApplySsuiTheme(SsuiAppTheme ssuiTheme)
+        protected override void OnApplySsuiTheme(SsuiAppTheme ssuiTheme)
         {
-            base.ApplySsuiTheme(ssuiTheme);
+            base.OnApplySsuiTheme(ssuiTheme);
 
             //if (ssuiTheme.IsHighContrast)
             //{

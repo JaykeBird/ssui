@@ -489,7 +489,7 @@ namespace SolidShineUi
         /// </param>
         /// <remarks>
         /// The base method will by default set the <see cref="Control.BorderBrush"/> value to match the theme; if a custom
-        /// border brush is needed, then update it again after this 
+        /// border brush is needed, then update it again after this is called.
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {

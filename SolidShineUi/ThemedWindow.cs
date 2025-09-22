@@ -82,7 +82,7 @@ namespace SolidShineUi
         /// Apply a <see cref="SsuiAppTheme"/> to this window. This applies a consistent appearance to this window and child controls.
         /// </summary>
         /// <param name="ssuiTheme">the theme value to apply</param>
-        public virtual void ApplySsuiTheme(SsuiAppTheme ssuiTheme)
+        public void ApplySsuiTheme(SsuiAppTheme ssuiTheme)
         {
             if (ssuiTheme != SsuiTheme)
             {
@@ -91,11 +91,23 @@ namespace SolidShineUi
                 return;
             }
 
+            OnApplySsuiTheme(ssuiTheme);
+        }
+
+        /// <summary>
+        /// Raised when the SsuiTheme value is changed, or when <see cref="ApplySsuiTheme(SsuiAppTheme)"/> is called.
+        /// Inheriting windows should override this to update their brushes to reflect this new theme.
+        /// </summary>
+        /// <param name="ssuiTheme">the theme value to apply</param>
+        /// <remarks>
+        /// The base method will by default set the <c>Background</c>, <c>BorderBrush</c>, and <c>Foreground</c> values to match the theme; 
+        /// if a custom brush is needed for those properties, then update it again after this is called.
+        /// </remarks>
+        protected virtual void OnApplySsuiTheme(SsuiAppTheme ssuiTheme)
+        {
             Background = ssuiTheme.WindowBackground;
             BorderBrush = ssuiTheme.BorderBrush;
             Foreground = ssuiTheme.Foreground;
         }
-
-
     }
 }
