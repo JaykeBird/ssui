@@ -722,16 +722,6 @@
                             </Style>
                         </Border.Style>
                         <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDefault, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
-                                            <Setter Property="BorderThickness" Value="1" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                                 <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" RecognizesAccessKey="True" >
                                     <ContentPresenter.Style>
@@ -860,16 +850,6 @@
                             </Style>
                         </Border.Style>
                         <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDefault, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="True">
-                                            <Setter Property="BorderThickness" Value="1" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
                             <Grid>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
