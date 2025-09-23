@@ -484,7 +484,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
-            "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
+            nameof(RightClick), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
@@ -501,10 +501,11 @@ namespace SolidShineUi
 
         // from https://stackoverflow.com/questions/10667545/why-ismouseover-is-recognized-and-mousedown-isnt-wpf-style-trigger
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsMouseDown",
+        /// <summary>
+        /// The internal dependency property for <see cref="IsMouseDown"/>. See that property for more details.
+        /// </summary>
+        protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly(nameof(IsMouseDown),
             typeof(bool), typeof(FlatButton), new FrameworkPropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get if there is a mouse button currently being pressed, while the mouse cursor is over this control.
@@ -530,6 +531,15 @@ namespace SolidShineUi
             return (bool)obj.GetValue(IsMouseDownProperty);
         }
 
+        /// <summary>
+        /// Get if a mouse button is currently being pressed while the cursor is over this FlatButton.
+        /// </summary>
+        public bool IsMouseDown
+        {
+            get => (bool)GetValue(IsMouseDownProperty);
+            protected set => SetValue(IsMouseDownPropertyKey, value);
+        }
+
         #endregion
 
         #region Variables/Properties
@@ -544,8 +554,7 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="IsSelected"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-            "IsSelected", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
+            nameof(IsSelected), typeof(bool), typeof(FlatButton), new PropertyMetadata(false, OnIsSelectedChanged));
 
         /// <summary>
         /// Perform an action when a property of an object has changed. Primarily used internally.
@@ -634,15 +643,15 @@ namespace SolidShineUi
         /// The backing dependency property object for the <see cref="SelectOnClick"/> property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            "SelectOnClick", typeof(bool), typeof(FlatButton), new PropertyMetadata(false));
+            nameof(SelectOnClick), typeof(bool), typeof(FlatButton), new PropertyMetadata(false));
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
         /// </summary>
         /// <remarks>
-        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton). A selected button will, by default, have some visual
-        /// differences to help make it look distinct from unselected buttons. The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
-        /// IsSelected property has already changed. While you could use the Click event to check when the button's IsSelected property is changed, it is better to use the IsSelectedChanged event,
+        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton).<para/>
+        /// The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
+        /// IsSelected property has already changed. Do not use Click event to check when the button's IsSelected property is changed, but instead the IsSelectedChanged event,
         /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
         /// </remarks>
         [Category("Common")]
@@ -699,18 +708,18 @@ namespace SolidShineUi
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PressRightClick();
-            }
+            //if (e.ChangedButton == MouseButton.Right)
+            //{
+            //    PressRightClick();
+            //}
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PerformRightClick();
-            }
+            //if (e.ChangedButton == MouseButton.Right)
+            //{
+            //    PerformRightClick();
+            //}
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
@@ -770,7 +779,6 @@ namespace SolidShineUi
         #endregion
 
         #endregion
-
 
     }
 }
