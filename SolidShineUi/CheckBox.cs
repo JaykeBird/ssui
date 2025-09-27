@@ -122,10 +122,12 @@ namespace SolidShineUi
         #region CheckState
 
         #region Routed Events
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// The backing routed event object for <see cref="CheckChanged"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent CheckChangedEvent = EventManager.RegisterRoutedEvent(
-            "CheckChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(CheckChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed, either to Checked, Indeterminate, or Unchecked.
@@ -136,10 +138,11 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckChangedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing routed event object for <see cref="Checked"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent(
-            "Checked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(Checked), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed to Checked.
@@ -150,10 +153,11 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing routed event object for <see cref="Unchecked"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent(
-            "Unchecked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(Unchecked), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed to Unchecked.
@@ -164,10 +168,11 @@ namespace SolidShineUi
             remove { RemoveHandler(UncheckedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing routed event object for <see cref="Indeterminate"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent(
-            "Indeterminate", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(Indeterminate), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed to Indeterminate.
