@@ -134,8 +134,15 @@ namespace SsuiSample
 
             if (cpd.DialogResult)
             {
-                txtSampleText.Foreground = new SolidColorBrush(cpd.SelectedColor);
+                txtSampleText.TextBrush = new SolidColorBrush(cpd.SelectedColor);
+                txtSampleText.HighlightBrush = new SolidColorBrush(cpd.SelectedColor);
             }
+        }
+
+        private void txtSampleText_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog md = new MessageDialog(this.ColorScheme);
+            md.ShowDialog(txtSampleText.Text, Window.GetWindow(this), "Dialog Test", MessageDialogImage.Info);
         }
     }
 }
