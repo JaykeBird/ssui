@@ -21,7 +21,7 @@ namespace SolidShineUi
     [ContentProperty("Items")]
     [DefaultEvent(nameof(TabChanged))]
     [Localizability(LocalizationCategory.None)]
-    public class TabControl : Control
+    public class TabControl : ThemedControl
     {
 
         static TabControl()
@@ -929,6 +929,49 @@ namespace SolidShineUi
                 ButtonHighlightBorderBrush = cs.HighlightColor.ToBrush();
             }
         }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(ContentAreaBackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);
+
+                ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBackgroundProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+
+                ApplyThemeBinding(TabBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);
+                ApplyThemeBinding(TabCloseBrushProperty, SsuiTheme.ForegroundProperty, theme);
+                
+                if (useLightBorder)
+                {
+                    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
+                }
+                else
+                {
+                    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                }
+            }
+        }
+
         #endregion
 
         #region Brushes

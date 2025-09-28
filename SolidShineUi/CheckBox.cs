@@ -26,7 +26,7 @@ namespace SolidShineUi
     /// </remarks>
     [DefaultEvent(nameof(CheckChanged))]
     [Localizability(LocalizationCategory.CheckBox)]
-    public class CheckBox : ContentControl
+    public class CheckBox : ThemedContentControl
     {
         // in my personal experience, I've run into difficulties and annoyances with the standard WPF CheckBox
         // while I understand the usage of nullable bool for IsChecked, to cover the potential of it being an indeterminate mark, I've personally never used tri-state checkboxes
@@ -458,6 +458,38 @@ namespace SolidShineUi
             Foreground = cs.ForegroundColor.ToBrush();
             BorderSelectedBrush = cs.BorderColor.ToBrush();
         }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            BackgroundHighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(CheckForegroundProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+
+                ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(CheckDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
+            }
+        }
+
         #endregion
 
         #region Brushes

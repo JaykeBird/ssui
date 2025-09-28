@@ -19,7 +19,7 @@ namespace SolidShineUi.Utils
     /// <remarks>
     /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
     /// </remarks>
-    public abstract class SpinnerBase : Control
+    public abstract class SpinnerBase : ThemedControl
     {
 
         #region Constructors
@@ -471,6 +471,36 @@ namespace SolidShineUi.Utils
             ClickBrush = cs.ThirdHighlightColor.ToBrush();
             HighlightBrush = cs.HighlightColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+
+                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+
+                // we do not set Background here, as that'll set the background of the text box, and I'll just leave that as the default
+            }
         }
 
         #endregion

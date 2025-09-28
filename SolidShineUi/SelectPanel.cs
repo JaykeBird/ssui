@@ -601,7 +601,17 @@ namespace SolidShineUi
 
             // apply brushes using mainTheme
 
+
             // apply subitem brushes using subitemTheme
+            ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, mainTheme);
+            ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, mainTheme);
+            ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, mainTheme);
+
+            ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, subitemTheme);
+            ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, subitemTheme);
+            ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, subitemTheme);
+
+            UpdateChildrenAppearance();
         }
 
 #endregion
