@@ -45,8 +45,6 @@ namespace SolidShineUi
             GotKeyboardFocus += LinkTextBlock_GotKeyboardFocus;
             LostKeyboardFocus += LinkTextBlock_LostKeyboardFocus;
             PreviewKeyUp += LinkTextBlock_PreviewKeyUp;
-
-            InternalBrushChanged += LinkTextBlock_InternalBrushChanged;
         }
 
         /// <summary>
@@ -70,8 +68,6 @@ namespace SolidShineUi
             GotKeyboardFocus += LinkTextBlock_GotKeyboardFocus;
             LostKeyboardFocus += LinkTextBlock_LostKeyboardFocus;
             PreviewKeyUp += LinkTextBlock_PreviewKeyUp;
-
-            InternalBrushChanged += LinkTextBlock_InternalBrushChanged;
         }
 
         #endregion
@@ -143,16 +139,6 @@ namespace SolidShineUi
             {
                 Foreground = DisabledBrush;
             }
-        }
-
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalBrushChanged;
-
-        private void LinkTextBlock_InternalBrushChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-
         }
 
         #endregion
