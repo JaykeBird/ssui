@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,7 +28,13 @@ namespace SolidShineUi
         public MenuButton()
         {
             ColorSchemeChanged += OnColorSchemeChanged;
+            SsuiThemeApplied += OnSsuiThemeApplied;
             Click += MenuButton_Click;
+        }
+
+        private void OnSsuiThemeApplied(object sender, RoutedEventArgs e)
+        {
+            // TODO: apply theme to menu
         }
 
         private void OnColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -217,12 +222,13 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Arrow
+
         /// <summary>
         /// The backing dependency property for <see cref="ShowMenuArrow"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
-            "ShowMenuArrow", typeof(bool), typeof(MenuButton),
-            new PropertyMetadata(true));
+            nameof(ShowMenuArrow), typeof(bool), typeof(MenuButton), new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
@@ -238,8 +244,7 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="KeepMenuArrowOnRight"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty KeepMenuArrowOnRightProperty = DependencyProperty.Register(
-            "KeepMenuArrowOnRight", typeof(bool), typeof(MenuButton),
-            new PropertyMetadata(false));
+            nameof(KeepMenuArrowOnRight), typeof(bool), typeof(MenuButton), new PropertyMetadata(false));
 
         /// <summary>
         /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 
@@ -252,19 +257,7 @@ namespace SolidShineUi
             set => SetValue(KeepMenuArrowOnRightProperty, value);
         }
 
-        ///// <summary>
-        ///// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
-        ///// </summary>
-        ///// <param name="cs">The color scheme to apply</param>
-        ///// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
-        ///// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
-        ///// This can also be achieved with the <c>UseAccentColors</c> property.
-        ///// </param>
-        //public new void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
-        //{
-        //    base.ApplyColorScheme(cs, transparentBack, useAccentColors);
-        //    Menu?.ApplyColorScheme(cs);
-        //}
+        #endregion
 
         /// <summary>
         /// Internal method for opening up the menu when the button is clicked

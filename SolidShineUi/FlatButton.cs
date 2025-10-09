@@ -1,14 +1,15 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
-using System.Diagnostics;
 using System.Windows.Threading;
-using System.Windows.Controls.Primitives;
-using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -212,7 +213,241 @@ namespace SolidShineUi
 
         #endregion
 
-        #region ColorScheme/TransparentBack/UseAccentColors
+        #region SsuiTheme
+
+        /// <summary>
+        /// Get or set the theme to apply to the appearance of this control.
+        /// </summary>
+        public SsuiTheme SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SsuiThemeProperty = ThemedControl.SsuiThemeProperty.AddOwner(typeof(FlatButton));
+
+        /// <summary>
+        /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent SsuiThemeChangedEvent = ThemedControl.SsuiThemeChangedEvent.AddOwner(typeof(FlatButton));
+        //EventManager.RegisterRoutedEvent(nameof(SsuiThemeChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ThemedContentControl));
+
+        /// <summary>
+        /// Raised after the <see cref="SsuiTheme"/> property has been changed and applied.
+        /// </summary>
+        public event RoutedEventHandler SsuiThemeChanged
+        {
+            add { AddHandler(SsuiThemeChangedEvent, value); }
+            remove { RemoveHandler(SsuiThemeChangedEvent, value); }
+        }
+
+        /// <summary>
+        /// Update the control's appearance by using <see cref="ApplySsuiTheme(SsuiTheme)"/> and then raise the <see cref="SsuiThemeChanged"/> event.
+        /// </summary>
+        protected internal void ApplyAndRaiseTheme()
+        {
+            ApplySsuiTheme(SsuiTheme);
+
+            RoutedEventArgs re = new RoutedEventArgs(SsuiThemeChangedEvent, this);
+            RaiseEvent(re);
+        }
+
+        #region UseLightBorder
+
+        /// <summary>
+        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control, rather than the <see cref="SsuiTheme.BorderBrush"/>.
+        /// </summary>
+        public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
+        public static DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(FlatButton),
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<FlatButton>((o) => o.OnUseLightBorderChange(o, e))));
+
+        void OnUseLightBorderChange(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_skipReapply) return;
+            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
+        }
+
+        #endregion
+
+        #region UseAccentColors
+
+        /// <summary>
+        /// Get or set if an accent theme should be used rather than the standard theme for this control. The accent theme, when used in moderation,
+        /// can be used to help particular controls stand out in the UI.
+        /// </summary>
+        /// <remarks>
+        /// The value of the <see cref="SsuiTheme"/> property needs to be of an <see cref="SsuiAppTheme"/> type, or otherwise this property does nothing.
+        /// This should already be taken care of if you're putting this control in a <see cref="ThemedWindow"/> and inheriting from that SsuiTheme property.
+        /// </remarks>
+        public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
+        public static DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(FlatButton),
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<FlatButton>((o) => o.OnUseAccentColorsChange(o, e))));
+
+        void OnUseAccentColorsChange(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_skipReapply) return;
+            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
+        }
+
+        #endregion
+
+        #region ApplySsuiTheme
+
+        bool _skipReapply = false;
+
+        /// <summary>
+        /// Check the properties to make sure they match these values. If not, update the properties and then recall the ApplySsuiTheme function.
+        /// </summary>
+        /// <param name="ssuiTheme">the inputted SsuiTheme value</param>
+        /// <param name="useLightBorder">the inputted UseLightBorder value</param>
+        /// <param name="useAccentTheme">the inputted UseAccentTheme value</param>
+        /// <returns></returns>
+        protected bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+        {
+            _skipReapply = true;
+
+            if (UseLightBorder != useLightBorder) UseLightBorder = useLightBorder;
+            if (UseAccentTheme != useAccentTheme) UseAccentTheme = useAccentTheme;
+
+            _skipReapply = false;
+
+            if (ssuiTheme != SsuiTheme)
+            {
+                SsuiTheme = ssuiTheme;
+                return false; // ApplySsuiTheme will be called again once the property is changed
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Apply a <see cref="SsuiTheme"/> to this control. This applies a consistent appearance to this control and child controls.
+        /// </summary>
+        /// <param name="ssuiTheme">the theme value to apply</param>
+        public void ApplySsuiTheme(SsuiTheme ssuiTheme)
+        {
+            ApplySsuiTheme(ssuiTheme, UseLightBorder, UseAccentTheme);
+        }
+
+        /// <summary>
+        /// Apply a <see cref="SsuiTheme"/> to this control. This applies a consistent appearance to this control and child controls.
+        /// </summary>
+        /// <param name="ssuiTheme">the theme value to apply</param>
+        /// <param name="useLightBorder">whether a light border color should be used in place of the standard one</param>
+        /// <param name="useAccentTheme">
+        /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
+        /// should be of type <see cref="SsuiAppTheme"/>
+        /// </param>
+        public void ApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
+
+            OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            RoutedEventArgs re = new RoutedEventArgs(SsuiThemeAppliedEvent, this);
+            RaiseEvent(re);
+        }
+
+        /// <summary>
+        /// Raised when the SsuiTheme value is changed, or when <see cref="ApplySsuiTheme(SsuiTheme, bool, bool)"/> is called.
+        /// Inheriting controls should override this to update their brushes to reflect this new theme.
+        /// </summary>
+        /// <param name="ssuiTheme">the theme value to apply</param>
+        /// <param name="useLightBorder">whether a light border color should be used in place of the standard one</param>
+        /// <param name="useAccentTheme">
+        /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
+        /// should be of type <see cref="SsuiAppTheme"/>
+        /// </param>
+        /// <remarks>
+        /// The base method will by default set the <see cref="Control.BorderBrush"/> value to match the theme; if a custom
+        /// border brush is needed, then update it again after this is called.
+        /// </remarks>
+        protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+            }
+        }
+
+        /// <summary>
+        /// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
+        /// </summary>
+        /// <param name="brushProperty">the property on this control to bind</param>
+        /// <param name="ssuiThemeProperty">the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
+        /// <exception cref="ArgumentException">
+        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
+        /// </exception>
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+        {
+            return ApplyThemeBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
+        }
+
+        /// <summary>
+        /// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
+        /// </summary>
+        /// <param name="brushProperty">the property on this control to bind</param>
+        /// <param name="ssuiThemeProperty">the name of the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
+        /// <param name="source">the specific SsuiTheme object to bind to (such as <see cref="SsuiAppTheme"/>'s AccentTheme or SubitemTheme)</param>
+        /// <exception cref="ArgumentException">
+        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
+        /// </exception>
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
+        {
+            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
+            {
+                throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
+            }
+            return SetBinding(brushProperty, new Binding(ssuiThemeProperty.Name) { Source = source });
+        }
+
+        /// <summary>
+        /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent SsuiThemeAppliedEvent = ThemedControl.SsuiThemeAppliedEvent.AddOwner(typeof(FlatButton));
+        // EventManager.RegisterRoutedEvent(nameof(SsuiThemeApplied), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ThemedContentControl));
+
+        /// <summary>
+        /// Raised after <see cref="ApplySsuiTheme(SsuiTheme, bool, bool)"/> has completed, and the theme has been applied to the control.
+        /// </summary>
+        /// <remarks>
+        /// If creating your own control that inherits from this class, use this event or override the <see cref="OnApplySsuiTheme(SsuiTheme, bool, bool)"/>
+        /// method to apply any updated brushes from the <see cref="SsuiTheme"/>.
+        /// <para/>
+        /// This event precedes the <see cref="SsuiThemeChanged"/> event.
+        /// </remarks>
+        public event RoutedEventHandler SsuiThemeApplied
+        {
+            add { AddHandler(SsuiThemeAppliedEvent, value); }
+            remove { RemoveHandler(SsuiThemeAppliedEvent, value); }
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region ColorScheme/UseAccentColors
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.

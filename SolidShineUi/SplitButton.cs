@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -17,7 +18,7 @@ namespace SolidShineUi
     /// A control that displays two buttons: a main button on the left which activates like a normal button, 
     /// and a secondary button on the right that displays a menu of additional options.
     /// </summary>
-    public class SplitButton : ContentControl, IClickSelectableControl
+    public class SplitButton : ThemedContentControl, IClickSelectableControl
     {
         static SplitButton()
         {
@@ -42,6 +43,58 @@ namespace SolidShineUi
 
             Menu?.ApplyColorScheme(cs);
         }
+
+        #region Template IO
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            LoadTemplateItems();
+
+            if (itemsLoaded)
+            {
+                // the itemsLoaded value will only be true if both controls are not null
+#if NETCOREAPP
+                btnMain!.Click += btnMain_Click;
+                btnMenu!.Click += btnMenu_Click;
+
+                btnMain.RightClick += btnMain_RightClick;
+                btnMenu.RightClick += btnMenu_RightClick;
+#else
+                btnMain.Click += btnMain_Click;
+                btnMenu.Click += btnMenu_Click;
+
+                btnMain.RightClick += btnMain_RightClick;
+                btnMenu.RightClick += btnMenu_RightClick;
+#endif
+            }
+        }
+
+        bool itemsLoaded = false;
+
+#if NETCOREAPP
+        FlatButton? btnMain = null;
+        FlatButton? btnMenu = null;
+#else
+        FlatButton btnMain = null;
+        FlatButton btnMenu = null;
+#endif
+
+        void LoadTemplateItems()
+        {
+            if (!itemsLoaded)
+            {
+                btnMain = (FlatButton)GetTemplateChild("PART_Main");
+                btnMenu = (FlatButton)GetTemplateChild("PART_Menu");
+
+                if (btnMain != null && btnMenu != null)
+                {
+                    itemsLoaded = true;
+                }
+            }
+        }
+        #endregion
 
         #region Brushes
 
@@ -213,7 +266,23 @@ namespace SolidShineUi
 
         #endregion
 
-        #region ColorScheme/TransparentBack/UseAccentColors
+        #region SsuiTheme
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (btnMain != null && btnMenu != null)
+            {
+                btnMain.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
+                btnMenu.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
+            }
+        }
+
+        #endregion
+
+        #region ColorScheme/UseAccentColors
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -941,58 +1010,6 @@ namespace SolidShineUi
         }
 
         #endregion
-
-        #region Template IO
-        /// <inheritdoc/>
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            LoadTemplateItems();
-
-            if (itemsLoaded)
-            {
-                // the itemsLoaded value will only be true if both controls are not null
-#if NETCOREAPP
-                btnMain!.Click += btnMain_Click;
-                btnMenu!.Click += btnMenu_Click;
-
-                btnMain.RightClick += btnMain_RightClick;
-                btnMenu.RightClick += btnMenu_RightClick;
-#else
-                btnMain.Click += btnMain_Click;
-                btnMenu.Click += btnMenu_Click;
-
-                btnMain.RightClick += btnMain_RightClick;
-                btnMenu.RightClick += btnMenu_RightClick;
-#endif
-            }
-        }
-
-        bool itemsLoaded = false;
-
-#if NETCOREAPP
-        FlatButton? btnMain = null;
-        FlatButton? btnMenu = null;
-#else
-        FlatButton btnMain = null;
-        FlatButton btnMenu = null;
-#endif
-
-        void LoadTemplateItems()
-        {
-            if (!itemsLoaded)
-            {
-                btnMain = (FlatButton)GetTemplateChild("PART_Main");
-                btnMenu = (FlatButton)GetTemplateChild("PART_Menu");
-
-                if (btnMain != null && btnMenu != null)
-                {
-                    itemsLoaded = true;
-                }
-            }
-        }
-#endregion
 
     }
 }

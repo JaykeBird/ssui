@@ -307,7 +307,7 @@ namespace SolidShineUi
         /// Get or set if the Execute event should be activated when the button is initially clicked, even if the <see cref="Delay"/> time hasn't been reached.
         /// </summary>
         /// <remarks>
-        /// When this is <c>true</c>, this guarantees that Execute is ran at least once when button is clicked, even if the button was pressed for long enough
+        /// When this is <c>true</c>, this guarantees that Execute is ran at least once when button is clicked, regardless of if the button was pressed for long enough
         /// to wait past <see cref="Delay"/> and trigger running the Execute event repeatedly. This is the default and expected behaviour with a RepeatButton,
         /// but if you need to have more fine control over when Execute runs, this can be set to false.
         /// </remarks>
