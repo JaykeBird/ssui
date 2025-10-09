@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-using KeyBoard = System.Windows.Input.Keyboard;
+using Keyboard = System.Windows.Input.Keyboard;
 
 namespace SolidShineUi.KeyboardShortcuts
 {
@@ -35,7 +35,7 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         /// <summary>
-        /// Get the window that this KeyboardShortcutHandler is connected to. When keys are pressed in this window, this will activate keyboard shortcuts.
+        /// Get the window that this KeyboardShortcutHandler is connected to. When keys are pressed in this window and <see cref="IsActive"/> is <c>true</c>, this will activate keyboard shortcuts.
         /// </summary>
         public Window Window { get; private set; }
 
@@ -99,6 +99,11 @@ namespace SolidShineUi.KeyboardShortcuts
             await KeyboardShortcutsIo.WriteToFileAsync(KeyRegistry, file);
         }
 
+        /// <summary>
+        /// Get or set if this keyboard shortcut handler is currently active. If <c>false</c>, then it will not detect keyboard shortcuts or invoke actions.
+        /// </summary>
+        public bool IsActive { get; set; } = true;
+
         ///// <summary>
         ///// Set if menu items should display the keyboard shortcut combinations directly in the user interface.
         ///// </summary>
@@ -146,13 +151,16 @@ namespace SolidShineUi.KeyboardShortcuts
 
             // secondly, check for keyboard shortcuts!
 
+            if (IsActive)
+            {
 #if NETCOREAPP
-            (IKeyAction? m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
+                (IKeyAction? m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
 #else
-            (IKeyAction m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
+                (IKeyAction m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
 #endif
 
-            m?.Execute();
+                m?.Execute();
+            }
 
             return;
         }
@@ -176,7 +184,7 @@ namespace SolidShineUi.KeyboardShortcuts
         {
             if (CtrlPressed)
             {
-                if (!KeyBoard.IsKeyDown(Key.LeftCtrl) && !KeyBoard.IsKeyDown(Key.RightCtrl))
+                if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
                 {
                     CtrlPressed = false;
                 }
@@ -184,7 +192,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
             if (ShiftPressed)
             {
-                if (!KeyBoard.IsKeyDown(Key.LeftShift) && !KeyBoard.IsKeyDown(Key.RightShift))
+                if (!Keyboard.IsKeyDown(Key.LeftShift) && !Keyboard.IsKeyDown(Key.RightShift))
                 {
                     ShiftPressed = false;
                 }
@@ -192,7 +200,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
             if (AltPressed)
             {
-                if (!KeyBoard.IsKeyDown(Key.LeftAlt) && !KeyBoard.IsKeyDown(Key.RightAlt) && !KeyBoard.IsKeyDown(Key.System))
+                if (!Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt) && !Keyboard.IsKeyDown(Key.System))
                 {
                     AltPressed = false;
                 }
