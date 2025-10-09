@@ -177,6 +177,42 @@ namespace SolidShineUi
 
         #endregion
 
+        #region TransparentBack
+
+        /// <summary>
+        /// The backing dependency property object for <see cref="TransparentBack"/>. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty TransparentBackProperty
+            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Get or set whether the button should have a transparent background when the button is not focused.
+        /// </summary>
+        [Category("Common")]
+        public bool TransparentBack
+        {
+            get => (bool)GetValue(TransparentBackProperty);
+            set => SetValue(TransparentBackProperty, value);
+        }
+
+        ///// <summary>
+        ///// Perform an action when a property of an object has changed. Primarily used internally.
+        ///// </summary>
+        ///// <param name="d">The object containing the property that changed.</param>
+        ///// <param name="e">Event arguments about the property change.</param>
+        //public static void OnTransparentBackChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (e.NewValue is bool tb)
+        //    {
+        //        if (d is SplitButton f)
+        //        {
+        //            f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
+        //        }
+        //    }
+        //}
+
+        #endregion
+
         #region ColorScheme/TransparentBack/UseAccentColors
 
         /// <summary>
@@ -218,39 +254,6 @@ namespace SolidShineUi
         bool runApply = true;
 
         /// <summary>
-        /// The backing dependency property object for <see cref="TransparentBack"/>. See the related property for more details.
-        /// </summary>
-        public static readonly DependencyProperty TransparentBackProperty
-            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(SplitButton),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnTransparentBackChanged)));
-
-        /// <summary>
-        /// Get or set whether the button should have a transparent background when the button is not focused.
-        /// </summary>
-        [Category("Common")]
-        public bool TransparentBack
-        {
-            get => (bool)GetValue(TransparentBackProperty);
-            set => SetValue(TransparentBackProperty, value);
-        }
-
-        /// <summary>
-        /// Perform an action when a property of an object has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnTransparentBackChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool tb)
-            {
-                if (d is SplitButton f)
-                {
-                    f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
-                }
-            }
-        }
-
-        /// <summary>
         /// The dependency property object for <see cref="UseAccentColors"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty UseAccentColorsProperty
@@ -278,7 +281,7 @@ namespace SolidShineUi
             {
                 if (d is SplitButton f)
                 {
-                    f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, ua);
+                    f.ApplyColorScheme(f.ColorScheme, ua);
                 }
             }
         }
@@ -289,18 +292,17 @@ namespace SolidShineUi
         /// <param name="cs">The color scheme to apply</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
-            ApplyColorScheme(cs, TransparentBack, UseAccentColors);
+            ApplyColorScheme(cs, UseAccentColors);
         }
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
         /// </summary>
         /// <param name="cs">The color scheme to apply</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
         /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
         /// This can also be achieved with the <c>UseAccentColors</c> property.
         /// </param>
-        public void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
+        public void ApplyColorScheme(ColorScheme cs, bool useAccentColors = false)
         {
             if (runApply == false)
             {
@@ -315,7 +317,6 @@ namespace SolidShineUi
             if (cs != ColorScheme)
             {
                 runApply = false;
-                TransparentBack = TransparentBack || transparentBack;
                 UseAccentColors = UseAccentColors || useAccentColors;
                 runApply = true;
                 ColorScheme = cs;
@@ -337,49 +338,15 @@ namespace SolidShineUi
                 Foreground = cs.ForegroundColor.ToBrush();
                 ClickBrush = cs.ThirdHighlightColor.ToBrush();
 
-                if (transparentBack || TransparentBack)
-                {
-                    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-                    TransparentBack = true;
-                }
-                else
-                {
-                    BorderBrush = cs.BorderColor.ToBrush();
-                }
-            }
-            else if (transparentBack || TransparentBack)
-            {
-                Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
-                BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-
-                if (UseAccentColors || useAccentColors)
-                {
-                    HighlightBrush = cs.AccentSecondHighlightColor.ToBrush();
-                    SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
-                    BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
-                    BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
-                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                    SeparatorBrush = cs.AccentBorderColor.ToBrush();
-                    DisabledBrush = cs.LightDisabledColor.ToBrush();
-                    Foreground = cs.ForegroundColor.ToBrush();
-                    ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
-
-                    UseAccentColors = true;
-                }
-                else
-                {
-                    HighlightBrush = cs.SecondHighlightColor.ToBrush();
-                    DisabledBrush = cs.LightDisabledColor.ToBrush();
-                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                    SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-                    BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                    BorderSelectedBrush = cs.SelectionColor.ToBrush();
-                    SeparatorBrush = cs.BorderColor.ToBrush();
-                    Foreground = cs.ForegroundColor.ToBrush();
-                    ClickBrush = cs.ThirdHighlightColor.ToBrush();
-                }
-
-                TransparentBack = true;
+                //if (transparentBack || TransparentBack)
+                //{
+                //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
+                //    TransparentBack = true;
+                //}
+                //else
+                //{
+                //    BorderBrush = cs.BorderColor.ToBrush();
+                //}
             }
             else
             {
