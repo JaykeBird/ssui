@@ -100,8 +100,8 @@ namespace SolidShineUi.Utils
                 BitmapFrame? result = decoder.Frames.Where(f => f.Width <= size).OrderByDescending(f => f.Width).FirstOrDefault()
                     ?? decoder.Frames.OrderBy(f => f.Width).FirstOrDefault();
 #else
-            BitmapFrame result = decoder.Frames.Where(f => f.Width <= size).OrderByDescending(f => f.Width).FirstOrDefault()
-                ?? decoder.Frames.OrderBy(f => f.Width).FirstOrDefault();
+                BitmapFrame result = decoder.Frames.Where(f => f.Width <= size).OrderByDescending(f => f.Width).FirstOrDefault()
+                    ?? decoder.Frames.OrderBy(f => f.Width).FirstOrDefault();
 #endif
 
                 //Debug.WriteLine("SELECTED FRAME: " + result?.Width ?? "(null)");
