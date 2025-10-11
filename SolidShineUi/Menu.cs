@@ -37,12 +37,12 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(Menu),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP
             ColorScheme cs = (e.NewValue as ColorScheme)!;
@@ -51,11 +51,10 @@ namespace SolidShineUi
 #endif
             if (d is Menu s)
             {
-                s.ColorSchemeChanged?.Invoke(d, e);
                 s.ApplyColorScheme(cs);
+                s.ColorSchemeChanged?.Invoke(d, e);
             }
         }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
@@ -82,7 +81,7 @@ namespace SolidShineUi
             Background = cs.MainColor.ToBrush();
             MenuBackground = cs.LightBackgroundColor.ToBrush();
             DisabledBrush = cs.DarkDisabledColor.ToBrush();
-            BorderBrush = cs.BorderColor.ToBrush();
+            MenuBorderBrush = cs.BorderColor.ToBrush();
             HighlightBrush = cs.ThirdHighlightColor.ToBrush();
             HighlightSubitemBrush = cs.ThirdHighlightColor.ToBrush();
             CheckedBrush = cs.SecondaryColor.ToBrush();
@@ -100,6 +99,8 @@ namespace SolidShineUi
             }
         }
         #endregion
+
+        #region Brushes
 
         /// <summary>
         /// Get or set the brush used for the background of the menu's drop-down area. This is different from the Background brush, which set the background of the top menu bar.
@@ -137,15 +138,15 @@ namespace SolidShineUi
         /// Get or set the brush used for the border of the menu's drop-down area.
         /// </summary>
         [Category("Brushes")]
-        public new Brush BorderBrush
+        public Brush MenuBorderBrush
         {
             get
             {
-                return (Brush)GetValue(BorderBrushProperty);
+                return (Brush)GetValue(MenuBorderBrushProperty);
             }
             set
             {
-                SetValue(BorderBrushProperty, value);
+                SetValue(MenuBorderBrushProperty, value);
             }
         }
 
@@ -197,31 +198,31 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="MenuBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
-            "MenuBackground", typeof(Brush), typeof(Menu),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
+            nameof(MenuBackground), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(Menu),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+            nameof(DisabledBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(Menu),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+        /// <summary>The backing dependency property for <see cref="MenuBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty MenuBorderBrushProperty = DependencyProperty.Register(
+            nameof(MenuBorderBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for <see cref="HighlightSubitemBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightSubitemBrushProperty = DependencyProperty.Register(
-            "HighlightSubitemBrush", typeof(Brush), typeof(Menu),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+            nameof(HighlightSubitemBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(Menu),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+            nameof(HighlightBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="CheckedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
-            "CheckedBrush", typeof(Brush), typeof(Menu),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(CheckedBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
+
+        #endregion
 
     }
 }

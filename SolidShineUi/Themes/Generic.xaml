@@ -221,7 +221,7 @@
                                         <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                         <Style.Triggers>
                                             <Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
-                                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
+                                                <Setter Property="BorderBrush" Value="{Binding Path=MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -249,9 +249,11 @@
                                         <ColumnDefinition x:Name="Col3" Width="14"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Border x:Name="Check" Grid.Column="0" Height="18" Width="18" HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center" Visibility="Collapsed" Margin="1" BorderThickness="0" >
+                                    <Border x:Name="Check" Grid.Column="0" Height="18" Width="18" HorizontalAlignment="Center" UseLayoutRounding="True"
+                                            VerticalAlignment="Center" Visibility="Collapsed" Margin="1" BorderThickness="0" >
                                         <Grid>
-                                            <Path x:Name="CheckMark" Height="10" Width="10" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" SnapsToDevicePixels="False" StrokeThickness="0"
+                                            <Path x:Name="CheckMark" Height="10" Width="10" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" 
+                                                    SnapsToDevicePixels="False" StrokeThickness="0"
                                                     Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z"
                                                     Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
                                             <!--
@@ -265,10 +267,9 @@
                                     </Border>
 
                                     <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}"
-                                                      x:Name="HeaderHost" RecognizesAccessKey="True"
-                                                      ContentSource="Header" VerticalAlignment="Center"/>
+                                                      x:Name="HeaderHost" RecognizesAccessKey="True" ContentSource="Header" VerticalAlignment="Center" />
                                     <ContentPresenter Grid.Column="2" Margin="8,1,8,1" x:Name="IGTHost"
-                                                      ContentSource="InputGestureText" VerticalAlignment="Center"/>
+                                                      ContentSource="InputGestureText" VerticalAlignment="Center" />
                                     <Grid Grid.Column="3" Margin="4,0,6,0" x:Name="ArrowPanel" VerticalAlignment="Center">
                                         <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center"
                                               Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
@@ -280,7 +281,7 @@
                                         <Grid Margin="0,0,5,5">
                                             <!--Border 2-->
                                             <Border x:Name="SubMenuBorder"
-                                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"
+                                                    BorderBrush="{Binding Path=MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"
                                                     BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"
                                                     SnapsToDevicePixels="True">
                                                 <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
@@ -329,7 +330,7 @@
                                     <Setter Property="UseLayoutRounding" Value="True" />
                                 </Trigger>
                                 <Trigger Property="Role" Value="TopLevelItem">
-                                    <!-- ??? -->
+                                    <!-- top-level menu item without subitems -->
                                     <Setter Property="Padding" Value="6,0,6,2"/>
                                     <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
                                     <Setter TargetName="Col3" Property="Width" Value="Auto"/>
@@ -393,7 +394,7 @@
                                         <Condition Property="Role" Value="TopLevelHeader"/>
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
-                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
                                 </MultiTrigger>
                                 <!--<Trigger Property="IsSubmenuOpen" Value="true">
@@ -431,13 +432,16 @@
         </Style.Resources>
         <!--<Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
         <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>-->
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:Menu}">
-                    <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" >
                         <!--<Rectangle Stroke="{TemplateBinding BorderBrush}"/>-->
                         <ItemsPresenter Margin="2,0,0,0"/>
-                    </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
