@@ -425,12 +425,21 @@ namespace SolidShineUi
                 {
                     ApplyThemeBinding(BackgroundProperty, SsuiAppTheme.WindowTitleBackgroundProperty, sat);
                 }
+                else if (useAccentTheme)
+                {
+                    ApplyThemeBinding(BackgroundProperty, SsuiTheme.BaseBackgroundProperty, sat.AccentTheme);
+                }
                 else
                 {
                     ApplyThemeBinding(BackgroundProperty, SsuiTheme.BaseBackgroundProperty, sat);
                 }
 
                 if (sat.UseSubitemThemeWithMenus)
+                {
+                    ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.SubitemTheme);
+                    ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.SubitemTheme);
+                }
+                else if (useAccentTheme)
                 {
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.AccentTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.AccentTheme);

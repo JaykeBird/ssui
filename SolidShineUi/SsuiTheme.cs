@@ -14,7 +14,7 @@ namespace SolidShineUi
     /// A class containing various brushes and other settings that can be used to set the appearance of various Solid Shine UI controls.
     /// </summary>
     /// <remarks>
-    /// This can be used for most SSUI-themed controls; for SSUI-themed windows or more customized theming, use a <see cref="SsuiAppTheme"/>.
+    /// This can be used in all SSUI-themed controls; for SSUI-themed windows or to apply across an entire application, use a <see cref="SsuiAppTheme"/>.
     /// </remarks>
     public class SsuiTheme : Freezable
     {
@@ -670,6 +670,8 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>
         /// Using the accent theme on certain controls can help bring attention to those controls and make them stand out in the UI.
+        /// By default, all controls will use the main theme; enable this for certain controls by setting <c>UseAccentTheme</c> to <c>true</c>
+        /// on that control.
         /// </remarks>
         public SsuiTheme AccentTheme { get => (SsuiTheme)GetValue(AccentThemeProperty); set => SetValue(AccentThemeProperty, value); }
 
