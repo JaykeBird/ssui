@@ -22,6 +22,8 @@
     <ssut:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
     <ssut:PartialThicknessConverter x:Key="PartialThConverter" />
     <ssut:CornerRadiusModifierConverter x:Key="CrModConverter" />
+    <ssut:ThicknessMultiplierConverter x:Key="ThicknessMultiplier" />
+
     <system:Byte x:Key="byteRightCR">21</system:Byte>
     <system:Byte x:Key="byteLeftCR">10</system:Byte>
     <system:Byte x:Key="byteBottomCR">35</system:Byte>
@@ -2614,5 +2616,73 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
 
     <!--</ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>-->
+
+    <Style TargetType="{x:Type flat:PositionSelect}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type flat:PositionSelect}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}">
+                        <Border.Style>
+                            <Style TargetType="Border" >
+                                <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="BorderBrush" Value="{Binding BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        <Setter Property="Background" Value="{Binding BackgroundDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid Background="#01FFFFFF" >
+                            <Border x:Name="brdrKeyFocus" IsHitTestVisible="False" 
+                                    BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectorSize, 
+                                            Converter={StaticResource ThicknessMultiplier}, ConverterParameter=0.5}">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                            <Grid x:Name="grdGuidelines" IsHitTestVisible="False"
+                                  Margin="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectorSize, 
+                                            Converter={StaticResource ThicknessMultiplier}, ConverterParameter=0.5}" >
+                                <Grid x:Name="PART_VerticalLinesGrid" />
+                                <Grid x:Name="PART_HorizontalLinesGrid" />
+                            </Grid>
+                            <Canvas x:Name="grdSelArea" IsHitTestVisible="False" ClipToBounds="False"
+                                    Margin="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=SelectorSize, 
+                                            Converter={StaticResource ThicknessMultiplier}, ConverterParameter=0.5}" >
+                                <Ellipse x:Name="PART_Selector" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                         Width="{TemplateBinding SelectorSize}" Height="{TemplateBinding SelectorSize}" 
+                                         Canvas.Top="0" Canvas.Left="0">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse" >
+                                            <Setter Property="Fill" Value="{Binding SelectorBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Fill" Value="{Binding SelectorDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                            </Canvas>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused">
+                            <Setter Property="BorderBrush" TargetName="brdrKeyFocus" Value="{TemplateBinding KeyboardFocusHighlight}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>
