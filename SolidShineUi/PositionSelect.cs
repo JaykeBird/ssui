@@ -756,8 +756,10 @@ namespace SolidShineUi
 
         #region SelectorPosition Properties
 
-        private double oWidth = 0.5; // X
-        private double oHeight = 0.5; // Y
+        //private double oWidth = 0.5; // X
+        //private double oHeight = 0.5; // Y
+
+        bool _updateValues = true;
 
         /// <summary>
         /// Get or set the selected point, on both the X and Y axes.
@@ -766,76 +768,192 @@ namespace SolidShineUi
         /// <remarks>
         /// When setting this property, the event SelectedPositionChanged will fire twice: once after the width (X) is changed, and once after the height (Y) is changed.
         /// </remarks>
-        public Point SelectedPoint
+        public Point SelectedPoint { get => (Point)GetValue(SelectedPointProperty); set => SetValue(SelectedPointProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedPoint"/>. See the related property for details.</summary>
+        public static DependencyProperty SelectedPointProperty
+            = DependencyProperty.Register(nameof(SelectedPoint), typeof(Point), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(new Point(0.5, 0.5), (d, e) => d.PerformAs<PositionSelect>((o) => o.OnSelectedPointChanged(e))));
+
+        private void OnSelectedPointChanged(DependencyPropertyChangedEventArgs e)
         {
-            get { return new Point(oWidth, oHeight); }
-            set
+            if (!_updateValues) return;
+
+            if (e.NewValue is Point p)
             {
-                SelectedX = value.X;
-                SelectedY = value.Y;
+                // validate values
+                Point newP = new Point(ValidateValue(p.X), ValidateValue(p.Y));
+
+                if (newP != p)
+                {
+                    // update the property and start over
+                    SelectedPoint = newP;
+                    return;
+                }
+
+                _updateValues = false;
+
+                SelectedX = p.X;
+                SelectedY = p.Y;
+
+                _updateValues = true;
+
+                Point o = new Point(0, 0);
+                if (e.OldValue is Point p2)
+                {
+                    o = p2;
+                }
+
+                PositionEllipse(p);
+                RaisePositionChangedEvent(o, p);
             }
+
         }
 
         /// <summary>
         /// Get or set the selected value on the horizontal (X) axis.
         /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
-        public double SelectedX
-        {
-            get { return oWidth; }
-            set
-            {
-                double val = value;
-                if (val < 0)
-                {
-                    val = 0;
-                }
-                else if (val > 1)
-                {
-                    val = 1;
-                }
+        public double SelectedX { get => (double)GetValue(SelectedXProperty); set => SetValue(SelectedXProperty, value); }
 
-                double sshalf = SelectorSize / 2;
-                oWidth = val;
-                if (ellSelect != null) Canvas.SetLeft(ellSelect, (GetCanvasWidth() * val) - sshalf);
-                SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        /// <summary>The backing dependency property for <see cref="SelectedX"/>. See the related property for details.</summary>
+        public static DependencyProperty SelectedXProperty
+            = DependencyProperty.Register(nameof(SelectedX), typeof(double), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<PositionSelect>((o) => o.OnSelectedXChange(e))));
+
 
         /// <summary>
         /// Get or set the selected value on the vertical (Y) axis.
         /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
-        public double SelectedY
+        public double SelectedY { get => (double)GetValue(SelectedYProperty); set => SetValue(SelectedYProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedY"/>. See the related property for details.</summary>
+        public static DependencyProperty SelectedYProperty
+            = DependencyProperty.Register(nameof(SelectedY), typeof(double), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<PositionSelect>((o) => o.OnSelectedYChange(e))));
+
+
+        private void OnSelectedXChange(DependencyPropertyChangedEventArgs e)
         {
-            get { return oHeight; }
-            set
+            if (!_updateValues) return;
+
+            if (e.NewValue is double nx)
             {
-                double val = value;
-                if (val < 0)
+                // validate values
+                double newP = ValidateValue(nx);
+
+                if (newP != nx)
                 {
-                    val = 0;
-                }
-                else if (val > 1)
-                {
-                    val = 1;
+                    // update the property and start over
+                    SelectedX = newP;
+                    return;
                 }
 
-                double sshalf = SelectorSize / 2;
-                oHeight = val;
-                if (ellSelect != null) Canvas.SetTop(ellSelect, (GetCanvasHeight() * val) - sshalf);
-                SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
+                _updateValues = false;
+
+                Point p = new Point(nx, SelectedY);
+
+                SelectedPoint = p;
+
+                _updateValues = true;
+
+                Point o = new Point(0, SelectedY);
+                if (e.OldValue is double p2)
+                {
+                    o.X = p2;
+                }
+
+                PositionEllipse(p);
+                RaisePositionChangedEvent(o, p);
             }
+
+        }
+
+        private void OnSelectedYChange(DependencyPropertyChangedEventArgs e)
+        {
+            if (!_updateValues) return;
+
+            if (e.NewValue is double ny)
+            {
+                // validate values
+                double newP = ValidateValue(ny);
+
+                if (newP != ny)
+                {
+                    // update the property and start over
+                    SelectedY = newP;
+                    return;
+                }
+
+                _updateValues = false;
+
+                Point p = new Point(SelectedX, ny);
+
+                SelectedPoint = p;
+
+                _updateValues = true;
+
+                Point o = new Point(SelectedX, 0);
+                if (e.OldValue is double p2)
+                {
+                    o.Y = p2;
+                }
+
+                PositionEllipse(p);
+                RaisePositionChangedEvent(o, p);
+            }
+
+        }
+
+        #region Property Helper Methods / SelectedPositionChanged event
+
+        double ValidateValue(double input)
+        {
+            if (input < 0) return 0;
+            else if (input > 1) return 1;
+            else return input;
+        }
+
+        void PositionEllipse(Point p)
+        {
+            if (ellSelect == null) return;
+
+            double sshalf = SelectorSize / 2;
+            Canvas.SetTop(ellSelect, (GetCanvasHeight() * p.Y) - sshalf);
+            Canvas.SetLeft(ellSelect, (GetCanvasWidth() * p.X) - sshalf);
         }
 
         /// <summary>
-        /// Raised when either the SelectedHeight or SelectedWidth properties change (i.e., when the selector was moved).
+        /// Raise the <see cref="SelectedPositionChanged"/> routed event, reporting both the old and new values for <see cref="SelectedPoint"/>.
         /// </summary>
-#if NETCOREAPP
-        public event EventHandler? SelectedPositionChanged;
-#else
-        public event EventHandler SelectedPositionChanged;
-#endif
+        /// <param name="oldValue">the old value of <see cref="SelectedPoint"/> prior to the change</param>
+        /// <param name="newValue">the new value of <see cref="SelectedPoint"/> after the change</param>
+        protected void RaisePositionChangedEvent(Point oldValue, Point newValue)
+        {
+            RoutedPropertyChangedEventArgs<Point> re = new RoutedPropertyChangedEventArgs<Point>
+                (oldValue, newValue, SelectedPositionChangedEvent);
+            re.Source = this;
+            RaiseEvent(re);
+        }
+
+        /// <summary>
+        /// The backing routed event object for <see cref="SelectedPositionChanged"/>. Please see the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent SelectedPositionChangedEvent = EventManager.RegisterRoutedEvent(
+            nameof(SelectedPositionChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Point>), typeof(PositionSelect));
+
+        /// <summary>
+        /// Raised when the <see cref="SelectedPoint"/> property is changed.
+        /// </summary>
+        public event RoutedPropertyChangedEventHandler<Point> SelectedPositionChanged
+        {
+            add { AddHandler(SelectedPositionChangedEvent, value); }
+            remove { RemoveHandler(SelectedPositionChangedEvent, value); }
+        }
+
+        #endregion
+
         #endregion
 
         #region Canvas Measurements / Internal SelectPoint
@@ -930,9 +1048,16 @@ namespace SolidShineUi
             }
 
             // update outputs
-            oWidth = p.X / GetCanvasWidth();
-            oHeight = p.Y / GetCanvasHeight();
-            SelectedPositionChanged?.Invoke(this, EventArgs.Empty);
+            _updateValues = false;
+
+            Point oldValue = new Point(SelectedX, SelectedY);
+
+            SelectedX = p.X / GetCanvasWidth();
+            SelectedY = p.Y / GetCanvasHeight();
+
+            _updateValues = true;
+
+            RaisePositionChangedEvent(oldValue, new Point(SelectedX, SelectedY));
         }
 
         #endregion
