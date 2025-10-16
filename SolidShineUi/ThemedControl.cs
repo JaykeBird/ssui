@@ -133,7 +133,7 @@ namespace SolidShineUi
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
-        public static DependencyProperty UseLightBorderProperty
+        public static readonly DependencyProperty UseLightBorderProperty
             = DependencyProperty.Register(nameof(UseLightBorder), typeof(bool), typeof(ThemedControl),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ThemedControl>((o) => o.OnUseLightBorderChange(o, e))));
 
@@ -158,7 +158,7 @@ namespace SolidShineUi
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
-        public static DependencyProperty UseAccentThemeProperty
+        public static readonly DependencyProperty UseAccentThemeProperty
             = DependencyProperty.Register(nameof(UseAccentTheme), typeof(bool), typeof(ThemedControl),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ThemedControl>((o) => o.OnUseAccentColorsChange(o ,e))));
 
@@ -379,7 +379,7 @@ namespace SolidShineUi
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
-        public static DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(ThemedContentControl),
+        public static readonly DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(ThemedContentControl),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ThemedContentControl>((o) => o.OnUseLightBorderChange(o, e))));
 
         void OnUseLightBorderChange(object sender, DependencyPropertyChangedEventArgs e)
@@ -403,7 +403,7 @@ namespace SolidShineUi
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
-        public static DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(ThemedContentControl),
+        public static readonly DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(ThemedContentControl),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ThemedContentControl>((o) => o.OnUseAccentColorsChange(o, e))));
 
         void OnUseAccentColorsChange(object sender, DependencyPropertyChangedEventArgs e)
@@ -622,7 +622,7 @@ namespace SolidShineUi
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
-        public static DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(ThemedUserControl),
+        public static readonly DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(ThemedUserControl),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ThemedUserControl>((o) => o.OnUseLightBorderChange(o, e))));
 
         void OnUseLightBorderChange(object sender, DependencyPropertyChangedEventArgs e)
@@ -646,7 +646,7 @@ namespace SolidShineUi
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
-        public static DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(ThemedUserControl),
+        public static readonly DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(ThemedUserControl),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ThemedUserControl>((o) => o.OnUseAccentColorsChange(o, e))));
 
         void OnUseAccentColorsChange(object sender, DependencyPropertyChangedEventArgs e)

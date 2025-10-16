@@ -47,7 +47,7 @@ namespace SolidShineUi.Utils
         public Color Color { get => (Color)GetValue(ColorProperty); set => SetValue(ColorProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Color"/>. See the related property for details.</summary>
-        public static DependencyProperty ColorProperty
+        public static readonly DependencyProperty ColorProperty
             = DependencyProperty.Register("Color", typeof(Color), typeof(ColorSwatchButton),
             new FrameworkPropertyMetadata(Colors.White, new PropertyChangedCallback((d, e) => d.PerformAs<ColorSwatchButton>((b) => b.UpdateColor()))));
 
@@ -60,7 +60,7 @@ namespace SolidShineUi.Utils
         public bool AlwaysHexTooltips { get => (bool)GetValue(AlwaysHexTooltipsProperty); set => SetValue(AlwaysHexTooltipsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="AlwaysHexTooltips"/>. See the related property for details.</summary>
-        public static DependencyProperty AlwaysHexTooltipsProperty
+        public static readonly DependencyProperty AlwaysHexTooltipsProperty
             = DependencyProperty.Register("AlwaysHexTooltips", typeof(bool), typeof(ColorSwatchButton),
             new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<ColorSwatchButton>((b) => b.UpdateColor()))));
 
@@ -70,7 +70,7 @@ namespace SolidShineUi.Utils
         public bool SetToolTip { get => (bool)GetValue(SetToolTipProperty); set => SetValue(SetToolTipProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SetToolTip"/>. See the related property for details.</summary>
-        public static DependencyProperty SetToolTipProperty
+        public static readonly DependencyProperty SetToolTipProperty
             = DependencyProperty.Register("SetToolTip", typeof(bool), typeof(ColorSwatchButton),
             new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<ColorSwatchButton>((b) => b.UpdateColor()))));
 

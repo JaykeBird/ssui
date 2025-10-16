@@ -753,7 +753,7 @@ namespace SolidShineUi
             public int SizeVarianceCooldown { get => (int)GetValue(SizeVarianceCooldownProperty); set => SetValue(SizeVarianceCooldownProperty, value); }
 
             /// <summary>The backing dependency property for <see cref="SizeVarianceCooldown"/>. See the related property for details.</summary>
-            public static DependencyProperty SizeVarianceCooldownProperty
+            public static readonly DependencyProperty SizeVarianceCooldownProperty
                 = DependencyProperty.Register(nameof(SizeVarianceCooldown), typeof(int), typeof(ParticleItem),
                 new FrameworkPropertyMetadata(3));
 
@@ -763,7 +763,7 @@ namespace SolidShineUi
             public int DirectionVarianceCooldown { get => (int)GetValue(DirectionVarianceCooldownProperty); set => SetValue(DirectionVarianceCooldownProperty, value); }
 
             /// <summary>The backing dependency property for <see cref="DirectionVarianceCooldown"/>. See the related property for details.</summary>
-            public static DependencyProperty DirectionVarianceCooldownProperty
+            public static readonly DependencyProperty DirectionVarianceCooldownProperty
                 = DependencyProperty.Register(nameof(DirectionVarianceCooldown), typeof(int), typeof(ParticleItem),
                 new FrameworkPropertyMetadata(3));
 

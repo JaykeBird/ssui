@@ -257,7 +257,7 @@ namespace SolidShineUi
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
-        public static DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(FlatButton),
+        public static readonly DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(FlatButton),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<FlatButton>((o) => o.OnUseLightBorderChange(o, e))));
 
         void OnUseLightBorderChange(object sender, DependencyPropertyChangedEventArgs e)
@@ -281,7 +281,7 @@ namespace SolidShineUi
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
-        public static DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(FlatButton),
+        public static readonly DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(FlatButton),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<FlatButton>((o) => o.OnUseAccentColorsChange(o, e))));
 
         void OnUseAccentColorsChange(object sender, DependencyPropertyChangedEventArgs e)
@@ -674,7 +674,7 @@ namespace SolidShineUi
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
-        public static DependencyProperty HighlightOnKeyboardFocusProperty
+        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty
             = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(true));
 

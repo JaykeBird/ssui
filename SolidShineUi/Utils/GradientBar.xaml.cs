@@ -128,7 +128,7 @@ namespace SolidShineUi.Utils
         public Brush StopFill { get => (Brush)GetValue(StopFillProperty); set => SetValue(StopFillProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopFill"/>. See the related property for details.</summary>
-        public static DependencyProperty StopFillProperty
+        public static readonly DependencyProperty StopFillProperty
             = DependencyProperty.Register(nameof(StopFill), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), OnStopBrushesChanged));
 
@@ -139,7 +139,7 @@ namespace SolidShineUi.Utils
         public Brush StopSelectedFill { get => (Brush)GetValue(StopSelectedFillProperty); set => SetValue(StopSelectedFillProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopSelectedFill"/>. See the related property for details.</summary>
-        public static DependencyProperty StopSelectedFillProperty
+        public static readonly DependencyProperty StopSelectedFillProperty
             = DependencyProperty.Register(nameof(StopSelectedFill), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush(), OnStopBrushesChanged));
 
@@ -151,7 +151,7 @@ namespace SolidShineUi.Utils
         public Brush StopBorderBrush { get => (Brush)GetValue(StopBorderBrushProperty); set => SetValue(StopBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty StopBorderBrushProperty
+        public static readonly DependencyProperty StopBorderBrushProperty
             = DependencyProperty.Register(nameof(StopBorderBrush), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush(), OnStopBrushesChanged));
 
@@ -162,7 +162,7 @@ namespace SolidShineUi.Utils
         public Brush StopBorderHighlightBrush { get => (Brush)GetValue(StopBorderHighlightBrushProperty); set => SetValue(StopBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopBorderHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty StopBorderHighlightBrushProperty
+        public static readonly DependencyProperty StopBorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(StopBorderHighlightBrush), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), OnStopBrushesChanged));
 
@@ -397,7 +397,7 @@ namespace SolidShineUi.Utils
         public bool ShowControls { get => (bool)GetValue(ShowControlsProperty); set => SetValue(ShowControlsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowControls"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowControlsProperty
+        public static readonly DependencyProperty ShowControlsProperty
             = DependencyProperty.Register("ShowControls", typeof(bool), typeof(GradientBar),
             new FrameworkPropertyMetadata(true));
 

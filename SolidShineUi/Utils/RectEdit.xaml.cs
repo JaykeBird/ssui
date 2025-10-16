@@ -28,7 +28,7 @@ namespace SolidShineUi.Utils
         public Brush StrokeColor { get => (Brush)GetValue(StrokeColorProperty); set => SetValue(StrokeColorProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StrokeColor"/>. See the related property for details.</summary>
-        public static DependencyProperty StrokeColorProperty
+        public static readonly DependencyProperty StrokeColorProperty
             = DependencyProperty.Register("StrokeColor", typeof(Brush), typeof(RectEdit),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
@@ -38,7 +38,7 @@ namespace SolidShineUi.Utils
         public Brush ButtonBackground { get => (Brush)GetValue(ButtonBackgroundProperty); set => SetValue(ButtonBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonBackgroundProperty
+        public static readonly DependencyProperty ButtonBackgroundProperty
             = DependencyProperty.Register("ButtonBackground", typeof(Brush), typeof(RectEdit),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
@@ -48,7 +48,7 @@ namespace SolidShineUi.Utils
         public Brush ButtonHighlightBrush { get => (Brush)GetValue(ButtonHighlightBrushProperty); set => SetValue(ButtonHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonHighlightBrushProperty
+        public static readonly DependencyProperty ButtonHighlightBrushProperty
             = DependencyProperty.Register("ButtonHighlightBrush", typeof(Brush), typeof(RectEdit),
             new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
 
@@ -58,7 +58,7 @@ namespace SolidShineUi.Utils
         public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonClickBrushProperty
+        public static readonly DependencyProperty ButtonClickBrushProperty
             = DependencyProperty.Register("ButtonClickBrush", typeof(Brush), typeof(RectEdit),
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
 
@@ -68,7 +68,7 @@ namespace SolidShineUi.Utils
         public Brush SpinnerBorderBrush { get => (Brush)GetValue(SpinnerBorderBrushProperty); set => SetValue(SpinnerBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SpinnerBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty SpinnerBorderBrushProperty
+        public static readonly DependencyProperty SpinnerBorderBrushProperty
             = DependencyProperty.Register("SpinnerBorderBrush", typeof(Brush), typeof(RectEdit),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
@@ -78,7 +78,7 @@ namespace SolidShineUi.Utils
         public Brush ButtonDisabledBrush { get => (Brush)GetValue(ButtonDisabledBrushProperty); set => SetValue(ButtonDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonDisabledBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonDisabledBrushProperty
+        public static readonly DependencyProperty ButtonDisabledBrushProperty
             = DependencyProperty.Register("ButtonDisabledBrush", typeof(Brush), typeof(RectEdit),
             new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
 
@@ -88,7 +88,7 @@ namespace SolidShineUi.Utils
         //public Brush SpinnerBorderDisabledBrush { get => (Brush)GetValue(SpinnerBorderDisabledBrushProperty); set => SetValue(SpinnerBorderDisabledBrushProperty, value); }
 
         ///// <summary>The backing dependency property for <see cref="SpinnerBorderDisabledBrush"/>. See the related property for details.</summary>
-        //public static DependencyProperty SpinnerBorderDisabledBrushProperty
+        //public static readonly DependencyProperty SpinnerBorderDisabledBrushProperty
         //    = DependencyProperty.Register(nameof(SpinnerBorderDisabledBrush), typeof(Brush), typeof(RectEdit),
         //    new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
@@ -102,7 +102,7 @@ namespace SolidShineUi.Utils
         public ColorScheme ColorScheme { get => (ColorScheme)GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(RectEdit),
             new FrameworkPropertyMetadata(new ColorScheme(), (d, e) => d.PerformAs<RectEdit>((o) => o.OnApplyColorScheme(e))));
 
@@ -166,7 +166,7 @@ namespace SolidShineUi.Utils
         public bool ShowMeasureTypeOptions { get => (bool)GetValue(ShowMeasureTypeOptionsProperty); set => SetValue(ShowMeasureTypeOptionsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowMeasureTypeOptions"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowMeasureTypeOptionsProperty
+        public static readonly DependencyProperty ShowMeasureTypeOptionsProperty
             = DependencyProperty.Register("ShowMeasureTypeOptions", typeof(bool), typeof(RectEdit),
             new FrameworkPropertyMetadata(true));
 
@@ -177,7 +177,7 @@ namespace SolidShineUi.Utils
         public double MeasureTypeOptionsPadding { get => (double)GetValue(MeasureTypeOptionsPaddingProperty); set => SetValue(MeasureTypeOptionsPaddingProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MeasureTypeOptionsPadding"/>. See the related property for details.</summary>
-        public static DependencyProperty MeasureTypeOptionsPaddingProperty
+        public static readonly DependencyProperty MeasureTypeOptionsPaddingProperty
             = DependencyProperty.Register(nameof(MeasureTypeOptionsPadding), typeof(double), typeof(RectEdit),
             new FrameworkPropertyMetadata(7.0));
 
@@ -194,7 +194,7 @@ namespace SolidShineUi.Utils
         public RectEditMeasureType MeasureType { get => (RectEditMeasureType)GetValue(MeasureTypeProperty); set => SetValue(MeasureTypeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MeasureType"/>. See the related property for details.</summary>
-        public static DependencyProperty MeasureTypeProperty
+        public static readonly DependencyProperty MeasureTypeProperty
             = DependencyProperty.Register("MeasureType", typeof(RectEditMeasureType), typeof(RectEdit),
             new FrameworkPropertyMetadata(RectEditMeasureType.OriginAndSize, (d, e) => d.PerformAs<RectEdit>(o => o.OnMeasureTypeChanged(e))));
 
@@ -295,7 +295,7 @@ namespace SolidShineUi.Utils
         public bool LimitToPercentageRange { get => (bool)GetValue(LimitToPercentageRangeProperty); set => SetValue(LimitToPercentageRangeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="LimitToPercentageRange"/>. See the related property for details.</summary>
-        public static DependencyProperty LimitToPercentageRangeProperty
+        public static readonly DependencyProperty LimitToPercentageRangeProperty
             = DependencyProperty.Register("LimitToPercentageRange", typeof(bool), typeof(RectEdit),
             new FrameworkPropertyMetadata(false, OnInternalLimitToPercentageRangeChanged));
 
@@ -411,7 +411,7 @@ namespace SolidShineUi.Utils
         public string MeasureByText { get => (string)GetValue(MeasureByTextProperty); set => SetValue(MeasureByTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MeasureByText"/>. See the related property for details.</summary>
-        public static DependencyProperty MeasureByTextProperty
+        public static readonly DependencyProperty MeasureByTextProperty
             = DependencyProperty.Register(nameof(MeasureByText), typeof(string), typeof(RectEdit),
             new FrameworkPropertyMetadata("Measure by:"));
 
@@ -422,7 +422,7 @@ namespace SolidShineUi.Utils
         public string WidthText { get => (string)GetValue(WidthTextProperty); set => SetValue(WidthTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="WidthText"/>. See the related property for details.</summary>
-        public static DependencyProperty WidthTextProperty
+        public static readonly DependencyProperty WidthTextProperty
             = DependencyProperty.Register(nameof(WidthText), typeof(string), typeof(RectEdit),
             new FrameworkPropertyMetadata("Width:"));
 
@@ -433,7 +433,7 @@ namespace SolidShineUi.Utils
         public string HeightText { get => (string)GetValue(HeightTextProperty); set => SetValue(HeightTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HeightText"/>. See the related property for details.</summary>
-        public static DependencyProperty HeightTextProperty
+        public static readonly DependencyProperty HeightTextProperty
             = DependencyProperty.Register(nameof(HeightText), typeof(string), typeof(RectEdit),
             new FrameworkPropertyMetadata("Height:"));
 
@@ -444,7 +444,7 @@ namespace SolidShineUi.Utils
         public string OriginAndSizeText { get => (string)GetValue(OriginAndSizeTextProperty); set => SetValue(OriginAndSizeTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="OriginAndSizeText"/>. See the related property for details.</summary>
-        public static DependencyProperty OriginAndSizeTextProperty
+        public static readonly DependencyProperty OriginAndSizeTextProperty
             = DependencyProperty.Register(nameof(OriginAndSizeText), typeof(string), typeof(RectEdit),
             new FrameworkPropertyMetadata("Origin + Size"));
 
@@ -455,7 +455,7 @@ namespace SolidShineUi.Utils
         public string TwoPointsText { get => (string)GetValue(TwoPointsTextProperty); set => SetValue(TwoPointsTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TwoPointsText"/>. See the related property for details.</summary>
-        public static DependencyProperty TwoPointsTextProperty
+        public static readonly DependencyProperty TwoPointsTextProperty
             = DependencyProperty.Register(nameof(TwoPointsText), typeof(string), typeof(RectEdit),
             new FrameworkPropertyMetadata("2 Points"));
 

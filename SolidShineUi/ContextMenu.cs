@@ -305,7 +305,7 @@ namespace SolidShineUi
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
-        public static DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(ContextMenu),
+        public static readonly DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(ContextMenu),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ContextMenu>((o) => o.OnUseLightBorderChange(o, e))));
 
         void OnUseLightBorderChange(object sender, DependencyPropertyChangedEventArgs _)
@@ -329,7 +329,7 @@ namespace SolidShineUi
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
-        public static DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(ContextMenu),
+        public static readonly DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(ContextMenu),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<ContextMenu>((o) => o.OnUseAccentColorsChange(o, e))));
 
         void OnUseAccentColorsChange(object sender, DependencyPropertyChangedEventArgs _)

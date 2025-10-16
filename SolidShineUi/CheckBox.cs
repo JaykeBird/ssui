@@ -113,7 +113,7 @@ namespace SolidShineUi
         ///// <summary>
         ///// A dependency property object backing the related property. See the property itself for more details.
         ///// </summary>
-        //public static DependencyProperty OnlyAllowCheckBoxClickProperty
+        //public static readonly DependencyProperty OnlyAllowCheckBoxClickProperty
         //    = DependencyProperty.Register("OnlyAllowCheckBoxClick", typeof(bool), typeof(CheckBox),
         //    new FrameworkPropertyMetadata(false));
 
@@ -234,7 +234,7 @@ namespace SolidShineUi
         public CheckState CheckState { get => (CheckState)GetValue(CheckStateProperty); set => SetValue(CheckStateProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckState"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckStateProperty
+        public static readonly DependencyProperty CheckStateProperty
             = DependencyProperty.Register(nameof(CheckState), typeof(CheckState), typeof(CheckBox),
             new FrameworkPropertyMetadata(CheckState.Unchecked, (d, e) => d.PerformAs<CheckBox>((o) => o.OnCheckStateChanged(e))));
 
@@ -500,7 +500,7 @@ namespace SolidShineUi
         public Brush CheckBackground { get => (Brush)GetValue(CheckBackgroundProperty); set => SetValue(CheckBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckBackgroundProperty
+        public static readonly DependencyProperty CheckBackgroundProperty
             = DependencyProperty.Register(nameof(CheckBackground), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.White.ToBrush()));
 
@@ -510,7 +510,7 @@ namespace SolidShineUi
         public Brush CheckForeground { get => (Brush)GetValue(CheckForegroundProperty); set => SetValue(CheckForegroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckForeground"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckForegroundProperty
+        public static readonly DependencyProperty CheckForegroundProperty
             = DependencyProperty.Register(nameof(CheckForeground), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.Black.ToBrush()));
 
@@ -520,7 +520,7 @@ namespace SolidShineUi
         public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty HighlightBrushProperty
+        public static readonly DependencyProperty HighlightBrushProperty
             = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
 
@@ -531,7 +531,7 @@ namespace SolidShineUi
         public Brush BackgroundHighlightBrush { get => (Brush)GetValue(BackgroundHighlightBrushProperty); set => SetValue(BackgroundHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BackgroundHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BackgroundHighlightBrushProperty
+        public static readonly DependencyProperty BackgroundHighlightBrushProperty
             = DependencyProperty.Register(nameof(BackgroundHighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.WhiteLightHighlight.ToBrush()));
 
@@ -541,7 +541,7 @@ namespace SolidShineUi
         public Brush BackgroundDisabledBrush { get => (Brush)GetValue(BackgroundDisabledBrushProperty); set => SetValue(BackgroundDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BackgroundDisabledBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BackgroundDisabledBrushProperty
+        public static readonly DependencyProperty BackgroundDisabledBrushProperty
             = DependencyProperty.Register(nameof(BackgroundDisabledBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("c4d9d9d9").ToBrush()));
 
@@ -551,7 +551,7 @@ namespace SolidShineUi
         public Brush BorderDisabledBrush { get => (Brush)GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BorderDisabledBrushProperty
+        public static readonly DependencyProperty BorderDisabledBrushProperty
             = DependencyProperty.Register(nameof(BorderDisabledBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
 
@@ -561,7 +561,7 @@ namespace SolidShineUi
         public Brush CheckDisabledBrush { get => (Brush)GetValue(CheckDisabledBrushProperty); set => SetValue(CheckDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckDisabledBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckDisabledBrushProperty
+        public static readonly DependencyProperty CheckDisabledBrushProperty
             = DependencyProperty.Register(nameof(CheckDisabledBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
 
@@ -571,7 +571,7 @@ namespace SolidShineUi
         public Brush BorderHighlightBrush { get => (Brush)GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BorderHighlightBrushProperty
+        public static readonly DependencyProperty BorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(BorderHighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
@@ -581,7 +581,7 @@ namespace SolidShineUi
         public Brush BorderSelectedBrush { get => (Brush)GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BorderSelectedBrushProperty
+        public static readonly DependencyProperty BorderSelectedBrushProperty
             = DependencyProperty.Register(nameof(BorderSelectedBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.Black.ToBrush()));
 
@@ -656,7 +656,7 @@ namespace SolidShineUi
         public PlacementDirection BoxPlacement { get => (PlacementDirection)GetValue(BoxPlacementProperty); set => SetValue(BoxPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BoxPlacement"/>. See the related property for details.</summary>
-        public static DependencyProperty BoxPlacementProperty
+        public static readonly DependencyProperty BoxPlacementProperty
             = DependencyProperty.Register(nameof(BoxPlacement), typeof(PlacementDirection), typeof(CheckBox),
             new FrameworkPropertyMetadata(PlacementDirection.Left));
 
@@ -718,7 +718,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty TriStateClickProperty
+        public static readonly DependencyProperty TriStateClickProperty
             = DependencyProperty.Register("TriStateClick", typeof(bool), typeof(CheckBox),
             new FrameworkPropertyMetadata(false));
 

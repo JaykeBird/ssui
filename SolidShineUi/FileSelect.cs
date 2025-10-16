@@ -842,7 +842,7 @@ namespace SolidShineUi
         public bool FileMustExist { get => (bool)GetValue(FileMustExistProperty); set => SetValue(FileMustExistProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="FileMustExist"/>. See the related property for details.</summary>
-        public static DependencyProperty FileMustExistProperty
+        public static readonly DependencyProperty FileMustExistProperty
             = DependencyProperty.Register("FileMustExist", typeof(bool), typeof(FileSelect),
             new FrameworkPropertyMetadata(true));
 

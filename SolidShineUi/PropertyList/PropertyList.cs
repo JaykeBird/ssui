@@ -189,7 +189,7 @@ namespace SolidShineUi.PropertyList
 #endif
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static DependencyProperty ColorSchemeProperty
+        public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(PropertyList),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
@@ -449,7 +449,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ObjectDisplayNameProperty
+        public static readonly DependencyProperty ObjectDisplayNameProperty
             = DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("No name"));
 
@@ -470,7 +470,7 @@ namespace SolidShineUi.PropertyList
         public PropertySortOption SortOption { get => (PropertySortOption)GetValue(SortOptionProperty); set => SetValue(SortOptionProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SortOption"/>. See the related property for details.</summary>
-        public static DependencyProperty SortOptionProperty
+        public static readonly DependencyProperty SortOptionProperty
             = DependencyProperty.Register("SortOption", typeof(PropertySortOption), typeof(PropertyList),
             new FrameworkPropertyMetadata(PropertySortOption.Name,
                 new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.SortOptionChanged?.Invoke(p, e)))));
@@ -493,7 +493,7 @@ namespace SolidShineUi.PropertyList
         public bool ShowInheritedProperties { get => (bool)GetValue(ShowInheritedPropertiesProperty); set => SetValue(ShowInheritedPropertiesProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowInheritedProperties"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowInheritedPropertiesProperty
+        public static readonly DependencyProperty ShowInheritedPropertiesProperty
             = DependencyProperty.Register("ShowInheritedProperties", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true,
                 new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowInheritedPropertiesChanged?.Invoke(p, e)))));
@@ -506,7 +506,7 @@ namespace SolidShineUi.PropertyList
         public bool ShowReadOnlyProperties { get => (bool)GetValue(ShowReadOnlyPropertiesProperty); set => SetValue(ShowReadOnlyPropertiesProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowReadOnlyProperties"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowReadOnlyPropertiesProperty
+        public static readonly DependencyProperty ShowReadOnlyPropertiesProperty
             = DependencyProperty.Register("ShowReadOnlyProperties", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true, new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowReadOnlyPropertiesChanged?.Invoke(p, e)))));
 
@@ -520,7 +520,7 @@ namespace SolidShineUi.PropertyList
         public string FilterText { get => (string)GetValue(FilterTextProperty); set => SetValue(FilterTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="FilterText"/>. See the related property for details.</summary>
-        public static DependencyProperty FilterTextProperty
+        public static readonly DependencyProperty FilterTextProperty
             = DependencyProperty.Register("FilterText", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("", new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.FilterTextChanged?.Invoke(p, e)))));
 
@@ -1277,7 +1277,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty TypeLabelProperty
+        public static readonly DependencyProperty TypeLabelProperty
             = DependencyProperty.Register("TypeLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Type: "));
 
@@ -1290,7 +1290,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ViewMenuLabelProperty
+        public static readonly DependencyProperty ViewMenuLabelProperty
             = DependencyProperty.Register("ViewMenuLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("View"));
 
@@ -1303,7 +1303,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty NameHeaderLabelProperty
+        public static readonly DependencyProperty NameHeaderLabelProperty
             = DependencyProperty.Register("NameHeaderLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Name"));
 
@@ -1316,7 +1316,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty TypeHeaderLabelProperty
+        public static readonly DependencyProperty TypeHeaderLabelProperty
             = DependencyProperty.Register("TypeHeaderLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Type"));
 
@@ -1329,7 +1329,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ValueHeaderLabelProperty
+        public static readonly DependencyProperty ValueHeaderLabelProperty
             = DependencyProperty.Register("ValueHeaderLabel", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Value"));
 
@@ -1342,7 +1342,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty FilterBoxToolTipProperty
+        public static readonly DependencyProperty FilterBoxToolTipProperty
             = DependencyProperty.Register("FilterBoxToolTip", typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Filter (use @ to filter by name only)"));
 
@@ -1362,7 +1362,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ShowNameDisplayProperty
+        public static readonly DependencyProperty ShowNameDisplayProperty
             = DependencyProperty.Register("ShowNameDisplay", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
@@ -1375,7 +1375,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ShowTypeDisplayProperty
+        public static readonly DependencyProperty ShowTypeDisplayProperty
             = DependencyProperty.Register("ShowTypeDisplay", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
@@ -1392,7 +1392,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ShowFilterBoxProperty
+        public static readonly DependencyProperty ShowFilterBoxProperty
             = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
@@ -1405,7 +1405,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ShowReloadButtonProperty
+        public static readonly DependencyProperty ShowReloadButtonProperty
             = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
@@ -1418,7 +1418,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ShowViewMenuProperty
+        public static readonly DependencyProperty ShowViewMenuProperty
             = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(true));
 
@@ -1435,7 +1435,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty ShowGridlinesProperty
+        public static readonly DependencyProperty ShowGridlinesProperty
             = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(false,
                 new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowGridlinesChanged?.Invoke(p, e)))));
@@ -1449,7 +1449,7 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
-        public static DependencyProperty GridlineBrushProperty
+        public static readonly DependencyProperty GridlineBrushProperty
             = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
@@ -1484,11 +1484,9 @@ namespace SolidShineUi.PropertyList
         [Category("Brushes")]
         public Brush HeaderBackground { get => (Brush)GetValue(HeaderBackgroundProperty); set => SetValue(HeaderBackgroundProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty HeaderBackgroundProperty
-            = DependencyProperty.Register("HeaderBackground", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="HeaderBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HeaderBackgroundProperty
+            = DependencyProperty.Register(nameof(HeaderBackground), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         /// <summary>
@@ -1497,11 +1495,9 @@ namespace SolidShineUi.PropertyList
         [Category("Brushes")]
         public Brush HeaderForeground { get => (Brush)GetValue(HeaderForegroundProperty); set => SetValue(HeaderForegroundProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty HeaderForegroundProperty
-            = DependencyProperty.Register("HeaderForeground", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="HeaderForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HeaderForegroundProperty
+            = DependencyProperty.Register(nameof(HeaderForeground), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         /// <summary>
@@ -1510,24 +1506,21 @@ namespace SolidShineUi.PropertyList
         [Category("Brushes")]
         public Brush ToolbarBackground { get => (Brush)GetValue(ToolbarBackgroundProperty); set => SetValue(ToolbarBackgroundProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty ToolbarBackgroundProperty
-            = DependencyProperty.Register("ToolbarBackground", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="ToolbarBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ToolbarBackgroundProperty
+            = DependencyProperty.Register(nameof(ToolbarBackground), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
 
         /// <summary>
-        /// Get or set the brush for the buttons on the toolbar when they are highlighted (i.e. mouse over or keyboard focus).
+        /// Get or set the brush for the buttons on the toolbar or items in the View menu
+        /// when they are highlighted (e.g., mouse over or keyboard focus).
         /// </summary>
         [Category("Brushes")]
         public Brush ButtonHighlightBrush { get => (Brush)GetValue(ButtonHighlightBrushProperty); set => SetValue(ButtonHighlightBrushProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty ButtonHighlightBrushProperty
-            = DependencyProperty.Register("ButtonHighlightBrush", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ButtonHighlightBrushProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBrush), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         /// <summary>
@@ -1536,24 +1529,21 @@ namespace SolidShineUi.PropertyList
         [Category("Brushes")]
         public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty ButtonClickBrushProperty
-            = DependencyProperty.Register("ButtonClickBrush", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ButtonClickBrushProperty
+            = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
         /// <summary>
-        /// Get or set the brush for the borders of the buttons on the toolbar, when the buttons are being highlighted or clicked. (The buttons display no border when not focused.)
+        /// Get or set the brush for the borders of the buttons on the toolbar, 
+        /// when the buttons are being highlighted or clicked. (The buttons display no border when not focused.)
         /// </summary>
         [Category("Brushes")]
         public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty ButtonHighlightBorderBrushProperty
-            = DependencyProperty.Register("ButtonHighlightBorderBrush", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ButtonHighlightBorderBrushProperty
+            = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         /// <summary>
@@ -1562,11 +1552,9 @@ namespace SolidShineUi.PropertyList
         [Category("Brushes")]
         public Brush TopPanelBackground { get => (Brush)GetValue(TopPanelBackgroundProperty); set => SetValue(TopPanelBackgroundProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty TopPanelBackgroundProperty
-            = DependencyProperty.Register("TopPanelBackground", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="TopPanelBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TopPanelBackgroundProperty
+            = DependencyProperty.Register(nameof(TopPanelBackground), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White)));
 
         /// <summary>
@@ -1575,11 +1563,9 @@ namespace SolidShineUi.PropertyList
         [Category("Brushes")]
         public Brush TopPanelForeground { get => (Brush)GetValue(TopPanelForegroundProperty); set => SetValue(TopPanelForegroundProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty TopPanelForegroundProperty
-            = DependencyProperty.Register("TopPanelForeground", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="TopPanelForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TopPanelForegroundProperty
+            = DependencyProperty.Register(nameof(TopPanelForeground), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black)));
 
         /// <summary>
@@ -1588,11 +1574,9 @@ namespace SolidShineUi.PropertyList
         [Category("Brushes")]
         public Brush HeaderDividerBrush { get => (Brush)GetValue(HeaderDividerBrushProperty); set => SetValue(HeaderDividerBrushProperty, value); }
 
-        /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
-        /// </summary>
-        public static DependencyProperty HeaderDividerBrushProperty
-            = DependencyProperty.Register("HeaderDividerBrush", typeof(Brush), typeof(PropertyList),
+        /// <summary>The backing dependency property for <see cref="HeaderDividerBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HeaderDividerBrushProperty
+            = DependencyProperty.Register(nameof(HeaderDividerBrush), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
         #endregion
@@ -1605,7 +1589,7 @@ namespace SolidShineUi.PropertyList
         public bool ShowTypesColumn { get => (bool)GetValue(ShowTypesColumnProperty); set => SetValue(ShowTypesColumnProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowTypesColumn"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowTypesColumnProperty
+        public static readonly DependencyProperty ShowTypesColumnProperty
             = DependencyProperty.Register(nameof(ShowTypesColumn), typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<PropertyList>((o) => o.UpdateTypesColumnSize())));
 

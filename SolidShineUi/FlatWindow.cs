@@ -403,7 +403,7 @@ namespace SolidShineUi
         public int CaptionHeight { get => (int)GetValue(CaptionHeightProperty); set => SetValue(CaptionHeightProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CaptionHeight"/>. See the related property for details.</summary>
-        public static DependencyProperty CaptionHeightProperty
+        public static readonly DependencyProperty CaptionHeightProperty
             = DependencyProperty.Register(nameof(CaptionHeight), typeof(int), typeof(FlatWindow),
             new FrameworkPropertyMetadata(29, (d, e) => d.PerformAs<FlatWindow, int>(e.NewValue, (o, n) => o.ResizeCaptionHeight(n))));
 

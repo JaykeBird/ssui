@@ -37,7 +37,7 @@ namespace SolidShineUi
         public SsuiAppTheme SsuiTheme { get => (SsuiAppTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
-        public static DependencyProperty SsuiThemeProperty
+        public static readonly DependencyProperty SsuiThemeProperty
             = DependencyProperty.Register(nameof(SsuiTheme), typeof(SsuiAppTheme), typeof(ThemedWindow),
             new FrameworkPropertyMetadata(new SsuiAppTheme(), (d, e) => d.PerformAs<ThemedWindow>((o) => o.OnSsuiThemeChanged(e))));
 

@@ -271,7 +271,7 @@ namespace SolidShineUi
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
-        public static DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(Menu),
+        public static readonly DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(Menu),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<Menu>((o) => o.OnUseLightBorderChange(o, e))));
 
         void OnUseLightBorderChange(object sender, DependencyPropertyChangedEventArgs e)
@@ -295,7 +295,7 @@ namespace SolidShineUi
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
-        public static DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(Menu),
+        public static readonly DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(Menu),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<Menu>((o) => o.OnUseAccentColorsChange(o, e))));
 
         void OnUseAccentColorsChange(object sender, DependencyPropertyChangedEventArgs e)
@@ -326,7 +326,7 @@ namespace SolidShineUi
         public bool UseTitleBarThemeBrush { get => (bool)GetValue(UseTitleBarThemeBrushProperty); set => SetValue(UseTitleBarThemeBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseTitleBarThemeBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty UseTitleBarThemeBrushProperty
+        public static readonly DependencyProperty UseTitleBarThemeBrushProperty
             = DependencyProperty.Register(nameof(UseTitleBarThemeBrush), typeof(bool), typeof(Menu),
             new FrameworkPropertyMetadata(true));
 

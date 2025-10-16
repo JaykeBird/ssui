@@ -235,7 +235,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty SnapToSnaplinesProperty
+        public static readonly DependencyProperty SnapToSnaplinesProperty
             = DependencyProperty.Register(nameof(SnapToSnaplines), typeof(bool), typeof(PositionSelect), new FrameworkPropertyMetadata(true));
 
 
@@ -248,7 +248,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty SnapDistanceProperty
+        public static readonly DependencyProperty SnapDistanceProperty
             = DependencyProperty.Register(nameof(SnapDistance), typeof(double), typeof(PositionSelect), new FrameworkPropertyMetadata(3.0));
 
         #region ObservableCollection handling
@@ -264,7 +264,7 @@ namespace SolidShineUi
         }
 
         /// <summary>The backing dependency property for <see cref="HorizontalSnapPoints"/>. See the related property for details.</summary>
-        public static DependencyProperty HorizontalSnapPointsProperty
+        public static readonly DependencyProperty HorizontalSnapPointsProperty
             = DependencyProperty.Register(nameof(HorizontalSnapPoints), typeof(ObservableCollection<double>), typeof(PositionSelect),
                 new FrameworkPropertyMetadata(new PropertyChangedCallback((d, e) => d.PerformAs<PositionSelect>((r) => r.HorizontalSnapPointsChanged(r, e)))));
 
@@ -279,7 +279,7 @@ namespace SolidShineUi
         }
 
         /// <summary>The backing dependency property for <see cref="VerticalSnapPoints"/>. See the related property for details.</summary>
-        public static DependencyProperty VerticalSnapPointsProperty
+        public static readonly DependencyProperty VerticalSnapPointsProperty
             = DependencyProperty.Register(nameof(VerticalSnapPoints), typeof(ObservableCollection<double>), typeof(PositionSelect),
                 new FrameworkPropertyMetadata(new PropertyChangedCallback((d, e) => d.PerformAs<PositionSelect>((r) => r.VerticalSnapPointsChanged(r, e)))));
 
@@ -609,7 +609,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty KeyMoveStepProperty
+        public static readonly DependencyProperty KeyMoveStepProperty
             = DependencyProperty.Register("KeyMoveStep", typeof(double), typeof(RelativePositionSelect),
             new FrameworkPropertyMetadata(0.05));
 
@@ -715,7 +715,7 @@ namespace SolidShineUi
         public double SelectorSize { get => (double)GetValue(SelectorSizeProperty); set => SetValue(SelectorSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectorSize"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectorSizeProperty
+        public static readonly DependencyProperty SelectorSizeProperty
             = DependencyProperty.Register(nameof(SelectorSize), typeof(double), typeof(PositionSelect),
             new FrameworkPropertyMetadata(9.0));
 
@@ -771,7 +771,7 @@ namespace SolidShineUi
         public Point SelectedPoint { get => (Point)GetValue(SelectedPointProperty); set => SetValue(SelectedPointProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedPoint"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectedPointProperty
+        public static readonly DependencyProperty SelectedPointProperty
             = DependencyProperty.Register(nameof(SelectedPoint), typeof(Point), typeof(PositionSelect),
             new FrameworkPropertyMetadata(new Point(0.5, 0.5), (d, e) => d.PerformAs<PositionSelect>((o) => o.OnSelectedPointChanged(e))));
 
@@ -817,7 +817,7 @@ namespace SolidShineUi
         public double SelectedX { get => (double)GetValue(SelectedXProperty); set => SetValue(SelectedXProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedX"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectedXProperty
+        public static readonly DependencyProperty SelectedXProperty
             = DependencyProperty.Register(nameof(SelectedX), typeof(double), typeof(PositionSelect),
             new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<PositionSelect>((o) => o.OnSelectedXChange(e))));
 
@@ -829,7 +829,7 @@ namespace SolidShineUi
         public double SelectedY { get => (double)GetValue(SelectedYProperty); set => SetValue(SelectedYProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedY"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectedYProperty
+        public static readonly DependencyProperty SelectedYProperty
             = DependencyProperty.Register(nameof(SelectedY), typeof(double), typeof(PositionSelect),
             new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<PositionSelect>((o) => o.OnSelectedYChange(e))));
 

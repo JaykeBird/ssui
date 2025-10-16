@@ -230,7 +230,7 @@ namespace SolidShineUi
         public string CheckBoxText { get => (string)GetValue(CheckBoxTextProperty); set => SetValue(CheckBoxTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckBoxText"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckBoxTextProperty
+        public static readonly DependencyProperty CheckBoxTextProperty
             = DependencyProperty.Register(nameof(CheckBoxText), typeof(string), typeof(MessageDialog),
             new FrameworkPropertyMetadata(""));
 
@@ -239,7 +239,7 @@ namespace SolidShineUi
         public bool CheckBoxValue { get => (bool)GetValue(CheckBoxValueProperty); set => SetValue(CheckBoxValueProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckBoxValue"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckBoxValueProperty
+        public static readonly DependencyProperty CheckBoxValueProperty
             = DependencyProperty.Register(nameof(CheckBoxValue), typeof(bool), typeof(MessageDialog),
             new FrameworkPropertyMetadata(false));
 

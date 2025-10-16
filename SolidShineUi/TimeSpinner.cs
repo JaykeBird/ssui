@@ -209,7 +209,7 @@ namespace SolidShineUi
         public string DisplayFormatString { get => (string)GetValue(DisplayFormatStringProperty); set => SetValue(DisplayFormatStringProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="DisplayFormatString"/>. See the related property for details.</summary>
-        public static DependencyProperty DisplayFormatStringProperty
+        public static readonly DependencyProperty DisplayFormatStringProperty
             = DependencyProperty.Register(nameof(DisplayFormatString), typeof(string), typeof(TimeSpinner),
             new FrameworkPropertyMetadata("g"));
 
@@ -230,7 +230,7 @@ namespace SolidShineUi
         public bool Use12HourClock { get => (bool)GetValue(Use12HourClockProperty); set => SetValue(Use12HourClockProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Use12HourClock"/>. See the related property for details.</summary>
-        public static DependencyProperty Use12HourClockProperty
+        public static readonly DependencyProperty Use12HourClockProperty
             = DependencyProperty.Register(nameof(Use12HourClock), typeof(bool), typeof(TimeSpinner),
             new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<TimeSpinner>(t => t.UpdateUI())));
 
