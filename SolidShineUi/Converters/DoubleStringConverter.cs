@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// Converts a double into a string for display in XAML.

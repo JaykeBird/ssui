@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SolidShineUi.Converters;
+using System;
 using System.Windows;
 #if AVALONIA
 using Avalonia.Data.Converters;

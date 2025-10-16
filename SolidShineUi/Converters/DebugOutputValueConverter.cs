@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
 
     /// <summary>

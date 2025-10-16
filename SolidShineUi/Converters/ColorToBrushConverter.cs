@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace SolidShineUi
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// Converts a Color into a SolidColorBrush.

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
-namespace SolidShineUi
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// Converts a <see cref="FontWeight"/> OpenType weight value into a human-friendly string (based upon the names in <see cref="FontWeights"/>).

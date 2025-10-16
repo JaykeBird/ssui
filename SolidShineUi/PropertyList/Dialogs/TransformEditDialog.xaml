@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SolidShineUi.PropertyList.Dialogs"
         xmlns:flat="clr-namespace:SolidShineUi"
+        xmlns:conv="clr-namespace:SolidShineUi.Converters"
         mc:Ignorable="d"
         Title="Edit Transforms" Height="360" Width="580" MinWidth="420" MinHeight="350" >
     <flat:FlatWindow.Resources>
-        <flat:ColorToBrushConverter x:Key="ctb" />
+        <conv:ColorToBrushConverter x:Key="ctb" />
     </flat:FlatWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>

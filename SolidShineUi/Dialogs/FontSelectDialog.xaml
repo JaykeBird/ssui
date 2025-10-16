@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:win="clr-namespace:System.Windows;assembly=PresentationCore"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:conv="clr-namespace:SolidShineUi.Converters"
         xmlns:flat="clr-namespace:SolidShineUi"
                  xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                  mc:Ignorable="d"
         Title="Select Font" Height="550" Width="480" x:Name="window" BorderBrush="Black" FontSize="12"
                 ResizeMode="NoResize" CaptionDisplayType="Close" >
     <flat:FlatWindow.Resources>
-        <flat:ColorToBrushConverter x:Key="ColorConverter" />
-        <flat:FontWeightValueConverter x:Key="fvc" />
-        <flat:FontWeightStringConverter x:Key="fwc" />
+        <conv:ColorToBrushConverter x:Key="ColorConverter" />
+        <conv:FontWeightValueConverter x:Key="fvc" />
+        <conv:FontWeightStringConverter x:Key="fwc" />
     </flat:FlatWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>

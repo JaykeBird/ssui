@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SolidShineUi"
+             xmlns:conv="clr-namespace:SolidShineUi.Converters"
              mc:Ignorable="d"
              d:DesignHeight="24" d:DesignWidth="120" MinWidth="120" Loaded="control_Loaded"
              MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp" MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave" MouseMove="control_MouseMove"
@@ -15,7 +16,7 @@
              KeyDown="UserControl_KeyDown" KeyUp="UserControl_KeyUp" GotKeyboardFocus="UserControl_GotKeyboardFocus" LostKeyboardFocus="UserControl_LostKeyboardFocus" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
-        <local:ColorToBrushConverter x:Key="ctb" />
+        <conv:ColorToBrushConverter x:Key="ctb" />
         <local:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>

@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
         xmlns:flat="clr-namespace:SolidShineUi"
+        xmlns:conv="clr-namespace:SolidShineUi.Converters"
         mc:Ignorable="d" SourceInitialized="window_SourceInitialized"
         Title="List Viewer/Editor" Height="450" Width="600" MinWidth="500" MinHeight="300" CaptionDisplayType="MaximizeClose" >
     <flat:FlatWindow.Resources>
-        <flat:ColorToBrushConverter x:Key="ctb" />
+        <conv:ColorToBrushConverter x:Key="ctb" />
     </flat:FlatWindow.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

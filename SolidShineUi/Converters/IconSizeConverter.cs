@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Diagnostics;
 using System.Windows.Media;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     // from https://stackoverflow.com/a/54738646/2987285
 

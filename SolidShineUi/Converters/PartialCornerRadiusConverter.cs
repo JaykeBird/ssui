@@ -2,8 +2,9 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
+using SolidShineUi.Utils;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// A helper method for WPF controls, to only selectively apply a <see cref="CornerRadius"/> value to only some corners.

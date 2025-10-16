@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// Takes a number and multiplies it by the amount in the parameter, and returns that value as a <see cref="double"/>.

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SolidShineUi
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// A MultiValueConverter that takes 4 values and creates a Rect. This class can be used to get around the fact that a Rect cannot be used for XAML binding.

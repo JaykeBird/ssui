@@ -4,6 +4,7 @@
     xmlns:flat="clr-namespace:SolidShineUi"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
     xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
+    xmlns:conv="clr-namespace:SolidShineUi.Converters"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--    xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"-->
 
@@ -11,18 +12,18 @@
         <ResourceDictionary Source="pack://application:,,,/SolidShineUi;component/TabControlStyle.xaml" />
         <ResourceDictionary>-->
 
-    <flat:ColorToBrushConverter x:Key="ColorConverter" />
+    <conv:ColorToBrushConverter x:Key="ColorConverter" />
     <BooleanToVisibilityConverter x:Key="VisConverter" />
     <flat:BindableChildConverter x:Key="BindableChildConverter" />
-    <flat:RectConverter x:Key="RectConverter" />
-    <ssut:FilePathToNameConverter x:Key="FileNameConverter" />
+    <conv:RectConverter x:Key="RectConverter" />
+    <conv:FilePathToNameConverter x:Key="FileNameConverter" />
     <!--<ssut:FileSelectSingleTitleConverter x:Key="FileSelectSstConverter" />-->
-    <ssut:FilePathToIconConverter x:Key="FileIconConverter" />
-    <ssut:IconSizeConverter x:Key="IconSizeConverter" />
-    <ssut:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
-    <ssut:PartialThicknessConverter x:Key="PartialThConverter" />
-    <ssut:CornerRadiusModifierConverter x:Key="CrModConverter" />
-    <ssut:ThicknessMultiplierConverter x:Key="ThicknessMultiplier" />
+    <conv:FilePathToIconConverter x:Key="FileIconConverter" />
+    <conv:IconSizeConverter x:Key="IconSizeConverter" />
+    <conv:PartialCornerRadiusConverter x:Key="PartialCrConverter" />
+    <conv:PartialThicknessConverter x:Key="PartialThConverter" />
+    <conv:CornerRadiusModifierConverter x:Key="CrModConverter" />
+    <conv:ThicknessMultiplierConverter x:Key="ThicknessMultiplier" />
 
     <system:Byte x:Key="byteRightCR">21</system:Byte>
     <system:Byte x:Key="byteLeftCR">10</system:Byte>
