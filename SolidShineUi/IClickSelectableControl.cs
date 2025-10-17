@@ -63,6 +63,12 @@ namespace SolidShineUi
         void ApplyColorScheme(ColorScheme cs);
 
         /// <summary>
+        /// Get or set the SsuiTheme to apply for this control. Each control will apply the theme's colors appropriately via its own
+        /// <c>OnApplySsuiTheme</c> method.
+        /// </summary>
+        SsuiTheme SsuiTheme { get; set; }
+
+        /// <summary>
         /// Get or set the background brush used for this control, when it isn't being clicked or selected.
         /// </summary>
         Brush Background { get; set; }

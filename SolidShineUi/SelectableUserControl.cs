@@ -14,7 +14,7 @@ namespace SolidShineUi
     /// </summary>
     [Localizability(LocalizationCategory.ListBox)]
     [DefaultEvent(nameof(IsSelectedChanged))]
-    public class SelectableUserControl : System.Windows.Controls.UserControl, IClickSelectableControl
+    public class SelectableUserControl : ThemedUserControl, IClickSelectableControl
     {
         /// <summary>
         /// Create a SelectableUserControl.
@@ -43,11 +43,34 @@ namespace SolidShineUi
             Focusable = true;
             IsTabStop = true;
 
-            base.Background = Background;
+            Background = BaseBackground;
+            Foreground = BaseForeground;
+
+            // after certain changes, we'll update the brushes
+            IsEnabledChanged += (d, e) => { UpdateBrushes(); };
+            SsuiThemeApplied += (d, e) => { UpdateBrushes(); };
+
+            // Background = transparent.ToBrush();
         }
 
         #region Brushes
+
         static Color transparent = Color.FromArgb(1, 0, 0, 0);
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this control when in its default state (e.g., when not selected or highlighted).
+        /// </summary>
+        /// <remarks>
+        /// Setting <c>Background</c> will only affect its background for the current state and time; once the state changes,
+        /// the background will be overwritten with either this brush or one of the relevant other brushes.
+        /// Instead, this brush should be set to control what the background should be when falling back to a default, base state.
+        /// </remarks>
+        [Category("Brushes")]
+        public Brush BaseBackground
+        {
+            get => (Brush)GetValue(BaseBackgroundProperty);
+            set => SetValue(BaseBackgroundProperty, value);
+        }
 
         /// <summary>
         /// Get or set the brush to use for the background of this control while it is being clicked.
@@ -57,16 +80,6 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(ClickBrushProperty);
             set => SetValue(ClickBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the brush to use for the background of this control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
         }
 
         /// <summary>
@@ -89,23 +102,91 @@ namespace SolidShineUi
             set => SetValue(HighlightBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(SelectableUserControl),
+
+        /// <summary>
+        /// Get or set the brush to use for the foreground of this control when in its default state (e.g., when not selected or highlighted).
+        /// </summary>
+        /// <remarks>
+        /// Setting <c>Foreground</c> will only affect its foreground for the current state and time; once the state changes,
+        /// the foreground will be overwritten with either this brush or one of the relevant other brushes.
+        /// Instead, this brush should be set to control what the foreground should be when falling back to a default, base state.
+        /// </remarks>
+        [Category("Brushes")]
+        public Brush BaseForeground
+        {
+            get => (Brush)GetValue(BaseForegroundProperty);
+            set => SetValue(BaseForegroundProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this control while it is being clicked.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush DisabledForeground
+        {
+            get => (Brush)GetValue(DisabledForegroundProperty);
+            set => SetValue(DisabledForegroundProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this control while it is selected.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this contol while it is highlighted (i.e. has a mouse over it, or has keyboard focus).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightForeground
+        {
+            get => (Brush)GetValue(HighlightForegroundProperty);
+            set => SetValue(HighlightForegroundProperty, value);
+        }
+
+        /// <summary>The backing dependency property for <see cref="BaseBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BaseBackgroundProperty = DependencyProperty.Register(
+            nameof(BaseBackground), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(transparent.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(SelectableUserControl),
+            nameof(ClickBrush), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(SelectableUserControl),
+            nameof(SelectedBrush), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(SelectableUserControl),
+            nameof(HighlightBrush), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>The backing dependency property for <see cref="BaseBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BaseForegroundProperty = DependencyProperty.Register(
+            nameof(BaseBackground), typeof(Brush), typeof(SelectableUserControl),
+            new PropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty DisabledForegroundProperty = DependencyProperty.Register(
+            nameof(ClickBrush), typeof(Brush), typeof(SelectableUserControl),
+            new PropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty = DependencyProperty.Register(
+            nameof(SelectedBrush), typeof(Brush), typeof(SelectableUserControl),
+            new PropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(
+            nameof(HighlightBrush), typeof(Brush), typeof(SelectableUserControl),
+            new PropertyMetadata(Colors.Black.ToBrush()));
 
 
         /// <summary>
@@ -115,38 +196,83 @@ namespace SolidShineUi
         {
             if (performingClick)
             {
-                base.Background = ClickBrush;
+                Background = ClickBrush;
             }
             else if (highlighting)
             {
-                base.Background = HighlightBrush;
+                Background = HighlightBrush;
             }
             else if (IsSelected)
             {
-                base.Background = SelectedBrush;
+                Background = SelectedBrush;
             }
             else
             {
-                base.Background = Background;
+                Background = BaseBackground;
+            }
+
+            if (!IsEnabled)
+            {
+                Foreground = DisabledForeground;
+            }
+            else if (highlighting || performingClick)
+            {
+                Foreground = HighlightForeground;
+            }
+            else if (IsSelected)
+            {
+                Foreground = SelectedForeground;
+            }
+            else
+            {
+                Foreground = BaseForeground;
             }
         }
 
         #endregion
 
         /// <summary>
-        /// When overridden by a derived class, this method is automatically called each time the color scheme is updated by the parent SelectPanel. Use this to update child controls.
+        /// When overridden by a derived class, this method is automatically called each time the color scheme is updated by the parent SelectPanel. 
+        /// Use this to update child controls.
         /// </summary>
         /// <param name="cs">The new color scheme.</param>
         public virtual void ApplyColorScheme(ColorScheme cs)
         {
+            BaseForeground = cs.ForegroundColor.ToBrush();
+            DisabledForeground = cs.DarkDisabledColor.ToBrush();
+
             UpdateBrushes();
-            if (IsEnabled)
+        }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
             {
-                Foreground = cs.ForegroundColor.ToBrush();
+                ApplyTheme(ssuiAppTheme.AccentTheme);
             }
             else
             {
-                Foreground = cs.DarkDisabledColor.ToBrush();
+                ApplyTheme(ssuiTheme);
+            }
+
+            BaseBackground = transparent.ToBrush();
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                // Border brush already applied in base
+                // BaseBackground is set to transparent above
+
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(BaseForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(DisabledForegroundProperty, SsuiTheme.DisabledForegroundProperty, theme);
             }
         }
 
@@ -163,7 +289,7 @@ namespace SolidShineUi
         public bool SelectOnClick { get => (bool)GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectOnClickProperty
+        public static readonly DependencyProperty SelectOnClickProperty
             = DependencyProperty.Register("SelectOnClick", typeof(bool), typeof(SelectableUserControl),
             new FrameworkPropertyMetadata(true));
 
@@ -178,7 +304,7 @@ namespace SolidShineUi
         public bool CanSelect { get => (bool)GetValue(CanSelectProperty); set => SetValue(CanSelectProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CanSelect"/>. See the related property for details.</summary>
-        public static DependencyProperty CanSelectProperty
+        public static readonly DependencyProperty CanSelectProperty
             = DependencyProperty.Register("CanSelect", typeof(bool), typeof(SelectableUserControl),
             new FrameworkPropertyMetadata(true, OnCanSelectChanged));
 
@@ -192,20 +318,23 @@ namespace SolidShineUi
                     {
                         s.sel = false;
 
-                        ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, true, false, SelectionChangeTrigger.DisableSelecting, s);
+                        ItemSelectionChangedEventArgs re = 
+                            new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, true, false, SelectionChangeTrigger.DisableSelecting, s);
                         s.RaiseEvent(re);
                     }
-                    s.ChangeBaseBackground(s.Background);
+                    s.Background = s.BaseBackground;
+                    s.Foreground = s.BaseForeground;
+                    //s.ChangeBaseBackground(s.Background);
                 }
 
                 s.CanSelectChanged?.Invoke(s, e);
             });
         }
 
-        private void ChangeBaseBackground(Brush newValue)
-        {
-            base.Background = newValue;
-        }
+        //private void ChangeBaseBackground(Brush newValue)
+        //{
+        //    base.Background = newValue;
+        //}
 
         bool sel = false;
 
@@ -248,11 +377,13 @@ namespace SolidShineUi
                 sel = value;
                 if (sel)
                 {
-                    base.Background = SelectedBrush;
+                    Background = SelectedBrush;
+                    Foreground = SelectedForeground;
                 }
                 else
                 {
-                    base.Background = Background;
+                    Background = BaseBackground;
+                    Foreground = BaseForeground;
                 }
 
                 if (curVal != sel)
@@ -337,7 +468,8 @@ namespace SolidShineUi
             highlighting = true;
             if (CanSelect && SelectOnClick)
             {
-                base.Background = HighlightBrush;
+                Background = HighlightBrush;
+                Foreground = HighlightForeground;
             }
         }
 
@@ -347,11 +479,13 @@ namespace SolidShineUi
 
             if (IsSelected)
             {
-                base.Background = SelectedBrush;
+                Background = SelectedBrush;
+                Foreground = SelectedForeground;
             }
             else
             {
-                base.Background = Background;
+                Background = BaseBackground;
+                Foreground = BaseForeground;
             }
         }
 
@@ -359,7 +493,8 @@ namespace SolidShineUi
         {
             performingClick = true;
 
-            base.Background = ClickBrush;
+            Background = ClickBrush;
+            Foreground = HighlightForeground;
         }
 
         void PerformRightClick()
