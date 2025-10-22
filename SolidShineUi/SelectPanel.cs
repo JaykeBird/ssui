@@ -571,7 +571,7 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region SsuiTheme
+        #region SsuiTheme / child SsuiTheme
 
         /// <inheritdoc/>
         protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
@@ -600,13 +600,11 @@ namespace SolidShineUi
             }
 
             // apply brushes using mainTheme
-
-
-            // apply subitem brushes using subitemTheme
             ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, mainTheme);
             ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, mainTheme);
             ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, mainTheme);
 
+            // apply subitem brushes using subitemTheme
             ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, subitemTheme);
             ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, subitemTheme);
             ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, subitemTheme);
@@ -614,7 +612,48 @@ namespace SolidShineUi
             UpdateChildrenAppearance();
         }
 
-#endregion
+        // updating brushes should update the equivalent values in this SsuiTheme, and setting the SsuiTheme property
+        // should then set this value to that theme (or its subitem theme)
+
+        // TODO: actually set this property within OnApplySsuiTheme, and adjust the brush properties to
+        // create a clone of this property and then set the appropriate brush in there
+
+        /// <summary>
+        /// The theme and brushes this panel will use for its child items.
+        /// To update the theme/brushes, set the <c>SsuiTheme</c> property or the various brush properties.
+        /// </summary>
+        public SsuiTheme ItemsTheme { get => (SsuiTheme)GetValue(ItemsThemeProperty); private set => SetValue(ItemsThemePropertyKey, value); }
+
+        private static readonly DependencyPropertyKey ItemsThemePropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(ItemsTheme), typeof(SsuiTheme), typeof(SelectPanel),
+            new FrameworkPropertyMetadata(new SsuiTheme(), (d, e) => d.PerformAs<SelectPanel>((o) => o.OnItemsThemeChange(e))));
+
+        /// <summary>The backing dependency property for <see cref="ItemsTheme"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ItemsThemeProperty = ItemsThemePropertyKey.DependencyProperty;
+
+        private void OnItemsThemeChange(DependencyPropertyChangedEventArgs e)
+        {
+            foreach (IClickSelectableControl item in ItemsSource)
+            {
+                if (item is FrameworkElement dobj)
+                {
+                    // most (if not all) IClickSelectableControl objects will be at least FrameworkElements, if not Controls
+                    // so we can pretty reliably set this property here. we will need to inform in the documentation that
+                    // implementers of this property will need to AddOwner this property so that it'll actually work
+
+                    // we want to do binding in case the ItemsTheme is itself bound to a single or central SsuiTheme somewhere
+                    // that way, the end user or developer can just change that SsuiTheme and it'll propogate down to here
+                    dobj.SetBinding(SsuiThemeProperty, new System.Windows.Data.Binding(nameof(ItemsTheme)) { Source = this });
+                }
+                else
+                {
+                    // on the rare off-chance it's not a framework element, then we'll just do plain-old property assignment
+                    item.SsuiTheme = SsuiTheme;
+                }
+            }
+        }
+
+        #endregion
 
         #region Routed Events
 
