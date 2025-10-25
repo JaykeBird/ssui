@@ -34,7 +34,7 @@ namespace SolidShineUi
 
         private void OnSsuiThemeApplied(object sender, RoutedEventArgs e)
         {
-            // TODO: apply theme to menu
+            Menu?.SetBinding(SolidShineUi.ContextMenu.SsuiThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
         }
 
         private void OnColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -51,7 +51,7 @@ namespace SolidShineUi
         #region Menu
         
         /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuProperty
+        public static readonly DependencyProperty MenuProperty
             = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(MenuButton),
             new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<MenuButton>((o) => o.OnMenuChanged(e))));
 
@@ -133,12 +133,8 @@ namespace SolidShineUi
         /// In the WPF version of Solid Shine UI, <c>StaysOpen</c> will keep the context menu open until a menu item is clicked (unless the menu item also has <c>StaysOpenOnClick</c>
         /// set to true), but other methods to close the menu don't generally work (such as clicking outside of the menu). So the best ways to close the menu is to have a "Close" menu
         /// item that doesn't have <c>StaysOpenOnClick</c> applied, or some other code or function that directly sets the menu's <c>IsOpen</c> property to <c>false</c>. You do not
-        /// need to explicitly change <c>StaysOpen</c> to <c>false</c> in order to allow the menu to close, so this value can remain unchanged as long as you want this behavior.
-        /// <para/>
-        /// In the Avalonia version of Solid Shine UI, <c>StaysOpen</c> will set the context menu to refuse to close; when the context menu is about to close, the MenuButton cancels 
-        /// that action. This also means that clicking any menu items will not close the menu, nor will setting the menu's <c>IsOpen</c> property to <c>false</c>.
-        /// Instead, to close the context menu, you will need to change <c>StaysOpen</c> back to <c>false</c> before you change <c>IsOpen</c> to <c>false</c> or click out of the menu,
-        /// and then you will need to re-set <c>StaysOpen</c> back to <c>true</c> whenever you want this behavior to occur again.
+        /// need to explicitly change <c>StaysOpen</c> to <c>false</c> in order to allow the menu to close via explicity setting the property, so this value can remain unchanged as 
+        /// long as you want this behavior.
         /// </remarks>
         [Category("Common")]
         public bool StaysOpen
@@ -154,6 +150,12 @@ namespace SolidShineUi
             }
         }
 
+        // /// <para/>
+        // /// In the Avalonia version of Solid Shine UI, <c>StaysOpen</c> will set the context menu to refuse to close; when the context menu is about to close, the MenuButton cancels 
+        // /// that action. This also means that clicking any menu items will not close the menu, nor will setting the menu's <c>IsOpen</c> property to <c>false</c>.
+        // /// Instead, to close the context menu, you will need to change <c>StaysOpen</c> back to <c>false</c> before you change <c>IsOpen</c> to <c>false</c> or click out of the menu,
+        // /// and then you will need to re-set <c>StaysOpen</c> back to <c>true</c> whenever you want this behavior to occur again.
+
         private void Menu_Closed(object sender, RoutedEventArgs e)
         {
             MenuClosed?.Invoke(this, EventArgs.Empty);
@@ -167,7 +169,7 @@ namespace SolidShineUi
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementProperty
+        public static readonly DependencyProperty MenuPlacementProperty
             = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(MenuButton),
             new FrameworkPropertyMetadata(PlacementMode.Bottom));
 
@@ -182,7 +184,7 @@ namespace SolidShineUi
 #endif
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementTargetProperty
+        public static readonly DependencyProperty MenuPlacementTargetProperty
             = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(MenuButton),
             new FrameworkPropertyMetadata(null));
 
@@ -193,7 +195,7 @@ namespace SolidShineUi
         public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementRectangleProperty
+        public static readonly DependencyProperty MenuPlacementRectangleProperty
             = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(MenuButton),
             new FrameworkPropertyMetadata(Rect.Empty));
 
@@ -203,7 +205,7 @@ namespace SolidShineUi
         public double MenuHorizontalOffset { get => (double)GetValue(MenuHorizontalOffsetProperty); set => SetValue(MenuHorizontalOffsetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuHorizontalOffset"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuHorizontalOffsetProperty
+        public static readonly DependencyProperty MenuHorizontalOffsetProperty
             = DependencyProperty.Register(nameof(MenuHorizontalOffset), typeof(double), typeof(MenuButton),
             new FrameworkPropertyMetadata(0.0));
 
@@ -213,7 +215,7 @@ namespace SolidShineUi
         public double MenuVerticalOffset { get => (double)GetValue(MenuVerticalOffsetProperty); set => SetValue(MenuVerticalOffsetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuVerticalOffset"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuVerticalOffsetProperty
+        public static readonly DependencyProperty MenuVerticalOffsetProperty
             = DependencyProperty.Register(nameof(MenuVerticalOffset), typeof(double), typeof(MenuButton),
             new FrameworkPropertyMetadata(-1.0));
 
