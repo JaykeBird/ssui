@@ -99,16 +99,6 @@ namespace SolidShineUi
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used for the background of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-
-        /// <summary>
         /// Get or set the brush used for the background of the control while the mouse is clicking it.
         /// </summary>
         [Category("Brushes")]
@@ -160,16 +150,6 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around the edges of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
         /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
         /// </summary>
         [Category("Brushes")]
@@ -190,43 +170,40 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.White.ToBrush()));
-
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
-
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
             "BorderHighlightBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
             "BorderSelectedBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -277,6 +254,39 @@ namespace SolidShineUi
             {
                 btnMain.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
                 btnMenu.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
+            }
+
+            Menu?.SetBinding(SolidShineUi.ContextMenu.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
+
+            if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
+            {
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, sat.AccentTheme);
+            }
+            else
+            {
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty);
+            }
+        }
+
+        /// <summary>
+        /// Remove the bindings the split button uses internally for setting the <c>SsuiTheme</c>.
+        /// This may be necessary in certain rare instances where you are setting the theme, but then also need to update other
+        /// properties (such as <see cref="CornerRadius"/>) afterwards.
+        /// However, in most situations, this is not needed and instead may cause other problems.
+        /// </summary>
+        public void ClearButtonThemeBindings()
+        {
+            if (btnMain != null && btnMenu != null)
+            {
+                BindingOperations.ClearBinding(btnMain, ThemedControl.SsuiThemeProperty);
+                BindingOperations.ClearBinding(btnMenu, ThemedControl.SsuiThemeProperty);
+
+                // so as to not leave the buttons' themes undefined, we'll set the themes as unbound values
+                // (actually, I won't do this, the intention is the brushes will revert to SplitButton's bindings ideally)
+                //SsuiTheme copy = (SsuiTheme)SsuiTheme.Clone();
+
+                //btnMain.SsuiTheme = copy;
+                //btnMenu.SsuiTheme = copy;
             }
         }
 
@@ -458,11 +468,6 @@ namespace SolidShineUi
 
         #region Border
 
-        /// <summary>The backing dependency property for <see cref="BorderThickness"/>. See the related property for details.</summary>
-        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(SplitButton),
-            new PropertyMetadata(new Thickness(1)));
-
         /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(SplitButton),
@@ -472,16 +477,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SplitButton),
             new PropertyMetadata(new CornerRadius(0)));
-
-        /// <summary>
-        /// Get or set the thickness of the border around the button.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
 
         /// <summary>
         /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
@@ -627,6 +622,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
         /// </summary>
+        /// <remarks>
+        /// See the remarks for <see cref="MenuButton.StaysOpen"/> for more details on the handling of this property.
+        /// </remarks>
         [Category("Common")]
         public bool StaysOpen
         {
@@ -835,10 +833,12 @@ namespace SolidShineUi
 
         // from https://stackoverflow.com/questions/10667545/why-ismouseover-is-recognized-and-mousedown-isnt-wpf-style-trigger
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The DependencyPropertyKey for the attached property <c>IsMouseDown</c>. This indicates to readers if the mouse is currently
+        /// pressed while over this control. Use <see cref="SetIsMouseDown(DependencyObject, bool)"/> to update this property.
+        /// </summary>
         protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsMouseDown",
             typeof(bool), typeof(SplitButton), new FrameworkPropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get if there is a mouse button currently being pressed, while the mouse cursor is over this control.
