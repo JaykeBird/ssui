@@ -1023,6 +1023,7 @@
         <Setter Property="Padding" Value="3,0" />
         <Setter Property="Background" Value="#01000000" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:CheckBox}" >
@@ -1599,6 +1600,7 @@
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:SelectPanel}">

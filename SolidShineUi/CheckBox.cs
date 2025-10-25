@@ -487,6 +487,8 @@ namespace SolidShineUi
                 ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
                 ApplyThemeBinding(CheckDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
@@ -594,13 +596,6 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(CheckBox),
-            new PropertyMetadata(new Thickness(1)));
-
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(CheckBox),
             new PropertyMetadata(new Thickness(1)));
@@ -611,16 +606,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(CheckBox),
             new PropertyMetadata(new CornerRadius(0)));
-
-        /// <summary>
-        /// Get or set the thickness of the border of the check box.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
 
         /// <summary>
         /// Get or set the thickness of the border of the check box, while the check box's IsChecked property is true.
