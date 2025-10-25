@@ -1597,6 +1597,8 @@
 
     <Style TargetType="{x:Type flat:SelectPanel}">
         <Setter Property="Focusable" Value="True" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:SelectPanel}">

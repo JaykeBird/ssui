@@ -591,25 +591,34 @@ namespace SolidShineUi
                 if (sat.UseSubitemThemeWithPanels)
                 {
                     // subitems should use the subitem theme
-                    subitemTheme = sat.SubitemTheme;
+                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.SubitemTheme)) { Source = this.SsuiTheme });
                 }
                 else if (useAccentTheme)
                 {
-                    subitemTheme = sat.AccentTheme;
+                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.AccentTheme)) { Source = this.SsuiTheme });
                 }
+                else
+                {
+                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+                }
+            }
+            else
+            {
+                SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
             }
 
             // apply brushes using mainTheme
             ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, mainTheme);
             ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, mainTheme);
             ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, mainTheme);
+            ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, mainTheme);
 
             // apply subitem brushes using subitemTheme
-            ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, subitemTheme);
-            ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, subitemTheme);
-            ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, subitemTheme);
+            //ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, subitemTheme);
+            //ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, subitemTheme);
+            //ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, subitemTheme);
 
-            UpdateChildrenAppearance();
+            // UpdateChildrenAppearance();
         }
 
         // updating brushes should update the equivalent values in this SsuiTheme, and setting the SsuiTheme property
@@ -800,16 +809,6 @@ namespace SolidShineUi
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used for the background of this control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-
-        /// <summary>
         /// Get or set the brush used when an item in this control is being clicked.
         /// </summary>
         [Category("Brushes")]
@@ -872,23 +871,6 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around this control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
-
-        /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
@@ -923,23 +905,9 @@ namespace SolidShineUi
             "BorderDisabledBrush", typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
-
         #endregion
 
-        #region Border
-
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
-        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(SelectPanel),
-            new PropertyMetadata(new Thickness(1)));
+        #region CornerRadius
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
@@ -947,16 +915,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
-
-        /// <summary>
-        /// Get or set the thickness of the border around this control.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
 
         /// <summary>
         /// Get or set the corner radius (or radii) to use for the control's border. Setting the corners to 0 means there is no rounding; square corners are used.
