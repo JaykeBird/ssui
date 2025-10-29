@@ -79,7 +79,8 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
-                                    <Grid Grid.Row="0"> <!-- title bar -->
+                                    <Grid Grid.Row="0">
+                                        <!-- title bar -->
                                         <Grid.Style>
                                             <Style TargetType="{x:Type Grid}">
                                                 <Setter Property="Background" Value="{Binding CaptionBarBackground, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -141,7 +142,7 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
-                                        </StackPanel> 
+                                        </StackPanel>
 
                                         <!-- top-right (top-right element, caption buttons) -->
                                         <StackPanel Margin="0" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal" >
@@ -659,7 +660,7 @@
                 </Setter>
             </Style>
         </Style.Resources>
-        
+
         <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
         <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
         <Setter Property="BorderBrush" Value="Gray" />
@@ -1022,6 +1023,7 @@
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Padding" Value="5,0,3,0" />
         <Setter Property="Background" Value="#01000000" />
+        <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
@@ -1029,6 +1031,9 @@
                 <ControlTemplate TargetType="{x:Type flat:CheckBox}" >
                     <DockPanel Background="{TemplateBinding Background}">
                         <Border x:Name="brdrChk" HorizontalAlignment="Center" Height="20" Margin="0,0" VerticalAlignment="Center" Width="20">
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{x:Static flat:CheckBox.CheckBoxClickCommand}" />
+                            </Border.InputBindings>
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="DockPanel.Dock" Value="Left" />
@@ -1042,6 +1047,13 @@
                                             <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource TemplatedParent}}" />
                                             <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
@@ -1060,6 +1072,13 @@
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </MultiDataTrigger>
+                                                <!--<MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Fill" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                </MultiDataTrigger>-->
                                             </Style.Triggers>
                                         </Style>
                                     </Path.Style>
@@ -1077,10 +1096,30 @@
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </MultiDataTrigger>
+                                                <!--<MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Fill" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                </MultiDataTrigger>-->
                                             </Style.Triggers>
                                         </Style>
                                     </Rectangle.Style>
                                 </Rectangle>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
                             </Grid>
                         </Border>
                         <ContentPresenter x:Name="cc" RecognizesAccessKey="True" >
@@ -1095,12 +1134,16 @@
                         </ContentPresenter>
                     </DockPanel>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True" >
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=Self}}" Value="False" />
+                            </MultiDataTrigger.Conditions>
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter Property="Background" TargetName="gridBkgd" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                             <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </Trigger>
+                        </MultiDataTrigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>

@@ -26,8 +26,11 @@
         <flat:CheckBox x:Name="chkTop" HorizontalAlignment="Left" Margin="20,291,0,0" VerticalAlignment="Top" Padding="0"
                        Content="This checkbox is on top of the text!" BoxPlacement="Top" ColorScheme="{Binding ColorScheme, ElementName=control}"/>
         <flat:CheckBox x:Name="chkColored" HorizontalAlignment="Left" Margin="20,375,0,0" VerticalAlignment="Top" Content="Check box" ColorScheme="{Binding ColorScheme, ElementName=control}"
-                       BorderThickness="2" BorderSelectionThickness="3" CheckBackground="LightGreen" CornerRadius="3" />
+                       BorderThickness="2" BorderSelectionThickness="3" CheckBackground="LightGreen" CheckHighlightBrush="Firebrick" CornerRadius="3" />
         <TextBlock HorizontalAlignment="Left" Margin="20,355,0,0" Text="Check box with colors!" VerticalAlignment="Top"/>
+        <flat:CheckBox x:Name="chkSingle_Copy" HorizontalAlignment="Left" Margin="275,220,0,0" VerticalAlignment="Top" OnlyAllowCheckBoxClick="True"
+                       Content="Only clicking on the box (not this text) works" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <TextBlock HorizontalAlignment="Left" Margin="275,200,0,0" Text="Only Allow CheckBox Click" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

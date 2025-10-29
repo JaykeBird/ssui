@@ -48,7 +48,7 @@ namespace SolidShineUi
         /// </summary>
         public CheckBox()
         {
-            //CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
+            CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
 
             //SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
             //SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
@@ -67,53 +67,54 @@ namespace SolidShineUi
         }
 
         #region CheckBoxClick
-        ///// <summary>
-        ///// The command that activates when the box of the checkbox itself has been clicked.
-        ///// </summary>
-        //public static readonly RoutedCommand CheckBoxClickCommand = new RoutedCommand();
 
-        ///// <summary>
-        ///// The backing value for the <see cref="CheckBoxClick"/> event. See the related event for more details.
-        ///// </summary>
-        //public static readonly RoutedEvent CheckBoxClickEvent = EventManager.RegisterRoutedEvent(
-        //    "CheckBoxClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
+        /// <summary>
+        /// The command that activates when the box of the checkbox itself has been clicked.
+        /// </summary>
+        public static readonly RoutedCommand CheckBoxClickCommand = new RoutedCommand();
 
-        ///// <summary>
-        ///// An event that raises only when the checkbox itself is clicked.
-        ///// </summary>
-        ///// <remarks>
-        ///// When combined with <see cref="OnlyAllowCheckBoxClick"/>, this can limit the checkbox to only being checkable when the box itself is clicked,
-        ///// not just anywhere within the control. This could be useful if the <c>Content</c> can also interact with the mouse.
-        ///// </remarks>
-        //public event RoutedEventHandler CheckBoxClick
-        //{
-        //    add { AddHandler(CheckBoxClickEvent, value); }
-        //    remove { RemoveHandler(CheckBoxClickEvent, value); }
-        //}
+        /// <summary>
+        /// The backing value for the <see cref="CheckBoxClick"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent CheckBoxClickEvent = EventManager.RegisterRoutedEvent(
+            "CheckBoxClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
-        //bool checkBoxClick = false;
+        /// <summary>
+        /// An event that raises only when the checkbox itself is clicked.
+        /// </summary>
+        /// <remarks>
+        /// When combined with <see cref="OnlyAllowCheckBoxClick"/>, this can limit the checkbox to only being checkable when the box itself is clicked,
+        /// not just anywhere within the control. This could be useful if the <c>Content</c> can also interact with the mouse.
+        /// </remarks>
+        public event RoutedEventHandler CheckBoxClick
+        {
+            add { AddHandler(CheckBoxClickEvent, value); }
+            remove { RemoveHandler(CheckBoxClickEvent, value); }
+        }
 
-        //private void OnCheckBoxClick(object sender, ExecutedRoutedEventArgs e)
-        //{
-        //    checkBoxClick = true;
-        //    RoutedEventArgs re = new RoutedEventArgs(CheckBoxClickEvent);
-        //    RaiseEvent(re);
-        //    DoClick();
-        //    checkBoxClick = false;
-        //}
+        bool checkBoxClick = false;
 
-        ///// <summary>
-        ///// Gets or sets whether clicking should only occur when the checkbox's box is clicked, and not the rest of the control.
-        ///// </summary>
-        //[Category("Common")]
-        //public bool OnlyAllowCheckBoxClick { get => (bool)GetValue(OnlyAllowCheckBoxClickProperty); set => SetValue(OnlyAllowCheckBoxClickProperty, value); }
+        private void OnCheckBoxClick(object sender, ExecutedRoutedEventArgs e)
+        {
+            checkBoxClick = true;
+            RoutedEventArgs re = new RoutedEventArgs(CheckBoxClickEvent);
+            RaiseEvent(re);
+            DoClick();
+            checkBoxClick = false;
+        }
 
-        ///// <summary>
-        ///// A dependency property object backing the related property. See the property itself for more details.
-        ///// </summary>
-        //public static readonly DependencyProperty OnlyAllowCheckBoxClickProperty
-        //    = DependencyProperty.Register("OnlyAllowCheckBoxClick", typeof(bool), typeof(CheckBox),
-        //    new FrameworkPropertyMetadata(false));
+        /// <summary>
+        /// Gets or sets whether clicking should only occur when the checkbox's box is clicked, and not the rest of the control.
+        /// </summary>
+        [Category("Common")]
+        public bool OnlyAllowCheckBoxClick { get => (bool)GetValue(OnlyAllowCheckBoxClickProperty); set => SetValue(OnlyAllowCheckBoxClickProperty, value); }
+
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
+        public static readonly DependencyProperty OnlyAllowCheckBoxClickProperty
+            = DependencyProperty.Register("OnlyAllowCheckBoxClick", typeof(bool), typeof(CheckBox),
+            new FrameworkPropertyMetadata(false));
 
         #endregion
 
@@ -585,8 +586,6 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(BorderSelectedBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.Black.ToBrush()));
 
-
-
         #endregion
 
         #region Border
@@ -737,12 +736,12 @@ namespace SolidShineUi
                     return;
                 }
 
-                //if (OnlyAllowCheckBoxClick && !checkBoxClick)
-                //{
-                //    // exit out
-                //    initiatingClick = false;
-                //    return;
-                //}
+                if (OnlyAllowCheckBoxClick && !checkBoxClick)
+                {
+                    // exit out
+                    initiatingClick = false;
+                    return;
+                }
 
                 if (TriStateClick)
                 {
