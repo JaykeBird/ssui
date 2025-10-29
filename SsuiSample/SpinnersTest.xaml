@@ -6,10 +6,11 @@
              xmlns:local="clr-namespace:SsuiSample"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+             xmlns:conv="clr-namespace:SolidShineUi.Converters;assembly=SolidShineUi"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <flat:ColorToBrushConverter x:Key="ctb" />
+        <conv:ColorToBrushConverter x:Key="ctb" />
     </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Spinners Test" FontSize="16" VerticalAlignment="Top"/>

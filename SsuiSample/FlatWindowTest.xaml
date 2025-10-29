@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SsuiSample"
              xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+             xmlns:conv="clr-namespace:SolidShineUi.Converters;assembly=SolidShineUi"
              xmlns:PropertyList="clr-namespace:SolidShineUi.PropertyList;assembly=SolidShineUi" x:Class="SsuiSample.FlatWindowTest" x:Name="control"
              mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="800" Unloaded="control_Unloaded" >
     <UserControl.Resources>
         <ResourceDictionary>
-            <flat:ColorToBrushConverter x:Key="ctb" />
+            <conv:ColorToBrushConverter x:Key="ctb" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
