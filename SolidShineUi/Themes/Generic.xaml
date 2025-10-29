@@ -1020,7 +1020,7 @@
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinHeight" Value="22" />
         <Setter Property="Width" Value="Auto" />
-        <Setter Property="Padding" Value="3,0" />
+        <Setter Property="Padding" Value="5,0,3,0" />
         <Setter Property="Background" Value="#01000000" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
@@ -1097,9 +1097,9 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True" >
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter Property="Background" TargetName="gridBkgd" Value="{Binding Path=BackgroundHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Background" TargetName="gridBkgd" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />

@@ -48,14 +48,12 @@ namespace SolidShineUi
         /// </summary>
         public CheckBox()
         {
-            Padding = new Thickness(5, 0, 0, 0);
-
             //CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
 
-            SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
-            SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
+            //SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
+            //SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
 
-            KeyboardNavigation.SetIsTabStop(this, true);
+            // KeyboardNavigation.SetIsTabStop(this, true);
 
             MouseDown += UserControl_MouseDown;
             MouseUp += UserControl_MouseUp;
@@ -438,16 +436,16 @@ namespace SolidShineUi
                 // TODO: change how check foreground is figured out based upon the color scheme
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
                 CheckForeground = ColorsHelper.Black.ToBrush();
-                HighlightBrush = ColorsHelper.Black.ToBrush();
-                BackgroundHighlightBrush = cs.HighlightColor.ToBrush();
+                CheckHighlightBrush = ColorsHelper.Black.ToBrush();
+                HighlightBrush = cs.HighlightColor.ToBrush();
                 BorderHighlightBrush = cs.BorderColor.ToBrush();
             }
             else
             {
                 BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
                 CheckForeground = Colors.Black.ToBrush();
-                HighlightBrush = ColorsHelper.DarkerGray.ToBrush();
-                BackgroundHighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
+                CheckHighlightBrush = ColorsHelper.DarkerGray.ToBrush();
+                HighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
                 BorderHighlightBrush = cs.HighlightColor.ToBrush();
             }
 
@@ -473,14 +471,14 @@ namespace SolidShineUi
                 ApplyTheme(ssuiTheme);
             }
 
-            BackgroundHighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
+            HighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
 
             void ApplyTheme(SsuiTheme theme)
             {
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
                 // Border brush already applied in base
                 ApplyThemeBinding(CheckForegroundProperty, SsuiTheme.CheckBrushProperty, theme);
-                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(CheckHighlightBrushProperty, SsuiTheme.CheckBrushProperty, theme);
                 ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
                 ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
 
@@ -519,22 +517,22 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the check mark in the checkbox's box, while the mouse is over the control or it has keyboard focus. 
         /// </summary>
-        public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
+        public Brush CheckHighlightBrush { get => (Brush)GetValue(CheckHighlightBrushProperty); set => SetValue(CheckHighlightBrushProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty HighlightBrushProperty
-            = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(CheckBox),
+        /// <summary>The backing dependency property for <see cref="CheckHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CheckHighlightBrushProperty
+            = DependencyProperty.Register(nameof(CheckHighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
 
 
         /// <summary>
         /// Get or set the brush used for the background of the checkbox's box, while the mouse is over the control or it has keyboard focus.
         /// </summary>
-        public Brush BackgroundHighlightBrush { get => (Brush)GetValue(BackgroundHighlightBrushProperty); set => SetValue(BackgroundHighlightBrushProperty, value); }
+        public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="BackgroundHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BackgroundHighlightBrushProperty
-            = DependencyProperty.Register(nameof(BackgroundHighlightBrush), typeof(Brush), typeof(CheckBox),
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightBrushProperty
+            = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.WhiteLightHighlight.ToBrush()));
 
         /// <summary>
