@@ -168,24 +168,24 @@ namespace SolidShineUi
             nameof(HighlightBrush), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
-        /// <summary>The backing dependency property for <see cref="BaseBackground"/>. See the related property for details.</summary>
+        /// <summary>The backing dependency property for <see cref="BaseForeground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BaseForegroundProperty = DependencyProperty.Register(
-            nameof(BaseBackground), typeof(Brush), typeof(SelectableUserControl),
+            nameof(BaseForeground), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        /// <summary>The backing dependency property for <see cref="DisabledForeground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledForegroundProperty = DependencyProperty.Register(
-            nameof(ClickBrush), typeof(Brush), typeof(SelectableUserControl),
+            nameof(DisabledForeground), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
+        /// <summary>The backing dependency property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedForegroundProperty = DependencyProperty.Register(
-            nameof(SelectedBrush), typeof(Brush), typeof(SelectableUserControl),
+            nameof(SelectedForeground), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(
-            nameof(HighlightBrush), typeof(Brush), typeof(SelectableUserControl),
+            nameof(HighlightForeground), typeof(Brush), typeof(SelectableUserControl),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
 

@@ -631,14 +631,14 @@ namespace SolidShineUi
         /// The theme and brushes this panel will use for its child items.
         /// To update the theme/brushes, set the <c>SsuiTheme</c> property or the various brush properties.
         /// </summary>
-        public SsuiTheme ItemsTheme { get => (SsuiTheme)GetValue(ItemsThemeProperty); private set => SetValue(ItemsThemePropertyKey, value); }
-
-        private static readonly DependencyPropertyKey ItemsThemePropertyKey
-            = DependencyProperty.RegisterReadOnly(nameof(ItemsTheme), typeof(SsuiTheme), typeof(SelectPanel),
-            new FrameworkPropertyMetadata(new SsuiTheme(), (d, e) => d.PerformAs<SelectPanel>((o) => o.OnItemsThemeChange(e))));
+        protected internal SsuiTheme ItemsTheme { get => (SsuiTheme)GetValue(ItemsThemeProperty); set => SetValue(ItemsThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ItemsTheme"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ItemsThemeProperty = ItemsThemePropertyKey.DependencyProperty;
+        protected internal static readonly DependencyProperty ItemsThemeProperty
+            = DependencyProperty.Register(nameof(ItemsTheme), typeof(SsuiTheme), typeof(SelectPanel),
+            new FrameworkPropertyMetadata(new SsuiTheme(), (d, e) => d.PerformAs<SelectPanel>((o) => o.OnItemsThemeChange(e))));
+
+        //public static readonly DependencyProperty ItemsThemeProperty = ItemsThemePropertyKey.DependencyProperty;
 
         private void OnItemsThemeChange(DependencyPropertyChangedEventArgs e)
         {
