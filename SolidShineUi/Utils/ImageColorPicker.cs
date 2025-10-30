@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,7 +7,7 @@ using static SolidShineUi.NativeMethods;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// Image element with the ability to pick out a pixel color value.
+    /// An Image control where users can select a color by clicking on pixels of the image.
     /// </summary>
     /// <remarks>
     /// Note that if this is used in a WPF project that isn't DPI-Aware, this control will perform weirdly on screens with a DPI value other than 100%.
@@ -35,16 +31,11 @@ namespace SolidShineUi.Utils
             StylusLeave += imageColorPicker_StylusLeave;
         }
 
-        //#if NETCOREAPP
-        //        public event EventHandler? SelectedColorChanged;
-        //#else
-        //        public event EventHandler SelectedColorChanged;
-        //#endif
+        #region SelectedColor
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing routed eent for <see cref="SelectedColorChanged"/>. See the related event for more details.</summary>
         public static readonly RoutedEvent SelectedColorChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectedColorChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ImageColorPicker));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the SelectedColor property is changed.
@@ -58,12 +49,67 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get the color that is selected from the image.
         /// </summary>
-        public Color? SelectedColor { get; private set; } = null;
+        public Color? SelectedColor { get => (Color?)GetValue(SelectedColorProperty); private set => SetValue(SelectedColorPropertyKey, value); }
+
+        private static readonly DependencyPropertyKey SelectedColorPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(SelectedColor), typeof(Color?), typeof(ImageColorPicker),
+            new FrameworkPropertyMetadata(null, OnSelectedColorChanged));
+
+        /// <summary>The backing dependency property for <see cref="SelectedColor"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedColorProperty = SelectedColorPropertyKey.DependencyProperty;
+
+        private static void OnSelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ImageColorPicker o)
+            {
+                o.RaiseSelectedColorChangedEvent();
+            }
+        }
+
+        private void RaiseSelectedColorChangedEvent()
+        {
+            RoutedEventArgs re = new RoutedEventArgs(SelectedColorChangedEvent);
+            RaiseEvent(re);
+        }
+
+        #endregion
+
+        #region SelectedPosition
+
+        Point? selPoint = null;
 
         /// <summary>
-        /// Get the position that is selected from the image. This position is relative to the control itself.
+        /// Get or set the position that is selected from the image. This position is relative to the control itself.
         /// </summary>
-        public Point? SelectedPosition { get; private set; } = null;
+        public Point? SelectedPosition
+        {
+            get => selPoint;
+            set
+            {
+                selPoint = value;
+                if (selPoint != null)
+                {
+                    Point s = selPoint.Value;
+                    Point p = PointToScreen(s);
+
+                    if (!dc_present)
+                    {
+                        dc = GetDC(IntPtr.Zero);
+                        dc_present = true;
+                    }
+
+                    SelectedColor = GetPixelPointColor(p);
+                }
+                else
+                {
+                    SelectedColor = null;
+                }
+            }
+        }
+
+        #endregion
+
+        #region DisplayCanvas / Event Handlers
 
         bool dc_present = false;
         IntPtr dc = IntPtr.Zero;
@@ -81,11 +127,8 @@ namespace SolidShineUi.Utils
                     dc_present = true;
                 }
 
+                selPoint = s;
                 SelectedColor = GetPixelPointColor(p);
-                SelectedPosition = s;
-
-                RoutedEventArgs re = new RoutedEventArgs(SelectedColorChangedEvent);
-                RaiseEvent(re);
             }
         }
 
@@ -98,11 +141,8 @@ namespace SolidShineUi.Utils
                     Point s = e.GetPosition(this);
                     Point p = PointToScreen(s);
 
+                    selPoint = s;
                     SelectedColor = GetPixelPointColor(p);
-                    SelectedPosition = s;
-
-                    RoutedEventArgs re = new RoutedEventArgs(SelectedColorChangedEvent);
-                    RaiseEvent(re);
                 }
             }
         }
@@ -134,11 +174,8 @@ namespace SolidShineUi.Utils
                     dc_present = true;
                 }
 
+                selPoint = s;
                 SelectedColor = GetPixelPointColor(p);
-                SelectedPosition = s;
-
-                RoutedEventArgs re = new RoutedEventArgs(SelectedColorChangedEvent);
-                RaiseEvent(re);
             }
         }
 
@@ -149,11 +186,8 @@ namespace SolidShineUi.Utils
                 Point s = e.GetPosition(this);
                 Point p = PointToScreen(s);
 
+                selPoint = s;
                 SelectedColor = GetPixelPointColor(p);
-                SelectedPosition = s;
-
-                RoutedEventArgs re = new RoutedEventArgs(SelectedColorChangedEvent);
-                RaiseEvent(re);
             }
         }
 
@@ -178,8 +212,8 @@ namespace SolidShineUi.Utils
             {
                 uint pixel = GetPixel(dc, (int)p.X, (int)p.Y);
                 Color color = Color.FromRgb((byte)(pixel & 0x000000FF),
-                             (byte)((pixel & 0x0000FF00) >> 8),
-                             (byte)((pixel & 0x00FF0000) >> 16));
+                                            (byte)((pixel & 0x0000FF00) >> 8),
+                                            (byte)((pixel & 0x00FF0000) >> 16));
                 return color;
             }
             else
@@ -187,5 +221,7 @@ namespace SolidShineUi.Utils
                 return null;
             }
         }
+
+        #endregion
     }
 }
