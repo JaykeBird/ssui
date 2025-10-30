@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using SolidShineUi;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
-using System.Windows.Threading;
 using System.Windows.Input;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi
 {
     /// <summary>
-    /// A dialog for the user to enter in a string (in response to a message or prompt).
+    /// A dialog for the user to enter in a string (in response to a message or prompt), with the ability to enter in multiple lines of text.
     /// </summary>
     public partial class MultilineStringInputDialog : FlatWindow
     {
@@ -79,8 +71,11 @@ namespace SolidShineUi.Utils
         public new bool DialogResult { get; private set; } = false;
 
         /// <summary>
-        /// Get or set whether the Enter key can be used to confirm the dialog. If enabled, pressing down the Enter key will be treated as if the user pressed "OK".
+        /// Get or set whether the Enter key can be used to confirm the dialog. If enabled, pressing down Ctrl+Enter will be treated as if the user pressed "OK".
         /// </summary>
+        /// <remarks>
+        /// With the MultilineStringInputDialog, pressing Enter will move down to a new line. To confirm, users must press both the Control and Enter keys at the same time.
+        /// </remarks>
         public bool EnterKeyConfirms { get; set; } = true;
 
         /// <summary>

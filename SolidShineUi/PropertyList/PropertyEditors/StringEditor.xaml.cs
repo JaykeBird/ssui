@@ -7,7 +7,6 @@ using System.Windows.Media.Imaging;
 using System.Linq;
 using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi.PropertyList.Dialogs;
-using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
