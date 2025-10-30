@@ -21,8 +21,6 @@ namespace SolidShineUi.Utils
             InitializeComponent();
         }
 
-        GradientStop _stop = new GradientStop(Colors.Black, 0.0);
-
         /// <summary>
         /// Create a GradientStopItem, with preset property values.
         /// </summary>
@@ -32,7 +30,6 @@ namespace SolidShineUi.Utils
         {
             Offset = offset;
             Color = color;
-            _stop = new GradientStop(Color, Offset);
             InitializeComponent();
         }
 
@@ -44,7 +41,6 @@ namespace SolidShineUi.Utils
         {
             Offset = stop.Offset;
             Color = stop.Color;
-            _stop = stop;
             InitializeComponent();
         }
 
@@ -55,23 +51,19 @@ namespace SolidShineUi.Utils
         {
             get
             {
-                if (_stop.Color != Color) _stop.Color = Color;
-                if (_stop.Offset != Offset) _stop.Offset = Offset;
-
-                return _stop;
+                GradientStop gs = new GradientStop();
+                gs.Color = Color;
+                gs.Offset = Offset;
+                return gs;
             }
             set
             {
                 Offset = value.Offset;
                 Color = value.Color;
-                _stop = value;
             }
         }
 
-        //private void Setup()
-        //{
-        //    //Click += control_Click;
-        //}
+        #region Offset / Color
 
         /// <summary>
         /// Get or set the offset value for this gradient stop. The offset determines how far along the gradient this stop occurs.
@@ -97,6 +89,10 @@ namespace SolidShineUi.Utils
             = DependencyProperty.Register("Color", typeof(Color), typeof(GradientStopItem),
             new FrameworkPropertyMetadata(Colors.Black));
 
+        #endregion
+
+        #region IsSelected
+
         /// <summary>
         /// Get or set whether this gradient stop is selected for editing.
         /// </summary>
@@ -108,6 +104,10 @@ namespace SolidShineUi.Utils
         public static readonly DependencyProperty IsSelectedProperty
             = DependencyProperty.Register("IsSelected", typeof(bool), typeof(GradientStopItem),
             new FrameworkPropertyMetadata(false));
+
+        #endregion
+
+        #region Brushes
 
         /// <summary>
         /// Get or set the brush used for the background of the gradient stop glyph.
@@ -166,6 +166,9 @@ namespace SolidShineUi.Utils
             = DependencyProperty.Register(nameof(StopBorderHighlightBrush), typeof(Brush), typeof(GradientStopItem),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
 
+        #endregion
+
+        #region Highlighting / Event Handlers
 
         private void Highlight()
         {
@@ -206,6 +209,8 @@ namespace SolidShineUi.Utils
         {
             brdrFocus.Visibility = Visibility.Collapsed;
         }
+
+        #endregion
 
         #region Click Handling
 
