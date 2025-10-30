@@ -33,6 +33,13 @@ namespace SolidShineUi.Utils
             Color = c;
             UpdateBrushes();
             ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
+            SsuiThemeApplied += ColorSwatchButton_SsuiThemeApplied;
+        }
+
+        private void ColorSwatchButton_SsuiThemeApplied(object sender, RoutedEventArgs e)
+        {
+            // override SsuiTheme's background brushes with our checkerboard pattern ones
+            UpdateBrushes();
         }
 
         private void ColorSwatchButton_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)

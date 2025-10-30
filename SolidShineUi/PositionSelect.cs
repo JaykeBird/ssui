@@ -225,6 +225,43 @@ namespace SolidShineUi
 
         #endregion
 
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
+            {
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
+                ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(SelectorBrushProperty, SsuiTheme.ControlPopBrushProperty, theme);
+                ApplyThemeBinding(SnapLineBrushProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(KeyboardFocusHighlightProperty, SsuiTheme.HighlightBrushProperty, theme);
+
+                //if (useLightBorder)
+                //{
+                //    ApplyThemeBinding(ControlBorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
+                //}
+                //else
+                //{
+                //    ApplyThemeBinding(ControlBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                //}
+
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectorDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+            }
+        }
+
         #region Snaplines
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SolidShineUi.Utils.GradientBar" x:Name="control"
+﻿<flat:ThemedUserControl x:Class="SolidShineUi.Utils.GradientBar" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
              xmlns:flat="clr-namespace:SolidShineUi"
              mc:Ignorable="d" MinHeight="120" SizeChanged="UserControl_SizeChanged"
              d:DesignHeight="180" d:DesignWidth="800">
-    <UserControl.Resources>
+    <flat:ThemedUserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
         <DrawingBrush x:Key="check" Stretch="None" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute" >
             <!-- https://stackoverflow.com/questions/3827561/how-to-create-checker-board-pattern -->
@@ -18,7 +18,7 @@
                 </DrawingGroup>
             </DrawingBrush.Drawing>
         </DrawingBrush>
-    </UserControl.Resources>
+    </flat:ThemedUserControl.Resources>
     <Grid Margin="-2,0,2,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" MinHeight="50" MaxHeight="60" />
@@ -88,4 +88,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>

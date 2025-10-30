@@ -10,7 +10,7 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// An editor control that can be used to edit <see cref="Rect"/> instances.
     /// </summary>
-    public partial class RectEdit : UserControl
+    public partial class RectEdit : ThemedUserControl
     {
         /// <summary>
         /// Create a RectEdit.
@@ -155,6 +155,32 @@ namespace SolidShineUi.Utils
 #else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
+            {
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(SpinnerBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+                ApplyThemeBinding(ButtonDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(StrokeColorProperty, SsuiTheme.BorderBrushProperty, theme);
+            }
+        }
+
         #endregion
 
         #region MeasureType

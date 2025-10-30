@@ -2730,7 +2730,7 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsKeyboardFocused">
+                        <Trigger Property="IsKeyboardFocused" Value="True" >
                             <Setter Property="BorderBrush" TargetName="brdrKeyFocus" Value="{TemplateBinding KeyboardFocusHighlight}" />
                         </Trigger>
                     </ControlTemplate.Triggers>

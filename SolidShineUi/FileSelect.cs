@@ -21,7 +21,7 @@ namespace SolidShineUi
     /// </summary>
     [DefaultEvent(nameof(SelectionChanged)), ContentProperty(nameof(SelectedFiles))]
     [Localizability(LocalizationCategory.ListBox)]
-    public class FileSelect : Control
+    public class FileSelect : ThemedControl
     {
         static FileSelect()
         {
@@ -85,6 +85,7 @@ namespace SolidShineUi
         #endregion
 
         #region Color Scheme
+
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -184,6 +185,38 @@ namespace SolidShineUi
                 cm.ApplyColorScheme(cs);
             }
         }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
+            {
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            if (ContextMenu is SolidShineUi.ContextMenu cm)
+            {
+                cm.SetBinding(SsuiThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
+                ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+            }
+        }
+
         #endregion
 
         #region Brushes

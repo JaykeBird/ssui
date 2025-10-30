@@ -13,7 +13,7 @@ namespace SolidShineUi.Utils
     /// Used with the <see cref="PropertyList.Dialogs.LinearGradientEditorDialog"/> and <see cref="PropertyList.Dialogs.RadialGradientEditorDialog"/>.
     /// </summary>
     [Localizability(LocalizationCategory.None), DefaultEvent(nameof(GradientChanged))]
-    public partial class GradientBar : UserControl
+    public partial class GradientBar : ThemedUserControl
     {
         /// <summary>
         /// Create a new GradientBar.
@@ -236,6 +236,19 @@ namespace SolidShineUi.Utils
             imgLeft.Source = IconLoader.LoadIcon("LeftArrow", cs);
             imgRight.Source = IconLoader.LoadIcon("RightArrow", cs);
             imgOffset.Source = IconLoader.LoadIcon("LeftRightArrow", cs);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            imgAdd.Source = IconLoader.LoadIcon("Add", ssuiTheme.IconVariation);
+            imgDelete.Source = IconLoader.LoadIcon("Delete", ssuiTheme.IconVariation);
+            imgSwap.Source = IconLoader.LoadIcon("Transfer", ssuiTheme.IconVariation);
+            imgLeft.Source = IconLoader.LoadIcon("LeftArrow", ssuiTheme.IconVariation);
+            imgRight.Source = IconLoader.LoadIcon("RightArrow", ssuiTheme.IconVariation);
+            imgOffset.Source = IconLoader.LoadIcon("LeftRightArrow", ssuiTheme.IconVariation);
         }
 
         #endregion

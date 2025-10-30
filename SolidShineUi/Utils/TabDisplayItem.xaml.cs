@@ -420,78 +420,79 @@ namespace SolidShineUi.Utils
 
         #region Color Scheme
 
-        /// <summary>
-        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
-        /// </summary>
-        public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
-            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
+        ///// <summary>
+        ///// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        ///// </summary>
+        //public static readonly DependencyProperty ColorSchemeProperty
+        //    = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabDisplayItem),
+        //    new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is ColorScheme cs)
-            {
-                if (d is TabDisplayItem tdi)
-                {
-                    tdi.ApplyColorScheme(cs);
-                }
-            }
-        }
+        ///// <summary>
+        ///// Perform an action when the ColorScheme property has changed.
+        ///// </summary>
+        ///// <param name="d">The object containing the property that changed.</param>
+        ///// <param name="e">Event arguments about the property change.</param>
+        //private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (e.NewValue is ColorScheme cs)
+        //    {
+        //        if (d is TabDisplayItem tdi)
+        //        {
+        //            tdi.ApplyColorScheme(cs);
+        //        }
+        //    }
+        //}
 
-        /// <summary>
-        /// Get or set the color scheme to apply to the window.
-        /// </summary>
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
+        ///// <summary>
+        ///// Get or set the color scheme to apply to the window.
+        ///// </summary>
+        //public ColorScheme ColorScheme
+        //{
+        //    get => (ColorScheme)GetValue(ColorSchemeProperty);
+        //    set => SetValue(ColorSchemeProperty, value);
+        //}
 
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply.</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
+        ///// <summary>
+        ///// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        ///// </summary>
+        ///// <param name="cs">The color scheme to apply.</param>
+        //public void ApplyColorScheme(ColorScheme cs)
+        //{
+        //    if (cs != ColorScheme)
+        //    {
+        //        ColorScheme = cs;
+        //        return;
+        //    }
 
-            if (cs.IsHighContrast)
-            {
-                Background = cs.BackgroundColor.ToBrush();
-                TabBorderBrush = cs.BorderColor.ToBrush();
-                HighlightBrush = cs.HighlightColor.ToBrush();
-                BorderHighlightBrush = cs.BorderColor.ToBrush();
-                CloseBrush = cs.BorderColor.ToBrush();
-            }
-            else
-            {
-                Background = cs.ThirdHighlightColor.ToBrush();
-                TabBorderBrush = cs.BorderColor.ToBrush();
-                HighlightBrush = cs.SecondHighlightColor.ToBrush();
-                BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                CloseBrush = cs.ForegroundColor.ToBrush();
-            }
+        //    if (cs.IsHighContrast)
+        //    {
+        //        Background = cs.BackgroundColor.ToBrush();
+        //        TabBorderBrush = cs.BorderColor.ToBrush();
+        //        HighlightBrush = cs.HighlightColor.ToBrush();
+        //        BorderHighlightBrush = cs.BorderColor.ToBrush();
+        //        CloseBrush = cs.BorderColor.ToBrush();
+        //    }
+        //    else
+        //    {
+        //        Background = cs.ThirdHighlightColor.ToBrush();
+        //        TabBorderBrush = cs.BorderColor.ToBrush();
+        //        HighlightBrush = cs.SecondHighlightColor.ToBrush();
+        //        BorderHighlightBrush = cs.HighlightColor.ToBrush();
+        //        CloseBrush = cs.ForegroundColor.ToBrush();
+        //    }
 
-            //if (IsHighlighted)
-            //{
-            //    border.Background = HighlightBrush;
-            //    border.BorderBrush = BorderHighlightBrush;
-            //}
-            //else
-            //{
-            //    border.Background = IsSelected ? SelectedTabBackground : Background;
-            //    border.BorderBrush = TabBorderBrush;
-            //}
-        }
+        //    //if (IsHighlighted)
+        //    //{
+        //    //    border.Background = HighlightBrush;
+        //    //    border.BorderBrush = BorderHighlightBrush;
+        //    //}
+        //    //else
+        //    //{
+        //    //    border.Background = IsSelected ? SelectedTabBackground : Background;
+        //    //    border.BorderBrush = TabBorderBrush;
+        //    //}
+        //}
+
         #endregion
 
         #region Click Handling
@@ -973,6 +974,12 @@ namespace SolidShineUi.Utils
     /// </remarks>
     public interface ITabDisplayItem
     {
+        // this interface is to contain any methods, properties, or events that are called or referenced by TabControl's code
+        // this way, if a developer creates their own template for TabControl, they can also create their own ITabDisplayItem control to use in it
+        //
+        // note that properties that are referenced in TabControl's template don't need to be put here, as the template that I created for
+        // TabControl is built around the idea of having the TabDisplayItem control as its ITabDisplayItem implementation
+        // thus, only add in items here that are referenced in the actual C# code, not anything that was in the template XAML
 
         /// <summary>
         /// The TabItem that this TabDisplayItem is representing.
