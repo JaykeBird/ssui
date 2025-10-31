@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SsuiSample.FlowDocumentTest" x:Name="control"
+﻿<flat:ThemedUserControl x:Class="SsuiSample.FlowDocumentTest" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,9 +10,9 @@
     <Grid>
         <DockPanel Margin="5">
             <WrapPanel DockPanel.Dock="Top">
-                <flat:CheckBox Margin="3" x:Name="chkFlow1" CheckState="Indeterminate" TriStateClick="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" CheckChanged="chkFlow1_CheckChanged" Content="FlowDirection of Border" />
-                <flat:CheckBox Margin="3" x:Name="chkFlow2" CheckState="Indeterminate" TriStateClick="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" CheckChanged="chkFlow2_CheckChanged" Content="FlowDirection of Section" />
-                <flat:CheckBox Margin="3" x:Name="chkFlow3" CheckState="Indeterminate" TriStateClick="True" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" CheckChanged="chkFlow3_CheckChanged" Content="FlowDirection of Paragraph2" />
+                <flat:CheckBox Margin="3" x:Name="chkFlow1" CheckState="Indeterminate" TriStateClick="True" CheckChanged="chkFlow1_CheckChanged" Content="FlowDirection of Border" />
+                <flat:CheckBox Margin="3" x:Name="chkFlow2" CheckState="Indeterminate" TriStateClick="True" CheckChanged="chkFlow2_CheckChanged" Content="FlowDirection of Section" />
+                <flat:CheckBox Margin="3" x:Name="chkFlow3" CheckState="Indeterminate" TriStateClick="True" CheckChanged="chkFlow3_CheckChanged" Content="FlowDirection of Paragraph2" />
             </WrapPanel>
             <TextBlock DockPanel.Dock="Bottom">unchecked: LeftToRight, checked: RightToLeft, indeterminate: inherit</TextBlock>
             <Border Margin="10" BorderBrush="Black" BorderThickness="1" x:Name="brdr" >
@@ -34,4 +34,4 @@
             </Border>
         </DockPanel>
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>

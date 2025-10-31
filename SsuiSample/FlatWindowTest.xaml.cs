@@ -1,21 +1,16 @@
-﻿using SolidShineUi;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SolidShineUi;
 
 namespace SsuiSample
 {
     /// <summary>
     /// Interaction logic for FlatWindowTest.xaml
     /// </summary>
-    public partial class FlatWindowTest : UserControl
+    public partial class FlatWindowTest : ThemedUserControl
     {
         public FlatWindowTest()
         {
@@ -89,11 +84,29 @@ namespace SsuiSample
                 return;
             }
 
+            // set up the SsuiTheme to use with the window
+            SsuiAppTheme mainTheme;
+            if (SsuiTheme is SsuiAppTheme sat)
+            {
+                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
+                mainTheme = sat;
+            }
+            else if (SsuiTheme.ControlPopBrush is SolidColorBrush scb)
+            {
+                mainTheme = new SsuiAppTheme(scb.Color);
+            }
+            else
+            {
+                mainTheme = new SsuiAppTheme();
+            }
+
             FlatWindow fw = new FlatWindow
             {
                 Width = nudWidth.Value,
                 Height = nudHeight.Value,
-                ColorScheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? ColorScheme : new ColorScheme(selColor),
+                SsuiTheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? mainTheme : new SsuiAppTheme(selColor),
+
+                //ColorScheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? ColorScheme : new ColorScheme(selColor),
                 //CornerRadius = new CornerRadius(nudCornerRadius.Value)
             };
 

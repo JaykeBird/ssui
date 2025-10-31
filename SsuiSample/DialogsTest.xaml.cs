@@ -16,7 +16,7 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for DialogsTest.xaml
     /// </summary>
-    public partial class DialogsTest : UserControl
+    public partial class DialogsTest : ThemedUserControl
     {
         public DialogsTest()
         {

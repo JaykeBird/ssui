@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="SsuiSample.PositionSelectTest" x:Name="control"
+﻿    <flat:ThemedUserControl x:Class="SsuiSample.PositionSelectTest" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SsuiSample"
-             xmlns:ssui="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+             xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
              xmlns:utils="clr-namespace:SolidShineUi.Utils;assembly=SolidShineUi"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
@@ -16,8 +16,7 @@
             <RowDefinition Height="30" />
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <utils:RelativePositionSelect Width="250" Height="250" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" 
-                                      ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
+        <utils:RelativePositionSelect Width="250" Height="250" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
                                       SelectedHeight="0.5" SelectedWidth="0.5" SelectorSize="15" x:Name="selPos1" SelectedPositionChanged="selPos1_SelectedPositionChanged" >
             <utils:RelativePositionSelect.HorizontalSnapPoints>
                 <system:Double>0.25</system:Double>
@@ -31,15 +30,14 @@
             </utils:RelativePositionSelect.VerticalSnapPoints>
         </utils:RelativePositionSelect>
         <TextBlock Grid.Row="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Width:" />
-        <ssui:DoubleSpinner Grid.Row="1" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}"
+        <flat:DoubleSpinner Grid.Row="1" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80"
                             MinValue="0" MaxValue="1" Decimals="3" Step="0.05" x:Name="nudWidth1" ValueChanged="nudWidth1_ValueChanged" />
         <TextBlock Grid.Row="2" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Height:" />
-        <ssui:DoubleSpinner Grid.Row="2" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}" 
+        <flat:DoubleSpinner Grid.Row="2" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" 
                             MinValue="0" MaxValue="1" Decimals="3" Step="0.05" x:Name="nudHeight1" ValueChanged="nudHeight1_ValueChanged" />
-        <ssui:CheckBox Grid.Row="1" Margin="160,0,0,0" Content="Snap to Snap Points" ColorScheme="{Binding ColorScheme, ElementName=control}"
-                       CheckChanged="chkSnap_CheckChanged" x:Name="chkSnap" IsChecked="True" />
+        <flat:CheckBox Grid.Row="1" Margin="160,0,0,0" Content="Snap to Snap Points" CheckChanged="chkSnap_CheckChanged" x:Name="chkSnap" IsChecked="True" HorizontalAlignment="Left" />
         <TextBlock Grid.Row="2" Margin="160,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Snap distance:" />
-        <ssui:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" ColorScheme="{Binding ColorScheme, ElementName=control}" 
+        <flat:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" 
                             MinValue="0" MaxValue="20" Value="5" Decimals="3" Step="1" x:Name="nudSnapsize" ValueChanged="nudSnapsize_ValueChanged" />
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>

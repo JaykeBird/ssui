@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using SolidShineUi;
 using System.Windows.Documents;
+using SolidShineUi;
 
 namespace SsuiSample
 {
     /// <summary>
     /// Interaction logic for FlowDocumentTest.xaml
     /// </summary>
-    public partial class FlowDocumentTest : UserControl
+    public partial class FlowDocumentTest : ThemedUserControl
     {
         // this is meant to test and make sure that Block's FlowDirection property actually has inheritance
 
@@ -17,13 +16,6 @@ namespace SsuiSample
         {
             InitializeComponent();
         }
-
-        public ColorScheme ColorScheme { get => (ColorScheme)GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(FlowDocumentTest), 
-                new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
