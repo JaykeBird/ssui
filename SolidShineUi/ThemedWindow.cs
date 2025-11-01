@@ -1,11 +1,7 @@
-﻿using SolidShineUi.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Data;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -105,9 +101,13 @@ namespace SolidShineUi
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiAppTheme ssuiTheme)
         {
-            Background = ssuiTheme.WindowBackground;
-            BorderBrush = ssuiTheme.BorderBrush;
-            Foreground = ssuiTheme.Foreground;
+            SetBinding(BackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowBackgroundProperty, ssuiTheme));
+            SetBinding(BorderBrushProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.BorderBrushProperty, ssuiTheme));
+            SetBinding(ForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.ForegroundProperty, ssuiTheme));
+
+            //Background = ssuiTheme.WindowBackground;
+            //BorderBrush = ssuiTheme.BorderBrush;
+            //Foreground = ssuiTheme.Foreground;
         }
     }
 }
