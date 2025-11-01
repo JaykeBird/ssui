@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Media;
 using SolidShineUi;
 
 namespace SsuiSample
@@ -11,48 +11,12 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for WildcardMatchTest.xaml
     /// </summary>
-    public partial class WildcardMatchTest : UserControl
+    public partial class WildcardMatchTest : ThemedUserControl
     {
         public WildcardMatchTest()
         {
             InitializeComponent();
         }
-
-        #region ColorScheme
-
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(WildcardMatchTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is WildcardMatchTest s)
-            {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
-        #endregion
 
         public void RunWildcard()
         {
@@ -74,7 +38,11 @@ namespace SsuiSample
             StringInputDialog sid = new StringInputDialog();
             sid.Owner = Window.GetWindow(this);
             sid.Title = "Wildcard Match";
-            sid.ColorScheme = ColorScheme;
+            if (SsuiTheme.ControlPopBrush is SolidColorBrush scb)
+            {
+                sid.ColorScheme = new ColorScheme(scb.Color);
+            }
+            
             sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             sid.Description = "The text to match against:";
 

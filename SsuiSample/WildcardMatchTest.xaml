@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SsuiSample.WildcardMatchTest" x:Name="control"
+﻿<flat:ThemedUserControl x:Class="SsuiSample.WildcardMatchTest" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -16,28 +16,26 @@
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Wildcard Match Test" FontSize="16" VerticalAlignment="Top"/>
         <TextBox Margin="160,0,210,0" Grid.Row="1" x:Name="txtMatch" VerticalAlignment="Center" Height="24" VerticalContentAlignment="Center" />
-        <flat:CheckBox x:Name="chkCase" Content="Ignore case" HorizontalAlignment="Right" Margin="0,0,105,0" Grid.Row="1" VerticalAlignment="Center" 
-                       Width="100" Height="24" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-        <flat:FlatButton Content="Run" x:Name="btnMatch" Click="btnMatch_Click" Margin="0,8,10,8" Grid.Row="1" 
-                         HorizontalAlignment="Right" Width="90" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+        <flat:CheckBox x:Name="chkCase" Content="Ignore case" HorizontalAlignment="Right" Margin="0,0,105,0" Grid.Row="1" VerticalAlignment="Center" Width="100" Height="24" />
+        <flat:FlatButton Content="Run" x:Name="btnMatch" Click="btnMatch_Click" Margin="0,8,10,8" Grid.Row="1" HorizontalAlignment="Right" Width="90" />
 
         <Grid Grid.Row="3" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
-            <flat:SelectPanel Margin="20,10,20,20" x:Name="selList" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" MultiSelect="True" />
+            <flat:SelectPanel Margin="20,10,20,20" x:Name="selList" MultiSelect="True" />
             <StackPanel Grid.Column="1">
-                <flat:FlatButton Margin="8" Content="Add Item..." x:Name="btnAdd" Click="btnAdd_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-                <flat:FlatButton Margin="8" Content="Remove Selected" x:Name="btnRemove" Click="btnRemove_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-                <flat:FlatButton Margin="8" Content="Remove All" x:Name="btnRemoveAll" Click="btnRemoveAll_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-                <flat:FlatButton Margin="8" Content="Deselect All" x:Name="btnDeselect" Click="btnDeselect_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-                <Border Margin="12,5" Height="1" BorderBrush="Black" BorderThickness="1" />
-                <flat:FlatButton Margin="8" Content="Clear Results" x:Name="btnClear" Click="btnClear_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+                <flat:FlatButton Margin="8" Content="Add Item..." x:Name="btnAdd" Click="btnAdd_Click" />
+                <flat:FlatButton Margin="8" Content="Remove Selected" x:Name="btnRemove" Click="btnRemove_Click" />
+                <flat:FlatButton Margin="8" Content="Remove All" x:Name="btnRemoveAll" Click="btnRemoveAll_Click" />
+                <flat:FlatButton Margin="8" Content="Deselect All" x:Name="btnDeselect" Click="btnDeselect_Click" />
+                <Border Margin="12,5" Height="1" BorderBrush="{Binding SsuiTheme.BorderBrush, ElementName=control, FallbackValue=Black}" BorderThickness="1" />
+                <flat:FlatButton Margin="8" Content="Clear Results" x:Name="btnClear" Click="btnClear_Click" />
             </StackPanel>
         </Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" Text="Wildcard text to match:" VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="2" x:Name="txtResults" Text="" VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,23,10,0" Text="(? for single character, * for 0 to any characters)" VerticalAlignment="Top"/>
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>

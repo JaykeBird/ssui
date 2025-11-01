@@ -105,7 +105,7 @@
             </MenuItem>
         </flat:Menu>
 
-        <flat:SelectPanel x:Name="stkTabs" Grid.Row="1" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" MultiSelect="False" BorderThickness="0,0,1,0" />
+        <flat:SelectPanel x:Name="stkTabs" Grid.Row="1" MultiSelect="False" BorderThickness="0,0,1,0" />
         <TextBlock x:Name="lblStart" Grid.Column="1" Grid.Row="1" Margin="20,20,0,0">
             <Run Text="Select a test from the left to get started!" /><LineBreak />
             <LineBreak />
@@ -126,7 +126,7 @@
             <local:SelectPanelTest x:Name="selectPanelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:SelectPanelScrollTest x:Name="selscrollTest" Visibility="Collapsed" />
             <local:SpinnersTest x:Name="spinnersTest" Visibility="Collapsed" />
-            <local:WildcardMatchTest x:Name="wildcardTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:WildcardMatchTest x:Name="wildcardTest" Visibility="Collapsed" />
         </Grid>
     </Grid>
 </flat:FlatWindow>
