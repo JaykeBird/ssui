@@ -392,7 +392,8 @@ namespace SolidShineUi
         {
             if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
 
-            OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+            if (ssuiTheme != null) OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+            // TODO: if SsuiTheme is null, instead call a ClearBindings method that prompts the control to instead clear all of the bindings to the SsuiTheme
 
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeAppliedEvent, this);
             RaiseEvent(re);
@@ -485,7 +486,7 @@ namespace SolidShineUi
         /// <param name="brushProperty">the property on this control to bind</param>
         /// <param name="ssuiThemeProperty">the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
         /// <exception cref="ArgumentException">
-        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
+        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
         {
@@ -499,15 +500,11 @@ namespace SolidShineUi
         /// <param name="ssuiThemeProperty">the name of the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
         /// <param name="source">the specific SsuiTheme object to bind to (such as <see cref="SsuiAppTheme"/>'s AccentTheme or SubitemTheme)</param>
         /// <exception cref="ArgumentException">
-        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or <see cref="SsuiAppTheme"/>
+        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
         {
-            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
-            {
-                throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
-            }
-            return SetBinding(brushProperty, new Binding(ssuiThemeProperty.Name) { Source = source });
+            return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
         }
 
         /// <summary>

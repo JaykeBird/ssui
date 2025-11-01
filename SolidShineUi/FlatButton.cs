@@ -331,7 +331,8 @@ namespace SolidShineUi
         {
             if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
 
-            OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+            if (ssuiTheme != null) OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+            // TODO: if SsuiTheme is null, instead call a ClearBindings method that prompts the control to instead clear all of the bindings to the SsuiTheme
 
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeAppliedEvent, this);
             RaiseEvent(re);
@@ -405,11 +406,7 @@ namespace SolidShineUi
         /// </exception>
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
         {
-            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
-            {
-                throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
-            }
-            return SetBinding(brushProperty, new Binding(ssuiThemeProperty.Name) { Source = source });
+            return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
         }
 
         /// <summary>
@@ -431,6 +428,37 @@ namespace SolidShineUi
         {
             add { AddHandler(SsuiThemeAppliedEvent, value); }
             remove { RemoveHandler(SsuiThemeAppliedEvent, value); }
+        }
+
+        #endregion
+
+        #region Style Generation
+
+        /// <summary>
+        /// Creates a <see cref="Style"/> for a FlatButton, where the visual properties are bound to a SsuiTheme <paramref name="theme"/>.
+        /// </summary>
+        /// <param name="theme">the SsuiTheme object to bind to</param>
+        protected internal static Style GenerateStyle(SsuiTheme theme)
+        {
+            Style os = new Style(typeof(FlatButton));
+
+            // looking at the actual WPF code for Setters, a Setter's Value can be bound by setting its Value to a BindingBase object
+            // https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Setter.cs
+
+            os.Setters.Add(new Setter(BackgroundProperty, SsuiTheme.CreateBinding(SsuiTheme.ControlBackgroundProperty, theme)));
+            os.Setters.Add(new Setter(HighlightBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.HighlightBrushProperty, theme)));
+            os.Setters.Add(new Setter(DisabledBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.DisabledBackgroundProperty, theme)));
+            os.Setters.Add(new Setter(BorderDisabledBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.DisabledBorderBrushProperty, theme)));
+            os.Setters.Add(new Setter(SelectedBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.SelectedBackgroundBrushProperty, theme)));
+            os.Setters.Add(new Setter(BorderHighlightBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.HighlightBorderBrushProperty, theme)));
+            os.Setters.Add(new Setter(BorderSelectedBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.SelectedBorderBrushProperty, theme)));
+            os.Setters.Add(new Setter(ForegroundProperty, SsuiTheme.CreateBinding(SsuiTheme.ForegroundProperty, theme)));
+            os.Setters.Add(new Setter(ForegroundHighlightBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.HighlightForegroundProperty, theme)));
+            os.Setters.Add(new Setter(ClickBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.ClickBrushProperty, theme)));
+
+            os.Setters.Add(new Setter(CornerRadiusProperty, SsuiTheme.CreateBinding(SsuiTheme.CornerRadiusProperty, theme)));
+
+            return os;
         }
 
         #endregion

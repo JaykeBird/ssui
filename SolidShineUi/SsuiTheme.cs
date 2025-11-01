@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace SolidShineUi
@@ -413,6 +414,26 @@ namespace SolidShineUi
             return new SsuiTheme();
         }
 
+
+        /// <summary>
+        /// Create a <see cref="Binding"/> for a property in the SsuiTheme.
+        /// </summary>
+        /// <param name="ssuiThemeProperty">the SsuiTheme or SsuiAppTheme property to bind to</param>
+        /// <param name="source">the SsuiTheme object holding the value to bind</param>
+        /// <returns>A <see cref="Binding"/> object that can be used to bind other controls' properties to this property.</returns>
+        /// <exception cref="ArgumentException">thrown if <paramref name="ssuiThemeProperty"/> is not a SsuiTheme property, or a property from a class that inherits from SsuiTheme</exception>
+        public static Binding CreateBinding(DependencyProperty ssuiThemeProperty, SsuiTheme source)
+        {
+            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
+            {
+                throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
+            }
+            return new Binding(ssuiThemeProperty.Name) { Source = source };
+
+            // in the future, I could create a small cache of Binding objects that the SsuiTheme itself stores and returns, rather than creating a new binding each time
+            // what I don't know, though, is whether each WPF binding expression requires a unique Binding object, or if I can reuse Binding objects
+        }
+
     }
 
 
@@ -728,6 +749,5 @@ namespace SolidShineUi
         {
             return new SsuiAppTheme();
         }
-
     }
 }
