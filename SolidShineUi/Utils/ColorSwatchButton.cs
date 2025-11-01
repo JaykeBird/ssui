@@ -17,11 +17,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Create a ColorSwatchButton.
         /// </summary>
-        public ColorSwatchButton()
+        public ColorSwatchButton() : this(Colors.White)
         {
-            Color = Colors.White;
-            UpdateBrushes();
-            ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
         }
 
         /// <summary>
@@ -34,6 +31,8 @@ namespace SolidShineUi.Utils
             UpdateBrushes();
             ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
             SsuiThemeApplied += ColorSwatchButton_SsuiThemeApplied;
+
+            UseLayoutRounding = true;
         }
 
         private void ColorSwatchButton_SsuiThemeApplied(object sender, RoutedEventArgs e)
