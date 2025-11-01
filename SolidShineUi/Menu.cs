@@ -235,7 +235,8 @@ namespace SolidShineUi
         public SsuiTheme SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty SsuiThemeProperty = ThemedControl.SsuiThemeProperty.AddOwner(typeof(Menu));
+        public static readonly DependencyProperty SsuiThemeProperty = ThemedControl.SsuiThemeProperty.AddOwner(typeof(Menu), 
+            new FrameworkPropertyMetadata(OnSsuiThemeChanged));
 
         /// <summary>
         /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
@@ -250,6 +251,14 @@ namespace SolidShineUi
         {
             add { AddHandler(SsuiThemeChangedEvent, value); }
             remove { RemoveHandler(SsuiThemeChangedEvent, value); }
+        }
+
+        private static void OnSsuiThemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is Menu tc)
+            {
+                tc.ApplyAndRaiseTheme();
+            }
         }
 
         /// <summary>

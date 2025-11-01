@@ -24,7 +24,7 @@
             <ColumnDefinition Width="135"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <flat:Menu Grid.ColumnSpan="2" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" >
+        <flat:Menu Grid.ColumnSpan="2" >
             <MenuItem Header="_Application">
                 <MenuItem Header="_Change Colors"  >
                     <MenuItem Header="_Select Color..." x:Name="mnuColors" Click="mnuColors_Click" />

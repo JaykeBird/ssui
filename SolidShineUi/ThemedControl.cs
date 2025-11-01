@@ -110,6 +110,10 @@ namespace SolidShineUi
                 //tcc.SsuiTheme = (SsuiTheme)e.NewValue;
                 tcc.ApplyAndRaiseTheme();
             }
+            else if (sender is ThemedUserControl tuc)
+            {
+                tuc.ApplyAndRaiseTheme();
+            }
         }
 
         /// <summary>

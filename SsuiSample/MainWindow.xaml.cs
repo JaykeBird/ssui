@@ -24,6 +24,7 @@ namespace SsuiSample
             InitializeComponent();
             //SourceInitialized += MainWindow_SourceInitialized;
             ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
+            SsuiTheme = new SsuiAppTheme(ColorsHelper.CreateFromHex("7AE"), ColorsHelper.CreateFromHex("EA7"));
             SetupSidebar();
             KeyDown += (s, e) =>
             {
