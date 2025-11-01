@@ -122,7 +122,7 @@
             <local:PropertyListTest x:Name="propListTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:TabControlTest x:Name="tabControlTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:TwoBasicSelectPanels x:Name="twoBasicTest" Visibility="Collapsed" />
-            <local:TwoPositionSelectTest x:Name="twoSelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:TwoPositionSelectTest x:Name="twoSelTest" Visibility="Collapsed" />
             <local:SelectPanelTest x:Name="selectPanelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:SelectPanelScrollTest x:Name="selscrollTest" Visibility="Collapsed" />
             <local:SpinnersTest x:Name="spinnersTest" Visibility="Collapsed" />

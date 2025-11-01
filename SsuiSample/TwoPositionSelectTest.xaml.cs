@@ -13,49 +13,12 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for RelativePositionSelectTest.xaml
     /// </summary>
-    public partial class TwoPositionSelectTest : UserControl
+    public partial class TwoPositionSelectTest : ThemedUserControl
     {
         public TwoPositionSelectTest()
         {
             InitializeComponent();
         }
-
-        #region ColorScheme
-
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TwoPositionSelectTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is TwoPositionSelectTest s)
-            {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
-
-        #endregion
 
         bool _internalAction = false;
 
