@@ -265,7 +265,7 @@ namespace SolidShineUi
                 // Border brush already applied in base
                 // BaseBackground is set to transparent above
 
-                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
                 ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
 
