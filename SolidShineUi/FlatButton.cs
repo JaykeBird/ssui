@@ -43,26 +43,10 @@ namespace SolidShineUi
             KeyDown += UserControl_KeyDown;
             KeyUp += UserControl_KeyUp;
 
-            Focusable = true;
-            KeyboardNavigation.SetIsTabStop(this, true);
-
-            HorizontalContentAlignment = HorizontalAlignment.Center;
-            VerticalContentAlignment = VerticalAlignment.Center;
-
-            Padding = new Thickness(5, 0, 5, 0);
+            //KeyboardNavigation.SetIsTabStop(this, true);
         }
 
         #region Brushes
-
-        /// <summary>
-        /// Get or set the brush used for the background of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
 
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse is clicking it.
@@ -96,6 +80,16 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush ForegroundHighlightBrush
+        {
+            get => (Brush)GetValue(BorderHighlightBrushProperty);
+            set => SetValue(BorderHighlightBrushProperty, value);
+        }
+
+        /// <summary>
         /// Get or set the brush used for the background of the control when the control is disabled.
         /// </summary>
         [Category("Brushes")]
@@ -116,17 +110,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around the edges of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush BorderHighlightBrush
@@ -146,49 +130,44 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-        /// <summary>The backing dependency property for <see cref="Background"/>. See the related property for details.</summary>
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(FlatButton),
-            new PropertyMetadata(Colors.White.ToBrush()));
-
         /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(FlatButton),
+            nameof(ClickBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(FlatButton),
+            nameof(SelectedBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(FlatButton),
+            nameof(HighlightBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="ForegroundHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ForegroundHighlightBrushProperty = DependencyProperty.Register(
+            nameof(ForegroundHighlightBrush), typeof(Brush), typeof(FlatButton),
+            new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(FlatButton),
+            nameof(DisabledBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(FlatButton),
+            nameof(BorderDisabledBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
-
-        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(FlatButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(FlatButton),
+            nameof(BorderHighlightBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(FlatButton),
+            nameof(BorderSelectedBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
 
         #endregion
@@ -395,6 +374,7 @@ namespace SolidShineUi
                 ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
                 ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(ForegroundHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty, theme);
                 ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
 
                 ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);

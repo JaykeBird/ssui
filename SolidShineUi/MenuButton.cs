@@ -34,7 +34,7 @@ namespace SolidShineUi
 
         private void OnSsuiThemeApplied(object sender, RoutedEventArgs e)
         {
-            Menu?.SetBinding(SolidShineUi.ContextMenu.SsuiThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+            Menu?.SetBinding(ThemedControl.SsuiThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
         }
 
         private void OnColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -170,7 +170,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MenuPlacementProperty
-            = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(MenuButton),
+            = DependencyProperty.Register(nameof(MenuPlacement), typeof(PlacementMode), typeof(MenuButton),
             new FrameworkPropertyMetadata(PlacementMode.Bottom));
 
 
@@ -185,7 +185,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MenuPlacementTargetProperty
-            = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(MenuButton),
+            = DependencyProperty.Register(nameof(MenuPlacementTarget), typeof(UIElement), typeof(MenuButton),
             new FrameworkPropertyMetadata(null));
 
 
@@ -196,7 +196,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MenuPlacementRectangleProperty
-            = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(MenuButton),
+            = DependencyProperty.Register(nameof(MenuPlacementRectangle), typeof(Rect), typeof(MenuButton),
             new FrameworkPropertyMetadata(Rect.Empty));
 
         /// <summary>

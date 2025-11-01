@@ -720,6 +720,11 @@
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Width" Value="Auto" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:FlatButton}">
@@ -797,6 +802,7 @@
                         <Trigger Property="IsMouseOver" Value="True" >
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -805,10 +811,12 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                         </MultiTrigger>
                         <Trigger Property="IsStylusOver" Value="True" >
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                         </Trigger>
                         <!--<Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -817,6 +825,7 @@
                         <Trigger Property="IsMouseDown" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -825,6 +834,7 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                         <!--<Trigger Property="IsFocused" Value="True" >
                             <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
@@ -843,6 +853,11 @@
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Width" Value="Auto" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:MenuButton}">
@@ -979,10 +994,12 @@
                         <Trigger Property="IsMouseOver" Value="True" >
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsStylusOver" Value="True" >
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -991,10 +1008,12 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                         <Trigger Property="IsMouseDown" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -1003,6 +1022,7 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
+                            <Setter Property="Foreground" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                         <!--<Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />

@@ -130,6 +130,16 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Get or set the brush used for the foreground of the control while the mouse is over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush ForegroundHighlightBrush
+        {
+            get => (Brush)GetValue(ForegroundHighlightBrushProperty);
+            set => SetValue(ForegroundHighlightBrushProperty, value);
+        }
+
+        /// <summary>
         /// Get or set the brush used for the background of the control when the control is disabled.
         /// </summary>
         [Category("Brushes")]
@@ -150,7 +160,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush BorderHighlightBrush
@@ -172,37 +182,42 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(SplitButton),
+            nameof(ClickBrush), typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(SplitButton),
+            nameof(SelectedBrush), typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(SplitButton),
+            nameof(HighlightBrush), typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="ForegroundHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ForegroundHighlightBrushProperty = DependencyProperty.Register(
+            nameof(ForegroundHighlightBrush), typeof(Brush), typeof(SplitButton),
+            new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(SplitButton),
+            nameof(DisabledBrush), typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(SplitButton),
+            nameof(BorderDisabledBrush), typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(SplitButton),
+            nameof(BorderHighlightBrush), typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(SplitButton),
+            nameof(BorderSelectedBrush), typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
 
         #endregion
@@ -256,7 +271,7 @@ namespace SolidShineUi
                 btnMenu.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
             }
 
-            Menu?.SetBinding(SolidShineUi.ContextMenu.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
+            Menu?.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
 
             if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
             {
