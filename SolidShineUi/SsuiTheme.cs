@@ -227,6 +227,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush to use for saturated backgrounds of certain controls.
         /// </summary>
+        /// <remarks>
+        /// If this SsuiTheme was created by using a base color, this brush will also be set to that base color.
+        /// </remarks>
         public Brush ControlSatBackground { get => (Brush)GetValue(ControlSatBackgroundProperty); set => SetValue(ControlSatBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ControlSatBackground"/>. See the related property for details.</summary>

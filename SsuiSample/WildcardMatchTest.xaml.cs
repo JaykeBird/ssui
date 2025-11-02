@@ -38,7 +38,7 @@ namespace SsuiSample
             StringInputDialog sid = new StringInputDialog();
             sid.Owner = Window.GetWindow(this);
             sid.Title = "Wildcard Match";
-            if (SsuiTheme.ControlPopBrush is SolidColorBrush scb)
+            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
             {
                 sid.ColorScheme = new ColorScheme(scb.Color);
             }
