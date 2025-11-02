@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SolidShineUi.Utils;
-using System.Windows.Navigation;
 
 namespace SolidShineUi
 {
@@ -18,20 +16,14 @@ namespace SolidShineUi
     /// </summary>
     public partial class ColorPickerDialog : FlatWindow
     {
-        ColorScheme cs = new ColorScheme();
-
         #region Window Actions
 
         /// <summary>
         /// Create a ColorPickerDialog. Please use the constructor with the ColorScheme argument.
         /// </summary>
-        [Obsolete("Please use the constructor with the ColorScheme argument.", false)]
         public ColorPickerDialog()
         {
             InitializeComponent();
-            ColorScheme = new ColorScheme();
-
-            UpdateAppearance();
         }
 
         /// <summary>
@@ -40,11 +32,8 @@ namespace SolidShineUi
         /// <param name="cs">The ColorScheme to use with this dialog.</param>
         public ColorPickerDialog(ColorScheme cs)
         {
-            this.cs = cs;
             InitializeComponent();
             ColorScheme = cs;
-
-            UpdateAppearance();
         }
 
         /// <summary>
@@ -54,37 +43,10 @@ namespace SolidShineUi
         /// <param name="color">The Color to preset as the selected color (i.e. as an existing or default value).</param>
         public ColorPickerDialog(ColorScheme cs, Color color)
         {
-            this.cs = cs;
             InitializeComponent();
             ColorScheme = cs;
-
-            UpdateAppearance();
+            
             LoadInSelectedColor(color);
-        }
-
-        void UpdateAppearance()
-        {
-            ColorScheme = cs;
-            //grid.Background = cs.BackgroundColor.ToBrush();
-
-            colorList.ApplyColorScheme(cs);
-
-            nudB.ApplyColorScheme(cs);
-            nudG.ApplyColorScheme(cs);
-            nudR.ApplyColorScheme(cs);
-
-            nudH.ApplyColorScheme(cs);
-            nudS.ApplyColorScheme(cs);
-            nudV.ApplyColorScheme(cs);
-
-            btnInvert.ApplyColorScheme(cs);
-            btnLoadPal.ApplyColorScheme(cs);
-            btnOpenImage.ApplyColorScheme(cs);
-
-            //nudAlpha.ApplyColorScheme(cs);
-
-            btnOK.ApplyColorScheme(cs);
-            btnCancel.ApplyColorScheme(cs);
         }
 
         #endregion

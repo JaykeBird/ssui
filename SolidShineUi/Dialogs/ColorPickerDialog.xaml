@@ -14,7 +14,7 @@
             <Setter Property="SetToolTip" Value="False" />
             <!--<Setter Property="AlwaysHexTooltips" Value="False" />-->
             <Setter Property="Margin" Value="1" />
-            <Setter Property="ColorScheme" Value="{Binding RelativeSource={RelativeSource AncestorType=flat:FlatWindow}, Path=ColorScheme}" />
+            <!--<Setter Property="ColorScheme" Value="{Binding RelativeSource={RelativeSource AncestorType=flat:FlatWindow}, Path=ColorScheme}" />-->
         </Style>
     </flat:FlatWindow.Resources>
     <Grid x:Name="grid">
@@ -23,8 +23,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <flat:TabControl x:Name="tabControl" Margin="10" TabMinWidth="0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
-                         ShowTabListMenu="False" AllowTabDragDrop="False" >
+        <flat:TabControl x:Name="tabControl" Margin="10" TabMinWidth="0" ShowTabListMenu="False" AllowTabDragDrop="False" >
             <flat:TabItem x:Name="tabSwatches" Title="Swatches" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
                     <Border BorderBrush="Black" BorderThickness="0" Margin="8,3" >
@@ -202,8 +201,7 @@
                         <ColumnDefinition Width="80"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <flat:FlatButton x:Name="btnInvert" HorizontalAlignment="Left" Height="24" Margin="10,84,0,0" VerticalAlignment="Top" Width="60" Click="btnInvert_Click"
-                                     ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Content="Invert" />
+                    <flat:FlatButton x:Name="btnInvert" HorizontalAlignment="Left" Height="24" Margin="10,84,0,0" VerticalAlignment="Top" Width="60" Click="btnInvert_Click" Content="Invert" />
                     <Border x:Name="brdrSlColor" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" VerticalAlignment="Top" Width="60">
                         <Border.Background>
                             <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute" >
@@ -224,34 +222,34 @@
                     <TextBlock x:Name="lblR" Grid.Column="1" HorizontalAlignment="Left" Margin="10,39,0,0" Text="R" VerticalAlignment="Top" Width="22"/>
                     <Slider x:Name="sldR" Grid.Column="1" Margin="40,39,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldR_ValueChanged" />
                     <flat:IntegerSpinner x:Name="nudR" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,35,10,0" Width="61" Value="0" MinValue="0"
-                                         MaxValue="255" AcceptExpressions="True" ValueChanged="nudR_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                                         MaxValue="255" AcceptExpressions="True" ValueChanged="nudR_ValueChanged" />
                     <!-- G -->
                     <TextBlock x:Name="lblG" Grid.Column="1" HorizontalAlignment="Left" Margin="10,68,0,0" Text="G" VerticalAlignment="Top" Width="22"/>
                     <Slider x:Name="sldG" Grid.Column="1" Margin="40,68,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldG_ValueChanged" />
                     <flat:IntegerSpinner x:Name="nudG" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,64,10,0" Width="61" Value="0" MinValue="0"
-                                         MaxValue="255" AcceptExpressions="True" ValueChanged="nudG_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                                         MaxValue="255" AcceptExpressions="True" ValueChanged="nudG_ValueChanged" />
                     <!-- B -->
                     <TextBlock x:Name="lblB" Grid.Column="1" HorizontalAlignment="Left" Margin="10,97,0,0" Text="B" VerticalAlignment="Top" Width="22"/>
                     <Slider x:Name="sldB" Grid.Column="1" Margin="40,97,76,0" VerticalAlignment="Top" Minimum="0" Maximum="255" Value="0" Interval="1" ValueChanged="sldB_ValueChanged" />
                     <flat:IntegerSpinner x:Name="nudB" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,93,10,0" Width="61" Value="0" MinValue="0"
-                                         MaxValue="255" AcceptExpressions="True" ValueChanged="nudB_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                                         MaxValue="255" AcceptExpressions="True" ValueChanged="nudB_ValueChanged" />
                     <!-- HSV -->
                     <TextBlock x:Name="lblHSL" Grid.Column="1" HorizontalAlignment="Left" Margin="10,130,0,0" Text="HSV" VerticalAlignment="Top"/>
                     <!-- H -->
                     <TextBlock x:Name="lblH" Grid.Column="1" HorizontalAlignment="Left" Margin="10,160,0,0" Text="H" VerticalAlignment="Top" Width="22"/>
                     <Slider x:Name="sldH" Grid.Column="1" Margin="40,160,76,0" VerticalAlignment="Top" Minimum="0" Maximum="359" Value="0" ValueChanged="sldH_ValueChanged" />
                     <flat:IntegerSpinner x:Name="nudH" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,156,10,0" Width="61" Value="0" MinValue="0"
-                                         MaxValue="359" ValueChanged="nudH_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                                         MaxValue="359" ValueChanged="nudH_ValueChanged" />
                     <!-- S -->
                     <TextBlock x:Name="lblS" Grid.Column="1" HorizontalAlignment="Left" Margin="10,188,0,0" Text="S" VerticalAlignment="Top" Width="22"/>
                     <Slider x:Name="sldS" Grid.Column="1" Margin="40,188,76,0" VerticalAlignment="Top" Minimum="0" Maximum="1000" Value="0" ValueChanged="sldS_ValueChanged" />
                     <flat:DoubleSpinner x:Name="nudS" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,184,10,0" Width="61" Value="0" MinValue="0" MaxValue="1"
-                                        Step="0.01" Decimals="3" ValueChanged="nudS_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                                        Step="0.01" Decimals="3" ValueChanged="nudS_ValueChanged" />
                     <!-- V -->
                     <TextBlock x:Name="lblV" Grid.Column="1" HorizontalAlignment="Left" Margin="10,218,0,0" Text="V" VerticalAlignment="Top" Width="22"/>
                     <Slider x:Name="sldV" Grid.Column="1" Margin="40,218,76,0" VerticalAlignment="Top" Minimum="0" Maximum="1000" Value="0" ValueChanged="sldV_ValueChanged" />
                     <flat:DoubleSpinner x:Name="nudV" Grid.Column="1" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top" Margin="0,214,10,0" Width="61" Value="0" MinValue="0" MaxValue="1"
-                                        Step="0.01" Decimals="3" ValueChanged="nudV_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"  />
+                                        Step="0.01" Decimals="3" ValueChanged="nudV_ValueChanged" />
                     <!-- Hex -->
                     <TextBlock x:Name="lblHex" Grid.Column="1" HorizontalAlignment="Left" Margin="10,265,0,0" Text="Hex" VerticalAlignment="Top"/>
                     <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="40,265,0,0" Text="#" VerticalAlignment="Top"/>
@@ -264,15 +262,13 @@
                     <Border Margin="10,10,10,45" BorderBrush="Black" Background="DarkGray" BorderThickness="1">
                         <ssut:ImageColorPicker x:Name="imgPicker" SelectedColorChanged="imgPicker_SelectedColorChanged" />
                     </Border>
-                    <flat:FlatButton x:Name="btnOpenImage" Content="Load Image..." HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="24" Click="btnOpenImage_Click"
-                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}"  />
+                    <flat:FlatButton x:Name="btnOpenImage" Content="Load Image..." HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="24" Click="btnOpenImage_Click" />
                     <TextBlock x:Name="lblImageExplain" HorizontalAlignment="Right" Margin="0,0,10,15" TextWrapping="Wrap" Text="Click on the image to select the color." VerticalAlignment="Bottom" />
                 </Grid>
             </flat:TabItem>
             <flat:TabItem x:Name="tabPalette" Title="Palette File" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
-                    <flat:FlatButton x:Name="btnLoadPal" Content="Open Palette..." HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="109" Height="24" Click="btnLoadPal_Click"
-                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}"  />
+                    <flat:FlatButton x:Name="btnLoadPal" Content="Open Palette..." HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="109" Height="24" Click="btnLoadPal_Click" />
                     <ComboBox x:Name="cbbListDisplay" Margin="0,20,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="60" SelectedIndex="0" Height="24" SelectionChanged="cbbListDisplay_SelectionChanged" >
                         <ComboBoxItem Content="Hex" />
                         <ComboBoxItem Content="RGB" />
@@ -295,7 +291,7 @@
             <Slider Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Minimum="0" Maximum="255" SmallChange="1" LargeChange="16" Value="255" TickFrequency="32" TickPlacement="Both"
                     Visibility="{Binding ElementName=window, Path=ShowTransparencyControls, Converter={StaticResource btv}}" x:Name="sldAlpha" ValueChanged="sldAlpha_ValueChanged" />
             <flat:IntegerSpinner Grid.Column="2" VerticalAlignment="Center" MinValue="0" MaxValue="255" Value="255" x:Name="nudAlpha" ValueChanged="nudAlpha_ValueChanged"
-                                 Visibility="{Binding ElementName=window, Path=ShowTransparencyControls, Converter={StaticResource btv}}" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"  />
+                                 Visibility="{Binding ElementName=window, Path=ShowTransparencyControls, Converter={StaticResource btv}}"  />
         </Grid>
         <Grid Height="40" Margin="10,15,10,0" Grid.Row="2" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
@@ -328,9 +324,7 @@
             </Border>
         </Grid>
 
-        <flat:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="2"
-                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:FieldModifier="private" />
-        <flat:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="2"
-                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" x:FieldModifier="private" />
+        <flat:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="2" />
+        <flat:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="24" Grid.Row="2" />
     </Grid>
 </flat:FlatWindow>

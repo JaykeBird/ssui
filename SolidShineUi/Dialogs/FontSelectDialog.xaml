@@ -30,6 +30,8 @@
                 <ColumnDefinition Width="Auto" x:Name="colWeights" />
                 <ColumnDefinition Width="Auto" x:Name="colSize" />
             </Grid.ColumnDefinitions>
+
+            <TextBlock HorizontalAlignment="Left" Margin="25,15,0,0" Text="Font:" VerticalAlignment="Top"/>
             <TextBox x:Name="txtFont" Height="24" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190" flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase"
                      TextChanged="txtFont_TextChanged" />
             <ListBox x:Name="lstFont" Margin="25,60,10,10" SelectionChanged="lstFont_SelectionChanged" >
@@ -78,7 +80,10 @@
                 </ListBox.ItemsSource>
             </ListBox>
             <!--DataContext="{x:Static Fonts.SystemFontFamilies}" ItemsSource='{Binding}' />-->
-            <TextBlock HorizontalAlignment="Left" Margin="25,15,0,0" Text="Font:" VerticalAlignment="Top"/>
+
+            <TextBlock HorizontalAlignment="Left" Margin="13,15,0,0" Text="Font weight:" VerticalAlignment="Top" x:Name="lblWeight" Grid.Column="1" />
+            <flat:IntegerSpinner x:Name="txtWeight" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" MinValue="1" Step="50" MaxValue="999" Value="400" 
+                ValueChanged="txtWeight_ValueChanged" Grid.Column="1" />
             <ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" SelectionChanged="lstWeight_SelectionChanged" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -105,8 +110,10 @@
                 <sys:Int32>900</sys:Int32>
                 <sys:Int32>950</sys:Int32>
             </ListBox>
+            
+            <TextBlock HorizontalAlignment="Left" Margin="7,15,0,0" Text="Size:" VerticalAlignment="Top" x:Name="lblSize" Grid.Column="2" />
             <flat:DoubleSpinner x:Name="txtSize" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10" 
-                                ValueChanged="txtSize_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Grid.Column="2" />
+                                ValueChanged="txtSize_ValueChanged" Grid.Column="2" />
             <ListBox x:Name="lstSize" Margin="10,60,10,10" Width="90" SelectionChanged="lstSize_SelectionChanged" Grid.Column="2" >
                 <sys:Int32>6</sys:Int32>
                 <sys:Int32>7</sys:Int32>
@@ -138,31 +145,27 @@
                 <sys:Int32>88</sys:Int32>
                 <sys:Int32>96</sys:Int32>
             </ListBox>
-            <TextBlock HorizontalAlignment="Left" Margin="13,15,0,0" Text="Font weight:" VerticalAlignment="Top" x:Name="lblWeight" Grid.Column="1" />
-            <TextBlock HorizontalAlignment="Left" Margin="7,15,0,0" Text="Size:" VerticalAlignment="Top" x:Name="lblSize" Grid.Column="2" />
-            <flat:IntegerSpinner x:Name="txtWeight" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" MinValue="1" Step="50" MaxValue="999" Value="400" 
-                ValueChanged="txtWeight_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="1" />
         </Grid>
 
         <TextBlock HorizontalAlignment="Left" Margin="25,2,0,0" Text="Styles/Decorations:" VerticalAlignment="Top" x:Name="lblStyles" Grid.Row="1" />
         <TextBlock HorizontalAlignment="Left" Margin="25,1,0,0" Text="Preview:" VerticalAlignment="Top" x:Name="lblPreview" Grid.Row="2" />
         <flat:CheckBox x:Name="chkOverline" Content="Overline" HorizontalAlignment="Left" Margin="25,27,0,0" VerticalAlignment="Top" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked" 
-                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                       Grid.Row="1" Padding="5,0" />
         <flat:CheckBox x:Name="chkStrike" Content="Strikethrough" HorizontalAlignment="Left" Margin="25,52,0,0" VerticalAlignment="Top" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked" 
-                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                       Grid.Row="1" Padding="5,0" />
         <flat:CheckBox x:Name="chkUnderline" Content="Underline" HorizontalAlignment="Left" Margin="135,52,0,0" VerticalAlignment="Top" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked" 
-                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                       Grid.Row="1" Padding="5,0" />
         <flat:CheckBox x:Name="chkBaseline" Content="Baseline" HorizontalAlignment="Left" Margin="135,27,0,0" VerticalAlignment="Top" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked" 
-                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                       Grid.Row="1" Padding="5,0" />
         <flat:CheckBox x:Name="chkItalic" Content="Italic" HorizontalAlignment="Left" Margin="225,27,0,0" VerticalAlignment="Top" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked" 
-                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                       Grid.Row="1" Padding="5,0" />
         <flat:CheckBox x:Name="chkOblique" Content="Oblique" HorizontalAlignment="Left" Margin="225,52,0,0" VerticalAlignment="Top" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked" 
-                       Grid.Row="1" Padding="5,0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                       Grid.Row="1" Padding="5,0" />
 
         <!--<TextBlock HorizontalAlignment="Left" Margin="240,250,0,0" Text="Font color:" VerticalAlignment="Top"/>-->
 
         <Border Height="90" Margin="25,5,25,5" VerticalAlignment="Top" BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=BorderBrush}" 
-                Background="{Binding ElementName=window, Path=ColorScheme.LightBackgroundColor, Converter={StaticResource ColorConverter}}" Grid.Row="3">
+                Background="{Binding ElementName=window, Path=SsuiTheme.PanelBackground}" Grid.Row="3">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" >
                 <TextBlock x:Name="txtPreview" Text="AaBbCc123!" VerticalAlignment="Center" HorizontalAlignment="Center" 
                        FontFamily="{Binding ElementName=lstFont, Path=SelectedItem}" FontSize="{Binding ElementName=txtSize, Path=Value}" 
@@ -170,12 +173,9 @@
             </ScrollViewer>
         </Border>
 
-        <flat:FlatButton x:Name="btnText" Content="Set Preview Text..." HorizontalAlignment="Left" Margin="25,0,0,25" VerticalAlignment="Bottom" Width="120" 
-                         ColorScheme="{Binding ColorScheme, ElementName=window}" Click="btnText_Click" Grid.Row="4"/>
+        <flat:FlatButton x:Name="btnText" Content="Set Preview Text..." HorizontalAlignment="Left" Margin="25,0,0,25" VerticalAlignment="Bottom" Width="120" Click="btnText_Click" Grid.Row="4"/>
         <!--<flat:FlatButton x:Name="btnApply" Content="Apply" HorizontalAlignment="Right" Margin="0,0,205,25" VerticalAlignment="Bottom" Width="80"/>-->
-        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,110,25" VerticalAlignment="Bottom" Width="80" 
-                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnOK_Click" Grid.Row="4"/>
-        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="80" 
-                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnCancel_Click" Grid.Row="4"/>
+        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,110,25" VerticalAlignment="Bottom" Width="80" Click="btnOK_Click" Grid.Row="4"/>
+        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="80" Click="btnCancel_Click" Grid.Row="4"/>
     </Grid>
 </flat:FlatWindow>
