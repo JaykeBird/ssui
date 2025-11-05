@@ -19,7 +19,7 @@ namespace SolidShineUi
         #region Window Actions
 
         /// <summary>
-        /// Create a ColorPickerDialog. Please use the constructor with the ColorScheme argument.
+        /// Create a ColorPickerDialog.
         /// </summary>
         public ColorPickerDialog()
         {
@@ -34,6 +34,17 @@ namespace SolidShineUi
         {
             InitializeComponent();
             ColorScheme = cs;
+        }
+
+        /// <summary>
+        /// Create a ColorPickerDialog.
+        /// </summary>
+        /// <param name="color">The Color to preset as the selected color (i.e. as an existing or default value).</param>
+        public ColorPickerDialog(Color color)
+        {
+            InitializeComponent();
+
+            LoadInSelectedColor(color);
         }
 
         /// <summary>
