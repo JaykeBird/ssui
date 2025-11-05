@@ -25,54 +25,38 @@ namespace SsuiSample
 //        FlatWindow fwRunning = null;
 //#endif
 
-        #region ColorScheme
-
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindowTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is FlatWindowTest s)
-            {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
-
-#endregion
-
         Color selColor = Colors.Salmon;
 
         private void btnColorSet_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, selColor);
+            ColorPickerDialog cpd = new ColorPickerDialog(selColor);
+            cpd.SsuiTheme = TryGetSsuiAppTheme();
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
             {
                 selColor = cpd.SelectedColor;
                 rdoCustomColor.IsChecked = true;
+            }
+        }
+
+        //
+        SsuiAppTheme TryGetSsuiAppTheme()
+        {
+            if (SsuiTheme is SsuiAppTheme sat)
+            {
+                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
+                return sat;
+            }
+            else if (Window.GetWindow(this) is ThemedWindow fw)
+            {
+                // okay, let's try to pull from the parent window if possible, as it should have a SsuiAppTheme as its theme
+                return fw.SsuiTheme;
+            }
+            else
+            {
+                // okay, I guess we'll just go with the default
+                return new SsuiAppTheme();
             }
         }
 
@@ -84,30 +68,11 @@ namespace SsuiSample
                 return;
             }
 
-            // set up the SsuiTheme to use with the window
-            SsuiAppTheme mainTheme;
-            if (SsuiTheme is SsuiAppTheme sat)
-            {
-                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
-                mainTheme = sat;
-            }
-            else if (SsuiTheme.ControlPopBrush is SolidColorBrush scb)
-            {
-                mainTheme = new SsuiAppTheme(scb.Color);
-            }
-            else
-            {
-                mainTheme = new SsuiAppTheme();
-            }
-
             FlatWindow fw = new FlatWindow
             {
                 Width = nudWidth.Value,
                 Height = nudHeight.Value,
-                SsuiTheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? mainTheme : new SsuiAppTheme(selColor),
-
-                //ColorScheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? ColorScheme : new ColorScheme(selColor),
-                //CornerRadius = new CornerRadius(nudCornerRadius.Value)
+                SsuiTheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? TryGetSsuiAppTheme() : new SsuiAppTheme(selColor),
             };
 
             if (btnSetIcon.SelectedFiles.Count > 0)
@@ -162,7 +127,7 @@ namespace SsuiSample
 
             if (rdoDisplayText.IsChecked.GetValueOrDefault(true))
             {
-                fw.ShowTitle = true; // it's already true by default, but I'm putting this here anyway lol
+                fw.ShowTitle = true; // it's already true by default, but I'm putting it here for clarity
             }
             else if (rdoDisplayImage.IsChecked.GetValueOrDefault(false))
             {
@@ -170,7 +135,7 @@ namespace SsuiSample
 
                 // set up a TopLeftElement
                 // with ShowTitle being set to false, you can create a different UI element to appear in the place of the title
-                // (if you still show the title ("ShowTitle = true"), the TopLeftElement is displayed even left of the window title)
+                // (if you still show the title ("ShowTitle = true"), the TopLeftElement is displayed to the left of the window title)
                 // just like TopRightElement, this can be set via XAML but I'm creating it in C# here
                 Image uii = new Image
                 {
@@ -199,6 +164,7 @@ namespace SsuiSample
             colProperties.MinWidth = 0;
             colProperties.Width = new GridLength(0, GridUnitType.Pixel);
             btnShowProperties.Visibility = Visibility.Collapsed;
+            propList.Clear();
         }
 
         private void fw_SourceInitialized(object sender, EventArgs e)

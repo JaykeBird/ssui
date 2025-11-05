@@ -116,7 +116,7 @@
             <local:CheckBoxTest x:Name="checkBoxTest" Visibility="Collapsed" />
             <local:DialogsTest x:Name="dialogsTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:FileSelectTest x:Name="fileSelectTest" Visibility="Collapsed" />
-            <local:FlatWindowTest x:Name="flatWindowTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:FlatWindowTest x:Name="flatWindowTest" Visibility="Collapsed" />
             <local:FlowDocumentTest x:Name="flowDocTest" Visibility="Collapsed" />
             <local:PositionSelectTest x:Name="posSelTest" Visibility="Collapsed" />
             <local:PropertyListTest x:Name="propListTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
