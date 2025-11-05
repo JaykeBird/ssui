@@ -11,7 +11,7 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <flat:FlatButton x:Name="btnBrush" Click="btnBrush_Click" />
+        <flat:FlatButton x:Name="btnBrush" Click="btnBrush_Click" SsuiThemeChanged="btnBrush_SsuiThemeChanged" />
         <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="txtBrushType" Text="Unknown" Margin="3,0" IsHitTestVisible="False" />
 
         <flat:FlatButton x:Name="btnMenu" Width="28" MinHeight="20" Grid.Column="1" Click="btnMenu_Click" TransparentBack="True" >

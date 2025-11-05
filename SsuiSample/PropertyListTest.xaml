@@ -55,8 +55,8 @@
                     <flat:FlatButton x:Name="btnClear" Content="Clear" HorizontalAlignment="Center" Margin="0,2,0,0" VerticalAlignment="Top" ColorScheme="{Binding ColorScheme, ElementName=control}" Grid.Column="1" Click="btnClear_Click" />
                 </Grid>
             </ScrollViewer>
-            <flat:FlatButton x:Name="btnSelCs" Content="Select CS" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" ColorScheme="{Binding ColorScheme, ElementName=control}" Click="btnSelCs_Click" Grid.Row="1" />
-            <flat:FlatButton x:Name="btnSelObj" Content="Select Test Object" HorizontalAlignment="Right" Margin="0,0,110,0" VerticalAlignment="Center" ColorScheme="{Binding ColorScheme, ElementName=control}" Click="btnSelObj_Click" Grid.Row="1" />
+            <flat:FlatButton x:Name="btnSelCs" Content="Select SsuiTheme" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" ColorScheme="{Binding ColorScheme, ElementName=control}" Click="btnSelCs_Click" Grid.Row="1" />
+            <flat:FlatButton x:Name="btnSelObj" Content="Select Test Object" HorizontalAlignment="Right" Margin="0,0,125,0" VerticalAlignment="Center" ColorScheme="{Binding ColorScheme, ElementName=control}" Click="btnSelObj_Click" Grid.Row="1" />
 
         </Grid>
 

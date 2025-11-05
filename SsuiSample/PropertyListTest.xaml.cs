@@ -89,7 +89,10 @@ namespace SsuiSample
 
         private void btnSelCs_Click(object sender, RoutedEventArgs e)
         {
-            prop.LoadObject(ColorScheme);
+            if (Window.GetWindow(this) is FlatWindow fw)
+            {
+                prop.LoadObject(fw.SsuiTheme);
+            }
         }
 
         private void btnSelObj_Click(object sender, RoutedEventArgs e)
