@@ -32,8 +32,6 @@ namespace SolidShineUi
         {
             InitializeComponent();
 
-            UpdateAppearance();
-
             invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             invalidTimer.Tick += InvalidTimer_Tick;
         }
@@ -47,7 +45,6 @@ namespace SolidShineUi
             InitializeComponent();
 
             SetValue(ColorSchemeProperty, cs);
-            UpdateAppearance();
 
             invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             invalidTimer.Tick += InvalidTimer_Tick;
@@ -71,79 +68,6 @@ namespace SolidShineUi
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
             invalidTimer.Start();
-        }
-
-        #endregion
-
-        #region Color Scheme
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply.</param>
-        public new void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-
-            UpdateAppearance();
-        }
-
-        void UpdateAppearance()
-        {
-            base.ApplyColorScheme(ColorScheme);
-
-            //grdButtonContainer.Background = BrushFactory.Create(ColorScheme.SecondaryColor);
-
-            btnCancel.ApplyColorScheme(ColorScheme);
-            btnOK.ApplyColorScheme(ColorScheme);
-            btnDiscard.ApplyColorScheme(ColorScheme);
-            extraButton1.ApplyColorScheme(ColorScheme);
-            extraButton2.ApplyColorScheme(ColorScheme);
-            extraButton3.ApplyColorScheme(ColorScheme);
-            chkBox.ApplyColorScheme(ColorScheme);
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public new static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(MessageDialog),
-                new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// The color scheme to use with the message dialog.
-        /// </summary>
-        public new ColorScheme ColorScheme
-        {
-            get
-            {
-                return (ColorScheme)GetValue(ColorSchemeProperty);
-            }
-            set
-            {
-                SetValue(ColorSchemeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public new static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-            if (d is MessageDialog m)
-            {
-                m.ApplyColorScheme(cs);
-            }
         }
 
         #endregion
