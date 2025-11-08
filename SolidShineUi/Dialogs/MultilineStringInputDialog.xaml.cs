@@ -18,7 +18,6 @@ namespace SolidShineUi
         public MultilineStringInputDialog()
         {
             InitializeComponent();
-            ColorScheme = new ColorScheme();
         }
 
         /// <summary>
@@ -42,6 +41,22 @@ namespace SolidShineUi
         {
             InitializeComponent();
             ColorScheme = cs;
+
+            Title = title;
+            txtDesc.Text = desc;
+
+            txtValue.Text = value;
+        }
+
+        /// <summary>
+        /// Create a StringInputBox with prefilled values.
+        /// </summary>
+        /// <param name="title">The title of the window.</param>
+        /// <param name="desc">The description to give to the user.</param>
+        /// <param name="value">The value to place in the text box. By default, the text box is empty.</param>
+        public MultilineStringInputDialog(string title, string desc, string value = "")
+        {
+            InitializeComponent();
 
             Title = title;
             txtDesc.Text = desc;
