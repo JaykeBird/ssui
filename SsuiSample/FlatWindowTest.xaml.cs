@@ -40,7 +40,6 @@ namespace SsuiSample
             }
         }
 
-        //
         SsuiAppTheme TryGetSsuiAppTheme()
         {
             if (SsuiTheme is SsuiAppTheme sat)

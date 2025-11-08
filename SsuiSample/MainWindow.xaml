@@ -114,7 +114,7 @@
         <Grid x:Name="grdTests" Grid.Column="1" Grid.Row="1">
             <local:ButtonsTest x:Name="buttonsTest" Visibility="Collapsed" />
             <local:CheckBoxTest x:Name="checkBoxTest" Visibility="Collapsed" />
-            <local:DialogsTest x:Name="dialogsTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:DialogsTest x:Name="dialogsTest" Visibility="Collapsed" />
             <local:FileSelectTest x:Name="fileSelectTest" Visibility="Collapsed" />
             <local:FlatWindowTest x:Name="flatWindowTest" Visibility="Collapsed" />
             <local:FlowDocumentTest x:Name="flowDocTest" Visibility="Collapsed" />
