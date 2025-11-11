@@ -22,7 +22,6 @@ namespace SolidShineUi.PropertyList.Dialogs
         public CharInputDialog()
         {
             InitializeComponent();
-            ColorScheme = new ColorScheme();
         }
 
         /// <summary>
@@ -44,6 +43,18 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             InitializeComponent();
             ColorScheme = cs;
+
+            c = value;
+            EnterValueIntoBoxes();
+        }
+
+        /// <summary>
+        /// Create a CharInputDialog with prefilled values, with a char being entered in.
+        /// </summary>
+        /// <param name="value">The value to preload into this dialog. The user is able to change the value though.</param>
+        public CharInputDialog(char value = 'a')
+        {
+            InitializeComponent();
 
             c = value;
             EnterValueIntoBoxes();
@@ -75,8 +86,30 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         /// <summary>
+        /// Create a CharInputDialog with prefilled values, with a Rune being entered in.
+        /// </summary>
+        /// <param name="value">The value to preload into this dialog. The user is able to change the value though.</param>
+        /// <remarks>
+        /// Entering in a Rune value will put the dialog into "Rune mode", which can be used to enter in and display characters beyond what a single <c>char</c> can support.
+        /// <para/>
+        /// Runes are a struct added in .NET Core, and allows directly converting a single Unicode character into its numeric Unicode value and back,
+        /// whereas chars are specifically for UTF-16 values, and there are some Unicode characters that must be represented using two char instances together.
+        /// Chars and Runes have different uses and purposes, it's recommended to view Microsoft's official documentation online about which struct you need for your purpose.
+        /// </remarks>
+        public CharInputDialog(Rune value)
+        {
+            InitializeComponent();
+
+            r = value;
+            runeMode = true;
+            nudDec.MaxValue = 1114111; // 10FFFF - max valid Unicode code point
+            txtHex.MaxValue = 1114111;
+            EnterValueIntoBoxes();
+        }
+
+        /// <summary>
         /// Enable rune mode for this dialog, which will allow the display of characters beyond what a single <c>char</c> can support. 
-        /// This is meant to be used in situations where a <see cref="Rune"/>, not a <see cref="char"/>, is needed or supported.
+        /// This is meant to be used in situations where a <see cref="Rune"/>, not a <see cref="char"/>, is needed/supported.
         /// </summary>
         /// <remarks>
         /// If you supplied a Rune in the constructor for this dialog, then the dialog is already in Rune mode.
@@ -284,28 +317,33 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// <summary>
         /// Get or set whether the Enter key can be used to confirm the dialog. If enabled, pressing down the Enter key will be treated as if the user pressed "OK".
         /// </summary>
-        public bool EnterKeyConfirms { get; set; } = true;
+        public bool EnterKeyConfirms { get => (bool)GetValue(EnterKeyConfirmsProperty); set => SetValue(EnterKeyConfirmsProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. Please see <see cref="EnterKeyConfirms"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty EnterKeyConfirmsProperty = StringInputDialog.EnterKeyConfirmsProperty.AddOwner(typeof(CharInputDialog));
 
         /// <summary>
         /// Get or set whether the Escape key can be used to cancel the dialog. If enabled, pressing down the Escape key will be treated as if the user pressed "Cancel".
         /// </summary>
-        public bool EscapeKeyCancels { get; set; } = true;
+        public bool EscapeKeyCancels { get => (bool)GetValue(EscapeKeyCancelsProperty); set => SetValue(EscapeKeyCancelsProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. Please see <see cref="EscapeKeyCancels"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty EscapeKeyCancelsProperty = StringInputDialog.EscapeKeyCancelsProperty.AddOwner(typeof(CharInputDialog));
 
         /// <summary>
         /// Get or set the description text to display above the text box. This text should describe why you're asking the user to select a character here.
         /// </summary>
         /// <remarks>Try to keep the description to about a sentence long.</remarks>
-        public string Description
-        {
-            get
-            {
-                return txtDesc.Text;
-            }
-            set
-            {
-                txtDesc.Text = value;
-            }
-        }
+        public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. See <see cref="Description"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty DescriptionProperty = StringInputDialog.DescriptionProperty.AddOwner(typeof(CharInputDialog));
 
         #endregion
 
