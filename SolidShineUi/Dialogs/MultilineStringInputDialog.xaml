@@ -7,9 +7,16 @@
         xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
         mc:Ignorable="d" Title="Dialog" Height="200" Width="300" Loaded="FlatWindow_Loaded" SourceInitialized="window_SourceInitialized" CaptionDisplayType="Close" Topmost="True" >
     <Grid x:Name="grid">
-        <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Enter a value:" VerticalAlignment="Top"/>
-        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" />
-        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" />
-        <flat:ClickSelectTextBox x:Name="txtValue" Margin="20,40,20,50" KeyDown="txtName_KeyDown" SelectOnFocus="True" AcceptsReturn="True" AcceptsTab="True" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top"
+                   Text="{Binding ElementName=window, Path=Description, FallbackValue='Enter a value:'}" />
+        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Left" Margin="125,0,0,0" Width="75" Height="24" VerticalAlignment="Center" Click="btnOK_Click" Grid.Row="2" />
+        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="205,0,0,0" Width="75" Height="24" VerticalAlignment="Center" Click="btnCancel_Click" Grid.Row="2" />
+        <flat:ClickSelectTextBox x:Name="txtValue" Margin="20,3,20,8" KeyDown="txtName_KeyDown" AcceptsReturn="True" AcceptsTab="True"
+                                 SelectOnFocus="{Binding SelectTextOnFocus, ElementName=window, FallbackValue=true}" Text="{Binding Value, ElementName=window}" Grid.Row="1" />
     </Grid>
 </flat:FlatWindow>

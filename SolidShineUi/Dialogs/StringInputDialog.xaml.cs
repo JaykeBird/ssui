@@ -38,7 +38,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Create a StringInputBox with prefilled values.
+        /// Create a StringInputDialog with prefilled values.
         /// </summary>
         /// <param name="cs">The color scheme to use for the window.</param>
         /// <param name="title">The title of the window.</param>
@@ -56,7 +56,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Create a StringInputBox with prefilled values.
+        /// Create a StringInputDialog with prefilled values.
         /// </summary>
         /// <param name="title">The title of the window.</param>
         /// <param name="desc">The description to give to the user.</param>
@@ -82,11 +82,14 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the text value of the input dialog's text box.
         /// </summary>
-        public string Value
-        {
-            get => txtValue.Text;
-            set => txtValue.Text = value;
-        }
+        public string Value { get => (string)GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. See <see cref="Value"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty ValueProperty
+            = DependencyProperty.Register(nameof(Value), typeof(string), typeof(StringInputDialog),
+            new FrameworkPropertyMetadata(""));
 
         /// <summary>
         /// Get or set the description text to display above the text box. This text should describe what the user should enter into the text box.
@@ -99,8 +102,8 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property backing the related property. See <see cref="Description"/> for details.
         /// </summary>
-        public static DependencyProperty DescriptionProperty
-            = DependencyProperty.Register("Description", typeof(string), typeof(StringInputDialog),
+        public static readonly DependencyProperty DescriptionProperty
+            = DependencyProperty.Register(nameof(Description), typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("Enter a value:"));
 
         /// <summary>
@@ -116,8 +119,8 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property backing the related property. Please see <see cref="EnterKeyConfirms"/> for details.
         /// </summary>
-        public static DependencyProperty EnterKeyConfirmsProperty
-            = DependencyProperty.Register("EnterKeyConfirms", typeof(bool), typeof(StringInputDialog),
+        public static readonly DependencyProperty EnterKeyConfirmsProperty
+            = DependencyProperty.Register(nameof(EnterKeyConfirms), typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -128,8 +131,8 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property backing the related property. Please see <see cref="EscapeKeyCancels"/> for details.
         /// </summary>
-        public static DependencyProperty EscapeKeyCancelsProperty
-            = DependencyProperty.Register("EscapeKeyCancels", typeof(bool), typeof(StringInputDialog),
+        public static readonly DependencyProperty EscapeKeyCancelsProperty
+            = DependencyProperty.Register(nameof(EscapeKeyCancels), typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -140,8 +143,8 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency proeprty backing the related property. Please see <see cref="SelectTextOnFocus"/> for details.
         /// </summary>
-        public static DependencyProperty SelectTextOnFocusProperty
-            = DependencyProperty.Register("SelectTextOnFocus", typeof(bool), typeof(StringInputDialog),
+        public static readonly DependencyProperty SelectTextOnFocusProperty
+            = DependencyProperty.Register(nameof(SelectTextOnFocus), typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
 
