@@ -16,12 +16,19 @@ using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList
 {
+
     /// <summary>
     /// A control that can display the properties and values of a .NET object, with support for live editing of many of them.
     /// This is the old version used in the Solid Shine UI 1.9 releases; please transition to the new <see cref="PropertyList"/> control.
     /// </summary>
+#if NETCOREAPP
+    [Obsolete("This is the old ExperimentalPropertyList control used in Solid Shine UI 1.9; please transition to the new PropertyList control."
+         , DiagnosticId = "SSUI002")]
+    public partial class ExperimentalPropertyList : UserControl, IPropertyEditorHost
+#else
     [Obsolete("This is the old ExperimentalPropertyList control used in Solid Shine UI 1.9; please transition to the new PropertyList control.")]
     public partial class ExperimentalPropertyList : UserControl, IPropertyEditorHost
+#endif
     {
         /// <summary>
         /// Create a PropertyList.
@@ -73,7 +80,7 @@ namespace SolidShineUi.PropertyList
 #else
         public event PropertyListObjectEventHandler LoadedObjectChanged;
 #endif
-        #endregion
+#endregion
 
         /// <summary>
         /// Get the internal contents of this PropertyList control.

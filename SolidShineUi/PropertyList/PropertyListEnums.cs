@@ -40,7 +40,7 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         HideObsolete = 4,
         /// <summary>
-        /// Only properties that have the PropertyListShow attribute (<see cref="PropertyListShowAttribute"/>) will be displayed. This overrides all other flags.
+        /// Only properties that have the PropertyListShow attribute (<see cref="PropertyListShowAttribute"/>) will be displayed. This overrides the "hide" flags.
         /// </summary>
         OnlyShowPropertyListShow = 8,
         /// <summary>
