@@ -22,7 +22,8 @@ namespace SolidShineUi.PropertyList.Dialogs
         public ImageBrushEditorDialog()
         {
             InitializeComponent();
-            ColorSchemeChanged += dialog_ColorSchemeChanged;
+            //ColorSchemeChanged += dialog_ColorSchemeChanged;
+            SsuiThemeChanged += ImageBrushEditorDialog_SsuiThemeChanged;
         }
 
         /// <summary>
@@ -31,16 +32,25 @@ namespace SolidShineUi.PropertyList.Dialogs
         public ImageBrushEditorDialog(ColorScheme cs)
         {
             InitializeComponent();
-            ColorSchemeChanged += dialog_ColorSchemeChanged;
+            //ColorSchemeChanged += dialog_ColorSchemeChanged;
+            SsuiThemeChanged += ImageBrushEditorDialog_SsuiThemeChanged;
             ColorScheme = cs;
+
         }
 
-        private void dialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void ImageBrushEditorDialog_SsuiThemeChanged(object sender, RoutedPropertyChangedEventArgs<SsuiAppTheme> e)
         {
-            imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
-            imgSetFullView.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
-            imgOpen.Source = IconLoader.LoadIcon("Open", ColorScheme);
+            imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", SsuiTheme.IconVariation);
+            imgSetFullView.Source = IconLoader.LoadIcon("FullFill", SsuiTheme.IconVariation);
+            imgOpen.Source = IconLoader.LoadIcon("Open", SsuiTheme.IconVariation);
         }
+
+        //private void dialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
+        //    imgSetFullView.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
+        //    imgOpen.Source = IconLoader.LoadIcon("Open", ColorScheme);
+        //}
 
         /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK", <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
         public new bool DialogResult { get; set; } = false;
@@ -215,10 +225,11 @@ namespace SolidShineUi.PropertyList.Dialogs
         void DownloadFailed(object sender, ExceptionEventArgs e)
 #endif
         {
-            MessageDialog md = new MessageDialog(ColorScheme);
+            MessageDialog md = new MessageDialog();
+            md.SsuiTheme = this.SsuiTheme;
 
             md.ShowDialog($"The image at the above URL could not be downloaded due to:\n\n{e.ErrorException}", owner: this, title: "Image Download Failed",
-                image: MessageDialogImage.Error, buttonDisplay: MessageDialogButtonDisplay.Auto);
+                image: MessageDialogImage.Error);
 
 #if NETCOREAPP
             LoadImageSource(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, IconVariation.Color)!);
