@@ -19,7 +19,7 @@ namespace SolidShineUi
     /// This can be used in all SSUI-themed controls. For SSUI-themed windows (see <see cref="ThemedWindow"/>)
     /// or to apply across an entire application, use a <see cref="SsuiAppTheme"/> instead.
     /// </remarks>
-    public class SsuiTheme : Freezable
+    public class SsuiTheme : Animatable
     {
         /// <summary>
         /// Create a new SsuiTheme, with default brushes.
