@@ -1,12 +1,11 @@
-﻿using SolidShineUi.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -20,30 +19,10 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ThemedControl), new FrameworkPropertyMetadata(typeof(ThemedControl)));
         }
 
-        //DependencyPropertyDescriptor ddd;
-        //EventHandler themeChange;
-
         /// <summary>
         /// Create a ThemedControl.
         /// </summary>
-        public ThemedControl()
-        {
-            // creating a method to listen to changes to the SsuiTheme property (since it's an attached property)
-            //
-            // according to this, this might be a memory leak issue, so I've added on a finalizer to hopefully counteract that
-            // https://agsmith.wordpress.com/2008/04/07/propertydescriptor-addvaluechanged-alternative/
-            //ddd = DependencyPropertyDescriptor.FromProperty(SsuiThemeProperty, typeof(ThemedControl));
-            //themeChange = (s, e) => ApplyAndRaiseTheme();
-            //ddd.AddValueChanged(this, themeChange);
-        }
-
-        ///// <summary>
-        ///// Finalizer for ThemedControl.
-        ///// </summary>
-        //~ThemedControl()
-        //{
-        //    ddd.RemoveValueChanged(this, themeChange);
-        //}
+        public ThemedControl() { }
 
         #region SsuiTheme Property
 
@@ -52,14 +31,27 @@ namespace SolidShineUi
         // https://github.com/dotnet/wpf/blob/8223378b6fdddd3ae4e0577e90d9953b5469f076/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Documents/Block.cs#L253
 
         /// <summary>
-        /// Get or set the theme to apply to the appearance of this control.
+        /// Get or set the theme to apply to the appearance of this control. This will bind the control's brushes to this theme.
         /// </summary>
+        /// <remarks>
+        /// This theme can be used to centrally apply a consistent appearance to all ThemedControls. Once a theme is set, the control's brushes are bound to the relevant
+        /// values in this SsuiTheme, allowing you to update the control's appearance by changing the relevant values in the SsuiTheme. 
+        /// This has the downside of overwriting any preset brush values set via XAML; to re-set these brushes, listen to the <see cref="SsuiThemeChanged"/> event and 
+        /// then reapply the brushes in that event handler.
+        /// <para/>
+        /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
+        /// </remarks>
+        [Category("Appearance")]
+#if NETCOREAPP
+        public SsuiTheme? SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#else
         public SsuiTheme SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#endif
 
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SsuiThemeProperty
             = DependencyProperty.RegisterAttached(nameof(SsuiTheme), typeof(SsuiTheme), typeof(ThemedControl),
-            new FrameworkPropertyMetadata(new SsuiTheme(), FrameworkPropertyMetadataOptions.Inherits, OnSsuiThemeChanged));
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits, OnSsuiThemeChanged));
 
         /// <summary>
         /// Get the <see cref="SsuiTheme"/> value applied to the specified framework element.
@@ -121,13 +113,13 @@ namespace SolidShineUi
         /// </summary>
         internal protected void ApplyAndRaiseTheme()
         {
-            ApplySsuiTheme(SsuiTheme);
+            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
 
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeChangedEvent, this);
             RaiseEvent(re);
         }
 
-        #endregion
+#endregion
 
         #region UseLightBorder
 
@@ -179,13 +171,16 @@ namespace SolidShineUi
         bool _skipReapply = false;
 
         /// <summary>
-        /// Check the properties to make sure they match these values. If not, update the properties and then recall the ApplySsuiTheme function.
+        /// Check the control's properties to make sure they match these values. If not, this will update the properties and then re-call the ApplySsuiTheme function.
         /// </summary>
         /// <param name="ssuiTheme">the inputted SsuiTheme value</param>
         /// <param name="useLightBorder">the inputted UseLightBorder value</param>
         /// <param name="useAccentTheme">the inputted UseAccentTheme value</param>
-        /// <returns></returns>
-        protected bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#if NETCOREAPP
+        bool CheckAndUpdateProperties(SsuiTheme? ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#else
+        bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#endif
         {
             _skipReapply = true;
 
@@ -221,7 +216,11 @@ namespace SolidShineUi
         /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
+#if NETCOREAPP
+        public void ApplySsuiTheme(SsuiTheme? ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#else
         public void ApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#endif
         {
             if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
 
@@ -268,7 +267,14 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
+        /// <remarks>
+        /// If <see cref="SsuiTheme"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#else
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#endif
         {
             return ApplyThemeBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
         }
@@ -282,9 +288,24 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
+        /// <remarks>
+        /// If <paramref name="source"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme? source)
+#else
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
+#endif
         {
-            return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
+            if (source == null)
+            {
+                BindingOperations.ClearBinding(this, brushProperty);
+                return null;
+            }
+            else
+            {
+                return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
+            }
         }
 
         /// <summary>
@@ -308,7 +329,7 @@ namespace SolidShineUi
             remove { RemoveHandler(SsuiThemeAppliedEvent, value); }
         }
 
-        #endregion
+#endregion
     }
 
 
@@ -319,38 +340,30 @@ namespace SolidShineUi
     {
 
         /// <summary>
-        /// Get or set the theme to apply to the appearance of this control.
+        /// Get or set the theme to apply to the appearance of this control. This will bind the control's brushes to this theme.
         /// </summary>
+        /// <remarks>
+        /// This theme can be used to centrally apply a consistent appearance to all ThemedControls. Once a theme is set, the control's brushes are bound to the relevant
+        /// values in this SsuiTheme, allowing you to update the control's appearance by changing the relevant values in the SsuiTheme. 
+        /// This has the downside of overwriting any preset brush values set via XAML; to re-set these brushes, listen to the <see cref="SsuiThemeChanged"/> event and 
+        /// then reapply the brushes in that event handler.
+        /// <para/>
+        /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
+        /// </remarks>
+        [Category("Appearance")]
+#if NETCOREAPP
+        public SsuiTheme? SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#else
         public SsuiTheme SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#endif
 
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SsuiThemeProperty = ThemedControl.SsuiThemeProperty.AddOwner(typeof(ThemedContentControl));
-
-        ///// <summary>
-        ///// Get the <see cref="SsuiTheme"/> value applied to the specified framework element.
-        ///// </summary>
-        ///// <param name="tc">the element to get the <see cref="ThemedControl.SsuiThemeProperty"/> value of</param>
-        ///// <returns></returns>
-        //public static SsuiTheme GetSsuiThemeProperty(FrameworkElement tc)
-        //{
-        //    return (SsuiTheme)tc.GetValue(ThemedControl.SsuiThemeProperty);
-        //}
-
-        ///// <summary>
-        ///// Set the <see cref="SsuiTheme"/> value for a specified framework element.
-        ///// </summary>
-        ///// <param name="tc"></param>
-        ///// <param name="value"></param>
-        //public static void SetSsuiThemeProperty(FrameworkElement tc, SsuiTheme value)
-        //{
-        //    tc.SetValue(ThemedControl.SsuiThemeProperty, value);
-        //}
 
         /// <summary>
         /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
         /// </summary>
         public static readonly RoutedEvent SsuiThemeChangedEvent = ThemedControl.SsuiThemeChangedEvent.AddOwner(typeof(ThemedContentControl));
-            //EventManager.RegisterRoutedEvent(nameof(SsuiThemeChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ThemedContentControl));
 
         /// <summary>
         /// Raised when the <see cref="SsuiTheme"/> property is changed.
@@ -366,7 +379,7 @@ namespace SolidShineUi
         /// </summary>
         protected internal void ApplyAndRaiseTheme()
         {
-            ApplySsuiTheme(SsuiTheme);
+            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
 
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeChangedEvent, this);
             RaiseEvent(re);
@@ -420,13 +433,16 @@ namespace SolidShineUi
         bool _skipReapply = false;
 
         /// <summary>
-        /// Check the properties to make sure they match these values. If not, update the properties and then recall the ApplySsuiTheme function.
+        /// Check the control's properties to make sure they match these values. If not, this will update the properties and then re-call the ApplySsuiTheme function.
         /// </summary>
         /// <param name="ssuiTheme">the inputted SsuiTheme value</param>
         /// <param name="useLightBorder">the inputted UseLightBorder value</param>
         /// <param name="useAccentTheme">the inputted UseAccentTheme value</param>
-        /// <returns></returns>
-        protected bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#if NETCOREAPP
+        bool CheckAndUpdateProperties(SsuiTheme? ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#else
+        bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#endif
         {
             _skipReapply = true;
 
@@ -462,7 +478,11 @@ namespace SolidShineUi
         /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
+#if NETCOREAPP
+        public void ApplySsuiTheme(SsuiTheme? ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#else
         public void ApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#endif
         {
             if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
 
@@ -509,7 +529,14 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
+        /// <remarks>
+        /// If <see cref="SsuiTheme"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#else
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#endif
         {
             return ApplyThemeBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
         }
@@ -523,9 +550,24 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
+        /// <remarks>
+        /// If <paramref name="source"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme? source)
+#else
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
+#endif
         {
-            return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
+            if (source == null)
+            {
+                BindingOperations.ClearBinding(this, brushProperty);
+                return null;
+            }
+            else
+            {
+                return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
+            }
         }
 
         /// <summary>
@@ -558,38 +600,30 @@ namespace SolidShineUi
     {
 
         /// <summary>
-        /// Get or set the theme to apply to the appearance of this control.
+        /// Get or set the theme to apply to the appearance of this control. This will bind the control's brushes to this theme.
         /// </summary>
+        /// <remarks>
+        /// This theme can be used to centrally apply a consistent appearance to all ThemedControls. Once a theme is set, the control's brushes are bound to the relevant
+        /// values in this SsuiTheme, allowing you to update the control's appearance by changing the relevant values in the SsuiTheme. 
+        /// This has the downside of overwriting any preset brush values set via XAML; to re-set these brushes, listen to the <see cref="SsuiThemeChanged"/> event and 
+        /// then reapply the brushes in that event handler.
+        /// <para/>
+        /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
+        /// </remarks>
+        [Category("Appearance")]
+#if NETCOREAPP
+        public SsuiTheme? SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#else
         public SsuiTheme SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#endif
 
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SsuiThemeProperty = ThemedControl.SsuiThemeProperty.AddOwner(typeof(ThemedUserControl));
-
-        ///// <summary>
-        ///// Get the <see cref="SsuiTheme"/> value applied to the specified framework element.
-        ///// </summary>
-        ///// <param name="tc">the element to get the <see cref="ThemedControl.SsuiThemeProperty"/> value of</param>
-        ///// <returns></returns>
-        //public static SsuiTheme GetSsuiThemeProperty(FrameworkElement tc)
-        //{
-        //    return (SsuiTheme)tc.GetValue(ThemedControl.SsuiThemeProperty);
-        //}
-
-        ///// <summary>
-        ///// Set the <see cref="SsuiTheme"/> value for a specified framework element.
-        ///// </summary>
-        ///// <param name="tc"></param>
-        ///// <param name="value"></param>
-        //public static void SetSsuiThemeProperty(FrameworkElement tc, SsuiTheme value)
-        //{
-        //    tc.SetValue(ThemedControl.SsuiThemeProperty, value);
-        //}
 
         /// <summary>
         /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
         /// </summary>
         public static readonly RoutedEvent SsuiThemeChangedEvent = ThemedControl.SsuiThemeChangedEvent.AddOwner(typeof(ThemedUserControl));
-        //EventManager.RegisterRoutedEvent(nameof(SsuiThemeChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ThemedContentControl));
 
         /// <summary>
         /// Raised after the <see cref="SsuiTheme"/> property has been changed and applied.
@@ -605,7 +639,7 @@ namespace SolidShineUi
         /// </summary>
         protected internal void ApplyAndRaiseTheme()
         {
-            ApplySsuiTheme(SsuiTheme);
+            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
 
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeChangedEvent, this);
             RaiseEvent(re);
@@ -659,13 +693,16 @@ namespace SolidShineUi
         bool _skipReapply = false;
 
         /// <summary>
-        /// Check the properties to make sure they match these values. If not, update the properties and then recall the ApplySsuiTheme function.
+        /// Check the control's properties to make sure they match these values. If not, this will update the properties and then re-call the ApplySsuiTheme function.
         /// </summary>
         /// <param name="ssuiTheme">the inputted SsuiTheme value</param>
         /// <param name="useLightBorder">the inputted UseLightBorder value</param>
         /// <param name="useAccentTheme">the inputted UseAccentTheme value</param>
-        /// <returns></returns>
-        protected bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#if NETCOREAPP
+        bool CheckAndUpdateProperties(SsuiTheme? ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#else
+        bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#endif
         {
             _skipReapply = true;
 
@@ -701,7 +738,11 @@ namespace SolidShineUi
         /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
+#if NETCOREAPP
+        public void ApplySsuiTheme(SsuiTheme? ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#else
         public void ApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#endif
         {
             if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
 
@@ -748,7 +789,14 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
+        /// <remarks>
+        /// If <see cref="SsuiTheme"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#else
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#endif
         {
             return ApplyThemeBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
         }
@@ -762,9 +810,24 @@ namespace SolidShineUi
         /// <exception cref="ArgumentException">
         /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
         /// </exception>
+        /// <remarks>
+        /// If <paramref name="source"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme? source)
+#else
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
+#endif
         {
-            return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
+            if (source == null)
+            {
+                BindingOperations.ClearBinding(this, brushProperty);
+                return null;
+            }
+            else
+            {
+                return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
+            }
         }
 
         /// <summary>

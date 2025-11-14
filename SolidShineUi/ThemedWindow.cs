@@ -1,12 +1,14 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
-using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
     /// <summary>
-    /// A WPF window that supports theming by Solid Shine UI's <see cref="SsuiAppTheme"/>.
+    /// A WPF window that supports theming by Solid Shine UI's <see cref="SsuiAppTheme"/>. Set the <see cref="SsuiTheme"/> property to apply this theme
+    /// to all child Solid Shine UI controls.
     /// </summary>
     /// <remarks>
     /// For a window that also has Solid Shine UI's stylings and extra features, see <see cref="FlatWindow"/>.
@@ -18,7 +20,11 @@ namespace SolidShineUi
         /// </summary>
         public ThemedWindow() : base()
         {
-            // set a binding so that the attached property for this window will be updated whenever we change SsuiTheme
+            // set a binding so that the attached property for this window will be updated whenever we change SsuiTheme.
+            // Although I think ONeWay is automatically implied if not set, I explicitly want to set it here.
+            // We cannot do TwoWay, since ThemedControl's SsuiTheme is a SsuiTheme type, and this window's SsuiTheme is a SsuiAppTheme type
+            // and SSuiAppTheme can be used as a SsuiTheme, but it does not work the other way around
+
             SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this, Mode = BindingMode.OneWay });
         }
 
@@ -28,8 +34,12 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>
         /// This property will set the <see cref="ThemedControl.SsuiThemeProperty"/> property for this window, which any child controls will inherit.
-        /// Setting that attached property on this window will not go the other way and 
+        /// Setting that attached property on this window will not go the other way and update this proprty.
+        /// <para/>
+        /// Child controls that inherit this theme can also use this theme's accent theme (if set) by setting <see cref="ThemedControl.UseAccentTheme"/>
+        /// to <c>true</c>.
         /// </remarks>
+        [Category("Appearance")]
         public SsuiAppTheme SsuiTheme { get => (SsuiAppTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
@@ -55,10 +65,6 @@ namespace SolidShineUi
         private void OnSsuiThemeChanged(DependencyPropertyChangedEventArgs e)
         {
             // the binding should get this to update the ThemedControl.SsuiThemeProperty for this window
-
-            //// update the SsuiTheme attached property
-            //// this will allow this to propogate for lower down the list
-            //ThemedControl.SetSsuiThemeProperty(this, (SsuiAppTheme)e.NewValue);
 
             if (e.NewValue is SsuiAppTheme snew)
             {
@@ -87,7 +93,7 @@ namespace SolidShineUi
                 return;
             }
 
-            OnApplySsuiTheme(ssuiTheme);
+            if (ssuiTheme != null) OnApplySsuiTheme(ssuiTheme);
         }
 
         /// <summary>

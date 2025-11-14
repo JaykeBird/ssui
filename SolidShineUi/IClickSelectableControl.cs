@@ -66,7 +66,11 @@ namespace SolidShineUi
         /// Get or set the SsuiTheme to apply for this control. Each control will apply the theme's colors appropriately via its own
         /// <c>OnApplySsuiTheme</c> method.
         /// </summary>
+#if NETCOREAPP
+        SsuiTheme? SsuiTheme { get; set; }
+#else
         SsuiTheme SsuiTheme { get; set; }
+#endif
 
         /// <summary>
         /// Get or set the background brush used for this control, when it isn't being clicked or selected.
@@ -93,7 +97,7 @@ namespace SolidShineUi
         /// </summary>
         Brush SelectedBrush { get; set; }
 
-        #endregion
+#endregion
     }
 
 

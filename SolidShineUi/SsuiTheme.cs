@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace SolidShineUi
 {
@@ -15,7 +16,8 @@ namespace SolidShineUi
     /// A class containing various brushes and other settings that can be used to set the appearance of various Solid Shine UI controls.
     /// </summary>
     /// <remarks>
-    /// This can be used in all SSUI-themed controls; for SSUI-themed windows or to apply across an entire application, use a <see cref="SsuiAppTheme"/>.
+    /// This can be used in all SSUI-themed controls. For SSUI-themed windows (see <see cref="ThemedWindow"/>)
+    /// or to apply across an entire application, use a <see cref="SsuiAppTheme"/> instead.
     /// </remarks>
     public class SsuiTheme : Freezable
     {
@@ -445,6 +447,9 @@ namespace SolidShineUi
     /// <summary>
     /// A class containing various brushes and other settings that can be used to set the appearance of SSUI-themed controls, windows, and entire applications.
     /// </summary>
+    /// <remarks>
+    /// This has extra properties and options that can be used to apply to windows, and to allow features like an accent theme or subitem theme.
+    /// </remarks>
     public class SsuiAppTheme : SsuiTheme
     {
         /// <summary>
