@@ -21,6 +21,8 @@ namespace SolidShineUi
     /// </remarks>
     public class SsuiTheme : Animatable
     {
+        #region Constructors / Create Palette
+
         /// <summary>
         /// Create a new SsuiTheme, with default brushes.
         /// </summary>
@@ -192,6 +194,8 @@ namespace SolidShineUi
                 return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f;
             }
         }
+
+        #endregion
 
         /// <summary>
         /// Get or set the brush to use for the background of most SSUI-themed controls.

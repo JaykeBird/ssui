@@ -70,30 +70,46 @@ namespace SsuiSample
             return p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound;
         }
 
-        private void mnuExit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private void mnuColors_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, ColorScheme.MainColor);
+            Color baseColor = Colors.Gray;
+
+            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
+            {
+                baseColor = scb.Color;
+            }
+
+            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, baseColor);
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
             {
-                ColorScheme = new ColorScheme(cpd.SelectedColor);
+                SsuiTheme = new SsuiAppTheme(cpd.SelectedColor);
             }
         }
 
         private void mnuLightTheme_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.CreateLightTheme(ColorScheme.AccentMainColor);
+            Color baseColor = ColorsHelper.CreateFromHex("A8A8A8");
+
+            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
+            {
+                baseColor = scb.Color;
+            }
+
+            SsuiTheme = SsuiThemes.CreateLightTheme(baseColor);
         }
 
         private void mnuDarkTheme_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.CreateDarkTheme(ColorScheme.AccentMainColor);
+            Color baseColor = ColorsHelper.CreateFromHex("C8C8C8");
+
+            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
+            {
+                baseColor = scb.Color;
+            }
+
+            SsuiTheme = SsuiThemes.CreateDarkTheme(baseColor);
         }
 
         private void mnuHcTheme1_Click(object sender, RoutedEventArgs e)
@@ -113,7 +129,12 @@ namespace SsuiSample
 
         private void mnuDefaultCs_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = new ColorScheme();
+            SsuiTheme = new SsuiAppTheme();
+        }
+
+        private void mnuSystem_Click(object sender, RoutedEventArgs e)
+        {
+            SsuiTheme = SsuiThemes.SystemThemeRoundedCorners;
         }
 
         void SetupSidebar()
@@ -143,6 +164,11 @@ namespace SsuiSample
             lblStart.Visibility = Visibility.Collapsed;
         }
 
+        private void mnuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         #region Help menu
 #pragma warning disable IDE0017 // Simplify object initialization
         private void mnuWebsite_Click(object sender, RoutedEventArgs e)
@@ -167,6 +193,7 @@ namespace SsuiSample
             a.ColorScheme = ColorScheme;
             a.ShowDialog();
         }
+
 #pragma warning restore IDE0017 // Simplify object initialization
         #endregion
 

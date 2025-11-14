@@ -36,6 +36,8 @@
                     <MenuItem Header="_High Contrast - Green on Black" x:Name="mnuHcTheme2" Click="mnuHcTheme2_Click" />
                     <MenuItem Header="_High Contrast - Black on White" x:Name="mnuHcTheme3" Click="mnuHcTheme3_Click" />
                     <Separator />
+                    <MenuItem Header="_System" x:Name="mnuSystem" Click="mnuSystem_Click" />
+                    <Separator />
                     <MenuItem Header="D_efault New" x:Name="mnuDefaultCs" Click="mnuDefaultCs_Click" />
                 </MenuItem>
                 <MenuItem Header="_Exit" x:Name="mnuExit" Click="mnuExit_Click" />
