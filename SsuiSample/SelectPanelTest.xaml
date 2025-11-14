@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SsuiSample.SelectPanelTest" x:Name="userControl"
+﻿<flat:ThemedUserControl x:Class="SsuiSample.SelectPanelTest" x:Name="userControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,48 +8,52 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <flat:SelectPanel Margin="20,60,250,10" x:Name="selPanel" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" 
-                          ItemsAdded="selPanel_ItemsAdded" ItemsRemoved="selPanel_ItemsRemoved" SelectionChanged="selPanel_SelectionChanged" MultiSelect="True" />
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Select Panel Test" FontSize="16" VerticalAlignment="Top"/>
-        <ScrollViewer Margin="0,60,10,0" HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto" Width="240" >
-            <StackPanel Width="205" >
-                <Grid VerticalAlignment="Top" Height="Auto" >
-                    <flat:FlatButton x:Name="btnAddBlank" Content="Add Basic Item" Margin="0,0,72,0" Height="24" ColorScheme="{Binding ColorScheme, ElementName=userControl}" Click="btnAddBlank_Click" />
-                    <flat:MenuButton x:Name="btnAddMenu" Content="Others" HorizontalAlignment="Right" Width="72" ColorScheme="{Binding ColorScheme, ElementName=userControl}">
-                        <flat:MenuButton.Menu>
-                            <flat:ContextMenu>
-                                <MenuItem Header="Add Editable Item" Click="mnuAddEditable_Click" />
-                                <MenuItem Header="Add Image Item (Basic)" Click="mnuAddImageBasic_Click" />
-                                <MenuItem Header="Add Image Item (Full)" Click="mnuAddImageFull_Click" />
-                                <MenuItem Header="Add Separator" Click="mnuAddSeparator_Click" />
-                                <MenuItem Header="Add FlatButton" Click="mnuAddButton_Click" />
-                            </flat:ContextMenu>
-                        </flat:MenuButton.Menu>
-                    </flat:MenuButton>
-                </Grid>
-                <TextBlock HorizontalAlignment="Left" Margin="0,5,0,0" Text="Use Ctrl key to select multiple items" VerticalAlignment="Top"/>
-                <Grid Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                    <flat:FlatButton HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Content="Move Up ▲" x:Name="btnMoveUp" Click="btnSelMoveUp_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                    <flat:FlatButton HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Content="Move Down ▼" x:Name="btnMoveDown" Click="btnSelMoveDown_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                </Grid>
-                <flat:FlatButton HorizontalAlignment="Stretch" Margin="0,20,0,0" VerticalAlignment="Top" Content="Remove Selected Items" x:Name="btnSelRemove" Click="btnSelRemove_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                <flat:FlatButton HorizontalAlignment="Stretch" Height="32" Margin="0,5,0,0" VerticalAlignment="Top" Content="Remove All Items" x:Name="btnSelRemoveAll" Click="btnSelRemoveAll_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                <Grid HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Margin="0,10,0,0">
-                    <TextBlock HorizontalAlignment="Left" Text="Count:" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="lblTotalItems" HorizontalAlignment="Left" Text="-" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="lblSelItems" HorizontalAlignment="Left" Margin="0,40,0,0" Text="-" VerticalAlignment="Top"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="40,0,0,0" Text="total item(s)" VerticalAlignment="Center"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="40,40,0,0" Text="selected item(s)" VerticalAlignment="Top"/>
-                </Grid>
-                <Grid HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" >
-                    <flat:FlatButton HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Content="Select All" x:Name="btnSelAll" Click="btnSelAll_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                    <flat:FlatButton HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Content="Deselect All" x:Name="btnSelNone" Click="btnSelNone_Click" ColorScheme="{Binding ColorScheme, ElementName=userControl}" />
-                </Grid>
-                <flat:CheckBox Content="Display checkboxes" x:Name="chkShowChk" Margin="0,10,0,0" CheckChanged="chkShowChk_CheckChanged" />
-                <Grid Height="10" Margin="0,10,0,0" VerticalAlignment="Top" x:Name="scrollBuffer"/>
-            </StackPanel>
+        <DockPanel Margin="20,60,10,0">
+            <ScrollViewer HorizontalAlignment="Right" VerticalScrollBarVisibility="Auto" Width="240" Grid.Column="1" DockPanel.Dock="Right" >
+                <StackPanel Width="205" >
+                    <!-- right side control panel -->
+                    <Grid VerticalAlignment="Top" Height="Auto" >
+                        <flat:FlatButton x:Name="btnAddBlank" Content="Add Basic Item" Margin="0,0,72,0" Height="24" Click="btnAddBlank_Click" />
+                        <flat:MenuButton x:Name="btnAddMenu" Content="Others" HorizontalAlignment="Right" Width="72">
+                            <flat:MenuButton.Menu>
+                                <flat:ContextMenu>
+                                    <MenuItem Header="Add Editable Item" Click="mnuAddEditable_Click" />
+                                    <MenuItem Header="Add Image Item (Basic)" Click="mnuAddImageBasic_Click" />
+                                    <MenuItem Header="Add Image Item (Full)" Click="mnuAddImageFull_Click" />
+                                    <MenuItem Header="Add Separator" Click="mnuAddSeparator_Click" />
+                                    <MenuItem Header="Add FlatButton" Click="mnuAddButton_Click" />
+                                </flat:ContextMenu>
+                            </flat:MenuButton.Menu>
+                        </flat:MenuButton>
+                    </Grid>
+                    <TextBlock HorizontalAlignment="Left" Margin="0,5,0,0" Text="Use Ctrl key to select multiple items" VerticalAlignment="Top"/>
+                    <Grid Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                        <flat:FlatButton HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Content="Move Up ▲" x:Name="btnMoveUp" Click="btnSelMoveUp_Click" />
+                        <flat:FlatButton HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Content="Move Down ▼" x:Name="btnMoveDown" Click="btnSelMoveDown_Click" />
+                    </Grid>
+                    <flat:FlatButton HorizontalAlignment="Stretch" Margin="0,20,0,0" VerticalAlignment="Top" Content="Remove Selected Items" x:Name="btnSelRemove" Click="btnSelRemove_Click" />
+                    <flat:FlatButton HorizontalAlignment="Stretch" Height="32" Margin="0,5,0,0" VerticalAlignment="Top" Content="Remove All Items" x:Name="btnSelRemoveAll" Click="btnSelRemoveAll_Click" />
+                    <Grid HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Margin="0,10,0,0">
+                        <TextBlock HorizontalAlignment="Left" Text="Count:" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="lblTotalItems" HorizontalAlignment="Left" Text="-" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="lblSelItems" HorizontalAlignment="Left" Margin="0,40,0,0" Text="-" VerticalAlignment="Top"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="40,0,0,0" Text="total item(s)" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="40,40,0,0" Text="selected item(s)" VerticalAlignment="Top"/>
+                    </Grid>
+                    <Grid HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" >
+                        <flat:FlatButton HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Content="Select All" x:Name="btnSelAll" Click="btnSelAll_Click" />
+                        <flat:FlatButton HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Content="Deselect All" x:Name="btnSelNone" Click="btnSelNone_Click" />
+                    </Grid>
+                    <flat:CheckBox Content="Display checkboxes" x:Name="chkShowChk" Margin="0,10,0,0" CheckChanged="chkShowChk_CheckChanged" />
+                    <Grid Height="10" Margin="0,10,0,0" VerticalAlignment="Top" x:Name="scrollBuffer"/>
+                </StackPanel>
+            </ScrollViewer>
+            
+            <flat:SelectPanel Margin="0,0,3,10" x:Name="selPanel" MultiSelect="True"
+                ItemsAdded="selPanel_ItemsAdded" ItemsRemoved="selPanel_ItemsRemoved" SelectionChanged="selPanel_SelectionChanged" />
 
-        </ScrollViewer>
+        </DockPanel>
 
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>

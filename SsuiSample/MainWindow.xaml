@@ -123,7 +123,7 @@
             <local:TabControlTest x:Name="tabControlTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
             <local:TwoBasicSelectPanels x:Name="twoBasicTest" Visibility="Collapsed" />
             <local:TwoPositionSelectTest x:Name="twoSelTest" Visibility="Collapsed" />
-            <local:SelectPanelTest x:Name="selectPanelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:SelectPanelTest x:Name="selectPanelTest" Visibility="Collapsed" />
             <local:SelectPanelScrollTest x:Name="selscrollTest" Visibility="Collapsed" />
             <local:SpinnersTest x:Name="spinnersTest" Visibility="Collapsed" />
             <local:WildcardMatchTest x:Name="wildcardTest" Visibility="Collapsed" />
