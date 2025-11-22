@@ -71,7 +71,7 @@ namespace SolidShineUi.Utils
         public double Offset { get => (double)GetValue(OffsetProperty); set => SetValue(OffsetProperty, value); }
 
         /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
+        /// The backing dependency property for <see cref="Offset"/>. See the related property for more details.
         /// </summary>
         public static DependencyProperty OffsetProperty
             = DependencyProperty.Register("Offset", typeof(double), typeof(GradientStopItem),
@@ -83,7 +83,7 @@ namespace SolidShineUi.Utils
         public Color Color { get => (Color)GetValue(ColorProperty); set => SetValue(ColorProperty, value); }
 
         /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
+        /// The backing dependency property for <see cref="Color"/>. See the related property for more details.
         /// </summary>
         public static DependencyProperty ColorProperty
             = DependencyProperty.Register("Color", typeof(Color), typeof(GradientStopItem),

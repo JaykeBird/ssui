@@ -53,11 +53,12 @@ namespace SolidShineUi.Utils
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the property <see cref="ColorScheme"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -212,39 +213,61 @@ namespace SolidShineUi.Utils
             set => SetValue(KeyboardFocusHighlightProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the property <see cref="ControlBackground"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ControlBackgroundProperty = DependencyProperty.Register(
             "ControlBackground", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="SelectorBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectorBrushProperty = DependencyProperty.Register(
             "SelectorBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="BackgroundDisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="BorderDisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="SelectorDisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectorDisabledBrushProperty = DependencyProperty.Register(
             "SelectorDisabledBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="BorderBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="SnapLineBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SnapLineBrushProperty = DependencyProperty.Register(
             "SnapLineBrush", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnSnapLineBrushChanged));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="KeyboardFocusHighlight"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty KeyboardFocusHighlightProperty = DependencyProperty.Register(
             "KeyboardFocusHighlight", typeof(Brush), typeof(TwoPositionsSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         #endregion
 
         /// <summary>

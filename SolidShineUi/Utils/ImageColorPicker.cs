@@ -33,7 +33,7 @@ namespace SolidShineUi.Utils
 
         #region SelectedColor
 
-        /// <summary>The backing routed eent for <see cref="SelectedColorChanged"/>. See the related event for more details.</summary>
+        /// <summary>The backing routed event for <see cref="SelectedColorChanged"/>. See the related event for more details.</summary>
         public static readonly RoutedEvent SelectedColorChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectedColorChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ImageColorPicker));
 
