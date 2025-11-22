@@ -1,5 +1,4 @@
-﻿using SolidShineUi.Utils;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -10,7 +9,7 @@ using System.Windows.Media;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A text block that has a Click event, and looking and acting more like a basic hyperlink from a web page.
+    /// A text block that has a Click event, and looks and acts more like a basic hyperlink from a web page.
     /// </summary>
     [DefaultEvent("Click")]
     public class LinkTextBlock : TextBlock
@@ -22,7 +21,7 @@ namespace SolidShineUi
         {
             // add listener for IsEnabled changing
             IsEnabledProperty.OverrideMetadata(typeof(LinkTextBlock), new FrameworkPropertyMetadata(
-                new PropertyChangedCallback((d, e) => d.PerformAs<LinkTextBlock, bool>(e.NewValue, (l, v) => l.IsEnabledValueChanged(v)))));
+                new PropertyChangedCallback(LinkTextBlock_IsEnabledChanged)));
         }
 
         /// <summary>
@@ -45,8 +44,6 @@ namespace SolidShineUi
             GotKeyboardFocus += LinkTextBlock_GotKeyboardFocus;
             LostKeyboardFocus += LinkTextBlock_LostKeyboardFocus;
             PreviewKeyUp += LinkTextBlock_PreviewKeyUp;
-
-            InternalBrushChanged += LinkTextBlock_InternalBrushChanged;
         }
 
         /// <summary>
@@ -70,8 +67,6 @@ namespace SolidShineUi
             GotKeyboardFocus += LinkTextBlock_GotKeyboardFocus;
             LostKeyboardFocus += LinkTextBlock_LostKeyboardFocus;
             PreviewKeyUp += LinkTextBlock_PreviewKeyUp;
-
-            InternalBrushChanged += LinkTextBlock_InternalBrushChanged;
         }
 
         #endregion
@@ -83,17 +78,17 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="TextBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty TextBrushProperty = DependencyProperty.Register(
             nameof(TextBrush), typeof(Brush), typeof(LinkTextBlock),
-            new PropertyMetadata(Color.FromRgb(0, 102, 204).ToBrush(), (d, e) => d.PerformAs<LinkTextBlock>((o) => o.OnInternalBrushChanged(e))));
+            new PropertyMetadata(Color.FromRgb(0, 102, 204).ToBrush(), LinkTextBlock_InternalBrushChanged));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             nameof(HighlightBrush), typeof(Brush), typeof(LinkTextBlock),
-            new PropertyMetadata(Color.FromRgb(51, 153, 255).ToBrush(), (d, e) => d.PerformAs<LinkTextBlock>((o) => o.OnInternalBrushChanged(e))));
+            new PropertyMetadata(Color.FromRgb(51, 153, 255).ToBrush(), LinkTextBlock_InternalBrushChanged));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             nameof(DisabledBrush), typeof(Brush), typeof(LinkTextBlock),
-            new PropertyMetadata(Color.FromRgb(120, 120, 120).ToBrush(), (d, e) => d.PerformAs<LinkTextBlock>((o) => o.OnInternalBrushChanged(e))));
+            new PropertyMetadata(Color.FromRgb(120, 120, 120).ToBrush(), LinkTextBlock_InternalBrushChanged));
 
 
         /// <summary>
@@ -145,14 +140,12 @@ namespace SolidShineUi
             }
         }
 
-        /// <summary>
-        /// Internal event for handling a property changed. Please view the event that is not prefixed as "Internal".
-        /// </summary>
-        protected event DependencyPropertyChangedEventHandler InternalBrushChanged;
-
-        private void LinkTextBlock_InternalBrushChanged(object sender, DependencyPropertyChangedEventArgs e)
+        static void LinkTextBlock_InternalBrushChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-
+            if (o is LinkTextBlock l)
+            {
+                l.OnInternalBrushChanged(e);
+            }
         }
 
         #endregion
@@ -200,6 +193,14 @@ namespace SolidShineUi
         #endregion
 
         #region Foreground-modifying methods
+
+        static void LinkTextBlock_IsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LinkTextBlock l && e.NewValue is bool val)
+            {
+                l.IsEnabledValueChanged(val);
+            }
+        }
 
         void IsEnabledValueChanged(bool newValue)
         {
