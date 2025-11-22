@@ -14,7 +14,8 @@ using static SolidShineUi.MessageDialogImageConverter;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A dialog to display a message to the user, and potentially allowing them to select from a few options via selecting the appropriate button. Similar to the generic WPF MessageBox.
+    /// A dialog to display a message to the user, and potentially allowing them to select from a few options via selecting the 
+    /// appropriate button. Similar to the generic WPF MessageBox.
     /// </summary>
     public partial class MessageDialog : FlatWindow
     {
@@ -184,7 +185,11 @@ namespace SolidShineUi
 
         #region Direct Properties
 
-        /// <summary>Get or set the text to display in the OK button. If empty, the button will not be displayed (unless the other buttons are also not displayed, in which case this one will be).</summary>
+        /// <summary>Get or set the text to display in the OK button. If empty, the button will not be displayed.</summary>
+        /// <remarks>
+        /// If the text of all bottom-row buttons (<c>OkButtonText</c>, <c>CancelButtonText</c>, and <c>DiscordButtonText</c>) is set to 
+        /// null or empty, then the OK button will be shown with the value "OK".
+        /// </remarks>
         public string OkButtonText { get; set; } = "OK";
         /// <summary>Get or set the text to display in the Cancel button. If empty, the button will not be displayed.</summary>
         public string CancelButtonText { get; set; } = "";
@@ -192,10 +197,13 @@ namespace SolidShineUi
         public string DiscardButtonText { get; set; } = "";
 
         /// <summary>Get or set the text to display in the first extra button. If empty, the button will not be displayed.</summary>
+        /// <remarks>In SolidShineUI 2.0, this will be renamed to <c>"ChoiceButton1Text"</c>.</remarks>
         public string ExtraButton1Text { get; set; } = "";
         /// <summary>Get or set the text to display in the second extra button. If empty, the button will not be displayed.</summary>
+        /// <remarks>In SolidShineUI 2.0, this will be renamed to <c>"ChoiceButton2Text"</c>.</remarks>
         public string ExtraButton2Text { get; set; } = "";
         /// <summary>Get or set the text to display in the third extra button. If empty, the button will not be displayed.</summary>
+        /// <remarks>In SolidShineUI 2.0, this will be renamed to <c>"ChoiceButton3Text"</c>.</remarks>
         public string ExtraButton3Text { get; set; } = "";
 
         /// <summary>Get the result of the message dialog, indicating which button the user pressed.</summary>
@@ -219,7 +227,10 @@ namespace SolidShineUi
         /// <summary>Get or set the text to display with the checkbox. If empty, the checkbox will not be displayed.</summary>
         public string CheckBoxText { get; set; } = "";
 
-        /// <summary>Get or set the checked state of the checkbox. Use the checkbox to display a "Remember my choice"-style option.</summary>
+        /// <summary>
+        /// Get or set the checked state of the checkbox. The checkbox is only displayed if <see cref="CheckBoxText"/> is not null or empty.
+        /// Use the checkbox to display a "Remember my choice"-style option.
+        /// </summary>
         public bool CheckBoxValue
         {
             get
@@ -279,7 +290,8 @@ namespace SolidShineUi
 
         #region Show Dialog
         /// <summary>
-        /// Display this message dialog. Use the properties such as <c>OkButtonText</c> or <c>CancelButtonText</c> and <c>Message</c> to control the appearance of the message dialog.
+        /// Display this message dialog as it is. Change the properties (such as <see cref="OkButtonText"/>,
+        /// <see cref="CancelButtonText"/> and <see cref="Message"/>) to control the appearance of the message dialog.
         /// </summary>
         public new MessageDialogResult ShowDialog()
         {
@@ -402,6 +414,27 @@ namespace SolidShineUi
         //{
         //    ShowDialog(message, null, null, title, showTwoBottomButtons ? MessageDialogButtonDisplay.Two : MessageDialogButtonDisplay.One, image, defaultButton, null, null, null, extraButton1Text, extraButton2Text, extraButton3Text);
         //}
+
+        /// <summary>
+        /// Display this message dialog.
+        /// </summary>
+        /// <param name="message">The message to display.</param>
+        /// <param name="owner">The owner window of this dialog. Use <c>null</c> if already set via property.</param>
+        /// <param name="title">The window title for this dialog. Use <c>null</c> if already set via property.</param>
+        /// <param name="image">The image to display with this dialog.</param>
+        /// <remarks>
+        /// Unless the <see cref="OkButtonText"/>, <see cref="CancelButtonText"/>, and/or <see cref="DiscardButtonText"/> properties were changed, this will by default
+        /// by just an OK-only message dialog.
+        /// </remarks>
+        /// <returns></returns>
+#if NETCOREAPP
+        public MessageDialogResult ShowDialog(string message, Window? owner = null, string title = "Dialog", MessageDialogImage image = MessageDialogImage.None)
+#else
+        public MessageDialogResult ShowDialog(string message, Window owner = null, string title = "Dialog", MessageDialogImage image = MessageDialogImage.None)
+#endif
+        {
+            return ShowDialog(message, null, owner, title, image: image, buttonDisplay: MessageDialogButtonDisplay.Auto);
+        }
 
         /// <summary>
         /// Display this message dialog. This is an obsolete method, please use one of the other ones.
@@ -624,7 +657,7 @@ namespace SolidShineUi
         /// <param name="colorScheme">The color scheme to use with the dialog. Use <c>null</c> if already set via property.</param>
         /// <param name="owner">The owner window of this dialog. Use <c>null</c> if already set via property.</param>
         /// <param name="title">The window title for this dialog. Use <c>null</c> if already set via property.</param>
-        /// <param name="buttonDisplay">Determine how many buttons should be displayed at the bottom of the dialog, either [OK], [OK] and [Cancel], or [OK] [Discard] and [Cancel].</param>
+        /// <param name="buttonDisplay">Determine how many buttons should be displayed at the bottom of the dialog: either [OK], [OK] and [Cancel], or [OK] [Discard] and [Cancel].</param>
         /// <param name="image">The image to display with this dialog.</param>
         /// <param name="defaultButton">The button to have selected by default when the dialog opens. (DOESN'T CURRENTLY WORK)</param>
         /// <param name="customOkButtonText">The text to use in the OK button. Use <c>null</c> if already set via property.</param>
@@ -635,12 +668,14 @@ namespace SolidShineUi
         /// <param name="extraButton3Text">The text to use in the third extra button. If this is set to a null or empty string, this button will not be displayed.</param>
         /// <param name="checkBoxText">The text to use in the check box. If this is set to a null or empty string, the check box will not be displayed.</param>
 #if NETCOREAPP
-        public MessageDialogResult ShowDialog(string message, ColorScheme? colorScheme = null, Window? owner = null, string title = "Dialog", MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto, 
+        public MessageDialogResult ShowDialog(string message, ColorScheme? colorScheme = null, Window? owner = null, string title = "Dialog", 
+            MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto, 
             MessageDialogImage image = MessageDialogImage.None, MessageDialogResult defaultButton = MessageDialogResult.Cancel, 
             string? customOkButtonText = null, string? customCancelButtonText = null, string? customDiscardButtonText = null,
             string? extraButton1Text = null, string? extraButton2Text = null, string? extraButton3Text = null, string? checkBoxText = null)
 #else
-        public MessageDialogResult ShowDialog(string message, ColorScheme colorScheme = null, Window owner = null, string title = "Dialog", MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto,
+        public MessageDialogResult ShowDialog(string message, ColorScheme colorScheme = null, Window owner = null, string title = "Dialog", 
+            MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto,
             MessageDialogImage image = MessageDialogImage.None, MessageDialogResult defaultButton = MessageDialogResult.Cancel,
             string customOkButtonText = null, string customCancelButtonText = null, string customDiscardButtonText = null,
             string extraButton1Text = null, string extraButton2Text = null, string extraButton3Text = null, string checkBoxText = null)
@@ -920,11 +955,10 @@ namespace SolidShineUi
         //    return result;
         //}
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
 #if NETCOREAPP
-        string GetStringOrNull(string? value, string defaultValue, bool zeroAsNull = false)
+        static string GetStringOrNull(string? value, string defaultValue, bool zeroAsNull = false)
 #else
-        string GetStringOrNull(string value, string defaultValue, bool zeroAsNull = false)
+        static string GetStringOrNull(string value, string defaultValue, bool zeroAsNull = false)
 #endif
         {
             if (zeroAsNull)
@@ -990,26 +1024,33 @@ namespace SolidShineUi
     /// </summary>
     public enum MessageDialogImage
     {
-        /// <summary>No image is displayed. This may be good for generic messages, but is not recommended for situations where the user should pay attention to the message.</summary>
+        /// <summary>No image is displayed. This may be good for generic messages, but is not recommended for
+        /// situations where the user should pay attention to the message.</summary>
         None = 0,
-        /// <summary>A white X on a red background is displayed. This is good for situations where an error or exception has occurred, or something isn't acting as intended.</summary>
+        /// <summary>A white X on a red background is displayed. This is good for situations where an error or
+        /// exception has occurred, or something isn't acting as intended.</summary>
         Error = 1,
-        /// <summary>An exclamation point on a yellow triangle is displayed. This is good when informing the user about potential errors or unintended side effects.</summary>
+        /// <summary>An exclamation point on a yellow triangle is displayed. This is good when informing the user
+        /// about potential errors or unintended side effects.</summary>
         Warning = 2,
-        /// <summary>A white question mark on a blue background is displayed. This is good when asking a question or when asking for confirmation for a routine task.</summary>
+        /// <summary>A white question mark on a blue background is displayed. This is good when asking a question
+        /// or when asking for confirmation for a routine task.</summary>
         Question = 3,
-        /// <summary>A white exclamation point on a blue background is displayed. This is good for when wanting to alert the user about something that isn't considered a warning.</summary>
+        /// <summary>A white exclamation point on a blue background is displayed. This is good for when wanting to
+        /// alert the user about something that isn't considered a warning.</summary>
         Hand = 4,
-        /// <summary>A white I on a blue background is displayed. This is good for generally informing the user about something, such as a task being completed or the response to a request.</summary>
+        /// <summary>A white "i" on a blue background is displayed. This is good for generally informing the user
+        /// about something, such as a task being completed or the response to a request.</summary>
         Info = 5,
-        /// <summary>A red stop sign is displayed. This is good for informing the user that this action isn't valid in the current state, or that an unavoidable major issue has occurred.</summary>
+        /// <summary>A red stop sign is displayed. This is good for informing the user that this action isn't valid
+        /// in the current state, or that an unavoidable major issue has occurred.</summary>
         Stop = 6,
         /// <summary>A yellow lock is displayed. This is good for situations where security or authentication are involved.</summary>
         Lock = 7 //, Check = 8
     }
 
     /// <summary>
-    /// A helper class that can retrieve a BitmapImage from a MessageDialogImage.
+    /// A helper class that can retrieve a <see cref="BitmapImage"/> based on a <see cref="MessageDialogImage"/> value.
     /// </summary>
     public static class MessageDialogImageConverter
     {
@@ -1018,7 +1059,9 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="image">The image to display. If "None", then <c>null</c> is returned.</param>
         /// <param name="color">The color to use for the image. Use black or white for high-contrast themes.</param>
-        /// <returns></returns>
+
+        /// <returns>The image, if located, or <c>null</c> if <see cref="MessageDialogImage.None"/> was inputted</returns>
+        /// <exception cref="ArgumentException">Thrown if an invalid value is put in for <paramref name="image"/> or <paramref name="color"/></exception>
 #if NETCOREAPP
         public static BitmapImage? GetImage(MessageDialogImage image, MessageDialogImageColor color)
 #else
@@ -1104,7 +1147,8 @@ namespace SolidShineUi
     /// Set how many buttons to display at the bottom of the dialog.
     /// </summary>
     /// <remarks>
-    /// <see cref="Auto"/> is used by default; if <see cref="Auto"/> is used, the <see cref="MessageDialog.OkButtonText"/>, <see cref="MessageDialog.CancelButtonText"/>, 
+    /// <see cref="Auto"/> is used by default; if <see cref="Auto"/> is used, the 
+    /// <see cref="MessageDialog.OkButtonText"/>, <see cref="MessageDialog.CancelButtonText"/>, 
     /// and <see cref="MessageDialog.DiscardButtonText"/> properties determine which buttons are displayed.
     /// </remarks>
     public enum MessageDialogButtonDisplay
@@ -1123,7 +1167,8 @@ namespace SolidShineUi
         /// </summary>
         Two = 2,
         /// <summary>
-        /// Display three buttons, the OK, Discard, and Cancel buttons. Outputs as <c>MessageDialogResult.OK</c>, <c>MessageDialogResult.Discard</c> or <c>MessageDialogResult.Cancel</c> when clicked. 
+        /// Display three buttons, the OK, Discard, and Cancel buttons. Outputs as <c>MessageDialogResult.OK</c>,
+        /// <c>MessageDialogResult.Discard</c> or <c>MessageDialogResult.Cancel</c> when clicked. 
         /// </summary>
         Three = 3
     }

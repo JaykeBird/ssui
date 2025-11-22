@@ -14,26 +14,30 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="txtMessage" Margin="70,20,20,20" TextWrapping="Wrap" MaxWidth="500"
-                   Text="Message. Accept?"
-                   />
+        <TextBlock x:Name="txtMessage" Margin="70,20,20,20" TextWrapping="Wrap" MaxWidth="500" Text="Message. Accept?" />
         <StackPanel x:Name="stkExtraButtons" Margin="70,0,20,0" Grid.Row="1">
-            <flat:FlatButton x:Name="extraButton1" x:FieldModifier="private" Visibility="Collapsed" Content="Extra Button 1" HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton1_Click" />
-            <flat:FlatButton x:Name="extraButton2" x:FieldModifier="private" Visibility="Collapsed" Content="Extra Button 2" HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton2_Click" />
-            <flat:FlatButton x:Name="extraButton3" x:FieldModifier="private" Visibility="Collapsed" Content="Extra Button 3" HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton3_Click" />
-
+            <flat:FlatButton x:Name="extraButton1" Visibility="Collapsed" Content="Extra Button 1" 
+                             HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton1_Click" />
+            <flat:FlatButton x:Name="extraButton2" Visibility="Collapsed" Content="Extra Button 2" 
+                             HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton2_Click" />
+            <flat:FlatButton x:Name="extraButton3" Visibility="Collapsed" Content="Extra Button 3" 
+                             HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton3_Click" />
         </StackPanel>
 
         <flat:CheckBox x:Name="chkBox" Margin="70,0,20,0" Grid.Row="2" Content="" Visibility="Collapsed" />
 
-        <Grid Grid.Row="3" x:Name="grdButtonContainer" ><!-- Background="Gainsboro" -->
+        <Grid Grid.Row="3" x:Name="grdButtonContainer" >
+            <!-- Background="Gainsboro" -->
             <StackPanel Margin="0,0,20,10" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
-                <flat:FlatButton x:Name="btnOK" x:FieldModifier="private" Margin="5,0,0,0" Content="OK" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="85" Padding="15,0" Click="btnOK_Click" />
-                <flat:FlatButton x:Name="btnDiscard" x:FieldModifier="private" Margin="5,0,0,0" Content="Discard" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="85" Padding="15,0" Click="btnDiscard_Click" />
-                <flat:FlatButton x:Name="btnCancel" x:FieldModifier="private" Margin="5,0,0,0" Content="Cancel" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="85" Padding="15,0" Click="btnCancel_Click" IsDefault="True" />
+                <flat:FlatButton Margin="5,0,0,0" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="85" Padding="15,0"
+                                 Content="OK" x:Name="btnOK" Click="btnOK_Click" />
+                <flat:FlatButton Margin="5,0,0,0" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="85" Padding="15,0"
+                                 Content="Discard" x:Name="btnDiscard" Click="btnDiscard_Click" />
+                <flat:FlatButton Margin="5,0,0,0" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" MinWidth="85" Padding="15,0"
+                                 Content="Cancel" x:Name="btnCancel" Click="btnCancel_Click" />
             </StackPanel>
         </Grid>
-        <Image x:Name="imgIcon" HorizontalAlignment="Left" Margin="18,12,0,12" Height="32" Width="32" VerticalAlignment="Center" Source="DialogImages/InfoColor.png"/>
+        <Image x:Name="imgIcon" HorizontalAlignment="Left" Margin="18,12,0,12" Height="32" Width="32" VerticalAlignment="Center" Source="{x:Null}"/>
 
     </Grid>
 </flat:FlatWindow>
