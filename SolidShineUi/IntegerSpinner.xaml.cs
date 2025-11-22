@@ -261,31 +261,47 @@ namespace SolidShineUi
 
         #region Brushes
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="ButtonBackground"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
             "ButtonBackground", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="DisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="BorderBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="HighlightBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="ClickBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
+        /// <summary>
+        /// The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(IntegerSpinner),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the brush used for the background of the buttons of the spinner.
@@ -393,7 +409,7 @@ namespace SolidShineUi
         protected event DependencyPropertyChangedEventHandler InternalValueChanged;
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Value"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", typeof(int), typeof(IntegerSpinner),
@@ -423,7 +439,7 @@ namespace SolidShineUi
         #region StepProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Step"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             "Step", typeof(int), typeof(IntegerSpinner),
@@ -444,7 +460,7 @@ namespace SolidShineUi
         #region MinValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MinValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
             "MinValue", typeof(int), typeof(IntegerSpinner),
@@ -467,9 +483,9 @@ namespace SolidShineUi
         #endregion
 
         #region MaxValueProperty
-        
+
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MaxValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
             "MaxValue", typeof(int), typeof(IntegerSpinner),
@@ -494,7 +510,9 @@ namespace SolidShineUi
 
         #region RepeatDelayProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="RepeatDelay"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
             "RepeatDelay", typeof(double), typeof(IntegerSpinner),
             new PropertyMetadata(300d, new PropertyChangedCallback(OnInternalRepeatDelayChanged)));
@@ -504,9 +522,11 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalRepeatDelayChanged;
 
+        /// <summary>
+        /// The backing routed event for <see cref="RepeatDelayChanged"/>. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
             "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
@@ -546,7 +566,9 @@ namespace SolidShineUi
 
         #region CornerRadiusProperty
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="CornerRadius"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(IntegerSpinner),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnInternalCornerRadiusChanged)));
@@ -556,9 +578,11 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalCornerRadiusChanged;
 
+        /// <summary>
+        /// The backing routed event for <see cref="CornerRadiusChanged"/>. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
             "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
@@ -601,7 +625,7 @@ namespace SolidShineUi
         #region AcceptExpressionsProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="AcceptExpressions"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
             "AcceptExpressions", typeof(bool), typeof(IntegerSpinner),  new PropertyMetadata(true));
@@ -625,7 +649,7 @@ namespace SolidShineUi
         #region ShowArrowsProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="ShowArrows"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
             "ShowArrows", typeof(bool), typeof(IntegerSpinner),
@@ -636,10 +660,11 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalShowArrowsChanged;
 
-#pragma warning disable CS1591
+        /// <summary>
+        /// The backing routed event for <see cref="ShowArrowsChanged"/>. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
             "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the ShowArrows property is changed.
@@ -679,7 +704,9 @@ namespace SolidShineUi
 
         #region DisplayAsHex
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="DisplayAsHex"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
             "DisplayAsHex", typeof(bool), typeof(IntegerSpinner),
             new PropertyMetadata(false, new PropertyChangedCallback(OnInternalDisplayAsHexChanged)));
@@ -689,9 +716,11 @@ namespace SolidShineUi
         /// </summary>
         protected event DependencyPropertyChangedEventHandler InternalDisplayAsHexChanged;
 
+        /// <summary>
+        /// The backing routed event for <see cref="DisplayAsHexChanged"/>. See the related event for more details.
+        /// </summary>
         public static readonly RoutedEvent DisplayAsHexChangedEvent = EventManager.RegisterRoutedEvent(
             "DisplayAsHexChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(IntegerSpinner));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the DisplayAsHex property is changed.
@@ -754,7 +783,7 @@ namespace SolidShineUi
         #region MinimumDigitCount
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MinimumDigitCount"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinimumDigitCountProperty = DependencyProperty.Register(
             "MinimumDigitCount", typeof(int), typeof(IntegerSpinner),
