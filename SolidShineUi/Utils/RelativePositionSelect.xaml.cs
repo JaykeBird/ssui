@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Linq;
 using System.Collections.ObjectModel;
-using System.Windows.Shapes;
 
 namespace SolidShineUi.Utils
 {
@@ -215,39 +214,61 @@ namespace SolidShineUi.Utils
             set => SetValue(KeyboardFocusHighlightProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the property <see cref="ControlBackground"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ControlBackgroundProperty = DependencyProperty.Register(
             "ControlBackground", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="SelectorBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectorBrushProperty = DependencyProperty.Register(
             "SelectorBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="BackgroundDisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="BorderDisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="SelectorDisabledBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SelectorDisabledBrushProperty = DependencyProperty.Register(
             "SelectorDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="BorderBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="SnapLineBrush"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty SnapLineBrushProperty = DependencyProperty.Register(
             "SnapLineBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnSnapLineBrushChanged));
 
+        /// <summary>
+        /// A dependency property object backing the property <see cref="KeyboardFocusHighlight"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty KeyboardFocusHighlightProperty = DependencyProperty.Register(
             "KeyboardFocusHighlight", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         #endregion
 
         /// <summary>
@@ -301,7 +322,7 @@ namespace SolidShineUi.Utils
         {
             if (d is RelativePositionSelect r)
             {
-                r.UpdateSnapLineBrush();
+                r.UpdateKeyboardFocusHighlightBrush();
             }
         }
 
@@ -757,6 +778,7 @@ namespace SolidShineUi.Utils
         }
 
         #region Mouse Events
+
         bool selectMode = false;
 
         private void grdGuidelines_MouseDown(object sender, MouseButtonEventArgs e)
@@ -786,6 +808,7 @@ namespace SolidShineUi.Utils
         {
             selectMode = false;
         }
+
         #endregion
 
         private void SelectPoint(Point p)
@@ -866,6 +889,7 @@ namespace SolidShineUi.Utils
         }
 
         #region SelectorPosition Properties
+
         private double oWidth = 0.5; // X
         private double oHeight = 0.5; // Y
 
