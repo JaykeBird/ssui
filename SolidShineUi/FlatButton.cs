@@ -232,7 +232,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is ColorScheme cs)
             {

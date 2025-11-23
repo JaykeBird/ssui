@@ -410,18 +410,17 @@ namespace SolidShineUi
 
         #region Color Scheme
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanel),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is SelectPanel sp)
             {
