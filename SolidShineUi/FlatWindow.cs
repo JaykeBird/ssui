@@ -562,8 +562,9 @@ namespace SolidShineUi
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) is being clicked.
+        /// Get or set the brush used when one of the caption buttons (minimize, restore, close) is being clicked.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>CaptionButtonsClickBrush</c>.</remarks>
         public Brush SelectionBrush
         {
             get
@@ -577,8 +578,9 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) has focus or has the mouse over it.
+        /// Get or set the brush used when one of the caption buttons (minimize, restore, close) has focus or has the mouse over it.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>CaptionButtonsHighlightBrush</c>.</remarks>
         public Brush HighlightBrush
         {
             get
@@ -594,6 +596,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the background brush to use for the caption area (title bar). Use <c>ContentBackground</c> for the content area of the window.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>TitleBarBackground</c>.</remarks>
         public new Brush Background
         {
             get
@@ -607,8 +610,9 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the icons of the caption buttons (in the top-right in non-RTL systems).
+        /// Get or set the brush used for the icons of the caption buttons (minimize, restore, close).
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>CaptionButtonsForeground</c>.</remarks>
         public Brush CaptionButtonsBrush
         {
             get
@@ -624,6 +628,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>TitleBarForeground</c>.</remarks>
         public Brush CaptionTextBrush
         {
             get
@@ -654,6 +659,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar) when the window isn't focused/active. This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>InactiveForeground</c>.</remarks>
         public Brush InactiveTextBrush
         {
             get
