@@ -73,7 +73,7 @@ namespace SolidShineUi.Utils
             set => SetValue(WindowChromeValProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="WindowChromeVal"/>. See the related property for details.</summary>
-        public static DependencyProperty WindowChromeValProperty
+        public static readonly DependencyProperty WindowChromeValProperty
             = DependencyProperty.RegisterAttached("WindowChromeVal", 
                 typeof(WindowChromeWrapper), typeof(WindowChromeWrapper),
                 new FrameworkPropertyMetadata(null, _OnChromeChanged));

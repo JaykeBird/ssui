@@ -60,15 +60,15 @@ namespace SolidShineUi.PropertyList
             set => SetValue(VisibleControlsProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static DependencyProperty ItemIndexProperty
+        /// <summary>The backing dependency property for <see cref="ItemIndex"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ItemIndexProperty
             = DependencyProperty.Register("ItemIndex", typeof(int), typeof(ListEditorItem),
             new FrameworkPropertyMetadata(0));
 
-        public static DependencyProperty VisibleControlsProperty
+        /// <summary>The backing dependency property for <see cref="VisibleControls"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty VisibleControlsProperty
             = DependencyProperty.Register("VisibleControls", typeof(ListEditorItemControls), typeof(ListEditorItem),
             new FrameworkPropertyMetadata(ListEditorItemControls.None, new PropertyChangedCallback(InternalOnVisibleControlsChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         Type objectType = typeof(object);
 

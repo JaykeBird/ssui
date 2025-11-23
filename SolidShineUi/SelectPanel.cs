@@ -96,11 +96,10 @@ namespace SolidShineUi
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ItemsSource"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IClickSelectableControl>), typeof(SelectPanel),
                 new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private static void OnInternalItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -805,15 +804,15 @@ namespace SolidShineUi
 
         #region Border
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="BorderThickness"/>. See the related property for details.</summary>
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(SelectPanel),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border around this control.
@@ -1350,8 +1349,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="AllowParentScrolling"/>. See the related property for details.</summary>
         public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
-            "AllowParentScrolling", typeof(bool), typeof(SelectPanel),
-            new PropertyMetadata(true));
+            "AllowParentScrolling", typeof(bool), typeof(SelectPanel), new PropertyMetadata(true));
 
         /// <summary>
         /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may disable any child items from scrolling.

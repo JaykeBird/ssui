@@ -165,7 +165,7 @@ namespace SolidShineUi
         public bool SelectOnClick { get => (bool)GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectOnClickProperty
+        public static readonly DependencyProperty SelectOnClickProperty
             = DependencyProperty.Register("SelectOnClick", typeof(bool), typeof(SelectableUserControl),
             new FrameworkPropertyMetadata(true));
 

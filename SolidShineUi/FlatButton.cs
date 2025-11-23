@@ -647,7 +647,7 @@ namespace SolidShineUi
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
-        public static DependencyProperty HighlightOnKeyboardFocusProperty
+        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty
             = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(false));
 
@@ -954,11 +954,10 @@ namespace SolidShineUi
 //        private KeyboardFocusChangedEventHandler FocusChangedHandler = null;
 //#endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="IsDefault"/>. See the related property for details.</summary>
         public static readonly DependencyProperty IsDefaultProperty
             = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsDefaultChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if this button is the default button in the dialog or window it is located in. Due to limitations in WPF, this actually does not work.
@@ -996,13 +995,12 @@ namespace SolidShineUi
         }
 
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey IsDefaultedPropertyKey
             = DependencyProperty.RegisterReadOnly("IsDefaulted", typeof(bool), typeof(FlatButton),
             new FrameworkPropertyMetadata(false));
 
+        /// <summary>The backing dependency property for <see cref="IsDefaulted"/>. See the related property for details.</summary>
         public static readonly DependencyProperty IsDefaultedProperty = IsDefaultedPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Specifies whether or not this button is the button that would be invoked when Enter is pressed. Due to limitations in WPF, this actually does not work.

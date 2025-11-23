@@ -355,7 +355,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty SnapToSnapLinesProperty
+        public static readonly DependencyProperty SnapToSnapLinesProperty
             = DependencyProperty.Register("SnapToSnapLines", typeof(bool), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(true));
 
@@ -369,7 +369,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty SnapDistanceProperty
+        public static readonly DependencyProperty SnapDistanceProperty
             = DependencyProperty.Register("SnapDistance", typeof(double), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(3.0));
 
@@ -716,7 +716,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty KeyMoveStepProperty
+        public static readonly DependencyProperty KeyMoveStepProperty
             = DependencyProperty.Register("KeyMoveStep", typeof(double), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(0.05));
 

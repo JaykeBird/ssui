@@ -1,9 +1,7 @@
-﻿using SolidShineUi.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -137,43 +135,50 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="Background"/>. See the related property for details.</summary>
         public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.White.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
             "ClickBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
             "SelectedBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
             "DisabledBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
             "BorderHighlightBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
             "BorderSelectedBrush", typeof(Brush), typeof(SplitButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -476,7 +481,7 @@ namespace SolidShineUi
         public bool ShowSeparator { get => (bool)GetValue(ShowSeparatorProperty); set => SetValue(ShowSeparatorProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowSeparator"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowSeparatorProperty
+        public static readonly DependencyProperty ShowSeparatorProperty
             = DependencyProperty.Register("ShowSeparator", typeof(bool), typeof(SplitButton),
             new FrameworkPropertyMetadata(true));
 
@@ -486,7 +491,7 @@ namespace SolidShineUi
         public Brush SeparatorBrush { get => (Brush)GetValue(SeparatorBrushProperty); set => SetValue(SeparatorBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SeparatorBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty SeparatorBrushProperty
+        public static readonly DependencyProperty SeparatorBrushProperty
             = DependencyProperty.Register("SeparatorBrush", typeof(Brush), typeof(SplitButton),
             new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
 
@@ -497,7 +502,7 @@ namespace SolidShineUi
         public double SeparatorEdgeMargin { get => (double)GetValue(SeparatorEdgeMarginProperty); set => SetValue(SeparatorEdgeMarginProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SeparatorEdgeMargin"/>. See the related property for details.</summary>
-        public static DependencyProperty SeparatorEdgeMarginProperty
+        public static readonly DependencyProperty SeparatorEdgeMarginProperty
             = DependencyProperty.Register("SeparatorEdgeMargin", typeof(double), typeof(SplitButton),
             new FrameworkPropertyMetadata(4.0));
 
@@ -507,7 +512,7 @@ namespace SolidShineUi
         public double SeparatorThickness { get => (double)GetValue(SeparatorThicknessProperty); set => SetValue(SeparatorThicknessProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SeparatorThickness"/>. See the related property for details.</summary>
-        public static DependencyProperty SeparatorThicknessProperty
+        public static readonly DependencyProperty SeparatorThicknessProperty
             = DependencyProperty.Register("SeparatorThickness", typeof(double), typeof(SplitButton),
             new FrameworkPropertyMetadata(1.0));
 
@@ -518,7 +523,7 @@ namespace SolidShineUi
         #region Menu
 
         /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuProperty
+        public static readonly DependencyProperty MenuProperty
             = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(SplitButton),
             new FrameworkPropertyMetadata(null, OnMenuChanged));
 
@@ -621,7 +626,7 @@ namespace SolidShineUi
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementProperty
+        public static readonly DependencyProperty MenuPlacementProperty
             = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(SplitButton),
             new FrameworkPropertyMetadata(PlacementMode.Bottom));
 
@@ -636,7 +641,7 @@ namespace SolidShineUi
 #endif
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementTargetProperty
+        public static readonly DependencyProperty MenuPlacementTargetProperty
             = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(SplitButton),
             new FrameworkPropertyMetadata(null));
 
@@ -647,7 +652,7 @@ namespace SolidShineUi
         public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementRectangleProperty
+        public static readonly DependencyProperty MenuPlacementRectangleProperty
             = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(SplitButton),
             new FrameworkPropertyMetadata(Rect.Empty));
 
@@ -664,7 +669,7 @@ namespace SolidShineUi
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
-        public static DependencyProperty HighlightOnKeyboardFocusProperty
+        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty
             = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(SplitButton),
             new FrameworkPropertyMetadata(false));
 
@@ -725,7 +730,7 @@ namespace SolidShineUi
         public PlacementDirection MenuButtonPlacement { get => (PlacementDirection)GetValue(MenuButtonPlacementProperty); set => SetValue(MenuButtonPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuButtonPlacement"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuButtonPlacementProperty
+        public static readonly DependencyProperty MenuButtonPlacementProperty
             = DependencyProperty.Register("MenuButtonPlacement", typeof(PlacementDirection), typeof(SplitButton),
             new FrameworkPropertyMetadata(PlacementDirection.Right));
 
@@ -739,7 +744,7 @@ namespace SolidShineUi
         public double MenuButtonSize { get => (double)GetValue(MenuButtonSizeProperty); set => SetValue(MenuButtonSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuButtonSize"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuButtonSizeProperty
+        public static readonly DependencyProperty MenuButtonSizeProperty
             = DependencyProperty.Register("MenuButtonSize", typeof(double), typeof(SplitButton),
             new FrameworkPropertyMetadata(20.0));
 

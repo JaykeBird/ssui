@@ -47,7 +47,7 @@ namespace SolidShineUi
         #region Menu
         
         /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuProperty
+        public static readonly DependencyProperty MenuProperty
             = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(MenuButton),
             new FrameworkPropertyMetadata(null, OnMenuChanged));
 
@@ -137,7 +137,7 @@ namespace SolidShineUi
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementProperty
+        public static readonly DependencyProperty MenuPlacementProperty
             = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(MenuButton),
             new FrameworkPropertyMetadata(PlacementMode.Bottom));
 
@@ -152,7 +152,7 @@ namespace SolidShineUi
 #endif
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementTargetProperty
+        public static readonly DependencyProperty MenuPlacementTargetProperty
             = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(MenuButton),
             new FrameworkPropertyMetadata(null));
 
@@ -163,7 +163,7 @@ namespace SolidShineUi
         public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
-        public static DependencyProperty MenuPlacementRectangleProperty
+        public static readonly DependencyProperty MenuPlacementRectangleProperty
             = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(MenuButton),
             new FrameworkPropertyMetadata(Rect.Empty));
 
@@ -188,8 +188,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="ShowMenuArrow"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ShowMenuArrowProperty = DependencyProperty.Register(
-            "ShowMenuArrow", typeof(bool), typeof(MenuButton),
-            new PropertyMetadata(true));
+            "ShowMenuArrow", typeof(bool), typeof(MenuButton), new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
@@ -203,8 +202,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="KeepMenuArrowOnRight"/>. See the related property for details.</summary>
         public static readonly DependencyProperty KeepMenuArrowOnRightProperty = DependencyProperty.Register(
-            "KeepMenuArrowOnRight", typeof(bool), typeof(MenuButton),
-            new PropertyMetadata(false));
+            "KeepMenuArrowOnRight", typeof(bool), typeof(MenuButton), new PropertyMetadata(false));
 
         /// <summary>
         /// Get or set if the arrow should be kept to the right side of the button, even if the content of the button is left or center aligned 

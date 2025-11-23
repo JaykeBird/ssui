@@ -68,32 +68,36 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         #region Dependency Properties
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static DependencyProperty DescriptionProperty
+        /// <summary>The backing dependency property for <see cref="Description"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty DescriptionProperty
             = DependencyProperty.Register("Description", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Edit and view collection:"));
 
-        public static DependencyProperty ListOfItemsLabelProperty
+        /// <summary>The backing dependency property for <see cref="ListOfItemsLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ListOfItemsLabelProperty
             = DependencyProperty.Register("ListOfItemsLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("List of items:"));
 
-        public static DependencyProperty EditItemLabelProperty
+        /// <summary>The backing dependency property for <see cref="EditItemLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EditItemLabelProperty
             = DependencyProperty.Register("EditItemLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Edit current item:"));
 
-        public static DependencyProperty EnumerableWarningTitleLabelProperty
+        /// <summary>The backing dependency property for <see cref="EnumerableWarningTitleLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EnumerableWarningTitleLabelProperty
             = DependencyProperty.Register("EnumerableWarningTitleLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Full Collection May Not Be Available"));
 
-        public static DependencyProperty EnumerableWarningDescriptionLabelProperty
+        /// <summary>The backing dependency property for <see cref="EnumerableWarningDescriptionLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EnumerableWarningDescriptionLabelProperty
             = DependencyProperty.Register("EnumerableWarningDescriptionLabel", typeof(string), typeof(ListEditorDialog),
-            new FrameworkPropertyMetadata("Note that with this collection, it may not yet be fully populated. For example, this collection could require some processing or downloading" +
-            "to populate.You can load in what's currently in this collection, but it may be incomplete, or it may take time or cause additional code to be executed."));
+            new FrameworkPropertyMetadata("Note that with this collection, it may not yet be fully populated. For example, this collection could require some processing or downloading " +
+            "to populate. You can load in what's currently in this collection, but it may be incomplete, or it may take time or cause additional code to be executed."));
 
-        public static DependencyProperty LoadCollectionLabelProperty
+        /// <summary>The backing dependency property for <see cref="LoadCollectionLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty LoadCollectionLabelProperty
             = DependencyProperty.Register("LoadCollectionLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Load Collection"));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the description text to display at the top of the dialog.

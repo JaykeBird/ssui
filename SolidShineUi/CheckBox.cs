@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -725,7 +724,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty TriStateClickProperty
+        public static readonly DependencyProperty TriStateClickProperty
             = DependencyProperty.Register("TriStateClick", typeof(bool), typeof(CheckBox),
             new FrameworkPropertyMetadata(false));
 
@@ -739,7 +738,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty OnlyAllowCheckBoxClickProperty
+        public static readonly DependencyProperty OnlyAllowCheckBoxClickProperty
             = DependencyProperty.Register("OnlyAllowCheckBoxClick", typeof(bool), typeof(CheckBox),
             new FrameworkPropertyMetadata(false));
 

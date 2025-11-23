@@ -1039,7 +1039,7 @@ namespace SolidShineUi
         public Brush ContentAreaBackground { get => (Brush)GetValue(ContentAreaBackgroundProperty); set => SetValue(ContentAreaBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty ContentAreaBackgroundProperty
+        public static readonly DependencyProperty ContentAreaBackgroundProperty
             = DependencyProperty.Register(nameof(ContentAreaBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnContentAreaBackgroundUpdate));
 
@@ -1050,7 +1050,7 @@ namespace SolidShineUi
         public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabHighlightBrushProperty
+        public static readonly DependencyProperty TabHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabHighlightBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -1061,7 +1061,7 @@ namespace SolidShineUi
         public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBorderHighlightBrushProperty
+        public static readonly DependencyProperty TabBorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabBorderHighlightBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -1072,7 +1072,7 @@ namespace SolidShineUi
         public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBorderBrushProperty
+        public static readonly DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -1083,7 +1083,7 @@ namespace SolidShineUi
         public Brush TabCloseBrush { get => (Brush)GetValue(TabCloseBrushProperty); set => SetValue(TabCloseBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabCloseBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabCloseBrushProperty
+        public static readonly DependencyProperty TabCloseBrushProperty
             = DependencyProperty.Register(nameof(TabCloseBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -1094,7 +1094,7 @@ namespace SolidShineUi
         public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBackgroundProperty
+        public static readonly DependencyProperty TabBackgroundProperty
             = DependencyProperty.Register(nameof(TabBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.LightGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -1105,7 +1105,7 @@ namespace SolidShineUi
         public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectedTabBackgroundProperty
+        public static readonly DependencyProperty SelectedTabBackgroundProperty
             = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -1116,7 +1116,7 @@ namespace SolidShineUi
         public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonHighlightBackgroundProperty
+        public static readonly DependencyProperty ButtonHighlightBackgroundProperty
             = DependencyProperty.Register(nameof(ButtonHighlightBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Silver.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBrushUpdate));
 
@@ -1127,7 +1127,7 @@ namespace SolidShineUi
         public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonHighlightBorderBrushProperty
+        public static readonly DependencyProperty ButtonHighlightBorderBrushProperty
             = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBorderBrushUpdate));
 
@@ -1138,7 +1138,7 @@ namespace SolidShineUi
         public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonClickBrushProperty
+        public static readonly DependencyProperty ButtonClickBrushProperty
             = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.LightGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnClickBrushUpdate));
 
@@ -1408,11 +1408,11 @@ namespace SolidShineUi
 
         #region ScrollButtons
 
-        private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly("ScrollButtonsVisible", typeof(bool), typeof(TabControl),
-            new PropertyMetadata(false));
+        private static readonly DependencyPropertyKey ScrollButtonsVisiblePropertyKey = DependencyProperty.RegisterReadOnly(
+            "ScrollButtonsVisible", typeof(bool), typeof(TabControl), new PropertyMetadata(false));
 
         /// <summary>
-        /// The read-only dependency property for the <see cref="ScrollButtonsVisible"/> property. See that related property for more details.
+        /// The backing dependency property for the <see cref="ScrollButtonsVisible"/> property. See that related property for more details.
         /// </summary>
         public static readonly DependencyProperty ScrollButtonsVisibleProperty = ScrollButtonsVisiblePropertyKey.DependencyProperty;
 
