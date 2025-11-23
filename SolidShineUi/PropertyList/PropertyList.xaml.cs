@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Runtime.InteropServices;
 using SolidShineUi.Utils;
 using System.Windows.Input;
+using System.Text; // needed in .NET 5 and later for the Rune type
 
 namespace SolidShineUi.PropertyList
 {
