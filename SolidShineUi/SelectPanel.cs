@@ -452,11 +452,14 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CA1051 // Do not declare visible instance fields
         /// <summary>
         /// This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.
         /// </summary>
         [Obsolete("This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.")]
         public bool use_lbrdr = false;
+#pragma warning restore CA1051 // Do not declare visible instance fields
+        
         bool runApply = true;
 
         /// <summary>
@@ -1053,7 +1056,7 @@ namespace SolidShineUi
 
         #region Move Items
 
-        private class SortByParentIndex : IComparer<IClickSelectableControl>
+        private sealed class SortByParentIndex : IComparer<IClickSelectableControl>
         {
             // A class to sort a collection of IClickSelectableControls by their index in the parent SelectableCollection.
 
@@ -1067,6 +1070,7 @@ namespace SolidShineUi
             public int Compare(IClickSelectableControl a, IClickSelectableControl b)
 #endif
             {
+
                 // do null checks first
                 // I don't think we'll run into a situation where these will actually be null, but better safe than sorry
                 if (a == null)

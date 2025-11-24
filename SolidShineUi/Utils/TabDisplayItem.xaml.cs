@@ -162,23 +162,23 @@ namespace SolidShineUi.Utils
         {
             if (d is TabDisplayItem s)
             {
-                s.InternalTabBorderBrushChanged();
+                // s.InternalTabBorderBrushChanged();
             }
         }
 
-        private void InternalTabBorderBrushChanged()
-        {
-            //if (highlighting)
-            //{
-            //    //border.Background = HighlightBrush;
-            //    border.BorderBrush = BorderHighlightBrush;
-            //}
-            //else
-            //{
-            //    //border.Background = IsSelected ? SelectedTabBackground : Background;
-            //    border.BorderBrush = TabBorderBrush;
-            //}
-        }
+        //private void InternalTabBorderBrushChanged()
+        //{
+        //    //if (highlighting)
+        //    //{
+        //    //    //border.Background = HighlightBrush;
+        //    //    border.BorderBrush = BorderHighlightBrush;
+        //    //}
+        //    //else
+        //    //{
+        //    //    //border.Background = IsSelected ? SelectedTabBackground : Background;
+        //    //    border.BorderBrush = TabBorderBrush;
+        //    //}
+        //}
 
         /// <summary>
         /// Get or set the brush used for the close glyph in this control.

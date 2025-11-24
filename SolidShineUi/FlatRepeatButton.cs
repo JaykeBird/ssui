@@ -272,10 +272,12 @@ namespace SolidShineUi
             DoExecute();
         }
 
+#pragma warning disable CA1051 // Do not declare visible instance fields (meant to be visible to inheritors of this button)
         /// <summary>
         /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
         /// </summary>
         protected DispatcherTimer executeTimer = new DispatcherTimer();
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         bool firstRun = false;
         bool timerRan = false;
