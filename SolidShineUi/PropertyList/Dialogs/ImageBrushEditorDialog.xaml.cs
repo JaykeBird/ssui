@@ -181,9 +181,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                     txtSource.FontStyle = FontStyles.Italic;
                     _blankSourceOnEnter = true;
                 }
-                imgSize.Text = Math.Round(bi.Height, 2).ToString() + " x " + Math.Round(bi.Width, 2).ToString();
-                imgSize.ToolTip = $"Device independent size: {bi.Height} x {bi.Width}\nActual pixel size: {bi.PixelHeight} x {bi.PixelWidth}";
                 imageSize = new Size(Math.Round(bi.Width, 2), Math.Round(bi.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = $"Device independent size: {bi.Height} x {bi.Width}\nActual pixel size: {bi.PixelHeight} x {bi.PixelWidth}";
             }
             else if (isrc is BitmapSource bs)
             {
@@ -191,9 +191,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtSource.Text = $"(image from bitmap source, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
-                imgSize.Text = Math.Round(bs.Height, 2).ToString() + " x " + Math.Round(bs.Width, 2).ToString();
-                imgSize.ToolTip = $"Device independent size: {bs.Height} x {bs.Width}\nActual pixel size: {bs.PixelHeight} x {bs.PixelWidth}";
                 imageSize = new Size(Math.Round(bs.Width, 2), Math.Round(bs.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = $"Device independent size: {bs.Height} x {bs.Width}\nActual pixel size: {bs.PixelHeight} x {bs.PixelWidth}";
             }
             else if (isrc is DrawingImage di)
             {
@@ -201,9 +201,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtSource.Text = $"(image from drawing, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
-                imgSize.Text = Math.Round(di.Height, 2).ToString() + " x " + Math.Round(di.Width, 2).ToString();
-                imgSize.ToolTip = null;
                 imageSize = new Size(Math.Round(di.Width, 2), Math.Round(di.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = null;
             }
             else
             {
@@ -211,9 +211,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtSource.Text = $"(image from unknown source, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
-                imgSize.Text = Math.Round(isrc.Height, 2).ToString() + " x " + Math.Round(isrc.Width, 2).ToString();
-                imgSize.ToolTip = null;
                 imageSize = new Size(Math.Round(isrc.Width, 2), Math.Round(isrc.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = null;
             }
             imgSource.Source = isrc;
             _internalAction = false;
