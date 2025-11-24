@@ -460,7 +460,7 @@ namespace SolidShineUi
     /// Event arguments for an ItemRemoving event. This is used for when an item is about to be removed.
     /// </summary>
     /// <typeparam name="T">Represents the type of item being removed.</typeparam>
-    public class ItemRemovingEventArgs<T>
+    public class ItemRemovingEventArgs<T> : EventArgs
     {
         /// <summary>
         /// Create an ItemRemovingEventArgs.

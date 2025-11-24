@@ -1061,7 +1061,7 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// Event arguments for a TabItem being dropped onto a TabControl. Primarily used internally.
     /// </summary>
-    public class TabItemDropEventArgs
+    public class TabItemDropEventArgs : EventArgs
     {
         /// <summary>
         /// Create a TabItemDropEventArgs.

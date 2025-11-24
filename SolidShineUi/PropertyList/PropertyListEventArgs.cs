@@ -111,7 +111,7 @@ namespace SolidShineUi.PropertyList
         }
     }
 #else
-    public class PropertyValueChangedEventArgs
+    public class PropertyValueChangedEventArgs : EventArgs
     {
         /// <summary>
         /// Get the new value to apply to this property.

@@ -10,7 +10,7 @@ namespace SolidShineUi.KeyboardShortcuts
     /// <summary>
     /// The generic event arguments for keyboard shortcut related events in the KeyRegistry.
     /// </summary>
-    public class KeyboardShortcutEventArgs
+    public class KeyboardShortcutEventArgs : EventArgs
     {
         /// <summary>
         /// The keyboard shortcut referenced in the event.
