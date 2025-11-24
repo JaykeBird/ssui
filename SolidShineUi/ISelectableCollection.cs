@@ -29,6 +29,8 @@ namespace SolidShineUi
         /// Select an item, replacing the current selection.
         /// </summary>
         /// <param name="item">The item to select.</param>
+        /// <remarks>This will be renamed to <c>SelectItem</c> in Solid Shine UI 2.0.</remarks>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Already shipped in public API")]
         void Select(object item);
 
         /// <summary>
@@ -97,6 +99,8 @@ namespace SolidShineUi
         /// Select an item, replacing the current selection.
         /// </summary>
         /// <param name="item">The item to select.</param>
+        /// <remarks>This will be renamed to <c>SelectItem</c> in Solid Shine UI 2.0.</remarks>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "Already shipped in public API")]
         void Select(T item);
 
         /// <summary>

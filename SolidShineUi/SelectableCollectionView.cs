@@ -12,7 +12,9 @@ namespace SolidShineUi
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> derives from SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
+#pragma warning disable CA1710 // Identifiers should have correct suffix (matching naming convention of ListCollectionView instead)
     public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollectionSource<T>, ICollection<T>, ISelectableCollectionSource
+#pragma warning restore CA1710 // Identifiers should have correct suffix
     {
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
@@ -344,12 +346,12 @@ namespace SolidShineUi
         /// Copy the elements of this Collection to an Array, starting at the specified index in the Array.
         /// </summary>
         /// <param name="array">The array to copy values into.</param>
-        /// <param name="index">The starting index at which to start copying values.</param>
+        /// <param name="arrayIndex">The starting index at which to start copying values.</param>
         /// <exception cref="ArgumentException">Raised if this Array is not an Array of type <typeparamref name="T"/>, 
         /// or if this Array isn't large enough to fit all the items in this Collection.</exception>
-        public void CopyTo(T[] array, int index)
+        public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array.Length - index < Count)
+            if (array.Length - arrayIndex < Count)
             {
                 throw new ArgumentException("The inputted array is not large enough to fit all of the elements in this collection.");
             }
@@ -357,7 +359,7 @@ namespace SolidShineUi
             {
                 for (int i = 0; i < Count; i++)
                 {
-                    array[index + i] = this[i];
+                    array[arrayIndex + i] = this[i];
                 }
             }
         }
