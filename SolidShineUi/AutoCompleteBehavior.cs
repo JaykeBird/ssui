@@ -194,7 +194,7 @@ namespace SolidShineUi
                 //giving auto-completion suggestions.
                 if (!string.IsNullOrEmpty(indicator))
                 {
-                    startIndex = tb.Text.LastIndexOf(indicator);
+                    startIndex = tb.Text.LastIndexOf(indicator, StringComparison.Ordinal);
                     //If we haven't typed the trigger string, then don't do anything.
                     if (startIndex == -1) { return; }
 
@@ -231,7 +231,8 @@ namespace SolidShineUi
                         select subvalue
                     )
                     where value.Substring(0, textLength).Equals(matchingString, comparer)
-                    select value.Substring(textLength, value.Length - textLength)/*Only select the last part of the suggestion*/
+                    // select value.Substring(textLength, value.Length - textLength)/*Only select the last part of the suggestion*/
+                    select value.Substring(textLength)/*Only select the last part of the suggestion*/
                 ).FirstOrDefault() ?? string.Empty;
 
                 //Nothing.  Leave 'em alone

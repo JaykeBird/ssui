@@ -141,7 +141,7 @@ namespace SolidShineUi
                         throw new InvalidDataException("Invalid palette file");
                     }
 
-                    colorCount = Convert.ToInt32(reader.ReadLine());
+                    colorCount = Convert.ToInt32(reader.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
                     char[] spaces = new[] { ' ', '\t' };
 
                     for (int i = 0; i < colorCount; i++)
@@ -605,7 +605,7 @@ namespace SolidShineUi
                         {
                             continue;
                         }
-                        else if (line.StartsWith("#"))
+                        else if (line.StartsWith("#", StringComparison.Ordinal))
                         {
                             continue;
                         }
@@ -696,9 +696,9 @@ namespace SolidShineUi
 
             try
             {
-                byte iR = byte.Parse(r);
-                byte iG = byte.Parse(g);
-                byte iB = byte.Parse(b);
+                byte iR = byte.Parse(r, System.Globalization.CultureInfo.InvariantCulture);
+                byte iG = byte.Parse(g, System.Globalization.CultureInfo.InvariantCulture);
+                byte iB = byte.Parse(b, System.Globalization.CultureInfo.InvariantCulture);
 
                 return Color.FromRgb(iR, iG, iB);
             }
@@ -775,7 +775,7 @@ namespace SolidShineUi
                         {
                             continue;
                         }
-                        else if (line.StartsWith("#"))
+                        else if (line.StartsWith("#", StringComparison.Ordinal))
                         {
                             // PowerToys lines currently doesn't have comments, but... why not lol
                             continue;
@@ -793,7 +793,7 @@ namespace SolidShineUi
                             if (formatSort == null)
                             {
                                 // don't know what it is yet
-                                if (entries[0].StartsWith("color"))
+                                if (entries[0].StartsWith("color", StringComparison.Ordinal))
                                 {
                                     // likely by color
                                     formatSort = false;
@@ -895,20 +895,20 @@ namespace SolidShineUi
             {
                 foreach (string item in entries)
                 {
-                    if (item.StartsWith("HEX"))
+                    if (item.StartsWith("HEX", StringComparison.Ordinal))
                     {
                         string hex = item.Substring(item.IndexOf('#'));
                         Color c = ColorsHelper.CreateFromHex(hex);
                         return c;
                     }
-                    else if (item.StartsWith("RGB"))
+                    else if (item.StartsWith("RGB", StringComparison.Ordinal))
                     {
                         string rgb = GetStringInsideParantheses(item);
                         string[] vals = rgb.Split(',');
                         Color c = Color.FromRgb(TryParseByte(vals[0]), TryParseByte(vals[1]), TryParseByte(vals[2]));
                         return c;
                     }
-                    else if (item.StartsWith("HSV"))
+                    else if (item.StartsWith("HSV", StringComparison.Ordinal))
                     {
                         string rgb = GetStringInsideParantheses(item);
                         string[] vals = rgb.Split(',');
@@ -929,7 +929,7 @@ namespace SolidShineUi
             {
                 try
                 {
-                    return byte.Parse(value);
+                    return byte.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
                 }
                 catch (FormatException)
                 {
@@ -941,7 +941,7 @@ namespace SolidShineUi
             {
                 try
                 {
-                    return double.Parse(value);
+                    return double.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
                 }
                 catch (FormatException)
                 {
