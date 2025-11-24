@@ -150,7 +150,7 @@ namespace SolidShineUi
                         string[] parts;
 
                         data = reader.ReadLine() ?? "";
-#if (NETCOREAPP || NET462_OR_GREATER)
+#if (NETCOREAPP || NET461_OR_GREATER)
                         parts = !string.IsNullOrEmpty(data) ? data.Split(spaces, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
 #else
                         parts = !string.IsNullOrEmpty(data) ? data.Split(spaces, StringSplitOptions.RemoveEmptyEntries) : new string[0];
@@ -158,12 +158,12 @@ namespace SolidShineUi
 
                         if (parts.Length == 0)
                         {
-                            throw new InvalidDataException(string.Format("Invalid palette contents found with data '{0}'", data));
+                            throw new InvalidDataException($"Invalid palette contents found with data '{data}'");
                         }
 
                         if (!int.TryParse(parts[0], out int r) || !int.TryParse(parts[1], out int g) || !int.TryParse(parts[2], out int b))
                         {
-                            throw new InvalidDataException(string.Format("Invalid palette contents found with data '{0}'", data));
+                            throw new InvalidDataException($"Invalid palette contents found with data '{data}'");
                         }
 
                         results.Add(Color.FromRgb((byte)r, (byte)g, (byte)b));
@@ -400,7 +400,7 @@ namespace SolidShineUi
                         results.Add(Color.FromRgb((byte)gray, (byte)gray, (byte)gray));
                         break;
                     default:
-                        throw new InvalidDataException(string.Format("Color space '{0}' not supported.", colorSpace));
+                        throw new InvalidDataException($"Color space '{colorSpace}' not supported.");
                 }
             }
 

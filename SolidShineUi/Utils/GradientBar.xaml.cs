@@ -393,7 +393,11 @@ namespace SolidShineUi.Utils
             }
             set
             {
+#if NET6_0_OR_GREATER
+                ArgumentNullException.ThrowIfNull(value, nameof(value));
+#else
                 if (value == null) throw new ArgumentNullException(nameof(value));
+#endif
                 SelectStop(value);
             }
         }

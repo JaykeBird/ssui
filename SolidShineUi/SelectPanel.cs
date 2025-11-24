@@ -1060,6 +1060,7 @@ namespace SolidShineUi
         {
             // A class to sort a collection of IClickSelectableControls by their index in the parent SelectableCollection.
 
+#pragma warning disable CA1859 // for code readability purposes and future proofing, this will stay as it is
 #if NETCOREAPP
             public IList<IClickSelectableControl>? ParentCollection { get; set; }
 
@@ -1069,6 +1070,7 @@ namespace SolidShineUi
 
             public int Compare(IClickSelectableControl a, IClickSelectableControl b)
 #endif
+#pragma warning restore CA1859
             {
 
                 // do null checks first
