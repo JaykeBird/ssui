@@ -11,17 +11,46 @@ namespace SolidShineUi
     /// </summary>
     public static class ArithmeticParser
     {
+
         /// <summary>
         /// Evaluate an arithmetic expression and output the result (i.e. "2+5" will output "7"). See remarks for more info on supported functions.
         /// </summary>
         /// <param name="input">The arithmetic expression to evaluate.</param>
         /// <exception cref="FormatException">Thrown if the expression is not valid (contains unrecognized characters or a mismatched number of parantheses).</exception>
         /// <returns>The result of the expression.</returns>
-        /// <remarks>Supports addition, subtraction, multiplication, division, and exponents. Also supports parantheses (with implied multiplcation) and negative numbers.<para/>
+        /// <remarks>Supports addition, subtraction, multiplication, division, and exponents. Also supports parantheses (with implied multiplcation) and negative numbers.<br/>
         /// Uses order of operations: exponents, division, multiplication, subtraction, addition.<para/>
-        /// Whitespace and new-line characters are removed prior to evaluation, and the literal characters ×, ⋅, and ÷ are replaced with their representations *, *, and /.</remarks>
+        /// Whitespace and new-line characters are removed prior to evaluation, and the literal characters ×, ⋅, and ÷ are replaced with their representations *, *, and /.<para/>
+        /// This is done using the <c>CurrentCulture</c>; use <see cref="Evaluate(string, IFormatProvider)"/> to specify a culture if needed.</remarks>
         public static double Evaluate(string input)
         {
+            return Evaluate(input, System.Globalization.CultureInfo.CurrentCulture);
+        }
+
+
+        /// <summary>
+        /// Evaluate an arithmetic expression and output the result (i.e. "2+5" will output "7"), using a specified culture or format provider. See remarks for more info on supported functions.
+        /// </summary>
+        /// <param name="input">The arithmetic expression to evaluate.</param>
+        /// <param name="culture">the culture or format provider to use for parsing numbers (if <c>null</c>, then <c>CurrentCulture</c> is used)</param>
+        /// <exception cref="FormatException">Thrown if the expression is not valid (contains unrecognized characters or a mismatched number of parantheses).</exception>
+        /// <returns>The result of the expression.</returns>
+        /// <remarks>Supports addition, subtraction, multiplication, division, and exponents. Also supports parantheses (with implied multiplcation) and negative numbers.<br/>
+        /// Uses order of operations: exponents, division, multiplication, subtraction, addition.<para/>
+        /// Whitespace and new-line characters are removed prior to evaluation, and the literal characters ×, ⋅, and ÷ are replaced with their representations *, *, and /.</remarks>
+#if NETCOREAPP
+        public static double Evaluate(string input, IFormatProvider? culture)
+        {
+            culture ??= System.Globalization.CultureInfo.CurrentCulture;
+#else
+        public static double Evaluate(string input, IFormatProvider culture)
+        {
+            if (culture == null)
+            {
+                culture = System.Globalization.CultureInfo.CurrentCulture;
+            }
+#endif
+
             // first, remove whitespace/newlines
             input = input.Replace(" ", "");
             input = input.Replace("\t", "");
@@ -41,7 +70,7 @@ namespace SolidShineUi
 
             if (g == 0)
             {
-                return PerformEvaluation(input);
+                return PerformEvaluation(input, culture);
             }
             else if (g == 1)
             {
@@ -69,7 +98,7 @@ namespace SolidShineUi
             }
         }
 
-        static double PerformEvaluation(string input)
+        static double PerformEvaluation(string input, IFormatProvider culture)
         {
             if (input.Contains("(") || input.Contains(")"))
             {
@@ -135,7 +164,7 @@ namespace SolidShineUi
 
                             if (!Changes.ContainsKey(subInput))
                             {
-                                string evaluatedSubInput = PerformEvaluation(subInput).ToString();
+                                string evaluatedSubInput = PerformEvaluation(subInput, culture).ToString(culture);
                                 Changes.Add(subInput, evaluatedSubInput);
                             }
                             openPar = false;
@@ -160,7 +189,7 @@ namespace SolidShineUi
             {
                 try
                 {
-                    return PerformOperations(ref ParsedOperations);
+                    return PerformOperations(ref ParsedOperations, culture);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -190,7 +219,7 @@ namespace SolidShineUi
             return openPar == closePar;
         }
 
-        static double PerformOperations(ref List<string> OperationList)
+        static double PerformOperations(ref List<string> OperationList, IFormatProvider culture)
         {
             while (OperationList.Count > 1)
             {
@@ -199,9 +228,9 @@ namespace SolidShineUi
                 {
                     if (OperationList[index] == "^")
                     {
-                        double div1 = double.Parse(OperationList[index - 1]);
-                        double div2 = double.Parse(OperationList[index + 1]);
-                        OperationList[index - 1] = Math.Pow(div1, div2).ToString();
+                        double div1 = double.Parse(OperationList[index - 1], culture);
+                        double div2 = double.Parse(OperationList[index + 1], culture);
+                        OperationList[index - 1] = Math.Pow(div1, div2).ToString(culture);
                         OperationList.RemoveAt(index);
                         OperationList.RemoveAt(index);
                     }
@@ -212,9 +241,9 @@ namespace SolidShineUi
                 {
                     if (OperationList[index] == "/")
                     {
-                        double div1 = double.Parse(OperationList[index - 1]);
-                        double div2 = double.Parse(OperationList[index + 1]);
-                        OperationList[index - 1] = (div1 / div2).ToString();
+                        double div1 = double.Parse(OperationList[index - 1], culture);
+                        double div2 = double.Parse(OperationList[index + 1], culture);
+                        OperationList[index - 1] = (div1 / div2).ToString(culture);
                         OperationList.RemoveAt(index);
                         OperationList.RemoveAt(index);
                     }
@@ -225,9 +254,9 @@ namespace SolidShineUi
                 {
                     if (OperationList[index] == "*")
                     {
-                        double mult1 = double.Parse(OperationList[index - 1]);
-                        double mult2 = double.Parse(OperationList[index + 1]);
-                        OperationList[index - 1] = (mult1 * mult2).ToString();
+                        double mult1 = double.Parse(OperationList[index - 1], culture);
+                        double mult2 = double.Parse(OperationList[index + 1], culture);
+                        OperationList[index - 1] = (mult1 * mult2).ToString(culture);
                         OperationList.RemoveAt(index);
                         OperationList.RemoveAt(index);
                     }
@@ -238,9 +267,9 @@ namespace SolidShineUi
                 {
                     if (OperationList[index] == "-")
                     {
-                        double res1 = double.Parse(OperationList[index - 1]);
-                        double res2 = double.Parse(OperationList[index + 1]);
-                        OperationList[index - 1] = (res1 - res2).ToString();
+                        double res1 = double.Parse(OperationList[index - 1], culture);
+                        double res2 = double.Parse(OperationList[index + 1], culture);
+                        OperationList[index - 1] = (res1 - res2).ToString(culture);
                         OperationList.RemoveAt(index);
                         OperationList.RemoveAt(index);
                     }
@@ -251,16 +280,16 @@ namespace SolidShineUi
                 {
                     if (OperationList[index] == "+")
                     {
-                        double sum1 = double.Parse(OperationList[index - 1]);
-                        double sum2 = double.Parse(OperationList[index + 1]);
-                        OperationList[index - 1] = (sum1 + sum2).ToString();
+                        double sum1 = double.Parse(OperationList[index - 1], culture);
+                        double sum2 = double.Parse(OperationList[index + 1], culture);
+                        OperationList[index - 1] = (sum1 + sum2).ToString(culture);
                         OperationList.RemoveAt(index);
                         OperationList.RemoveAt(index);
                     }
                     index++;
                 }
             }
-            return double.Parse(OperationList[0]);
+            return double.Parse(OperationList[0], culture);
         }
 
 #if NETCOREAPP
@@ -390,12 +419,12 @@ namespace SolidShineUi
                 return 3;
             }
 
-            if (input.EndsWith("/") || input.EndsWith("*") || input.EndsWith("+") || input.EndsWith("-"))
+            if (input.EndsWith("/", StringComparison.Ordinal) || input.EndsWith("*", StringComparison.Ordinal) || input.EndsWith("+", StringComparison.Ordinal) || input.EndsWith("-", StringComparison.Ordinal))
             {
                 return 4;
             }
 
-            if (input.StartsWith("+") || input.StartsWith("*") || input.StartsWith("/"))
+            if (input.StartsWith("+", StringComparison.Ordinal) || input.StartsWith("*", StringComparison.Ordinal) || input.StartsWith("/", StringComparison.Ordinal))
             {
                 return 5;
             }
@@ -428,12 +457,12 @@ namespace SolidShineUi
             char prev = '0';
             bool hasnumber = false;
 
-            if (input.EndsWith("/") || input.EndsWith("*") || input.EndsWith("+") || input.EndsWith("-"))
+            if (input.EndsWith("/", StringComparison.Ordinal) || input.EndsWith("*", StringComparison.Ordinal) || input.EndsWith("+", StringComparison.Ordinal) || input.EndsWith("-", StringComparison.Ordinal))
             {
                 return false;
             }
 
-            if (input.StartsWith("+") || input.StartsWith("*") || input.StartsWith("/"))
+            if (input.StartsWith("+", StringComparison.Ordinal) || input.StartsWith("*", StringComparison.Ordinal) || input.StartsWith("/", StringComparison.Ordinal))
             {
                 return false;
             }
