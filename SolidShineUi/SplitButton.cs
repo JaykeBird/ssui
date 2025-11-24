@@ -898,7 +898,7 @@ namespace SolidShineUi
         {
             if (e.NewValue is bool se)
             {
-                bool old = Convert.ToBoolean(e.OldValue);
+                bool old = (e.OldValue is bool oval) ? oval : false;
 
                 if (d is SplitButton f)
                 {
