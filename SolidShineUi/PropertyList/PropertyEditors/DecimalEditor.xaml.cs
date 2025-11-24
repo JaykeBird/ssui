@@ -196,14 +196,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuSetValue_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(_cs, "Set Decimal", "Enter in the exact decimal value to use:", _internalValue.ToString());
+            StringInputDialog sid = new StringInputDialog(_cs, "Set Decimal", "Enter in the exact decimal value to use:", _internalValue.ToString(provider: null));
             sid.ValidationFunction = (s) => { return decimal.TryParse(s, out _); };
             sid.ValidationFailureString = "Not a valid decimal value";
             if (_host != null) sid.Owner = _host.GetWindow();
             sid.ShowDialog();
             if (sid.DialogResult)
             {
-                _internalValue = decimal.Parse(sid.Value);
+                _internalValue = decimal.Parse(sid.Value, null);
                 _internalAction = true;
                 dblSpinner.Value = (double)_internalValue;
                 _internalAction = false;
@@ -214,7 +214,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#general-format-specifier-g
             // "However, if the number is a Decimal and the precision specifier is omitted, fixed-point notation is always used and trailing zeros are preserved."
-            Clipboard.SetText(_internalValue.ToString("G"));
+            Clipboard.SetText(_internalValue.ToString("G", null));
         }
     }
 }

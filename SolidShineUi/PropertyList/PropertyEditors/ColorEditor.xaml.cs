@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Linq;
-using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi;
 using SolidShineUi.PropertyList.Dialogs;
 using SolidShineUi.Utils;
+using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -175,7 +176,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Color ccol = col.Value;
 
                 string hex = ccol.GetHexStringWithAlpha();
-                nudValue.Value = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                nudValue.Value = int.Parse(hex, NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo);
                 brdrColor.Background = new SolidColorBrush(ccol);
             }
 
@@ -188,7 +189,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (_internalAction) return;
 
-            _col = ColorsHelper.CreateFromHex(nudValue.Value.ToString("X8"));
+            _col = ColorsHelper.CreateFromHex(nudValue.Value.ToString("X8", NumberFormatInfo.CurrentInfo));
             brdrColor.Background = new SolidColorBrush(_col);
 
             ValueChanged?.Invoke(this, EventArgs.Empty);
@@ -216,7 +217,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 _internalAction = true;
                 _col = cpd.SelectedColor;
-                nudValue.Value = int.Parse(_col.GetHexStringWithAlpha(), System.Globalization.NumberStyles.HexNumber);
+                nudValue.Value = int.Parse(_col.GetHexStringWithAlpha(), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo);
                 brdrColor.Background = new SolidColorBrush(_col);
                 _internalAction = false;
             }

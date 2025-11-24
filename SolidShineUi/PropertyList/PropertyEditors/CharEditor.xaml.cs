@@ -8,6 +8,7 @@ using SolidShineUi.PropertyList.Dialogs;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -110,7 +111,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.Text = ((char)(_value ?? 'a')).ToString();
                 }
 
-                txtValue.Text = ((int)(char)(_value ?? 'a')).ToString("X4");
+                txtValue.Text = ((int)(char)(_value ?? 'a')).ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #if NETCOREAPP
             else if (_itemType == typeof(Rune?) || _itemType == typeof(Rune))
@@ -118,7 +119,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                 txtText.IsEnabled = true;
                 txtText.Text = ((Rune)(_value ?? 'a')).ToString();
-                txtValue.Text = ((Rune)(_value ?? 'a')).Value.ToString("X4");
+                txtValue.Text = ((Rune)(_value ?? 'a')).Value.ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #endif
             else
@@ -192,7 +193,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.IsEnabled = true;
                 }
                 _value = c;
-                txtValue.Text = ((int)c).ToString("X4");
+                txtValue.Text = ((int)c).ToString("X4", NumberFormatInfo.CurrentInfo);
             }
             else if (type == typeof(char?))
             {
@@ -216,7 +217,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                         txtText.Text = c.ToString();
                         txtText.IsEnabled = true;
                     }
-                    txtValue.Text = ((int)(c ?? '\0')).ToString("X4");
+                    txtValue.Text = ((int)(c ?? '\0')).ToString("X4", NumberFormatInfo.CurrentInfo);
                 }
             }
 #if NETCOREAPP
@@ -225,7 +226,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Rune r = (Rune)(value ?? '\0');
                 txtText.Text = r.ToString();
                 _value = r;
-                txtValue.Text = r.Value.ToString("X4");
+                txtValue.Text = r.Value.ToString("X4", NumberFormatInfo.CurrentInfo);
             }
             else if (type == typeof(Rune?))
             {
@@ -240,7 +241,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 else
                 {
                     txtText.Text = (r ?? (Rune)'a').ToString();
-                    txtValue.Text = (r ?? (Rune)'a').Value.ToString("X4");
+                    txtValue.Text = (r ?? (Rune)'a').Value.ToString("X4", NumberFormatInfo.CurrentInfo);
                 }
             }
 #endif
@@ -278,7 +279,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.Text = val[0].ToString();
                     _internalAction = false;
                 }
-                txtValue.Text = ((int)(char)(_value ?? '\0')).ToString("X4");
+                txtValue.Text = ((int)(char)(_value ?? '\0')).ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #if NETCOREAPP
             else if (_itemType == typeof(Rune) || _itemType == typeof(Rune?))
@@ -300,7 +301,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.Text = _value.ToString();
                     _internalAction = false;
                 }
-                txtValue.Text = ((Rune)(_value ?? '\0')).Value.ToString("X4");
+                txtValue.Text = ((Rune)(_value ?? '\0')).Value.ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #endif
             else
@@ -330,7 +331,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     Rune r = sid.ValueAsRune;
                     txtText.Text = r.ToString();
                     _value = r;
-                    txtValue.Text = r.Value.ToString("X4");
+                    txtValue.Text = r.Value.ToString("X4", NumberFormatInfo.CurrentInfo);
                     _internalAction = false;
                 }
             }
@@ -363,7 +364,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                         txtText.IsEnabled = true;
                     }
                     _value = c;
-                    txtValue.Text = ((int)c).ToString("X4");
+                    txtValue.Text = ((int)c).ToString("X4", NumberFormatInfo.CurrentInfo);
                     _internalAction = false;
                 }
             }
