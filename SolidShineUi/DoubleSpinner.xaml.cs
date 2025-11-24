@@ -801,7 +801,7 @@ namespace SolidShineUi
 
             string digitDisplay = "G";
             if (MinimumDigitCount > 0) { digitDisplay = new string('0', MinimumDigitCount) + "." + new string('#', Decimals + 1); }
-            string sVal = Value.ToString(digitDisplay);
+            string sVal = Value.ToString(digitDisplay, null);
 
             if (txtValue.Text != sVal)
             {
@@ -817,15 +817,15 @@ namespace SolidShineUi
             }
 
             _updateBox = false;
-            if (double.TryParse(txtValue.Text, out _))
+            if (double.TryParse(txtValue.Text, out double dval))
             {
-                Value = Math.Round(double.Parse(txtValue.Text), Decimals);
+                Value = Math.Round(dval, Decimals);
             }
             else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
             {
                 try
                 {
-                    Value = Math.Round(ArithmeticParser.Evaluate(txtValue.Text), Decimals, MidpointRounding.AwayFromZero);
+                    Value = Math.Round(ArithmeticParser.Evaluate(txtValue.Text, null), Decimals, MidpointRounding.AwayFromZero);
                 }
                 catch (FormatException)
                 {
