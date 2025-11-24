@@ -286,7 +286,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else
             {
-                txtData.Text = _transform.Value.ToString();
+                txtData.Text = _transform.Value.ToString(null);
             }
         }
 

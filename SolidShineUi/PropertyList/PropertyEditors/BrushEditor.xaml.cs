@@ -642,7 +642,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    txtCurrentValue.Text = b.ToString();
+                    txtCurrentValue.Text = b.ToString(null);
                 }
 
                 ValueChanged?.Invoke(this, EventArgs.Empty);

@@ -725,7 +725,7 @@ namespace SolidShineUi.PropertyList
             else
             {
                 IEnumerable<PropertyInfo> propInfos;
-                if (filter.StartsWith("@"))
+                if (filter.StartsWith("@", StringComparison.Ordinal))
                 {
                     propInfos = FilterNameOnly(filter.Substring(1));
                 }
@@ -1467,7 +1467,7 @@ namespace SolidShineUi.PropertyList
             {
                 var generics = type.GetGenericArguments();
 
-                if (typeString.StartsWith("System.Nullable"))
+                if (typeString.StartsWith("System.Nullable", StringComparison.Ordinal))
                 {
                     return (fullName ? generics[0].FullName : generics[0].Name) + "?";
                 }
