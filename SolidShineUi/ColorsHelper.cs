@@ -62,13 +62,14 @@ namespace SolidShineUi
 
             switch (hex.Length)
             {
+#if NETCOREAPP
                 case 6: // #890ABC
                     try
                     {
                         return Color.FromRgb(
-                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier));
+                            byte.Parse(hex.AsSpan(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
                     }
                     catch (FormatException ex)
                     {
@@ -79,16 +80,43 @@ namespace SolidShineUi
                     try
                     {
                         return Color.FromArgb(
-                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(6, 2), NumberStyles.AllowHexSpecifier));
+                            byte.Parse(hex.AsSpan(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(6, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
+                    }
+                    catch (FormatException ex)
+                    {
+                        throw new FormatException("Hex string is not in a correct format.", ex);
+                    }
+#else
+                case 6: // #890ABC
+                    try
+                    {
+                        return Color.FromRgb(
+                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
                     }
                     catch (FormatException ex)
                     {
                         throw new FormatException("Hex string is not in a correct format.", ex);
                     }
 
+                case 8: // #FF890ABC
+                    try
+                    {
+                        return Color.FromArgb(
+                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(6, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
+                    }
+                    catch (FormatException ex)
+                    {
+                        throw new FormatException("Hex string is not in a correct format.", ex);
+                    }
+#endif
                 case 3: // #890 (equivalent to #889900)
                     try
                     {
@@ -97,9 +125,9 @@ namespace SolidShineUi
                         string b = $"{hex.Substring(2, 1)}{hex.Substring(2, 1)}";
 
                         return Color.FromRgb(
-                            byte.Parse(r, NumberStyles.AllowHexSpecifier),
-                            byte.Parse(g, NumberStyles.AllowHexSpecifier),
-                            byte.Parse(b, NumberStyles.AllowHexSpecifier));
+                            byte.Parse(r, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(g, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(b, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
                     }
                     catch (FormatException ex)
                     {
@@ -162,7 +190,8 @@ namespace SolidShineUi
         /// <param name="color">The color to convert to a hex string.</param>
         public static string ToHexString(Color color)
         {
-            return color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+            return color.R.ToString("X2", CultureInfo.InvariantCulture)
+                 + color.G.ToString("X2", CultureInfo.InvariantCulture) + color.B.ToString("X2", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -175,7 +204,8 @@ namespace SolidShineUi
         /// </remarks>
         public static string ToHexStringWithAlpha(Color color)
         {
-            return color.A.ToString("X2") + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+            return color.A.ToString("X2", CultureInfo.InvariantCulture) + color.R.ToString("X2", CultureInfo.InvariantCulture) 
+                 + color.G.ToString("X2", CultureInfo.InvariantCulture) + color.B.ToString("X2", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -189,7 +219,7 @@ namespace SolidShineUi
             return ColorTranslator.ToOle(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
-        #endregion
+#endregion
 
         #region Additional Functions
 
