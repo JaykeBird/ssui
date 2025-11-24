@@ -64,6 +64,8 @@ namespace SolidShineUi.Utils
 
         private ColorListItemDisplay cld = ColorListItemDisplay.Hex;
 
+        private IFormatProvider invar = System.Globalization.CultureInfo.InvariantCulture;
+
         /// <summary>
         /// Get or set the text to display with the color, such as RGB values or HEX values.
         /// </summary>
@@ -83,11 +85,11 @@ namespace SolidShineUi.Utils
                         lblColor.Text = "#" + col.GetHexString();
                         break;
                     case ColorListItemDisplay.Rgb:
-                        lblColor.Text = col.R.ToString() + ", " + col.G.ToString() + ", " + col.B.ToString();
+                        lblColor.Text = col.R.ToString(invar) + ", " + col.G.ToString(invar) + ", " + col.B.ToString(invar);
                         break;
                     case ColorListItemDisplay.Hsv:
                         ColorsHelper.ToHSV(col, out double h, out double s, out double v);
-                        lblColor.Text = h.ToString("N0") + ", " + s.ToString("N3") + ", " + v.ToString("N3");
+                        lblColor.Text = h.ToString("N0", invar) + ", " + s.ToString("N3", invar) + ", " + v.ToString("N3", invar);
                         break;
                     default:
                         lblColor.Text = "#" + col.GetHexString();
@@ -118,11 +120,11 @@ namespace SolidShineUi.Utils
                         lblColor.Text = "#" + col.GetHexString();
                         break;
                     case ColorListItemDisplay.Rgb:
-                        lblColor.Text = col.R.ToString() + ", " + col.G.ToString() + ", " + col.B.ToString();
+                        lblColor.Text = col.R.ToString(invar) + ", " + col.G.ToString(invar) + ", " + col.B.ToString(invar);
                         break;
                     case ColorListItemDisplay.Hsv:
                         ColorsHelper.ToHSV(col, out double h, out double s, out double v);
-                        lblColor.Text = h.ToString("N0") + ", " + s.ToString("N3") + ", " + v.ToString("N3");
+                        lblColor.Text = h.ToString("N0", invar) + ", " + s.ToString("N3", invar) + ", " + v.ToString("N3", invar);
                         break;
                     default:
                         lblColor.Text = "#" + col.GetHexString();
