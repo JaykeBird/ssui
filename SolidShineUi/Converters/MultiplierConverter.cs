@@ -37,8 +37,8 @@ namespace SolidShineUi.Converters
 
             try
             {
-                dblVal = System.Convert.ToDouble(value);
-                dblParam = System.Convert.ToDouble(parameter);
+                dblVal = System.Convert.ToDouble(value, culture);
+                dblParam = System.Convert.ToDouble(parameter, culture);
             }
             catch (FormatException)
             {
@@ -75,8 +75,8 @@ namespace SolidShineUi.Converters
 
             try
             {
-                dblVal = System.Convert.ToDouble(value);
-                dblParam = System.Convert.ToDouble(parameter);
+                dblVal = System.Convert.ToDouble(value, culture);
+                dblParam = System.Convert.ToDouble(parameter, culture);
             }
             catch (FormatException)
             {
@@ -148,7 +148,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    double dval = System.Convert.ToDouble(vi);
+                    double dval = System.Convert.ToDouble(vi, culture);
                     val = new Thickness(dval);
                 }
                 catch (FormatException)
@@ -180,7 +180,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    dblParam = System.Convert.ToDouble(parameter);
+                    dblParam = System.Convert.ToDouble(parameter, culture);
                 }
                 catch (FormatException)
                 {
@@ -239,7 +239,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    double dval = System.Convert.ToDouble(vi);
+                    double dval = System.Convert.ToDouble(vi, culture);
                     val = new Thickness(dval);
                 }
                 catch (FormatException)
@@ -271,7 +271,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    dblParam = System.Convert.ToDouble(parameter);
+                    dblParam = System.Convert.ToDouble(parameter, culture);
                 }
                 catch (FormatException)
                 {
@@ -346,7 +346,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    double dval = System.Convert.ToDouble(vi);
+                    double dval = System.Convert.ToDouble(vi, culture);
                     val = new CornerRadius(dval);
                 }
                 catch (FormatException)
@@ -378,7 +378,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    dblParam = System.Convert.ToDouble(parameter);
+                    dblParam = System.Convert.ToDouble(parameter, culture);
                 }
                 catch (FormatException)
                 {
@@ -437,7 +437,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    double dval = System.Convert.ToDouble(vi);
+                    double dval = System.Convert.ToDouble(vi, culture);
                     val = new CornerRadius(dval);
                 }
                 catch (FormatException)
@@ -469,7 +469,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    dblParam = System.Convert.ToDouble(parameter);
+                    dblParam = System.Convert.ToDouble(parameter, culture);
                 }
                 catch (FormatException)
                 {
@@ -544,7 +544,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    double dval = System.Convert.ToDouble(vi);
+                    double dval = System.Convert.ToDouble(vi, culture);
                     val = new Point(dval, dval);
                 }
                 catch (FormatException)
@@ -576,7 +576,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    dblParam = System.Convert.ToDouble(parameter);
+                    dblParam = System.Convert.ToDouble(parameter, culture);
                 }
                 catch (FormatException)
                 {
@@ -635,7 +635,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    double dval = System.Convert.ToDouble(vi);
+                    double dval = System.Convert.ToDouble(vi, culture);
                     val = new Point(dval, dval);
                 }
                 catch (FormatException)
@@ -667,7 +667,7 @@ namespace SolidShineUi.Converters
             {
                 try
                 {
-                    dblParam = System.Convert.ToDouble(parameter);
+                    dblParam = System.Convert.ToDouble(parameter, culture);
                 }
                 catch (FormatException)
                 {

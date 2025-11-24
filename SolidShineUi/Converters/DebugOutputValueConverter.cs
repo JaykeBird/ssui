@@ -63,12 +63,12 @@ namespace SolidShineUi.Converters
             }
         }
 
-        void PostItem(string s)
+        static void PostItem(string s)
         {
             Debug.WriteLine(s);
         }
 
-        void PostItem(object item)
+        static void PostItem(object item)
         {
             PostItem(item.ToString() ?? "(null)");
         }

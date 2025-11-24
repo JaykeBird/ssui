@@ -6,7 +6,7 @@ using System.Windows.Data;
 namespace SolidShineUi.Converters
 {
     /// <summary>
-    /// Converts a double into a string for display in XAML.
+    /// Converts a double into a string for display in XAML, with rounding possible by setting the parameter to the decimal places to round to.
     /// </summary>
     public class DoubleStringConverter : IValueConverter
     {
@@ -24,9 +24,9 @@ namespace SolidShineUi.Converters
             try
             {
                 int Decimals = (int)parameter;
-                return Math.Round((double)value, Decimals).ToString();
+                return Math.Round((double)value, Decimals).ToString(culture);
             }
-            catch (InvalidCastException)
+            catch (InvalidCastException) // this means that the parameter is not set, and we won't round the input; still fine to have and use
             {
                 return (value ?? 0.0d).ToString() ?? "0.0";
             }
@@ -40,7 +40,7 @@ namespace SolidShineUi.Converters
         {
             try
             {
-                return double.Parse(value as string ?? "0");
+                return double.Parse(value as string ?? "0", culture);
             }
             catch (FormatException)
             {
