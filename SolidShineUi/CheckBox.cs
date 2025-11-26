@@ -190,6 +190,8 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region Properties
+
         /// <summary>The backing dependency property for <see cref="IsChecked"/>. See the related property for details.</summary>
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
             "IsChecked", typeof(bool), typeof(CheckBox),
@@ -247,37 +249,13 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="CheckState"/>. See the related property for details.</summary>
         public static DependencyProperty CheckStateProperty
             = DependencyProperty.Register(nameof(CheckState), typeof(CheckState), typeof(CheckBox),
-            new FrameworkPropertyMetadata(CheckState.Unchecked, (d, e) => d.PerformAs<CheckBox>((o) => o.OnCheckStateChanged(e))));
+            new FrameworkPropertyMetadata(CheckState.Unchecked, OnCheckStateChanged));
 
-        private void OnCheckStateChanged(DependencyPropertyChangedEventArgs e)
+        private static void OnCheckStateChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is CheckState newVal) { }
-            else
+            if (o is CheckBox cb)
             {
-                newVal = CheckState.Unchecked;
-            }
-
-            if (updateBoolValues)
-            {
-                switch (newVal)
-                {
-                    case CheckState.Unchecked:
-                        IsChecked = false;
-                        IsIndeterminate = false;
-                        break;
-                    case CheckState.Checked:
-                        IsChecked = true;
-                        IsIndeterminate = false;
-                        break;
-                    case CheckState.Indeterminate:
-                        IsChecked = true;
-                        IsIndeterminate = true;
-                        break;
-                    default:
-                        IsChecked = false;
-                        IsIndeterminate = false;
-                        break;
-                }
+                cb.OnInternalCheckStateChanged(e);
             }
         }
 
@@ -384,6 +362,38 @@ namespace SolidShineUi
                 RoutedEventArgs t = new RoutedEventArgs(CheckChangedEvent);
                 RaiseEvent(t);
                 RaiseCheckedEvent();
+            }
+        }
+
+        private void OnInternalCheckStateChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is CheckState newVal) { }
+            else
+            {
+                newVal = CheckState.Unchecked;
+            }
+
+            if (updateBoolValues)
+            {
+                switch (newVal)
+                {
+                    case CheckState.Unchecked:
+                        IsChecked = false;
+                        IsIndeterminate = false;
+                        break;
+                    case CheckState.Checked:
+                        IsChecked = true;
+                        IsIndeterminate = false;
+                        break;
+                    case CheckState.Indeterminate:
+                        IsChecked = true;
+                        IsIndeterminate = true;
+                        break;
+                    default:
+                        IsChecked = false;
+                        IsIndeterminate = false;
+                        break;
+                }
             }
         }
 
@@ -714,10 +724,10 @@ namespace SolidShineUi
 
         #region Routed Events
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>The backing routed event for <see cref="Click"/>. See the related event for details.</summary>
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
             "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the check box is clicked.
@@ -728,10 +738,9 @@ namespace SolidShineUi
             remove { RemoveHandler(ClickEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing routed event for <see cref="RightClick"/>. See the related event for details.</summary>
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
             "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Raised when the check box is right-clicked.
@@ -745,6 +754,7 @@ namespace SolidShineUi
         #endregion
 
         #region Variables/Properties
+
         bool initiatingClick = false;
         /// <summary>
         /// Gets or sets whether the Click event should be raised when the checkbox is pressed, rather than when it is released.
