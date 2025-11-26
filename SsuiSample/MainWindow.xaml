@@ -38,6 +38,7 @@
                     <Separator />
                     <MenuItem Header="D_efault New" x:Name="mnuDefaultCs" Click="mnuDefaultCs_Click" />
                 </MenuItem>
+                <MenuItem Header="_Set Culture..." x:Name="mnuCulture" Click="mnuCulture_Click" />
                 <MenuItem Header="_Exit" x:Name="mnuExit" Click="mnuExit_Click" />
             </MenuItem>
             <MenuItem Header="_Test Menu">

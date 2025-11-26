@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,6 +24,8 @@ namespace SsuiSample
         public MainWindow()
         {
             InitializeComponent();
+
+            defaultCulture = CultureInfo.CurrentCulture;
 
             ColorScheme cs = new ColorScheme(ColorsHelper.CreateFromHex("#77AAEE"), ColorsHelper.CreateFromHex("#EEAA77"));
             //cs.MenusUseAccent = true;
@@ -68,6 +72,52 @@ namespace SsuiSample
         private void mnuExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        CultureInfo defaultCulture;
+
+        private void mnuCulture_Click(object sender, RoutedEventArgs e)
+        {
+            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Current Culture", "Set the culture to use for this window", CultureInfo.CurrentCulture.Name);
+            sid.ValidationFunction = (v) =>
+            {
+                if (string.IsNullOrWhiteSpace(v)) return false;
+                try
+                {
+                    CultureInfo ci = new CultureInfo(v);
+                }
+                catch (CultureNotFoundException)
+                {
+                    if (string.Equals(v, "invariant", StringComparison.InvariantCultureIgnoreCase) || string.Equals(v, "default", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        // special case for invariant or default (use system) culture
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            };
+            sid.ValidationFailureString = "Not a valid culture name";
+            sid.ShowDialog();
+
+            if (sid.DialogResult)
+            {
+                if (string.Equals(sid.Value, "invariant", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+                }
+                else if (string.Equals(sid.Value, "default", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Thread.CurrentThread.CurrentCulture = defaultCulture;
+                    Thread.CurrentThread.CurrentUICulture = defaultCulture;
+                }
+                else
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo(sid.Value);
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(sid.Value);
+                }
+            }
         }
 
         private void mnuColors_Click(object sender, RoutedEventArgs e)
