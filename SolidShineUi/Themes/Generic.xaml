@@ -214,7 +214,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type MenuItem}">
                             <!--Border 1-->
-                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent"
+                            <Border x:Name="Border" Background="#01FFFFFF" BorderBrush="Transparent"
                                     BorderThickness="1" SnapsToDevicePixels="False">
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
@@ -301,7 +301,7 @@
                                     <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1,1,1,1"/>
                                     <Setter TargetName="SubMenu" Property="Margin" Value="2,3,2,2"/>
                                     <Setter TargetName="TransitionBorder" Property="Width" Value="{Binding ActualWidth, ElementName=Grid}"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                     <Setter Property="UseLayoutRounding" Value="True" />
                                 </Trigger>
                                 <Trigger Property="Role" Value="TopLevelItem">
@@ -312,7 +312,7 @@
                                     <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
                                     <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed"/>
                                     <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                 </Trigger>
                                 <Trigger Property="Role" Value="SubmenuHeader">
                                     <!-- menu item with subitems -->
@@ -322,7 +322,7 @@
                                     <Setter TargetName="Icon" Property="UseLayoutRounding" Value="True" />
                                     <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
                                     <Setter TargetName="Border" Property="MinHeight" Value="22"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                 </Trigger>
                                 <Trigger Property="Role" Value="SubmenuItem">
                                     <!-- menu item -->
@@ -333,7 +333,7 @@
                                     <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
                                     <Setter TargetName="Border" Property="MinHeight" Value="22"/>
                                     <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                 </Trigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -452,7 +452,7 @@
                         <ControlTemplate TargetType="{x:Type MenuItem}">
                             <!--Border 1-->
                             <!-- individual menu item (top-level menu) -->
-                            <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent"
+                            <Border x:Name="Border" Background="#01FFFFFF" BorderBrush="Transparent"
                                     BorderThickness="1" SnapsToDevicePixels="False">
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
@@ -527,7 +527,7 @@
                                     <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
                                     <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1,1,1,1"/>
                                     <Setter TargetName="SubMenu" Property="Margin" Value="2,3,2,2"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                     <Setter Property="UseLayoutRounding" Value="True" />
                                 </Trigger>
                                 <Trigger Property="Role" Value="TopLevelItem">
@@ -537,7 +537,7 @@
                                     <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
                                     <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed"/>
                                     <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                 </Trigger>
                                 <Trigger Property="Role" Value="SubmenuHeader">
                                     <Setter Property="DockPanel.Dock" Value="Top"/>
@@ -546,7 +546,7 @@
                                     <Setter TargetName="Icon" Property="UseLayoutRounding" Value="True" />
                                     <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
                                     <Setter TargetName="Border" Property="MinHeight" Value="22"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                 </Trigger>
                                 <Trigger Property="Role" Value="SubmenuItem">
                                     <Setter Property="DockPanel.Dock" Value="Top"/>
@@ -556,7 +556,7 @@
                                     <Setter TargetName="Icon" Property="Margin" Value="2,0,0,0" />
                                     <Setter TargetName="Border" Property="MinHeight" Value="22"/>
                                     <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                 </Trigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
