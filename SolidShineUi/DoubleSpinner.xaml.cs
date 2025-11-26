@@ -14,6 +14,7 @@ namespace SolidShineUi
     /// <summary>
     /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Handled in Unloaded event")]
     public partial class DoubleSpinner : UserControl
     {
 
@@ -55,6 +56,7 @@ namespace SolidShineUi
         {
             InitializeComponent();
             Loaded += DoubleSpinner_Loaded;
+            Unloaded += DoubleSpinner_Unloaded;
 
             DependencyPropertyDescriptor.FromProperty(ValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, PropertyChanged);
             //DependencyPropertyDescriptor.FromProperty(ValueProperty, typeof(DoubleSpinner)).AddValueChanged(this, ValueChanged);
@@ -79,7 +81,29 @@ namespace SolidShineUi
         private void DoubleSpinner_Loaded(object sender, EventArgs e)
         {
             txtValue.TextChanged += txtValue_TextChanged;
+        }        
+        
+        #region Disposing / Unloading
+
+        /// <summary>
+        /// Reset the spinner's internal timers; this should only be needed if this control is being unloaded and then later loaded.
+        /// </summary>
+        protected void ResetTimers()
+        {
+            advanceTimer.Dispose();
+            keyDownTimer.Dispose();
+
+            advanceTimer = new Timer(50);
+            keyDownTimer = new Timer(300);
         }
+
+        private void DoubleSpinner_Unloaded(object sender, RoutedEventArgs e)
+        {
+            advanceTimer.Dispose();
+            keyDownTimer.Dispose();
+        }
+
+        #endregion
 
         private void DoubleSpinner_InternalValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

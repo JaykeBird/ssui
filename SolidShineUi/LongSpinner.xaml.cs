@@ -14,6 +14,7 @@ namespace SolidShineUi
     /// <summary>
     /// A control for selecting a number, via typing in a number, an arithmetic expression, or using the up and down buttons. Only Long values are allowed.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Handled in Unloaded event")]
     public partial class LongSpinner : UserControl
     {
 
@@ -55,6 +56,7 @@ namespace SolidShineUi
         {
             InitializeComponent();
             Loaded += LongSpinner_Loaded;
+            Unloaded += LongSpinner_Unloaded;
 
             //txtValue.SetBinding(TextBox.TextProperty, new Binding("Value")
             //{
@@ -91,6 +93,28 @@ namespace SolidShineUi
         {
             txtValue.TextChanged += txtValue_TextChanged;
         }
+
+        #region Disposing / Unloading
+
+        /// <summary>
+        /// Reset the spinner's internal timers; this should only be needed if this control is being unloaded and then later loaded.
+        /// </summary>
+        protected void ResetTimers()
+        {
+            advanceTimer.Dispose();
+            keyDownTimer.Dispose();
+
+            advanceTimer = new Timer(50);
+            keyDownTimer = new Timer(300);
+        }
+
+        private void LongSpinner_Unloaded(object sender, RoutedEventArgs e)
+        {
+            advanceTimer.Dispose();
+            keyDownTimer.Dispose();
+        }
+
+        #endregion
 
         private void LongSpinner_internalValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
