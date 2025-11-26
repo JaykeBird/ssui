@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// Extension methods for Streams. This file is not utilized in SolidShineUi at all, and will be removed in a future version.
+    /// Extension methods for Streams. This file is not utilized in SolidShineUi at all, and will be removed in Solid Shine UI 2.0.
     /// </summary>
-    [Obsolete("This file is not utilized in SolidShineUi at all, and will be removed in a future version.")]
+    [Obsolete("This file is not utilized in SolidShineUi at all, and will be removed in Solid Shine UI 2.0.")]
     public static class StreamExtensions
     {
         #region Static Methods

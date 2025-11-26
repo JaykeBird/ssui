@@ -61,6 +61,7 @@ namespace SolidShineUi
         #endregion
 
         #region Layout Properties
+
         /// <summary>
         /// Gets or sets the internal padding in each of the caption buttons.
         /// </summary>
@@ -108,6 +109,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty MarginButtonProperty = DependencyProperty.Register(
              "MarginButton", typeof(Thickness), typeof(ChromeButtons));
+        
         #endregion
 
         #region Caption Type

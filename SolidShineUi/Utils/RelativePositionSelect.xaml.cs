@@ -13,6 +13,9 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// A control to visually select a value between 0.0 and 1.0 in both the X (width) and Y (height) axes.
     /// </summary>
+    /// <remarks>
+    /// In Solid Shine UI 2.0, this will be replaced with an updated PositionSelect control.
+    /// </remarks>
     public partial class RelativePositionSelect : UserControl
     {
 

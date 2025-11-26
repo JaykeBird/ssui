@@ -1093,9 +1093,9 @@ namespace SolidShineUi.Utils
 
         /// <summary>
         /// Get whether the dropped TabItem should be put before or after the source TabItem. 
-        /// (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in the future.)
+        /// (Please use <see cref="PlaceBefore"/> instead, as this property will be removed in Solid Shine UI 2.0.)
         /// </summary>
-        [Obsolete("Please use the PlaceBefore property instead going forward. This property will be removed in a future version.", false)]
+        [Obsolete("Please use the PlaceBefore property instead going forward. This property will be removed in Solid Shine UI 2.0.", false)]
         public bool Before { get; private set; }
 
         /// <summary>

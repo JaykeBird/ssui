@@ -974,7 +974,7 @@ namespace SolidShineUi
         /// Get or set if this button is the default button in the dialog or window it is located in. Due to limitations in WPF, this actually does not work.
         /// </summary>
         /// <remarks>
-        /// This will be removed in version 2.0.
+        /// This will be removed in Solid Shine UI 2.0.
         /// </remarks>
         [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
         public bool IsDefault
@@ -1020,7 +1020,7 @@ namespace SolidShineUi
         /// Specifies whether or not this button is the button that would be invoked when Enter is pressed. Due to limitations in WPF, this actually does not work.
         /// </summary>
         /// <remarks>
-        /// This will be removed in version 2.0.
+        /// This will be removed in Solid Shine UI 2.0.
         /// </remarks>
         [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
         public bool IsDefaulted

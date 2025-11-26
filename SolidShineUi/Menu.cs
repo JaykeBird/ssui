@@ -153,6 +153,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the border of the menu's drop-down area.
         /// </summary>
+        /// <remarks>
+        /// In Solid Shine UI 2.0, this will be renamed to <c>MenuBorderBrush</c>, to prevent the overlapping of <c>Control.BorderBrush</c>.
+        /// </remarks>
         [Category("Brushes")]
         public new Brush BorderBrush
         {

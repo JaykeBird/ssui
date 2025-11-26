@@ -156,6 +156,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the border of the menu's drop-down area.
         /// </summary>
+        /// <remarks>
+        /// In Solid Shine UI 2.0, this <c>ContextMenu.BorderBrush</c> will be removed, so that instead <c>Control.BorderBrush</c> can be used.
+        /// </remarks>
         [Category("Brushes")]
         public new Brush BorderBrush
         {
@@ -170,7 +173,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the top-level menu items in the menu bar. This is not used in a ContextMenu; instead look at the HighlightSubitemBrush property.
+        /// Get or set the brush used for the top-level menu items in the menu bar. This is not used in a ContextMenu; instead look at the <see cref="HighlightSubitemBrush"/> property.
         /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
