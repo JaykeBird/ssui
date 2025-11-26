@@ -10,6 +10,7 @@ namespace SolidShineUi.Utils
     /// </summary>
     public static class IconLoader
     {
+#pragma warning disable CA1707 // Identifiers should not contain underscores (for backwards compatibility, this has to stay)
         /// <summary>
         /// Black monochrome icon
         /// </summary>
@@ -22,6 +23,7 @@ namespace SolidShineUi.Utils
         /// White monochrome icon
         /// </summary>
         public const string ICON_WHITE = "White";
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 
         /// <summary>
         /// Load an icon from SolidShineUi's internal icon list.

@@ -35,6 +35,8 @@ namespace SolidShineUi
 
             invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             invalidTimer.Tick += InvalidTimer_Tick;
+
+            ColorSchemeChanged += MessageDialog_ColorSchemeChanged;
         }
 
         /// <summary>
@@ -50,6 +52,8 @@ namespace SolidShineUi
 
             invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             invalidTimer.Tick += InvalidTimer_Tick;
+
+            ColorSchemeChanged += MessageDialog_ColorSchemeChanged;
         }
 
 #if NETCOREAPP
@@ -86,51 +90,18 @@ namespace SolidShineUi
             invalidTimer.Start();
         }
 
-#endregion
+        #endregion
 
         #region Color Scheme
 
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply.</param>
-        public new void ApplyColorScheme(ColorScheme cs)
+        private void MessageDialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-
-            UpdateAppearance();
-        }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="hco">The high-contast color scheme to apply.</param>
-        /// <remarks>
-        /// This method will be removed in version 2.0. Instead, use <see cref="ApplyColorScheme(ColorScheme)"/> and use
-        /// <see cref="ColorScheme.GetHighContrastScheme(HighContrastOption)"/> to acquire the high contrast theme.
-        /// </remarks>
-        [Obsolete("This overload of the ApplyColorScheme method will be removed in the future. Please use the other ApplyColorScheme method, " +
-            "and use ColorScheme.GetHighContrastScheme to get the desired high-contrast scheme.", false)]
-        public new void ApplyColorScheme(HighContrastOption hco)
-        {
-            ColorScheme cs = ColorScheme.GetHighContrastScheme(hco);
-
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-
             UpdateAppearance();
         }
 
         void UpdateAppearance()
         {
-            base.ApplyColorScheme(ColorScheme);
+            // base.ApplyColorScheme(ColorScheme);
 
             //grdButtonContainer.Background = BrushFactory.Create(ColorScheme.SecondaryColor);
 
@@ -141,44 +112,6 @@ namespace SolidShineUi
             extraButton2.ApplyColorScheme(ColorScheme);
             extraButton3.ApplyColorScheme(ColorScheme);
             chkBox.ApplyColorScheme(ColorScheme);
-        }
-
-        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
-        public new static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(MessageDialog),
-                new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        /// <summary>
-        /// The color scheme to use with the message dialog.
-        /// </summary>
-        public new ColorScheme ColorScheme
-        {
-            get
-            {
-                return (ColorScheme)GetValue(ColorSchemeProperty);
-            }
-            set
-            {
-                SetValue(ColorSchemeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public new static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-            if (d is MessageDialog m)
-            {
-                m.ApplyColorScheme(cs);
-            }
         }
 
         #endregion

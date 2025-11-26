@@ -81,10 +81,8 @@ namespace SolidShineUi
         /// However, the description is helpful to remind the user what is being asked of them here, and also to potentially clarify the types of values that are valid or invalid.</remarks>
         public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
-        /// <summary>
-        /// A dependency property backing the related property. See <see cref="Description"/> for details.
-        /// </summary>
-        public static DependencyProperty DescriptionProperty
+        /// <summary>The backing dependency property for <see cref="Description"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty DescriptionProperty
             = DependencyProperty.Register("Description", typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("Enter a value:"));
 
@@ -98,10 +96,8 @@ namespace SolidShineUi
         /// </summary>
         public bool EnterKeyConfirms { get => (bool)GetValue(EnterKeyConfirmsProperty); set => SetValue(EnterKeyConfirmsProperty, value); }
 
-        /// <summary>
-        /// A dependency property backing the related property. Please see <see cref="EnterKeyConfirms"/> for details.
-        /// </summary>
-        public static DependencyProperty EnterKeyConfirmsProperty
+        /// <summary>The backing dependency property for <see cref="EnterKeyConfirms"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EnterKeyConfirmsProperty
             = DependencyProperty.Register("EnterKeyConfirms", typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
@@ -110,10 +106,8 @@ namespace SolidShineUi
         /// </summary>
         public bool EscapeKeyCancels { get => (bool)GetValue(EscapeKeyCancelsProperty); set => SetValue(EscapeKeyCancelsProperty, value); }
 
-        /// <summary>
-        /// A dependency property backing the related property. Please see <see cref="EscapeKeyCancels"/> for details.
-        /// </summary>
-        public static DependencyProperty EscapeKeyCancelsProperty
+        /// <summary>The backing dependency property for <see cref="EscapeKeyCancels"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EscapeKeyCancelsProperty
             = DependencyProperty.Register("EscapeKeyCancels", typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
@@ -122,10 +116,8 @@ namespace SolidShineUi
         /// </summary>
         public bool SelectTextOnFocus { get => (bool)GetValue(SelectTextOnFocusProperty); set => SetValue(SelectTextOnFocusProperty, value); }
 
-        /// <summary>
-        /// A dependency proeprty backing the related property. Please see <see cref="SelectTextOnFocus"/> for details.
-        /// </summary>
-        public static DependencyProperty SelectTextOnFocusProperty
+        /// <summary>The backing dependency property for <see cref="SelectTextOnFocus"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectTextOnFocusProperty
             = DependencyProperty.Register("SelectTextOnFocus", typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
@@ -158,7 +150,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property backing the related property. See <see cref="ValidationSuccessString"/> for details.
         /// </summary>
-        public static DependencyProperty ValidationSuccessStringProperty
+        public static readonly DependencyProperty ValidationSuccessStringProperty
             = DependencyProperty.Register("ValidationSuccessString", typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(""));
 
@@ -170,7 +162,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property backing the related property. See <see cref="ValidationFailureString"/> for details.
         /// </summary>
-        public static DependencyProperty ValidationFailureStringProperty
+        public static readonly DependencyProperty ValidationFailureStringProperty
             = DependencyProperty.Register("ValidationFailureString", typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("Input is not valid"));
 

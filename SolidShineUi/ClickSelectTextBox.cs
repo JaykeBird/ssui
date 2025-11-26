@@ -37,7 +37,7 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property backing its related property. See <see cref="SelectOnFocus"/> for more details.
         /// </summary>
-        public static DependencyProperty SelectOnFocusProperty
+        public static readonly DependencyProperty SelectOnFocusProperty
             = DependencyProperty.Register("SelectOnFocus", typeof(bool), typeof(ClickSelectTextBox),
             new FrameworkPropertyMetadata(true));
 

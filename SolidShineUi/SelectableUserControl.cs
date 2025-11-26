@@ -165,7 +165,7 @@ namespace SolidShineUi
         public bool SelectOnClick { get => (bool)GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectOnClickProperty
+        public static readonly DependencyProperty SelectOnClickProperty
             = DependencyProperty.Register("SelectOnClick", typeof(bool), typeof(SelectableUserControl),
             new FrameworkPropertyMetadata(true));
 
@@ -219,12 +219,12 @@ namespace SolidShineUi
         /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
         /// </summary>
         /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
-        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="trigger">The source or method used to trigger the change in selection.</param>
         /// <param name="triggerSource">The object that triggered the change.</param>
 #if NETCOREAPP
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object? triggerSource = null)
 #else
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object triggerSource = null)
 #endif
         {
             if (CanSelect)
@@ -243,8 +243,8 @@ namespace SolidShineUi
 
                 if (curVal != sel)
                 {
-                    IsSelectedChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, triggerMethod, triggerSource));
-                    SelectionChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, triggerMethod, triggerSource));
+                    IsSelectedChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, trigger, triggerSource));
+                    SelectionChanged?.Invoke(this, new ItemSelectionChangedEventArgs(curVal, sel, trigger, triggerSource));
                 }
             }
         }

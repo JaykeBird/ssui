@@ -6,7 +6,6 @@ using System;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Diagnostics;
-using SolidShineUi.Utils;
 using System.Windows.Threading;
 
 #if NET40
@@ -175,6 +174,7 @@ namespace SolidShineUi
         #endregion
 
         #region Color Scheme
+
         /// <summary>
         /// Get if the window's color scheme is a high contrast theme (and thus, the window is displaying high-contrast colors).
         /// </summary>
@@ -201,7 +201,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is ColorScheme cs)
             {
@@ -288,15 +288,15 @@ namespace SolidShineUi
 
         int captionHeight = 29;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="CaptionDisplayType"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
             "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
             new PropertyMetadata(CaptionType.Full));
 
+        /// <summary>The backing dependency property for <see cref="CaptionButtonPadding"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CaptionButtonPaddingProperty = DependencyProperty.Register(
             "CaptionButtonPadding", typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(9, 7, 9, 7)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Gets or sets the visibility of the caption buttons (close, maximize, minimize). The actions may still be available via other methods even if the buttons are hidden.
@@ -320,7 +320,9 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets the amount of padding to use with each of the caption buttons. A higher padding will make the buttons larger.
         /// </summary>
-        /// <remarks>The default value is (9,7,9,7).</remarks>
+        /// <remarks>
+        /// The default value for Solid Shine UI 1.x is (9,7,9,7). This will be changed to (15,7,15,7) for SSUI 2.0 to match the Windows 10/11 style.
+        /// </remarks>
         public Thickness CaptionButtonPadding
         {
             get
@@ -354,6 +356,8 @@ namespace SolidShineUi
             // note to self: if updating this method, make sure this matches the WindowChrome settings in the Generic.xaml file.
             SetWindowChrome(height);
         }
+
+        #region Corner Radius (commented out)
 
         //void ChangeChromeCornerRadius(CornerRadius radius)
         //{
@@ -399,53 +403,12 @@ namespace SolidShineUi
         //    }
         //}
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
-            "TopRightElement", typeof(UIElement), typeof(FlatWindow),
-            new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        #endregion
 
-        /// <summary>
-        /// Gets or sets the UI element to place in the top-right of the window, to the left of the caption buttons.
-        /// </summary>
-        public UIElement TopRightElement
-        {
-            get
-            {
-                return (UIElement)GetValue(TopRightElementProperty);
-            }
-            set
-            {
-                SetValue(TopRightElementProperty, value);
-            }
-        }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
-            "TopLeftElement", typeof(UIElement), typeof(FlatWindow),
-            new PropertyMetadata(null));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Gets or sets the UI element to place in the top-left corner of the window.
-        /// </summary>
-        public UIElement TopLeftElement
-        {
-            get
-            {
-                return (UIElement)GetValue(TopLeftElementProperty);
-            }
-            set
-            {
-                SetValue(TopLeftElementProperty, value);
-            }
-        }
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ShowTitle"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
-            "ShowTitle", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ShowTitle", typeof(bool), typeof(FlatWindow), new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the <see cref="Window.Title"/> should be displayed at the top of the window.
@@ -463,11 +426,9 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ShowIcon"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
-            "ShowIcon", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ShowIcon", typeof(bool), typeof(FlatWindow), new PropertyMetadata(false));
 
         /// <summary>
         /// Get or set if the <see cref="Window.Icon"/> should be displayed at the top-left of the window.
@@ -485,11 +446,51 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        #region TopLeftElement / TopRightElement
+
+        /// <summary>The backing dependency property for <see cref="TopRightElement"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TopRightElementProperty = DependencyProperty.Register(
+            "TopRightElement", typeof(UIElement), typeof(FlatWindow),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the UI element to place in the top-right of the window, to the left of the caption buttons.
+        /// </summary>
+        public UIElement TopRightElement
+        {
+            get
+            {
+                return (UIElement)GetValue(TopRightElementProperty);
+            }
+            set
+            {
+                SetValue(TopRightElementProperty, value);
+            }
+        }
+
+        /// <summary>The backing dependency property for <see cref="TopLeftElement"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TopLeftElementProperty = DependencyProperty.Register(
+            "TopLeftElement", typeof(UIElement), typeof(FlatWindow),
+            new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets the UI element to place in the top-left corner of the window.
+        /// </summary>
+        public UIElement TopLeftElement
+        {
+            get
+            {
+                return (UIElement)GetValue(TopLeftElementProperty);
+            }
+            set
+            {
+                SetValue(TopLeftElementProperty, value);
+            }
+        }
+
+        /// <summary>The backing dependency property for <see cref="ExcludeTopLeftElementFromChrome"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ExcludeTopLeftElementFromChromeProperty = DependencyProperty.Register(
-            "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ExcludeTopLeftElementFromChrome", typeof(bool), typeof(FlatWindow), new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the top-left element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
@@ -510,11 +511,9 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ExcludeTopRightElementFromChrome"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ExcludeTopRightElementFromChromeProperty = DependencyProperty.Register(
-            "ExcludeTopRightElementFromChrome", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            "ExcludeTopRightElementFromChrome", typeof(bool), typeof(FlatWindow), new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the top-right element should be considered part of the window chrome or not. Set to <c>true</c> to exclude it from the window chrome.
@@ -535,11 +534,12 @@ namespace SolidShineUi
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        #endregion
+
+        /// <summary>The backing dependency property for <see cref="BorderThickness"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(1)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border of the window. Setting the thickness to 0 means the border is not visible.
@@ -562,8 +562,9 @@ namespace SolidShineUi
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) is being clicked.
+        /// Get or set the brush used when one of the caption buttons (minimize, restore, close) is being clicked.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>CaptionButtonsClickBrush</c>.</remarks>
         public Brush SelectionBrush
         {
             get
@@ -577,8 +578,9 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used when one of the caption buttons (in the top-right on non-RTL systems) has focus or has the mouse over it.
+        /// Get or set the brush used when one of the caption buttons (minimize, restore, close) has focus or has the mouse over it.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>CaptionButtonsHighlightBrush</c>.</remarks>
         public Brush HighlightBrush
         {
             get
@@ -594,6 +596,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the background brush to use for the caption area (title bar). Use <c>ContentBackground</c> for the content area of the window.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>TitleBarBackground</c>.</remarks>
         public new Brush Background
         {
             get
@@ -607,8 +610,9 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the icons of the caption buttons (in the top-right in non-RTL systems).
+        /// Get or set the brush used for the icons of the caption buttons (minimize, restore, close).
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>CaptionButtonsForeground</c>.</remarks>
         public Brush CaptionButtonsBrush
         {
             get
@@ -624,6 +628,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>TitleBarForeground</c>.</remarks>
         public Brush CaptionTextBrush
         {
             get
@@ -654,6 +659,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the text in the caption area (title bar) when the window isn't focused/active. This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
+        /// <remarks>For SSUI 2.0, this will be renamed to <c>InactiveForeground</c>.</remarks>
         public Brush InactiveTextBrush
         {
             get

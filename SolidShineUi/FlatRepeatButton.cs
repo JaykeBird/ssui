@@ -71,7 +71,7 @@ namespace SolidShineUi
         public ICommand PressBeginsCommand { get => (ICommand)GetValue(PressBeginsCommandProperty); set => SetValue(PressBeginsCommandProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressBeginsCommand"/>. See the related property for details.</summary>
-        public static DependencyProperty PressBeginsCommandProperty
+        public static readonly DependencyProperty PressBeginsCommandProperty
             = DependencyProperty.Register(nameof(PressBeginsCommand), typeof(ICommand), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -81,7 +81,7 @@ namespace SolidShineUi
         public object PressBeginsCommandParameter { get => GetValue(PressBeginsCommandParameterProperty); set => SetValue(PressBeginsCommandParameterProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressBeginsCommandParameter"/>. See the related property for details.</summary>
-        public static DependencyProperty PressBeginsCommandParameterProperty
+        public static readonly DependencyProperty PressBeginsCommandParameterProperty
             = DependencyProperty.Register(nameof(PressBeginsCommandParameter), typeof(object), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -95,7 +95,7 @@ namespace SolidShineUi
         public IInputElement PressBeginsCommandTarget { get => (IInputElement)GetValue(PressBeginsCommandTargetProperty); set => SetValue(PressBeginsCommandTargetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressBeginsCommandTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty PressBeginsCommandTargetProperty
+        public static readonly DependencyProperty PressBeginsCommandTargetProperty
             = DependencyProperty.Register(nameof(PressBeginsCommandTarget), typeof(IInputElement), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -134,7 +134,7 @@ namespace SolidShineUi
         public ICommand PressEndsCommand { get => (ICommand)GetValue(PressEndsCommandProperty); set => SetValue(PressEndsCommandProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressEndsCommand"/>. See the related property for details.</summary>
-        public static DependencyProperty PressEndsCommandProperty
+        public static readonly DependencyProperty PressEndsCommandProperty
             = DependencyProperty.Register(nameof(PressEndsCommand), typeof(ICommand), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -144,7 +144,7 @@ namespace SolidShineUi
         public object PressEndsCommandParameter { get => GetValue(PressEndsCommandParameterProperty); set => SetValue(PressEndsCommandParameterProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressEndsCommandParameter"/>. See the related property for details.</summary>
-        public static DependencyProperty PressEndsCommandParameterProperty
+        public static readonly DependencyProperty PressEndsCommandParameterProperty
             = DependencyProperty.Register(nameof(PressEndsCommandParameter), typeof(object), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -158,7 +158,7 @@ namespace SolidShineUi
         public IInputElement PressEndsCommandTarget { get => (IInputElement)GetValue(PressEndsCommandTargetProperty); set => SetValue(PressEndsCommandTargetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressEndsCommandTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty PressEndsCommandTargetProperty
+        public static readonly DependencyProperty PressEndsCommandTargetProperty
             = DependencyProperty.Register(nameof(PressEndsCommandTarget), typeof(IInputElement), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -205,7 +205,7 @@ namespace SolidShineUi
         public ICommand ExecuteCommand { get => (ICommand)GetValue(ExecuteCommandProperty); set => SetValue(ExecuteCommandProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommand"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteCommandProperty
+        public static readonly DependencyProperty ExecuteCommandProperty
             = DependencyProperty.Register(nameof(ExecuteCommand), typeof(ICommand), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -215,7 +215,7 @@ namespace SolidShineUi
         public object ExecuteCommandParameter { get => GetValue(ExecuteCommandParameterProperty); set => SetValue(ExecuteCommandParameterProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommandParameter"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteCommandParameterProperty
+        public static readonly DependencyProperty ExecuteCommandParameterProperty
             = DependencyProperty.Register(nameof(ExecuteCommandParameter), typeof(object), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -230,7 +230,7 @@ namespace SolidShineUi
         public IInputElement ExecuteCommandTarget { get => (IInputElement)GetValue(ExecuteCommandTargetProperty); set => SetValue(ExecuteCommandTargetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommandTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteCommandTargetProperty
+        public static readonly DependencyProperty ExecuteCommandTargetProperty
             = DependencyProperty.Register(nameof(ExecuteCommandTarget), typeof(IInputElement), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -272,10 +272,12 @@ namespace SolidShineUi
             DoExecute();
         }
 
+#pragma warning disable CA1051 // Do not declare visible instance fields (meant to be visible to inheritors of this button)
         /// <summary>
         /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
         /// </summary>
         protected DispatcherTimer executeTimer = new DispatcherTimer();
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         bool firstRun = false;
         bool timerRan = false;
@@ -286,7 +288,7 @@ namespace SolidShineUi
         public int Interval { get => (int)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
-        public static DependencyProperty IntervalProperty
+        public static readonly DependencyProperty IntervalProperty
             = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(200));
 
@@ -296,7 +298,7 @@ namespace SolidShineUi
         public int Delay { get => (int)GetValue(DelayProperty); set => SetValue(DelayProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Delay"/>. See the related property for details.</summary>
-        public static DependencyProperty DelayProperty
+        public static readonly DependencyProperty DelayProperty
             = DependencyProperty.Register(nameof(Delay), typeof(int), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(200));
 
@@ -314,7 +316,7 @@ namespace SolidShineUi
         public bool ExecuteOnFirstClick { get => (bool)GetValue(ExecuteOnFirstClickProperty); set => SetValue(ExecuteOnFirstClickProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteOnFirstClick"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteOnFirstClickProperty
+        public static readonly DependencyProperty ExecuteOnFirstClickProperty
             = DependencyProperty.Register(nameof(ExecuteOnFirstClick), typeof(bool), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(true));
 

@@ -166,7 +166,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
 #if NETCOREAPP
             ColorScheme cs = (e.NewValue as ColorScheme)!;
@@ -870,8 +870,8 @@ namespace SolidShineUi
             }
 
             string digitDisplay = "";
-            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G"); }
-            string sVal = Value.ToString((DisplayAsHex ? "X" : "D") + digitDisplay);
+            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G", null); }
+            string sVal = Value.ToString((DisplayAsHex ? "X" : "D") + digitDisplay, null);
 
             if (txtValue.Text != sVal)
             {
@@ -891,22 +891,22 @@ namespace SolidShineUi
             _updateBox = false;
             if (DisplayAsHex)
             {
-                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out _))
+                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.HexNumber, null, out long ival))
                 {
-                    Value = long.Parse(txtValue.Text, System.Globalization.NumberStyles.HexNumber);
+                    Value = ival;
                 }
             }
             else
             {
-                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out _))
+                if (long.TryParse(txtValue.Text, System.Globalization.NumberStyles.Integer, null, out long ival))
                 {
-                    Value = long.Parse(txtValue.Text, System.Globalization.NumberStyles.Integer);
+                    Value = ival;
                 }
                 else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
                 {
                     try
                     {
-                        Value = (long)Math.Round(ArithmeticParser.Evaluate(txtValue.Text), MidpointRounding.AwayFromZero);
+                        Value = (long)Math.Round(ArithmeticParser.Evaluate(txtValue.Text, null), MidpointRounding.AwayFromZero);
                     }
                     catch (FormatException)
                     {

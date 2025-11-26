@@ -49,7 +49,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         /// <summary>
         /// The backing dependency property object for <see cref="TransformList"/>. See the related property for more details.
         /// </summary>
-        public static DependencyProperty TransformListProperty
+        public static readonly DependencyProperty TransformListProperty
             = DependencyProperty.Register("TransformList", typeof(SelectableCollection<TransformSelectableControl>), typeof(TransformEditDialog),
             new FrameworkPropertyMetadata(new SelectableCollection<TransformSelectableControl>()));
 
@@ -259,7 +259,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         public bool ExcludeBlanksInExport { get => (bool)GetValue(ExcludeBlanksInExportProperty); set => SetValue(ExcludeBlanksInExportProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExcludeBlanksInExport"/>. See the related property for details.</summary>
-        public static DependencyProperty ExcludeBlanksInExportProperty
+        public static readonly DependencyProperty ExcludeBlanksInExportProperty
             = DependencyProperty.Register("ExcludeBlanksInExport", typeof(bool), typeof(TransformEditDialog),
             new FrameworkPropertyMetadata(true));
 

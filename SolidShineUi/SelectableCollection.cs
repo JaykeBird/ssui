@@ -234,7 +234,7 @@ namespace SolidShineUi
         /// <param name="item">The item to select.</param>
         /// <remarks>If <c>CanSelectMultiple</c> is true, use <see cref="AddToSelection(T)"/> to add more items to the selected list,
         /// or <see cref="SelectRange(IEnumerable{T})"/> to select multiple items at once.
-        /// This function will always replace whatever is currently selected.</remarks>
+        /// This function will always replace whatever is currently selected.<para/>This will be renamed to <c>SelectItem</c> in Solid Shine UI 2.0.</remarks>
         public void Select(T item)
         {
             if (Contains(item))
@@ -460,7 +460,7 @@ namespace SolidShineUi
     /// Event arguments for an ItemRemoving event. This is used for when an item is about to be removed.
     /// </summary>
     /// <typeparam name="T">Represents the type of item being removed.</typeparam>
-    public class ItemRemovingEventArgs<T>
+    public class ItemRemovingEventArgs<T> : EventArgs
     {
         /// <summary>
         /// Create an ItemRemovingEventArgs.

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -189,8 +189,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 ulongbig = ul;
                 intSpinner.Value = 0L;
 
-                txtUlongLong.Text = ul.ToString();
-                txtUlongLong.ToolTip = ul.ToString("D");
+                txtUlongLong.Text = ul.ToString(NumberFormatInfo.CurrentInfo);
+                txtUlongLong.ToolTip = ul.ToString("D", NumberFormatInfo.CurrentInfo);
 
                 btnEnableEdit.Visibility = Visibility.Visible;
                 txtUlongLong.Visibility = Visibility.Visible;
@@ -303,17 +303,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (ulong2long)
             {
-                Clipboard.SetText(ulongbig.ToString("D"));
+                Clipboard.SetText(ulongbig.ToString("D", NumberFormatInfo.CurrentInfo));
             }
             else
             {
                 if (intSpinner.DisplayAsHex)
                 {
-                    Clipboard.SetText(intSpinner.Value.ToString("X"));
+                    Clipboard.SetText(intSpinner.Value.ToString("X", NumberFormatInfo.CurrentInfo));
                 }
                 else
                 {
-                    Clipboard.SetText(intSpinner.Value.ToString("D"));
+                    Clipboard.SetText(intSpinner.Value.ToString("D", NumberFormatInfo.CurrentInfo));
                 }
             }
         }

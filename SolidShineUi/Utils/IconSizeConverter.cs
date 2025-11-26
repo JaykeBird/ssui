@@ -51,7 +51,7 @@ namespace SolidShineUi.Utils
             int size = 0;
             try
             {
-                size = string.IsNullOrWhiteSpace(parameter?.ToString()) ? 0 : System.Convert.ToInt32(parameter);
+                size = string.IsNullOrWhiteSpace(parameter?.ToString()) ? 0 : System.Convert.ToInt32(parameter, culture);
             }
             catch (FormatException) { }
             catch (InvalidCastException) { }
@@ -82,7 +82,7 @@ namespace SolidShineUi.Utils
                     // not sure why this was returning the string, so now this is removed
                     // return suri;
                 }
-                else if (!suri.StartsWith("pack:"))
+                else if (!suri.StartsWith("pack:", StringComparison.Ordinal))
                 {
                     suri = $"pack://application:,,,{suri}";
                 }

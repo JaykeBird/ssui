@@ -267,10 +267,8 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public bool ShowGridlines { get => (bool)GetValue(ShowGridlinesProperty); set => SetValue(ShowGridlinesProperty, value); }
 
-        /// <summary>
-        /// A depedency property that backs a related property. See the related property for more details.
-        /// </summary>
-        public static DependencyProperty ShowGridlinesProperty
+        /// <summary>The backing dependency property for <see cref="ShowGridlines"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ShowGridlinesProperty
             = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(PropertyEditorItem),
             new FrameworkPropertyMetadata(false));
 
@@ -279,10 +277,8 @@ namespace SolidShineUi.PropertyList
         /// </summary>
         public Brush GridlineBrush { get => (Brush)GetValue(GridlineBrushProperty); set => SetValue(GridlineBrushProperty, value); }
 
-        /// <summary>
-        /// A depedency property that backs a related property. See the related property for more details.
-        /// </summary>
-        public static DependencyProperty GridlineBrushProperty
+        /// <summary>The backing dependency property for <see cref="GridlineBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty GridlineBrushProperty
             = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(PropertyEditorItem),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 

@@ -58,6 +58,7 @@ namespace SolidShineUi
         }
 
         #region Drag-Drop events
+
         private void NewFileSelect_DragLeave(object sender, DragEventArgs e)
         {
 
@@ -88,6 +89,7 @@ namespace SolidShineUi
         #endregion
 
         #region Color Scheme
+
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -96,7 +98,6 @@ namespace SolidShineUi
 #else
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
-
 
         /// <summary>
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
@@ -110,7 +111,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is ColorScheme cs)
             {
@@ -711,7 +712,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Connections to Control Template
+        #region Template IO
 
         /// <inheritdoc/>
         public override void OnApplyTemplate()

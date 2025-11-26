@@ -13,20 +13,21 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*" MinHeight="40"/>
-            <RowDefinition Height="4*" MinHeight="32" />
-            <RowDefinition Height="5*" MinHeight="40" />
-            <RowDefinition Height="10*" MinHeight="80"/>
-            <RowDefinition Height="5*" MinHeight="34" />
+            <RowDefinition Height="1*" MinHeight="40"/>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="2*" MinHeight="80"/>
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="Enter a Unicode (UTF-32) code point:" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="222"/>
-        <flat:FlatButton x:Name="btnOK" Content="OK" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" Grid.Column="1" />
-        <flat:FlatButton x:Name="btnCancel" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" Grid.Column="1" />
-        <flat:IntegerSpinner x:Name="txtHex" Height="24" Margin="20,5,10,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" Grid.Row="2" ValueChanged="txtHex_ValueChanged" DisplayAsHex="True" ColorScheme="{Binding ColorScheme, ElementName=window}" />
-        <flat:IntegerSpinner x:Name="nudDec" Height="24" Margin="10,5,15,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" Grid.Row="2" ValueChanged="nudDec_ValueChanged" Grid.Column="1" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+        <TextBlock x:Name="txtDesc" Margin="20,20,20,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2"
+                   Text="{Binding Description, ElementName=window, FallbackValue='Enter a Unicode (UTF-32) code point:'}" />
+        <flat:IntegerSpinner x:Name="txtHex" Height="24" Margin="20,5,10,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" Grid.Row="2" ValueChanged="txtHex_ValueChanged" DisplayAsHex="True" />
+        <flat:IntegerSpinner x:Name="nudDec" Height="24" Margin="10,5,15,0" VerticalAlignment="Top" KeyDown="txtName_KeyDown" Grid.Row="2" ValueChanged="nudDec_ValueChanged" Grid.Column="1" />
         <flat:ClickSelectTextBox x:Name="txtPreview" Height="24" IsReadOnly="True" BorderThickness="0" Background="Transparent" Margin="20,40,10,0" VerticalAlignment="Top" SelectOnFocus="True" Grid.Row="3" />
-        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="As Hexadecimal (A-F,0-9):" VerticalAlignment="Top" Grid.Row="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" Text="As Decimal:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="Preview:" VerticalAlignment="Top" Grid.Row="3"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Text="As Hexadecimal (A-F,0-9):" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,15,0,0" Text="As Decimal:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Text="Preview:" VerticalAlignment="Top" Grid.Row="3"/>
+        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" Grid.Column="1" />
+        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" Grid.Column="1" />
     </Grid>
 </flat:FlatWindow>

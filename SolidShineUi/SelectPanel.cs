@@ -96,11 +96,10 @@ namespace SolidShineUi
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ItemsSource"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IClickSelectableControl>), typeof(SelectPanel),
                 new PropertyMetadata(new PropertyChangedCallback(OnInternalItemsSourceChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private static void OnInternalItemsSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -411,18 +410,17 @@ namespace SolidShineUi
 
         #region Color Scheme
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanel),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
         /// </summary>
         /// <param name="d">The object containing the property that changed.</param>
         /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is SelectPanel sp)
             {
@@ -454,11 +452,14 @@ namespace SolidShineUi
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
+#pragma warning disable CA1051 // Do not declare visible instance fields
         /// <summary>
         /// This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.
         /// </summary>
         [Obsolete("This field is not meant to be public. This will be hidden in a future release. Please use the UseLighterBorder property.")]
         public bool use_lbrdr = false;
+#pragma warning restore CA1051 // Do not declare visible instance fields
+        
         bool runApply = true;
 
         /// <summary>
@@ -805,15 +806,15 @@ namespace SolidShineUi
 
         #region Border
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="BorderThickness"/>. See the related property for details.</summary>
         public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
             "BorderThickness", typeof(Thickness), typeof(SelectPanel),
             new PropertyMetadata(new Thickness(1)));
 
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the thickness of the border around this control.
@@ -1055,10 +1056,11 @@ namespace SolidShineUi
 
         #region Move Items
 
-        private class SortByParentIndex : IComparer<IClickSelectableControl>
+        private sealed class SortByParentIndex : IComparer<IClickSelectableControl>
         {
             // A class to sort a collection of IClickSelectableControls by their index in the parent SelectableCollection.
 
+#pragma warning disable CA1859 // for code readability purposes and future proofing, this will stay as it is
 #if NETCOREAPP
             public IList<IClickSelectableControl>? ParentCollection { get; set; }
 
@@ -1068,7 +1070,9 @@ namespace SolidShineUi
 
             public int Compare(IClickSelectableControl a, IClickSelectableControl b)
 #endif
+#pragma warning restore CA1859
             {
+
                 // do null checks first
                 // I don't think we'll run into a situation where these will actually be null, but better safe than sorry
                 if (a == null)
@@ -1350,8 +1354,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="AllowParentScrolling"/>. See the related property for details.</summary>
         public static readonly DependencyProperty AllowParentScrollingProperty = DependencyProperty.Register(
-            "AllowParentScrolling", typeof(bool), typeof(SelectPanel),
-            new PropertyMetadata(true));
+            "AllowParentScrolling", typeof(bool), typeof(SelectPanel), new PropertyMetadata(true));
 
         /// <summary>
         /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may disable any child items from scrolling.
