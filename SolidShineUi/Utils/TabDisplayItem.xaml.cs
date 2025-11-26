@@ -816,10 +816,11 @@ namespace SolidShineUi.Utils
 
         #region Drag and Drop
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the <see cref="AllowDragDrop"/> property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty AllowDragDropProperty = DependencyProperty.Register("AllowDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if the tab can be dragged and dropped.
@@ -830,10 +831,11 @@ namespace SolidShineUi.Utils
             set { SetValue(AllowDragDropProperty, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// A dependency property object backing the <see cref="AllowDataDragDrop"/> property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty AllowDataDragDropProperty = DependencyProperty.Register("AllowDataDragDrop", typeof(bool), typeof(TabDisplayItem),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowDragDropChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set if data can be dropped onto this TabDisplayItem.
