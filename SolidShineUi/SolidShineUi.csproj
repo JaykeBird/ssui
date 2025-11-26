@@ -13,9 +13,9 @@
 		<Title>Solid Shine UI</Title>
 		<Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
 		<Copyright>Copyright 2018-2025 Jayke R. Huempfner, other contributors</Copyright>
-		<Version>1.9.9</Version>
-		<AssemblyVersion>1.9.9</AssemblyVersion>
-		<FileVersion>1.9.9</FileVersion>
+		<Version>1.9.10</Version>
+		<AssemblyVersion>1.9.10</AssemblyVersion>
+		<FileVersion>1.9.10</FileVersion>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<Authors>Jayke R. Huempfner, other contributors</Authors>
 		<PackageIconUrl></PackageIconUrl>
@@ -29,22 +29,17 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReleaseNotes>Version 1.9.9
+		<PackageReleaseNotes>Version 1.9.10
+			- Add support for .NET 10
+            - Add MultiplierConverter and similar converters
+            - Add IsActive property to KeyboardShortcutHandler
+            - Various small fixes and improvements
+            
+            Version 1.9.9
 			- Add support for .NET 9
 			- Add brush properties to TabControl
 			- Added properties, events, fixes to FlatButton, MenuButton
 			- Various fixes and improvements across the board
-			
-			Version 1.9.8
-			- New SplitButton, FlatRepeatButton controls
-            - Rewrote how FontSelectDialog handles font weights
-            - New IClickSelectableControl interface to use with SelectPanel
-            
-            Version 1.9.7
-			- Add TransformEditDialog, TransformEditor for PropertyList
-			- Add support for .NET 8, and .NET Framework 4.0, 4.5, and 4.6.1
-			- Improvements to SelectPanel, various PropertyList editors
-			- Various other smaller improvements and bug fixes
             
 			See website for more details!</PackageReleaseNotes>
 	</PropertyGroup>
