@@ -140,12 +140,20 @@ namespace SolidShineUi
         /// Add an item to the existing list of selected items.
         /// </summary>
         /// <param name="item">The item to select.</param>
-        public void AddToSelection(T item)
+        public bool AddToSelection(T item)
         {
             if (baseCollection.Contains(item))
             {
-                selectedItems.Add(item);
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
+                if (!selectedItems.Contains(item))
+                {
+                    selectedItems.Add(item);
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
+                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -153,7 +161,7 @@ namespace SolidShineUi
         /// Select an item, replacing the current list of selected items.
         /// </summary>
         /// <param name="item">The item to select.</param>
-        public void Select(T item)
+        public void SelectItem(T item)
         {
             if (baseCollection.Contains(item))
             {
@@ -294,19 +302,23 @@ namespace SolidShineUi
         /// <inheritdoc/>
         public bool IsReadOnly => true;
 
-        void ISelectableCollection.AddToSelection(object item)
+        bool ISelectableCollection.AddToSelection(object item)
         {
             if (item is T t)
             {
-                AddToSelection(t);
+                return AddToSelection(t);
+            }
+            else
+            {
+                return false;
             }
         }
 
-        void ISelectableCollection.Select(object item)
+        void ISelectableCollection.SelectItem(object item)
         {
             if (item is T t)
             {
-                Select(t);
+                SelectItem(t);
             }
         }
 

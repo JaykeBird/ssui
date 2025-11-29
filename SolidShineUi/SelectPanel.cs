@@ -417,16 +417,16 @@ namespace SolidShineUi
                         }
                         else
                         {
-                            isl.Select(item);
+                            isl.SelectItem(item);
                         }
 
-                        RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<IClickSelectableControl>());
+                        RaiseSelectionChangedEvent((new[] { item }).ToList(), null);
                     }
                     else
                     {
                         isl.Deselect(item);
 
-                        RaiseSelectionChangedEvent(new List<IClickSelectableControl>(), (new[] { item }).ToList());
+                        RaiseSelectionChangedEvent(null, (new[] { item }).ToList());
                     }
                 }
 
@@ -681,12 +681,14 @@ namespace SolidShineUi
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 
-        void RaiseSelectionChangedEvent(List<IClickSelectableControl> addedItems, List<IClickSelectableControl> removedItems)
-        {
 #if NETCOREAPP
+        void RaiseSelectionChangedEvent(List<IClickSelectableControl>? addedItems, List<IClickSelectableControl>? removedItems)
+        {
             addedItems ??= new List<IClickSelectableControl>();
             removedItems ??= new List<IClickSelectableControl>();
 #else
+        void RaiseSelectionChangedEvent(List<IClickSelectableControl> addedItems, List<IClickSelectableControl> removedItems)
+        {
             if (addedItems == null)
             {
                 addedItems = new List<IClickSelectableControl>();
@@ -1361,7 +1363,7 @@ namespace SolidShineUi
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
                         isl.Insert(moveIndex, suc);
-                        if (resel) isc.Select(suc);
+                        if (resel) isc.SelectItem(suc);
                     }
                     else
                     {
@@ -1420,7 +1422,7 @@ namespace SolidShineUi
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
                         isl.Insert(moveIndex, suc);
-                        if (resel) isc.Select(suc);
+                        if (resel) isc.SelectItem(suc);
                     }
                     else
                     {

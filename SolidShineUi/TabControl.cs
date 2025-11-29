@@ -63,7 +63,7 @@ namespace SolidShineUi
         {
             if (Items.Count > 0 && SelectFirstTabOnLoad)
             {
-                Items.Select(Items[0]);
+                Items.SelectItem(Items[0]);
             }
         }
 
@@ -296,36 +296,36 @@ namespace SolidShineUi
                                 // nothing to do
                                 break;
                             case SelectedTabCloseAction.SelectFirstTab:
-                                Items.Select(Items[0]);
+                                Items.SelectItem(Items[0]);
                                 break;
                             case SelectedTabCloseAction.SelectLastTab:
-                                Items.Select(Items[Items.Count - 1]);
+                                Items.SelectItem(Items[Items.Count - 1]);
                                 break;
                             case SelectedTabCloseAction.SelectTabToLeft:
                                 if (closedTabIndex == -1)
                                 {
                                     // most likely closed via Items.Remove command
-                                    Items.Select(Items[0]);
+                                    Items.SelectItem(Items[0]);
                                 }
                                 else if (closedTabIndex == 0)
                                 {
                                     // left most tab closed
-                                    Items.Select(Items[0]);
+                                    Items.SelectItem(Items[0]);
                                 }
                                 else
                                 {
-                                    Items.Select(Items[closedTabIndex - 1]);
+                                    Items.SelectItem(Items[closedTabIndex - 1]);
                                 }
                                 break;
                             case SelectedTabCloseAction.SelectTabToRight:
                                 if (closedTabIndex == -1)
                                 {
                                     // most likely closed via Items.Remove command
-                                    Items.Select(Items[Items.Count - 1]);
+                                    Items.SelectItem(Items[Items.Count - 1]);
                                 }
                                 else
                                 {
-                                    Items.Select(Items[closedTabIndex]);
+                                    Items.SelectItem(Items[closedTabIndex]);
                                 }
                                 break;
                             default:
@@ -565,7 +565,7 @@ namespace SolidShineUi
                 {
                     if (Items.Contains(tab))
                     {
-                        Items.Select(tab);
+                        Items.SelectItem(tab);
                         tab.BringIntoView();
                     }
                 }
@@ -1267,7 +1267,7 @@ namespace SolidShineUi
 
             if (selItem != null)
             {
-                Items.Select(selItem);
+                Items.SelectItem(selItem);
             }
 
             // fix to make sure the correct tab has the IsSelected state
@@ -1310,7 +1310,7 @@ namespace SolidShineUi
             {
                 if (tdi.TabItem != null && tdi.CanSelect)
                 {
-                    Items.Select(tdi.TabItem);
+                    Items.SelectItem(tdi.TabItem);
                 }
             }
         }

@@ -23,13 +23,14 @@ namespace SolidShineUi
         /// <remarks>
         /// If <see cref="CanSelectMultiple"/> is false, this function will only succeed if there is currently nothing selected; otherwise, nothing happens.
         /// </remarks>
-        void AddToSelection(object item);
+        /// <returns><c>true</c> if the item was added to the selection; <c>false</c> if it was not</returns>
+        bool AddToSelection(object item);
 
         /// <summary>
         /// Select an item, replacing the current selection.
         /// </summary>
         /// <param name="item">The item to select.</param>
-        void Select(object item);
+        void SelectItem(object item);
 
         /// <summary>
         /// Remove an item from the list of selected items.
@@ -94,13 +95,13 @@ namespace SolidShineUi
         /// <remarks>
         /// If <see cref="CanSelectMultiple"/> is false, this function will only succeed if there is currently nothing selected; otherwise, nothing happens.
         /// </remarks>
-        void AddToSelection(T item);
+        bool AddToSelection(T item);
 
         /// <summary>
         /// Select an item, replacing the current selection.
         /// </summary>
         /// <param name="item">The item to select.</param>
-        void Select(T item);
+        void SelectItem(T item);
 
         /// <summary>
         /// Remove an item from the list of selected items.
