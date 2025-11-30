@@ -23,9 +23,9 @@
                 <flat:LinkTextBlock x:Name="txtSampleText" Text="Sample Text" VerticalAlignment="Center" HorizontalAlignment="Center"
                                     Click="txtSampleText_Click" TextBrush="Black" HighlightBrush="Black" UnderlineOnHighlight="False" />
             </Border>
-            <flat:FlatButton x:Name="btnSetText" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Text..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Click="btnSetText_Click"/>
-            <flat:FlatButton x:Name="btnSetFont" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Font..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1" Click="btnSetFont_Click"/>
-            <flat:FlatButton x:Name="btnSetColor" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Color..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="2" Click="btnSetColor_Click"/>
+            <flat:FlatButton x:Name="btnSetText" Content="Change Text..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Click="btnSetText_Click"/>
+            <flat:FlatButton x:Name="btnSetFont" Content="Change Font..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1" Click="btnSetFont_Click"/>
+            <flat:FlatButton x:Name="btnSetColor" Content="Change Color..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="2" Click="btnSetColor_Click"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" Grid.Row="1" Text="StringInputDialog" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" Grid.Row="1" Text="FontSelectDialog" VerticalAlignment="Top" Grid.Column="1"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" Grid.Row="1" Text="ColorPickerDialog" VerticalAlignment="Top" Grid.Column="2"/>
