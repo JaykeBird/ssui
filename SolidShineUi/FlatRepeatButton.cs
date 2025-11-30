@@ -240,14 +240,14 @@ namespace SolidShineUi
 
         void SetupTimer()
         {
-            executeTimer.Tick += ExecuteTimer_Elapsed;
+            ExecuteTimer.Tick += ExecuteTimer_Elapsed;
             ResetTimer();
         }
 
         void ResetTimer()
         {
-            executeTimer.Stop();
-            executeTimer.Interval = new TimeSpan(0, 0, 0, 0, Delay);
+            ExecuteTimer.Stop();
+            ExecuteTimer.Interval = new TimeSpan(0, 0, 0, 0, Delay);
             //executeTimer.AutoReset = false;
         }
 
@@ -259,23 +259,23 @@ namespace SolidShineUi
         {
             if (firstRun)
             {
-                executeTimer.IsEnabled = false;
-                executeTimer.Interval = new TimeSpan(0, 0, 0, 0, Interval);
-                executeTimer.Start();
+                ExecuteTimer.IsEnabled = false;
+                ExecuteTimer.Interval = new TimeSpan(0, 0, 0, 0, Interval);
+                ExecuteTimer.Start();
                 
                 firstRun = false;
                 timerRan = true;
 
-                executeTimer.Start();
+                ExecuteTimer.Start();
             }
 
             DoExecute();
         }
 
         /// <summary>
-        /// the timer to set how long to wait before responding to and acting upon a key press (for changing the value)
+        /// The timer to set how long to wait before calling the Execute event.
         /// </summary>
-        protected DispatcherTimer executeTimer = new DispatcherTimer();
+        protected DispatcherTimer ExecuteTimer { get; } = new DispatcherTimer();
 
         bool firstRun = false;
         bool timerRan = false;
@@ -347,7 +347,7 @@ namespace SolidShineUi
             RaiseEvent(re);
 
             firstRun = true;
-            executeTimer.Start();
+            ExecuteTimer.Start();
         }
 
         void PressEnded()
