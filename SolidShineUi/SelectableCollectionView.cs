@@ -8,12 +8,15 @@ using System.Collections;
 
 namespace SolidShineUi
 {
+#pragma warning disable CA1710 // Identifiers should have correct suffix (matching naming convention of ListCollectionView instead)
     /// <summary>
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> derives from SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
     public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollection<T>, ICollection<T>, ISelectableCollection
     {
+#pragma warning restore CA1710 // Identifiers should have correct suffix
+
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
         /// </summary>
