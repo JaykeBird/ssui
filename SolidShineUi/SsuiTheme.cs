@@ -164,7 +164,7 @@ namespace SolidShineUi
 
             // the highlight foreground against the highlight brush,
             float bHigh = GetColorBrightness(((SolidColorBrush)HighlightBrush).Color);
-            HighlightForeground = (bHigh < 0.55 ? Colors.White : Colors.Black).ToBrush();
+            HighlightForeground = (bHigh < 0.55 ? Colors.LightGray : ColorsHelper.DarkerGray).ToBrush();
 
             // and the check brush against the panel background
             float bPane = GetColorBrightness(((SolidColorBrush)PanelBackground).Color);
@@ -338,7 +338,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightForegroundProperty
             = DependencyProperty.Register(nameof(HighlightForeground), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+            new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the background of SSUI-themed controls while they are selected 

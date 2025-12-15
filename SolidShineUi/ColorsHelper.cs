@@ -627,10 +627,10 @@ namespace SolidShineUi
         public static Color HighContrastRed { get; } = CreateFromHex("900000"); // 600000
 
 
-        /// <summary>A darker gray color used in some styles. Has hex string 464646.</summary>
+        /// <summary>A darker gray color used in some styles. Has hex string 414141.</summary>
         public static Color DarkerGray { get; } = CreateFromHex("414141");
 
-        /// <summary>A darker gray color used in some styles. Has hex string 464646.</summary>
+        /// <summary>A white color used in certain controls or styles. Has the hex string 10FFFFFF.</summary>
         public static Color WhiteLightHighlight { get; } = Color.FromArgb(16, 255, 255, 255);
 
         /// <summary>
