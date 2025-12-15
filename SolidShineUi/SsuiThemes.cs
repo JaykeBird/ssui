@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace SolidShineUi
@@ -16,7 +15,7 @@ namespace SolidShineUi
         /// A SsuiAppTheme that uses the system's colors for the controls.
         /// </summary>
         /// <remarks>
-        /// Note that this will have a very Windows 98/2000-ish appearance on modern computers, 
+        /// Note that this will have a somewhat old-school (think Windows 98/2000) appearance on modern computers, 
         /// given that <see cref="SystemColors"/> only provides basic color brushes.
         /// </remarks>
         public static SsuiAppTheme SystemTheme
@@ -56,7 +55,8 @@ namespace SolidShineUi
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
-                    CornerRadius = new CornerRadius(0)
+                    CornerRadius = new CornerRadius(0),
+                    IconVariation = Utils.IconVariation.Color
                 };
             }
         }
@@ -65,7 +65,7 @@ namespace SolidShineUi
         /// A SsuiAppTheme that uses the system's colors for the controls, and adds a slight rounded corners to the edges of many controls.
         /// </summary>
         /// <remarks>
-        /// Note that this will have a very Windows 98/2000-ish appearance on modern computers, 
+        /// Note that this will have a somewhat old-school (think Windows XP) appearance on modern computers, 
         /// given that <see cref="SystemColors"/> only provides basic color brushes.
         /// </remarks>
         public static SsuiAppTheme SystemThemeRoundedCorners
@@ -105,7 +105,8 @@ namespace SolidShineUi
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
-                    CornerRadius = new CornerRadius(3)
+                    CornerRadius = new CornerRadius(3),
+                    IconVariation = Utils.IconVariation.Color
                 };
             }
         }
@@ -126,7 +127,6 @@ namespace SolidShineUi
         /// Create a premade light theme color scheme. Lighter gray colors are used, and a custom accent color can be provided to add some more color.
         /// </summary>
         /// <param name="accentColor">The accent color to use with the light theme, to add more color to certain elements.</param>
-        /// <returns></returns>
         public static SsuiAppTheme CreateLightTheme(Color accentColor)
         {
             return new SsuiAppTheme(accentColor)
@@ -153,7 +153,6 @@ namespace SolidShineUi
         /// Create a premade dark theme color scheme. Darker gray colors are used, and a custom accent color can be provided to add some more color.
         /// </summary>
         /// <param name="accentColor">The accent color to use with the dark theme, to add more color to certain elements.</param>
-        /// <returns></returns>
         public static SsuiAppTheme CreateDarkTheme(Color accentColor)
         {
             ColorsHelper.ToHSV(accentColor, out double h, out double s, out double v);
