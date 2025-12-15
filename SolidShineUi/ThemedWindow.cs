@@ -34,10 +34,12 @@ namespace SolidShineUi
         /// </summary>
         /// <remarks>
         /// This property will set the <see cref="ThemedControl.SsuiThemeProperty"/> property for this window, which any child controls will inherit.
-        /// Setting that attached property on this window will not go the other way and update this proprty.
+        /// Setting that attached property on this window will not update this property.
+        /// Note that setting this will likely overwrite any brush values that are set in all child controls (that have a SsuiTheme property to inherit),
+        /// so if you had set a control to use a specific brush, you will need to re-update that after calling this property.
         /// <para/>
         /// Child controls that inherit this theme can also use this theme's accent theme (if set) by setting <see cref="ThemedControl.UseAccentTheme"/>
-        /// to <c>true</c>.
+        /// to <c>true</c> on that control.
         /// </remarks>
         [Category("Appearance")]
         public SsuiAppTheme SsuiTheme { get => (SsuiAppTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
