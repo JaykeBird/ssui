@@ -122,8 +122,8 @@
             <local:FlatWindowTest x:Name="flatWindowTest" Visibility="Collapsed" />
             <local:FlowDocumentTest x:Name="flowDocTest" Visibility="Collapsed" />
             <local:PositionSelectTest x:Name="posSelTest" Visibility="Collapsed" />
-            <local:PropertyListTest x:Name="propListTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:TabControlTest x:Name="tabControlTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:PropertyListTest x:Name="propListTest" Visibility="Collapsed" />
+            <local:TabControlTest x:Name="tabControlTest" Visibility="Collapsed" />
             <local:TwoBasicSelectPanels x:Name="twoBasicTest" Visibility="Collapsed" />
             <local:TwoPositionSelectTest x:Name="twoSelTest" Visibility="Collapsed" />
             <local:SelectPanelTest x:Name="selectPanelTest" Visibility="Collapsed" />

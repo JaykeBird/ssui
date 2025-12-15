@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SsuiSample.TabControlTest" x:Name="userControl"
+﻿<flat:ThemedUserControl x:Class="SsuiSample.TabControlTest" x:Name="userControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,9 +9,6 @@
              xmlns:pl="clr-namespace:SolidShineUi.PropertyList;assembly=SolidShineUi"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <conv:ColorToBrushConverter x:Key="ctb" />
-    </UserControl.Resources>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="Tab Control Test" FontSize="16" VerticalAlignment="Top"/>
         <Grid Margin="10,60,10,0">
@@ -22,7 +19,7 @@
                 <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
             <Border Background="#44FFFFFF" BorderThickness="1" BorderBrush="#55000000" Margin="20,10,20,20">
-                <flat:TabControl x:Name="tabControl" Margin="5" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" TabChanged="tabControl_TabChanged"
+                <flat:TabControl x:Name="tabControl" Margin="5" TabChanged="tabControl_TabChanged"
                                  TabMinWidth="{Binding ElementName=nudTabWidth, Mode=TwoWay, Path=Value}" HorizontalTabBarHeight="{Binding ElementName=nudTabBarHeight, Mode=TwoWay, Path=Value}"
                                  ShowTabsOnBottom="{Binding ElementName=chkBottom, Mode=TwoWay, Path=IsChecked}" ShowTabListMenu="{Binding ElementName=chkTlm, Mode=TwoWay, Path=IsChecked}" >
                     <flat:TabItem Title="Tab 1" Icon="Resources/Images/SmileyColor.png" AllowDrop="True" ToolTip="This is a ToolTip"
@@ -41,10 +38,10 @@
                 </flat:TabControl>
             </Border>
             <StackPanel Margin="20,0" Height="Auto" VerticalAlignment="Center" Grid.Row="1" Orientation="Horizontal">
-                <flat:FlatButton x:Name="btnAdd" Margin="3" Click="btnAdd_Click" MinWidth="80" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add Tab...</flat:FlatButton>
-                <flat:FlatButton x:Name="btnAddNoClose" Margin="3" Click="btnAddNoClose_Click" MinWidth="125" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Add No Close Tab...</flat:FlatButton>
-                <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" >Remove All Tabs</flat:FlatButton>
-                <flat:MenuButton x:Name="btnEditCurrent" Margin="3" MinWidth="130" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Edit Current Tab">
+                <flat:FlatButton x:Name="btnAdd" Margin="3" Click="btnAdd_Click" MinWidth="80">Add Tab...</flat:FlatButton>
+                <flat:FlatButton x:Name="btnAddNoClose" Margin="3" Click="btnAddNoClose_Click" MinWidth="125">Add No Close Tab...</flat:FlatButton>
+                <flat:FlatButton x:Name="btnRemoveAll" Margin="3" Click="btnRemoveAll_Click" MinWidth="110">Remove All Tabs</flat:FlatButton>
+                <flat:MenuButton x:Name="btnEditCurrent" Margin="3" MinWidth="130" Content="Edit Current Tab">
                     <flat:MenuButton.Menu>
                         <flat:ContextMenu>
                             <MenuItem Header="Rename Tab..." x:Name="btnRename" Click="btnRename_Click" />
@@ -68,14 +65,12 @@
             </StackPanel>
             <ScrollViewer Grid.Row="2" Margin="10,0" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" >
-                    <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" 
-                                   ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" />
-                    <flat:CheckBox Content="Show tab list menu" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkTlm" 
-                                   ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" IsChecked="True" />
+                    <flat:CheckBox Content="Show tabs on bottom" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" x:Name="chkBottom" />
+                    <flat:CheckBox Content="Show tab list menu" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" x:Name="chkTlm" IsChecked="True" />
                     <TextBlock Margin="10,0,5,0" Text="Minimum tab width:" VerticalAlignment="Center" />
-                    <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
+                    <flat:DoubleSpinner x:Name="nudTabWidth" Value="120" Step="1" MinWidth="50" SnapsToDevicePixels="True" />
                     <TextBlock Margin="10,0,5,0" Text="Tab bar height:" VerticalAlignment="Center" />
-                    <flat:DoubleSpinner x:Name="nudTabBarHeight" Value="24" Step="1" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" MinWidth="50" SnapsToDevicePixels="True" />
+                    <flat:DoubleSpinner x:Name="nudTabBarHeight" Value="24" Step="1" MinWidth="50" SnapsToDevicePixels="True" />
                     <Border Width="1" Margin="10,2" BorderThickness="1" BorderBrush="#CC333333" />
                     <TextBlock Margin="10,0,5,0" Text="Action on selected tab close:" VerticalAlignment="Center" />
                     <flat:EnumComboBox Enum="{x:Type flat:SelectedTabCloseAction}" x:Name="cbbSelectTabClose" SelectedIndex="0" SelectionChanged="cbbSelectTabClose_SelectionChanged" />
@@ -83,12 +78,12 @@
             </ScrollViewer>
             <TextBlock Grid.Row="3" VerticalAlignment="Center" Margin="10,0" x:Name="txtStatus" />
         </Grid>
-        <flat:FlatButton x:Name="btnProperties" Click="btnProperties_Click" MinWidth="120" ColorScheme="{Binding ColorScheme, ElementName=userControl}" 
+        <flat:FlatButton x:Name="btnProperties" Click="btnProperties_Click" MinWidth="120"
                          Content="Show Property List" Margin="0,24,30,0" HorizontalAlignment="Right" Width="80" Height="24" VerticalAlignment="Top" />
         <Popup x:Name="popProps" Placement="Bottom" >
-            <Border x:Name="border" BorderThickness="1" BorderBrush="{Binding ColorScheme.BorderColor, ElementName=userControl, Converter={StaticResource ctb}}" >
-                <pl:PropertyList x:Name="pl" ColorScheme="{Binding ColorScheme, ElementName=userControl}" ShowInheritedProperties="False" Height="400" />
+            <Border x:Name="border" BorderThickness="1" BorderBrush="{Binding SsuiTheme.BorderBrush, ElementName=userControl}" >
+                <pl:PropertyList x:Name="pl" ShowInheritedProperties="False" Height="400" SsuiTheme="{Binding SsuiTheme, ElementName=userControl}" />
             </Border>
         </Popup>
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>
