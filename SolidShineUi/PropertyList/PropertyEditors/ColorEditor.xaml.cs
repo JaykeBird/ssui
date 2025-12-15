@@ -34,7 +34,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        ColorScheme _cs = new ColorScheme();
 #if NETCOREAPP
         IPropertyEditorHost? _host = null;
 #else
@@ -43,25 +42,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         Color _col = Colors.White;
 
         /// <summary>
-        /// Set the visual appearance of this control via the ColorScheme.
+        /// Set the visual appearance of this control via the SsuiTheme.
         /// </summary>
-        /// <param name="value">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme value)
+        /// <param name="value">the value to apply</param>
+        public void ApplySsuiTheme(SsuiTheme value)
         {
-            _cs = value;
-            nudValue.ColorScheme = value;
-            btnMenu.ColorScheme = value;
-            btnColor.ColorScheme = value;
-            imgMenu.Source = LoadIcon("ThreeDots", value);
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            nudValue.SsuiTheme = value;
+            btnMenu.SsuiTheme = value;
+            btnColor.SsuiTheme = value;
+            imgMenu.Source = LoadIcon("ThreeDots", value.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -205,10 +194,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuColor_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerDialog cpd = new ColorPickerDialog(_cs, _col);
+            ColorPickerDialog cpd = new ColorPickerDialog(_col);
             if (_host != null)
             {
                 cpd.Owner = _host.GetWindow();
+                cpd.SsuiTheme = _host.GetThemeForDialogs();
             }
 
             cpd.ShowDialog();

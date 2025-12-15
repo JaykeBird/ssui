@@ -291,7 +291,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
                 if (editor != null)
                 {
-                    editor.ColorScheme = ColorScheme;
+                    editor.ApplySsuiTheme(SsuiTheme);
                     if (parentList != null)
                     {
                         editor.SetHostControl(parentList);

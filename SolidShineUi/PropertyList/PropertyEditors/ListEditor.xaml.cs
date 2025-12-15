@@ -39,23 +39,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
 
-        ColorScheme _cs = new ColorScheme();
-
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme cs)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = cs;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -205,7 +193,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
 
                 ListEditorDialog led = new ListEditorDialog();
-                led.ColorScheme = _cs;
+                led.SsuiTheme = _parent?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
+                led.Owner = _parent?.GetWindow();
                 led.LoadEnumerable(listVal, _listType, propEditorType);
                 led.Description = $"collection of {_listType.Name} ({listVal.Count} items), stored in a {listVal.GetType().Name.Replace("`1", "")}:";
 

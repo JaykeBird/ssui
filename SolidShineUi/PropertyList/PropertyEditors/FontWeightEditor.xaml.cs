@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+
 using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -44,21 +43,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        { 
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            nudWeight.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            imgItalic.Source = LoadIcon("TextBold", cs);
-            imgMenu.Source = LoadIcon("ThreeDots", cs);
+            nudWeight.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgItalic.Source = LoadIcon("TextBold", theme.IconVariation);
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

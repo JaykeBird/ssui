@@ -1,11 +1,12 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -35,35 +36,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
-        /// <summary>
-        /// Set the visual appearance of this control via a ColorScheme.
-        /// </summary>
-        /// <param name="value">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme value)
-        {
-            dblSpinner.ColorScheme = value;
-            btnMenu.ColorScheme = value;
-            if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (value.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
-        }
-
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            dblSpinner.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -202,7 +180,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
 
             _propType = type;
+            _internalAction = true;
             dblSpinner.Value = (double)(value ?? 0);
+            _internalAction = false;
         }
 #else
         public event EventHandler ValueChanged;
@@ -302,7 +282,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
 
             _propType = type;
+            _internalAction = true;
             dblSpinner.Value = (double)(value ?? 0);
+            _internalAction = false;
         }
 #endif
 

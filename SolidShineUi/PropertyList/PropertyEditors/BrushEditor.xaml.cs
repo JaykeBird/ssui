@@ -35,66 +35,37 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { }
 
-        private ColorScheme _cs = new ColorScheme();
+        // private SsuiTheme _cs = new SsuiTheme();
+
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
 
         /// <summary>
         /// Set the visual apperance of this control via a ColorScheme.
         /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
+        /// <param name="theme">the color scheme to apply</param>
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            btnEditBrush.ColorScheme = cs;
-            selChange.ColorScheme = cs;
-            brdrPop.BorderBrush = cs.BorderColor.ToBrush();
+            // _cs = theme;
+            btnMenu.SsuiTheme = theme;
+            btnEditBrush.SsuiTheme = theme;
+            selChange.SsuiTheme = theme;
+            brdrPop.BorderBrush = theme.BorderBrush;
 
-            if (cs.IsHighContrast)
-            {
-                btnBrush.BorderBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderHighlightBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderSelectedBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                //btnBrush.DisabledBrush = value.BackgroundColor.ToBrush();
-                btnBrush.Foreground = cs.ForegroundColor.ToBrush();
-                btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            btnBrush.BorderBrush = theme.BorderBrush;
+            btnBrush.BorderDisabledBrush = theme.DisabledBorderBrush;
+            btnBrush.SelectedBrush = theme.SelectedBackgroundBrush;
+            btnBrush.BorderHighlightBrush = theme.HighlightBorderBrush;
+            btnBrush.BorderSelectedBrush = theme.SelectedBorderBrush;
+            btnBrush.Foreground = theme.Foreground;
+            btnBrush.ClickBrush = theme.ClickBrush;
 
-                brdrPop.Background = cs.BackgroundColor.ToBrush();
-            }
-            else
-            {
-                btnBrush.BorderBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                btnBrush.SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-                btnBrush.BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                btnBrush.BorderSelectedBrush = cs.SelectionColor.ToBrush();
-                btnBrush.Foreground = cs.ForegroundColor.ToBrush();
-                btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            brdrPop.Background = theme.ClickBrush;
 
-                brdrPop.Background = cs.ThirdHighlightColor.ToBrush();
-            }
-
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -489,8 +460,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (_actualType == typeof(SolidColorBrush))
             {
-                ColorPickerDialog cpd = new ColorPickerDialog(_cs, ((SolidColorBrush)_dataValue).Color);
+                ColorPickerDialog cpd = new ColorPickerDialog(((SolidColorBrush)_dataValue).Color);
+                //cpd.SsuiTheme = _cs;
                 cpd.Owner = Window.GetWindow(this);
+                cpd.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 cpd.ShowDialog();
                 if (cpd.DialogResult)
                 {
@@ -500,8 +473,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_actualType == typeof(LinearGradientBrush))
             {
-                LinearGradientEditorDialog lged = new LinearGradientEditorDialog(_cs, (LinearGradientBrush)_dataValue);
+                LinearGradientEditorDialog lged = new LinearGradientEditorDialog((LinearGradientBrush)_dataValue);
                 lged.Owner = Window.GetWindow(this);
+                lged.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 lged.ShowDialog();
 
                 if (lged.DialogResult)
@@ -512,8 +486,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_actualType == typeof(RadialGradientBrush))
             {
-                RadialGradientEditorDialog lged = new RadialGradientEditorDialog(_cs, (RadialGradientBrush)_dataValue);
+                RadialGradientEditorDialog lged = new RadialGradientEditorDialog((RadialGradientBrush)_dataValue);
                 lged.Owner = Window.GetWindow(this);
+                lged.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 lged.ShowDialog();
 
                 if (lged.DialogResult)
@@ -524,9 +499,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_actualType == typeof(ImageBrush))
             {
-                ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
+                ImageBrushEditorDialog ibre = new ImageBrushEditorDialog();
                 ibre.LoadImage((ImageBrush)_dataValue);
                 ibre.Owner = Window.GetWindow(this);
+                ibre.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 ibre.ShowDialog();
 
                 if (ibre.DialogResult)
@@ -633,9 +609,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // change to image brush
             // display image brush editor dialog, don't actually immediately change
-            ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
+            ImageBrushEditorDialog ibre = new ImageBrushEditorDialog();
             ibre.LoadImage(new ImageBrush(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, IconVariation.Color)));
             ibre.Owner = Window.GetWindow(this);
+            ibre.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
             ibre.ShowDialog();
 
             if (ibre.DialogResult)
@@ -665,7 +642,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Transform t = _dataValue.Transform;
                 TransformEditDialog ted = new TransformEditDialog();
                 ted.ImportTransforms(t);
-                ted.ColorScheme = _cs;
+                ted.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 ted.ShowDialog();
 
                 if (ted.DialogResult == true)
@@ -693,7 +670,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Transform t = _dataValue.RelativeTransform;
                 TransformEditDialog ted = new TransformEditDialog();
                 ted.ImportTransforms(t);
-                ted.ColorScheme = _cs;
+                ted.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 ted.ShowDialog();
 
                 if (ted.DialogResult == true)

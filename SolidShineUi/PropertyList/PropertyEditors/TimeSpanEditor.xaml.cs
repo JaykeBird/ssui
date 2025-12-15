@@ -27,7 +27,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void MnuSetNull_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
 #if DEBUG
-            Debugger.Log(0, null, "SET NULL CHANGED");
+            Debugger.Log(0, null, "TIMESPANEDITOR: SET NULL CHANGED");
 #endif
             //throw new NotImplementedException();
         }
@@ -45,22 +45,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
         
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme cs)
         {
-            spinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            spinner.SsuiTheme = cs;
+            btnMenu.SsuiTheme = cs;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs.IconVariation);
         }
 
         /// <inheritdoc/>
