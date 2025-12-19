@@ -99,6 +99,7 @@
         <WarningLevel>4</WarningLevel>
         <EnableNETAnalyzers>True</EnableNETAnalyzers>
         <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+        <AnalysisLevel>latest-recommended</AnalysisLevel>
     </PropertyGroup>
     <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net471|AnyCPU'">
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
