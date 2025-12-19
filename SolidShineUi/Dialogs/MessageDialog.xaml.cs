@@ -11,6 +11,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using static SolidShineUi.MessageDialogImageConverter;
 using SolidShineUi.Utils;
+using System.ComponentModel;
 
 namespace SolidShineUi
 {
@@ -128,6 +129,7 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(""));
 
         /// <summary>Get the result of the message dialog, indicating which button the user pressed.</summary>
+        [ReadOnly(true)]
         public new MessageDialogResult DialogResult
         {
             get => (MessageDialogResult)GetValue(DialogResultProperty); private set => SetValue(DialogResultPropertyKey, value); 

@@ -187,6 +187,7 @@ namespace SolidShineUi
         /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead modify/manage your items through that items source, rather than using this property.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set the list of items in this SelectPanel.")]
         public SelectableCollection<IClickSelectableControl> Items
         {
             get { return (SelectableCollection<IClickSelectableControl>)GetValue(ItemsProperty); }
@@ -195,7 +196,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Helper Methods
+        #region MultiSelect
 
         /// <summary>
         /// Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.
@@ -206,6 +207,7 @@ namespace SolidShineUi
         /// </remarks>
         /// <exception cref="NotSupportedException">Thrown if the underlying <see cref="ISelectableCollection"/> in <see cref="ItemsSource"/> doesn't allow changing this value</exception>
         [Category("Common")]
+        [Description("Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.")]
         public bool MultiSelect
         {
             get
@@ -225,10 +227,14 @@ namespace SolidShineUi
                 if (ItemsSource is ISelectableCollection isl)
                 {
                     isl.CanSelectMultiple = value;
-                    // some ISelectionCollection types may not allow this property to be changed, in theory
+                    // some ISelectionCollection types may not allow this property to be changed. at that point, an exception is raised
                 }
             }
         }
+
+        #endregion
+
+        #region Helper Methods
 
         void RefreshVisualSelection()
         {
@@ -776,13 +782,14 @@ namespace SolidShineUi
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
-            = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
+            = DependencyProperty.Register(nameof(HorizontalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar for this control.
         /// </summary>
         [Category("Layout")]
+        [Description("Get or set the appearance of the horizontal scroll bar for this control.")]
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
             get { return (ScrollBarVisibility)GetValue(HorizontalScrollBarVisibilityProperty); }
@@ -793,13 +800,14 @@ namespace SolidShineUi
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty
-            = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
+            = DependencyProperty.Register(nameof(VerticalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar for this control.
         /// </summary>
         [Category("Layout")]
+        [Description("Get or set the appearance of the vertical scroll bar for this control.")]
         public ScrollBarVisibility VerticalScrollBarVisibility
         {
             get { return (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty); }
@@ -915,14 +923,14 @@ namespace SolidShineUi
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
+            nameof(CornerRadius), typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
 
         /// <summary>
         /// Get or set the corner radius (or radii) to use for the control's border. Setting the corners to 0 means there is no rounding; square corners are used.
-        /// Any corners with a higher number will be rounded.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the corner radius (or radii) to use for the control's border.")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -1468,6 +1476,8 @@ namespace SolidShineUi
         /// <summary>
         /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may prevent any child items from scrolling.
         /// </summary>
+        [Category("Common")]
+        [Description("Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll.")]
         public bool AllowParentScrolling
         {
             get => (bool)GetValue(AllowParentScrollingProperty);

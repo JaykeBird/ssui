@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -35,7 +36,7 @@ namespace SolidShineUi.Utils
 
         /// <summary>The backing routed eent for <see cref="SelectedColorChanged"/>. See the related event for more details.</summary>
         public static readonly RoutedEvent SelectedColorChangedEvent = EventManager.RegisterRoutedEvent(
-            "SelectedColorChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ImageColorPicker));
+            nameof(SelectedColorChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ImageColorPicker));
 
         /// <summary>
         /// Raised when the SelectedColor property is changed.
@@ -49,6 +50,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get the color that is selected from the image.
         /// </summary>
+        [ReadOnly(true)]
+        [Category("Common")]
         public Color? SelectedColor { get => (Color?)GetValue(SelectedColorProperty); private set => SetValue(SelectedColorPropertyKey, value); }
 
         private static readonly DependencyPropertyKey SelectedColorPropertyKey
@@ -81,6 +84,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the position that is selected from the image. This position is relative to the control itself.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the position that is selected from the image. This position is relative to the control itself.")]
         public Point? SelectedPosition
         {
             get => selPoint;

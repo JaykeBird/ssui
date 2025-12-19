@@ -17,7 +17,7 @@ namespace SolidShineUi
 {
 
     /// <summary>
-    /// A control that provides a responsive and customizable UI for users to select files on their computer, similar to the "<c>input type="file"</c>" element in HTML.
+    /// A control that provides a customizable UI for users to select files on their computer, similar to the "<c>input type="file"</c>" element in HTML.
     /// </summary>
     [DefaultEvent(nameof(SelectionChanged)), ContentProperty(nameof(SelectedFiles))]
     [Localizability(LocalizationCategory.ListBox)]
@@ -54,7 +54,47 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(SelectFile, OnSelectFileCommand, CanExecuteAlways));
         }
 
+        #region Template IO
+
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            LoadTemplateItems();
+        }
+
+        bool itemsLoaded = false;
+
+#if NETCOREAPP
+        ItemsControl? ic = null;
+        FlatButton? fb = null;
+        Grid? ch = null;
+#else
+        ItemsControl ic = null;
+        FlatButton fb = null;
+        Grid ch = null;
+#endif
+
+        void LoadTemplateItems()
+        {
+            if (!itemsLoaded)
+            {
+                ic = (ItemsControl)GetTemplateChild("PART_Ic");
+                fb = (FlatButton)GetTemplateChild("PART_Button");
+                ch = (Grid)GetTemplateChild("PART_Content");
+
+                if (ic != null && fb != null && ch != null)
+                {
+                    itemsLoaded = true;
+                }
+            }
+        }
+
+        #endregion
+
         #region Drag-Drop events
+
         private void NewFileSelect_DragLeave(object sender, DragEventArgs e)
         {
 
@@ -84,7 +124,7 @@ namespace SolidShineUi
         }
         #endregion
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -214,6 +254,9 @@ namespace SolidShineUi
                 ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
                 ApplyThemeBinding(ButtonHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
+                ApplyThemeBinding(ButtonCornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
@@ -326,9 +369,10 @@ namespace SolidShineUi
         #region Corner Radius
 
         /// <summary>
-        /// Get or set how much rounding to apply to the corners of the control. Setting the corners to 0 means no rounding is done; straight corners are shown.
+        /// Get or set how much rounding to apply to the corners of the control. Setting the corners to 0 means no rounding/straight corners.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set how much rounding to apply to the corners of the control. Setting the corners to 0 means no rounding/straight corners.")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -339,14 +383,14 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(FileSelect),
+            nameof(CornerRadius), typeof(CornerRadius), typeof(FileSelect),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback(OnCornerRadiusChanged)));
 
         /// <summary>
         /// The backing routed event for <see cref="CornerRadiusChanged"/>. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
+            nameof(CornerRadiusChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
 
         /// <summary>
         /// Raised when the <see cref="CornerRadius"/> property is changed.
@@ -367,9 +411,10 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set how much rounding to apply to the Browse button inside the control. Settings the corners to 0 means no rounding is done; straight corners are shown.
+        /// Get or set how much rounding to apply to the Browse button inside the control. Settings the corners to 0 means no rounding/straight corners.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set how much rounding to apply to the Browse button inside the control. Settings the corners to 0 means no rounding/straight corners.")]
         public CornerRadius ButtonCornerRadius
         {
             get => (CornerRadius)GetValue(ButtonCornerRadiusProperty);
@@ -380,8 +425,7 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="ButtonCornerRadius"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ButtonCornerRadiusProperty = DependencyProperty.Register(
-            "ButtonCornerRadius", typeof(CornerRadius), typeof(FileSelect),
-            new PropertyMetadata(new CornerRadius(0)));
+            nameof(ButtonCornerRadius), typeof(CornerRadius), typeof(FileSelect), new PropertyMetadata(new CornerRadius(0)));
 
         #endregion
 
@@ -391,34 +435,21 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="BrowseButtonText"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty BrowseButtonTextProperty = DependencyProperty.Register(
-            "BrowseButtonText", typeof(string), typeof(FileSelect),
+            nameof(BrowseButtonText), typeof(string), typeof(FileSelect),
             new FrameworkPropertyMetadata("Browse..."));
 
         /// <summary>
         /// The backing dependency property for <see cref="NoFilesSelectedMessage"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty NoFilesSelectedMessageProperty = DependencyProperty.Register(
-            "NoFilesSelectedMessage", typeof(string), typeof(FileSelect),
+            nameof(NoFilesSelectedMessage), typeof(string), typeof(FileSelect),
             new FrameworkPropertyMetadata("(no files selected)"));
-
-        /// <summary>
-        /// The backing dependency property for <see cref="ShowIcon"/>. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
-            "ShowIcon", typeof(bool), typeof(FileSelect),
-            new FrameworkPropertyMetadata(true));
-
-        /// <summary>
-        /// The backing dependency property for <see cref="FileListPadding"/>. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty FileListPaddingProperty = DependencyProperty.Register(
-            "FileListPadding", typeof(Thickness), typeof(FileSelect),
-            new FrameworkPropertyMetadata(new Thickness(0)));
 
         /// <summary>
         /// Get or set the text displayed in the Browse button. The default value is "Browse...".
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set the text displayed in the Browse button. The default value is \"Browse...\".")]
         public string BrowseButtonText
         {
             get => (string)GetValue(BrowseButtonTextProperty);
@@ -428,7 +459,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the message displayed when no files have been selected. The default value is "(no files selected)".
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set the message displayed when no files have been selected. The default value is \"(no files selected)\".")]
         public string NoFilesSelectedMessage
         {
             get => (string)GetValue(NoFilesSelectedMessageProperty);
@@ -436,9 +468,16 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// The backing dependency property for <see cref="ShowIcon"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
+            nameof(ShowIcon), typeof(bool), typeof(FileSelect), new FrameworkPropertyMetadata(true));
+
+        /// <summary>
         /// Get or set if the file icons are shown for selected files.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set if the file icons are shown for selected files.")]
         public bool ShowIcon
         {
             get => (bool)GetValue(ShowIconProperty);
@@ -449,13 +488,14 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="ButtonPlacement"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ButtonPlacementProperty = DependencyProperty.Register(
-            "ButtonPlacement", typeof(PlacementDirection), typeof(FileSelect),
+            nameof(ButtonPlacement), typeof(PlacementDirection), typeof(FileSelect),
             new FrameworkPropertyMetadata(PlacementDirection.Right));
 
         /// <summary>
-        /// Get or set the placement location of the Browse button. The button can be placed on any of the four edges of the control, or it can be hidden entirely.
+        /// Get or set the placement location of the Browse button within the control.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set the placement location of the Browse button within the control.")]
         public PlacementDirection ButtonPlacement
         {
             get => (PlacementDirection)GetValue(ButtonPlacementProperty);
@@ -466,7 +506,7 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="DisplayFilenames"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty DisplayFilenamesProperty = DependencyProperty.Register(
-            "DisplayFilenames", typeof(bool), typeof(FileSelect),
+            nameof(DisplayFilenames), typeof(bool), typeof(FileSelect),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -474,11 +514,19 @@ namespace SolidShineUi
         /// If false, then only a count is displayed (i.e. "3 file(s) selected").
         /// </summary>
         [Category("Common")]
+        [Description("Get or set if the filenames of the selected files are displayed.")]
         public bool DisplayFilenames
         {
             get => (bool)GetValue(DisplayFilenamesProperty);
             set => SetValue(DisplayFilenamesProperty, value);
         }
+
+        /// <summary>
+        /// The backing dependency property for <see cref="FileListPadding"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty FileListPaddingProperty = DependencyProperty.Register(
+            nameof(FileListPadding), typeof(Thickness), typeof(FileSelect),
+            new FrameworkPropertyMetadata(new Thickness(0)));
 
         /// <summary>
         /// Get or set the padding to put around the file list portion of the control (the portion that actually has the files listed).
@@ -488,6 +536,7 @@ namespace SolidShineUi
         /// Use <see cref="Control.Padding"/> to add space between the edges of this FileSelect and its contents (the file list and Browse button together). 
         /// </remarks>
         [Category("Layout")]
+        [Description("Get or set the padding to put around the file list portion of the control (the portion that actually has the files listed).")]
         public Thickness FileListPadding
         {
             get => (Thickness)GetValue(FileListPaddingProperty);
@@ -498,13 +547,14 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="HorizontalScrollBarVisibility"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty = DependencyProperty.Register(
-            "HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
+            nameof(HorizontalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
         /// </summary>
         [Category("Layout")]
+        [Description("Get or set the appearance of the horizontal scroll bar when displaying the list of filenames.")]
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
             get => (ScrollBarVisibility)GetValue(HorizontalScrollBarVisibilityProperty);
@@ -515,13 +565,14 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="VerticalScrollBarVisibility"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register(
-            "VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(FileSelect),
+            nameof(VerticalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(FileSelect),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar when displaying the list of filenames. Does nothing if <c>DisplayFilenames</c> is set to false.
         /// </summary>
         [Category("Layout")]
+        [Description("Get or set the appearance of the vertical scroll bar when displaying the list of filenames.")]
         public ScrollBarVisibility VerticalScrollBarVisibility
         {
             get => (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty);
@@ -696,45 +747,6 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Template IO
-
-        /// <inheritdoc/>
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            LoadTemplateItems();
-        }
-
-        bool itemsLoaded = false;
-
-#if NETCOREAPP
-        ItemsControl? ic = null;
-        FlatButton? fb = null;
-        Grid? ch = null;
-#else
-        ItemsControl ic = null;
-        FlatButton fb = null;
-        Grid ch = null;
-#endif
-
-        void LoadTemplateItems()
-        {
-            if (!itemsLoaded)
-            {
-                ic = (ItemsControl)GetTemplateChild("PART_Ic");
-                fb = (FlatButton)GetTemplateChild("PART_Button");
-                ch = (Grid)GetTemplateChild("PART_Content");
-
-                if (ic != null && fb != null && ch != null)
-                {
-                    itemsLoaded = true;
-                }
-            }
-        }
-
-        #endregion
-
         #region FileFilter / AllowMultipleFiles
 
         /// <summary>
@@ -751,24 +763,26 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="FileFilter"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty FileFilterProperty = DependencyProperty.Register(
-            "FileFilter", typeof(string), typeof(FileSelect),
-            new PropertyMetadata(ALL_FILES_FILTER));
+            nameof(FileFilter), typeof(string), typeof(FileSelect), new PropertyMetadata(ALL_FILES_FILTER));
 
         /// <summary>
         /// The backing dependency property for <see cref="AllowMultipleFiles"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty AllowMultipleFilesProperty = DependencyProperty.Register(
-            "AllowMultipleFiles", typeof(bool), typeof(FileSelect),
+            nameof(AllowMultipleFiles), typeof(bool), typeof(FileSelect),
             new PropertyMetadata(true, new PropertyChangedCallback(OnAllowMultipleFilesChanged)));
 
         /// <summary>
         /// Get or set the file filter used when selecting files. Use the <see cref="FILTER_DELIMITER"/> character (usually a semicolon ";")
-        /// to separate multiple extensions/filters (i.e. <c>*.docx;*.xlsx;*.pptx</c>). Supports <c>*</c> and <c>?</c> wildcards like Windows.
+        /// to separate multiple extensions/filters (i.e. <c>*.docx;*.xlsx;*.pptx</c>). Supports <c>*</c> and <c>?</c> wildcard characters.
         /// </summary>
         /// <remarks>
-        /// If the filter is changed after files have been selected, the existing selected files are not re-run against the new filter. This only applies to files added in afterwards.
+        /// If the filter is changed after files have been selected, the existing selected files are not re-run against the new filter. 
+        /// This only applies to files added in afterwards.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set the file filter used when selecting files. Use the filter delimiter (usually a semicolon \";\") to separate " +
+            "multiple extensions/filters. Supports * and ? wildcard characters.")]
         public string FileFilter
         {
             get => (string)GetValue(FileFilterProperty);
@@ -782,6 +796,7 @@ namespace SolidShineUi
         /// If you want to set a specific max number of files that can be selected, set this to "true" and then set the max value via the <c>SelectedFiles.Capacity</c> property.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set if multiple files can be selected with the FileSelect. If false, only one file can be selected.")]
         public bool AllowMultipleFiles
         {
             get => (bool)GetValue(AllowMultipleFilesProperty);
@@ -823,6 +838,7 @@ namespace SolidShineUi
         /// Get the list of files selected in this FileSelect. You can add or remove items from the collection, or set the collection's max size via the <c>Capacity</c> property.
         /// </summary>
         [Category("Common")]
+        [Description("Get the list of files selected in this FileSelect.")]
         public LimitableStringCollection SelectedFiles
         {
             get { return (LimitableStringCollection)GetValue(SelectedFilesProperty); }
@@ -851,7 +867,7 @@ namespace SolidShineUi
         /// The backing routed event for <see cref="SelectionChanged"/>. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-            "SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
+            nameof(SelectionChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FileSelect));
 
         /// <summary>
         /// Raised when the list of selected files (<see cref="SelectedFiles"/>) is changed.
@@ -872,6 +888,8 @@ namespace SolidShineUi
         /// <para />
         /// If this property is changed after files have been selected, the existing selected files are not re-checked. This only applies to files added in afterwards.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set if a file must exist at a specified path before it can be added to SelectedFiles. Default is true.")]
         public bool FileMustExist { get => (bool)GetValue(FileMustExistProperty); set => SetValue(FileMustExistProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="FileMustExist"/>. See the related property for details.</summary>
@@ -1120,22 +1138,27 @@ namespace SolidShineUi
         /// <summary>
         /// Hide the UI element.
         /// </summary>
+        [Description("Hide the UI element.")]
         Hidden = 0,
         /// <summary>
         /// Display the UI element at the top side of the control.
         /// </summary>
+        [Description("Display the UI element at the top side of the control.")]
         Top = 1,
         /// <summary>
         /// Display the UI element at the left side of the control.
         /// </summary>
+        [Description("Display the UI element at the left side of the control.")]
         Left = 2,
         /// <summary>
         /// Display the UI element at the right side of the control.
         /// </summary>
+        [Description("Display the UI element at the right side of the control.")]
         Right = 3,
         /// <summary>
         /// Display the UI element at the bottom side of the control.
         /// </summary>
+        [Description("Display the UI element at the bottom side of the control.")]
         Bottom = 4,
     }
 }

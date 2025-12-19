@@ -234,27 +234,12 @@ namespace SolidShineUi
         /// Get or set whether the button should have a transparent background when the button is not focused.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set whether the button should have a transparent background when the button is not focused.")]
         public bool TransparentBack
         {
             get => (bool)GetValue(TransparentBackProperty);
             set => SetValue(TransparentBackProperty, value);
         }
-
-        ///// <summary>
-        ///// Perform an action when a property of an object has changed. Primarily used internally.
-        ///// </summary>
-        ///// <param name="d">The object containing the property that changed.</param>
-        ///// <param name="e">Event arguments about the property change.</param>
-        //public static void OnTransparentBackChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (e.NewValue is bool tb)
-        //    {
-        //        if (d is SplitButton f)
-        //        {
-        //            f.ApplyColorScheme(f.ColorScheme, tb, f.UseAccentColors);
-        //        }
-        //    }
-        //}
 
         #endregion
 
@@ -587,6 +572,7 @@ namespace SolidShineUi
         /// Get or set the menu that appears when the menu button is clicked.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set the menu that appears when the menu button is clicked.")]
         public ContextMenu? Menu
         {
             get { return (ContextMenu)GetValue(MenuProperty); }
@@ -612,6 +598,7 @@ namespace SolidShineUi
         /// Get or set the menu that appears when the menu button is clicked.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set the menu that appears when the menu button is clicked.")]
         public ContextMenu Menu
         {
             get { return (ContextMenu)GetValue(MenuProperty); }
@@ -635,12 +622,13 @@ namespace SolidShineUi
 #endif
 
         /// <summary>
-        /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
+        /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for applicable child menu items as well.
         /// </summary>
         /// <remarks>
         /// See the remarks for <see cref="MenuButton.StaysOpen"/> for more details on the handling of this property.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set if the menu should close automatically. Remember to set the StaysOpenOnClick property for applicable child menu items as well.")]
         public bool StaysOpen
         {
             get
@@ -664,6 +652,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement mode for the SplitButton's menu. Default is <c>Bottom</c>.
         /// </summary>
+        [Description("Get or set the placement mode for the SplitButton's menu. Default is Bottom.")]
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
@@ -675,6 +664,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement target for the SplitButton's menu. Set to <c>null</c> to set the target to this SplitButton. Default is <c>null</c>.
         /// </summary>
+        [Description("Get or set the placement target for the SplitButton's menu. Set to null to set the target to this SplitButton. Default is null.")]
 #if NETCOREAPP
         public UIElement? MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
 #else
@@ -690,6 +680,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement rectangle for the SplitButton's menu. This sets the area relative to the button that the menu is positioned.
         /// </summary>
+        [Description("Get or set the placement rectangle for the SplitButton's menu. This sets the area relative to the button that the menu is positioned.")]
         public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
@@ -707,6 +698,8 @@ namespace SolidShineUi
         /// Get or set if the button should be highlighted (using the <see cref="HighlightBrush"/> and <see cref="BorderHighlightBrush"/>)
         /// when it has keyboard focus. If <c>false</c>, only the keyboard focus outline appears, and highlighting only occurs on mouse/stylus over.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set if the button should be highlighted when it has keyboard focus.")]
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
@@ -879,6 +872,16 @@ namespace SolidShineUi
             return (bool)obj.GetValue(IsMouseDownProperty);
         }
 
+        /// <summary>
+        /// Get if a mouse button is currently being pressed while the cursor is over this SplitButton.
+        /// </summary>
+        [ReadOnly(true)]
+        public bool IsMouseDown
+        {
+            get => (bool)GetValue(IsMouseDownProperty);
+            protected set => SetValue(IsMouseDownPropertyKey, value);
+        }
+
         #endregion
 
         #region Variables/Properties
@@ -891,7 +894,7 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="IsSelected"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-            "IsSelected", typeof(bool), typeof(SplitButton),
+            nameof(IsSelected), typeof(bool), typeof(SplitButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
 
         private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -919,6 +922,8 @@ namespace SolidShineUi
         /// This can be changed via the <see cref="BorderSelectionThickness"/> property. You can also directly edit the brushes used via the <see cref="SelectedBrush"/> and
         /// <see cref="BorderSelectedBrush"/> properties.
         /// </remarks>
+        [Category("Common")]
+        [Description("Gets or sets whether this button is selected.")]
         public bool IsSelected
         {
             get
@@ -935,7 +940,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
-            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SplitButton));
+            nameof(IsSelectedChanged), RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(SplitButton));
 
         /// <summary>
         /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
@@ -974,8 +979,7 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            "SelectOnClick", typeof(bool), typeof(SplitButton),
-            new PropertyMetadata(false));
+            nameof(SelectOnClick), typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
@@ -987,6 +991,7 @@ namespace SolidShineUi
         /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
         /// </remarks>
         [Category("Common")]
+        [Description("Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.")]
         public bool SelectOnClick
         {
             get => (bool)GetValue(SelectOnClickProperty);

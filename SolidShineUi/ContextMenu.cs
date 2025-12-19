@@ -220,6 +220,7 @@ namespace SolidShineUi
         /// Get or set if the context menu has rounded corners. When true, each corner has a corner radius of 4.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if the context menu has rounded corners. When true, each corner has a corner radius of 4.")]
         public bool RoundedCorners
         {
             get
@@ -234,9 +235,11 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set if a vertical scroll bar is visible for the context menu.
+        /// <para/>
         /// If the context menu is longer than the screen, the scroll bar can be used.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if a vertical scroll bar is visible for the context menu.")]
         public System.Windows.Controls.ScrollBarVisibility VerticalScrollBarVisibility
         {
             get

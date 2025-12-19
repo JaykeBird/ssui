@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Diagnostics;
 using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace SolidShineUi
 {
@@ -102,9 +102,13 @@ namespace SolidShineUi
             chkSel.IsEnabled = IsEnabled;
         }
 
+        #region UI Elements / Layout
+
         /// <summary>
         /// Get or set the left indent to apply to the item's content. This can be used to make an improvised tree view.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the left indent to apply to the item's content. This can be used to make an improvised tree view.")]
         public double Indent
         {
             get
@@ -118,9 +122,12 @@ namespace SolidShineUi
         }
 
         #region Checkbox
+
         /// <summary>
         /// Get or set whether a checkbox should be displayed on the item. Checkboxes can make it easy to select mutliple items.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set whether a checkbox should be displayed on the item. Checkboxes can make it easy to select mutliple items.")]
         public bool ShowCheckbox
         {
             get
@@ -145,6 +152,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the state of the checkbox. The checkbox is only shown if <see cref="ShowCheckbox"/> is set to true.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the state of the checkbox. The checkbox is only shown if ShowCheckbox is set to true.")]
         public CheckState CheckboxState
         {
             get
@@ -160,6 +169,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if the checkbox is checked. The checkbox is only shown if <see cref="ShowCheckbox"/> is set to true.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set if the checkbox is checked. The checkbox is only shown if ShowCheckbox is set to true.")]
         public bool IsCheckboxChecked
         {
             get
@@ -179,6 +190,8 @@ namespace SolidShineUi
         /// When <c>true</c>, changing the checkstate will also change whether this control is selected.
         /// When <c>false</c>, the checkstate can be changed without affecting whether this control is selected or not.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set if the checkbox's value should be changed if this control is selected (and vice-versa). By default, this value is true.")]
         public bool MatchCheckboxValueToSelect { get; set; } = true;
 
         bool updatingCheck = false;
@@ -202,14 +215,18 @@ namespace SolidShineUi
                 updatingCheck = false;
             }
         }
+
         #endregion
 
         #region Image
+
         double imgWidth = 16;
 
         /// <summary>
         /// Get or set the width to afford to the image. By default, the width is set to 16, but larger images will require the width to be set higher.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the width to afford to the image. By default, the width is set to 16, but larger images will require the width to be set higher.")]
         public double ImageWidth
         {
             get
@@ -236,6 +253,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set whether to display an image on the left side of the item. Set the image via the <c>ImageSource</c> property.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set whether to display an image on the left side of the item. Set the image via the ImageSource property.")]
         public bool ShowImage
         {
             get
@@ -256,8 +275,14 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the source for the image to show on the left side of the item. If set, the item automatically displays the image (unless <c>AutoShowImageOnSourceSet</c> is set to false).
+        /// Get or set the source for the image to show on the left side of the item.
         /// </summary>
+        /// <remarks>
+        /// If this is updated to a value other than null, then <c>ShowImage</c> is automatically set to <c>true</c> to display the image
+        /// (unless <c>AutoShowImageOnSourceSet</c> is set to false).
+        /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the source for the image to show on the left side of the item.")]
 #if NETCOREAPP
         public ImageSource? ImageSource
 #else
@@ -289,13 +314,22 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set whether the <c>ShowImage</c> property should be updated when the <c>ImageSource</c> property is set. Default is true.
         /// </summary>
+        [Description("Get or set whether the ShowImage property should be updated when the ImageSource property is set. Default is true.")]
         public bool AutoShowImageOnSourceSet { get; set; } = true;
+
+        #endregion
+
         #endregion
 
         #region Text
+
         /// <summary>
-        /// Get or set the text to display within the item. This text can be edited by setting <c>AllowTextEditing</c> to true, or by calling <see cref="DisplayEditText()"/>.
+        /// Get or set the text to display within the item.
+        /// <para/>
+        /// This text can be edited by setting <see cref="AllowTextEditing"/> to true, or by calling <see cref="DisplayEditText()"/>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the text to display within the item.")]
         public string Text
         {
             get
@@ -314,8 +348,11 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the width of the main text section of the control.
+        /// <para/>
         /// This can be used to limit the width of the main text section, or make it as wide as needed for the full text to fit.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the width of the main text section of the control.")]
         public GridLength TextColumnWidth
         {
             get
@@ -331,6 +368,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the text trimming behavior to use when the text overflows the visible area.
         /// </summary>
+        [Category("Text")]
+        [Description("Get or set the text trimming behavior to use when the text overflows the visible area.")]
         public TextTrimming TextTrimming
         {
             get
@@ -342,12 +381,16 @@ namespace SolidShineUi
                 lblText.TextTrimming = value;
             }
         }
+
         #endregion
 
         #region RightText
+
         /// <summary>
         /// Get or set the text to display on the far-right side of the item. This text cannot be edited directly by the user.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the text to display on the far-right side of the item. This text cannot be edited directly by the user.")]
         public string RightText
         {
             get
@@ -363,6 +406,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the FontFamily to use for the text on the right side of the control.
         /// </summary>
+        [Category("Text")]
+        [Description("Get or set the FontFamily to use for the text on the right side of the control.")]
         public FontFamily RightFontFamily
         {
             get
@@ -378,6 +423,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the font size to use for the text on the right side of the control.
         /// </summary>
+        [Category("Text")]
+        [Description("Get or set the font size to use for the text on the right side of the control.")]
         public double RightFontSize
         {
             get
@@ -393,6 +440,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the font weight to use for the text on the right side of the control.
         /// </summary>
+        [Category("Text")]
+        [Description("Get or set the font weight to use for the text on the right side of the control.")]
         public FontWeight RightFontWeight
         {
             get
@@ -408,6 +457,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the font stretch to use for the text on the right side of the control.
         /// </summary>
+        [Category("Text")]
+        [Description("Get or set the font stretch to use for the text on the right side of the control.")]
         public FontStretch RightFontStretch
         {
             get
@@ -423,6 +474,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the FontStyle to use for the text on the right side of the control.
         /// </summary>
+        [Category("Text")]
+        [Description("Get or set the FontStyle to use for the text on the right side of the control.")]
         public FontStyle RightFontStyle
         {
             get
@@ -437,8 +490,11 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the width of the right text section of the control.
+        /// <para/>
         /// This can be used to limit the width of the right text section, or make it as wide as needed for the right text to fit fully.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the width of the right text section of the control.")]
         public GridLength RightTextWidth
         {
             get
@@ -453,9 +509,12 @@ namespace SolidShineUi
         #endregion
 
         #region Text Editing
+
         /// <summary>
         /// Get or set if the text should have an underline effect when the mouse is over the text. This is enabled by default when <c>AllowTextEditing</c> is set to "true", but otherwise is disabled.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set if the text should have an underline effect when the mouse is over the text. This is enabled by default when AllowTextEditing is set to true, but otherwise is disabled.")]
         public bool TextUnderlineOnMouseOver
         {
             get
@@ -472,7 +531,7 @@ namespace SolidShineUi
         /// The routed event object backing the related event. See <see cref="TextChanged"/> for more details.
         /// </summary>
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(
-            "TextChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<string>), typeof(SelectableItem));
+            nameof(TextChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<string>), typeof(SelectableItem));
 
         /// <summary>
         /// Raised when the Text property is changed, either via updating the property or via the the user's text editing view.
@@ -486,6 +545,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set whether all of the text should be selected when the text-editing text box recieves focus.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set whether all of the text should be selected when the text-editing text box recieves focus.")]
         public bool SelectOnFocusTextEdit
         {
             get
@@ -503,7 +564,12 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set whether the user should be allowed to edit the text in the Text property. If enabled, a text box will appear when the user clicks on the text.
         /// </summary>
-        /// <remarks>While editing, pressing "Enter" will confirm the edit, while pressing "Escape" will cancel the operation.</remarks>
+        /// <remarks>
+        /// While editing, pressing the Enter key will confirm the edit, while pressing the Escape key will cancel the operation.
+        /// Editing can also be confirmed via <see cref="ConfirmEdit"/> or cancelled via <see cref="CancelEdit"/>.
+        /// </remarks>
+        [Category("Common")]
+        [Description("Get or set whether the user should be allowed to edit the text in the Text property. If enabled, a text box will appear when the user clicks on the text.")]
         public bool AllowTextEditing
         {
             get { return _canEditText; }
@@ -539,9 +605,10 @@ namespace SolidShineUi
         /// Get if this control is currently in text edit mode.
         /// </summary>
         /// <remarks>
-        /// To activate text edit mode, make sure <see cref="AllowTextEditing"/> is set to true, and then the user can click on the text, 
-        /// or it can be activated via the <see cref="DisplayEditText"/> method.
+        /// To activate text edit mode, either set <see cref="AllowTextEditing"/> is set to true to make the text editable by clicking on it, 
+        /// or call the <see cref="DisplayEditText"/> method.
         /// </remarks>
+        [ReadOnly(true)]
         public bool IsCurrentlyEditingText { get { return _editMode; } }
 
         /// <summary>
@@ -564,7 +631,7 @@ namespace SolidShineUi
 
         /// <summary>
         /// Confirm the user's edit to the text, as changed via the text editing view. Also exits the text editing view. 
-        /// This can only be called when in the text editing view.
+        /// This can only be called when in the text editing view (see <see cref="IsCurrentlyEditingText"/>).
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if this item is not in the text editing view.</exception>
         public void ConfirmEdit()
@@ -608,6 +675,7 @@ namespace SolidShineUi
                 CancelEdit();
             }
         }
+
         #endregion
     }
 }

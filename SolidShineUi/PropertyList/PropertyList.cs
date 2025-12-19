@@ -188,11 +188,12 @@ namespace SolidShineUi.PropertyList
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing dependency property for <see cref="ColorScheme"/>. See the related property for more details.
+        /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
             = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(PropertyList),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -310,6 +311,8 @@ namespace SolidShineUi.PropertyList
         /// <remarks>
         /// To load in an object, please use <see cref="LoadObject(object)"/>.
         /// </remarks>
+        [ReadOnly(true)]
+        [Description("Get if this control has an object loaded.")]
         public bool HasObjectLoaded { get => (bool)GetValue(HasObjectLoadedProperty); private set => SetValue(HasObjectLoadedPropertyKey, value); }
 
         private static readonly DependencyPropertyKey HasObjectLoadedPropertyKey
@@ -439,19 +442,21 @@ namespace SolidShineUi.PropertyList
         #endregion
 
         #region Object Display Name
+
         /// <summary>
         /// Get or set the string used to name the object being observed. The PropertyList will try to set this automatically via looking at the Name property,
         /// or otherwise you can set a custom name to display.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the string used to name the object being observed.")]
         public string ObjectDisplayName { get => (string)GetValue(ObjectDisplayNameProperty); set => SetValue(ObjectDisplayNameProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ObjectDisplayNameProperty
-            = DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("No name"));
+            = DependencyProperty.Register(nameof(ObjectDisplayName), typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata(NO_NAME));
 
         #endregion
 
@@ -460,6 +465,7 @@ namespace SolidShineUi.PropertyList
         #region Sort, Filter, DisplayOptions
 
         #region Properties
+
         /// <summary>
         /// Get or set how the list of properties are sorted in the PropertyList.
         /// </summary>
@@ -467,13 +473,13 @@ namespace SolidShineUi.PropertyList
         /// If this setting is changed, you will need to reload the object (<see cref="ReloadObject()"/>) or load a new object to apply that change.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set how the list of properties are sorted in the PropertyList.")]
         public PropertySortOption SortOption { get => (PropertySortOption)GetValue(SortOptionProperty); set => SetValue(SortOptionProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SortOption"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SortOptionProperty
-            = DependencyProperty.Register("SortOption", typeof(PropertySortOption), typeof(PropertyList),
-            new FrameworkPropertyMetadata(PropertySortOption.Name,
-                new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.SortOptionChanged?.Invoke(p, e)))));
+            = DependencyProperty.Register(nameof(SortOption), typeof(PropertySortOption), typeof(PropertyList),
+            new FrameworkPropertyMetadata(PropertySortOption.Name, (o, e) => o.PerformAs<PropertyList>((p) => p.SortOptionChanged?.Invoke(p, e))));
 
         /// <summary>
         /// Get or set the settings for what properties should be displayed in the PropertyList.
@@ -484,31 +490,33 @@ namespace SolidShineUi.PropertyList
         /// Note that set-only properties are not supported by PropertyList and thus won't be displayed, regardless of this setting.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set the settings for what properties should be displayed in the PropertyList.")]
         public PropertyListDisplayFlags DisplayOptions { get; set; } = PropertyListDisplayFlags.HidePropertyListHide;
 
         /// <summary>
         /// Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set if inherited properties (properties not defined directly in the observed object's type) are visible in the PropertyList.")]
         public bool ShowInheritedProperties { get => (bool)GetValue(ShowInheritedPropertiesProperty); set => SetValue(ShowInheritedPropertiesProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowInheritedProperties"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ShowInheritedPropertiesProperty
-            = DependencyProperty.Register("ShowInheritedProperties", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true,
-                new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowInheritedPropertiesChanged?.Invoke(p, e)))));
+            = DependencyProperty.Register(nameof(ShowInheritedProperties), typeof(bool), typeof(PropertyList),
+            new FrameworkPropertyMetadata(true, (o, e) => o.PerformAs<PropertyList>((p) => p.ShowInheritedPropertiesChanged?.Invoke(p, e))));
 
 
         /// <summary>
         /// Get or set if read-only properties (properties that only have a <c>get</c> section, and cannot be set/changed) are visible in the PropertyList.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set if read-only properties (properties that only have a get section, and cannot be set/changed) are visible in the PropertyList.")]
         public bool ShowReadOnlyProperties { get => (bool)GetValue(ShowReadOnlyPropertiesProperty); set => SetValue(ShowReadOnlyPropertiesProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowReadOnlyProperties"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ShowReadOnlyPropertiesProperty
-            = DependencyProperty.Register("ShowReadOnlyProperties", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true, new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowReadOnlyPropertiesChanged?.Invoke(p, e)))));
+            = DependencyProperty.Register(nameof(ShowReadOnlyProperties), typeof(bool), typeof(PropertyList),
+            new FrameworkPropertyMetadata(true, (o, e) => o.PerformAs<PropertyList>((p) => p.ShowReadOnlyPropertiesChanged?.Invoke(p, e))));
 
         /// <summary>
         /// Get or set the string to use for filtering the properties. Only properties that match this filter text will be displayed, 
@@ -517,12 +525,14 @@ namespace SolidShineUi.PropertyList
         /// <remarks>
         /// If the first character is <c>@</c>, then only the property names will be matched. Otherwise, the property names or types may be matched.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the string to use for filtering the properties. Only properties that match this filter text will be displayed.")]
         public string FilterText { get => (string)GetValue(FilterTextProperty); set => SetValue(FilterTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="FilterText"/>. See the related property for details.</summary>
         public static readonly DependencyProperty FilterTextProperty
-            = DependencyProperty.Register("FilterText", typeof(string), typeof(PropertyList),
-            new FrameworkPropertyMetadata("", new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.FilterTextChanged?.Invoke(p, e)))));
+            = DependencyProperty.Register(nameof(FilterText), typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("", (o, e) => o.PerformAs<PropertyList>((p) => p.FilterTextChanged?.Invoke(p, e))));
 
         #endregion
 
@@ -1272,78 +1282,84 @@ namespace SolidShineUi.PropertyList
         /// You can hide the entire type label and display by setting <see cref="ShowTypeDisplay"/> to false.
         /// </remarks>
         [Category("Text Labels")]
+        [Description("Get or set the label to display next to the object's type at the top of the control.")]
         public string TypeLabel { get => (string)GetValue(TypeLabelProperty); set => SetValue(TypeLabelProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty TypeLabelProperty
-            = DependencyProperty.Register("TypeLabel", typeof(string), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(TypeLabel), typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Type: "));
 
         /// <summary>
         /// Get or set the label to display in the View menu in the toolbar.
         /// </summary>
         [Category("Text Labels")]
+        [Description("Get or set the label to display in the View menu in the toolbar.")]
         public string ViewMenuLabel { get => (string)GetValue(ViewMenuLabelProperty); set => SetValue(ViewMenuLabelProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ViewMenuLabelProperty
-            = DependencyProperty.Register("ViewMenuLabel", typeof(string), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(ViewMenuLabel), typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("View"));
 
         /// <summary>
         /// Get or set the label to display in the column header for the Name column.
         /// </summary>
         [Category("Text Labels")]
+        [Description("Get or set the label to display in the column header for the Name column.")]
         public string NameHeaderLabel { get => (string)GetValue(NameHeaderLabelProperty); set => SetValue(NameHeaderLabelProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty NameHeaderLabelProperty
-            = DependencyProperty.Register("NameHeaderLabel", typeof(string), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(NameHeaderLabel), typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Name"));
 
         /// <summary>
         /// Get or set the label to display in the column header for the Type column.
         /// </summary>
         [Category("Text Labels")]
+        [Description("Get or set the label to display in the column header for the Type column.")]
         public string TypeHeaderLabel { get => (string)GetValue(TypeHeaderLabelProperty); set => SetValue(TypeHeaderLabelProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty TypeHeaderLabelProperty
-            = DependencyProperty.Register("TypeHeaderLabel", typeof(string), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(TypeHeaderLabel), typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Type"));
 
         /// <summary>
         /// Get or set the label to display in the column header for the Value column.
         /// </summary>
         [Category("Text Labels")]
+        [Description("Get or set the label to display in the column header for the Value column.")]
         public string ValueHeaderLabel { get => (string)GetValue(ValueHeaderLabelProperty); set => SetValue(ValueHeaderLabelProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueHeaderLabelProperty
-            = DependencyProperty.Register("ValueHeaderLabel", typeof(string), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(ValueHeaderLabel), typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Value"));
 
         /// <summary>
         /// Get or set the label to display in a tool-tip when the Filter text box has focus or mouse over.
         /// </summary>
         [Category("Text Labels")]
+        [Description("Get or set the label to display in a tool-tip when the Filter text box has focus or mouse over.")]
         public string FilterBoxToolTip { get => (string)GetValue(FilterBoxToolTipProperty); set => SetValue(FilterBoxToolTipProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty FilterBoxToolTipProperty
-            = DependencyProperty.Register("FilterBoxToolTip", typeof(string), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(FilterBoxToolTip), typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Filter (use @ to filter by name only)"));
 
         #endregion
@@ -1357,27 +1373,27 @@ namespace SolidShineUi.PropertyList
         /// PropertyList tries to load the name of a control by looking at its <c>Name</c> property; otherwise, you can also custom set a name via the <see cref="ObjectDisplayName"/> property.
         /// </remarks>
         [Category("Appearance")]
+        [Description("Get or set if the name display text is displayed at the top of the PropertyList control.")]
         public bool ShowNameDisplay { get => (bool)GetValue(ShowNameDisplayProperty); set => SetValue(ShowNameDisplayProperty, value); }
 
         /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// The backing dependency property for <see cref="ShowNameDisplay"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ShowNameDisplayProperty
-            = DependencyProperty.Register("ShowNameDisplay", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true));
+            = DependencyProperty.Register(nameof(ShowNameDisplay), typeof(bool), typeof(PropertyList), new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the type display text should be visible at the top of the PropertyList control.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if the type display text should be visible at the top of the PropertyList control.")]
         public bool ShowTypeDisplay { get => (bool)GetValue(ShowTypeDisplayProperty); set => SetValue(ShowTypeDisplayProperty, value); }
 
         /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// The backing dependency property for <see cref="ShowTypeDisplay"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ShowTypeDisplayProperty
-            = DependencyProperty.Register("ShowTypeDisplay", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true));
+            = DependencyProperty.Register(nameof(ShowTypeDisplay), typeof(bool), typeof(PropertyList), new FrameworkPropertyMetadata(true));
 
         #endregion
 
@@ -1387,40 +1403,40 @@ namespace SolidShineUi.PropertyList
         /// Get or set if the Filter textbox should be visible at the top of the PropertyList control.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if the Filter textbox should be visible at the top of the PropertyList control.")]
         public bool ShowFilterBox { get => (bool)GetValue(ShowFilterBoxProperty); set => SetValue(ShowFilterBoxProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ShowFilterBoxProperty
-            = DependencyProperty.Register("ShowFilterBox", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true));
+            = DependencyProperty.Register(nameof(ShowFilterBox), typeof(bool), typeof(PropertyList), new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the Reload button should be visible at the top of the PropertyList control.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if the Reload button should be visible at the top of the PropertyList control.")]
         public bool ShowReloadButton { get => (bool)GetValue(ShowReloadButtonProperty); set => SetValue(ShowReloadButtonProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ShowReloadButtonProperty
-            = DependencyProperty.Register("ShowReloadButton", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true));
+            = DependencyProperty.Register(nameof(ShowReloadButton), typeof(bool), typeof(PropertyList), new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the View and Sort menu button should be visible at the top of the PropertyList control.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if the View and Sort menu button should be visible at the top of the PropertyList control.")]
         public bool ShowViewMenu { get => (bool)GetValue(ShowViewMenuProperty); set => SetValue(ShowViewMenuProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ShowViewMenuProperty
-            = DependencyProperty.Register("ShowViewMenu", typeof(bool), typeof(PropertyList),
-            new FrameworkPropertyMetadata(true));
+            = DependencyProperty.Register(nameof(ShowViewMenu), typeof(bool), typeof(PropertyList), new FrameworkPropertyMetadata(true));
 
         #endregion
 
@@ -1430,13 +1446,14 @@ namespace SolidShineUi.PropertyList
         /// Get or set if gridlines are visible between the properties in the control.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if gridlines are visible between the properties in the control.")]
         public bool ShowGridlines { get => (bool)GetValue(ShowGridlinesProperty); set => SetValue(ShowGridlinesProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ShowGridlinesProperty
-            = DependencyProperty.Register("ShowGridlines", typeof(bool), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(ShowGridlines), typeof(bool), typeof(PropertyList),
             new FrameworkPropertyMetadata(false,
                 new PropertyChangedCallback((o, e) => o.PerformAs<PropertyList>((p) => p.ShowGridlinesChanged?.Invoke(p, e)))));
 
@@ -1444,13 +1461,14 @@ namespace SolidShineUi.PropertyList
         /// Get or set the brush of the gridlines in the control. Use <see cref="ShowGridlines"/> to actually display the gridlines.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush of the gridlines in the control. Use ShowGridlines to actually display the gridlines.")]
         public Brush GridlineBrush { get => (Brush)GetValue(GridlineBrushProperty); set => SetValue(GridlineBrushProperty, value); }
 
         /// <summary>
         /// Identifies a dependency property for this control. Please see the related property for more details.
         /// </summary>
         public static readonly DependencyProperty GridlineBrushProperty
-            = DependencyProperty.Register("GridlineBrush", typeof(Brush), typeof(PropertyList),
+            = DependencyProperty.Register(nameof(GridlineBrush), typeof(Brush), typeof(PropertyList),
             new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         //private event EventHandler GridlinePropertyChanged;
@@ -1586,6 +1604,8 @@ namespace SolidShineUi.PropertyList
         /// <summary>
         /// Get or set if the Types column should be visible in the control.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set if the Types column should be visible in the control.")]
         public bool ShowTypesColumn { get => (bool)GetValue(ShowTypesColumnProperty); set => SetValue(ShowTypesColumnProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowTypesColumn"/>. See the related property for details.</summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,15 +31,7 @@ namespace SolidShineUi
             Click += FlatRepeatButton_Click;
         }
 
-        private void FlatRepeatButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (ExecuteOnFirstClick && !timerRan)
-            {
-                DoExecute();
-            }
-
-            timerRan = false;
-        }
+        #region Events / Command Properties
 
         #region Press Begins
 
@@ -46,7 +39,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="PressBegins"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent PressBeginsEvent = EventManager.RegisterRoutedEvent(
-            "PressBegins", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
+            nameof(PressBegins), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised when the user starts clicking/pressing this button.
@@ -68,20 +61,24 @@ namespace SolidShineUi
         /// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>true</c>. This occurs when the user clicks down on
         /// the button, or presses the Space or Enter key on the button, or presses on the button via touch, pen, or other pointer.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the command to execute when this button begins being pressed.")]
         public ICommand PressBeginsCommand { get => (ICommand)GetValue(PressBeginsCommandProperty); set => SetValue(PressBeginsCommandProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressBeginsCommand"/>. See the related property for details.</summary>
-        public static DependencyProperty PressBeginsCommandProperty
+        public static readonly DependencyProperty PressBeginsCommandProperty
             = DependencyProperty.Register(nameof(PressBeginsCommand), typeof(ICommand), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// Get or set the parameter to pass with <see cref="PressBeginsCommand"/> when it is executed. Default value is <c>null</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the parameter to pass with PressBeginsCommand when it is executed.")]
         public object PressBeginsCommandParameter { get => GetValue(PressBeginsCommandParameterProperty); set => SetValue(PressBeginsCommandParameterProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressBeginsCommandParameter"/>. See the related property for details.</summary>
-        public static DependencyProperty PressBeginsCommandParameterProperty
+        public static readonly DependencyProperty PressBeginsCommandParameterProperty
             = DependencyProperty.Register(nameof(PressBeginsCommandParameter), typeof(object), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -92,10 +89,11 @@ namespace SolidShineUi
         /// WPF's <see cref="RoutedCommand"/> supports indicating a command target, but other <see cref="ICommand"/> implementations may not. In those cases, this property
         /// will not do anything.
         /// </remarks>
+        [Description("Get or set the target element that will receive PressBeginsCommand when it is executed.")]
         public IInputElement PressBeginsCommandTarget { get => (IInputElement)GetValue(PressBeginsCommandTargetProperty); set => SetValue(PressBeginsCommandTargetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressBeginsCommandTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty PressBeginsCommandTargetProperty
+        public static readonly DependencyProperty PressBeginsCommandTargetProperty
             = DependencyProperty.Register(nameof(PressBeginsCommandTarget), typeof(IInputElement), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -107,7 +105,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="PressEnds"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent PressEndsEvent = EventManager.RegisterRoutedEvent(
-            "PressEnds", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
+            nameof(PressEnds), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised when the user stops clicking/pressing this button.
@@ -131,20 +129,24 @@ namespace SolidShineUi
         /// mouse button while over this button, or releases the Space or Enter key, or moves the touch, pen, or other pointer away from the button. This also occurs if the user
         /// moves the mouse cursor away from the button while still holding down a mouse button (and bringing the mouse cursor back to trigger the press begins actions again).
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the command to execute when this button is no longer being pressed.")]
         public ICommand PressEndsCommand { get => (ICommand)GetValue(PressEndsCommandProperty); set => SetValue(PressEndsCommandProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressEndsCommand"/>. See the related property for details.</summary>
-        public static DependencyProperty PressEndsCommandProperty
+        public static readonly DependencyProperty PressEndsCommandProperty
             = DependencyProperty.Register(nameof(PressEndsCommand), typeof(ICommand), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// Get or set the parameter to pass with <see cref="PressEndsCommand"/> when it is executed. Default value is <c>null</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the parameter to pass with PressEndsCommand when it is executed.")]
         public object PressEndsCommandParameter { get => GetValue(PressEndsCommandParameterProperty); set => SetValue(PressEndsCommandParameterProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressEndsCommandParameter"/>. See the related property for details.</summary>
-        public static DependencyProperty PressEndsCommandParameterProperty
+        public static readonly DependencyProperty PressEndsCommandParameterProperty
             = DependencyProperty.Register(nameof(PressEndsCommandParameter), typeof(object), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -155,10 +157,11 @@ namespace SolidShineUi
         /// WPF's <see cref="RoutedCommand"/> supports indicating a command target, but other <see cref="ICommand"/> implementations may not. In those cases, this property
         /// will not do anything.
         /// </remarks>
+        [Description("Get or set the target element that will receive PressEndsCommand when it is executed.")]
         public IInputElement PressEndsCommandTarget { get => (IInputElement)GetValue(PressEndsCommandTargetProperty); set => SetValue(PressEndsCommandTargetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="PressEndsCommandTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty PressEndsCommandTargetProperty
+        public static readonly DependencyProperty PressEndsCommandTargetProperty
             = DependencyProperty.Register(nameof(PressEndsCommandTarget), typeof(IInputElement), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -170,7 +173,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="Execute"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent ExecuteEvent = EventManager.RegisterRoutedEvent(
-            "Execute", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
+            nameof(Execute), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised while this button is being pressed. This continues to be raised repeatedly until the button is no longer pressed.
@@ -202,20 +205,24 @@ namespace SolidShineUi
         /// successive execution should occur after the previous one.
         /// You can also use <see cref="ExecuteOnFirstClick"/> to disable this raising when the button is just clicked, without holding it down beyond <see cref="Delay"/>.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the command to execute while this button is being pressed. This continues to be executed repeatedly until the button is no longer pressed.")]
         public ICommand ExecuteCommand { get => (ICommand)GetValue(ExecuteCommandProperty); set => SetValue(ExecuteCommandProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommand"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteCommandProperty
+        public static readonly DependencyProperty ExecuteCommandProperty
             = DependencyProperty.Register(nameof(ExecuteCommand), typeof(ICommand), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// Get or set the parameter to pass with <see cref="ExecuteCommand"/> when it is executed. Default value is <c>null</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the parameter to pass with ExecuteCommand when it is executed.")]
         public object ExecuteCommandParameter { get => GetValue(ExecuteCommandParameterProperty); set => SetValue(ExecuteCommandParameterProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommandParameter"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteCommandParameterProperty
+        public static readonly DependencyProperty ExecuteCommandParameterProperty
             = DependencyProperty.Register(nameof(ExecuteCommandParameter), typeof(object), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
@@ -227,16 +234,22 @@ namespace SolidShineUi
         /// WPF's <see cref="RoutedCommand"/> supports indicating a command target, but other <see cref="ICommand"/> implementations may not. In those cases, this property
         /// will not do anything.
         /// </remarks>
+        /// 
+        [Description("Get or set the target element that will receive ExecuteCommand when it is executed.")]
         public IInputElement ExecuteCommandTarget { get => (IInputElement)GetValue(ExecuteCommandTargetProperty); set => SetValue(ExecuteCommandTargetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommandTarget"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteCommandTargetProperty
+        public static readonly DependencyProperty ExecuteCommandTargetProperty
             = DependencyProperty.Register(nameof(ExecuteCommandTarget), typeof(IInputElement), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(null));
 
         #endregion
 
-        #region Timer
+        #endregion
+
+        #region Timer / ExecuteOnFirstClick
+
+        #region Setup / Logic
 
         void SetupTimer()
         {
@@ -280,28 +293,33 @@ namespace SolidShineUi
         bool firstRun = false;
         bool timerRan = false;
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Get or set how long of a pause there should be between <see cref="Execute"/> firing, while the button is being pressed. Measured in milliseconds.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set how long of a pause there should be between Execute firing, while the button is being pressed. Measured in milliseconds.")]
         public int Interval { get => (int)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
-        public static DependencyProperty IntervalProperty
+        public static readonly DependencyProperty IntervalProperty
             = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(200));
 
         /// <summary>
         /// Get or set how long the delay should be after the button is initially pressed, before starting to raise <see cref="Execute"/>. Measured in milliseconds.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set how long the delay should be after the button is initially pressed, before starting to raise Execute. Measured in milliseconds.")]
         public int Delay { get => (int)GetValue(DelayProperty); set => SetValue(DelayProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Delay"/>. See the related property for details.</summary>
-        public static DependencyProperty DelayProperty
+        public static readonly DependencyProperty DelayProperty
             = DependencyProperty.Register(nameof(Delay), typeof(int), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(200));
-
-
-        #endregion
 
         /// <summary>
         /// Get or set if the Execute event should be activated when the button is initially clicked, even if the <see cref="Delay"/> time hasn't been reached.
@@ -311,12 +329,18 @@ namespace SolidShineUi
         /// to wait past <see cref="Delay"/> and trigger running the Execute event repeatedly. This is the default and expected behaviour with a RepeatButton,
         /// but if you need to have more fine control over when Execute runs, this can be set to false.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set if the Execute event should be activated when the button is initially clicked, even if the Delay time hasn't been reached.")]
         public bool ExecuteOnFirstClick { get => (bool)GetValue(ExecuteOnFirstClickProperty); set => SetValue(ExecuteOnFirstClickProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteOnFirstClick"/>. See the related property for details.</summary>
-        public static DependencyProperty ExecuteOnFirstClickProperty
+        public static readonly DependencyProperty ExecuteOnFirstClickProperty
             = DependencyProperty.Register(nameof(ExecuteOnFirstClick), typeof(bool), typeof(FlatRepeatButton),
             new FrameworkPropertyMetadata(true));
+
+        #endregion
+
+        #endregion
 
         #region Pressed Handling / Core Logic
 
@@ -360,6 +384,16 @@ namespace SolidShineUi
             RaiseEvent(re);
 
             ResetTimer();
+        }
+
+        private void FlatRepeatButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ExecuteOnFirstClick && !timerRan)
+            {
+                DoExecute();
+            }
+
+            timerRan = false;
         }
 
         /// <summary>

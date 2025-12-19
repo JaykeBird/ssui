@@ -1,6 +1,7 @@
 ﻿using SolidShineUi.Utils;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +18,9 @@ namespace SolidShineUi
     /// This is inspired by the <c>DomainUpDown</c> control in Windows Forms. If considering this control, please also compare this to the experience with WPF's <c>ComboBox</c>
     /// to see what will be the better user experience; this control has the limitation where users aren't able to see the full list of items at one time.
     /// </remarks>
-    [ContentProperty("Items")]
+    [DefaultEvent(nameof(ValueChanged))]
+    [ContentProperty(nameof(Items))]
+    [Localizability(LocalizationCategory.ComboBox)]
     public class StringSpinner : SpinnerBase
     {
         static StringSpinner()
@@ -46,6 +49,9 @@ namespace SolidShineUi
         /// <remarks>
         /// Use <see cref="SelectedIndex"/> to select a different string programmatically, like so: <c>mySpinner.SelectedIndex = mySpinner.Items.IndexOf("my string");</c>
         /// </remarks>
+        [ReadOnly(true)]
+        [Category("Common")]
+        [Description("Get the string value that is currently selected in this control.")]
         public string Value { get => (string)GetValue(ValueProperty); private set => SetValue(ValuePropertyKey, value); }
 
         private static readonly DependencyPropertyKey ValuePropertyKey
@@ -61,6 +67,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get the list of string values to select from in this StringSpinner control. Add items to this list via <c>Items.Add("string")</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get the list of string values to select from in this StringSpinner control.")]
         public ObservableCollection<string> Items { get => (ObservableCollection<string>)GetValue(ItemsProperty); private set => SetValue(ItemsPropertyKey, value); }
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
@@ -76,6 +84,9 @@ namespace SolidShineUi
         /// <summary>
         /// Get the highest index value that is allowed to be set via <see cref="SelectedIndex"/> in this control. This will be equal to <c>Items.Count - 1</c>.
         /// </summary>
+        [ReadOnly(true)]
+        [Category("Common")]
+        [Description("Get the highest index value that is allowed to be set via \"SelectedIndex\" in this control.")]
         public int MaxValue { get => (int)GetValue(MaxValueProperty); private set => SetValue(MaxValuePropertyKey, value); }
 
         private static readonly DependencyPropertyKey MaxValuePropertyKey
@@ -88,6 +99,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the index of the selected string in this control. This index must be between 0 and <see cref="MaxValue"/>, inclusive.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the index of the selected string in this control.")]
         public int SelectedIndex
         {
             get => _selected;

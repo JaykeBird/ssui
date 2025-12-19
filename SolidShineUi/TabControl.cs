@@ -18,7 +18,7 @@ namespace SolidShineUi
     /// <summary>
     /// A control that can house multiple controls under a number of tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
     /// </summary>
-    [ContentProperty("Items")]
+    [ContentProperty(nameof(Items))]
     [DefaultEvent(nameof(TabChanged))]
     [Localizability(LocalizationCategory.None)]
     public class TabControl : ThemedControl
@@ -54,9 +54,13 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, DoCloseCurrentTab, CanExecuteIfAnyTabSelected));
         }
 
+        #region Loaded event
+
         /// <summary>
         /// Get or set if the first tab should be selected right away when the control is loaded. This property has no effect after the control is loaded.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set if the first tab should be selected right away when the control is loaded. This property has no effect after the control is loaded.")]
         public bool SelectFirstTabOnLoad { get; set; } = true;
 
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
@@ -67,7 +71,10 @@ namespace SolidShineUi
             }
         }
 
+        #endregion
+
         #region Template IO
+
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -260,10 +267,6 @@ namespace SolidShineUi
                         // from https://stackoverflow.com/a/1876534/2987285
                         ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                         c.ApplyTemplate();
-                        //#if NETCOREAPP
-                        //                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-                        //#else
-                        //#endif
                         if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                         {
                             if (tb.TabItem != null && tb.TabItem == newItem)
@@ -620,7 +623,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set if the tab bar should be shown at the bottom of the control, rather than the top.")]
         public bool ShowTabsOnBottom
         {
             get { return (bool)GetValue(ShowTabsOnBottomProperty); }
@@ -648,7 +652,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the height of the horizontal tab bar. The default value is 24.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set the height of the horizontal tab bar. The default value is 24.")]
         public double HorizontalTabBarHeight
         {
             get { return (double)GetValue(HorizontalTabBarHeightProperty); }
@@ -668,12 +673,14 @@ namespace SolidShineUi
         #region LeftTabBarElement and RightTabBarElement
 
         /// <summary>The backing dependency property object for the related property. See <see cref="LeftTabBarElement"/> for details.</summary>
-        public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty LeftTabBarElementProperty = 
+            DependencyProperty.Register(nameof(LeftTabBarElement), typeof(UIElement), typeof(TabControl), new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// Get or set the element to display on the left side of the tab bar.
         /// </summary>
+        [Category("Layout")]
+        [Description("Get or set the element to display on the left side of the tab bar.")]
         public UIElement LeftTabBarElement
         {
             get { return (UIElement)GetValue(LeftTabBarElementProperty); }
@@ -681,12 +688,14 @@ namespace SolidShineUi
         }
 
         /// <summary>The backing dependency property object for the related property. See <see cref="RightTabBarElement"/> for details.</summary>
-        public static readonly DependencyProperty RightTabBarElementProperty = DependencyProperty.Register("RightTabBarElement", typeof(UIElement), typeof(TabControl),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty RightTabBarElementProperty = 
+            DependencyProperty.Register(nameof(RightTabBarElement), typeof(UIElement), typeof(TabControl), new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).
         /// </summary>
+        [Category("Layout")]
+        [Description("Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).")]
         public UIElement RightTabBarElement
         {
             get { return (UIElement)GetValue(RightTabBarElementProperty); }
@@ -700,13 +709,16 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="ShowTabListMenu"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
+        public static readonly DependencyProperty ShowTabListMenuProperty = 
+            DependencyProperty.Register(nameof(ShowTabListMenu), typeof(bool), typeof(TabControl),
             new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<TabControl>((t) => t.ShowTabListMenuChanged?.Invoke(t, e)))));
 
         /// <summary>
-        /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs. This mimics a similar menu found in Visual Studio.
+        /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs.
+        /// This mimics a similar menu found in Visual Studio.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs.")]
         public bool ShowTabListMenu
         {
             get { return (bool)GetValue(ShowTabListMenuProperty); }
@@ -729,13 +741,15 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="TabMinWidth"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty TabMinWidthProperty = DependencyProperty.Register("TabMinWidth", typeof(double), typeof(TabControl),
+        public static readonly DependencyProperty TabMinWidthProperty = 
+            DependencyProperty.Register(nameof(TabMinWidth), typeof(double), typeof(TabControl),
             new FrameworkPropertyMetadata(120.0d, new PropertyChangedCallback((d, e) => d.PerformAs<TabControl>((t) => t.OnTabMinWidthChanged(e)))));
 
         /// <summary>
         /// Get or set the minimum width a tab should have in the tab bar. While tabs may be wider than this width, they will never be shorter than it.
         /// </summary>
-        [Category("Layout")]
+        [Category("Appearance")]
+        [Description("Get or set the minimum width a tab should have in the tab bar. While tabs may be wider than this width, they will never be shorter than it.")]
         public double TabMinWidth
         {
             get { return (double)GetValue(TabMinWidthProperty); }
@@ -778,7 +792,8 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="SelectedTabClosedAction"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty SelectedTabClosedActionProperty = DependencyProperty.Register("SelectedTabClosedAction", typeof(SelectedTabCloseAction), typeof(TabControl),
+        public static readonly DependencyProperty SelectedTabClosedActionProperty = 
+            DependencyProperty.Register(nameof(SelectedTabClosedAction), typeof(SelectedTabCloseAction), typeof(TabControl),
             new PropertyMetadata(SelectedTabCloseAction.SelectTabToLeft));
 
         /// <summary>
@@ -794,6 +809,8 @@ namespace SolidShineUi
         /// This property is only for situations affecting a change in the selected tab. If a different (not selected) tab is closed, no extra action is needed
         /// and this property has no effect or relation to that.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the action to take when the currently selected tab is closed.")]
         public SelectedTabCloseAction SelectedTabClosedAction
         {
             get { return (SelectedTabCloseAction)GetValue(SelectedTabClosedActionProperty); }
@@ -806,7 +823,8 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="AllowTabDragDrop"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty AllowTabDragDropProperty = DependencyProperty.Register("AllowTabDragDrop", typeof(bool), typeof(TabControl),
+        public static readonly DependencyProperty AllowTabDragDropProperty = 
+            DependencyProperty.Register(nameof(AllowTabDragDrop), typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<TabControl>((t) => t.AllowTabDragDropChanged?.Invoke(t, e)))));
 
         /// <summary>
@@ -816,6 +834,7 @@ namespace SolidShineUi
         /// Note that dragging and dropping tabs between TabControls is not currently supported.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set if tabs can be dragged and dropped. If true, users can drag tabs around to rearrange them in the control's tab bar.")]
         public bool AllowTabDragDrop
         {
             get { return (bool)GetValue(AllowTabDragDropProperty); }
@@ -835,7 +854,7 @@ namespace SolidShineUi
         
         #endregion
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -1190,13 +1209,13 @@ namespace SolidShineUi
         /// <summary>
         /// Set up a new ITabDisplayItem that was added to this TabControl.
         /// This will set up the necessary event handlers and other properties to allow the ITabDisplayItem to interact with the TabControl.
+        /// <para/>
+        /// This is used internally for handling tabs, and calling this should be avoided except from within your own 
+        /// <see cref="ITabDisplayItem"/> control.
         /// </summary>
         /// <param name="tdi">The ITabDisplayItem to set up.</param>
         /// <remarks>
-        /// This is used internally for handling tabs, and calling this should be avoided except from within your own 
-        /// <see cref="ITabDisplayItem"/> control.
-        /// <para/>
-        /// To add a tab to a <see cref="TabControl"/>, use <c>Items.Add</c>.
+        /// This is not for adding tabs to this control. To add a tab, use <c>Items.Add</c>.
         /// </remarks>
         public void RegisterTabDisplayItem(ITabDisplayItem tdi)
         {
@@ -1279,10 +1298,7 @@ namespace SolidShineUi
                     // from https://stackoverflow.com/a/1876534/2987285
                     ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                     c.ApplyTemplate();
-                    //#if NETCOREAPP
-                    //#else
-                    //                    TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-                    //#endif
+
                     if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                     {
                         if (tb.TabItem != null && tb.TabItem == selItem)
@@ -1367,6 +1383,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get if the scroll buttons are currently visible in the tab bar.
         /// </summary>
+        [ReadOnly(true)]
         public bool ScrollButtonsVisible
         {
             get { return (bool)GetValue(ScrollButtonsVisibleProperty); }
@@ -1444,6 +1461,7 @@ namespace SolidShineUi
         }
 
         #endregion
+    
     }
 
     /// <summary>

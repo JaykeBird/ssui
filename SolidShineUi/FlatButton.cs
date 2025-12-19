@@ -182,6 +182,7 @@ namespace SolidShineUi
         /// Get or set whether the button should have a transparent background when the button is not focused or selected.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set whether the button should have a transparent background when the button is not focused or selected.")]
         public bool TransparentBack
         {
             get => (bool)GetValue(TransparentBackProperty);
@@ -678,18 +679,19 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
-            "BorderSelectionThickness", typeof(Thickness), typeof(FlatButton),
+            nameof(BorderSelectionThickness), typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(2)));
 
         /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
+            nameof(CornerRadius), typeof(CornerRadius), typeof(FlatButton),
             new PropertyMetadata(new CornerRadius(0)));
 
         /// <summary>
         /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the thickness of the border around the button, while the button is in a selected state.")]
         public Thickness BorderSelectionThickness
         {
             get => (Thickness)GetValue(BorderSelectionThicknessProperty);
@@ -700,6 +702,7 @@ namespace SolidShineUi
         /// Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -714,6 +717,8 @@ namespace SolidShineUi
         /// Get or set if the button should be highlighted (using the <see cref="HighlightBrush"/> and <see cref="BorderHighlightBrush"/>)
         /// when it has keyboard focus. If <c>false</c>, only the keyboard focus outline appears, and highlighting only occurs on mouse/stylus over.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set if the button should be highlighted when it has keyboard focus.")]
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
@@ -781,6 +786,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get if a mouse button is currently being pressed while the cursor is over this FlatButton.
         /// </summary>
+        [ReadOnly(true)]
         public bool IsMouseDown
         {
             get => (bool)GetValue(IsMouseDownProperty);
@@ -836,6 +842,8 @@ namespace SolidShineUi
         /// To listen to changes to this property, use <see cref="IsSelectedChanged"/>, rather than listening to the <c>Click</c> event, as other actions could change this 
         /// property rather than just clicking it.
         /// </remarks>
+        [Category("Common")]
+        [Description("Gets or sets whether this button is selected.")]
         public bool IsSelected
         {
             get
@@ -852,7 +860,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
-            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(FlatButton));
+            nameof(IsSelectedChanged), RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
@@ -902,6 +910,7 @@ namespace SolidShineUi
         /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
         /// </remarks>
         [Category("Common")]
+        [Description("Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.")]
         public bool SelectOnClick
         {
             get => (bool)GetValue(SelectOnClickProperty);

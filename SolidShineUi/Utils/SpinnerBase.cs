@@ -80,16 +80,16 @@ namespace SolidShineUi.Utils
         #region IsAtMaxValue / IsAtMinValue
 
         /// <summary>
-        /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
+        /// The internal dependency property key, used for setting the <see cref="IsAtMaxValue"/> property.
         /// </summary>
         protected static readonly DependencyPropertyKey IsAtMaxValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMaxValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+            = DependencyProperty.RegisterReadOnly(nameof(IsAtMaxValue), typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
 
         /// <summary>
-        /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property. Only accessible to <c>NewSpinnerBase</c> and controls that inherit from it.
+        /// The internal dependency property key, used for setting the <see cref="IsAtMinValue"/> property.
         /// </summary>
         protected static readonly DependencyPropertyKey IsAtMinValuePropertyKey
-            = DependencyProperty.RegisterReadOnly("IsAtMinValue", typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
+            = DependencyProperty.RegisterReadOnly(nameof(IsAtMinValue), typeof(bool), typeof(SpinnerBase), new FrameworkPropertyMetadata(false));
 
         /// <summary>
         /// A dependency property object backing the <see cref="IsAtMaxValue"/> property. See the related property for more details.
@@ -104,11 +104,13 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get if this spinner's <c>Value</c> is currently equal to its <c>MaxValue</c>. If true, the value cannot be increased any more.
         /// </summary>
+        [ReadOnly(true)]
         public bool IsAtMaxValue { get => (bool)GetValue(IsAtMaxValueProperty); protected set => SetValue(IsAtMaxValuePropertyKey, value); }
 
         /// <summary>
         /// Get if this spinner's <c>Value</c> is currently equal to its <c>MinValue</c>. If true, the value cannot be decreased any more.
         /// </summary>
+        [ReadOnly(true)]
         public bool IsAtMinValue { get => (bool)GetValue(IsAtMinValueProperty); protected set => SetValue(IsAtMinValuePropertyKey, value); }
 
         #endregion
@@ -408,7 +410,7 @@ namespace SolidShineUi.Utils
 
         #region Properties
 
-        #region ColorScheme
+        #region ColorScheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -442,8 +444,9 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the color scheme used for this spinner. For easier color scheme management, bind this to the window or larger control you're using.
+        /// Get or set the color scheme used for this spinner. A color scheme can be used to style an entire control at once.
         /// </summary>
+        [Category("Appearance")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -513,14 +516,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="RepeatDelay"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty RepeatDelayProperty = DependencyProperty.Register(
-            "RepeatDelay", typeof(int), typeof(SpinnerBase),
+            nameof(RepeatDelay), typeof(int), typeof(SpinnerBase),
             new PropertyMetadata(300, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnRepeatDelayChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="RepeatDelayChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent RepeatDelayChangedEvent = EventManager.RegisterRoutedEvent(
-            "RepeatDelayChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
+            nameof(RepeatDelayChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the RepeatDelay property is changed.
@@ -550,6 +553,7 @@ namespace SolidShineUi.Utils
         /// specified in <see cref="Interval"/>. This will continue until the button is no longer held down, or the <c>MaxValue</c> or <c>MinValue</c> is reached.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set the delay period before starting the repeatedly stepping up or down while the button is held, in milliseconds. Default is 300 milliseconds.")]
         public int RepeatDelay
         {
             get => (int)GetValue(RepeatDelayProperty);
@@ -568,6 +572,7 @@ namespace SolidShineUi.Utils
         /// specified in this property. This continues until the button is no longer held, or the <c>MaxValue</c> or <c>MinValue</c> is reached.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set the rate of repeatedly stepping up or down while a button is held, in milliseconds. Default is 50 milliseconds.")]
         public int Interval { get => (int)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
@@ -590,7 +595,7 @@ namespace SolidShineUi.Utils
         /// The routed event object for the <see cref="IntervalChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent IntervalChangedEvent = EventManager.RegisterRoutedEvent(
-            "IntervalChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
+            nameof(IntervalChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<int>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the <see cref="Interval"/> property is changed.
@@ -609,14 +614,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="CornerRadius"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(SpinnerBase),
+            nameof(CornerRadius), typeof(CornerRadius), typeof(SpinnerBase),
             new PropertyMetadata(new CornerRadius(0), new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnCornerRadiusChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="CornerRadiusChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent CornerRadiusChangedEvent = EventManager.RegisterRoutedEvent(
-            "CornerRadiusChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<CornerRadius>), typeof(SpinnerBase));
+            nameof(CornerRadiusChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<CornerRadius>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the CornerRadius property is changed.
@@ -641,6 +646,7 @@ namespace SolidShineUi.Utils
         /// Get or set the corner radius to use around the corners of this control. Setting the corner radius to a value other than 0 displays rounded corners.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the corner radius to use around the corners of this control. Setting the corner radius to a value other than 0 displays rounded corners.")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -655,7 +661,7 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="AcceptExpressions"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty AcceptExpressionsProperty = DependencyProperty.Register(
-            "AcceptExpressions", typeof(bool), typeof(SpinnerBase),
+            nameof(AcceptExpressions), typeof(bool), typeof(SpinnerBase),
             new PropertyMetadata(true));
 
         /// <summary>
@@ -667,6 +673,7 @@ namespace SolidShineUi.Utils
         /// For <see cref="IntegerSpinner"/> and <see cref="LongSpinner"/>, this is ignored if <c>DisplayAsHex</c> is set to <c>true</c>.)
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set if the spinner should evaluate arithmetic expressions (such as \"2+5\") to accept as a value.")]
         public bool AcceptExpressions
         {
             get => (bool)GetValue(AcceptExpressionsProperty);
@@ -681,14 +688,14 @@ namespace SolidShineUi.Utils
         /// The dependency property object for the <see cref="ShowArrows"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowArrowsProperty = DependencyProperty.Register(
-            "ShowArrows", typeof(bool), typeof(SpinnerBase),
+            nameof(ShowArrows), typeof(bool), typeof(SpinnerBase),
             new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<SpinnerBase>((s) => s.OnShowArrowsChanged(e)))));
 
         /// <summary>
         /// The routed event object for the <see cref="ShowArrowsChanged"/> event. See the related event for details.
         /// </summary>
         public static readonly RoutedEvent ShowArrowsChangedEvent = EventManager.RegisterRoutedEvent(
-            "ShowArrowsChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(SpinnerBase));
+            nameof(ShowArrowsChanged), RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(SpinnerBase));
 
         /// <summary>
         /// Raised when the <see cref="ShowArrows"/> property is changed.
@@ -710,32 +717,20 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set whether the up and down arrow buttons are shown.
+        /// Get or set whether the up and down arrow buttons are shown for this spinner control.
         /// </summary>
+        /// <remarks>
+        /// Users are still able to use the arrow keys to change the value even if the arrow buttons are not shown.
+        /// <para/>
+        /// Hiding the arrow buttons may be desirable when the spinner control has a small width, to provide more space to see the value.
+        /// </remarks>
         [Category("Common")]
+        [Description("Get or set whether the up and down arrow buttons are shown for this spinner control.")]
         public bool ShowArrows
         {
             get => (bool)GetValue(ShowArrowsProperty);
             set => SetValue(ShowArrowsProperty, value);
         }
-
-        #endregion
-
-        #region ShowButtonDividerProperty
-        
-        ///// <summary>
-        ///// Get or set if a small divider border should be shown between the buttons and the text box.
-        ///// </summary>
-        ///// <remarks>
-        ///// In earlier versions of Solid Shine UI, there was no divider shown (although there actually should've been one).
-        ///// So the default value now is <c>true</c>, as is the intended behavior, but this can be set to <c>false</c> if you want to maintain appearance 
-        ///// </remarks>
-        //public bool ShowButtonDivider { get => (bool)GetValue(ShowButtonDividerProperty); set => SetValue(ShowButtonDividerProperty, value); }
-
-        ///// <summary>The backing dependency property for <see cref="ShowButtonDivider"/>. See the related property for details.</summary>
-        //public static DependencyProperty ShowButtonDividerProperty
-        //    = DependencyProperty.Register(nameof(ShowButtonDivider), typeof(bool), typeof(NewSpinnerBase),
-        //    new FrameworkPropertyMetadata(true));
 
         #endregion
 
@@ -749,7 +744,8 @@ namespace SolidShineUi.Utils
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// Get or set the minimum number of integral digits to display in the spinner (for spinners that display numbers). A value of 0 or lower will revert the display to the standard number display format.
+        /// Get or set the minimum number of integral digits to display in the spinner (for spinners that display numbers). 
+        /// A value of 0 or lower will revert the display to the standard number display format.
         /// </summary>
         /// <remarks>
         /// This modifies the number of digits being rendered via <see cref="double.ToString(string)"/>, <see cref="int.ToString(string)"/>, and other similar methods.
@@ -762,6 +758,7 @@ namespace SolidShineUi.Utils
         /// For spinners that don't interact with numbers (like <see cref="StringSpinner"/> and <see cref="TimeSpinner"/>), this property will not do anything.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set the minimum number of integral digits to display in the spinner (for spinners that display numbers).")]
         public int MinimumDigitCount
         {
             get => (int)GetValue(MinimumDigitCountProperty);

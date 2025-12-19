@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -504,6 +505,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get if this TabDisplayItem is currently highlighted (i.e. has focus or mouse over).
         /// </summary>
+        [ReadOnly(true)]
         public bool IsHighlighted { get => (bool)GetValue(IsHighlightedProperty); private set => SetValue(IsHighlightedPropertyKey, value); }
 
         private static readonly DependencyPropertyKey IsHighlightedPropertyKey
