@@ -7,9 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace SolidShineUi
 {
@@ -509,7 +507,6 @@ namespace SolidShineUi
 
         #endregion
 
-
         #region ColorScheme/UseAccentColors
 
         /// <summary>
@@ -679,13 +676,6 @@ namespace SolidShineUi
 
         #region Border
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
-        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(FlatButton),
-            new PropertyMetadata(new Thickness(1)));
-
         /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
             "BorderSelectionThickness", typeof(Thickness), typeof(FlatButton),
@@ -695,16 +685,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
             new PropertyMetadata(new CornerRadius(0)));
-
-        /// <summary>
-        /// Get or set the thickness of the border around the button.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
 
         /// <summary>
         /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.

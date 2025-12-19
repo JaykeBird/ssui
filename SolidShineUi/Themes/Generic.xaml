@@ -722,6 +722,7 @@
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="5,0,5,0" />
@@ -855,6 +856,7 @@
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="5,0,5,0" />
@@ -1044,8 +1046,8 @@
         <Setter Property="Padding" Value="5,0,3,0" />
         <Setter Property="Background" Value="#01000000" />
         <Setter Property="BorderBrush" Value="Black" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:CheckBox}" >
@@ -1201,9 +1203,9 @@
 
     <Style TargetType="{x:Type flat:TabControl}">
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
