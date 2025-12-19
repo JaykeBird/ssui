@@ -85,6 +85,17 @@ namespace SolidShineUi
             chkSel.ApplyColorScheme(cs);
         }
 
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            lblText.DisabledBrush = ssuiTheme.DisabledForeground;
+            lblText.TextBrush = ssuiTheme.Foreground;
+            lblText.HighlightBrush = ssuiTheme.HighlightForeground;
+
+            chkSel.SsuiTheme = ssuiTheme;
+        }
+
         private void SelectableItem_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             lblText.IsEnabled = IsEnabled;
