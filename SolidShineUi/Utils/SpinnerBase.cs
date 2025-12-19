@@ -500,6 +500,8 @@ namespace SolidShineUi.Utils
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
 
                 // we do not set Background here, as that'll set the background of the text box, and I'll just leave that as the default
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
