@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SolidShineUi;
+using SolidShineUi.Utils;
 using SolidShineUi.PropertyList.Dialogs;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -15,7 +14,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     public partial class TransformEditor : UserControl, IPropertyEditor
     {
 
-        // CloneCurrentValue is used a lot to make sure that the internal variable that I have, _
+        // CloneCurrentValue is used a lot to make sure that the internal variable that I have, _transform, is actually editable
 
         /// <summary>
         /// Create an TransformEditor.
@@ -38,25 +37,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => _writable; set { _writable = value; btnMenu.IsEnabled = value; } }
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        ColorScheme _cs = new ColorScheme();
 
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
 
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme cs)
         {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = cs;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", cs.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -166,8 +160,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool OpenTransformDialog()
         {
             TransformEditDialog ted = new TransformEditDialog();
-            ted.Owner = Window.GetWindow(this);
-            ted.ColorScheme = _cs;
+            ted.Owner = _host?.GetWindow();
+            ted.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             if (_specificType)
             {
                 ted.ImportSingleTransform(_transform);

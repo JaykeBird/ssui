@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+
 using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -35,18 +34,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        { 
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme value)
         {
-            imgItalic.Source = LoadIcon("TextItalic", cs);
+            imgItalic.Source = LoadIcon("TextItalic", value.IconVariation);
         }
 
         /// <inheritdoc/>

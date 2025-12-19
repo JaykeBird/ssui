@@ -1,14 +1,14 @@
-﻿using System;
+﻿using SolidShineUi.PropertyList.Dialogs;
+using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Linq;
-using static SolidShineUi.Utils.IconLoader;
-using SolidShineUi.PropertyList.Dialogs;
-using System.Text;
-using System.IO;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text; // need this for handling Rune support in .NET
+using System.Windows;
+using System.Windows.Controls;
+using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -42,26 +42,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _parent = host; */ }
+        public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
 
-        ColorScheme _cs = new ColorScheme();
-        //IPropertyEditorHost _parent = null;
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+        // ColorScheme _cs = new ColorScheme();
+#if NETCOREAPP
+        IPropertyEditorHost? _parent = null;
+#else
+        IPropertyEditorHost _parent = null;
+#endif
 
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme cs)
         {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = cs;
+            imgMenu.Source = LoadIcon("ThreeDots", cs.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -320,9 +314,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NETCOREAPP
             if (_itemType == typeof(Rune) || _itemType == typeof(Rune?))
             {
-                CharInputDialog sid = new CharInputDialog(_cs, (Rune)(_value ?? '\0'));
+                CharInputDialog sid = new CharInputDialog((Rune)(_value ?? '\0'));
                 sid.Title = "Enter Rune as Unicode";
-                sid.Owner = Window.GetWindow(this);
+                sid.Owner = _parent?.GetWindow() ?? Window.GetWindow(this);
+                sid.SsuiTheme = _parent?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 sid.ShowDialog();
 
                 if (sid.DialogResult)
@@ -345,8 +340,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             void LoadDialogAsChar()
             {
-                CharInputDialog sid = new CharInputDialog(_cs, (char)(_value ?? '\0'));
-                sid.Owner = Window.GetWindow(this);
+                CharInputDialog sid = new CharInputDialog((char)(_value ?? '\0'));
+                sid.Owner = _parent?.GetWindow() ?? Window.GetWindow(this);
+                sid.SsuiTheme = _parent?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 sid.ShowDialog();
 
                 if (sid.DialogResult)

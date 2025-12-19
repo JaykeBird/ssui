@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi.PropertyList.Dialogs;
-using System.Security.Cryptography;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -36,33 +34,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
 
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            btnMenu.ColorScheme = cs;
-            _cs = cs;
-
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                // imgNew.Source = LoadIcon("Reload", Utils.IconVariation.White);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                // imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Black);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
-            }
-            else
-            {
-                // imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Color);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
-            }
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
-
-        private ColorScheme _cs = new ColorScheme();
 
         private Rect rect = Rect.Empty;
 
@@ -168,9 +146,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuEdit_Click(object sender, RoutedEventArgs e)
         {
-            RectEditDialog red = new RectEditDialog(_cs);
+            RectEditDialog red = new RectEditDialog();
             red.SetRect(rect);
             red.Owner = _host?.GetWindow();
+            red.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             red.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             red.ShowDialog();
 

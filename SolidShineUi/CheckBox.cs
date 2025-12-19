@@ -472,14 +472,15 @@ namespace SolidShineUi
                 ApplyTheme(ssuiTheme);
             }
 
-            HighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
+            // don't set HighlightBrush
+            // HighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
 
             void ApplyTheme(SsuiTheme theme)
             {
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
                 // Border brush already applied in base
                 ApplyThemeBinding(CheckForegroundProperty, SsuiTheme.CheckBrushProperty, theme);
-                ApplyThemeBinding(CheckHighlightBrushProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(CheckHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty, theme);
                 ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
                 ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
 
@@ -496,7 +497,8 @@ namespace SolidShineUi
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used for the background of the checkbox's box. This value is not modified by the <see cref="ColorScheme"/> property.
+        /// Get or set the brush used for the background of the checkbox's box. This value is not modified by the <see cref="ColorScheme"/> 
+        /// or <see cref="ThemedContentControl.SsuiTheme"/> property.
         /// </summary>
         public Brush CheckBackground { get => (Brush)GetValue(CheckBackgroundProperty); set => SetValue(CheckBackgroundProperty, value); }
 

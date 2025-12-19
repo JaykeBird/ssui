@@ -32,35 +32,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
+
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme cs)
         {
-            btnMenu.ColorScheme = cs;
-            _cs = cs;
+            btnMenu.SsuiTheme = cs;
 
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.White);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Black);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
-            }
-            else
-            {
-                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Color);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
-            }
+            imgNew.Source = LoadIcon("Reload", cs.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", cs.IconVariation);
         }
-
-        private ColorScheme _cs = new ColorScheme();
 
         private Guid guid = Guid.Empty;
 
@@ -174,11 +161,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             sid.Title = "Enter Guid";
             sid.Description = "Enter in a valid Guid for this property:";
 
-            sid.ColorScheme = _cs;
-            sid.Owner = Window.GetWindow(this);
+            sid.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
+            sid.Owner = _host?.GetWindow() ?? Window.GetWindow(this);
             sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
+            sid.ValidationFunction = (s) => { return Guid.TryParse(s, out Guid _); };
+            sid.ValidationFailureString = "Not a valid Guid";
+
             sid.ShowDialog();
+
             if (sid.DialogResult)
             {
                 bool res = Guid.TryParse(sid.Value, out Guid g);

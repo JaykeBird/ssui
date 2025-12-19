@@ -40,6 +40,9 @@ namespace SolidShineUi
         /// then reapply the brushes in that event handler.
         /// <para/>
         /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
+        /// <para/>
+        /// Note that setting this will likely overwrite any brush values that are set in all child controls (that have a SsuiTheme property to inherit),
+        /// so if you had set a control to use a specific brush, you will need to re-update that after calling this property.
         /// </remarks>
         [Category("Appearance")]
 #if NETCOREAPP
@@ -349,6 +352,9 @@ namespace SolidShineUi
         /// then reapply the brushes in that event handler.
         /// <para/>
         /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
+        /// <para/>
+        /// Note that setting this will likely overwrite any brush values that are set in all child controls (that have a SsuiTheme property to inherit),
+        /// so if you had set a control to use a specific brush, you will need to re-update that after calling this property.
         /// </remarks>
         [Category("Appearance")]
 #if NETCOREAPP
@@ -609,6 +615,9 @@ namespace SolidShineUi
         /// then reapply the brushes in that event handler.
         /// <para/>
         /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
+        /// <para/>
+        /// Note that setting this will likely overwrite any brush values that are set in all child controls (that have a SsuiTheme property to inherit),
+        /// so if you had set a control to use a specific brush, you will need to re-update that after calling this property.
         /// </remarks>
         [Category("Appearance")]
 #if NETCOREAPP

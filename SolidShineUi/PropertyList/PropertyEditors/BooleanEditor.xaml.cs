@@ -27,12 +27,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            chkValue.ColorScheme = cs;
+            chkValue.SsuiTheme = theme;
         }
 
         /// <inheritdoc/>

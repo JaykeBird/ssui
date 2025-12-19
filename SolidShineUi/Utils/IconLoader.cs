@@ -47,7 +47,7 @@ namespace SolidShineUi.Utils
         /// <param name="iconName">The name of the icon.</param>
         /// <param name="colorVariation">The icon color variation to use.</param>
         /// <returns></returns>
-        public static BitmapImage LoadIcon(string iconName, IconVariation colorVariation = IconVariation.Color)
+        public static BitmapImage LoadIcon(string iconName, IconVariation colorVariation)
         {
             try
             {

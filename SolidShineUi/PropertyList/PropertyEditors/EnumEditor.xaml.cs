@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Reflection;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -30,11 +31,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
 
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs) { }
+        public void ApplySsuiTheme(SsuiTheme theme) { }
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()

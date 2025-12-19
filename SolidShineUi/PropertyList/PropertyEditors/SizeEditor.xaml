@@ -23,7 +23,7 @@
         <!-- Menu -->
         <flat:MenuButton x:Name="btnMenu" Grid.Column="8" ShowMenuArrow="False" TransparentBack="True" >
             <StackPanel Orientation="Horizontal">
-                <Image Height="16" Width="16" x:Name="imgFontEdit" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
+                <Image Height="16" Width="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>

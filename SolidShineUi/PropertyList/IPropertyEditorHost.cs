@@ -47,5 +47,11 @@ namespace SolidShineUi.PropertyList
         IPropertyEditor CreateEditorForType(Type propType);
 #endif
 
+        /// <summary>
+        /// Get the SsuiAppTheme to use for when a property editor wants to display a dialog.
+        /// </summary>
+        /// <returns>The SsuiAppTheme to apply to the dialog when loading it.</returns>
+        SsuiAppTheme GetThemeForDialogs();
+
     }
 }

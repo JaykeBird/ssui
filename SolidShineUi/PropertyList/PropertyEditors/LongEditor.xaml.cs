@@ -1,11 +1,10 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -32,35 +31,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
-        /// <summary>
-        /// Set the visual appearance of this control via a ColorScheme.
-        /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            intSpinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
-        }
-
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            intSpinner.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

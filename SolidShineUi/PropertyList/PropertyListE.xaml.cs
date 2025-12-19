@@ -142,6 +142,8 @@ namespace SolidShineUi.PropertyList
                 return;
             }
 
+            SsuiTheme sTheme = new SsuiTheme(cs);
+
 #if NETCOREAPP
             foreach (UIElement? item in stkProperties.Children)
 #else
@@ -153,7 +155,7 @@ namespace SolidShineUi.PropertyList
                 {
                     if (pei.PropertyEditorControl != null)
                     {
-                        pei.PropertyEditorControl.ColorScheme = cs;
+                        pei.PropertyEditorControl.ApplySsuiTheme(sTheme);
                     }
                 }
             }
@@ -426,6 +428,8 @@ namespace SolidShineUi.PropertyList
 
             Type baseType = _baseObject?.GetType() ?? typeof(object);
 
+            SsuiTheme sTheme = new SsuiTheme(ColorScheme);
+
             foreach (PropertyInfo item in properties)
             {
                 // first, check the property against the DisplayOptions
@@ -458,7 +462,7 @@ namespace SolidShineUi.PropertyList
 
                 if (ipe != null)
                 {
-                    ipe.ApplyColorScheme(ColorScheme);
+                    ipe.ApplySsuiTheme(sTheme);
                     ipe.SetHostControl(this);
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
@@ -1451,6 +1455,19 @@ namespace SolidShineUi.PropertyList
 #endif
         {
             return Window.GetWindow(this);
+        }
+
+
+        public SsuiAppTheme GetThemeForDialogs()
+        {
+            if (GetWindow() is ThemedWindow tw)
+            {
+                return tw.SsuiTheme;
+            }
+            else
+            {
+                return SsuiThemes.SystemTheme;
+            }
         }
     }
 }

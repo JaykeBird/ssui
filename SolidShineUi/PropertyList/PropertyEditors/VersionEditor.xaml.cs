@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -13,6 +11,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class VersionEditor : UserControl, IPropertyEditor
     {
+        // if using this to backport to your code using Solid Shine UI 1.9.x, replace usages of "SsuiTheme" below with "ColorScheme"
+        // you will also need to refer back to the source code for 1.9.10's VersionEditor to fix the other erroring lines/sections
+        // (such as the lines in mnuParse_Click, the missing ParentPropertyList property, and IPropertyEditorHost not existing)
+
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(Version) };
 
@@ -34,30 +36,24 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        private ColorScheme _cs = new ColorScheme();
-
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
+        
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme value)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+            nudLeft.SsuiTheme = value;
+            nudTop.SsuiTheme = value;
+            nudRight.SsuiTheme = value;
+            nudBottom.SsuiTheme = value;
+            btnMenu.SsuiTheme = value;
 
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme value)
-        {
-            _cs = value;
-            nudLeft.ColorScheme = value;
-            nudTop.ColorScheme = value;
-            nudRight.ColorScheme = value;
-            nudBottom.ColorScheme = value;
-            btnMenu.ColorScheme = value;
-
-            imgFontEdit.Source = LoadIcon("ThreeDots", value);
+            imgFontEdit.Source = LoadIcon("ThreeDots", value.IconVariation);
         }
 
         /// <summary>
@@ -73,7 +69,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 #if NETCOREAPP
         /// <inheritdoc/>
+        public event EventHandler? ValueChanged;
+
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             if (type == typeof(Version))
             {
@@ -107,8 +113,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (nudBottom.Value < 0)
             {
@@ -136,54 +147,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
             }
         }
-
-        /// <inheritdoc/>
-        public event EventHandler? ValueChanged;
-#else
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            if (type == typeof(Version))
-            {
-                if (value != null)
-                {
-                    if (value is Version t)
-                    {
-                        _internalAction = true;
-                        nudLeft.Value = t.Major;
-                        nudTop.Value = t.Minor;
-                        nudRight.Value = t.Build;
-                        nudBottom.Value = t.Revision;
-                        _internalAction = false;
-                    }
-                    else
-                    {
-                        // uhhh?
-                        SetAllToValue(0);
-                    }
-                }
-                else
-                {
-                    // null? treat it as Thickness of value 0
-                    SetAllToValue(0);
-                }
-            }
-            else
-            {
-                // uhhh?
-                SetAllToValue(0);
-            }
-        }
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
-        }
-        
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-#endif
 
         bool _internalAction = false;
 
@@ -214,18 +177,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuParse_Click(object sender, RoutedEventArgs e)
         {
-            //bool done = false;
-            StringInputDialog sid = new StringInputDialog(_cs, "Parse Version from String",
+            StringInputDialog sid = new StringInputDialog("Parse Version from String",
                 "Enter a Version string (numbers and periods only):");
+
             sid.ValidationFunction = (s) => { return Version.TryParse(s, out _); };
             sid.ValidationFailureString = "Not a valid Version value";
+
             sid.Width = 350;
-            sid.Owner = Window.GetWindow(this);
+            sid.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
+            sid.Owner = _host?.GetWindow();
 
             sid.ShowDialog();
+
             if (sid.DialogResult)
             {
                 Version v = Version.Parse(sid.Value);
+
                 _internalAction = true;
                 nudLeft.Value = v.Major;
                 nudTop.Value = v.Minor;
@@ -233,39 +200,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 nudBottom.Value = v.Revision;
                 _internalAction = false;
             }
-            //            while (!done)
-            //            {
-            //                sid.ShowDialog();
-            //                if (sid.DialogResult == true)
-            //                {
-            //#if NETCOREAPP
-            //                    Version? v = new Version();
-            //#else
-            //                    Version v = new Version();
-            //#endif
-            //                    bool res = Version.TryParse(sid.Value, out v);
-            //                    if (res && v != null) // null check shouldn't be necessary, but to satisfy the nullability system in .NET, here it is lol
-            //                    {
-            //                        done = true;
-            //                        _internalAction = true;
-            //                        nudLeft.Value = v.Major;
-            //                        nudTop.Value = v.Minor;
-            //                        nudRight.Value = v.Build;
-            //                        nudBottom.Value = v.Revision;
-            //                        _internalAction = false;
-            //                    }
-            //                    else
-            //                    {
-            //                        MessageDialog md = new MessageDialog(_cs);
-            //                        md.Owner = Window.GetWindow(this);
-            //                        md.ShowDialog("The string entered could not be formatted as a string. Make sure there are only numbers and periods. Do you want to retry?", null, null,
-            //                            "Parse String Error", MessageDialogButtonDisplay.Two, MessageDialogImage.Error, customOkButtonText: "Retry");
-            //                        if (md.DialogResult == MessageDialogResult.Cancel)
-            //                        {
-            //                            done = true;
-            //                        }
-            //                    }
-            //                }
         }
     }
 }

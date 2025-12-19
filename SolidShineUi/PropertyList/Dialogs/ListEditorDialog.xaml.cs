@@ -58,11 +58,27 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         int count = -1;
 
-        int addMode = ADD_CANNOT_ADD;
-        const int ADD_CANNOT_ADD = 0;
-        const int ADD_PRIMITIVE_TYPE = 1;
-        const int ADD_STRING_MODE = 2;
-        const int ADD_STANDARD = 3;
+        AddModeType addMode = AddModeType.CannotAdd;
+
+        private enum AddModeType
+        {
+            /// <summary>
+            /// Adding new items is not supported, as this type doesn't match any of the other add types
+            /// </summary>
+            CannotAdd = 0,
+            /// <summary>
+            /// The type is a primitive type, explicit support for adding has been added
+            /// </summary>
+            PrimitiveType = 1,
+            /// <summary>
+            /// The type has a constructor that takes a string; this can be used for adding
+            /// </summary>
+            StringMode = 2,
+            /// <summary>
+            /// The type has a constructor that takes no parameters; this can be used for adding
+            /// </summary>
+            Standard = 3,
+        }
 
         #endregion
 
@@ -226,12 +242,12 @@ namespace SolidShineUi.PropertyList.Dialogs
                 // does not have a parameterless constructor
                 if (basicTypes.Contains(baseType))
                 {
-                    addMode = ADD_PRIMITIVE_TYPE;
+                    addMode = AddModeType.PrimitiveType;
                 }
                 else if (baseType.GetConstructor(new Type[] { typeof(string) }) != null)
                 {
                     // there is a string-based constructor that we can use
-                    addMode = ADD_STRING_MODE;
+                    addMode = AddModeType.StringMode;
                 }
                 else
                 {
@@ -241,12 +257,12 @@ namespace SolidShineUi.PropertyList.Dialogs
             else
             {
                 // has a parameterless constructor
-                addMode = ADD_STANDARD;
+                addMode = AddModeType.Standard;
             }
 
             void CannotAdd()
             {
-                addMode = ADD_CANNOT_ADD;
+                addMode = AddModeType.CannotAdd;
                 btnAdd.IsEnabled = false;
                 txtCannotAdd.Visibility = Visibility.Visible;
             }
@@ -275,7 +291,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
                 if (editor != null)
                 {
-                    editor.ColorScheme = ColorScheme;
+                    editor.ApplySsuiTheme(SsuiTheme);
                     if (parentList != null)
                     {
                         editor.SetHostControl(parentList);
@@ -381,7 +397,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 switch (addMode)
                 {
-                    case ADD_STANDARD:
+                    case AddModeType.Standard:
                         var newItem = Activator.CreateInstance(baseType);
                         if (newItem != null)
                         {
@@ -392,7 +408,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                             btnAdd.IsEnabled = false;
                         }
                         break;
-                    case ADD_STRING_MODE:
+                    case AddModeType.StringMode:
                         StringInputDialog sid = new StringInputDialog(ColorScheme, "Add Item", "Enter a string value to use for creating a new item:");
                         sid.Owner = this;
                         sid.ShowDialog();
@@ -405,7 +421,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                             }
                         }
                         break;
-                    case ADD_PRIMITIVE_TYPE:
+                    case AddModeType.PrimitiveType:
                         // let's go down the list of basic types
                         // I've tried to sort by what is probably the most common first
                         if (baseType == typeof(bool)) { CreateItem(false); }

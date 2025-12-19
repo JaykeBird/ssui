@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -31,34 +28,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
         
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme cs)
         {
-            intSpinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
-            //if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            //{
-            //    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            //}
-            //else if (cs.BackgroundColor == Colors.White)
-            //{
-            //    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            //}
-            //else
-            //{
-            //    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            //}
+            intSpinner.SsuiTheme = cs;
+            btnMenu.SsuiTheme = cs;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -77,7 +53,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         Type _propType = typeof(int);
 
 #if NETCOREAPP
-        
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
         
@@ -164,23 +139,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return intSpinner.Value;
             }
         }
-        
-        /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
-        {
-            _propType = type;
-
-            if (value == null)
-            {
-                SetAsNull();
-            }
-
-            LoadUi();
-
-            intSpinner.Value = (int)(value ?? 0);
-        }
 #else
-
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
 
@@ -267,9 +226,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return intSpinner.Value;
             }
         }
+#endif
 
+#if NETCOREAPP
+        /// <inheritdoc/>
+        public void LoadValue(object? value, Type type)
+#else
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             _propType = type;
 
@@ -280,9 +245,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             LoadUi();
 
+            _internalAction = true;
             intSpinner.Value = (int)(value ?? 0);
+            _internalAction = false;
         }
-#endif
 
         void LoadUi()
         {
@@ -339,11 +305,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        bool _internalAction = false;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private void intSpinner_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ValueChanged?.Invoke(this, EventArgs.Empty);
+            if (!_internalAction)
+            {
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         void SetAsNull()

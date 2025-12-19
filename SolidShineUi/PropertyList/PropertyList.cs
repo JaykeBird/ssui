@@ -25,7 +25,7 @@ namespace SolidShineUi.PropertyList
     /// 
     [DefaultEvent(nameof(LoadedObjectChanged))]
     [Localizability(LocalizationCategory.ListBox)]
-    public class PropertyList : Control, IPropertyEditorHost
+    public class PropertyList : ThemedControl, IPropertyEditorHost
     {
 
         static PropertyList()
@@ -229,6 +229,8 @@ namespace SolidShineUi.PropertyList
                 return;
             }
 
+            SsuiTheme sTheme = new SsuiTheme(cs);
+
             if (stkProperties != null)
             {
 #if NETCOREAPP
@@ -237,13 +239,9 @@ namespace SolidShineUi.PropertyList
                 foreach (UIElement item in stkProperties.Children)
 #endif
                 {
-                    if (item == null) continue;
                     if (item is PropertyEditorItem pei)
                     {
-                        if (pei.PropertyEditorControl != null)
-                        {
-                            pei.PropertyEditorControl.ColorScheme = cs;
-                        }
+                        pei.PropertyEditorControl?.ApplySsuiTheme(sTheme);
                     }
                 }
             }
@@ -274,7 +272,92 @@ namespace SolidShineUi.PropertyList
 
         }
 
-        #endregion
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (ssuiTheme is SsuiAppTheme sat)
+            {
+
+#if NETCOREAPP
+                DialogSsuiTheme ??= sat;
+#else
+                if (DialogSsuiTheme == null)
+                {
+                    DialogSsuiTheme = sat;
+                }
+#endif
+
+                if (useAccentTheme)
+                {
+                    ApplyTheme(sat.AccentTheme);
+                }
+                else
+                {
+                    ApplyTheme(sat);
+                }
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
+                ApplyThemeBinding(HeaderBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(HeaderDividerBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                ApplyThemeBinding(HeaderForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(TopPanelBackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);
+                ApplyThemeBinding(TopPanelForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(ToolbarBackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                if (btnView != null && btnView.Menu != null)
+                {
+                    btnView.Menu.SsuiTheme = theme;
+                }
+
+                if (stkProperties != null)
+                {
+#if NETCOREAPP
+                    foreach (UIElement? item in stkProperties.Children)
+#else
+                    foreach (UIElement item in stkProperties.Children)
+#endif
+                    {
+                        if (item is PropertyEditorItem pei)
+                        {
+                            pei.PropertyEditorControl?.ApplySsuiTheme(theme);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get or set the <see cref="SsuiAppTheme"/> to use for dialogs that are displayed by editors within this PropertyList. This can be used to provide
+        /// a visual theme for these dialogs that is consistent with the rest of your application's theming, if you don't use SsuiAppTheme in your application.
+        /// </summary>
+        /// <remarks>
+        /// By default, this is set to <c>null</c>. Setting <see cref="ThemedControl.SsuiTheme"/> with a SsuiAppTheme will also update this property.
+        /// If this is <c>null</c> and the property list cannot locate an existing theme to use, the fallback value is <see cref="SsuiThemes.SystemTheme"/>.
+        /// </remarks>
+#if NETCOREAPP
+        public SsuiAppTheme? DialogSsuiTheme { get => (SsuiAppTheme)GetValue(DialogSsuiThemeProperty); set => SetValue(DialogSsuiThemeProperty, value); }
+#else
+        public SsuiAppTheme DialogSsuiTheme { get => (SsuiAppTheme)GetValue(DialogSsuiThemeProperty); set => SetValue(DialogSsuiThemeProperty, value); }
+#endif
+
+        /// <summary>The backing dependency property for <see cref="DialogSsuiTheme"/>. See the related property for details.</summary>
+        public static DependencyProperty DialogSsuiThemeProperty
+            = DependencyProperty.Register(nameof(DialogSsuiTheme), typeof(SsuiAppTheme), typeof(PropertyList),
+            new FrameworkPropertyMetadata(null));
+
+
+#endregion
 
         #region Basics / Object Loading
 
@@ -1116,7 +1199,7 @@ namespace SolidShineUi.PropertyList
 
                 if (ipe != null)
                 {
-                    ipe.ApplyColorScheme(ColorScheme);
+                    ipe.ApplySsuiTheme(SsuiTheme ?? SsuiThemes.SystemTheme);
                     ipe.SetHostControl(this);
                     //ipe.ParentPropertyList = this;
                     ipe.IsPropertyWritable = item.CanWrite;
@@ -1263,6 +1346,22 @@ namespace SolidShineUi.PropertyList
         }
 
         #endregion
+
+        public SsuiAppTheme GetThemeForDialogs()
+        {
+            if (DialogSsuiTheme != null)
+            {
+                return DialogSsuiTheme;
+            }
+            else if (GetWindow() is ThemedWindow tw)
+            {
+                return tw.SsuiTheme;
+            }
+            else
+            {
+                return SsuiThemes.SystemTheme;
+            }
+        }
 
 #endregion
 

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Runtime.InteropServices; // used in .NET version for opening links
+
 using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -29,20 +28,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme cs)
         {
             //_cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = cs;
+            imgMenu.Source = LoadIcon("ThreeDots", cs.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -96,6 +86,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (_itemType == typeof(Uri))
             {
@@ -111,8 +108,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else return null;
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             _itemType = type;
             if (type == typeof(Uri))
@@ -148,74 +150,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void txtText_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_internalAction) return;
+#if NETCOREAPP
             bool res = Uri.TryCreate(txtText.Text, UriKind.RelativeOrAbsolute, out Uri? u);
-            if (res)
-            {
-                ValueChanged?.Invoke(this, e);
-                _uriNeedsReset = false;
-            }
-            else
-            {
-                _uriNeedsReset = true;
-            }
-        }
 #else
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (_itemType == typeof(Uri))
-            {
-                if (setAsNull)
-                {
-                    return null;
-                }
-                else
-                {
-                    return _uri;
-                }
-            }
-            else return null;
-        }
-        
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            _itemType = type;
-            if (type == typeof(Uri))
-            {
-                if (value == null)
-                {
-                    _uri = new Uri("file://C:/");
-                    txtText.Text = "(null)";
-                }
-                else
-                {
-                    Uri u = (Uri)value;
-                    if (u != null)
-                    {
-                        _uri = u;
-                        _internalAction = true;
-                        txtText.Text = u.ToString();
-                        _internalAction = false;
-                    }
-                    else
-                    {
-                        _uri = new Uri("file://C:/");
-                        _internalAction = true;
-                        txtText.Text = "(null)";
-                        _internalAction = false;
-                    }
-                }
-            }
-        }
-
-        private void txtText_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_internalAction) return;
             bool res = Uri.TryCreate(txtText.Text, UriKind.RelativeOrAbsolute, out Uri u);
+#endif
             if (res)
             {
                 ValueChanged?.Invoke(this, e);
@@ -226,7 +165,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 _uriNeedsReset = true;
             }
         }
-#endif
 
         bool _uriNeedsReset = false;
         bool _internalAction = false;
@@ -264,6 +202,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnuOpenUrl_Click(object sender, RoutedEventArgs e)
         {
 #if (NETCOREAPP || NET47_OR_GREATER)
+            // technically, most this is unneeded since WPF is a Windows-only platform, but ehh, it's not hurting anything, so I'll leave it lol
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Process.Start(new ProcessStartInfo(_uri.AbsoluteUri) { UseShellExecute = true });

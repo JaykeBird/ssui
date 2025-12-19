@@ -1,17 +1,16 @@
-﻿using SolidShineUi;
-using SolidShineUi.PropertyList;
-using System;
-using System.Text;
+﻿using System;
+using System.Text; // needed for the .NET version to test the Rune class
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
+using SolidShineUi;
+using SolidShineUi.PropertyList;
 
 namespace SsuiSample
 {
     /// <summary>
     /// Interaction logic for PropertyListTest.xaml
     /// </summary>
-    public partial class PropertyListTest : UserControl
+    public partial class PropertyListTest : ThemedUserControl
     {
         public PropertyListTest()
         {
@@ -20,42 +19,6 @@ namespace SsuiSample
             // set PropertyList properties
             prop.DisplayOptions = PropertyListDisplayFlags.HidePropertyListHide;
         }
-
-        #region ColorScheme
-
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(PropertyListTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is PropertyListTest s)
-            {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
-        #endregion
 
         private void btnSel1_Click(object sender, RoutedEventArgs e)
         {

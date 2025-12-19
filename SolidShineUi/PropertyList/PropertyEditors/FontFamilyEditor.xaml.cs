@@ -31,25 +31,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => btnEdit.IsEnabled; set => btnEdit.IsEnabled = value; }
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
+
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme value)
+        public void ApplySsuiTheme(SsuiTheme value)
         {
-            _cs = value;
-            btnEdit.ColorScheme = value;
-            imgFontEdit.Source = LoadIcon("Font", value);
+            btnEdit.SsuiTheme = value;
+            imgFontEdit.Source = LoadIcon("Font", value.IconVariation);
         }
-
-        private ColorScheme _cs = new ColorScheme();
 
 #if NETCOREAPP
         private FontFamily? font = new FontFamily("Segoe UI");
+        IPropertyEditorHost? _host = null;
 #else
         private FontFamily font = new FontFamily("Segoe UI");
+        IPropertyEditorHost _host = null;
 #endif
 
         /// <inheritdoc/>
@@ -132,8 +129,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             FontSelectDialog dlg = new FontSelectDialog
             {
-                ColorScheme = _cs,
                 Owner = Window.GetWindow(this),
+                SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme,
 
                 ShowDecorations = false,
                 ShowSizes = false,
