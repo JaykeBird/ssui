@@ -1171,7 +1171,7 @@ namespace SolidShineUi
 
         #region Move Items
 
-        private class SortByParentIndex : IComparer<IClickSelectableControl>
+        private sealed class SortByParentIndex : IComparer<IClickSelectableControl>
         {
             // A class to sort a collection of IClickSelectableControls by their index in the parent SelectableCollection.
 

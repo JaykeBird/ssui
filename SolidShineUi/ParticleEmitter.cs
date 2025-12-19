@@ -705,7 +705,9 @@ namespace SolidShineUi
             GC.SuppressFinalize(this);
         }
 
-        private class ParticleItem : Border
+        #region ParticleItem class
+
+        private sealed class ParticleItem : Border
         {
             /// <summary>
             /// The distance by which this particle should travel each update tick. If this is changed, call <see cref="UpdateVectorSpeed"/> afterward.
@@ -768,6 +770,8 @@ namespace SolidShineUi
                 new FrameworkPropertyMetadata(3));
 
         }
+
+        #endregion
 
     }
 }
