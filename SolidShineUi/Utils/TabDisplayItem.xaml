@@ -16,7 +16,7 @@
              KeyDown="UserControl_KeyDown" KeyUp="UserControl_KeyUp" GotKeyboardFocus="UserControl_GotKeyboardFocus" LostKeyboardFocus="UserControl_LostKeyboardFocus" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
-        <conv:ColorToBrushConverter x:Key="ctb" />
+        <!--<conv:ColorToBrushConverter x:Key="ctb" />-->
         <local:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>
@@ -87,14 +87,16 @@
                     <Border local:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                     Tag="{Binding ElementName=control, Path=TabItem.ExtraTabElement}" x:Name="brdrExtraElement" />
                 </Grid>
-                <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" MinWidth="16" Margin="0,1" Padding="0" TransparentBack="True" Click="btnClose_Click" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"
+                <local:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" MinWidth="16" Margin="0,1" Padding="0" Click="btnClose_Click"
+                              HighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBackground}" ClickBrush="{Binding ElementName=control, Path=ButtonClickBrush}"
+                              BorderHighlightBrush="{Binding ElementName=control, Path=ButtonHighlightBorderBrush}" TransparentBack="True"
                               Visibility="{Binding ElementName=control, Path=TabItem.CanClose, Converter={StaticResource btv}}" >
                     <Path x:Name="pathClose" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M1,0 L0,1 L4,5 L0,9 L1,10 L5,6 L9,10 L10,9 L6,5 L10,1 L9,0 L5,4 z"
                           Fill="{Binding ElementName=control, Path=CloseBrush, FallbackValue=Black}" />
-                    <!--<Image Source="/SolidShineUi;component/Images/SmallExitColor.png" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Stretch="None" MaxHeight="16" UseLayoutRounding="False" />-->
                 </local:FlatButton>
 
-                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
+                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8" StrokeDashArray="1 3" 
+                           Stroke="{Binding Path=Foreground, ElementName=control}" Visibility="Collapsed" />
             </Grid>
         </Border>
         <Grid x:Name="grdDrag" Visibility="Collapsed" >
@@ -102,9 +104,9 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragLeft" BorderBrush="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}"
+            <Border Grid.Column="0" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragLeft" BorderBrush="{Binding ElementName=control, Path=TabBorderBrush}"
                     AllowDrop="True" Drop="brdrDragLeft_Drop" DragEnter="brdrDragLeft_DragEnter" DragLeave="brdrDragLeft_DragLeave" />
-            <Border Grid.Column="1" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragRght" BorderBrush="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}"
+            <Border Grid.Column="1" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragRght" BorderBrush="{Binding ElementName=control, Path=TabBorderBrush}"
                     AllowDrop="True" Drop="brdrDragRght_Drop" DragEnter="brdrDragRght_DragEnter" DragLeave="brdrDragRght_DragLeave" />
         </Grid>
     </Grid>
