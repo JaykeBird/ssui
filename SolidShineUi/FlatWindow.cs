@@ -246,7 +246,7 @@ namespace SolidShineUi
         /// <summary>
         /// Gets or sets the amount of padding to use with each of the caption buttons. A higher padding will make the buttons larger.
         /// </summary>
-        /// <remarks>The default value is (12,7,12,7).</remarks>
+        /// <remarks>The default value is (15,7,15,7) to match the appearance with Windows 10/11.</remarks>
         [Category("Appearance")]
         public Thickness CaptionButtonPadding
         {
@@ -259,7 +259,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty CaptionButtonPaddingProperty = DependencyProperty.Register(
             "CaptionButtonPadding", typeof(Thickness), typeof(FlatWindow),
-            new PropertyMetadata(new Thickness(12, 7, 12, 7)));
+            new PropertyMetadata(new Thickness(15, 7, 15, 7)));
 
 #if NETCOREAPP
         private void ResizeModeChanged(object? sender, EventArgs e)

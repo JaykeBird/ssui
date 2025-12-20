@@ -2699,9 +2699,6 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
         </Setter>
     </Style>
 
-    <!--</ResourceDictionary>
-    </ResourceDictionary.MergedDictionaries>-->
-
     <Style TargetType="{x:Type flat:PositionSelect}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinHeight" Value="24" />
@@ -2769,5 +2766,8 @@ Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResourc
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!--</ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>-->
 
 </ResourceDictionary>
