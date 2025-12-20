@@ -100,13 +100,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else if (value is Rect g)
             {
                 rect = g;
-                txtFontName.Text = rect.ToString();
+                txtFontName.Text = rect.ToString(null);
             }
             else
             {
                 // this object is not a Guid? what is it here???
                 rect = Rect.Empty;
-                txtFontName.Text = rect.ToString();
+                txtFontName.Text = rect.ToString(null);
             }
         }
 
@@ -120,7 +120,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         void UnsetAsNull()
         {
             mnuSetNull.IsChecked = false;
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
         }
 
         private void mnuSetNull_Click(object sender, RoutedEventArgs e)
@@ -139,7 +139,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnu11Rect_Click(object sender, RoutedEventArgs e)
         {
             rect = new Rect(0, 0, 1, 1);
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
             UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -158,7 +158,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 rect = red.GetRect();
             }
 
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
             UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -166,7 +166,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnuEmpty_Click(object sender, RoutedEventArgs e)
         {
             rect = Rect.Empty;
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
             UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }

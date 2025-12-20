@@ -370,14 +370,14 @@ namespace SolidShineUi
         protected override void UpdateUI()
         {
             // format the timespan to look correct
-            string sVal = Value.ToString(DisplayFormatString);
+            string sVal = Value.ToString(DisplayFormatString, null);
 
             if (Use12HourClock) // if we're going to display the 12-hour clock values (AM and PM), then we'll need to manually add that on ourselves
             {
                 if (Value.Hours > 12)
                 {
                     TimeSpan newVal = Value - new TimeSpan(12, 0, 0);
-                    sVal = newVal.ToString(DisplayFormatString) + " " + CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator;
+                    sVal = newVal.ToString(DisplayFormatString, null) + " " + CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator;
                 }
                 else if (Value.Hours > 11)
                 {
@@ -388,7 +388,7 @@ namespace SolidShineUi
                 {
                     // check for between midnight (12 AM) and 1 AM
                     TimeSpan newVal = Value + new TimeSpan(12, 0, 0);
-                    sVal = newVal.ToString(DisplayFormatString) + " " + CultureInfo.CurrentUICulture.DateTimeFormat.AMDesignator;
+                    sVal = newVal.ToString(DisplayFormatString, null) + " " + CultureInfo.CurrentUICulture.DateTimeFormat.AMDesignator;
                 }
                 else
                 {
@@ -396,7 +396,8 @@ namespace SolidShineUi
                 }
             }
 
-            if (Value < TimeSpan.Zero && !sVal.StartsWith("-")) // used for custom format strings, as they don't support displaying the negative sign for negative values
+            // used for custom format strings, as they don't support displaying the negative sign for negative values
+            if (Value < TimeSpan.Zero && !sVal.StartsWith("-", StringComparison.Ordinal))
             {
                 sVal = "-" + sVal;
             }

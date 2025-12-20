@@ -290,8 +290,8 @@ namespace SolidShineUi
             base.UpdateUI();
 
             string digitDisplay = "";
-            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G"); }
-            string sVal = Value.ToString((DisplayAsHex ? "X" : "D") + digitDisplay);
+            if (MinimumDigitCount > 0) { digitDisplay = MinimumDigitCount.ToString("G", null); }
+            string sVal = Value.ToString((DisplayAsHex ? "X" : "D") + digitDisplay, null);
 
             if (txtValue == null) return; // this is not good, as it means that the template didn't apply, or the applied template's text box won't get the updated value
 
@@ -332,7 +332,7 @@ namespace SolidShineUi
                 {
                     try
                     {
-                        Value = (int)Math.Round(ArithmeticParser.Evaluate(txtValue.Text), MidpointRounding.AwayFromZero);
+                        Value = (int)Math.Round(ArithmeticParser.Evaluate(txtValue.Text, null), MidpointRounding.AwayFromZero);
                     }
                     catch (FormatException)
                     {

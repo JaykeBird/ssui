@@ -255,7 +255,7 @@ namespace SolidShineUi
         {
             string digitDisplay = "G";
             if (MinimumDigitCount > 0) { digitDisplay = new string('0', MinimumDigitCount) + "." + new string('#', Decimals + 1); }
-            string sVal = Value.ToString(digitDisplay);
+            string sVal = Value.ToString(digitDisplay, null);
 
             if (txtValue == null) return; // this is not good, as it means that the template didn't apply, or the applied template's text box won't get the updated value
 
@@ -284,13 +284,13 @@ namespace SolidShineUi
             _updateBox = false;
             if (double.TryParse(txtValue.Text, out _))
             {
-                Value = Math.Round(double.Parse(txtValue.Text), Decimals);
+                Value = Math.Round(double.Parse(txtValue.Text, null), Decimals);
             }
             else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
             {
                 try
                 {
-                    Value = Math.Round(ArithmeticParser.Evaluate(txtValue.Text), Decimals, MidpointRounding.AwayFromZero);
+                    Value = Math.Round(ArithmeticParser.Evaluate(txtValue.Text, null), Decimals, MidpointRounding.AwayFromZero);
                 }
                 catch (FormatException)
                 {
