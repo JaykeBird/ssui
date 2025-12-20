@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -13,22 +14,28 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Black monochrome icon
         /// </summary>
+        [Obsolete("This will be removed in a future version of Solid Shine UI")]
         public const string ICON_BLACK = "Black";
         /// <summary>
         /// Multi-colored icon
         /// </summary>
+        [Obsolete("This will be removed in a future version of Solid Shine UI")]
         public const string ICON_COLOR = "Color";
         /// <summary>
         /// White monochrome icon
         /// </summary>
+        [Obsolete("This will be removed in a future version of Solid Shine UI")]
         public const string ICON_WHITE = "White";
 
         /// <summary>
         /// Load an icon from SolidShineUi's internal icon list.
         /// </summary>
+        /// <remarks>
+        /// This will be removed in a future version of Solid Shine UI; instead use <see cref="LoadIcon(string, IconVariation)"/>.
+        /// </remarks>
         /// <param name="iconName">The name of the icon.</param>
         /// <param name="colorVariation">The color variation to use: <c>"Color"</c>, <c>"Black"</c>, or <c>"White"</c>.</param>
-        /// <returns></returns>
+        [Obsolete("This will be removed in a future version of Solid Shine UI; instead use the overload with the IconVariation enum")]
         public static BitmapImage LoadIcon(string iconName, string colorVariation = ICON_COLOR)
         {
             try
