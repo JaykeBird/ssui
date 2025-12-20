@@ -26,6 +26,8 @@ namespace SolidShineUi
 
         #region Window Actions
 
+        #region Constructors
+
         /// <summary>
         /// Create a new MessageDialog.
         /// </summary>
@@ -35,6 +37,8 @@ namespace SolidShineUi
 
             invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             invalidTimer.Tick += InvalidTimer_Tick;
+
+            KeyUp += MessageDialog_KeyUp;
         }
 
         /// <summary>
@@ -49,7 +53,13 @@ namespace SolidShineUi
 
             invalidTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             invalidTimer.Tick += InvalidTimer_Tick;
+
+            KeyUp += MessageDialog_KeyUp;
         }
+
+        #endregion
+
+        #region Window Loaded / Invalid Timer
 
 #if NETCOREAPP
         private void InvalidTimer_Tick(object? sender, EventArgs e)
@@ -69,11 +79,93 @@ namespace SolidShineUi
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
             invalidTimer.Start();
+
+            switch (DefaultDialogResult)
+            {
+                case MessageDialogResult.OK:
+                    if (btnOK.Visibility == Visibility.Visible)
+                    {
+                        btnOK.Focus();
+                    }
+                    else
+                    {
+                        btnCancel.Focus();
+                    }
+                    break;
+                case MessageDialogResult.Discard:
+                    if (btnDiscard.Visibility == Visibility.Visible)
+                    {
+                        btnDiscard.Focus();
+                    }
+                    else if (btnCancel.Visibility == Visibility.Visible)
+                    {
+                        btnCancel.Focus();
+                    }
+                    else
+                    {
+                        btnOK.Focus();
+                    }
+                    break;
+                case MessageDialogResult.Cancel:
+                    if (btnCancel.Visibility == Visibility.Visible)
+                    {
+                        btnCancel.Focus();
+                    }
+                    else
+                    {
+                        btnOK.Focus();
+                    }
+                    break;
+                case MessageDialogResult.Extra1:
+                    if (extraButton1.Visibility == Visibility.Visible)
+                    {
+                        extraButton1.Focus();
+                    }
+                    else if (btnCancel.Visibility == Visibility.Visible)
+                    {
+                        btnCancel.Focus();
+                    }
+                    else
+                    {
+                        btnOK.Focus();
+                    }
+                    break;
+                case MessageDialogResult.Extra2:
+                    if (extraButton2.Visibility == Visibility.Visible)
+                    {
+                        extraButton2.Focus();
+                    }
+                    else if (btnCancel.Visibility == Visibility.Visible)
+                    {
+                        btnCancel.Focus();
+                    }
+                    else
+                    {
+                        btnOK.Focus();
+                    }
+                    break;
+                case MessageDialogResult.Extra3:
+                    if (extraButton3.Visibility == Visibility.Visible)
+                    {
+                        extraButton3.Focus();
+                    }
+                    else if (btnCancel.Visibility == Visibility.Visible)
+                    {
+                        btnCancel.Focus();
+                    }
+                    else
+                    {
+                        btnOK.Focus();
+                    }
+                    break;
+            }
         }
 
         #endregion
 
-        #region Direct Properties
+        #endregion
+
+        #region Properties
 
         /// <summary>Get or set the text to display in the OK button. If empty, the button will not be displayed.</summary>
         /// <remarks>
@@ -104,28 +196,28 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(""));
 
 
-        /// <summary>Get or set the text to display in the first extra button. If empty, the button will not be displayed.</summary>
-        public string ExtraButton1Text { get => (string)GetValue(ExtraButton1TextProperty); set => SetValue(ExtraButton1TextProperty, value); }
+        /// <summary>Get or set the text to display in the first choice button. If empty, the button will not be displayed.</summary>
+        public string ChoiceButton1Text { get => (string)GetValue(ChoiceButton1TextProperty); set => SetValue(ChoiceButton1TextProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="ExtraButton1Text"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ExtraButton1TextProperty
-            = DependencyProperty.Register(nameof(ExtraButton1Text), typeof(string), typeof(MessageDialog),
+        /// <summary>The backing dependency property for <see cref="ChoiceButton1Text"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ChoiceButton1TextProperty
+            = DependencyProperty.Register(nameof(ChoiceButton1Text), typeof(string), typeof(MessageDialog),
             new FrameworkPropertyMetadata(""));
 
-        /// <summary>Get or set the text to display in the second extra button. If empty, the button will not be displayed.</summary>
-        public string ExtraButton2Text { get => (string)GetValue(ExtraButton2TextProperty); set => SetValue(ExtraButton2TextProperty, value); }
+        /// <summary>Get or set the text to display in the second choice button. If empty, the button will not be displayed.</summary>
+        public string ChoiceButton2Text { get => (string)GetValue(ChoiceButton2TextProperty); set => SetValue(ChoiceButton2TextProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="ExtraButton2Text"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ExtraButton2TextProperty
-            = DependencyProperty.Register(nameof(ExtraButton2Text), typeof(string), typeof(MessageDialog),
+        /// <summary>The backing dependency property for <see cref="ChoiceButton2Text"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ChoiceButton2TextProperty
+            = DependencyProperty.Register(nameof(ChoiceButton2Text), typeof(string), typeof(MessageDialog),
             new FrameworkPropertyMetadata(""));
 
-        /// <summary>Get or set the text to display in the third extra button. If empty, the button will not be displayed.</summary>
-        public string ExtraButton3Text { get => (string)GetValue(ExtraButton3TextProperty); set => SetValue(ExtraButton3TextProperty, value); }
+        /// <summary>Get or set the text to display in the third choice button. If empty, the button will not be displayed.</summary>
+        public string ChoiceButton3Text { get => (string)GetValue(ChoiceButton3TextProperty); set => SetValue(ChoiceButton3TextProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="ExtraButton3Text"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ExtraButton3TextProperty
-            = DependencyProperty.Register(nameof(ExtraButton3Text), typeof(string), typeof(MessageDialog),
+        /// <summary>The backing dependency property for <see cref="ChoiceButton3Text"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ChoiceButton3TextProperty
+            = DependencyProperty.Register(nameof(ChoiceButton3Text), typeof(string), typeof(MessageDialog),
             new FrameworkPropertyMetadata(""));
 
         /// <summary>Get the result of the message dialog, indicating which button the user pressed.</summary>
@@ -143,7 +235,7 @@ namespace SolidShineUi
         public static readonly DependencyProperty DialogResultProperty = DialogResultPropertyKey.DependencyProperty;
 
 
-        /// <summary>Get or set the text to display for the message.</summary>
+        /// <summary>Get or set the text to display for the message in the dialog.</summary>
         public string Message { get => (string)GetValue(MessageProperty); set => SetValue(MessageProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Message"/>. See the related property for details.</summary>
@@ -183,16 +275,9 @@ namespace SolidShineUi
             {
                 _image = value;
 
-                IconVariation mio = IconVariation.Color;
-
-                if (ColorScheme.IsHighContrast)
-                {
-                    mio = IconLoader.SelectVariationFromColorScheme(ColorScheme);
-                }
-
                 try
                 {
-                    imgIcon.Source = GetImage(value, mio);
+                    imgIcon.Source = GetImage(value, SsuiTheme.IconVariation);
                 }
                 catch (ArgumentException)
                 {
@@ -209,6 +294,7 @@ namespace SolidShineUi
         #endregion
 
         #region Show Dialog
+
         /// <summary>
         /// Display this message dialog. Change the properties (such as <c>OkButtonText</c>, <c>CancelButtonText</c>, and <c>Message</c>) to 
         /// control the appearance of the message dialog.
@@ -254,30 +340,30 @@ namespace SolidShineUi
                 btnOK.Visibility = Visibility.Visible;
             }
 
-            bool showExtraButtons = false;
+            bool showChoiceButtons = false;
 
-            if (!string.IsNullOrEmpty(ExtraButton1Text))
+            if (!string.IsNullOrEmpty(ChoiceButton1Text))
             {
-                extraButton1.Content = ExtraButton1Text;
+                extraButton1.Content = ChoiceButton1Text;
                 extraButton1.Visibility = Visibility.Visible;
-                showExtraButtons = true;
+                showChoiceButtons = true;
             }
 
-            if (!string.IsNullOrEmpty(ExtraButton2Text))
+            if (!string.IsNullOrEmpty(ChoiceButton2Text))
             {
-                extraButton2.Content = ExtraButton2Text;
+                extraButton2.Content = ChoiceButton2Text;
                 extraButton2.Visibility = Visibility.Visible;
-                showExtraButtons = true;
+                showChoiceButtons = true;
             }
 
-            if (!string.IsNullOrEmpty(ExtraButton3Text))
+            if (!string.IsNullOrEmpty(ChoiceButton3Text))
             {
-                extraButton3.Content = ExtraButton3Text;
+                extraButton3.Content = ChoiceButton3Text;
                 extraButton3.Visibility = Visibility.Visible;
-                showExtraButtons = true;
+                showChoiceButtons = true;
             }
 
-            if (showExtraButtons)
+            if (showChoiceButtons)
             {
                 stkExtraButtons.Margin = new Thickness(70, 10, 20, 10);
             }
@@ -315,7 +401,6 @@ namespace SolidShineUi
         /// Unless the <c>OkButtonText</c>, <c>CancelButtonText</c>, and/or <c>DiscardButtonText</c> properties were changed, this will by default
         /// by just an OK-only message dialog.
         /// </remarks>
-        /// <returns></returns>
 #if NETCOREAPP
         public MessageDialogResult ShowDialog(string message, Window? owner = null, string title = "Dialog", MessageDialogImage image = MessageDialogImage.None)
 #else
@@ -335,26 +420,26 @@ namespace SolidShineUi
         /// <param name="buttonDisplay">Determine how many buttons should be displayed at the bottom of the dialog, either [OK], [OK] and [Cancel], 
         /// or [OK] [Discard] and [Cancel].</param>
         /// <param name="image">The image to display with this dialog.</param>
-        /// <param name="defaultButton">The button to trigger by default if the user presses the "Enter" or "Space" keys</param>
-        /// <param name="customOkButtonText">The text to use in the OK button. Use <c>null</c> if already set via property.</param>
-        /// <param name="customCancelButtonText">The text to use in the Cancel button. Use <c>null</c> if already set via property.</param>
-        /// <param name="customDiscardButtonText">The text to use in the Discard button. Use <c>null</c> if already set via property.</param>
-        /// <param name="extraButton1Text">The text to use in the first extra button. If this is set to a null or empty string, this button will not be displayed.</param>
-        /// <param name="extraButton2Text">The text to use in the second extra button. If this is set to a null or empty string, this button will not be displayed.</param>
-        /// <param name="extraButton3Text">The text to use in the third extra button. If this is set to a null or empty string, this button will not be displayed.</param>
+        /// <param name="defaultResult">The button to trigger by default if the user presses the "Enter" or "Space" keys</param>
+        /// <param name="okButtonText">The text to use in the OK button. Use <c>null</c> if already set via property.</param>
+        /// <param name="cancelButtonText">The text to use in the Cancel button. Use <c>null</c> if already set via property.</param>
+        /// <param name="discardButtonText">The text to use in the Discard button. Use <c>null</c> if already set via property.</param>
+        /// <param name="choiceButton1Text">The text to use in the first choice button. If this is set to a null or empty string, this button will not be displayed.</param>
+        /// <param name="choiceButton2Text">The text to use in the second choice button. If this is set to a null or empty string, this button will not be displayed.</param>
+        /// <param name="choiceButton3Text">The text to use in the third choice button. If this is set to a null or empty string, this button will not be displayed.</param>
         /// <param name="checkBoxText">The text to use in the check box. If this is set to a null or empty string, the check box will not be displayed.</param>
 #if NETCOREAPP
         public MessageDialogResult ShowDialog(string message, ColorScheme? colorScheme = null, Window? owner = null, string title = "Dialog", 
         MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto, 
-            MessageDialogImage image = MessageDialogImage.None, MessageDialogResult defaultButton = MessageDialogResult.Cancel, 
-            string? customOkButtonText = null, string? customCancelButtonText = null, string? customDiscardButtonText = null,
-            string? extraButton1Text = null, string? extraButton2Text = null, string? extraButton3Text = null, string? checkBoxText = null)
+            MessageDialogImage image = MessageDialogImage.None, MessageDialogResult defaultResult = MessageDialogResult.Cancel, 
+            string? okButtonText = null, string? cancelButtonText = null, string? discardButtonText = null,
+            string? choiceButton1Text = null, string? choiceButton2Text = null, string? choiceButton3Text = null, string? checkBoxText = null)
 #else
         public MessageDialogResult ShowDialog(string message, ColorScheme colorScheme = null, Window owner = null, string title = "Dialog", 
             MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto,
-            MessageDialogImage image = MessageDialogImage.None, MessageDialogResult defaultButton = MessageDialogResult.Cancel,
-            string customOkButtonText = null, string customCancelButtonText = null, string customDiscardButtonText = null,
-            string extraButton1Text = null, string extraButton2Text = null, string extraButton3Text = null, string checkBoxText = null)
+            MessageDialogImage image = MessageDialogImage.None, MessageDialogResult defaultResult = MessageDialogResult.Cancel,
+            string okButtonText = null, string cancelButtonText = null, string discardButtonText = null,
+            string choiceButton1Text = null, string choiceButton2Text = null, string choiceButton3Text = null, string checkBoxText = null)
 #endif
         {
             txtMessage.Text = message;
@@ -374,17 +459,17 @@ namespace SolidShineUi
                 Owner = owner;
             }
 
-            if (!string.IsNullOrEmpty(customOkButtonText))
+            if (!string.IsNullOrEmpty(okButtonText))
             {
-                OkButtonText = customOkButtonText;
+                OkButtonText = okButtonText;
             }
-            if (!string.IsNullOrEmpty(customCancelButtonText))
+            if (!string.IsNullOrEmpty(cancelButtonText))
             {
-                CancelButtonText = customCancelButtonText;
+                CancelButtonText = cancelButtonText;
             }
-            if (!string.IsNullOrEmpty(customDiscardButtonText))
+            if (!string.IsNullOrEmpty(discardButtonText))
             {
-                DiscardButtonText = customDiscardButtonText;
+                DiscardButtonText = discardButtonText;
             }
 
             switch (buttonDisplay)
@@ -498,44 +583,44 @@ namespace SolidShineUi
 
             Image = image;
 
-            if (!string.IsNullOrEmpty(extraButton1Text))
+            if (!string.IsNullOrEmpty(choiceButton1Text))
             {
-                ExtraButton1Text = extraButton1Text;
+                ChoiceButton1Text = choiceButton1Text;
             }
-            if (!string.IsNullOrEmpty(extraButton2Text))
+            if (!string.IsNullOrEmpty(choiceButton2Text))
             {
-                ExtraButton2Text = extraButton2Text;
+                ChoiceButton2Text = choiceButton2Text;
             }
-            if (!string.IsNullOrEmpty(extraButton3Text))
+            if (!string.IsNullOrEmpty(choiceButton3Text))
             {
-                ExtraButton3Text = extraButton3Text;
+                ChoiceButton3Text = choiceButton3Text;
             }
             if (!string.IsNullOrEmpty(checkBoxText))
             {
                 CheckBoxText = checkBoxText;
             }
 
-            bool showExtraButtons = false;
+            bool showChoiceButtons = false;
 
-            if (!string.IsNullOrEmpty(ExtraButton1Text))
+            if (!string.IsNullOrEmpty(ChoiceButton1Text))
             {
-                extraButton1.Content = ExtraButton1Text;
+                extraButton1.Content = ChoiceButton1Text;
                 extraButton1.Visibility = Visibility.Visible;
-                showExtraButtons = true;
+                showChoiceButtons = true;
             }
 
-            if (!string.IsNullOrEmpty(ExtraButton2Text))
+            if (!string.IsNullOrEmpty(ChoiceButton2Text))
             {
-                extraButton2.Content = ExtraButton2Text;
+                extraButton2.Content = ChoiceButton2Text;
                 extraButton2.Visibility = Visibility.Visible;
-                showExtraButtons = true;
+                showChoiceButtons = true;
             }
 
-            if (!string.IsNullOrEmpty(ExtraButton3Text))
+            if (!string.IsNullOrEmpty(ChoiceButton3Text))
             {
-                extraButton3.Content = ExtraButton3Text;
+                extraButton3.Content = ChoiceButton3Text;
                 extraButton3.Visibility = Visibility.Visible;
-                showExtraButtons = true;
+                showChoiceButtons = true;
             }
 
             if (!string.IsNullOrEmpty(CheckBoxText))
@@ -544,67 +629,12 @@ namespace SolidShineUi
                 chkBox.Visibility = Visibility.Visible;
             }
 
-            if (showExtraButtons)
+            if (showChoiceButtons)
             {
                 stkExtraButtons.Margin = new Thickness(70, 10, 20, 10);
             }
 
-            // TODO: use defaultButton value to instead handle Enter or Space key press
-            //switch (defaultButton)
-            //{
-            //    case MessageDialogResult.OK:
-            //        if (btnOK.Visibility == Visibility.Visible)
-            //        {
-            //            btnOK.IsDefault = true;
-            //        }
-            //        else
-            //        {
-            //            btnCancel.IsDefault = true;
-            //        }
-            //        break;
-            //    case MessageDialogResult.Discard:
-            //        btnDiscard.IsDefault = true;
-            //        break;
-            //    case MessageDialogResult.Cancel:
-            //        btnCancel.IsDefault = true;
-            //        break;
-            //    case MessageDialogResult.Extra1:
-            //        if (extraButton1.Visibility == Visibility.Visible)
-            //        {
-            //            extraButton1.IsDefault = true;
-            //            btnCancel.IsDefault = false;
-            //            btnOK.IsDefault = false;
-            //        }
-            //        else
-            //        {
-            //            btnCancel.IsDefault = true;
-            //        }
-            //        break;
-            //    case MessageDialogResult.Extra2:
-            //        if (extraButton2.Visibility == Visibility.Visible)
-            //        {
-            //            extraButton2.IsDefault = true;
-            //            btnCancel.IsDefault = false;
-            //            btnOK.IsDefault = false;
-            //        }
-            //        else
-            //        {
-            //            btnCancel.IsDefault = true;
-            //        }
-            //        break;
-            //    case MessageDialogResult.Extra3:
-            //        if (extraButton3.Visibility == Visibility.Visible)
-            //        {
-            //            extraButton3.IsDefault = true;
-            //            btnCancel.IsDefault = false;
-            //            btnOK.IsDefault = false;
-            //        }
-            //        else
-            //        {
-            //            btnCancel.IsDefault = true;
-            //        }
-            //        break;
-            //}
+            DefaultDialogResult = defaultResult;
 
             if (Owner != null)
             {
@@ -622,25 +652,13 @@ namespace SolidShineUi
 
 #endregion
 
-        //protected override Size MeasureOverride(Size constraint)
-        //{
-        //    var result = base.MeasureOverride(constraint);
-        //    // ... add custom measure code here if desired ...
-        //    InvalidateVisual();
-        //    return result;
-        //}
 
 #if NETCOREAPP
-        static string GetStringOrNull(string? value, string defaultValue, bool zeroAsNull = false)
+        static string GetStringOrNull(string? value, string defaultValue)
 #else
-        static string GetStringOrNull(string value, string defaultValue, bool zeroAsNull = false)
+        static string GetStringOrNull(string value, string defaultValue)
 #endif
         {
-            if (zeroAsNull)
-            {
-                if (value == "0") value = null;
-            }
-
             return string.IsNullOrEmpty(value) ? defaultValue : value;
         }
 
@@ -680,6 +698,42 @@ namespace SolidShineUi
         {
             DialogResult = MessageDialogResult.Extra3;
             Close();
+        }
+
+        #endregion
+
+        #region Key Presses / Default Result
+        
+        /// <summary>
+        /// Get or set the dialog result that will be considered the default when the dialog is opened.
+        /// The corresponding button will be highlighted when the dialog is opened, and if the user
+        /// presses the Space or Enter key, this result will be selected (if they don't move focus to another button).
+        /// </summary>
+        /// <remarks>
+        /// If the result value set here doesn't correspond to a button that's shown on the dialog, the Cancel or OK button will be highlighted instead.
+        /// </remarks>
+        public MessageDialogResult DefaultDialogResult { get; set; } = MessageDialogResult.Cancel;
+
+        private void MessageDialog_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case System.Windows.Input.Key.Escape:
+                    // treat this as a cancel
+                    if (btnCancel.Visibility == Visibility.Visible)
+                    {
+                        DialogResult = MessageDialogResult.Cancel;
+                        Close();
+                    }
+                    else
+                    {
+                        DialogResult = MessageDialogResult.OK;
+                        Close();
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         #endregion
@@ -795,7 +849,7 @@ namespace SolidShineUi
     public enum MessageDialogButtonDisplay
     {
         /// <summary>
-        /// If set, uses the OkButtonText, CancelButtonText, and DiscardButtonText properties to determine which buttons should be displayed. 
+        /// Use the OkButtonText, CancelButtonText, and DiscardButtonText properties to determine which buttons should be displayed. 
         /// If a property is null or empty, then the corresponding button isn't displayed.
         /// </summary>
         Auto = 0,
