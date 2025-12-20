@@ -691,7 +691,7 @@ namespace SolidShineUi
 
         }
 
-        Thickness AdjustMargin(Thickness t, double left = 0, double right = 0, double top = 0, double bottom = 0)
+        static Thickness AdjustMargin(Thickness t, double left = 0, double right = 0, double top = 0, double bottom = 0)
         {
             return new Thickness(t.Left + left, t.Top + top, t.Right + right, t.Bottom + bottom);
         }

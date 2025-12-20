@@ -19,6 +19,7 @@ namespace SolidShineUi.Utils
     /// <remarks>
     /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
     /// </remarks>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable", Justification = "Disposing in Unloaded event")]
     public abstract class SpinnerBase : ThemedControl
     {
 
@@ -34,6 +35,7 @@ namespace SolidShineUi.Utils
         public SpinnerBase()
         {
             Loaded += NewSpinnerBase_Loaded;
+            Unloaded += SpinnerBase_Unloaded;
 
             BorderThickness = new Thickness(1);
             SetResourceReference(BackgroundProperty, SystemColors.WindowBrushKey);
@@ -51,6 +53,12 @@ namespace SolidShineUi.Utils
         {
             // doesn't work in constructor, apparently
             InternalValidateValue();
+        }
+
+        private void SpinnerBase_Unloaded(object sender, RoutedEventArgs e)
+        {
+            keyDownTimer?.Dispose();
+            advanceTimer?.Dispose();
         }
 
         /// <summary>
@@ -117,6 +125,8 @@ namespace SolidShineUi.Utils
 
         #region Internal Values / Timers
 
+#pragma warning disable CA1051 // Do not declare visible instance fields
+
         /// <summary>
         /// determine the text box's text should be changed when <c>Value</c> is updated
         /// </summary>
@@ -172,6 +182,8 @@ namespace SolidShineUi.Utils
         }
 
         #endregion
+
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
         #endregion
 
@@ -985,10 +997,14 @@ namespace SolidShineUi.Utils
         /// </summary>
         public abstract T MaxValue { get; set; }
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
+        // the name Step is a keyword in Visual Basic, for usage with the For blocks; the potentials of overlap/confusion is very small
+
         /// <summary>
         /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
         /// </summary>
         public abstract TStep Step { get; set; }
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         /// <summary>
         /// Validate <see cref="Value"/> make sure it's between <see cref="MinValue"/> and <see cref="MaxValue"/>. This will also update the UI.

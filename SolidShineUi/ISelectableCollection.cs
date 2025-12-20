@@ -9,6 +9,7 @@ namespace SolidShineUi
     /// <summary>
     /// Defines an interface for a collection where items within it can be selected. This is the non-generic version of <see cref="ISelectableCollection{T}"/>.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1010:Generic interface should also be implemented", Justification = "Non-generic version")]
     public interface ISelectableCollection : IEnumerable
     {
         /// <summary>

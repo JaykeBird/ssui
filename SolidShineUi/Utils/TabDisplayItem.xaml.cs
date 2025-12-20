@@ -117,21 +117,21 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
         public static DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabDisplayItem),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush(), (d, e) => d.PerformAs<TabDisplayItem>(o => o.OnTabBorderBrushChanged(o, e))));
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush())); // (d, e) => d.PerformAs<TabDisplayItem>(o => o.OnTabBorderBrushChanged(o, e))));
 
-        private void OnTabBorderBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            //if (IsHighlighted)
-            //{
-            //    //border.Background = HighlightBrush;
-            //    border.BorderBrush = BorderHighlightBrush;
-            //}
-            //else
-            //{
-            //    //border.Background = IsSelected ? SelectedTabBackground : Background;
-            //    border.BorderBrush = TabBorderBrush;
-            //}
-        }
+        //private void OnTabBorderBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    //if (IsHighlighted)
+        //    //{
+        //    //    //border.Background = HighlightBrush;
+        //    //    border.BorderBrush = BorderHighlightBrush;
+        //    //}
+        //    //else
+        //    //{
+        //    //    //border.Background = IsSelected ? SelectedTabBackground : Background;
+        //    //    border.BorderBrush = TabBorderBrush;
+        //    //}
+        //}
 
         /// <summary>
         /// Get or set the brush used for the close glyph in this control.

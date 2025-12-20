@@ -349,12 +349,12 @@ namespace SolidShineUi
         /// Copy the elements of this Collection to an Array, starting at the specified index in the Array.
         /// </summary>
         /// <param name="array">The array to copy values into.</param>
-        /// <param name="index">The starting index at which to start copying values.</param>
+        /// <param name="arrayIndex">The starting index at which to start copying values.</param>
         /// <exception cref="ArgumentException">Raised if this Array is not an Array of type <typeparamref name="T"/>, 
         /// or if this Array isn't large enough to fit all the items in this Collection.</exception>
-        public void CopyTo(T[] array, int index)
+        public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array.Length - index < Count)
+            if (array.Length - arrayIndex < Count)
             {
                 throw new ArgumentException("The inputted array is not large enough to fit all of the elements in this collection.");
             }
@@ -362,7 +362,7 @@ namespace SolidShineUi
             {
                 for (int i = 0; i < Count; i++)
                 {
-                    array[index + i] = this[i];
+                    array[arrayIndex + i] = this[i];
                 }
             }
         }

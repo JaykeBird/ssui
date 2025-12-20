@@ -97,8 +97,9 @@ namespace SolidShineUi
         public static readonly DependencyProperty MaxValueProperty = MaxValuePropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Get or set the index of the selected string in this control. This index must be between 0 and <see cref="MaxValue"/>, inclusive.
+        /// Get or set the index of the selected string in this control. This value must be between 0 and <see cref="MaxValue"/>, inclusive.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">thrown if the value inputted is below 0 or above MaxValue</exception>
         [Category("Common")]
         [Description("Get or set the index of the selected string in this control.")]
         public int SelectedIndex
@@ -108,7 +109,8 @@ namespace SolidShineUi
             {
                 if (value > MaxValue || value < 0)
                 {
-                    throw new IndexOutOfRangeException("This value is not within the allowed range of values. Value cannot be less than 0, or greater than MaxValue.");
+                    throw new ArgumentOutOfRangeException(nameof(value), 
+                        "This value is not within the allowed range of values. Value cannot be less than 0, or greater than MaxValue.");
                 }
                 else
                 {

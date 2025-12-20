@@ -13,7 +13,7 @@ namespace SolidShineUi.Utils
     public class ForeBorder : Border
     {
 
-        public DependencyProperty ForegroundProperty = Control.ForegroundProperty.AddOwner(typeof(ForeBorder));
+        public static readonly DependencyProperty ForegroundProperty = Control.ForegroundProperty.AddOwner(typeof(ForeBorder));
 
         public Brush Foreground
         {
