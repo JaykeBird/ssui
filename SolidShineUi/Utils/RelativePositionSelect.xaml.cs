@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Windows.Shapes;
-using SolidShineUi;
 
 namespace SolidShineUi.Utils
 {
@@ -48,7 +45,7 @@ namespace SolidShineUi.Utils
             // might consider hiding snap lines while control is disabled
         }
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -63,8 +60,8 @@ namespace SolidShineUi.Utils
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RelativePositionSelect),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(RelativePositionSelect),
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -73,13 +70,7 @@ namespace SolidShineUi.Utils
         /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-
-            if (d is RelativePositionSelect r)
+            if (e.NewValue is ColorScheme cs && d is RelativePositionSelect r)
             {
                 r.ColorSchemeChanged?.Invoke(d, e);
                 r.ApplyColorScheme(cs);
@@ -87,8 +78,9 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the color scheme used for this RelativePositionSelect. For easier color scheme management, bind this to the window or larger control you're using.
+        /// Get or set the color scheme used for this RelativePositionSelect. This can be used to set all of the brushes at once.
         /// </summary>
+        [Category("Appearance")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);

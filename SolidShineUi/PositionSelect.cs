@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Controls;
-using System.ComponentModel;
-using SolidShineUi.Utils;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
     /// <summary>
     /// A control that allows a user to select a 2-D point (position) between (0,0) and (1,1).
     /// </summary>
+    [DefaultEvent(nameof(SelectedPositionChanged))]
+    [Localizability(LocalizationCategory.Ignore)]
     public class PositionSelect : ThemedControl
     {
         static PositionSelect()
@@ -225,6 +224,88 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Color Scheme / SsuiTheme
+
+        /// <summary>
+        /// Raised when the ColorScheme property is changed.
+        /// </summary>
+#if NETCOREAPP
+        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
+#else
+        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
+#endif
+
+        /// <summary>
+        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
+        /// </summary>
+        public static readonly DependencyProperty ColorSchemeProperty
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
+
+        /// <summary>
+        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
+        /// </summary>
+        /// <param name="d">The object containing the property that changed.</param>
+        /// <param name="e">Event arguments about the property change.</param>
+        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is ColorScheme cs && d is PositionSelect r)
+            {
+                r.ColorSchemeChanged?.Invoke(d, e);
+                r.ApplyColorScheme(cs);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the color scheme used for this RelativePositionSelect. This can be used to set all of the brushes at once.
+        /// </summary>
+        [Category("Appearance")]
+        public ColorScheme ColorScheme
+        {
+            get => (ColorScheme)GetValue(ColorSchemeProperty);
+            set => SetValue(ColorSchemeProperty, value);
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs == null)
+            {
+                return;
+            }
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            if (cs.IsHighContrast)
+            {
+                Background = cs.BackgroundColor.ToBrush();
+                BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
+                SelectorBrush = cs.ForegroundColor.ToBrush();
+                SnapLineBrush = cs.BorderColor.ToBrush();
+                KeyboardFocusHighlight = cs.SecondHighlightColor.ToBrush();
+            }
+            else
+            {
+                Background = cs.LightBackgroundColor.ToBrush();
+                BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
+                SelectorBrush = cs.HighlightColor.ToBrush();
+                SnapLineBrush = cs.SecondaryColor.ToBrush();
+                KeyboardFocusHighlight = cs.ThirdHighlightColor.ToBrush();
+            }
+
+            BorderBrush = cs.BorderColor.ToBrush();
+            BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
+            BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+            SelectorDisabledBrush = cs.DarkDisabledColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+        }
+
         /// <inheritdoc/>
         protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
@@ -247,6 +328,10 @@ namespace SolidShineUi
                 ApplyThemeBinding(SnapLineBrushProperty, SsuiTheme.ControlBackgroundProperty, theme);
                 ApplyThemeBinding(KeyboardFocusHighlightProperty, SsuiTheme.HighlightBrushProperty, theme);
 
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectorDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+
                 //if (useLightBorder)
                 //{
                 //    ApplyThemeBinding(ControlBorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
@@ -255,18 +340,18 @@ namespace SolidShineUi
                 //{
                 //    ApplyThemeBinding(ControlBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
                 //}
-
-                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
-                ApplyThemeBinding(SelectorDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
-                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
             }
         }
+
+        #endregion
 
         #region Snaplines
 
         /// <summary>
         /// Get or set if the selector should snap to the snap lines within the control.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set if the selector should snap to the snap lines within the control.")]
         public bool SnapToSnaplines { get => (bool)GetValue(SnapToSnaplinesProperty); set => SetValue(SnapToSnaplinesProperty, value); }
 
         /// <summary>
@@ -278,8 +363,12 @@ namespace SolidShineUi
 
         /// <summary>
         /// The distance, in pixels, within which the selector should snap to the nearest snap line.
+        /// <para/>
         /// The larger the distance, the further the selector can be away from a snap line before it snaps to the line.
+        /// However, having a large snap distance can also make it harder to place the selector in spots near, but not on, a snap line.
         /// </summary>
+        [Category("Common")]
+        [Description("The distance, in pixels, within which the selector should snap to the nearest snap line.")]
         public double SnapDistance { get => (double)GetValue(SnapDistanceProperty); set => SetValue(SnapDistanceProperty, value); }
 
         /// <summary>
@@ -292,8 +381,11 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the list of snap points that are displayed along the horizontal (X) axis of the control.
+        /// <para/>
         /// <c>0.0</c> represents the far left of the control, and <c>1.0</c> represents the far right of the control.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the list of snap points that are displayed along the horizontal (X) axis of the control.")]
         public ObservableCollection<double> HorizontalSnapPoints
         {
             get => (ObservableCollection<double>)GetValue(HorizontalSnapPointsProperty);
@@ -307,8 +399,11 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the list of snap points that are displayed along the vertical (Y) axis of the control.
+        /// <para/>
         /// <c>0.0</c> represents the far top of the control, and <c>1.0</c> represents the far bottom of the control.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the list of snap points that are displayed along the vertical (Y) axis of the control.")]
         public ObservableCollection<double> VerticalSnapPoints
         {
             get => (ObservableCollection<double>)GetValue(VerticalSnapPointsProperty);
@@ -641,41 +736,31 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
         /// </summary>
-        public double KeyMoveStep { get => (double)GetValue(KeyMoveStepProperty); set => SetValue(KeyMoveStepProperty, value); }
+        [Description("Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).")]
+        public double Step { get => (double)GetValue(StepProperty); set => SetValue(StepProperty, value); }
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static readonly DependencyProperty KeyMoveStepProperty
-            = DependencyProperty.Register("KeyMoveStep", typeof(double), typeof(RelativePositionSelect),
+        public static readonly DependencyProperty StepProperty
+            = DependencyProperty.Register(nameof(Step), typeof(double), typeof(RelativePositionSelect),
             new FrameworkPropertyMetadata(0.05));
-
-
-        //private void RelativePositionSelect_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        //{
-        //    // brdrKeyFocus.BorderBrush = Colors.Transparent.ToBrush();
-        //}
-
-        //private void RelativePositionSelect_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        //{
-        //    // brdrKeyFocus.BorderBrush = KeyboardFocusHighlight;
-        //}
 
         private void PositionSelect_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.Left:
-                    SelectedX -= KeyMoveStep;
+                    SelectedX -= Step;
                     break;
                 case Key.Right:
-                    SelectedX += KeyMoveStep;
+                    SelectedX += Step;
                     break;
                 case Key.Up:
-                    SelectedY -= KeyMoveStep;
+                    SelectedY -= Step;
                     break;
                 case Key.Down:
-                    SelectedY += KeyMoveStep;
+                    SelectedY += Step;
                     break;
                 case Key.Home:
                     SelectedX = 0;
@@ -746,9 +831,13 @@ namespace SolidShineUi
         #endregion
 
         /// <summary>
-        /// Get or set the size of the selector. The larger the selector, the easier it will be to see and also to click and drag, 
+        /// Get or set the size of the selector (the circle used to select a value).
+        /// <para/>
+        /// The larger the selector, the easier it will be to see and also to click and drag, 
         /// but also harder to precisely get to or visualize a specific value (although snaplines can help rectify this).
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the size of the selector (the circle used to select a value).")]
         public double SelectorSize { get => (double)GetValue(SelectorSizeProperty); set => SetValue(SelectorSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectorSize"/>. See the related property for details.</summary>
@@ -800,11 +889,15 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the selected point, on both the X and Y axes.
+        /// <para/>
         /// This is how far the selector is from the top-left corner of the control, on a relative scale from <c>0.0</c> to <c>1.0</c> in both axes.
         /// </summary>
         /// <remarks>
-        /// When setting this property, the event SelectedPositionChanged will fire twice: once after the width (X) is changed, and once after the height (Y) is changed.
+        /// When setting this property, the event <see cref="SelectedPositionChanged"/> will fire twice: 
+        /// once after the width (X) is changed, and once after the height (Y) is changed.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the selected point, on both the X and Y axes.")]
         public Point SelectedPoint { get => (Point)GetValue(SelectedPointProperty); set => SetValue(SelectedPointProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedPoint"/>. See the related property for details.</summary>
@@ -849,8 +942,11 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the selected value on the horizontal (X) axis.
+        /// <para/>
         /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the horizontal (X) axis.")]
         public double SelectedX { get => (double)GetValue(SelectedXProperty); set => SetValue(SelectedXProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedX"/>. See the related property for details.</summary>
@@ -861,8 +957,11 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the selected value on the vertical (Y) axis.
+        /// <para/>
         /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the vertical (Y) axis.")]
         public double SelectedY { get => (double)GetValue(SelectedYProperty); set => SetValue(SelectedYProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedY"/>. See the related property for details.</summary>
@@ -945,7 +1044,7 @@ namespace SolidShineUi
 
         #region Property Helper Methods / SelectedPositionChanged event
 
-        double ValidateValue(double input)
+        static double ValidateValue(double input)
         {
             if (input < 0) return 0;
             else if (input > 1) return 1;
