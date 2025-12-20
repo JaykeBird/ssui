@@ -202,8 +202,8 @@ namespace SolidShineUi
             //    InactiveTextBrush = ColorsHelper.CreateFromHex("#505050").ToBrush();
             //}
 
-            SetBinding(CaptionBarBackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowTitleBackgroundProperty, ssuiTheme));
-            SetBinding(CaptionBarForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowTitleForegroundProperty, ssuiTheme));
+            SetBinding(TitleBarBackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowTitleBackgroundProperty, ssuiTheme));
+            SetBinding(TitleBarForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowTitleForegroundProperty, ssuiTheme));
             SetBinding(InactiveBackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowInactiveBackgroundProperty, ssuiTheme));
             SetBinding(InactiveForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowInactiveForegroundProperty, ssuiTheme));
             // SetBinding(BorderBrushProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.BorderBrushProperty, ssuiTheme));
@@ -230,6 +230,8 @@ namespace SolidShineUi
         /// able to minimize or maximize the window. The <c>ResizeMode</c> property can also be used to prevent certain actions.
         /// </remarks>
         [Category("Appearance")]
+        [Description("Gets or sets the visibility of the caption buttons (close, maximize, minimize). " +
+            "The actions may still be available via other methods even if the buttons are hidden.")]
         public CaptionType CaptionDisplayType
         {
             get => (CaptionType)GetValue(CaptionDisplayTypeProperty);
@@ -240,14 +242,15 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="CaptionDisplayType"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CaptionDisplayTypeProperty = DependencyProperty.Register(
-            "CaptionDisplayType", typeof(CaptionType), typeof(FlatWindow),
+            nameof(CaptionDisplayType), typeof(CaptionType), typeof(FlatWindow),
             new PropertyMetadata(CaptionType.Full));
 
         /// <summary>
         /// Gets or sets the amount of padding to use with each of the caption buttons. A higher padding will make the buttons larger.
         /// </summary>
-        /// <remarks>The default value is (15,7,15,7) to match the appearance with Windows 10/11.</remarks>
+        /// <remarks>The default value is (15,7,15,7) to match the appearance with Windows 10/11. SSUI 1.x had a default of (9,7,9,7).</remarks>
         [Category("Appearance")]
+        [Description("Gets or sets the amount of padding to use with each of the caption buttons.")]
         public Thickness CaptionButtonPadding
         {
             get => (Thickness)GetValue(CaptionButtonPaddingProperty);
@@ -258,7 +261,7 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="CaptionButtonPadding"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CaptionButtonPaddingProperty = DependencyProperty.Register(
-            "CaptionButtonPadding", typeof(Thickness), typeof(FlatWindow),
+            nameof(CaptionButtonPadding), typeof(Thickness), typeof(FlatWindow),
             new PropertyMetadata(new Thickness(15, 7, 15, 7)));
 
 #if NETCOREAPP
@@ -296,6 +299,7 @@ namespace SolidShineUi
         /// Gets or sets the UI element to place in the top-right of the window, to the left of the caption buttons.
         /// </summary>
         [Category("Appearance")]
+        [Description("Gets or sets the UI element to place in the top-right of the window, to the left of the caption buttons.")]
         public UIElement TopRightElement
         {
             get => (UIElement)GetValue(TopRightElementProperty);
@@ -310,9 +314,10 @@ namespace SolidShineUi
             new PropertyMetadata(null));
 
         /// <summary>
-        /// Gets or sets the UI element to place in the top-left corner of the window.
+        /// Gets or sets the UI element to place in the top-left corner of the window, between the window icon and the title.
         /// </summary>
         [Category("Appearance")]
+        [Description("Gets or sets the UI element to place in the top-left corner of the window, between the window icon and the title.")]
         public UIElement TopLeftElement
         {
             get => (UIElement)GetValue(TopLeftElementProperty);
@@ -333,6 +338,7 @@ namespace SolidShineUi
         /// This changes the IsHitTestVisibleInChrome property for the top-left element. If set to true, the element can be interacted with.
         /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
         /// </remarks>
+        [Description("Get or set if the top-left element should be considered part of the window chrome or not.")]
         public bool ExcludeTopLeftElementFromChrome
         {
             get => (bool)GetValue(ExcludeTopLeftElementFromChromeProperty);
@@ -353,6 +359,7 @@ namespace SolidShineUi
         /// This changes the IsHitTestVisibleInChrome property for the top-right element. If set to true, the element can be interacted with.
         /// If set to false, the element cannot be interacted with, and clicking, dragging, etc. acts as if you're clicking on the window's title bar.
         /// </remarks>
+        [Description("Get or set if the top-right element should be considered part of the window chrome or not.")]
         public bool ExcludeTopRightElementFromChrome
         {
             get => (bool)GetValue(ExcludeTopRightElementFromChromeProperty);
@@ -367,13 +374,13 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="ShowTitle"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(
-            "ShowTitle", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
+            nameof(ShowTitle), typeof(bool), typeof(FlatWindow), new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the <see cref="Window.Title"/> should be displayed at the top of the window.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if the Title should be displayed at the top of the window.")]
         public bool ShowTitle
         {
             get => (bool)GetValue(ShowTitleProperty);
@@ -384,13 +391,13 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="ShowIcon"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(
-            "ShowIcon", typeof(bool), typeof(FlatWindow),
-            new PropertyMetadata(true));
+            nameof(ShowIcon), typeof(bool), typeof(FlatWindow), new PropertyMetadata(true));
 
         /// <summary>
         /// Get or set if the <see cref="Window.Icon"/> should be displayed at the top of the window.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set if the Icon should be displayed at the top of the window.")]
         public bool ShowIcon
         {
             get => (bool)GetValue(ShowIconProperty);
@@ -400,6 +407,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the height of the caption (title bar) area of the window. Default is 29.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the height of the caption (title bar) area of the window. Default is 29.")]
         public int CaptionHeight { get => (int)GetValue(CaptionHeightProperty); set => SetValue(CaptionHeightProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CaptionHeight"/>. See the related property for details.</summary>
@@ -455,10 +464,10 @@ namespace SolidShineUi
         /// set the background for the entire window.
         /// </remarks>
         [Category("Brushes")]
-        public Brush CaptionBarBackground
+        public Brush TitleBarBackground
         {
-            get => (Brush)GetValue(CaptionBarBackgroundProperty);
-            set => SetValue(CaptionBarBackgroundProperty, value);
+            get => (Brush)GetValue(TitleBarBackgroundProperty);
+            set => SetValue(TitleBarBackgroundProperty, value);
         }
 
         /// <summary>
@@ -475,10 +484,10 @@ namespace SolidShineUi
         /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
         [Category("Brushes")]
-        public Brush CaptionBarForeground
+        public Brush TitleBarForeground
         {
-            get => (Brush)GetValue(CaptionBarForegroundProperty);
-            set => SetValue(CaptionBarForegroundProperty, value);
+            get => (Brush)GetValue(TitleBarForegroundProperty);
+            set => SetValue(TitleBarForegroundProperty, value);
         }
 
         /// <summary>
@@ -530,10 +539,10 @@ namespace SolidShineUi
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
         /// <summary>
-        /// The backing dependency property object for <see cref="CaptionBarBackground"/>. See the related property for details.
+        /// The backing dependency property object for <see cref="TitleBarBackground"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty CaptionBarBackgroundProperty = DependencyProperty.Register(
-            nameof(CaptionBarBackground), typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty TitleBarBackgroundProperty = DependencyProperty.Register(
+            nameof(TitleBarBackground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
         /// <summary>
@@ -544,10 +553,10 @@ namespace SolidShineUi
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
         /// <summary>
-        /// The backing dependency property object for <see cref="CaptionBarForeground"/>. See the related property for details.
+        /// The backing dependency property object for <see cref="TitleBarForeground"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty CaptionBarForegroundProperty = DependencyProperty.Register(
-            nameof(CaptionBarForeground), typeof(Brush), typeof(FlatWindow),
+        public static readonly DependencyProperty TitleBarForegroundProperty = DependencyProperty.Register(
+            nameof(TitleBarForeground), typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
         /// <summary>

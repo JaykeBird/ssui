@@ -83,7 +83,7 @@
                                         <!-- title bar -->
                                         <Grid.Style>
                                             <Style TargetType="{x:Type Grid}">
-                                                <Setter Property="Background" Value="{Binding CaptionBarBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                <Setter Property="Background" Value="{Binding TitleBarBackground, RelativeSource={RelativeSource TemplatedParent}}" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
                                                         <Setter Property="Background" Value="{Binding Path=InactiveBackground, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -127,7 +127,7 @@
                                                         <Setter Property="HorizontalAlignment" Value="Left"/>
                                                         <Setter Property="Visibility" Value="Visible" />
                                                         <Setter Property="VerticalAlignment" Value="Center"/>
-                                                        <Setter Property="Foreground" Value="{Binding Path=CaptionBarForeground, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        <Setter Property="Foreground" Value="{Binding Path=TitleBarForeground, RelativeSource={RelativeSource TemplatedParent}}" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsActive, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
                                                                 <Setter Property="Foreground" Value="{Binding Path=InactiveForeground, RelativeSource={RelativeSource TemplatedParent}}" />
