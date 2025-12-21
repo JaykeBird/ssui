@@ -206,5 +206,125 @@ namespace SolidShineUi
             }
         }
 
+
+        public static SsuiAppTheme HighContrastWhiteOnBlack
+        {
+            get => new SsuiAppTheme()
+            {
+                WindowBackground = Colors.Black.ToBrush(),
+                BaseBackground = Colors.Black.ToBrush(),
+                PanelBackground = Colors.Black.ToBrush(),
+                ControlSatBackground = Colors.Black.ToBrush(),
+                WindowCaptionsBackground = Colors.Black.ToBrush(),
+                WindowTitleBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                WindowTitleForeground = Colors.White.ToBrush(),
+                ControlBackground = Colors.Black.ToBrush(),
+                BorderBrush = Colors.White.ToBrush(),
+                Foreground = Colors.White.ToBrush(),
+                HighlightForeground = Colors.Black.ToBrush(),
+                HighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                WindowCaptionsHighlight = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                ClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                WindowCaptionsClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                HighlightBorderBrush = Colors.White.ToBrush(),
+                WindowInactiveForeground = Colors.White.ToBrush(),
+                WindowCaptionsForeground = Colors.White.ToBrush(),
+                WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                ControlPopBrush = Colors.White.ToBrush(),
+                SelectedBorderBrush = Colors.White.ToBrush(),
+                SelectedBackgroundBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                DisabledBackground = Colors.Black.ToBrush(),
+                DisabledBorderBrush = ColorsHelper.HighContrastLightGreen.ToBrush(),
+                DisabledForeground = ColorsHelper.HighContrastLightGreen.ToBrush(),
+                LightBorderBrush = Colors.White.ToBrush(),
+                IconVariation = Utils.IconVariation.White,
+            };
+        }
+
+        public static SsuiAppTheme HighContrastGreenOnBlack
+        {
+            get => new SsuiAppTheme()
+            {
+                WindowBackground = Colors.Black.ToBrush(),
+                BaseBackground = Colors.Black.ToBrush(),
+                PanelBackground = Colors.Black.ToBrush(),
+                ControlSatBackground = Colors.Black.ToBrush(),
+                WindowCaptionsBackground = Colors.Black.ToBrush(),
+                WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                WindowTitleForeground = Colors.Black.ToBrush(),
+                ControlBackground = Colors.Black.ToBrush(),
+                BorderBrush = Colors.White.ToBrush(),
+                Foreground = ColorsHelper.HighContrastGreen.ToBrush(),
+                HighlightForeground = Colors.Black.ToBrush(),
+                HighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                WindowCaptionsHighlight = ColorsHelper.HighContrastBlue.ToBrush(),
+                ClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                WindowCaptionsClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                HighlightBorderBrush = Colors.White.ToBrush(),
+                WindowInactiveForeground = Colors.White.ToBrush(),
+                WindowCaptionsForeground = Colors.Black.ToBrush(),
+                WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                ControlPopBrush = Colors.White.ToBrush(),
+                SelectedBorderBrush = Colors.White.ToBrush(),
+                SelectedBackgroundBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                DisabledBackground = Colors.Black.ToBrush(),
+                DisabledBorderBrush = ColorsHelper.HighContrastGray.ToBrush(),
+                DisabledForeground = ColorsHelper.HighContrastGray.ToBrush(),
+                LightBorderBrush = Colors.White.ToBrush(),
+                IconVariation = Utils.IconVariation.White,
+            };
+        }
+
+        public static SsuiAppTheme HighContrastBlackOnWhite
+        {
+            get => new SsuiAppTheme()
+            {
+                WindowBackground = Colors.White.ToBrush(),
+                BaseBackground = Colors.White.ToBrush(),
+                PanelBackground = Colors.White.ToBrush(),
+                ControlSatBackground = Colors.White.ToBrush(),
+                WindowCaptionsBackground = Colors.White.ToBrush(),
+                WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                WindowInactiveBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                WindowTitleForeground = Colors.Black.ToBrush(),
+                ControlBackground = Colors.White.ToBrush(),
+                BorderBrush = Colors.Black.ToBrush(),
+                Foreground = Colors.Black.ToBrush(),
+                HighlightForeground = Colors.Black.ToBrush(),
+                HighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                WindowCaptionsHighlight = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                ClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                WindowCaptionsClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                HighlightBorderBrush = Colors.Black.ToBrush(),
+                WindowInactiveForeground = Colors.White.ToBrush(),
+                WindowCaptionsForeground = Colors.Black.ToBrush(),
+                WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                ControlPopBrush = Colors.Black.ToBrush(),
+                SelectedBorderBrush = Colors.Black.ToBrush(),
+                SelectedBackgroundBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                DisabledBackground = Colors.Black.ToBrush(),
+                DisabledBorderBrush = ColorsHelper.HighContrastRed.ToBrush(),
+                DisabledForeground = ColorsHelper.HighContrastRed.ToBrush(),
+                LightBorderBrush = Colors.White.ToBrush(),
+                IconVariation = Utils.IconVariation.Black,
+            };
+        }
+
+        public static SsuiAppTheme GetHighContrastTheme(HighContrastOption option)
+        {
+            switch (option)
+            {
+                case HighContrastOption.WhiteOnBlack:
+                    return HighContrastWhiteOnBlack;
+                case HighContrastOption.GreenOnBlack:
+                    return HighContrastGreenOnBlack;
+                case HighContrastOption.BlackOnWhite:
+                    return HighContrastBlackOnWhite;
+                default:
+                    return HighContrastWhiteOnBlack;
+            }
+        }
     }
 }

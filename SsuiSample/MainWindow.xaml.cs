@@ -166,17 +166,17 @@ namespace SsuiSample
 
         private void mnuHcTheme1_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.WhiteOnBlack);
+            SsuiTheme = SsuiThemes.HighContrastWhiteOnBlack;
         }
 
         private void mnuHcTheme2_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.GreenOnBlack);
+            SsuiTheme = SsuiThemes.HighContrastGreenOnBlack;
         }
 
         private void mnuHcTheme3_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.BlackOnWhite);
+            SsuiTheme = SsuiThemes.HighContrastBlackOnWhite;
         }
 
         private void mnuDefaultCs_Click(object sender, RoutedEventArgs e)
