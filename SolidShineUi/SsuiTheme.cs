@@ -384,6 +384,26 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>
+        /// Get or set the brush to use for checkmark symbols in certain SSUI-themed controls such as <see cref="CheckBox"/>, while higlighted (e.g., mouse over).
+        /// </summary>
+        public Brush CheckHighlightBrush { get => (Brush)GetValue(CheckHighlightBrushProperty); set => SetValue(CheckHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CheckBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CheckHighlightBrushProperty
+            = DependencyProperty.Register(nameof(CheckHighlightBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use in the background behind checkmark symbols in certain SSUI-themed controls such as <see cref="CheckBox"/>, while highlighted (e.g., mouse over).
+        /// </summary>
+        public Brush CheckBackgroundHighlightBrush { get => (Brush)GetValue(CheckBackgroundHighlightBrushProperty); set => SetValue(CheckBackgroundHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CheckBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CheckBackgroundHighlightBrushProperty
+            = DependencyProperty.Register(nameof(CheckBackgroundHighlightBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(ColorsHelper.WhiteLightHighlight.ToBrush()));
+
+        /// <summary>
         /// Get or set the brush to use for key elements in certain SSUI-themed controls that should be distinguished or stand out (or "pop")
         /// against the background (e.g. the selector in the <see cref="RelativePositionSelect"/>).
         /// </summary>

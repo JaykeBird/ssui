@@ -369,7 +369,8 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
+
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -384,7 +385,7 @@ namespace SolidShineUi
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(CheckBox),
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(CheckBox),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         /// <summary>
@@ -472,17 +473,15 @@ namespace SolidShineUi
                 ApplyTheme(ssuiTheme);
             }
 
-            // don't set HighlightBrush
-            // HighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
-
             void ApplyTheme(SsuiTheme theme)
             {
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
                 // Border brush already applied in base
                 ApplyThemeBinding(CheckForegroundProperty, SsuiTheme.CheckBrushProperty, theme);
-                ApplyThemeBinding(CheckHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(CheckHighlightBrushProperty, SsuiTheme.CheckHighlightBrushProperty, theme);
                 ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
                 ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.CheckBackgroundHighlightBrushProperty, theme);
 
                 ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
