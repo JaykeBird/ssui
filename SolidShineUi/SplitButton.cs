@@ -261,10 +261,12 @@ namespace SolidShineUi
             if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
             {
                 ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, sat.AccentTheme);
+                ApplyThemeBinding(ForegroundHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.AccentTheme);
             }
             else
             {
                 ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty);
+                ApplyThemeBinding(ForegroundHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty);
             }
         }
 
