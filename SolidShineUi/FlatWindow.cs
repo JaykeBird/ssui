@@ -103,11 +103,7 @@ namespace SolidShineUi
         //}
         #endregion
 
-        #region Color Scheme
-        ///// <summary>
-        ///// Get if the window's color scheme is a high contrast theme (and thus, the window is displaying high-contrast colors).
-        ///// </summary>
-        //public bool HighContrastMode { get; private set; } = false;
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -165,26 +161,6 @@ namespace SolidShineUi
 
             // instead, let's move everything on to the SsuiTheme
             SsuiTheme = new SsuiAppTheme(cs);
-
-            //if (cs.IsHighContrast)
-            //{
-            //    HighContrastMode = true;
-            //    InactiveTextBrush = cs.WindowTitleBarTextColor.ToBrush();
-            //}
-            //else
-            //{
-            //    InactiveTextBrush = ColorsHelper.CreateFromHex("#505050").ToBrush();
-            //}
-
-            //Background = cs.WindowTitleBarColor.ToBrush();
-            //InactiveBackground = cs.WindowInactiveColor.ToBrush();
-            //CaptionButtonsBrush = cs.WindowTitleBarTextColor.ToBrush();
-            //CaptionTextBrush = cs.WindowTitleBarTextColor.ToBrush();
-            //BorderBrush = cs.BorderColor.ToBrush();
-            //HighlightBrush = cs.HighlightColor.ToBrush();
-            //SelectionBrush = cs.SelectionColor.ToBrush();
-            //Foreground = cs.ForegroundColor.ToBrush();
-            //ContentBackground = cs.BackgroundColor.ToBrush();
         }
 
         /// <inheritdoc/>
@@ -192,27 +168,18 @@ namespace SolidShineUi
         {
             base.OnApplySsuiTheme(ssuiTheme);
 
-            //if (ssuiTheme.IsHighContrast)
-            //{
-            //    HighContrastMode = true;
-            //    InactiveTextBrush = cs.WindowTitleBarTextColor.ToBrush();
-            //}
-            //else
-            //{
-            //    InactiveTextBrush = ColorsHelper.CreateFromHex("#505050").ToBrush();
-            //}
+            ApplyThemeBinding(TitleBarBackgroundProperty, SsuiAppTheme.WindowTitleBackgroundProperty, ssuiTheme);
+            ApplyThemeBinding(TitleBarForegroundProperty, SsuiAppTheme.WindowTitleForegroundProperty, ssuiTheme);
+            ApplyThemeBinding(InactiveBackgroundProperty, SsuiAppTheme.WindowInactiveBackgroundProperty, ssuiTheme);
+            ApplyThemeBinding(InactiveForegroundProperty, SsuiAppTheme.WindowInactiveForegroundProperty, ssuiTheme);
+            ApplyThemeBinding(CaptionButtonsForegroundProperty, SsuiAppTheme.WindowCaptionsForegroundProperty, ssuiTheme);
+            ApplyThemeBinding(CaptionButtonsHighlightBrushProperty, SsuiAppTheme.WindowCaptionsHighlightProperty, ssuiTheme);
+            ApplyThemeBinding(CaptionButtonsClickBrushProperty, SsuiAppTheme.WindowCaptionsClickBrushProperty, ssuiTheme);
+            ApplyThemeBinding(ContentBackgroundProperty, SsuiAppTheme.WindowBackgroundProperty, ssuiTheme);
 
-            SetBinding(TitleBarBackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowTitleBackgroundProperty, ssuiTheme));
-            SetBinding(TitleBarForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowTitleForegroundProperty, ssuiTheme));
-            SetBinding(InactiveBackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowInactiveBackgroundProperty, ssuiTheme));
-            SetBinding(InactiveForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowInactiveForegroundProperty, ssuiTheme));
             // SetBinding(BorderBrushProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.BorderBrushProperty, ssuiTheme));
-            SetBinding(CaptionButtonsForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowCaptionsForegroundProperty, ssuiTheme));
-            SetBinding(CaptionButtonsHighlightBrushProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowCaptionsHighlightProperty, ssuiTheme));
-            SetBinding(CaptionButtonsClickBrushProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowCaptionsClickBrushProperty, ssuiTheme));
             // SetBinding(ForegroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.ForegroundProperty, ssuiTheme));
             // SetBinding(BackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowBackgroundProperty, ssuiTheme));
-            SetBinding(ContentBackgroundProperty, SolidShineUi.SsuiTheme.CreateBinding(SsuiAppTheme.WindowBackgroundProperty, ssuiTheme));
         }
 
         #endregion

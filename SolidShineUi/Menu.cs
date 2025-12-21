@@ -235,8 +235,8 @@ namespace SolidShineUi
         /// <remarks>
         /// This theme can be used to centrally apply a consistent appearance to all ThemedControls. Once a theme is set, the control's brushes are bound to the relevant
         /// values in this SsuiTheme, allowing you to update the control's appearance by changing the relevant values in the SsuiTheme. 
-        /// This has the downside of overwriting any preset brush values set via XAML; to re-set these brushes, listen to the <see cref="SsuiThemeChanged"/> event and 
-        /// then reapply the brushes in that event handler.
+        /// This has the downside of overwriting any preset brush values set via XAML; to circumvent this, listen to the <see cref="SsuiThemeChanged"/> event and 
+        /// then reapply the brushes in that event handler, or include that brush property's name in this control's <see cref="ThemeValueExclude"/>.
         /// <para/>
         /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
         /// </remarks>
@@ -325,6 +325,30 @@ namespace SolidShineUi
             if (_skipReapply) return;
             ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
         }
+
+        #endregion
+
+        #region ThemeValueExclude
+
+        /// <summary>
+        /// Get or set the properties to not apply the theme values to when applying a SsuiTheme to this control.
+        /// <para/>
+        /// Use a comma-separated list for multiple properties; for each property, the property's value will not be changed when the SsuiTheme is applied.
+        /// </summary>
+        /// <remarks>
+        /// This can be used when you have certain brushes or values set for a particular control and applying a SsuiTheme ends up resetting that value.
+        /// If only one property's value needs to be kept unchanged, then just set this to the name of that property. If multiple properties need this,
+        /// then provide this as a comma-separated list of all the properties' names in a single string (e.g., <c>"Background,Foreground,BorderBrush"</c>).
+        /// When the control is applying a SsuiTheme (such as set via a property directly, or inheriting from a parent), the control will skip over setting
+        /// properties that match one of the names on this list.
+        /// <para/>
+        /// Note that this functionality is designed for comparing dependency properties' names (<see cref="DependencyProperty.Name"/>) 
+        /// to the list provided here. This will also likely not have any effect on any property that isn't a dependency property.
+        /// </remarks>
+        public string ThemeValueExclude { get => (string)GetValue(ThemeValueExcludeProperty); set => SetValue(ThemeValueExcludeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ThemeValueExclude"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ThemeValueExcludeProperty = ThemedControl.ThemeValueExcludeProperty.AddOwner(typeof(Menu));
 
         #endregion
 
@@ -538,6 +562,13 @@ namespace SolidShineUi
         protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
 #endif
         {
+            // if ThemeValueExclude includes this property's name (as part of a comma-separated list), then we'll not do anything here
+            if (!string.IsNullOrEmpty(ThemeValueExclude))
+            {
+                if (ThemeValueExclude.Split(',').Contains(brushProperty.Name)) return null;
+            }
+
+            // if the theme value provided is null, then we'll just undo any binding that exists (which should undo it to the previous SsuiTheme)
             if (source == null)
             {
                 BindingOperations.ClearBinding(this, brushProperty);

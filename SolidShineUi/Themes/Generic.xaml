@@ -1827,7 +1827,7 @@
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                          SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
-                                         ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}"
+                                         ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}" ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
                                          IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
                             <flat:FlatButton.Style>
                                 <Style TargetType="flat:FlatButton">
@@ -1850,7 +1850,7 @@
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                          SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
-                                         ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}"
+                                         ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}" ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
                                          IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
                             <flat:FlatButton.Style>
                                 <Style TargetType="flat:FlatButton">
@@ -2184,14 +2184,14 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" ThemeValueExclude="CornerRadius," 
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
@@ -2273,14 +2273,14 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
@@ -2362,14 +2362,14 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
@@ -2452,14 +2452,14 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
@@ -2541,14 +2541,14 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <flat:FlatRepeatButton Grid.Row="0" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepUp"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepUp}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
                                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M4,0 L0,4 L8,4 z" />
                                         </flat:FlatRepeatButton>
                                         <flat:FlatRepeatButton Grid.Row="1" BorderThickness="0" MinHeight="11" MinWidth="19" x:Name="PART_btnStepDown"
-                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" 
+                                                     ExecuteCommand="{x:Static ssut:SpinnerBase.StepDown}" ThemeValueExclude="CornerRadius,"
                                                      Interval="{TemplateBinding Interval}" Delay="{TemplateBinding RepeatDelay}"
                                                      Background="{TemplateBinding ButtonBackground}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                                      ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" >
