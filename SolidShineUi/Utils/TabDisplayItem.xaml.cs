@@ -372,10 +372,12 @@ namespace SolidShineUi.Utils
             if (ShowTabsOnBottom)
             {
                 TabBorderThickSelected = new Thickness(1, 0, 1, 1);
+                btnClose.BorderThickness = new Thickness(1, 1, 0, 0);
             }
             else
             {
                 TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+                btnClose.BorderThickness = new Thickness(1, 0, 0, 1);
             }
 
             if (IsSelected)
