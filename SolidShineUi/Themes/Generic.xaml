@@ -24,6 +24,7 @@
     <conv:PartialThicknessConverter x:Key="PartialThConverter" />
     <conv:CornerRadiusModifierConverter x:Key="CrModConverter" />
     <conv:ThicknessMultiplierConverter x:Key="ThicknessMultiplier" />
+    <conv:DebugOutputValueConverter x:Key="dovc" />
 
     <system:Byte x:Key="byteRightCR">21</system:Byte>
     <system:Byte x:Key="byteLeftCR">10</system:Byte>
@@ -1822,12 +1823,17 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <flat:FlatButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1" TransparentBack="{TemplateBinding TransparentBack}"
-                                         BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
+                        <flat:FlatButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1" TransparentBack="{TemplateBinding TransparentBack}" SsuiTheme="{x:Null}"
+                                         BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                         BorderDisabledBrush="{Binding BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
-                                         SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
-                                         ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}" ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
+                                         SelectedBrush="{Binding SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                         Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent},
+                                                           Converter={StaticResource dovc}}" 
+                                         Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                         ForegroundHighlightBrush="{Binding ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                         ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
                                          IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
                             <flat:FlatButton.Style>
                                 <Style TargetType="flat:FlatButton">
@@ -1845,12 +1851,13 @@
                             </flat:FlatButton.Style>
                             <ContentPresenter ContentSource="Content" RecognizesAccessKey="True" />
                         </flat:FlatButton>
-                        <flat:FlatButton x:Name="PART_Menu" Padding="0" TransparentBack="{TemplateBinding TransparentBack}"
+                        <flat:FlatButton x:Name="PART_Menu" Padding="0" TransparentBack="{TemplateBinding TransparentBack}" SsuiTheme="{x:Null}"
                                          BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                          SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
-                                         ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}" ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
+                                         ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}" 
+                                         ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
                                          IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
                             <flat:FlatButton.Style>
                                 <Style TargetType="flat:FlatButton">

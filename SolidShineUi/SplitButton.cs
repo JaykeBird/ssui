@@ -250,47 +250,83 @@ namespace SolidShineUi
         {
             base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
 
-            if (btnMain != null && btnMenu != null)
-            {
-                btnMain.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
-                btnMenu.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
-            }
-
             Menu?.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
 
-            if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
             {
-                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, sat.AccentTheme);
-                ApplyThemeBinding(ForegroundHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.AccentTheme);
+                // ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyTheme(sat.AccentTheme);
             }
             else
             {
-                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty);
-                ApplyThemeBinding(ForegroundHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty);
+                // ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(ForegroundHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
         /// <summary>
-        /// Remove the bindings the split button uses internally for setting the <c>SsuiTheme</c>.
-        /// This may be necessary in certain rare instances where you are setting the theme, but then also need to update other
-        /// properties (such as <see cref="CornerRadius"/>) afterwards.
-        /// However, in most situations, this is not needed and instead may cause other problems.
+        /// Internal function used for debugging the state of the internal buttons.
         /// </summary>
-        public void ClearButtonThemeBindings()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string GetMainButtonBackgroundBinding
         {
-            if (btnMain != null && btnMenu != null)
+            get
             {
-                BindingOperations.ClearBinding(btnMain, ThemedControl.SsuiThemeProperty);
-                BindingOperations.ClearBinding(btnMenu, ThemedControl.SsuiThemeProperty);
+                if (btnMain != null)
+                {
+                    Binding b = BindingOperations.GetBinding(btnMain, BackgroundProperty);
+                    
+                    if (b != null)
+                    {
+                        return $"{b.Source}: {b.Path.Path} (+ {btnMain?.SsuiTheme?.ToString() ?? "(theme null)"})";
+                    }
+                    else
+                    {
+                        return "(no binding)";
+                    }
+                }
 
-                // so as to not leave the buttons' themes undefined, we'll set the themes as unbound values
-                // (actually, I won't do this, the intention is the brushes will revert to SplitButton's bindings ideally)
-                //SsuiTheme copy = (SsuiTheme)SsuiTheme.Clone();
-
-                //btnMain.SsuiTheme = copy;
-                //btnMenu.SsuiTheme = copy;
+                return "(not found)";
             }
         }
+
+        ///// <summary>
+        ///// Remove the bindings the split button uses internally for setting the <c>SsuiTheme</c>.
+        ///// This may be necessary in certain rare instances where you are setting the theme, but then also need to update other
+        ///// properties (such as <see cref="CornerRadius"/>) afterwards.
+        ///// However, in most situations, this is not needed and instead may cause other problems.
+        ///// </summary>
+        //public void ClearButtonThemeBindings()
+        //{
+        //    if (btnMain != null && btnMenu != null)
+        //    {
+        //        BindingOperations.ClearBinding(btnMain, ThemedControl.SsuiThemeProperty);
+        //        BindingOperations.ClearBinding(btnMenu, ThemedControl.SsuiThemeProperty);
+
+        //        // so as to not leave the buttons' themes undefined, we'll set the themes as unbound values
+        //        // (actually, I won't do this, the intention is the brushes will revert to SplitButton's bindings ideally)
+        //        //SsuiTheme copy = (SsuiTheme)SsuiTheme.Clone();
+
+        //        //btnMain.SsuiTheme = copy;
+        //        //btnMenu.SsuiTheme = copy;
+        //    }
+        //}
 
         #endregion
 
