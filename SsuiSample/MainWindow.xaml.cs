@@ -80,7 +80,8 @@ namespace SsuiSample
 
         private void mnuCulture_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Current Culture", "Set the culture to use for this window", CultureInfo.CurrentCulture.Name);
+            StringInputDialog sid = new StringInputDialog("Set Current Culture", "Set the culture to use for this window", CultureInfo.CurrentCulture.Name);
+            sid.SsuiTheme = SsuiTheme;
             sid.ValidationFunction = (v) =>
             {
                 if (string.IsNullOrWhiteSpace(v)) return false;
@@ -131,7 +132,8 @@ namespace SsuiSample
                 baseColor = scb.Color;
             }
 
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, baseColor);
+            ColorPickerDialog cpd = new ColorPickerDialog(baseColor);
+            cpd.SsuiTheme = SsuiTheme;
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
