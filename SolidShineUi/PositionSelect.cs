@@ -89,6 +89,17 @@ namespace SolidShineUi
                     // put in event handlers here
 
                     itemsLoaded = true;
+
+                    // now that we have these set, let's re-apply the horizontal and vertical snap lines if they were applied in XAML
+                    foreach (double item in HorizontalSnapPoints)
+                    {
+                        AddHorizontalSnapPoint(item);
+                    }
+
+                    foreach (double item in VerticalSnapPoints)
+                    {
+                        AddVerticalSnapPoint(item);
+                    }
                 }
 
             }
@@ -331,6 +342,8 @@ namespace SolidShineUi
                 ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
                 ApplyThemeBinding(SelectorDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
 
                 //if (useLightBorder)
                 //{
@@ -731,6 +744,40 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Other Visual Properties
+
+        /// <summary>
+        /// Get or set the size of the selector (the circle used to select a value).
+        /// <para/>
+        /// The larger the selector, the easier it will be to see and also to click and drag, 
+        /// but also harder to precisely get to or visualize a specific value (although snaplines can help rectify this).
+        /// </summary>
+        [Category("Common")]
+        [Description("Get or set the size of the selector (the circle used to select a value).")]
+        public double SelectorSize { get => (double)GetValue(SelectorSizeProperty); set => SetValue(SelectorSizeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectorSize"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectorSizeProperty
+            = DependencyProperty.Register(nameof(SelectorSize), typeof(double), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(9.0));
+
+        /// <summary>
+        /// Get or set how rounded the corners of this control is. Use 0 for all values for straight corners.
+        /// <para/>
+        /// It is recommended that each value of the corner radius should be equal to or less than <see cref="SelectorSize"/>, 
+        /// to prevent any potential visual issues.
+        /// </summary>
+        [Category("Common")]
+        [Description("Get or set how rounded the corners of this control is. Use 0 for all values for straight corners.")]
+        public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CornerRadiusProperty
+            = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(new CornerRadius(0)));
+
+        #endregion
+
         #region Keyboard Controls
 
         /// <summary>
@@ -830,21 +877,6 @@ namespace SolidShineUi
 
         #endregion
 
-        /// <summary>
-        /// Get or set the size of the selector (the circle used to select a value).
-        /// <para/>
-        /// The larger the selector, the easier it will be to see and also to click and drag, 
-        /// but also harder to precisely get to or visualize a specific value (although snaplines can help rectify this).
-        /// </summary>
-        [Category("Common")]
-        [Description("Get or set the size of the selector (the circle used to select a value).")]
-        public double SelectorSize { get => (double)GetValue(SelectorSizeProperty); set => SetValue(SelectorSizeProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="SelectorSize"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty SelectorSizeProperty
-            = DependencyProperty.Register(nameof(SelectorSize), typeof(double), typeof(PositionSelect),
-            new FrameworkPropertyMetadata(9.0));
-
         #region Mouse Events
 
         bool selectMode = false;
@@ -852,10 +884,11 @@ namespace SolidShineUi
         private void PositionSelect_MouseDown(object sender, MouseButtonEventArgs e)
         {
             selectMode = true;
+            double sshalf = SelectorSize / 2;
 
             // get point from mouse
             Point p = Mouse.GetPosition(this);
-            SelectPoint(p);
+            SelectPoint(new Point(p.X - sshalf, p.Y - sshalf));
         }
 
         private void PositionSelect_MouseUp(object sender, MouseButtonEventArgs e)
@@ -867,9 +900,11 @@ namespace SolidShineUi
         {
             if (selectMode)
             {
+                double sshalf = SelectorSize / 2;
+
                 // get point from mouse
                 Point p = Mouse.GetPosition(this);
-                SelectPoint(p);
+                SelectPoint(new Point(p.X - sshalf, p.Y - sshalf));
             }
         }
 

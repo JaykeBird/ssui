@@ -16,28 +16,29 @@
             <RowDefinition Height="30" />
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <utils:RelativePositionSelect Width="250" Height="250" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
-                                      SelectedHeight="0.5" SelectedWidth="0.5" SelectorSize="15" x:Name="selPos1" SelectedPositionChanged="selPos1_SelectedPositionChanged" >
-            <utils:RelativePositionSelect.HorizontalSnapPoints>
+        <flat:PositionSelect Width="250" Height="250" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
+            SelectedX="0.5" SelectedY="0.5" SelectorSize="15" x:Name="selPos1" SelectedPositionChanged="selPos1_SelectedPositionChanged" >
+            <flat:PositionSelect.HorizontalSnapPoints>
                 <system:Double>0.25</system:Double>
                 <system:Double>0.5</system:Double>
                 <system:Double>0.75</system:Double>
-            </utils:RelativePositionSelect.HorizontalSnapPoints>
-            <utils:RelativePositionSelect.VerticalSnapPoints>
+            </flat:PositionSelect.HorizontalSnapPoints>
+            <flat:PositionSelect.VerticalSnapPoints>
                 <system:Double>0.25</system:Double>
                 <system:Double>0.5</system:Double>
                 <system:Double>0.75</system:Double>
-            </utils:RelativePositionSelect.VerticalSnapPoints>
-        </utils:RelativePositionSelect>
+            </flat:PositionSelect.VerticalSnapPoints>
+        </flat:PositionSelect>
         <TextBlock Grid.Row="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Width:" />
-        <flat:DoubleSpinner Grid.Row="1" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80"
-                            MinValue="0" MaxValue="1" Decimals="3" Step="0.05" x:Name="nudWidth1" ValueChanged="nudWidth1_ValueChanged" />
+        <flat:DoubleSpinner Grid.Row="1" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Decimals="3" Width="80"
+                            MinValue="0" MaxValue="1" Step="0.05" x:Name="nudWidth1" Value="{Binding ElementName=selPos1, Path=SelectedX}" />
         <TextBlock Grid.Row="2" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Height:" />
-        <flat:DoubleSpinner Grid.Row="2" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" 
-                            MinValue="0" MaxValue="1" Decimals="3" Step="0.05" x:Name="nudHeight1" ValueChanged="nudHeight1_ValueChanged" />
-        <flat:CheckBox Grid.Row="1" Margin="160,0,0,0" Content="Snap to Snap Points" CheckChanged="chkSnap_CheckChanged" x:Name="chkSnap" IsChecked="True" HorizontalAlignment="Left" />
+        <flat:DoubleSpinner Grid.Row="2" Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Decimals="3" Width="80" 
+                            MinValue="0" MaxValue="1" Step="0.05" x:Name="nudHeight1" Value="{Binding ElementName=selPos1, Path=SelectedY}" />
+        <flat:CheckBox Grid.Row="1" Margin="160,0,0,0" Content="Snap to Snaplines" x:Name="chkSnap"
+                            HorizontalAlignment="Left" IsChecked="{Binding ElementName=selPos1, Path=SnapToSnaplines, Mode=TwoWay}" />
         <TextBlock Grid.Row="2" Margin="160,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Snap distance:" />
-        <flat:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" 
-                            MinValue="0" MaxValue="20" Value="5" Decimals="3" Step="1" x:Name="nudSnapsize" ValueChanged="nudSnapsize_ValueChanged" />
+        <flat:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" Decimals="3" 
+                            MinValue="0" MaxValue="20" Step="1" x:Name="nudSnapsize" Value="{Binding ElementName=selPos1, Path=SnapDistance}" />
     </Grid>
 </flat:ThemedUserControl>
