@@ -1,4 +1,4 @@
-﻿    <flat:ThemedUserControl x:Class="SsuiSample.PositionSelectTest" x:Name="control"
+﻿<flat:ThemedUserControl x:Class="SsuiSample.PositionSelectTest" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -37,8 +37,13 @@
                             MinValue="0" MaxValue="1" Step="0.05" x:Name="nudHeight1" Value="{Binding ElementName=selPos1, Path=SelectedY}" />
         <flat:CheckBox Grid.Row="1" Margin="160,0,0,0" Content="Snap to Snaplines" x:Name="chkSnap"
                             HorizontalAlignment="Left" IsChecked="{Binding ElementName=selPos1, Path=SnapToSnaplines, Mode=TwoWay}" />
+        <flat:CheckBox Grid.Row="1" Margin="290,0,0,0" Content="Is Enabled" x:Name="chkEnabled"
+                            HorizontalAlignment="Left" IsChecked="{Binding ElementName=selPos1, Path=IsEnabled, Mode=TwoWay}" />
         <TextBlock Grid.Row="2" Margin="160,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Snap distance:" />
-        <flat:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" Decimals="3" 
+        <flat:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Decimals="3" 
                             MinValue="0" MaxValue="20" Step="1" x:Name="nudSnapsize" Value="{Binding ElementName=selPos1, Path=SnapDistance}" />
+        <TextBlock Grid.Row="2" Margin="325,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Selector size:" />
+        <flat:DoubleSpinner Grid.Row="2" Margin="400,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Decimals="3" 
+            MinValue="0" MaxValue="20" Step="1" x:Name="nudSelectorSize" Value="{Binding SelectorSize, ElementName=selPos1}" />
     </Grid>
 </flat:ThemedUserControl>

@@ -17,7 +17,9 @@ namespace SsuiSample
 
         private void selPos1_SelectedPositionChanged(object sender, RoutedPropertyChangedEventArgs<Point> e)
         {
-
+            // this event handler is raised whenever the selected position (the location of the selector) is changed
+            // e.OldValue and e.NewValue can be used to check and compare the change in values
+            // (note that while the mouse is dragging the selector, that can cause this handler to be raised a lot)
         }
     }
 }

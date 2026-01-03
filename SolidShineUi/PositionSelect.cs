@@ -582,7 +582,6 @@ namespace SolidShineUi
                 return;
             }
 
-            //double sshalf = SelectorSize / 2;
             Border b = new Border();
             b.BorderThickness = new Thickness(0.75);
             b.BorderBrush = SnapLineBrush;
@@ -634,7 +633,6 @@ namespace SolidShineUi
                 return;
             }
 
-            //double sshalf = SelectorSize / 2;
             Border b = new Border();
             b.BorderThickness = new Thickness(0.75);
             b.BorderBrush = SnapLineBrush;
@@ -680,10 +678,26 @@ namespace SolidShineUi
         }
         #endregion
 
+        #region Size Changes
+
+        void SelectorSizeChanged(DependencyPropertyChangedEventArgs e)
+        {
+            // clear the cached values, since they'll now be different
+            _canvasWidth = double.NaN;
+            _canvasHeight = double.NaN;
+
+            if (e.NewValue is double d)
+            {
+                sshalf = d / 2;
+            }
+
+            AdjustItemsX();
+            AdjustItemsY();
+        }
+
         private void PositionSelect_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // here, we will be shifting the snaplines and selector around to match the new size of the control
-            double sshalf = SelectorSize / 2;
 
             // clear the cached values, since they'll now be different
             _canvasWidth = double.NaN;
@@ -691,56 +705,70 @@ namespace SolidShineUi
 
             if (e.WidthChanged)
             {
-                if (canVertical != null)
-                {
-                    // snaplines
-#if NETCOREAPP
-                    foreach (UIElement? item in canVertical.Children)
-#else
-                    foreach (UIElement item in canVertical.Children)
-#endif
-                    {
-                        if (item != null && item is Border b)
-                        {
-                            if (b.Tag is double d)
-                            {
-                                b.Margin = new Thickness(GetCanvasWidth() * d, 0, 0, 0);
-                                //b.Margin = new Thickness(grdSelArea.ActualWidth * d + sshalf, 0, 0, 0);
-                            }
-                        }
-                    }
-                }
-
-                // selector
-                if (ellSelect != null) Canvas.SetLeft(ellSelect, (GetCanvasWidth() * SelectedX) - sshalf);
+                AdjustItemsX();
             }
 
             if (e.HeightChanged)
             {
-                if (canHorizontal != null)
-                {
-                    // snaplines
+                AdjustItemsY();
+            }
+        }
+
+        private double sshalf = 4.5;
+
+        void AdjustItemsX()
+        {
+            if (canVertical != null)
+            {
+                // snaplines
 #if NETCOREAPP
-                    foreach (UIElement? item in canHorizontal.Children)
+                    foreach (UIElement? item in canVertical.Children)
 #else
-                    foreach (UIElement item in canHorizontal.Children)
+                foreach (UIElement item in canVertical.Children)
 #endif
+                {
+                    if (item != null && item is Border b)
                     {
-                        if (item != null && item is Border b)
+                        if (b.Tag is double d)
                         {
-                            if (b.Tag is double d)
-                            {
-                                b.Margin = new Thickness(0, GetCanvasHeight() * d, 0, 0);
-                                //b.Margin = new Thickness(0, grdSelArea.ActualHeight * d + sshalf, 0, 0);
-                            }
+                            b.Margin = new Thickness(GetCanvasWidth() * d, 0, 0, 0);
+                            //b.Margin = new Thickness(grdSelArea.ActualWidth * d + sshalf, 0, 0, 0);
                         }
                     }
                 }
-
-                // selector
-                if (ellSelect != null) Canvas.SetTop(ellSelect, (GetCanvasHeight() * SelectedY) - sshalf);
             }
+
+            // selector
+            if (ellSelect != null) Canvas.SetLeft(ellSelect, (GetCanvasWidth() * SelectedX) - sshalf);
         }
+
+        void AdjustItemsY()
+        {
+            if (canHorizontal != null)
+            {
+                // snaplines
+#if NETCOREAPP
+                    foreach (UIElement? item in canHorizontal.Children)
+#else
+                foreach (UIElement item in canHorizontal.Children)
+#endif
+                {
+                    if (item != null && item is Border b)
+                    {
+                        if (b.Tag is double d)
+                        {
+                            b.Margin = new Thickness(0, GetCanvasHeight() * d, 0, 0);
+                            //b.Margin = new Thickness(0, grdSelArea.ActualHeight * d + sshalf, 0, 0);
+                        }
+                    }
+                }
+            }
+
+            // selector
+            if (ellSelect != null) Canvas.SetTop(ellSelect, (GetCanvasHeight() * SelectedY) - sshalf);
+        }
+
+        #endregion
 
         #endregion
 
@@ -759,7 +787,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="SelectorSize"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectorSizeProperty
             = DependencyProperty.Register(nameof(SelectorSize), typeof(double), typeof(PositionSelect),
-            new FrameworkPropertyMetadata(9.0));
+            new FrameworkPropertyMetadata(9.0, (d, e) => d.PerformAs<PositionSelect>(p => p.SelectorSizeChanged(e))));
 
         /// <summary>
         /// Get or set how rounded the corners of this control is. Use 0 for all values for straight corners.
@@ -884,11 +912,10 @@ namespace SolidShineUi
         private void PositionSelect_MouseDown(object sender, MouseButtonEventArgs e)
         {
             selectMode = true;
-            double sshalf = SelectorSize / 2;
 
             // get point from mouse
             Point p = Mouse.GetPosition(this);
-            SelectPoint(new Point(p.X - sshalf, p.Y - sshalf));
+            SelectPoint(p - new Vector(sshalf, sshalf));
         }
 
         private void PositionSelect_MouseUp(object sender, MouseButtonEventArgs e)
@@ -900,11 +927,9 @@ namespace SolidShineUi
         {
             if (selectMode)
             {
-                double sshalf = SelectorSize / 2;
-
                 // get point from mouse
                 Point p = Mouse.GetPosition(this);
-                SelectPoint(new Point(p.X - sshalf, p.Y - sshalf));
+                SelectPoint(p - new Vector(sshalf, sshalf));
             }
         }
 
@@ -1090,7 +1115,6 @@ namespace SolidShineUi
         {
             if (ellSelect == null) return;
 
-            double sshalf = SelectorSize / 2;
             Canvas.SetTop(ellSelect, (GetCanvasHeight() * p.Y) - sshalf);
             Canvas.SetLeft(ellSelect, (GetCanvasWidth() * p.X) - sshalf);
         }
@@ -1163,8 +1187,6 @@ namespace SolidShineUi
             {
                 p.Y = GetCanvasHeight();
             }
-
-            double sshalf = SelectorSize / 2;
 
             // check for snap positions
             if (SnapToSnaplines && canVertical != null && canHorizontal != null)
