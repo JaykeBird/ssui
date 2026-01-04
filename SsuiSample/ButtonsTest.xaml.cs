@@ -34,17 +34,5 @@ namespace SsuiSample
         {
             txtResult.Text = $"{(sender as FrameworkElement).Name} was clicked on the menu";
         }
-
-        // this can be used if you have buttons that you want to apply special colors to, while also using the SsuiTheme
-        // when the SsuiTheme is set, all existing brush data is overwritten with the brushes in the SsuiTheme
-        // (the recommended scenario, though, is to set an accent theme and then set the button to use the accent theme)
-        private void Button_SsuiThemeChanged(object sender, RoutedEventArgs e)
-        {
-            if (sender is FlatButton fb)
-            {
-                fb.Background = ColorsHelper.Purple.ToBrush();
-                // fb.ForegroundHighlightBrush = ColorsHelper.Orange.ToBrush();
-            }
-        }
     }
 }

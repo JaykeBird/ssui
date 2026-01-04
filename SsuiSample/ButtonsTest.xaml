@@ -36,7 +36,7 @@
             <TextBlock Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" >
                 FlatButton<LineBreak/>In Accent Color
             </TextBlock>
-            <flat:FlatButton x:Name="btnFlat1" Content="_Button Text" Width="100" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" RightClick="Button_RightClick" SsuiThemeChanged="Button_SsuiThemeChanged" />
+            <flat:FlatButton x:Name="btnFlat1" Content="_Button Text" Width="100" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" RightClick="Button_RightClick" />
             <flat:FlatButton x:Name="btnFlat2" Content="B_utton Text" Width="100" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" TransparentBack="True" Click="Button_Click" RightClick="Button_RightClick" />
             <flat:FlatButton x:Name="btnFlat3" Content="Bu_tton Text" Width="100" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False" Click="Button_Click" RightClick="Button_RightClick" />
             <flat:MenuButton x:Name="btnMenu1" Content="_Menu Button" Width="100" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" RightClick="Button_RightClick" >

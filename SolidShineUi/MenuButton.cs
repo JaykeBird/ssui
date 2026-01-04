@@ -39,13 +39,10 @@ namespace SolidShineUi
 
         private void OnColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-
-            Menu?.ApplyColorScheme(cs);
+            if (e.NewValue is ColorScheme cs)
+            {
+                Menu?.ApplyColorScheme(cs);
+            }
         }
 
         #region Menu
@@ -265,6 +262,14 @@ namespace SolidShineUi
         /// Internal method for opening up the menu when the button is clicked
         /// </summary>
         private void MenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenMenu();
+        }
+
+        /// <summary>
+        /// Display this menu button's menu programmatically. This will open the menu at the set placement target and location.
+        /// </summary>
+        public void OpenMenu()
         {
             if (Menu != null)
             {
