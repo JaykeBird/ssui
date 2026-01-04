@@ -31,6 +31,11 @@ namespace SolidShineUi
         public SplitButton()
         {
             ColorSchemeChanged += OnColorSchemeChanged;
+
+            DependencyPropertyDescriptor.FromProperty(BackgroundProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(BackgroundProperty, Background));
+            DependencyPropertyDescriptor.FromProperty(BorderBrushProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(BorderBrushProperty, BorderBrush));
+            DependencyPropertyDescriptor.FromProperty(BorderThicknessProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(BorderThicknessProperty, BorderThickness));
+            DependencyPropertyDescriptor.FromProperty(ForegroundProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(ForegroundProperty, Foreground));
         }
 
         private void OnColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -181,54 +186,60 @@ namespace SolidShineUi
         }
 
         /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            nameof(ClickBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.Gainsboro.ToBrush()));
+        public static readonly DependencyProperty ClickBrushProperty = FlatButton.ClickBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            nameof(SelectedBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
+        public static readonly DependencyProperty SelectedBrushProperty = FlatButton.SelectedBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            nameof(HighlightBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.LightGray.ToBrush()));
+        public static readonly DependencyProperty HighlightBrushProperty = FlatButton.HighlightBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="ForegroundHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ForegroundHighlightBrushProperty = DependencyProperty.Register(
-            nameof(ForegroundHighlightBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        public static readonly DependencyProperty ForegroundHighlightBrushProperty = FlatButton.ForegroundHighlightBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            nameof(DisabledBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.Gray.ToBrush()));
+        public static readonly DependencyProperty DisabledBrushProperty = FlatButton.DisabledBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            nameof(BorderDisabledBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.DarkGray.ToBrush()));
+        public static readonly DependencyProperty BorderDisabledBrushProperty = FlatButton.BorderDisabledBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            nameof(BorderHighlightBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        public static readonly DependencyProperty BorderHighlightBrushProperty = FlatButton.BorderHighlightBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            nameof(BorderSelectedBrush), typeof(Brush), typeof(SplitButton),
-            new PropertyMetadata(Colors.DimGray.ToBrush()));
+        public static readonly DependencyProperty BorderSelectedBrushProperty = FlatButton.BorderSelectedBrushProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         #endregion
+
+        private static void ApplyPropertyUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SplitButton sb)
+            {
+                sb.ApplyValueToButtons(e.Property, e.NewValue);
+            }
+        }
+
+        private void ApplyValueToButtons(DependencyProperty property, object value)
+        {
+            btnMain?.SetValue(property, value);
+            btnMenu?.SetValue(property, value);
+        }
 
         #region TransparentBack
 
         /// <summary>
         /// The backing dependency property object for <see cref="TransparentBack"/>. See the related property for more details.
         /// </summary>
-        public static readonly DependencyProperty TransparentBackProperty
-            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+        public static readonly DependencyProperty TransparentBackProperty = FlatButton.TransparentBackProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(false, ApplyPropertyUpdate));
 
         /// <summary>
         /// Get or set whether the button should have a transparent background when the button is not focused.
@@ -373,8 +384,7 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for <see cref="UseAccentColors"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty UseAccentColorsProperty
-            = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(SplitButton),
+        public static readonly DependencyProperty UseAccentColorsProperty = FlatButton.UseAccentColorsProperty.AddOwner(typeof(SplitButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnUseAccentColorsChanged)));
 
         /// <summary>
@@ -507,19 +517,18 @@ namespace SolidShineUi
         #region Border
 
         /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
-            "BorderSelectionThickness", typeof(Thickness), typeof(SplitButton),
-            new PropertyMetadata(new Thickness(2)));
+        public static readonly DependencyProperty BorderSelectionThicknessProperty = FlatButton.BorderSelectionThicknessProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(SplitButton),
-            new PropertyMetadata(new CornerRadius(0)));
+        public static readonly DependencyProperty CornerRadiusProperty = FlatButton.CornerRadiusProperty.AddOwner(typeof(SplitButton), 
+            new PropertyMetadata((o, e) => o.PerformAs<SplitButton, CornerRadius>(e.NewValue, (s, v) => s.ApplyCornerRadiusToButtons(v))));
 
         /// <summary>
         /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the thickness of the border around the button, while the button is in a selected (IsSelected) state.")]
         public Thickness BorderSelectionThickness
         {
             get => (Thickness)GetValue(BorderSelectionThicknessProperty);
@@ -530,10 +539,55 @@ namespace SolidShineUi
         /// Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
+        }
+
+        void ApplyCornerRadiusToButtons(CornerRadius cr)
+        {
+            if (btnMenu == null || btnMain == null) return;
+
+            switch (MenuButtonPlacement)
+            {
+                case PlacementDirection.Hidden:
+                    // no menu button
+                    // apply all to main button
+                    btnMenu.CornerRadius = new CornerRadius(0);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, cr.BottomRight, cr.BottomLeft);
+                    break;
+                case PlacementDirection.Top:
+                    // menu button on top (top left, top right)
+                    // main button on bottom
+                    btnMenu.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, 0, 0);
+                    btnMain.CornerRadius = new CornerRadius(0, 0, cr.BottomRight, cr.BottomLeft);
+                    break;
+                case PlacementDirection.Left:
+                    // menu button on left (top left, bottom left)
+                    // main button on right
+                    btnMenu.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
+                    btnMain.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
+                    break;
+                case PlacementDirection.Right:
+                    // menu button on right (top right, bottom right)
+                    // main button on left
+                    btnMenu.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
+                    break;
+                case PlacementDirection.Bottom:
+                    // menu button on bottom (bottom left, bottom right)
+                    // main button on top
+                    btnMenu.CornerRadius = new CornerRadius(0, 0, cr.BottomRight, cr.BottomLeft);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, 0, 0);
+                    break;
+                default:
+                    // treat it as Right, as that's the default value
+                    btnMenu.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
+                    break;
+            }
         }
 
         #region Separator Border
@@ -546,8 +600,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="ShowSeparator"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ShowSeparatorProperty
-            = DependencyProperty.Register("ShowSeparator", typeof(bool), typeof(SplitButton),
-            new FrameworkPropertyMetadata(true));
+            = DependencyProperty.Register("ShowSeparator", typeof(bool), typeof(SplitButton), new FrameworkPropertyMetadata(true));
 
         /// <summary>
         /// Get or set the brush to use for the separator bar between the main and menu buttons.
@@ -556,8 +609,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="SeparatorBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SeparatorBrushProperty
-            = DependencyProperty.Register("SeparatorBrush", typeof(Brush), typeof(SplitButton),
-            new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
+            = DependencyProperty.Register("SeparatorBrush", typeof(Brush), typeof(SplitButton), new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
 
         /// <summary>
         /// Get or set how distant the separator bar should be from the edges of the button. The higher the number, the bigger the space between
@@ -567,8 +619,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="SeparatorEdgeMargin"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SeparatorEdgeMarginProperty
-            = DependencyProperty.Register("SeparatorEdgeMargin", typeof(double), typeof(SplitButton),
-            new FrameworkPropertyMetadata(4.0));
+            = DependencyProperty.Register("SeparatorEdgeMargin", typeof(double), typeof(SplitButton), new FrameworkPropertyMetadata(4.0));
 
         /// <summary>
         /// Get or set how wide the separator bar should be. A value of 0 will make it invisible.
@@ -577,8 +628,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="SeparatorThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SeparatorThicknessProperty
-            = DependencyProperty.Register("SeparatorThickness", typeof(double), typeof(SplitButton),
-            new FrameworkPropertyMetadata(1.0));
+            = DependencyProperty.Register("SeparatorThickness", typeof(double), typeof(SplitButton), new FrameworkPropertyMetadata(1.0));
 
         #endregion
 
@@ -586,9 +636,10 @@ namespace SolidShineUi
 
         #region Menu
 
+        #region Primary Properties / Events
+
         /// <summary>The backing dependency property for <see cref="Menu"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty MenuProperty
-            = DependencyProperty.Register(nameof(Menu), typeof(ContextMenu), typeof(SplitButton),
+        public static readonly DependencyProperty MenuProperty = MenuButton.MenuProperty.AddOwner(typeof(SplitButton),
             new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<SplitButton>((o) => o.OnMenuChanged(e))));
 
         /// <summary>
@@ -685,7 +736,9 @@ namespace SolidShineUi
             MenuClosed?.Invoke(this, EventArgs.Empty);
         }
 
-        #region Placement
+        #endregion
+
+        #region Placement Properties
 
         /// <summary>
         /// Get or set the placement mode for the SplitButton's menu. Default is <c>Bottom</c>.
@@ -694,8 +747,7 @@ namespace SolidShineUi
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty MenuPlacementProperty
-            = DependencyProperty.Register("MenuPlacement", typeof(PlacementMode), typeof(SplitButton),
+        public static readonly DependencyProperty MenuPlacementProperty = MenuButton.MenuPlacementProperty.AddOwner(typeof(SplitButton),
             new FrameworkPropertyMetadata(PlacementMode.Bottom));
 
 
@@ -710,9 +762,7 @@ namespace SolidShineUi
 #endif
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementTarget"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty MenuPlacementTargetProperty
-            = DependencyProperty.Register("MenuPlacementTarget", typeof(UIElement), typeof(SplitButton),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty MenuPlacementTargetProperty = MenuButton.MenuPlacementTargetProperty.AddOwner(typeof(SplitButton));
 
 
         /// <summary>
@@ -722,11 +772,52 @@ namespace SolidShineUi
         public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty MenuPlacementRectangleProperty
-            = DependencyProperty.Register("MenuPlacementRectangle", typeof(Rect), typeof(SplitButton),
-            new FrameworkPropertyMetadata(Rect.Empty));
+        public static readonly DependencyProperty MenuPlacementRectangleProperty = MenuButton.MenuPlacementRectangleProperty.AddOwner(typeof(SplitButton));
+
+
+        /// <summary>
+        /// Get or set how far offset the menu is horizontally (left or right) from its placement target/rectangle when it's opened.
+        /// </summary>
+        public double MenuHorizontalOffset { get => (double)GetValue(MenuHorizontalOffsetProperty); set => SetValue(MenuHorizontalOffsetProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuHorizontalOffset"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty MenuHorizontalOffsetProperty = MenuButton.MenuHorizontalOffsetProperty.AddOwner(typeof(SplitButton));
+
+        /// <summary>
+        /// Get or set how far offset the menu is vertically (up or down) from its placement target/rectangle when it's opened.
+        /// </summary>
+        public double MenuVerticalOffset { get => (double)GetValue(MenuVerticalOffsetProperty); set => SetValue(MenuVerticalOffsetProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuVerticalOffset"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty MenuVerticalOffsetProperty = MenuButton.MenuVerticalOffsetProperty.AddOwner(typeof(SplitButton));
 
         #endregion
+
+        /// <summary>
+        /// Display this split button's menu programmatically. This will open the menu at the set placement target and location.
+        /// </summary>
+        public void OpenMenu()
+        {
+            if (Menu != null)
+            {
+                // first, raise MenuOpening event
+                CancelEventArgs ce = new CancelEventArgs(false);
+                MenuOpening?.Invoke(this, ce);
+                if (ce.Cancel) return;
+
+                // then, set up the full menu and show it
+                Menu.Placement = MenuPlacement;
+                Menu.PlacementTarget = MenuPlacementTarget ?? this;
+                Menu.PlacementRectangle = MenuPlacementRectangle;
+                Menu.HorizontalOffset = MenuHorizontalOffset;
+                Menu.VerticalOffset = MenuVerticalOffset;
+                Menu.IsOpen = true;
+                Menu.Closed += Menu_Closed;
+
+                // finally, we can raise the MenuOpened event
+                MenuOpened?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         #endregion
 
@@ -741,9 +832,8 @@ namespace SolidShineUi
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty
-            = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(SplitButton),
-            new FrameworkPropertyMetadata(false));
+        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty = FlatButton.HighlightOnKeyboardFocusProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         #endregion
 
@@ -761,25 +851,7 @@ namespace SolidShineUi
 
         private void btnMenu_Click(object sender, RoutedEventArgs e)
         {
-            if (Menu != null)
-            {
-                // first, raise MenuOpening event
-                CancelEventArgs ce = new CancelEventArgs(false);
-                MenuOpening?.Invoke(this, ce);
-                if (ce.Cancel) return;
-
-                // then, set up the full menu and show it
-                Menu.Placement = MenuPlacement;
-                Menu.PlacementTarget = MenuPlacementTarget ?? this;
-                Menu.PlacementRectangle = MenuPlacementRectangle;
-                Menu.HorizontalOffset = 0;
-                Menu.VerticalOffset = -1;
-                Menu.IsOpen = true;
-                Menu.Closed += Menu_Closed;
-
-                // finally, we can raise the MenuOpened event
-                MenuOpened?.Invoke(this, EventArgs.Empty);
-            }
+            OpenMenu();
 
             RoutedEventArgs rre = new RoutedEventArgs(MenuClickEvent);
             RaiseEvent(rre);
@@ -931,8 +1003,7 @@ namespace SolidShineUi
         /// <summary>
         /// The backing dependency property for <see cref="IsSelected"/>. See the related property for more details.
         /// </summary>
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-            nameof(IsSelected), typeof(bool), typeof(SplitButton),
+        public static readonly DependencyProperty IsSelectedProperty = FlatButton.IsSelectedProperty.AddOwner(typeof(SplitButton),
             new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
 
         private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -1016,8 +1087,7 @@ namespace SolidShineUi
         /// <summary>
         /// The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            nameof(SelectOnClick), typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
+        public static readonly DependencyProperty SelectOnClickProperty = FlatButton.SelectOnClickProperty.AddOwner(typeof(SplitButton));
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
