@@ -18,6 +18,9 @@ namespace SolidShineUi.Converters
     /// Select an icon from a ICO file/resource, that matches a given width or height.
     /// If the exact size wanted isn't available, this will instead return the nearest available size that's smaller than the given width or height.
     /// </summary>
+    [ValueConversion(typeof(BitmapFrame), typeof(BitmapFrame))]
+    [ValueConversion(typeof(BitmapImage), typeof(BitmapFrame))]
+    [ValueConversion(typeof(string), typeof(BitmapFrame))]
     public class IconSizeConverter : IValueConverter
     {
         /// <summary>

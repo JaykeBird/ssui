@@ -9,6 +9,7 @@ namespace SolidShineUi.Converters
     /// <summary>
     /// Converts a Color into a SolidColorBrush.
     /// </summary>
+    [ValueConversion(typeof(Color), typeof(SolidColorBrush))]
     public class ColorToBrushConverter : IValueConverter
     {
         /// <summary>

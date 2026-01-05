@@ -11,6 +11,9 @@ namespace SolidShineUi.Converters
     /// <summary>
     /// Takes a number and multiplies it by the amount in the parameter, and returns that value as a <see cref="double"/>.
     /// </summary>
+    [ValueConversion(typeof(double), typeof(double))]
+    [ValueConversion(typeof(IConvertible), typeof(double))]
+    [ValueConversion(typeof(string), typeof(double))]
     public class MultiplierConverter : IValueConverter
     {
         /// <inheritdoc/>
@@ -104,6 +107,10 @@ namespace SolidShineUi.Converters
     /// <para/>
     /// Conversion back is also supported, by instead dividing by the parameter value rather than multiplying.
     /// </remarks>
+    [ValueConversion(typeof(Thickness), typeof(Thickness))]
+    [ValueConversion(typeof(double), typeof(Thickness))]
+    [ValueConversion(typeof(IConvertible), typeof(Thickness))]
+    [ValueConversion(typeof(string), typeof(Thickness))]
     public class ThicknessMultiplierConverter : IValueConverter
     {
         /// <inheritdoc/>
@@ -302,6 +309,10 @@ namespace SolidShineUi.Converters
     /// <para/>
     /// Conversion back is also supported, by instead dividing by the parameter value rather than multiplying.
     /// </remarks>
+    [ValueConversion(typeof(CornerRadius), typeof(CornerRadius))]
+    [ValueConversion(typeof(double), typeof(CornerRadius))]
+    [ValueConversion(typeof(IConvertible), typeof(CornerRadius))]
+    [ValueConversion(typeof(string), typeof(CornerRadius))]
     public class CornerRadiusMultiplierConverter : IValueConverter
     {
         /// <inheritdoc/>
@@ -500,6 +511,10 @@ namespace SolidShineUi.Converters
     /// <para/>
     /// Conversion back is also supported, by instead dividing by the parameter value rather than multiplying.
     /// </remarks>
+    [ValueConversion(typeof(Point), typeof(Point))]
+    [ValueConversion(typeof(double), typeof(Point))]
+    [ValueConversion(typeof(IConvertible), typeof(Point))]
+    [ValueConversion(typeof(string), typeof(Point))]
     public class PointMultiplierConverter : IValueConverter
     {
         /// <inheritdoc/>

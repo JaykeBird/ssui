@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
@@ -10,8 +9,10 @@ using System.Windows;
 namespace SolidShineUi.Converters
 {
     /// <summary>
-    /// Converts a <see cref="FontWeight"/> OpenType weight value into a human-friendly string (based upon the names in <see cref="FontWeights"/>).
+    /// Converts a <see cref="FontWeight"/> OpenType weight value into a human-friendly English string (based upon the names in <see cref="FontWeights"/>).
     /// </summary>
+    [ValueConversion(typeof(int), typeof(string))]
+    [ValueConversion(typeof(FontWeight), typeof(string))]
     public class FontWeightStringConverter : IValueConverter
     {
         /// <summary>
@@ -243,6 +244,7 @@ namespace SolidShineUi.Converters
     /// <summary>
     /// Converts an integer to a <see cref="FontWeight"/>.
     /// </summary>
+    [ValueConversion(typeof(int), typeof(FontWeight))]
     public class FontWeightValueConverter : IValueConverter
     {
         /// <summary>

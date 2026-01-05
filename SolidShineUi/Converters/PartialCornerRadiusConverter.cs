@@ -9,15 +9,20 @@ namespace SolidShineUi.Converters
     /// <summary>
     /// A helper method for WPF controls, to only selectively apply a <see cref="CornerRadius"/> value to only some corners.
     /// </summary>
+    [ValueConversion(typeof(CornerRadius), typeof(CornerRadius))]
+    [ValueConversion(typeof(IConvertible), typeof(CornerRadius))]
+    [ValueConversion(typeof(double), typeof(CornerRadius))]
     public class PartialCornerRadiusConverter : IValueConverter
     {
 
         /// <summary>
         /// Modify a <see cref="CornerRadius"/> to only apply to a few corners, as based upon the values in <paramref name="parameter"/>.
         /// </summary>
-        /// <param name="value">The <see cref="CornerRadius"/> object to read from (or a <see cref="double"/> for a uniform value)</param>
+        /// <param name="value">
+        /// The <see cref="CornerRadius"/> object to read from (or <see cref="double"/> or a double-parseable <see cref="IConvertible"/> for a uniform value)
+        /// </param>
         /// <param name="targetType">Not used, returned type will always be a <see cref="CornerRadius"/></param>
-        /// <param name="parameter">The corners to carry over to the final output; one or more of strings <c>"TL,TR,BL,BR"</c>, or a <see cref="byte"/></param>
+        /// <param name="parameter">The corners to carry over to the final output; one or more of strings <c>"TL,TR,BL,BR"</c>, or a <see cref="byte"/> (see <see cref="PartialValueHelper"/>)</param>
         /// <param name="culture">Not used</param>
         /// <returns>A <see cref="CornerRadius"/> that only has a portion of its values set </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -29,6 +34,17 @@ namespace SolidShineUi.Converters
             if (value is double d)
             {
                 baseVal = new CornerRadius(d);
+            }
+            else if (value is IConvertible ic)
+            {
+                try
+                {
+                    baseVal = new CornerRadius(ic.ToDouble(culture));
+                }
+                catch (InvalidCastException)
+                {
+                    return new CornerRadius();
+                }
             }
             else if (value is CornerRadius cr)
             {

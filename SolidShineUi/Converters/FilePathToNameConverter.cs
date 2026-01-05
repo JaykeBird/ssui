@@ -10,8 +10,9 @@ namespace SolidShineUi.Converters
 {
 
     /// <summary>
-    /// Convert a fully-qualified path to a file into just displaying the filename, for use in XAML.
+    /// Converts a fully-qualified path to a file into just displaying the filename, for use in XAML.
     /// </summary>
+    [ValueConversion(typeof(string), typeof(string))]
     public class FilePathToNameConverter : IValueConverter
     {
         /// <summary>

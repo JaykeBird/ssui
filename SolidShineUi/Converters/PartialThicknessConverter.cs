@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 using SolidShineUi.Utils;
@@ -13,15 +9,20 @@ namespace SolidShineUi.Converters
     /// <summary>
     /// A helper method for WPF controls, to only selectively apply a <see cref="CornerRadius"/> value to only some corners.
     /// </summary>
+    [ValueConversion(typeof(Thickness), typeof(Thickness))]
+    [ValueConversion(typeof(IConvertible), typeof(Thickness))]
+    [ValueConversion(typeof(double), typeof(Thickness))]
     public class PartialThicknessConverter : IValueConverter
     {
 
         /// <summary>
         /// Convert a double into a string, with rounding possible by setting the <paramref name="parameter"/> value.
         /// </summary>
-        /// <param name="value">The <see cref="Thickness"/> object to read from (or <see cref="double"/> for a uniform value)</param>
+        /// <param name="value">
+        /// The <see cref="Thickness"/> object to read from (or <see cref="double"/> or a double-parseable <see cref="IConvertible"/> for a uniform value)
+        /// </param>
         /// <param name="targetType">Not used, returned type will always be a <see cref="Thickness"/></param>
-        /// <param name="parameter">The corners to apply to the result; one or more of <c>L,T,B,R</c></param>
+        /// <param name="parameter">The corners to apply to the result; one or more of chars <c>L,T,B,R</c> or a <see cref="byte"/> (see <see cref="PartialValueHelper"/>)</param>
         /// <param name="culture">Not used</param>
         /// <returns>A <see cref="Thickness"/> that only has a portion of its values set </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -33,6 +34,17 @@ namespace SolidShineUi.Converters
             if (value is double d)
             {
                 baseVal = new Thickness(d);
+            }
+            else if (value is IConvertible ic)
+            {
+                try
+                {
+                    baseVal = new Thickness(ic.ToDouble(culture));
+                }
+                catch (InvalidCastException)
+                {
+                    return new Thickness();
+                }
             }
             else if (value is Thickness th)
             {
