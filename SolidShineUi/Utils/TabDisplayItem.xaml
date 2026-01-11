@@ -38,7 +38,7 @@
             </Border.Style>
             <Border BorderThickness="0" x:Name="brdrInnerColor" Background="{Binding ElementName=control, Path=TabBackground}" />
         </Border>
-        <Border BorderThickness="1">
+        <Border BorderThickness="1" >
             <!--<Border.Triggers>
             <Trigger Property="IsKeyboardFocused" Value="True" >
                 <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />

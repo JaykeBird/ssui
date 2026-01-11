@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
@@ -11,7 +7,7 @@ namespace SolidShineUi.Converters
     /// <summary>
     /// A MultiValueConverter that takes 4 values and creates a Rect. This class can be used to get around the fact that a Rect cannot be used for XAML binding.
     /// </summary>
-    [ValueConversion(typeof(double), typeof(Rect))]
+    [ValueConversion(typeof(double[]), typeof(Rect))]
     public class RectConverter : IMultiValueConverter
     {
         #region IMultiValueConverter Members

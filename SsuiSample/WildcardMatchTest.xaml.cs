@@ -18,6 +18,25 @@ namespace SsuiSample
             InitializeComponent();
         }
 
+        SsuiAppTheme TryGetSsuiAppTheme()
+        {
+            if (SsuiTheme is SsuiAppTheme sat)
+            {
+                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
+                return sat;
+            }
+            else if (Window.GetWindow(this) is ThemedWindow fw)
+            {
+                // okay, let's try to pull from the parent window if possible, as it should have a SsuiAppTheme as its theme
+                return fw.SsuiTheme;
+            }
+            else
+            {
+                // okay, I guess we'll just go with the default
+                return new SsuiAppTheme();
+            }
+        }
+
         public void RunWildcard()
         {
             foreach (SelectableItem item in selList.Items.OfType<SelectableItem>())
@@ -38,10 +57,7 @@ namespace SsuiSample
             StringInputDialog sid = new StringInputDialog();
             sid.Owner = Window.GetWindow(this);
             sid.Title = "Wildcard Match";
-            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
-            {
-                sid.ColorScheme = new ColorScheme(scb.Color);
-            }
+            sid.SsuiTheme = TryGetSsuiAppTheme();
             
             sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             sid.Description = "The text to match against:";
