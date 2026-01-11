@@ -389,8 +389,15 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
+        /// <para/>
+        /// This method will be removed in a future version. Please use <c>UseAccentTheme</c> instead.
         /// </summary>
         [Category("Appearance")]
+#if NET5_0_OR_GREATER
+        [Obsolete("This method will be removed in a future version. Please use UseAccentTheme instead.", DiagnosticId = "SSUI001")]
+#else
+        [Obsolete("This method will be removed in a future version. Please use UseAccentTheme instead.")]
+#endif
         public bool UseAccentColors
         {
             get => (bool)GetValue(UseAccentColorsProperty);
@@ -419,7 +426,11 @@ namespace SolidShineUi
         /// <param name="cs">The color scheme to apply</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
-            ApplyColorScheme(cs, UseAccentColors);
+#pragma warning disable SSUI001 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
+            ApplyColorScheme(cs, UseAccentColors || UseAccentTheme);
+#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore SSUI001 // Type or member is obsolete
         }
 
         /// <summary>
@@ -444,10 +455,21 @@ namespace SolidShineUi
             if (cs != ColorScheme)
             {
                 runApply = false;
+#pragma warning disable SSUI001 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
                 UseAccentColors = UseAccentColors || useAccentColors;
+#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore SSUI001 // Type or member is obsolete
                 runApply = true;
                 ColorScheme = cs;
                 return;
+            }
+
+            if (useAccentColors != UseAccentTheme)
+            {
+                runApply = false;
+                UseAccentTheme = useAccentColors;
+                runApply = true;
             }
 
             runApply = false;
@@ -477,7 +499,9 @@ namespace SolidShineUi
             }
             else
             {
-                if (UseAccentColors || useAccentColors)
+#pragma warning disable SSUI001 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
+                if (UseAccentColors || useAccentColors || UseAccentTheme)
                 {
                     Background = cs.AccentSecondaryColor.ToBrush();
                     BorderBrush = cs.AccentBorderColor.ToBrush();
@@ -507,6 +531,8 @@ namespace SolidShineUi
                     Foreground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.ThirdHighlightColor.ToBrush();
                 }
+#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore SSUI001 // Type or member is obsolete
             }
 
             runApply = true;
