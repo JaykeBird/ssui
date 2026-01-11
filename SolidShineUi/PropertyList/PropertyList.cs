@@ -305,7 +305,7 @@ namespace SolidShineUi.PropertyList
             void ApplyTheme(SsuiTheme theme)
             {
                 ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
-                ApplyThemeBinding(HeaderBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(HeaderBackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
                 ApplyThemeBinding(HeaderDividerBrushProperty, SsuiTheme.BorderBrushProperty, theme);
                 ApplyThemeBinding(HeaderForegroundProperty, SsuiTheme.ForegroundProperty, theme);
                 ApplyThemeBinding(TopPanelBackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);

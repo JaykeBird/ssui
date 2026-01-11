@@ -510,7 +510,7 @@ namespace SolidShineUi.Utils
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
 
-                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
                 ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
 

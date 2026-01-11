@@ -276,7 +276,7 @@ namespace SolidShineUi
 
             void ApplyTheme(SsuiTheme theme)
             {
-                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
@@ -354,7 +354,7 @@ namespace SolidShineUi
         
         /// <summary>The backing dependency property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SplitButton),
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(SplitButton),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         private static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -538,7 +538,7 @@ namespace SolidShineUi
             runApply = true;
         }
 
-        #endregion
+#endregion
 
         #region Border
 

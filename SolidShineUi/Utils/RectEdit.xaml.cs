@@ -173,7 +173,7 @@ namespace SolidShineUi.Utils
             void ApplyTheme(SsuiTheme theme)
             {
                 ApplyThemeBinding(SpinnerBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
-                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
                 ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
                 ApplyThemeBinding(ButtonDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(ButtonHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);

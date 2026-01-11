@@ -16,7 +16,7 @@ using System.Windows.Media;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control that can house multiple controls under a number of tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
+    /// A control that can house multiple controls under one or more tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
     /// </summary>
     [ContentProperty(nameof(Items))]
     [DefaultEvent(nameof(TabChanged))]
@@ -963,21 +963,20 @@ namespace SolidShineUi
                 ApplyTheme(ssuiTheme);
             }
 
-
             void ApplyTheme(SsuiTheme theme)
             {
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
                 // Border brush already applied in base
-                ApplyThemeBinding(ContentAreaBackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);
+                ApplyThemeBinding(ContentAreaBackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
 
                 ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
                 ApplyThemeBinding(ButtonHighlightBackgroundProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(ButtonHighlightBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
 
-                ApplyThemeBinding(TabBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
-                ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
-                ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
-                ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);
+                ApplyThemeBinding(TabBackgroundProperty, SsuiTheme.TabBackgroundProperty, theme);
+                ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.TabHighlightBrushProperty, theme);
+                ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.TabHighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.TabSelectedBrushProperty, theme);
                 ApplyThemeBinding(TabCloseBrushProperty, SsuiTheme.ForegroundProperty, theme);
                 
                 if (useLightBorder)
@@ -999,6 +998,7 @@ namespace SolidShineUi
         /// Get or set the background used for the content area of the TabControl.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the background used for the content area of the TabControl.")]
         public Brush ContentAreaBackground { get => (Brush)GetValue(ContentAreaBackgroundProperty); set => SetValue(ContentAreaBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
@@ -1007,9 +1007,10 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnContentAreaBackgroundUpdate));
 
         /// <summary>
-        /// Get or set the brush used for the background of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// Get or set the brush used for the background of a tab while it is highlighted (e.g., mouse over, keyboard focus).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the background of a tab while it is highlighted (e.g., mouse over, keyboard focus).")]
         public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
@@ -1018,9 +1019,10 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
-        /// Get or set the brush used for the borders of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// Get or set the brush used for the borders of a tab while it is highlighted (e.g., mouse over, keyboard focus).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the borders of a tab while it is highlighted (e.g., mouse over, keyboard focus).")]
         public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
@@ -1032,6 +1034,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the borders of tabs. This is different from the <see cref="Control.BorderBrush"/> used for the rest of the TabControl.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the borders of tabs.")]
         public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
@@ -1043,6 +1046,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the close glyph used in the tabs (where <see cref="TabItem.CanClose"/> is set to <c>true</c>).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the close glyph used in the tabs.")]
         public Brush TabCloseBrush { get => (Brush)GetValue(TabCloseBrushProperty); set => SetValue(TabCloseBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabCloseBrush"/>. See the related property for details.</summary>
@@ -1054,6 +1058,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the background of a tab. Individual tabs can overwrite their backgrounds by changing <see cref="TabItem.TabBackground"/>.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the background of a tab.")]
         public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBackground"/>. See the related property for details.</summary>
@@ -1065,6 +1070,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the background of a selected tab.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the background of a selected tab.")]
         public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
@@ -1073,9 +1079,10 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
-        /// Get or set the brush used for buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// Get or set the brush used for buttons in the TabControl, when they are highlighted (e.g., mouse over).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for buttons in the TabControl, when they are highlighted (e.g., mouse over).")]
         public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
@@ -1084,9 +1091,10 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.Silver.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBrushUpdate));
 
         /// <summary>
-        /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (e.g., mouse over).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (e.g., mouse over).")]
         public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
@@ -1095,9 +1103,10 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBorderBrushUpdate));
 
         /// <summary>
-        /// Get or set the brush used for buttons in the TabControl, when they are being clicked (i.e. mouse down, key down).
+        /// Get or set the brush used for buttons in the TabControl, when they are being clicked (e.g., mouse down, key down).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for buttons in the TabControl, when they are being clicked (e.g., mouse down, key down).")]
         public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>

@@ -1,6 +1,7 @@
 ﻿using SolidShineUi.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,9 +55,9 @@ namespace SolidShineUi
             BorderBrush = cs.BorderColor.ToBrush();
             CheckBrush = cs.ForegroundColor.ToBrush();
             ClickBrush = cs.SecondHighlightColor.ToBrush();
-            ControlBackground = cs.SecondaryColor.ToBrush();
+            ButtonBackground = cs.SecondaryColor.ToBrush();
             ControlPopBrush = cs.SelectionColor.ToBrush();
-            ControlSatBackground = cs.MainColor.ToBrush();
+            ControlSatBrush = cs.MainColor.ToBrush();
             DisabledBackground = cs.LightDisabledColor.ToBrush();
             DisabledBorderBrush = cs.DarkDisabledColor.ToBrush();
             DisabledForeground = cs.DarkDisabledColor.ToBrush();
@@ -64,10 +65,14 @@ namespace SolidShineUi
             HighlightBrush = cs.ThirdHighlightColor.ToBrush();
             HighlightBorderBrush = cs.HighlightColor.ToBrush();
             HighlightForeground = cs.ForegroundColor.ToBrush();
+            TabHighlightBrush = cs.ThirdHighlightColor.ToBrush();
+            TabHighlightBorderBrush = cs.HighlightColor.ToBrush();
             LightBorderBrush = cs.HighlightColor.ToBrush();
             PanelBackground = cs.LightBackgroundColor.ToBrush();
+            ControlBackground = cs.LightBackgroundColor.ToBrush();
             SelectedBackgroundBrush = cs.ThirdHighlightColor.ToBrush();
             SelectedBorderBrush = cs.SelectionColor.ToBrush();
+            TabSelectedBrush = cs.LightBackgroundColor.ToBrush();
         }
 
         void CreatePalette(Color baseColor)
@@ -95,13 +100,14 @@ namespace SolidShineUi
             double sc = 0.059;
             double sbc = 0.03;
 
-            ControlSatBackground = baseColor.ToBrush();
+            ControlSatBrush = baseColor.ToBrush();
             //MainColor = baseColor;
             //WindowTitleBarColor = baseColor;
             //WindowInactiveColor = baseColor;
             HighlightBorderBrush = AddValue(h, s, v, vc1).ToBrush();
+            TabHighlightBorderBrush = HighlightBorderBrush.CloneCurrentValue();
             SelectedBorderBrush = AddValue(h, s, v, vc2).ToBrush();
-            ControlPopBrush = AddValue(h, s, v, vc2).ToBrush();
+            ControlPopBrush = SelectedBorderBrush.CloneCurrentValue();
             BorderBrush = AddValue(h, s, v, vc3).ToBrush();
             LightBorderBrush = AddValue(h, s, v, vc1).ToBrush();
 
@@ -112,11 +118,13 @@ namespace SolidShineUi
 
             if (s > ssc)
             {
-                ControlBackground = AddValue(h, ssc, v, t1).ToBrush(); // 4 - Secondary Color
+                ButtonBackground = AddValue(h, ssc, v, t1).ToBrush(); // 4 - Secondary Color
+                TabBackground = ButtonBackground.CloneCurrentValue();
             }
             else
             {
-                ControlBackground = AddValue(h, s, v, t1).ToBrush(); // 4
+                ButtonBackground = AddValue(h, s, v, t1).ToBrush(); // 4
+                TabBackground = ButtonBackground.CloneCurrentValue();
             }
 
             if (s > sc)
@@ -131,31 +139,36 @@ namespace SolidShineUi
             if (s > sec)
             {
                 SelectedBackgroundBrush = AddValue(h, sec, v, t3).ToBrush(); // 6 - Second Highlight Color
-                ClickBrush = AddValue(h, sec, v, t3).ToBrush();
+                ClickBrush = SelectedBackgroundBrush.CloneCurrentValue();
             }
             else
             {
                 SelectedBackgroundBrush = AddValue(h, s, v, t3).ToBrush(); // 6
-                ClickBrush = AddValue(h, s, v, t3).ToBrush();
+                ClickBrush = SelectedBackgroundBrush.CloneCurrentValue();
             }
 
             if (s > stc)
             {
                 HighlightBrush = AddValue(h, stc, v, t3).ToBrush(); // 7 - Menu Highlight Color
+                TabHighlightBrush = HighlightBrush.CloneCurrentValue();
             }
             else
             {
                 HighlightBrush = AddValue(h, s, v, t3).ToBrush(); // 7
+                TabHighlightBrush = HighlightBrush.CloneCurrentValue();
             }
 
             if (s > sbc)
             {
                 PanelBackground = AddValue(h, sbc, v, t4).ToBrush(); // 8 - Menu Background Color
-
+                ControlBackground = PanelBackground.CloneCurrentValue();
+                TabSelectedBrush = PanelBackground.CloneCurrentValue();
             }
             else
             {
                 PanelBackground = AddValue(h, s, v, t4).ToBrush(); // 8
+                ControlBackground = PanelBackground.CloneCurrentValue();
+                TabSelectedBrush = PanelBackground.CloneCurrentValue();
             }
 
             // finally, we'll want to check the foreground against the base background,
@@ -198,18 +211,30 @@ namespace SolidShineUi
         #endregion
 
         /// <summary>
-        /// Get or set the brush to use for the background of most SSUI-themed controls.
+        /// Get or set the brush to use for the background of SSUI's button controls. This brush is meant to "pop out" from the background,
+        /// versus <see cref="ControlBackground"/> or <see cref="PanelBackground"/> that should appear to "sink in".
+        /// </summary>
+        public Brush ButtonBackground { get => (Brush)GetValue(ButtonBackgroundProperty); set => SetValue(ButtonBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ButtonBackgroundProperty
+            = DependencyProperty.Register(nameof(ButtonBackground), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the background of most SSUI-themed controls that aren't buttons or multi-item panels.
+        /// This brush should seem to "sink in" to the surrounding background, generally achieved by using a lighter or brighter color.
         /// </summary>
         public Brush ControlBackground { get => (Brush)GetValue(ControlBackgroundProperty); set => SetValue(ControlBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ControlBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ControlBackgroundProperty
             = DependencyProperty.Register(nameof(ControlBackground), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
         /// <summary>
-        /// Get or set the brush to use for the background of panel controls, such as <see cref="SelectPanel"/> and <see cref="TabControl"/>,
-        /// that seem to "sink in" to the background, rather than "popping out".
+        /// Get or set the brush to use for the background of panel controls, such as <see cref="SelectPanel"/>, <see cref="TabControl"/>,
+        /// and <see cref="PropertyList.PropertyList"/>. This brush should seem to "sink in" to the surrounding background, rather than "popping out".
         /// </summary>
         public Brush PanelBackground { get => (Brush)GetValue(PanelBackgroundProperty); set => SetValue(PanelBackgroundProperty, value); }
 
@@ -231,18 +256,15 @@ namespace SolidShineUi
 
 
         /// <summary>
-        /// Get or set the brush to use for saturated backgrounds of certain controls.<br/>
-        /// If this SsuiTheme was created by using a base color, this brush will also be set to that base color.
+        /// Get or set the brush to use for saturated parts or elements of certain controls.
+        /// <para/>
+        /// If this SsuiTheme was created by using a base color (via using <c>new </c><see cref="SsuiTheme(Color)"/>), this brush will also be set to that base color.
         /// </summary>
-        /// <remarks>
-        /// If the constructor <see cref="SsuiTheme(Color)"/> was used to create this SsuiTheme, then that constructor will set this brush
-        /// to be a SolidColorBrush with that inputted color.
-        /// </remarks>
-        public Brush ControlSatBackground { get => (Brush)GetValue(ControlSatBackgroundProperty); set => SetValue(ControlSatBackgroundProperty, value); }
+        public Brush ControlSatBrush { get => (Brush)GetValue(ControlSatBrushProperty); set => SetValue(ControlSatBrushProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="ControlSatBackground"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ControlSatBackgroundProperty
-            = DependencyProperty.Register(nameof(ControlSatBackground), typeof(Brush), typeof(SsuiTheme),
+        /// <summary>The backing dependency property for <see cref="ControlSatBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ControlSatBrushProperty
+            = DependencyProperty.Register(nameof(ControlSatBrush), typeof(Brush), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
 
         /// <summary>
@@ -339,6 +361,49 @@ namespace SolidShineUi
         public static readonly DependencyProperty HighlightForegroundProperty
             = DependencyProperty.Register(nameof(HighlightForeground), typeof(Brush), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the background of the tabs in a tabbed control like <see cref="TabControl"/> when they are not selected.
+        /// </summary>
+        /// <remarks>
+        /// Note that individual tabs' backgrounds in a TabControl can be recolored by using <see cref="TabItem.TabBackground"/>.
+        /// </remarks>
+        public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TabBackgroundProperty
+            = DependencyProperty.Register(nameof(TabBackground), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
+
+        /// <summary>
+        /// The brush to use for the background of a tab while it is selected, such as tabs in a <see cref="TabControl"/> or a <c>Ribbon</c>.
+        /// </summary>
+        public Brush TabSelectedBrush { get => (Brush)GetValue(TabSelectedBrushProperty); set => SetValue(TabSelectedBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabSelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TabSelectedBrushProperty
+            = DependencyProperty.Register(nameof(TabSelectedBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// The brush to use for the background of a tab while it is higlighted (e.g., mouse over), such as tabs in a <see cref="TabControl"/> or a <c>Ribbon</c>.
+        /// </summary>
+        public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TabHighlightBrushProperty
+            = DependencyProperty.Register(nameof(TabHighlightBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
+
+        /// <summary>
+        /// The brush to use for the border around a tab while it is higlighted (e.g., mouse over), such as tabs in a <see cref="TabControl"/> or a <c>Ribbon</c>.
+        /// </summary>
+        public Brush TabHighlightBorderBrush { get => (Brush)GetValue(TabHighlightBorderBrushProperty); set => SetValue(TabHighlightBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabHighlightBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TabHighlightBorderBrushProperty
+            = DependencyProperty.Register(nameof(TabHighlightBorderBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the background of SSUI-themed controls while they are selected 
@@ -438,6 +503,34 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(IconVariation), typeof(IconVariation), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(IconVariation.Color));
 
+        /// <summary>
+        /// The brush to use for the background of command bars, such as toolbars or the main bar of Ribbons.
+        /// <para/>
+        /// No controls in Solid Shine UI 2.0 use this brush automatically, but it can be used for other SSUI-themed controls.
+        /// This is included for forward compatibility with future versions.
+        /// </summary>
+        public Brush CommandBarBackground { get => (Brush)GetValue(CommandBarBackgroundProperty); set => SetValue(CommandBarBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CommandBarBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CommandBarBackgroundProperty
+            = DependencyProperty.Register(nameof(CommandBarBackground), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+
+        /// <summary>
+        /// The brush to use for the border around command bars, such as toolbars or the main bar of Ribbons.
+        /// <para/>
+        /// No controls in Solid Shine UI 2.0 use this brush automatically, but it can be used for other SSUI-themed controls.
+        /// This is included for forward compatibility with future versions.
+        /// </summary>
+        public Brush CommandBarBorderBrush { get => (Brush)GetValue(CommandBarBorderBrushProperty); set => SetValue(CommandBarBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CommandBarBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CommandBarBorderBrushProperty
+            = DependencyProperty.Register(nameof(CommandBarBorderBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
+
+        #region Freezable Methods
 
         /// <inheritdoc/>
         protected override Freezable CreateInstanceCore()
@@ -445,6 +538,28 @@ namespace SolidShineUi
             return new SsuiTheme();
         }
 
+        /// <summary>
+        /// Creates a modifiable clone of the SsuiTheme, making deep copies of the object's values. When copying the object's dependency properties,
+        /// this method copies expressions (which might no longer resolve) but not animations or their current values.
+        /// <para/>
+        /// See <see cref="Freezable.Clone"/>.
+        /// </summary>
+        public new SsuiTheme Clone()
+        {
+            return (SsuiTheme)base.Clone();
+        }
+
+        /// <summary>
+        /// Creates a modifiable clone (deep copy) of the SsuiTheme using its current values.
+        /// <para/>
+        /// See <see cref="Freezable.CloneCurrentValue"/>.
+        /// </summary>
+        public new SsuiTheme CloneCurrentValue()
+        {
+            return (SsuiTheme)base.CloneCurrentValue();
+        }
+
+        #endregion
 
         /// <summary>
         /// Create a <see cref="Binding"/> for a property in the SsuiTheme.
@@ -769,7 +884,7 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(false));
 
         /// <summary>
-        /// Get or set if the <see cref="SubitemTheme"/> should be used for the <c>Ribbon</c> control.
+        /// Get or set if the <see cref="SubitemTheme"/> should be used for the <c>Ribbon</c> control (not included in Solid Shine UI 2.0).
         /// </summary>
         public bool UseSubitemThemeWithRibbons { get => (bool)GetValue(UseSubitemThemeWithRibbonsProperty); set => SetValue(UseSubitemThemeWithRibbonsProperty, value); }
 
@@ -778,10 +893,35 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(UseSubitemThemeWithRibbons), typeof(bool), typeof(SsuiAppTheme),
             new FrameworkPropertyMetadata(true));
 
+        #region Freezable Methods
+
         /// <inheritdoc/>
         protected override Freezable CreateInstanceCore()
         {
             return new SsuiAppTheme();
         }
+
+        /// <summary>
+        /// Creates a modifiable clone of the SsuiAppTheme, making deep copies of the object's values. When copying the object's dependency properties,
+        /// this method copies expressions (which might no longer resolve) but not animations or their current values.
+        /// <para/>
+        /// See <see cref="Freezable.Clone"/>.
+        /// </summary>
+        public new SsuiAppTheme Clone()
+        {
+            return (SsuiAppTheme)base.Clone();
+        }
+
+        /// <summary>
+        /// Creates a modifiable clone (deep copy) of the SsuiAppTheme using its current values.
+        /// <para/>
+        /// See <see cref="Freezable.CloneCurrentValue"/>.
+        /// </summary>
+        public new SsuiAppTheme CloneCurrentValue()
+        {
+            return (SsuiAppTheme)base.CloneCurrentValue();
+        }
+
+        #endregion
     }
 }

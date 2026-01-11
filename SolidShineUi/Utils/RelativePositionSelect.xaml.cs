@@ -143,10 +143,10 @@ namespace SolidShineUi.Utils
 
             void ApplyTheme(SsuiTheme theme)
             {
-                ApplyThemeBinding(ControlBackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
+                ApplyThemeBinding(ControlBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
                 ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(SelectorBrushProperty, SsuiTheme.ControlPopBrushProperty, theme);
-                ApplyThemeBinding(SnapLineBrushProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(SnapLineBrushProperty, SsuiTheme.ControlSatBrushProperty, theme);
                 ApplyThemeBinding(KeyboardFocusHighlightProperty, SsuiTheme.HighlightBrushProperty, theme);
 
                 if (useLightBorder)

@@ -265,16 +265,10 @@ namespace SolidShineUi
             if (_skipReapply) return;
             ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
         }
-            else
-            {
-                if (!runApply) return;
-                ApplyColorScheme(ColorScheme, UseAccentTheme);
-            }
-        }
 
         #endregion
 
-        #region UseAccentColors
+        #region UseAccentTheme
 
         /// <summary>
         /// Get or set if an accent theme should be used rather than the standard theme for this control. The accent theme, when used in moderation,
@@ -294,9 +288,9 @@ namespace SolidShineUi
         {
             if (SsuiTheme != null)
             {
-            if (_skipReapply) return;
-            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
-        }
+                if (_skipReapply) return;
+                ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
+            }
             else
             {
                 if (!runApply) return;
@@ -424,7 +418,7 @@ namespace SolidShineUi
 
             void ApplyTheme(SsuiTheme theme)
             {
-                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
@@ -534,7 +528,7 @@ namespace SolidShineUi
             // looking at the actual WPF code for Setters, a Setter's Value can be bound by setting its Value to a BindingBase object
             // https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Setter.cs
 
-            os.Setters.Add(new Setter(BackgroundProperty, SsuiTheme.CreateBinding(SsuiTheme.ControlBackgroundProperty, theme)));
+            os.Setters.Add(new Setter(BackgroundProperty, SsuiTheme.CreateBinding(SsuiTheme.ButtonBackgroundProperty, theme)));
             os.Setters.Add(new Setter(HighlightBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.HighlightBrushProperty, theme)));
             os.Setters.Add(new Setter(DisabledBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.DisabledBackgroundProperty, theme)));
             os.Setters.Add(new Setter(BorderDisabledBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.DisabledBorderBrushProperty, theme)));
@@ -677,7 +671,7 @@ namespace SolidShineUi
 
             if (useAccentColors != UseAccentTheme)
             {
-            runApply = false;
+                runApply = false;
                 UseAccentTheme = useAccentColors;
                 runApply = true;
             }

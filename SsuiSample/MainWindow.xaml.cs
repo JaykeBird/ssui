@@ -127,7 +127,7 @@ namespace SsuiSample
         {
             Color baseColor = Colors.Gray;
 
-            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
+            if (SsuiTheme.ControlSatBrush is SolidColorBrush scb)
             {
                 baseColor = scb.Color;
             }
@@ -146,7 +146,7 @@ namespace SsuiSample
         {
             Color baseColor = ColorsHelper.CreateFromHex("A8A8A8");
 
-            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
+            if (SsuiTheme.ControlSatBrush is SolidColorBrush scb)
             {
                 baseColor = scb.Color;
             }
@@ -158,7 +158,7 @@ namespace SsuiSample
         {
             Color baseColor = ColorsHelper.CreateFromHex("C8C8C8");
 
-            if (SsuiTheme.ControlSatBackground is SolidColorBrush scb)
+            if (SsuiTheme.ControlSatBrush is SolidColorBrush scb)
             {
                 baseColor = scb.Color;
             }
