@@ -34,9 +34,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme value)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            imgItalic.Source = LoadIcon("TextItalic", value.IconVariation);
+            imgItalic.Source = LoadIcon("TextItalic", theme.IconVariation);
         }
 
         /// <inheritdoc/>

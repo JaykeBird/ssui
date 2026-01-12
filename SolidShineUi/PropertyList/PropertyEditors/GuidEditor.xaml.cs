@@ -41,12 +41,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
 
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            btnMenu.SsuiTheme = cs;
+            btnMenu.SsuiTheme = theme;
 
-            imgNew.Source = LoadIcon("Reload", cs.IconVariation);
-            imgFontEdit.Source = LoadIcon("ThreeDots", cs.IconVariation);
+            imgNew.Source = LoadIcon("Reload", theme.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         private Guid guid = Guid.Empty;

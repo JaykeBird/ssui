@@ -34,10 +34,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
 
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            btnMenu.SsuiTheme = cs;
-            imgMenu.Source = LoadIcon("ThreeDots", cs.IconVariation);
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

@@ -35,13 +35,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            nudHeight.SsuiTheme = cs;
-            nudWidth.SsuiTheme = cs;
-            btnMenu.SsuiTheme = cs;
+            nudHeight.SsuiTheme = theme;
+            nudWidth.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
 
-            imgFontEdit.Source = LoadIcon("ThreeDots", cs.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <summary>

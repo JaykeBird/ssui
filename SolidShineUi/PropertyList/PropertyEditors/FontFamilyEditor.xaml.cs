@@ -35,10 +35,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme value)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            btnEdit.SsuiTheme = value;
-            imgFontEdit.Source = LoadIcon("Font", value.IconVariation);
+            btnEdit.SsuiTheme = theme;
+            imgFontEdit.Source = LoadIcon("Font", theme.IconVariation);
         }
 
 #if NETCOREAPP

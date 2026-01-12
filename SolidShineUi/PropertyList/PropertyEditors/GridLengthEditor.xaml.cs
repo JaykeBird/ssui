@@ -31,12 +31,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
             //_cs = value;
-            nudValue.SsuiTheme = cs;
-            btnMenu.SsuiTheme = cs;
-            imgMenu.Source = LoadIcon("ThreeDots", cs.IconVariation);
+            nudValue.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

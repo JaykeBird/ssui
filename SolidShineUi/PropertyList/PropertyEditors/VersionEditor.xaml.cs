@@ -45,15 +45,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
         
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme value)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            nudLeft.SsuiTheme = value;
-            nudTop.SsuiTheme = value;
-            nudRight.SsuiTheme = value;
-            nudBottom.SsuiTheme = value;
-            btnMenu.SsuiTheme = value;
+            nudLeft.SsuiTheme = theme;
+            nudTop.SsuiTheme = theme;
+            nudRight.SsuiTheme = theme;
+            nudBottom.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
 
-            imgFontEdit.Source = LoadIcon("ThreeDots", value.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <summary>

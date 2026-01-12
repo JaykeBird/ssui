@@ -34,15 +34,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            nudHeight.SsuiTheme = cs;
-            nudWidth.SsuiTheme = cs;
-            btnMenu.SsuiTheme = cs;
+            nudHeight.SsuiTheme = theme;
+            nudWidth.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
 
-            imgWidth.Source = LoadIcon("LeftRightArrow", cs.IconVariation);
-            imgHeight.Source = LoadIcon("UpDownArrow", cs.IconVariation);
-            imgMenu.Source = LoadIcon("ThreeDots", cs.IconVariation);
+            imgWidth.Source = LoadIcon("LeftRightArrow", theme.IconVariation);
+            imgHeight.Source = LoadIcon("UpDownArrow", theme.IconVariation);
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <summary>

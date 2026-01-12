@@ -36,23 +36,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
-        /// <summary>
-        /// Set the visual appearance of this control via a ColorScheme.
-        /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplySsuiTheme(SsuiTheme cs)
+        /// <inheritdoc/>
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            nudLeft.SsuiTheme = cs;
-            nudTop.SsuiTheme = cs;
-            nudRight.SsuiTheme = cs;
-            nudBottom.SsuiTheme = cs;
-            btnMenu.SsuiTheme = cs;
+            nudLeft.SsuiTheme = theme;
+            nudTop.SsuiTheme = theme;
+            nudRight.SsuiTheme = theme;
+            nudBottom.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
 
-            imgLeft.Source = LoadIcon("LeftArrow", cs.IconVariation);
-            imgRight.Source = LoadIcon("RightArrow", cs.IconVariation);
-            imgTop.Source = LoadIcon("UpArrow", cs.IconVariation);
-            imgBottom.Source = LoadIcon("DownArrow", cs.IconVariation);
-            imgFontEdit.Source = LoadIcon("ThreeDots", cs.IconVariation);
+            imgLeft.Source = LoadIcon("LeftArrow", theme.IconVariation);
+            imgRight.Source = LoadIcon("RightArrow", theme.IconVariation);
+            imgTop.Source = LoadIcon("UpArrow", theme.IconVariation);
+            imgBottom.Source = LoadIcon("DownArrow", theme.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

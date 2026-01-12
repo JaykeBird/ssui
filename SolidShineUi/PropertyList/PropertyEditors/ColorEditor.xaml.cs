@@ -44,13 +44,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <summary>
         /// Set the visual appearance of this control via the SsuiTheme.
         /// </summary>
-        /// <param name="value">the value to apply</param>
-        public void ApplySsuiTheme(SsuiTheme value)
+        /// <param name="theme">the value to apply</param>
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            nudValue.SsuiTheme = value;
-            btnMenu.SsuiTheme = value;
-            btnColor.SsuiTheme = value;
-            imgMenu.Source = LoadIcon("ThreeDots", value.IconVariation);
+            nudValue.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            btnColor.SsuiTheme = theme;
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
