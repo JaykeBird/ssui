@@ -20,45 +20,7 @@ namespace SolidShineUi
         /// </remarks>
         public static SsuiAppTheme SystemTheme
         {
-            get
-            {
-                return new SsuiAppTheme()
-                {
-                    BaseBackground = SystemColors.WindowBrush,
-                    PanelBackground = SystemColors.ControlLightLightBrush,
-                    BorderBrush = SystemColors.ControlDarkDarkBrush,
-                    LightBorderBrush = SystemColors.ControlDarkBrush,
-                    ButtonBackground = SystemColors.ControlBrush,
-                    ControlPopBrush = SystemColors.HighlightBrush,
-                    ControlSatBrush = SystemColors.ControlLightBrush,
-                    CheckBrush = SystemColors.ControlTextBrush,
-                    ClickBrush = SystemColors.MenuHighlightBrush,
-                    SelectedBackgroundBrush = SystemColors.HighlightBrush,
-                    SelectedBorderBrush = SystemColors.ControlDarkBrush,
-                    HighlightBrush = SystemColors.MenuHighlightBrush,
-                    HighlightBorderBrush = SystemColors.ControlDarkBrush,
-                    HighlightForeground = SystemColors.HighlightTextBrush,
-                    DisabledBackground = SystemColors.InactiveCaptionBrush,
-                    DisabledForeground = SystemColors.GrayTextBrush,
-                    DisabledBorderBrush = SystemColors.GrayTextBrush,
-                    Foreground = SystemColors.ControlTextBrush,
-                    WindowCaptionsForeground = SystemColors.ActiveCaptionTextBrush,
-                    WindowBackground = SystemColors.WindowBrush,
-                    WindowCaptionsBackground = Color.FromArgb(1, 255, 255, 255).ToBrush(), // almost entirely transparent
-                    WindowTitleBackground = new LinearGradientBrush(SystemColors.ActiveCaptionColor, SystemColors.GradientActiveCaptionColor, 0.0d),
-                    WindowTitleForeground = SystemColors.ActiveCaptionTextBrush,
-                    WindowInactiveBackground = new LinearGradientBrush(SystemColors.InactiveCaptionColor, SystemColors.GradientInactiveCaptionColor, 0.0d),
-                    WindowInactiveForeground = SystemColors.InactiveCaptionTextBrush,
-                    WindowCaptionsHighlight = SystemColors.MenuHighlightBrush,
-                    WindowCaptionsHighlightForeground = SystemColors.HighlightTextBrush,
-                    WindowCaptionsClickBrush = SystemColors.MenuHighlightBrush,
-                    UseSubitemThemeWithMenus = false,
-                    UseSubitemThemeWithPanels = false,
-                    UseSubitemThemeWithRibbons = false,
-                    CornerRadius = new CornerRadius(0),
-                    IconVariation = Utils.IconVariation.Color
-                };
-            }
+            get => CreateSystemTheme(new CornerRadius(0));
         }
 
         /// <summary>
@@ -70,45 +32,54 @@ namespace SolidShineUi
         /// </remarks>
         public static SsuiAppTheme SystemThemeRoundedCorners
         {
-            get
+            get => CreateSystemTheme(new CornerRadius(3));
+        }
+
+        static SsuiAppTheme CreateSystemTheme(CornerRadius cornerRadius)
+        {
+            return new SsuiAppTheme()
             {
-                return new SsuiAppTheme()
-                {
-                    BaseBackground = SystemColors.WindowBrush,
-                    PanelBackground = SystemColors.ControlLightLightBrush,
-                    BorderBrush = SystemColors.ControlDarkDarkBrush,
-                    LightBorderBrush = SystemColors.ControlDarkBrush,
-                    ButtonBackground = SystemColors.ControlBrush,
-                    ControlPopBrush = SystemColors.HighlightBrush,
-                    ControlSatBrush = SystemColors.ControlLightBrush,
-                    CheckBrush = SystemColors.ControlTextBrush,
-                    ClickBrush = SystemColors.MenuHighlightBrush,
-                    SelectedBackgroundBrush = SystemColors.HighlightBrush,
-                    SelectedBorderBrush = SystemColors.ControlDarkBrush,
-                    HighlightBrush = SystemColors.MenuHighlightBrush,
-                    HighlightBorderBrush = SystemColors.ControlDarkBrush,
-                    HighlightForeground = SystemColors.HighlightTextBrush,
-                    DisabledBackground = SystemColors.InactiveCaptionBrush,
-                    DisabledForeground = SystemColors.GrayTextBrush,
-                    DisabledBorderBrush = SystemColors.GrayTextBrush,
-                    Foreground = SystemColors.ControlTextBrush,
-                    WindowCaptionsForeground = SystemColors.ActiveCaptionTextBrush,
-                    WindowBackground = SystemColors.WindowBrush,
-                    WindowCaptionsBackground = Color.FromArgb(1, 255, 255, 255).ToBrush(), // almost entirely transparent
-                    WindowTitleBackground = new LinearGradientBrush(SystemColors.ActiveCaptionColor, SystemColors.GradientActiveCaptionColor, 0.0d),
-                    WindowTitleForeground = SystemColors.ActiveCaptionTextBrush,
-                    WindowInactiveBackground = new LinearGradientBrush(SystemColors.InactiveCaptionColor, SystemColors.GradientInactiveCaptionColor, 0.0d),
-                    WindowInactiveForeground = SystemColors.InactiveCaptionTextBrush,
-                    WindowCaptionsHighlight = SystemColors.MenuHighlightBrush,
-                    WindowCaptionsHighlightForeground = SystemColors.HighlightTextBrush,
-                    WindowCaptionsClickBrush = SystemColors.MenuHighlightBrush,
-                    UseSubitemThemeWithMenus = false,
-                    UseSubitemThemeWithPanels = false,
-                    UseSubitemThemeWithRibbons = false,
-                    CornerRadius = new CornerRadius(3),
-                    IconVariation = Utils.IconVariation.Color
-                };
-            }
+                BaseBackground = SystemColors.WindowBrush,
+                PanelBackground = SystemColors.ControlLightLightBrush,
+                ControlBackground = SystemColors.ControlLightLightBrush,
+                ButtonBackground = SystemColors.ControlBrush,
+                BorderBrush = SystemColors.ControlDarkDarkBrush,
+                LightBorderBrush = SystemColors.ControlDarkBrush,
+                ControlPopBrush = SystemColors.HighlightBrush,
+                ControlSatBrush = SystemColors.ControlLightBrush,
+                CheckBrush = SystemColors.ControlTextBrush,
+                ClickBrush = SystemColors.MenuHighlightBrush,
+                SelectedBackgroundBrush = SystemColors.HighlightBrush,
+                SelectedBorderBrush = SystemColors.ControlDarkBrush,
+                HighlightBrush = SystemColors.MenuHighlightBrush,
+                HighlightBorderBrush = SystemColors.ControlDarkBrush,
+                HighlightForeground = SystemColors.HighlightTextBrush,
+                DisabledBackground = SystemColors.InactiveCaptionBrush,
+                DisabledForeground = SystemColors.GrayTextBrush,
+                DisabledBorderBrush = SystemColors.GrayTextBrush,
+                Foreground = SystemColors.ControlTextBrush,
+                WindowCaptionsForeground = SystemColors.ActiveCaptionTextBrush,
+                WindowBackground = SystemColors.WindowBrush,
+                WindowCaptionsBackground = Color.FromArgb(1, 255, 255, 255).ToBrush(), // almost entirely transparent
+                WindowTitleBackground = new LinearGradientBrush(SystemColors.ActiveCaptionColor, SystemColors.GradientActiveCaptionColor, 0.0d),
+                WindowTitleForeground = SystemColors.ActiveCaptionTextBrush,
+                WindowInactiveBackground = new LinearGradientBrush(SystemColors.InactiveCaptionColor, SystemColors.GradientInactiveCaptionColor, 0.0d),
+                WindowInactiveForeground = SystemColors.InactiveCaptionTextBrush,
+                WindowCaptionsHighlight = SystemColors.MenuHighlightBrush,
+                WindowCaptionsHighlightForeground = SystemColors.HighlightTextBrush,
+                WindowCaptionsClickBrush = SystemColors.MenuHighlightBrush,
+                TabBackground = SystemColors.ControlBrush,
+                TabHighlightBorderBrush = SystemColors.ControlDarkDarkBrush,
+                TabHighlightBrush = SystemColors.ControlDarkBrush,
+                TabSelectedBrush = SystemColors.ControlLightLightBrush,
+                CommandBarBackground = SystemColors.ControlLightBrush,
+                CommandBarBorderBrush = SystemColors.ControlDarkDarkBrush,
+                UseSubitemThemeWithMenus = false,
+                UseSubitemThemeWithPanels = false,
+                UseSubitemThemeWithRibbons = false,
+                CornerRadius = cornerRadius,
+                IconVariation = Utils.IconVariation.Color
+            };
         }
 
 
@@ -134,13 +105,18 @@ namespace SolidShineUi
                 WindowBackground = Color.FromRgb(246, 246, 246).ToBrush(),
                 BaseBackground = Color.FromRgb(246, 246, 246).ToBrush(),
                 PanelBackground = Color.FromRgb(255, 255, 255).ToBrush(),
+                ControlBackground = Color.FromRgb(255, 255, 255).ToBrush(),
                 ControlSatBrush = Color.FromRgb(200, 200, 200).ToBrush(),
                 WindowCaptionsBackground = Color.FromRgb(200, 200, 200).ToBrush(),
                 WindowTitleBackground = Color.FromRgb(200, 200, 200).ToBrush(),
                 WindowInactiveBackground = Color.FromRgb(200, 200, 200).ToBrush(),
                 WindowTitleForeground = Color.FromRgb(0, 0, 0).ToBrush(),
                 ButtonBackground = Color.FromRgb(220, 220, 220).ToBrush(),
+                TabBackground = Color.FromRgb(220, 220, 220).ToBrush(),
+                CommandBarBackground = Color.FromRgb(220, 220, 220).ToBrush(),
+                TabSelectedBrush = Color.FromRgb(255, 255, 255).ToBrush(),
                 BorderBrush = Color.FromRgb(128, 128, 128).ToBrush(),
+                CommandBarBorderBrush = Color.FromRgb(128, 128, 128).ToBrush(),
                 Foreground = Color.FromRgb(0, 0, 0).ToBrush(),
                 HighlightForeground = Color.FromRgb(0, 0, 0).ToBrush(),
                 WindowInactiveForeground = Color.FromRgb(0, 0, 0).ToBrush(),
@@ -156,17 +132,20 @@ namespace SolidShineUi
         public static SsuiAppTheme CreateDarkTheme(Color accentColor)
         {
             ColorsHelper.ToHSV(accentColor, out double h, out double s, out double v);
-            double vc3 = -0.4;
+            double vc3 = -0.45;
+            double vc4 = -0.2;
+            double vc5 = -0.32;
             Color dark = AddValue(h, s, v, vc3);
+            Color dark2 = AddValue(h, s, v, vc4);
+            Color darkHigh = AddValue(h, s, v, vc5);
 
             SsuiAppTheme ssat = new SsuiAppTheme(accentColor);
             ColorsHelper.ToHSV(dark, out h, out s, out v);
 
-            Color dark2 = AddValue(h, s, v, -0.2);
-
             ssat.WindowBackground = Color.FromRgb(15, 15, 15).ToBrush();
             ssat.BaseBackground = Color.FromRgb(15, 15, 15).ToBrush();
             ssat.PanelBackground = Color.FromRgb(0, 0, 0).ToBrush();
+            ssat.ControlBackground = Color.FromRgb(0, 0, 0).ToBrush();
             ssat.ControlSatBrush = Color.FromRgb(55, 55, 55).ToBrush();
             ssat.WindowTitleBackground = Color.FromRgb(55, 55, 55).ToBrush();
             ssat.WindowCaptionsBackground = Color.FromRgb(55, 55, 55).ToBrush();
@@ -174,13 +153,21 @@ namespace SolidShineUi
             ssat.WindowTitleForeground = Color.FromRgb(255, 255, 255).ToBrush();
             ssat.WindowInactiveForeground = Color.FromRgb(255, 255, 255).ToBrush();
             ssat.ButtonBackground = Color.FromRgb(40, 40, 40).ToBrush();
-            ssat.HighlightBrush = dark.ToBrush();
+            ssat.HighlightBrush = darkHigh.ToBrush();
+            ssat.TabHighlightBrush = darkHigh.ToBrush();
             ssat.ClickBrush = dark2.ToBrush();
-            ssat.BorderBrush = Color.FromRgb(128, 128, 128).ToBrush();
             ssat.Foreground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.TabBackground = Color.FromRgb(40, 40, 40).ToBrush();
+            ssat.CommandBarBackground = Color.FromRgb(40, 40, 40).ToBrush();
+            ssat.TabSelectedBrush = Color.FromRgb(0, 0, 0).ToBrush();
+            ssat.BorderBrush = Color.FromRgb(128, 128, 128).ToBrush();
+            ssat.CommandBarBorderBrush = Color.FromRgb(128, 128, 128).ToBrush();
+            ssat.SelectedBackgroundBrush = dark.ToBrush();
+            ssat.SelectedBorderBrush = dark2.ToBrush();
             ssat.HighlightForeground = Color.FromRgb(255, 255, 255).ToBrush();
             ssat.WindowCaptionsForeground = Color.FromRgb(255, 255, 255).ToBrush();
             ssat.WindowCaptionsHighlightForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.WindowCaptionsHighlight = darkHigh.ToBrush();
             ssat.DisabledForeground = Color.FromRgb(255, 255, 255).ToBrush();
             //ssat.DisabledBorderBrush = Color.FromRgb(128, 128, 128).ToBrush();
             ssat.DisabledBackground = ColorsHelper.CreateFromHex("9D9D9D").ToBrush();
@@ -214,7 +201,8 @@ namespace SolidShineUi
                 WindowBackground = Colors.Black.ToBrush(),
                 BaseBackground = Colors.Black.ToBrush(),
                 PanelBackground = Colors.Black.ToBrush(),
-                ControlSatBrush = Colors.Black.ToBrush(),
+                ControlBackground = Colors.Black.ToBrush(),
+                ControlSatBrush = Colors.White.ToBrush(),
                 WindowCaptionsBackground = Colors.Black.ToBrush(),
                 WindowTitleBackground = ColorsHelper.HighContrastPurple.ToBrush(),
                 WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
@@ -238,7 +226,19 @@ namespace SolidShineUi
                 DisabledBorderBrush = ColorsHelper.HighContrastLightGreen.ToBrush(),
                 DisabledForeground = ColorsHelper.HighContrastLightGreen.ToBrush(),
                 LightBorderBrush = Colors.White.ToBrush(),
+                TabBackground = Colors.Black.ToBrush(),
+                TabHighlightBorderBrush = Colors.White.ToBrush(),
+                TabSelectedBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                TabHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                CommandBarBackground = Colors.Black.ToBrush(),
+                CommandBarBorderBrush = Colors.White.ToBrush(),
+                CheckBrush = Colors.Black.ToBrush(),
+                CheckHighlightBrush = Colors.White.ToBrush(),
+                CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
                 IconVariation = Utils.IconVariation.White,
+                UseSubitemThemeWithMenus = false,
+                UseSubitemThemeWithPanels = false,
+                UseSubitemThemeWithRibbons = false,
             };
         }
 
@@ -249,7 +249,8 @@ namespace SolidShineUi
                 WindowBackground = Colors.Black.ToBrush(),
                 BaseBackground = Colors.Black.ToBrush(),
                 PanelBackground = Colors.Black.ToBrush(),
-                ControlSatBrush = Colors.Black.ToBrush(),
+                ControlBackground = Colors.Black.ToBrush(),
+                ControlSatBrush = Colors.Green.ToBrush(),
                 WindowCaptionsBackground = Colors.Black.ToBrush(),
                 WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
                 WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
@@ -273,7 +274,19 @@ namespace SolidShineUi
                 DisabledBorderBrush = ColorsHelper.HighContrastGray.ToBrush(),
                 DisabledForeground = ColorsHelper.HighContrastGray.ToBrush(),
                 LightBorderBrush = Colors.White.ToBrush(),
+                TabBackground = Colors.Black.ToBrush(),
+                TabHighlightBorderBrush = Colors.White.ToBrush(),
+                TabSelectedBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                TabHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                CommandBarBackground = Colors.Black.ToBrush(),
+                CommandBarBorderBrush = Colors.White.ToBrush(),
+                CheckBrush = Colors.Black.ToBrush(),
+                CheckHighlightBrush = Colors.White.ToBrush(),
+                CheckBackgroundHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
                 IconVariation = Utils.IconVariation.White,
+                UseSubitemThemeWithMenus = false,
+                UseSubitemThemeWithPanels = false,
+                UseSubitemThemeWithRibbons = false,
             };
         }
 
@@ -284,6 +297,7 @@ namespace SolidShineUi
                 WindowBackground = Colors.White.ToBrush(),
                 BaseBackground = Colors.White.ToBrush(),
                 PanelBackground = Colors.White.ToBrush(),
+                ControlBackground = Colors.White.ToBrush(),
                 ControlSatBrush = Colors.White.ToBrush(),
                 WindowCaptionsBackground = Colors.White.ToBrush(),
                 WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
@@ -308,7 +322,19 @@ namespace SolidShineUi
                 DisabledBorderBrush = ColorsHelper.HighContrastRed.ToBrush(),
                 DisabledForeground = ColorsHelper.HighContrastRed.ToBrush(),
                 LightBorderBrush = Colors.White.ToBrush(),
+                TabBackground = Colors.White.ToBrush(),
+                TabHighlightBorderBrush = Colors.Black.ToBrush(),
+                TabSelectedBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                TabHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                CommandBarBackground = Colors.White.ToBrush(),
+                CommandBarBorderBrush = Colors.Black.ToBrush(),
+                CheckBrush = Colors.Black.ToBrush(),
+                CheckHighlightBrush = Colors.Black.ToBrush(),
+                CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
                 IconVariation = Utils.IconVariation.Black,
+                UseSubitemThemeWithMenus = false,
+                UseSubitemThemeWithPanels = false,
+                UseSubitemThemeWithRibbons = false,
             };
         }
 

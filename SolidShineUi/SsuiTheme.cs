@@ -46,16 +46,30 @@ namespace SolidShineUi
         /// Create a new SsuiTheme by adapting a Solid Shine UI 1.x ColorScheme object.
         /// </summary>
         /// <param name="cs">the ColorScheme object to adapt from</param>
+        /// <remarks>
+        /// It is recommended for new programs to create and use a SsuiTheme using one of the other constructors, rather than
+        /// using a ColorScheme. This constructor is primarily provided as an upgrade path for those upgrading their app from SSUI 1.9.
+        /// <para/>
+        /// This creates a SsuiTheme by assigning brush values from the colors of the ColorScheme, with the goal of closely matching
+        /// the visual appearance of how the ColorScheme's colors were used within SSUI's controls.
+        /// If the ColorScheme <paramref name="cs"/> is a high contrast theme, this may create undesirable results. Instead, you should 
+        /// create a high contrast SsuiTheme using <see cref="SsuiThemes.GetHighContrastTheme(HighContrastOption)"/>.
+        /// </remarks>
         public SsuiTheme(ColorScheme cs)
         {
-            // TODO: detect if it's a high contrast theme
-            // if so, bring out a SsuiTheme high contrast theme
+            // maybe a future thing to explore is checking if cs is a high contrast theme, and then copying in all the values from
+            // the corresponding high contrast SsuiTheme in SsuiThemes, rather than just blindly copying the values here
+            //
+            // SSUI's controls have special behavior/handling for high contrast ColorSchemes that just isn't needed for a SsuiTheme
+            // however, due to this, directly copying over the ColorScheme's values without that marker will cause certain controls
+            // to look or act a bit differently.
 
             BaseBackground = cs.BackgroundColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();
             CheckBrush = cs.ForegroundColor.ToBrush();
             ClickBrush = cs.SecondHighlightColor.ToBrush();
             ButtonBackground = cs.SecondaryColor.ToBrush();
+            TabBackground = cs.SecondaryColor.ToBrush();
             ControlPopBrush = cs.SelectionColor.ToBrush();
             ControlSatBrush = cs.MainColor.ToBrush();
             DisabledBackground = cs.LightDisabledColor.ToBrush();
@@ -80,6 +94,9 @@ namespace SolidShineUi
             // this palette building system works by pretty much taking the HSV values of the base color
             // and making alternate colors by changing the value by various amounts
             // and then creating clamps/bounds on saturation to prevent colors going too light
+            //
+            // amusingly, the base color itself isn't actually used for that much (for a SsuiAppTheme, it does become the title bar color)
+            // so while a saturated, high value color is recommended for creating a palette, that saturated color itself won't appear that much
 
             ColorsHelper.ToHSV(baseColor, out double h, out double s, out double v);
 
@@ -651,6 +668,15 @@ namespace SolidShineUi
         /// Create a new SsuiTheme by adapting a Solid Shine UI 1.x ColorScheme object.
         /// </summary>
         /// <param name="cs">the ColorScheme object to adapt from</param>
+        /// <remarks>
+        /// It is recommended for new programs to create and use a SsuiAppTheme using one of the other constructors, rather than
+        /// using a ColorScheme. This constructor is primarily provided as an upgrade path for those upgrading their app from SSUI 1.9.
+        /// <para/>
+        /// This creates a SsuiAppTheme by assigning brush values from the colors of the ColorScheme, with the goal of closely matching
+        /// the visual appearance of how the ColorScheme's colors were used within SSUI's controls.
+        /// If the ColorScheme <paramref name="cs"/> is a high contrast theme, this may create undesirable results. Instead, you should 
+        /// create a high contrast SsuiTheme using <see cref="SsuiThemes.GetHighContrastTheme(HighContrastOption)"/>.
+        /// </remarks>
         public SsuiAppTheme(ColorScheme cs) : base(cs)
         {
             WindowTitleBackground = cs.WindowTitleBarColor.ToBrush();
