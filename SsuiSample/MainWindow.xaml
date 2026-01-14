@@ -128,6 +128,7 @@
             <local:TwoPositionSelectTest x:Name="twoSelTest" Visibility="Collapsed" />
             <local:SelectPanelTest x:Name="selectPanelTest" Visibility="Collapsed" />
             <local:SelectPanelScrollTest x:Name="selscrollTest" Visibility="Collapsed" />
+            <local:SerializerTest x:Name="serializerTest" Visibility="Collapsed" />
             <local:SpinnersTest x:Name="spinnersTest" Visibility="Collapsed" />
             <local:WildcardMatchTest x:Name="wildcardTest" Visibility="Collapsed" />
         </Grid>
