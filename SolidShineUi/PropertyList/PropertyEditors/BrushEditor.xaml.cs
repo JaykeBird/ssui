@@ -33,7 +33,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
         // private SsuiTheme _cs = new SsuiTheme();
 

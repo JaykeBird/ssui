@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -787,7 +788,15 @@ namespace SolidShineUi.Utils
         private void btnColorChange_Click(object sender, RoutedEventArgs e)
         {
             if (_selected == null) return;
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, _selected.Color);
+            ColorPickerDialog cpd = new ColorPickerDialog(_selected.Color);
+            if (SsuiTheme != null && SsuiTheme is SsuiAppTheme sat)
+            {
+                cpd.ApplySsuiTheme(sat);
+            }
+            else
+            {
+                cpd.SsuiTheme = new SsuiAppTheme(ColorScheme);
+            }
             cpd.ShowDialog();
 
             if (cpd.DialogResult)

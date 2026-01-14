@@ -64,16 +64,16 @@
                 </flat:FlatButton>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" >
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Margin="3" x:Name="nudStartX" ValueChanged="nudStartX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Margin="3" x:Name="nudStartY" ValueChanged="nudStartY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudStartX" ValueChanged="nudStartX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudStartY" ValueChanged="nudStartY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudStartAX" AcceptExpressions="True"
                                     ValueChanged="nudStartX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Visibility="Collapsed" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudStartAY" AcceptExpressions="True"
                                     ValueChanged="nudStartY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Visibility="Collapsed" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" >
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Margin="3" x:Name="nudEndX" ValueChanged="nudEndX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Margin="3" x:Name="nudEndY" ValueChanged="nudEndY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudEndX" ValueChanged="nudEndX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudEndY" ValueChanged="nudEndY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudEndAX" AcceptExpressions="True"
                                     ValueChanged="nudEndX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Visibility="Collapsed" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudEndAY" AcceptExpressions="True"

@@ -46,14 +46,14 @@
             <TextBlock Text="Y:" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
             <TextBlock Text="Center (focus) X:" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="3" />
             <TextBlock Text="Center (focus) Y:" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
-            
-            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" x:Name="nudStartX" ValueChanged="nudStartX_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="0"
+
+            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" Step="0.1" x:Name="nudStartX" ValueChanged="nudStartX_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="0"
                                 Margin="10,5,10,0" Grid.Row="3" Height="24" VerticalAlignment="Top" />
-            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" x:Name="nudStartY" ValueChanged="nudStartY_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="1" 
+            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" Step="0.1" x:Name="nudStartY" ValueChanged="nudStartY_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="1" 
                                 Margin="10,5,10,0" Grid.Row="3" Height="24" VerticalAlignment="Top" />
-            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" x:Name="nudEndX" ValueChanged="nudEndX_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="3" 
+            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" Step="0.1" x:Name="nudEndX" ValueChanged="nudEndX_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="3" 
                                 Margin="10,5,10,0" Grid.Row="3" Height="24" VerticalAlignment="Top" />
-            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" x:Name="nudEndY" ValueChanged="nudEndY_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="4" 
+            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" Step="0.1" x:Name="nudEndY" ValueChanged="nudEndY_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="4" 
                                 Margin="10,5,10,0" Grid.Row="3" Height="24" VerticalAlignment="Top" />
 
             <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" x:Name="nudStartAX" ColorScheme="{Binding ColorScheme, ElementName=window}" Visibility="Collapsed" Grid.Column="0" 
@@ -68,9 +68,9 @@
             <TextBlock Text="Size (radius) X:" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="3" />
             <TextBlock Text="Size (radius) Y:" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="4" />
             
-            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" x:Name="nudSizeX" ValueChanged="nudSize_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="3" 
+            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" Step="0.1" x:Name="nudSizeX" ValueChanged="nudSize_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="3" 
                 Margin="10,5,10,0" Grid.Row="5" Height="24" VerticalAlignment="Top" />
-            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" x:Name="nudSizeY" ValueChanged="nudSize_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="4" 
+            <flat:DoubleSpinner MinValue="0" MaxValue="1" Decimals="3" Step="0.1" x:Name="nudSizeY" ValueChanged="nudSize_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="4" 
                 Margin="10,6,10,0" Grid.Row="5" Height="24" VerticalAlignment="Top" />
             <flat:DoubleSpinner MinValue="0" MaxValue="2000" Step="1" Decimals="3" x:Name="nudSizeAX" ValueChanged="nudSize_ValueChanged" ColorScheme="{Binding ColorScheme, ElementName=window}" Grid.Column="3" 
                 Margin="10,5,10,0" Grid.Row="5" Height="24" VerticalAlignment="Top" />
