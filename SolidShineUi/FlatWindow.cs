@@ -538,14 +538,14 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty InactiveBackgroundProperty = DependencyProperty.Register(
             nameof(InactiveBackground), typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
+            new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
         /// <summary>
         /// The backing dependency property object for <see cref="ContentBackground"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
             nameof(ContentBackground), typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
+            new PropertyMetadata(new SolidColorBrush(Colors.White)));
 
         #endregion
 
