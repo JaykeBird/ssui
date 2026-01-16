@@ -15,7 +15,7 @@ namespace SolidShineUi
         /// A SsuiAppTheme that uses the system's colors for the controls.
         /// </summary>
         /// <remarks>
-        /// Note that this will have a somewhat old-school (think Windows 98/2000) appearance on modern computers, 
+        /// Note that this will have a somewhat old-school (think Windows XP) appearance on modern computers, 
         /// given that <see cref="SystemColors"/> only provides basic color brushes.
         /// </remarks>
         public static SsuiAppTheme SystemTheme

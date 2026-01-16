@@ -278,15 +278,13 @@ namespace SolidShineUi.PropertyList
 
             if (ssuiTheme is SsuiAppTheme sat)
             {
-
-#if NETCOREAPP
-                DialogSsuiTheme ??= sat;
-#else
-                if (DialogSsuiTheme == null)
+                if (!string.IsNullOrEmpty(ThemeValueExclude))
                 {
-                    DialogSsuiTheme = sat;
+                    if (!ThemeValueExclude.Split(',').Contains(nameof(DialogSsuiTheme)))
+                    {
+                        DialogSsuiTheme = sat;
+                    }
                 }
-#endif
 
                 if (useAccentTheme)
                 {
@@ -339,11 +337,12 @@ namespace SolidShineUi.PropertyList
 
         /// <summary>
         /// Get or set the <see cref="SsuiAppTheme"/> to use for dialogs that are displayed by editors within this PropertyList. This can be used to provide
-        /// a visual theme for these dialogs that is consistent with the rest of your application's theming, if you don't use SsuiAppTheme in your application.
+        /// a visual theme for these dialogs that is consistent with the rest of your application's theming, even if you don't use SsuiAppTheme elsewhere in your application.
         /// </summary>
         /// <remarks>
-        /// By default, this is set to <c>null</c>. Setting <see cref="ThemedControl.SsuiTheme"/> with a SsuiAppTheme will also update this property.
-        /// If this is <c>null</c> and the property list cannot locate an existing theme to use, the fallback value is <see cref="SsuiThemes.SystemTheme"/>.
+        /// By default, this is set to <c>null</c>. Setting the <c>SsuiTheme</c> property with a SsuiAppTheme will also update this property,
+        /// unless this property's name is included in the <c>ThemeValueExclude</c> property.
+        /// If this is <c>null</c> and the property list cannot locate a theme in its parent window, the fallback value is <see cref="SsuiThemes.SystemTheme"/>.
         /// </remarks>
 #if NETCOREAPP
         public SsuiAppTheme? DialogSsuiTheme { get => (SsuiAppTheme)GetValue(DialogSsuiThemeProperty); set => SetValue(DialogSsuiThemeProperty, value); }
