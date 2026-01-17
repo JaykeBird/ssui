@@ -1,25 +1,82 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
 namespace SolidShineUi
 {
+    /// <summary>
+    /// A helper class to serialize and deserialize brushes to and from strings.
+    /// </summary>
+    /// <remarks>
+    /// Note that this only works for <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/>.
+    /// The strings created by this class are a lot shorter than serializing to XAML while containing the same data, making these easier to be
+    /// transferred and stored. These strings can also be theoretically consumed or created by other GUI systems as a cross-compatible system.
+    /// <para/>
+    /// This class also adds on some extension methods to <see cref="Brush"/> and <see cref="GradientStop"/> to facilitate easily serializing those objects there.
+    /// </remarks>
     public static class BrushSerializer
     {
+        /*
+        
+        some thoughts on brush serialization:
+
+        serializing WPF objects is a bit harder than normal due to the fact that WPF DependencyObjects tend to contain a number of properties and data that isn't meant
+        to be stored (and is instead to be generated in real-time as needed), and (relatedly, or perhaps as a result) some properties end up tripping up serialization
+        methods. The common workaround I've seen people refer to and use online seems to be XAML serialization, which luckily is a thing that is present included in
+        WPF via the XamlWriter and XamlReader classes (and other stuff in that area). If all someone cares about is just serialization without caring about how long
+        it is and how it looks, that works well enough.
+         
+        perhaps the convenience and ability to serialize/deserialize to XAML kind of defeats the purpose of making this, but I decided to do this anyway. This method
+        is more straight forward in that it generates strings, rather than needing to set up a StringBuilder or other object to contain the written XAML text before
+        converting that to a string. This also generates strings that one can also then reuse in other UI systems/libraries, such as Avalonia. And finally, of course,
+        the strings generated here have the same data as the XAML serializations while using a lot less characters (although this code's outputs could be made even
+        more compact, but I have no desire to do that.)
+
+        there is one key problem that creating these bespoke serializers have over the XAML serialization, in which is that I had to write special code for each
+        particular type of Brush I wanted to support. in comparison, XAML serialization can handle a lot more arbitrary and convoluted situations, as it's a pretty
+        generic serialization system.
+
+        in here, I opted to only support SolidColorBrush, LinearGradientBrush, and RadialGradientBrush. These have a set list of properties and don't have the potential
+        to create endless options and complications in a way that an ImageBrush or DrawingBrush can. trying to support the various options of a drawing or an image
+        source is beyond what I wanted to accomplish here and now, although I suppose that can be addressed in the future if needed/wanted. I could, of course, just
+        only support a subset of options and features (such as only supporting certain types of image sources), but I figure it's easier starting off by drawing the
+        line at the brush type level, rather than having to at this time think about and consider the syntax and how to draw the line for these other types.
+
+        Simultaneously conveniently and inconveniently, WPF's brush classes are sealed or built in a way that can't be properly inherited from (due to the usage of
+        internal virtual methods). so that means the existing list of brushes in WPF that we have right now is all we'll ever have (unless Microsoft, for some reason,
+        decides to create a whole new type of brush; they are the only ones that can do so). I'm generally not a fan of how much code that Microsoft made internal
+        for WPF that someone like me won't be able to come along and modify or build upon, but I think with a core class like brushes, it was a good call here
+        
+        */
+
+        /// <summary>the character to use to separate out blocks of properties or data; similar data should be separated via a subSeparator</summary>
         const string separator = ";";
+        /// <summary>the separator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
         static readonly char[] splitChar = new char[] { ';' };
+        /// <summary>the character to use to separate like data or subdata within a datum</summary>
         static readonly char subSeparator = ',';
+        /// <summary>the subSeparator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
         private static readonly char[] subSplitChar = new char[] { subSeparator };
 
         private static string SerializeSolidColorBrush(SolidColorBrush brush)
         {
             string color = brush.Color.GetHexStringWithAlpha();
-            return string.Join(separator, "s", color, SerializeBrushProperties(brush));
+
+            string bprops = SerializeBrushProperties(brush);
+
+            if (string.IsNullOrEmpty(bprops))
+            {
+                return string.Join(separator, "s", color);
+            }
+            else
+            {
+                return string.Join(separator, "s", color, bprops);
+            }
+            // SolidColorBrush is type "s"
         }
 
         private static string SerializeLinearGradientBrush(LinearGradientBrush lgb)
@@ -28,7 +85,7 @@ namespace SolidShineUi
             switch (lgb.MappingMode)
             {
                 case BrushMappingMode.Absolute:
-                    props += "a";
+                    props += "aa"; // two A's, as Avalonia has the ability to set the relativeness of the start and end points independently of one another
                     break;
                 default:
                     break;
@@ -72,6 +129,7 @@ namespace SolidShineUi
             {
                 return string.Join(separator, "l", start, end, SerializeGradientStopCollection(lgb.GradientStops), bprops);
             }
+            // LinearGradientBrush is type "l"
         }
 
         private static string SerializeRadialGradientBrush(RadialGradientBrush rgb)
@@ -80,13 +138,9 @@ namespace SolidShineUi
             switch (rgb.MappingMode)
             {
                 case BrushMappingMode.Absolute:
-                    props += "a";
-                    break;
-                case BrushMappingMode.RelativeToBoundingBox:
-                    props += "b";
+                    props += "aa"; // two A's, as Avalonia has the ability to set the relativeness of the start and end points independently of one another
                     break;
                 default:
-                    props += "b";
                     break;
             }
 
@@ -130,6 +184,7 @@ namespace SolidShineUi
             {
                 return string.Join(separator, "r", start, end, cx, cy, SerializeGradientStopCollection(rgb.GradientStops), bprops);
             }
+            // RadialGradientBrush is of type "r"
         }
 
         private static string SerializeGradientStopCollection(GradientStopCollection gsc)
@@ -143,6 +198,7 @@ namespace SolidShineUi
             }
             if (gsc.Count == 1)
             {
+                // we'll create another gradient stop that's nearby with the same color, so it should look the same visually
                 double newOffset = gsc[0].Offset == 1 ? 0.99 : gsc[0].Offset + 0.01;
                 gsc.Add(new GradientStop(gsc[0].Color, newOffset));
             }
@@ -152,11 +208,25 @@ namespace SolidShineUi
             return string.Join(new string(subSeparator, 1), stops);
         }
 
-        private static string SerializeGradientStop(GradientStop g)
+        /// <summary>
+        /// Create a string representing a GradientStop, with the format being "<c>color</c>@<c>offset</c>" (e.g., "<c>FF00FF88@0.5</c>").
+        /// </summary>
+        /// <param name="g">the stop to serialize</param>
+        public static string SerializeGradientStop(GradientStop g)
         {
             return g.Color.GetHexStringWithAlpha() + "@" + g.Offset.ToString(CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// Creates a string to represent various common brush properties, such as <see cref="Brush.Opacity"/> and <see cref="Brush.Transform"/>.
+        /// </summary>
+        /// <param name="brush">the brush to read property data from</param>
+        /// <param name="gradientBrushProperties">a string representing the common gradient brush properties, to add on if present</param>
+        /// <remarks>
+        /// Each property has a unique value ('<c>o</c>' for Opacity, '<c>t</c>' for Transform, and '<c>r</c>' for RelativeTransform), and then
+        /// separated with the separator ('<c>;</c>'), although <paramref name="gradientBrushProperties"/> are combined together under the 'p' value.
+        /// Transforms are serialized using <see cref="TransformSerializer"/>.
+        /// </remarks>
         private static string SerializeBrushProperties(Brush brush, string gradientBrushProperties = "")
         {
             List<string> values = new List<string>();
@@ -250,13 +320,16 @@ namespace SolidShineUi
         /// <para/>
         /// Use <see cref="DeserializeGradientStop(string)"/> to convert the string back into a gradient stop.
         /// </summary>
+        /// <remarks>
+        /// The format is "<c>color</c>@<c>offset</c>" with the color represented by a hex code (e.g., "<c>FF00FF88@0.5</c>").
+        /// </remarks>
         public static string Serialize(this GradientStop gs)
         {
             return SerializeGradientStop(gs);
         }
 
         /// <summary>
-        /// Deserialize a brush string back into a brush.
+        /// Deserialize a brush string back into a <see cref="Brush"/>.
         /// <para/>
         /// Brushes can be serialized/converted to a string using <see cref="Serialize(Brush)"/>.
         /// </summary>
@@ -273,7 +346,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Deserialize a brush string back into a brush.
+        /// Deserialize a brush string back into a <see cref="Brush"/>.
         /// <para/>
         /// Brushes can be serialized/converted to a string using <see cref="Serialize(Brush)"/>.
         /// </summary>
@@ -297,7 +370,7 @@ namespace SolidShineUi
             {
                 string[] vals = s.Split(splitChar, StringSplitOptions.RemoveEmptyEntries);
 
-                switch (vals[0].ToLowerInvariant())
+                switch (vals[0].ToLowerInvariant()) // the initial character tells us what type of brush this is
                 {
                     case "s":
                         // solid color brush
@@ -341,6 +414,8 @@ namespace SolidShineUi
                             string end = vals[2];
                             string stops = vals[3];
                             
+                            // we'll optionally support if a property-defining character was added at the beginning of each value; we'll just remove the characters
+                            // this does not change the fact that these values still need to be in the correct order
                             if (start.StartsWith("b,", StringComparison.OrdinalIgnoreCase)) start = start.Substring(2);
                             if (end.StartsWith("c,", StringComparison.OrdinalIgnoreCase)) end = end.Substring(2);
                             if (stops.StartsWith("s,", StringComparison.OrdinalIgnoreCase)) stops = stops.Substring(2);
@@ -388,6 +463,8 @@ namespace SolidShineUi
                             string cy = vals[4];
                             string stops = vals[5];
 
+                            // we'll optionally support if a property-defining character was added at the beginning of each value; we'll just remove the characters
+                            // this does not change the fact that these values still need to be in the correct order
                             if (start.StartsWith("b,", StringComparison.OrdinalIgnoreCase)) start = start.Substring(2);
                             if (end.StartsWith("c,", StringComparison.OrdinalIgnoreCase)) end = end.Substring(2);
                             if (cx.StartsWith("x,", StringComparison.OrdinalIgnoreCase)) cx = cx.Substring(2);
@@ -433,10 +510,21 @@ namespace SolidShineUi
             }
         }
 
-
+        /// <summary>
+        /// Deserialize a collection of common brush properties from a string array into individual variables to apply to a brush.
+        /// </summary>
+        /// <param name="values">the string array of values to deserialize (each value as its own item)</param>
+        /// <param name="startIndex">the index in the array to start reading from; earlier indices would've been handled by the calling method</param>
+        /// <param name="opacity">the opacity value read from the array ('<c>o</c>' value); default is <c>1.0</c> if not present</param>
+        /// <param name="transform">the transform value read from the array ('<c>t</c>' value); default is <see cref="Transform.Identity"/> if not present</param>
+        /// <param name="relativeTransform">the relative transform value read from the array ('<c>r</c>' value); default is <see cref="Transform.Identity"/> if not present</param>
+        /// <param name="extraProperties">if a '<c>p</c>' value is present, the text that was contained with that value; otherwise, an empty string</param>
         private static void DeserializeBrushProperties(string[] values, int startIndex, out double opacity, 
             out Transform transform, out Transform relativeTransform, out string extraProperties)
         {
+            // unlike the properties unique to each brush, these can be defined in any order
+            // (or in fact, even multiple can be put in, but in that case, only the last one defined will be the one returned)
+
             opacity = 1.0;
             transform = Transform.Identity;
             relativeTransform = Transform.Identity;
@@ -474,14 +562,21 @@ namespace SolidShineUi
             }
         }
 
-        public static GradientStop DeserializeGradientStop(string stop)
+        /// <summary>
+        /// Create a <see cref="GradientStop"/> by deserializing a string representing that gradient stop.
+        /// <para/>
+        /// GradientStops can be serialized using <see cref="SerializeGradientStop(GradientStop)"/>.
+        /// </summary>
+        /// <param name="str">the string to deserialize</param>
+        /// <exception cref="FormatException">thrown if the inputted text is invalid and can't be parsed</exception>
+        public static GradientStop DeserializeGradientStop(string str)
         {
             try
             {
-                int atIndex = stop.IndexOf('@');
+                int atIndex = str.IndexOf('@');
                 if (atIndex < 0) throw new FormatException("Gradient stop string invalid");
-                string color = stop.Substring(0, atIndex);
-                string offset = stop.Substring(atIndex + 1);
+                string color = str.Substring(0, atIndex);
+                string offset = str.Substring(atIndex + 1);
 
                 return new GradientStop(ColorsHelper.CreateFromHex(color), Convert.ToDouble(offset, CultureInfo.InvariantCulture));
             }
@@ -514,26 +609,31 @@ namespace SolidShineUi
             return gsc;
         }
 
-        private static void DeserializeGradientBrushProperties(string values, out BrushMappingMode map, 
+        private static void DeserializeGradientBrushProperties(string values, out BrushMappingMode mappingMode, 
             out ColorInterpolationMode colorMode, out GradientSpreadMethod spread)
         {
             if (string.IsNullOrEmpty(values)) // quick exit for an empty string
             {
-                map = BrushMappingMode.RelativeToBoundingBox;
+                mappingMode = BrushMappingMode.RelativeToBoundingBox;
                 colorMode = ColorInterpolationMode.SRgbLinearInterpolation;
                 spread = GradientSpreadMethod.Pad;
                 return;
             }
 
+            // MappingMode
+            //
+            // unlike Avalonia, here the point mapping is applied to the whole brush, rather than just each point, so just finding 
+            // one A will be enough to trigger this brush as being in absolute mode; no need to search for 'ab' or 'ba' or 'aa'
             if (values.Contains('a'))
             {
-                map = BrushMappingMode.Absolute;
+                mappingMode = BrushMappingMode.Absolute;
             }
             else
             {
-                map = BrushMappingMode.RelativeToBoundingBox;
+                mappingMode = BrushMappingMode.RelativeToBoundingBox;
             }
 
+            // ColorInterpolationMode
             if (values.Contains('i'))
             {
                 colorMode = ColorInterpolationMode.ScRgbLinearInterpolation;
@@ -543,6 +643,7 @@ namespace SolidShineUi
                 colorMode = ColorInterpolationMode.SRgbLinearInterpolation;
             }
 
+            // SpreadMethod
             if (values.Contains('p'))
             {
                 spread = GradientSpreadMethod.Pad;
