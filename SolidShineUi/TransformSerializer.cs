@@ -9,11 +9,27 @@ using System.Windows.Media.Converters;
 
 namespace SolidShineUi
 {
+
+    /// <summary>
+    /// A helper class to serialize and deserialize WPF <see cref="Transform"/> objects to and from strings.
+    /// </summary>
+    /// <remarks>
+    /// The standard Serialize methods will create special strings for the common Transform types 
+    /// (<see cref="ScaleTransform"/>, <see cref="SkewTransform"/>, <see cref="RotateTransform"/>, <see cref="TranslateTransform"/>, <see cref="TransformGroup"/>)
+    /// and then fall back to serializing the Transform's Matrix value for any remaining types. <see cref="SerializeAsMatrix(Transform)"/> can also be used to
+    /// always serialize a transform with its matrix value, even if it's one of the common types.
+    /// <para/>
+    /// This class also adds on some extension methods to <see cref="Transform"/> to facilitate easily serializing those objects there.
+    /// </remarks>
     public static class TransformSerializer
     {
+        /// <summary>the character to use for separating values in a Transform; this should be the same as <c>subSeparator</c> in BrushSerializer</summary>
         const string separator = ",";
+        /// <summary>the character to use for separating child transforms when serializing a TransformGroup</summary>
         static readonly char groupSeparator = '/';
+        /// <summary>the group separator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
         private static readonly char[] groupSplitChar = new char[] { groupSeparator };
+        /// <summary>the separator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
         private static readonly char[] splitChar = new char[] { ',' };
 
         private static string SerializeRotateTransform(RotateTransform rt)

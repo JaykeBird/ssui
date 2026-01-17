@@ -9,7 +9,7 @@ using System.Windows.Media;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A helper class to serialize and deserialize brushes to and from strings.
+    /// A helper class to serialize and deserialize <see cref="Brush"/> objects to and from strings.
     /// </summary>
     /// <remarks>
     /// Note that this only works for <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/>.
@@ -48,16 +48,20 @@ namespace SolidShineUi
 
         Simultaneously conveniently and inconveniently, WPF's brush classes are sealed or built in a way that can't be properly inherited from (due to the usage of
         internal virtual methods). so that means the existing list of brushes in WPF that we have right now is all we'll ever have (unless Microsoft, for some reason,
-        decides to create a whole new type of brush; they are the only ones that can do so). I'm generally not a fan of how much code that Microsoft made internal
-        for WPF that someone like me won't be able to come along and modify or build upon, but I think with a core class like brushes, it was a good call here
+        decides to create a whole new type of brush). I'm generally not a fan of how much code that Microsoft made internal
+        for WPF that someone like me won't be able to come along and modify or build upon, but I think with a core class like brushes, it was a good call here.
+
+        specifically talking about how I format the serialized strings here, I use semicolons to separate out the "values", which generally correspond to properties
+        in a Brush. Some properties, such as the extra ones in GradientBrush, have beeen combined together into one value to prevent those strings getting too long.
+        The required properties/values must be in the right order to deserialize correctly, but optional later ones (which have labels) can be in any order.
         
         */
 
-        /// <summary>the character to use to separate out blocks of properties or data; similar data should be separated via a subSeparator</summary>
+        /// <summary>the character to use to separate out values; data within a value should be separated via a subSeparator</summary>
         const string separator = ";";
         /// <summary>the separator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
         static readonly char[] splitChar = new char[] { ';' };
-        /// <summary>the character to use to separate like data or subdata within a datum</summary>
+        /// <summary>the character to use to separate out data within a value</summary>
         static readonly char subSeparator = ',';
         /// <summary>the subSeparator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
         private static readonly char[] subSplitChar = new char[] { subSeparator };
