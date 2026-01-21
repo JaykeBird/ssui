@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,10 @@ namespace SolidShineUi
     /// </summary>
     /// <remarks>
     /// This can be used in all SSUI-themed controls. For SSUI-themed windows (see <see cref="ThemedWindow"/>)
-    /// or to apply across an entire application, use a <see cref="SsuiAppTheme"/> instead.
+    /// or to have more options for applying across an entire application, use a <see cref="SsuiAppTheme"/> instead.
+    /// <para/>
+    /// Note that this class is not meant to be used for serialization. Use the <see cref="ToSerializableObject"/> method to create a copy of this
+    /// that can be used for serialization scenarios, like storing in a settings file.
     /// </remarks>
     public class SsuiTheme : Animatable
     {
@@ -87,6 +91,89 @@ namespace SolidShineUi
             SelectedBackgroundBrush = cs.ThirdHighlightColor.ToBrush();
             SelectedBorderBrush = cs.SelectionColor.ToBrush();
             TabSelectedBrush = cs.LightBackgroundColor.ToBrush();
+        }
+
+        /// <summary>
+        /// Create a new SsuiTheme by parsing a <see cref="SerializableSsuiTheme"/> object.
+        /// </summary>
+        /// <param name="theme">the object to parse</param>
+        public SsuiTheme(SerializableSsuiTheme theme)
+        {
+            ButtonBackground = StringToBrush(theme.ButtonBackground);
+            ControlBackground = StringToBrush(theme.ControlBackground);
+            PanelBackground = StringToBrush(theme.PanelBackground);
+            BaseBackground = StringToBrush(theme.BaseBackground);
+            ControlSatBrush = StringToBrush(theme.ControlSatBrush);
+            BorderBrush = StringToBrush(theme.BorderBrush);
+            Foreground = StringToBrush(theme.Foreground);
+            DisabledBackground = StringToBrush(theme.DisabledBackground);
+            DisabledBorderBrush = StringToBrush(theme.DisabledBorderBrush);
+            DisabledForeground = StringToBrush(theme.DisabledForeground);
+            HighlightBrush = StringToBrush(theme.HighlightBrush);
+            HighlightBorderBrush = StringToBrush(theme.HighlightBorderBrush);
+            ClickBrush = StringToBrush(theme.ClickBrush);
+            HighlightForeground = StringToBrush(theme.HighlightForeground);
+            TabBackground = StringToBrush(theme.TabBackground);
+            TabSelectedBrush = StringToBrush(theme.TabSelectedBrush);
+            TabHighlightBrush = StringToBrush(theme.TabHighlightBrush);
+            TabHighlightBorderBrush = StringToBrush(theme.TabHighlightBorderBrush);
+            SelectedBackgroundBrush = StringToBrush(theme.SelectedBackgroundBrush);
+            SelectedBorderBrush = StringToBrush(theme.SelectedBorderBrush);
+            LightBorderBrush = StringToBrush(theme.LightBorderBrush);
+            CheckBrush = StringToBrush(theme.CheckBrush);
+            CheckHighlightBrush = StringToBrush(theme.CheckHighlightBrush);
+            CheckBackgroundHighlightBrush = StringToBrush(theme.CheckBackgroundHighlightBrush);
+            ControlPopBrush = StringToBrush(theme.ControlPopBrush);
+            CommandBarBackground = StringToBrush(theme.CommandBarBackground);
+            CommandBarBorderBrush = StringToBrush(theme.CommandBarBorderBrush);
+            CornerRadius = ParseCornerRadius(theme.CornerRadius);
+
+            if (Enum.TryParse<IconVariation>(theme.IconVariation, out var res))
+            {
+                IconVariation = res;
+            }
+
+            Brush StringToBrush(string s)
+            {
+                if (string.IsNullOrEmpty(s)) return Colors.Transparent.ToBrush();
+                try
+                {
+                    return BrushSerializer.DeserializeBrush(s);
+                }
+                catch (FormatException)
+                {
+                    return Colors.Transparent.ToBrush();
+                }
+            }
+
+            CornerRadius ParseCornerRadius(string s)
+            {
+                try
+                {
+                    CornerRadiusConverter tc = new CornerRadiusConverter();
+#if NETCOREAPP
+                    object? Maybeval = tc.ConvertFromString(null, CultureInfo.InvariantCulture, s);
+#else
+                    object Maybeval = tc.ConvertFromString(null, CultureInfo.InvariantCulture, s);
+#endif
+                    if (Maybeval is CornerRadius tt)
+                    {
+                        return tt;
+                    }
+                    else { throw new NotSupportedException(); } // this can also be thrown by CornerRadiusConverter if it can't do the conversion
+                }
+                catch (NotSupportedException)
+                {
+                    if (double.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out double dval))
+                    {
+                        return new CornerRadius(dval);
+                    }
+                    else
+                    {
+                        return new CornerRadius(0);
+                    }
+                }
+            }
         }
 
         void CreatePalette(Color baseColor)
@@ -226,6 +313,8 @@ namespace SolidShineUi
         }
 
         #endregion
+
+        #region Properties
 
         /// <summary>
         /// Get or set the brush to use for the background of SSUI's button controls. This brush is meant to "pop out" from the background,
@@ -547,6 +636,8 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(CommandBarBorderBrush), typeof(Brush), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
 
+        #endregion
+
         #region Freezable Methods
 
         /// <inheritdoc/>
@@ -578,6 +669,8 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Helper Methods
+
         /// <summary>
         /// Create a <see cref="Binding"/> for a property in the SsuiTheme.
         /// </summary>
@@ -597,6 +690,62 @@ namespace SolidShineUi
             // what I don't know, though, is whether each WPF binding expression requires a unique Binding object, or if I can reuse Binding objects
         }
 
+        /// <summary>
+        /// Create a <see cref="SerializableSsuiTheme"/> object that is built to be used in serialization scenarios, such as storing in a settings file.
+        /// </summary>
+        /// <remarks>
+        /// As SsuiTheme is a WPF Freezable object, it includes properties and 
+        /// </remarks>
+        public SerializableSsuiTheme ToSerializableObject()
+        {
+            return SerializableSsuiTheme.FromSsuiTheme(this);
+        }
+
+        /// <summary>
+        /// Create a copy of this SsuiTheme.
+        /// </summary>
+        /// <remarks>
+        /// Only created this for niche situations. Most people should use <see cref="Clone"/> or <see cref="CloneCurrentValue"/>, to utilize the functionality provided by Freezable.
+        /// </remarks>
+        internal protected SsuiTheme Copy()
+        {
+            return new SsuiTheme
+            {
+                ButtonBackground = this.ButtonBackground,
+                ControlBackground = this.ControlBackground,
+                PanelBackground = this.PanelBackground,
+                BaseBackground = this.BaseBackground,
+                ControlSatBrush = this.ControlSatBrush,
+                BorderBrush = this.BorderBrush,
+                Foreground = this.Foreground,
+                DisabledBackground = this.DisabledBackground,
+                DisabledBorderBrush = this.DisabledBorderBrush,
+                DisabledForeground = this.DisabledForeground,
+                HighlightBrush = this.HighlightBrush,
+                HighlightBorderBrush = this.HighlightBorderBrush,
+                ClickBrush = this.ClickBrush,
+                HighlightForeground = this.HighlightForeground,
+                TabBackground = this.TabBackground,
+                TabSelectedBrush = this.TabSelectedBrush,
+                TabHighlightBrush = this.TabHighlightBrush,
+                TabHighlightBorderBrush = this.TabHighlightBorderBrush,
+                SelectedBackgroundBrush = this.SelectedBackgroundBrush,
+                SelectedBorderBrush = this.SelectedBorderBrush,
+                LightBorderBrush = this.LightBorderBrush,
+                CheckBrush = this.CheckBrush,
+                CheckHighlightBrush = this.CheckHighlightBrush,
+                CheckBackgroundHighlightBrush = this.CheckBackgroundHighlightBrush,
+                ControlPopBrush = this.ControlPopBrush,
+                CommandBarBackground = this.CommandBarBackground,
+                CommandBarBorderBrush = this.CommandBarBorderBrush,
+                CornerRadius = this.CornerRadius,
+                IconVariation = this.IconVariation,
+            };
+
+        }
+
+        #endregion
+
     }
 
 
@@ -605,9 +754,15 @@ namespace SolidShineUi
     /// </summary>
     /// <remarks>
     /// This has extra properties and options that can be used to apply to windows, and to allow features like an accent theme or subitem theme.
+    /// <para/>
+    /// Note that this class is not meant to be used for serialization. Use the <c>ToSerializableObject()</c> method to create a copy of this
+    /// that can be used for serialization scenarios, like storing in a settings file.
     /// </remarks>
     public class SsuiAppTheme : SsuiTheme
     {
+
+        #region Constructors / Create Palette
+
         /// <summary>
         /// Create a new SsuiAppTheme, with default colors.
         /// </summary>
@@ -665,7 +820,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Create a new SsuiTheme by adapting a Solid Shine UI 1.x ColorScheme object.
+        /// Create a new SsuiAppTheme by adapting a Solid Shine UI 1.x ColorScheme object.
         /// </summary>
         /// <param name="cs">the ColorScheme object to adapt from</param>
         /// <remarks>
@@ -691,6 +846,113 @@ namespace SolidShineUi
 
             AccentTheme = new SsuiTheme(cs.AccentMainColor);
             SubitemTheme = new SsuiTheme(cs.MainColor);
+        }
+
+        /// <summary>
+        /// Create a new SsuiAppTheme by parsing a <see cref="SerializableSsuiTheme"/> object.
+        /// </summary>
+        /// <param name="theme">the object to parse</param>
+        public SsuiAppTheme(SerializableSsuiTheme theme)
+        {
+            ButtonBackground = StringToBrush(theme.ButtonBackground);
+            ControlBackground = StringToBrush(theme.ControlBackground);
+            PanelBackground = StringToBrush(theme.PanelBackground);
+            BaseBackground = StringToBrush(theme.BaseBackground);
+            ControlSatBrush = StringToBrush(theme.ControlSatBrush);
+            BorderBrush = StringToBrush(theme.BorderBrush);
+            Foreground = StringToBrush(theme.Foreground);
+            DisabledBackground = StringToBrush(theme.DisabledBackground);
+            DisabledBorderBrush = StringToBrush(theme.DisabledBorderBrush);
+            DisabledForeground = StringToBrush(theme.DisabledForeground);
+            HighlightBrush = StringToBrush(theme.HighlightBrush);
+            HighlightBorderBrush = StringToBrush(theme.HighlightBorderBrush);
+            ClickBrush = StringToBrush(theme.ClickBrush);
+            HighlightForeground = StringToBrush(theme.HighlightForeground);
+            TabBackground = StringToBrush(theme.TabBackground);
+            TabSelectedBrush = StringToBrush(theme.TabSelectedBrush);
+            TabHighlightBrush = StringToBrush(theme.TabHighlightBrush);
+            TabHighlightBorderBrush = StringToBrush(theme.TabHighlightBorderBrush);
+            SelectedBackgroundBrush = StringToBrush(theme.SelectedBackgroundBrush);
+            SelectedBorderBrush = StringToBrush(theme.SelectedBorderBrush);
+            LightBorderBrush = StringToBrush(theme.LightBorderBrush);
+            CheckBrush = StringToBrush(theme.CheckBrush);
+            CheckHighlightBrush = StringToBrush(theme.CheckHighlightBrush);
+            CheckBackgroundHighlightBrush = StringToBrush(theme.CheckBackgroundHighlightBrush);
+            ControlPopBrush = StringToBrush(theme.ControlPopBrush);
+            CommandBarBackground = StringToBrush(theme.CommandBarBackground);
+            CommandBarBorderBrush = StringToBrush(theme.CommandBarBorderBrush);
+            CornerRadius = ParseCornerRadius(theme.CornerRadius);
+
+            WindowTitleBackground = StringToBrush(theme.WindowTitleBackground);
+            WindowTitleForeground = StringToBrush(theme.WindowTitleForeground);
+            WindowInactiveBackground = StringToBrush(theme.WindowInactiveBackground);
+            WindowInactiveForeground = StringToBrush(theme.WindowInactiveForeground);
+            WindowCaptionsBackground = StringToBrush(theme.WindowCaptionsBackground);
+            WindowCaptionsForeground = StringToBrush(theme.WindowCaptionsForeground);
+            WindowCaptionsHighlight = StringToBrush(theme.WindowCaptionsHighlight);
+            WindowCaptionsHighlightForeground = StringToBrush(theme.WindowCaptionsHighlightForeground);
+            WindowCaptionsClickBrush = StringToBrush(theme.WindowCaptionsClickBrush);
+            WindowBackground = StringToBrush(theme.WindowBackground);
+
+            UseSubitemThemeWithMenus = theme.UseSubitemThemeWithMenus;
+            UseSubitemThemeWithPanels = theme.UseSubitemThemeWithPanels;
+            UseSubitemThemeWithRibbons = theme.UseSubitemThemeWithRibbons;
+
+            if (!string.IsNullOrEmpty(theme.IconVariation) && Enum.TryParse<IconVariation>(theme.IconVariation, out var iv))
+            {
+                IconVariation = iv;
+            }
+
+            if (theme.AccentTheme != null)
+            {
+                AccentTheme = theme.AccentTheme.ToSsuiTheme();
+            }
+            if (theme.SubitemTheme != null)
+            {
+                SubitemTheme = theme.SubitemTheme.ToSsuiTheme();
+            }
+
+            Brush StringToBrush(string s)
+            {
+                if (string.IsNullOrEmpty(s)) return Colors.Transparent.ToBrush();
+                try
+                {
+                    return BrushSerializer.DeserializeBrush(s);
+                }
+                catch (FormatException)
+                {
+                    return Colors.Transparent.ToBrush();
+                }
+            }
+
+            CornerRadius ParseCornerRadius(string s)
+            {
+                try
+                {
+                    CornerRadiusConverter tc = new CornerRadiusConverter();
+#if NETCOREAPP
+                    object? Maybeval = tc.ConvertFromString(null, CultureInfo.InvariantCulture, s);
+#else
+                    object Maybeval = tc.ConvertFromString(null, CultureInfo.InvariantCulture, s);
+#endif
+                    if (Maybeval is CornerRadius tt)
+                    {
+                        return tt;
+                    }
+                    else { throw new NotSupportedException(); } // this can also be thrown by CornerRadiusConverter if it can't do the conversion
+                }
+                catch (NotSupportedException)
+                {
+                    if (double.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out double dval))
+                    {
+                        return new CornerRadius(dval);
+                    }
+                    else
+                    {
+                        return new CornerRadius(0);
+                    }
+                }
+            }
         }
 
         void CreateWindowPalette(Color baseColor)
@@ -759,6 +1021,10 @@ namespace SolidShineUi
                 return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f;
             }
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Get or set the brush to use for the title bar area of a SSUI-themed window.
@@ -861,6 +1127,10 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(WindowBackground), typeof(Brush), typeof(SsuiAppTheme),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
+        #endregion
+
+        #region Accent / Subitem Themes
+
         /// <summary>
         /// Get or set the theme to use for controls that are set to use accent brushes.
         /// </summary>
@@ -919,6 +1189,8 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(UseSubitemThemeWithRibbons), typeof(bool), typeof(SsuiAppTheme),
             new FrameworkPropertyMetadata(true));
 
+        #endregion
+
         #region Freezable Methods
 
         /// <inheritdoc/>
@@ -949,5 +1221,6 @@ namespace SolidShineUi
         }
 
         #endregion
+
     }
 }

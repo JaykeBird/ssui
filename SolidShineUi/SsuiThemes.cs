@@ -37,7 +37,7 @@ namespace SolidShineUi
 
         static SsuiAppTheme CreateSystemTheme(CornerRadius cornerRadius)
         {
-            return new SsuiAppTheme()
+            SsuiAppTheme ssat = new SsuiAppTheme()
             {
                 BaseBackground = SystemColors.WindowBrush,
                 PanelBackground = SystemColors.ControlLightLightBrush,
@@ -80,6 +80,11 @@ namespace SolidShineUi
                 CornerRadius = cornerRadius,
                 IconVariation = Utils.IconVariation.Color
             };
+
+            ssat.AccentTheme = ssat.Copy();
+            ssat.SubitemTheme = ssat.Copy();
+
+            return ssat;
         }
 
 
@@ -193,151 +198,187 @@ namespace SolidShineUi
             }
         }
 
-
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> with high contrast colors, with white text on a black background.
+        /// </summary>
         public static SsuiAppTheme HighContrastWhiteOnBlack
         {
-            get => new SsuiAppTheme()
+            get
             {
-                WindowBackground = Colors.Black.ToBrush(),
-                BaseBackground = Colors.Black.ToBrush(),
-                PanelBackground = Colors.Black.ToBrush(),
-                ControlBackground = Colors.Black.ToBrush(),
-                ControlSatBrush = Colors.White.ToBrush(),
-                WindowCaptionsBackground = Colors.Black.ToBrush(),
-                WindowTitleBackground = ColorsHelper.HighContrastPurple.ToBrush(),
-                WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
-                WindowTitleForeground = Colors.White.ToBrush(),
-                ButtonBackground = Colors.Black.ToBrush(),
-                BorderBrush = Colors.White.ToBrush(),
-                Foreground = Colors.White.ToBrush(),
-                HighlightForeground = Colors.Black.ToBrush(),
-                HighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                WindowCaptionsHighlight = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                ClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                WindowCaptionsClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                HighlightBorderBrush = Colors.White.ToBrush(),
-                WindowInactiveForeground = Colors.White.ToBrush(),
-                WindowCaptionsForeground = Colors.White.ToBrush(),
-                WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
-                ControlPopBrush = Colors.White.ToBrush(),
-                SelectedBorderBrush = Colors.White.ToBrush(),
-                SelectedBackgroundBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                DisabledBackground = Colors.Black.ToBrush(),
-                DisabledBorderBrush = ColorsHelper.HighContrastLightGreen.ToBrush(),
-                DisabledForeground = ColorsHelper.HighContrastLightGreen.ToBrush(),
-                LightBorderBrush = Colors.White.ToBrush(),
-                TabBackground = Colors.Black.ToBrush(),
-                TabHighlightBorderBrush = Colors.White.ToBrush(),
-                TabSelectedBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                TabHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                CommandBarBackground = Colors.Black.ToBrush(),
-                CommandBarBorderBrush = Colors.White.ToBrush(),
-                CheckBrush = Colors.Black.ToBrush(),
-                CheckHighlightBrush = Colors.White.ToBrush(),
-                CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                IconVariation = Utils.IconVariation.White,
-                UseSubitemThemeWithMenus = false,
-                UseSubitemThemeWithPanels = false,
-                UseSubitemThemeWithRibbons = false,
-            };
+                SsuiAppTheme ssat = new SsuiAppTheme()
+                {
+                    WindowBackground = Colors.Black.ToBrush(),
+                    BaseBackground = Colors.Black.ToBrush(),
+                    PanelBackground = Colors.Black.ToBrush(),
+                    ControlBackground = Colors.Black.ToBrush(),
+                    ControlSatBrush = Colors.White.ToBrush(),
+                    WindowCaptionsBackground = Colors.Black.ToBrush(),
+                    WindowTitleBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                    WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                    WindowTitleForeground = Colors.White.ToBrush(),
+                    ButtonBackground = Colors.Black.ToBrush(),
+                    BorderBrush = Colors.White.ToBrush(),
+                    Foreground = Colors.White.ToBrush(),
+                    HighlightForeground = Colors.Black.ToBrush(),
+                    HighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowCaptionsHighlight = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    ClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowCaptionsClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    HighlightBorderBrush = Colors.White.ToBrush(),
+                    WindowInactiveForeground = Colors.White.ToBrush(),
+                    WindowCaptionsForeground = Colors.White.ToBrush(),
+                    WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                    ControlPopBrush = Colors.White.ToBrush(),
+                    SelectedBorderBrush = Colors.White.ToBrush(),
+                    SelectedBackgroundBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    DisabledBackground = Colors.Black.ToBrush(),
+                    DisabledBorderBrush = ColorsHelper.HighContrastLightGreen.ToBrush(),
+                    DisabledForeground = ColorsHelper.HighContrastLightGreen.ToBrush(),
+                    LightBorderBrush = Colors.White.ToBrush(),
+                    TabBackground = Colors.Black.ToBrush(),
+                    TabHighlightBorderBrush = Colors.White.ToBrush(),
+                    TabSelectedBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    TabHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    CommandBarBackground = Colors.Black.ToBrush(),
+                    CommandBarBorderBrush = Colors.White.ToBrush(),
+                    CheckBrush = Colors.Black.ToBrush(),
+                    CheckHighlightBrush = Colors.White.ToBrush(),
+                    CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    IconVariation = Utils.IconVariation.White,
+                    UseSubitemThemeWithMenus = false,
+                    UseSubitemThemeWithPanels = false,
+                    UseSubitemThemeWithRibbons = false,
+                };
+
+                ssat.AccentTheme = ssat.Copy();
+                ssat.SubitemTheme = ssat.Copy();
+
+                return ssat;
+            }
         }
 
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> with high contrast colors, with green text on a black background.
+        /// </summary>
         public static SsuiAppTheme HighContrastGreenOnBlack
         {
-            get => new SsuiAppTheme()
+            get
             {
-                WindowBackground = Colors.Black.ToBrush(),
-                BaseBackground = Colors.Black.ToBrush(),
-                PanelBackground = Colors.Black.ToBrush(),
-                ControlBackground = Colors.Black.ToBrush(),
-                ControlSatBrush = Colors.Green.ToBrush(),
-                WindowCaptionsBackground = Colors.Black.ToBrush(),
-                WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
-                WindowTitleForeground = Colors.Black.ToBrush(),
-                ButtonBackground = Colors.Black.ToBrush(),
-                BorderBrush = Colors.White.ToBrush(),
-                Foreground = ColorsHelper.HighContrastGreen.ToBrush(),
-                HighlightForeground = Colors.Black.ToBrush(),
-                HighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                WindowCaptionsHighlight = ColorsHelper.HighContrastBlue.ToBrush(),
-                ClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                WindowCaptionsClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                HighlightBorderBrush = Colors.White.ToBrush(),
-                WindowInactiveForeground = Colors.White.ToBrush(),
-                WindowCaptionsForeground = Colors.Black.ToBrush(),
-                WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
-                ControlPopBrush = Colors.White.ToBrush(),
-                SelectedBorderBrush = Colors.White.ToBrush(),
-                SelectedBackgroundBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                DisabledBackground = Colors.Black.ToBrush(),
-                DisabledBorderBrush = ColorsHelper.HighContrastGray.ToBrush(),
-                DisabledForeground = ColorsHelper.HighContrastGray.ToBrush(),
-                LightBorderBrush = Colors.White.ToBrush(),
-                TabBackground = Colors.Black.ToBrush(),
-                TabHighlightBorderBrush = Colors.White.ToBrush(),
-                TabSelectedBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                TabHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                CommandBarBackground = Colors.Black.ToBrush(),
-                CommandBarBorderBrush = Colors.White.ToBrush(),
-                CheckBrush = Colors.Black.ToBrush(),
-                CheckHighlightBrush = Colors.White.ToBrush(),
-                CheckBackgroundHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                IconVariation = Utils.IconVariation.White,
-                UseSubitemThemeWithMenus = false,
-                UseSubitemThemeWithPanels = false,
-                UseSubitemThemeWithRibbons = false,
-            };
+                SsuiAppTheme ssat = new SsuiAppTheme()
+                {
+                    WindowBackground = Colors.Black.ToBrush(),
+                    BaseBackground = Colors.Black.ToBrush(),
+                    PanelBackground = Colors.Black.ToBrush(),
+                    ControlBackground = Colors.Black.ToBrush(),
+                    ControlSatBrush = Colors.Green.ToBrush(),
+                    WindowCaptionsBackground = Colors.Black.ToBrush(),
+                    WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                    WindowTitleForeground = Colors.Black.ToBrush(),
+                    ButtonBackground = Colors.Black.ToBrush(),
+                    BorderBrush = Colors.White.ToBrush(),
+                    Foreground = ColorsHelper.HighContrastGreen.ToBrush(),
+                    HighlightForeground = Colors.Black.ToBrush(),
+                    HighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    WindowCaptionsHighlight = ColorsHelper.HighContrastBlue.ToBrush(),
+                    ClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    WindowCaptionsClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    HighlightBorderBrush = Colors.White.ToBrush(),
+                    WindowInactiveForeground = Colors.White.ToBrush(),
+                    WindowCaptionsForeground = Colors.Black.ToBrush(),
+                    WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                    ControlPopBrush = Colors.White.ToBrush(),
+                    SelectedBorderBrush = Colors.White.ToBrush(),
+                    SelectedBackgroundBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    DisabledBackground = Colors.Black.ToBrush(),
+                    DisabledBorderBrush = ColorsHelper.HighContrastGray.ToBrush(),
+                    DisabledForeground = ColorsHelper.HighContrastGray.ToBrush(),
+                    LightBorderBrush = Colors.White.ToBrush(),
+                    TabBackground = Colors.Black.ToBrush(),
+                    TabHighlightBorderBrush = Colors.White.ToBrush(),
+                    TabSelectedBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    TabHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    CommandBarBackground = Colors.Black.ToBrush(),
+                    CommandBarBorderBrush = Colors.White.ToBrush(),
+                    CheckBrush = Colors.Black.ToBrush(),
+                    CheckHighlightBrush = Colors.White.ToBrush(),
+                    CheckBackgroundHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    IconVariation = Utils.IconVariation.White,
+                    UseSubitemThemeWithMenus = false,
+                    UseSubitemThemeWithPanels = false,
+                    UseSubitemThemeWithRibbons = false,
+                };
+
+                ssat.AccentTheme = ssat.Copy();
+                ssat.SubitemTheme = ssat.Copy();
+
+                return ssat;
+            }
         }
 
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> with high contrast colors, with black text on a white background.
+        /// </summary>
         public static SsuiAppTheme HighContrastBlackOnWhite
         {
-            get => new SsuiAppTheme()
+            get
             {
-                WindowBackground = Colors.White.ToBrush(),
-                BaseBackground = Colors.White.ToBrush(),
-                PanelBackground = Colors.White.ToBrush(),
-                ControlBackground = Colors.White.ToBrush(),
-                ControlSatBrush = Colors.White.ToBrush(),
-                WindowCaptionsBackground = Colors.White.ToBrush(),
-                WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                WindowInactiveBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                WindowTitleForeground = Colors.Black.ToBrush(),
-                ButtonBackground = Colors.White.ToBrush(),
-                BorderBrush = Colors.Black.ToBrush(),
-                Foreground = Colors.Black.ToBrush(),
-                HighlightForeground = Colors.Black.ToBrush(),
-                HighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                WindowCaptionsHighlight = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                ClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                WindowCaptionsClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                HighlightBorderBrush = Colors.Black.ToBrush(),
-                WindowInactiveForeground = Colors.White.ToBrush(),
-                WindowCaptionsForeground = Colors.Black.ToBrush(),
-                WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
-                ControlPopBrush = Colors.Black.ToBrush(),
-                SelectedBorderBrush = Colors.Black.ToBrush(),
-                SelectedBackgroundBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                DisabledBackground = Colors.Black.ToBrush(),
-                DisabledBorderBrush = ColorsHelper.HighContrastRed.ToBrush(),
-                DisabledForeground = ColorsHelper.HighContrastRed.ToBrush(),
-                LightBorderBrush = Colors.White.ToBrush(),
-                TabBackground = Colors.White.ToBrush(),
-                TabHighlightBorderBrush = Colors.Black.ToBrush(),
-                TabSelectedBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                TabHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                CommandBarBackground = Colors.White.ToBrush(),
-                CommandBarBorderBrush = Colors.Black.ToBrush(),
-                CheckBrush = Colors.Black.ToBrush(),
-                CheckHighlightBrush = Colors.Black.ToBrush(),
-                CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                IconVariation = Utils.IconVariation.Black,
-                UseSubitemThemeWithMenus = false,
-                UseSubitemThemeWithPanels = false,
-                UseSubitemThemeWithRibbons = false,
-            };
+                SsuiAppTheme ssat = new SsuiAppTheme()
+                {
+                    WindowBackground = Colors.White.ToBrush(),
+                    BaseBackground = Colors.White.ToBrush(),
+                    PanelBackground = Colors.White.ToBrush(),
+                    ControlBackground = Colors.White.ToBrush(),
+                    ControlSatBrush = Colors.White.ToBrush(),
+                    WindowCaptionsBackground = Colors.White.ToBrush(),
+                    WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowInactiveBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowTitleForeground = Colors.Black.ToBrush(),
+                    ButtonBackground = Colors.White.ToBrush(),
+                    BorderBrush = Colors.Black.ToBrush(),
+                    Foreground = Colors.Black.ToBrush(),
+                    HighlightForeground = Colors.Black.ToBrush(),
+                    HighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    WindowCaptionsHighlight = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    ClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    WindowCaptionsClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    HighlightBorderBrush = Colors.Black.ToBrush(),
+                    WindowInactiveForeground = Colors.White.ToBrush(),
+                    WindowCaptionsForeground = Colors.Black.ToBrush(),
+                    WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                    ControlPopBrush = Colors.Black.ToBrush(),
+                    SelectedBorderBrush = Colors.Black.ToBrush(),
+                    SelectedBackgroundBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    DisabledBackground = Colors.Black.ToBrush(),
+                    DisabledBorderBrush = ColorsHelper.HighContrastRed.ToBrush(),
+                    DisabledForeground = ColorsHelper.HighContrastRed.ToBrush(),
+                    LightBorderBrush = Colors.White.ToBrush(),
+                    TabBackground = Colors.White.ToBrush(),
+                    TabHighlightBorderBrush = Colors.Black.ToBrush(),
+                    TabSelectedBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    TabHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    CommandBarBackground = Colors.White.ToBrush(),
+                    CommandBarBorderBrush = Colors.Black.ToBrush(),
+                    CheckBrush = Colors.Black.ToBrush(),
+                    CheckHighlightBrush = Colors.Black.ToBrush(),
+                    CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    IconVariation = Utils.IconVariation.Black,
+                    UseSubitemThemeWithMenus = false,
+                    UseSubitemThemeWithPanels = false,
+                    UseSubitemThemeWithRibbons = false,
+                };
+
+                ssat.AccentTheme = ssat.Copy();
+                ssat.SubitemTheme = ssat.Copy();
+
+                return ssat;
+            }
         }
 
+        /// <summary>
+        /// Get a high contrast <see cref="SsuiAppTheme"/> based upon the type of high contrast option selected.
+        /// </summary>
+        /// <param name="option">the type of high contrast theme to get</param>
         public static SsuiAppTheme GetHighContrastTheme(HighContrastOption option)
         {
             switch (option)
