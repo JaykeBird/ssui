@@ -525,7 +525,7 @@ namespace SolidShineUi
             {
                 ApplyThemeBinding(MenuBackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
-                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
             }
         }
