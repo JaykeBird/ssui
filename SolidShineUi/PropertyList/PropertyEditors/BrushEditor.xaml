@@ -19,7 +19,7 @@
         </flat:FlatButton>
 
         <Popup x:Name="popBrush">
-            <Border x:Name="brdrPop" BorderThickness="1" BorderBrush="Black" Background="White" >
+            <flat:ContentControlWithMenu x:Name="brdrPop" BorderThickness="1" BorderBrush="Black" Background="White" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -57,15 +57,16 @@
                                             BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
                     </Grid>
                     <TextBlock Text="Change to:" Margin="5,3" Grid.Row="2" />
-                    <flat:SelectPanel Grid.Row="3" x:Name="selChange" BorderThickness="0,1,0,0" Padding="3" >
-                        <flat:SelectableItem Text="Nothing (null)" x:Name="siNothing" Click="siNothing_Click" SelectOnClick="False" Indent="20" />
-                        <flat:SelectableItem Text="Solid Color Brush" x:Name="siSolid" Click="siSolid_Click" SelectOnClick="False" Indent="20" />
-                        <flat:SelectableItem Text="Linear Gradient Brush" x:Name="siLinear" Click="siLinear_Click" SelectOnClick="False" Indent="20" />
-                        <flat:SelectableItem Text="Radial Gradient Brush" x:Name="siRadial" Click="siRadial_Click" SelectOnClick="False" Indent="20" />
-                        <flat:SelectableItem Text="Image Brush" x:Name="siImage" Click="siImage_Click" SelectOnClick="False" Indent="20" />
-                    </flat:SelectPanel>
+                    <Border BorderThickness="1" x:Name="brdrBottom" Grid.Row="3" Height="1" />
                 </Grid>
-            </Border>
+                <flat:ContentControlWithMenu.Items>
+                    <MenuItem Header="Nothing (null)" x:Name="siNothing" Click="siNothing_Click" />
+                    <MenuItem Header="Solid Color Brush" x:Name="siSolid" Click="siSolid_Click" />
+                    <MenuItem Header="Linear Gradient Brush" x:Name="siLinear" Click="siLinear_Click" />
+                    <MenuItem Header="Radial Gradient Brush" x:Name="siRadial" Click="siRadial_Click" />
+                    <MenuItem Header="Image Brush" x:Name="siImage" Click="siImage_Click" />
+                </flat:ContentControlWithMenu.Items>
+            </flat:ContentControlWithMenu>
         </Popup>
     </Grid>
 </UserControl>

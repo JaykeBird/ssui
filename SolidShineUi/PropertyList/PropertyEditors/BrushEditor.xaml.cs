@@ -52,8 +52,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             // _cs = theme;
             btnMenu.SsuiTheme = theme;
             btnEditBrush.SsuiTheme = theme;
-            selChange.SsuiTheme = theme;
-            brdrPop.BorderBrush = theme.BorderBrush;
+            brdrPop.SsuiTheme = theme;
 
             btnBrush.BorderBrush = theme.BorderBrush;
             btnBrush.BorderDisabledBrush = theme.DisabledBorderBrush;
@@ -63,7 +62,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             btnBrush.Foreground = theme.Foreground;
             btnBrush.ClickBrush = theme.ClickBrush;
 
-            brdrPop.Background = theme.ClickBrush;
+            brdrBottom.BorderBrush = theme.BorderBrush;
 
             imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
@@ -82,7 +81,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 btnBrush.IsEnabled = value;
                 btnEditBrush.IsEnabled = value;
-                selChange.IsEnabled = value;
+
+                foreach (var item in brdrPop.Items)
+                {
+                    if (item is UIElement ele)
+                    {
+                        ele.IsEnabled = value;
+                    }
+                }
             }
         }
 
