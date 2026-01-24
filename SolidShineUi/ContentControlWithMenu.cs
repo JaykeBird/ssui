@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,7 +16,7 @@ using System.Windows.Media;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control that can host some content, as well as a menu beside it.
+    /// A control that can host some content, as well as a menu next to it.
     /// </summary>
     [ContentProperty(nameof(Content))]
     public class ContentControlWithMenu : MenuBase
@@ -109,19 +108,62 @@ namespace SolidShineUi
 
         #region Non-Brush Properties
 
+        #region Content Properties
+
+        // see https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/ContentControl.cs
+
+        /// <summary>
+        /// Get or set the content to display in the main area of the control.
+        /// </summary>
         public object Content { get => GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Content"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ContentProperty
-            = DependencyProperty.Register(nameof(Content), typeof(object), typeof(ContentControlWithMenu),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty ContentProperty = ContentControl.ContentProperty.AddOwner(typeof(ContentControlWithMenu), 
+            new FrameworkPropertyMetadata(OnContentChanged));
 
+        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ContentControlWithMenu cc)
+            {
+                cc.HasContent = e.NewValue != null;
+            }
+        }
+
+        /// <summary>
+        /// Get if this control currently has a non-null <c>Content</c> value.
+        /// </summary>
+        public bool HasContent { get => (bool)GetValue(HasContentProperty); private set => SetValue(HasContentPropertyKey, value); }
+
+        private static readonly DependencyPropertyKey HasContentPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(HasContent), typeof(bool), typeof(ContentControlWithMenu),
+            new FrameworkPropertyMetadata(false));
+
+        /// <summary>The backing dependency property for <see cref="HasContent"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HasContentProperty = HasContentPropertyKey.DependencyProperty;
+
+        ///// <summary>
+        ///// Get or set the template to use for displaying the <see cref="Content"/> in this control.
+        ///// </summary>
+        //public DataTemplate ContentTemplate { get => (DataTemplate)GetValue(ContentTemplateProperty); set => SetValue(ContentTemplateProperty, value); }
+
+        ///// <summary>The backing dependency property for <see cref="ContentTemplate"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty ContentTemplateProperty = ContentControl.ContentTemplateProperty.AddOwner(typeof(ContentControlWithMenu));
+
+        #endregion
+
+        #region Menu Placement/Appearance
+
+        /// <summary>
+        /// Get or set the side of the control to place the menu items in <c>Items</c>.
+        /// </summary>
         public PlacementDirection MenuPlacement { get => (PlacementDirection)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MenuPlacementProperty
             = DependencyProperty.Register(nameof(MenuPlacement), typeof(PlacementDirection), typeof(ContentControlWithMenu),
             new FrameworkPropertyMetadata(PlacementDirection.Bottom));
+
+        #endregion
 
         #endregion
 
@@ -316,7 +358,6 @@ namespace SolidShineUi
 
         #endregion
 
-
         #region MenuBase Properties Access
 
         // because MenuBase declares these as internal, I have to find these properties via Reflection
@@ -415,7 +456,6 @@ namespace SolidShineUi
         }
 
         #endregion
-
 
         #region SsuiTheme
 

@@ -2907,6 +2907,8 @@
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:ContentControlWithMenu}">
@@ -2923,7 +2925,11 @@
                                     </Style>
                                 </StackPanel.Style>
                             </StackPanel>
-                            <ContentPresenter Content="{TemplateBinding Content}" />
+                            <Border>
+                                <ContentPresenter Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                            </Border>
                         </DockPanel>
                     </Border>
 
