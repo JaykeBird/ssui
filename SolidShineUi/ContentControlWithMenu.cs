@@ -663,10 +663,24 @@ namespace SolidShineUi
             if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
 
             if (ssuiTheme != null) OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
-            // TODO: if SsuiTheme is null, instead call a ClearBindings method that prompts the control to instead clear all of the bindings to the SsuiTheme
 
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeAppliedEvent, this);
             RaiseEvent(re);
+        }
+
+        /// <summary>
+        /// Clear the existing SsuiTheme applied to this control and remove all bindings. This will reset the control's appearance.
+        /// </summary>
+        public void ClearSsuiTheme()
+        {
+            SsuiTheme = null;
+
+            // maybe I should update OnApplySsuiTheme to show that it can support null values, but for now, I'm doing this lol
+#if NETCOREAPP
+            OnApplySsuiTheme(null!);
+#else
+            OnApplySsuiTheme(null);
+#endif
         }
 
         /// <summary>

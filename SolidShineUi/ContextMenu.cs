@@ -450,10 +450,24 @@ namespace SolidShineUi
             if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
 
             if (ssuiTheme != null) OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
-            // TODO: if SsuiTheme is null, instead call a ClearBindings method that prompts the control to instead clear all of the bindings to the SsuiTheme
 
             RoutedEventArgs re = new RoutedEventArgs(SsuiThemeAppliedEvent, this);
             RaiseEvent(re);
+        }
+
+        /// <summary>
+        /// Clear the existing SsuiTheme applied to this control and remove all bindings. This will reset the control's appearance.
+        /// </summary>
+        public void ClearSsuiTheme()
+        {
+            SsuiTheme = null;
+
+            // maybe I should update OnApplySsuiTheme to show that it can support null values, but for now, I'm doing this lol
+#if NETCOREAPP
+            OnApplySsuiTheme(null!);
+#else
+            OnApplySsuiTheme(null);
+#endif
         }
 
         /// <summary>
@@ -467,8 +481,8 @@ namespace SolidShineUi
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
         /// <remarks>
-        /// The base method will by default set the <see cref="System.Windows.Controls.Control.BorderBrush"/> value to match the theme; if a custom
-        /// border brush is needed, then update it again after this is called.
+        /// The base method will by default set the <see cref="System.Windows.Controls.Control.BorderBrush"/> value to match the theme; if a different
+        /// border brush is needed, then update it again in your override method.
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
