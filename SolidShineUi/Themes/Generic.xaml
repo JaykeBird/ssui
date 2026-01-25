@@ -2733,7 +2733,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
                                                           SharedSizeGroup="MenuItemIconColumnGroup"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
+                                        <ColumnDefinition x:Name="Col1" Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
                                         <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
                                         <ColumnDefinition x:Name="Col3" Width="14"/>
                                     </Grid.ColumnDefinitions>
@@ -2796,10 +2796,11 @@
                                     <Setter TargetName="SubMenuPopup" Property="Placement" Value="Bottom"/>
                                     <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
                                     <Setter TargetName="Col3" Property="Width" Value="Auto"/>
-                                    <Setter TargetName="Check" Property="Visibility" Value="Collapsed" />
-                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                                    <!--<Setter TargetName="Col1" Property="Width" Value="1*" />-->
+                                    <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible" />
                                     <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed" />
-                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Visible"/>
                                     <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1,1,1,1"/>
                                     <Setter TargetName="SubMenu" Property="Margin" Value="2,3,2,2"/>
                                     <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
@@ -2809,9 +2810,10 @@
                                     <Setter Property="Padding" Value="6,0,6,2"/>
                                     <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
                                     <Setter TargetName="Col3" Property="Width" Value="Auto"/>
-                                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                                    <!--<Setter TargetName="Col1" Property="Width" Value="1*" />-->
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
                                     <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed"/>
-                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="ArrowPanel" Property="Visibility" Value="Visible"/>
                                     <Setter TargetName="Border" Property="Background" Value="#01FFFFFF"/>
                                 </Trigger>
                                 <Trigger Property="Role" Value="SubmenuHeader">
@@ -2913,39 +2915,45 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type flat:ContentControlWithMenu}">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                            Background="{TemplateBinding Background}">
+                            Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" >
                         <DockPanel>
-                            <StackPanel IsItemsHost="True" x:Name="MenuStack" Grid.IsSharedSizeScope="True" >
-                                <StackPanel.Style>
-                                    <Style TargetType="StackPanel">
+                            <ssut:ForeBorder x:Name="MenuBorder">
+                                <ssut:ForeBorder.Style>
+                                    <Style TargetType="{x:Type ssut:ForeBorder}">
                                         <Setter Property="Visibility" Value="Visible" />
                                         <Setter Property="DockPanel.Dock" Value="Bottom" />
-                                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                                        <Setter Property="VerticalAlignment" Value="Bottom" />
                                         <Setter Property="HorizontalAlignment" Value="Stretch" />
                                     </Style>
-                                </StackPanel.Style>
-                            </StackPanel>
-                            <Border>
-                                <ContentPresenter Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                            </Border>
+                                </ssut:ForeBorder.Style>
+                                <StackPanel IsItemsHost="True" x:Name="MenuStack" Grid.IsSharedSizeScope="True" 
+                                            Margin="{TemplateBinding MenuItemsPadding}" />
+                            </ssut:ForeBorder>
+                            <ContentPresenter Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                         </DockPanel>
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="MenuPlacement" Value="Right">
-                            <Setter Property="DockPanel.Dock" TargetName="MenuStack" Value="Right" />
+                            <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Right" />
+                            <Setter Property="VerticalAlignment" TargetName="MenuBorder" Value="Stretch" />
+                            <Setter Property="HorizontalAlignment" TargetName="MenuBorder" Value="Right" />
                         </Trigger>
                         <Trigger Property="MenuPlacement" Value="Top">
-                            <Setter Property="DockPanel.Dock" TargetName="MenuStack" Value="Top" />
+                            <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Top" />
+                            <Setter Property="VerticalAlignment" TargetName="MenuBorder" Value="Top" />
+                            <Setter Property="HorizontalAlignment" TargetName="MenuBorder" Value="Stretch" />
                         </Trigger>
                         <Trigger Property="MenuPlacement" Value="Left">
-                            <Setter Property="DockPanel.Dock" TargetName="MenuStack" Value="Left" />
+                            <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Left" />
+                            <Setter Property="VerticalAlignment" TargetName="MenuBorder" Value="Stretch" />
+                            <Setter Property="HorizontalAlignment" TargetName="MenuBorder" Value="Left" />
                         </Trigger>
                         <Trigger Property="MenuPlacement" Value="Hidden">
-                            <Setter Property="DockPanel.Dock" TargetName="MenuStack" Value="Left" />
-                            <Setter Property="Visibility" TargetName="MenuStack" Value="Collapsed" />
+                            <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Left" />
+                            <Setter Property="Visibility" TargetName="MenuBorder" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -108,6 +108,17 @@ namespace SolidShineUi
 
         #region Non-Brush Properties
 
+        /// <summary>
+        /// Get or set the radius to use for the corners of the control, to provide a rounded corner appearance if desired.
+        /// </summary>
+        public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CornerRadiusProperty
+            = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(ContentControlWithMenu),
+            new FrameworkPropertyMetadata(new CornerRadius(0)));
+
+
         #region Content Properties
 
         // see https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/ContentControl.cs
@@ -162,6 +173,17 @@ namespace SolidShineUi
         public static readonly DependencyProperty MenuPlacementProperty
             = DependencyProperty.Register(nameof(MenuPlacement), typeof(PlacementDirection), typeof(ContentControlWithMenu),
             new FrameworkPropertyMetadata(PlacementDirection.Bottom));
+
+        /// <summary>
+        /// Get or set the padding to have around the menu items in the menu part of the control. Default value is 2.
+        /// </summary>
+        public Thickness MenuItemsPadding { get => (Thickness)GetValue(MenuItemsPaddingProperty); set => SetValue(MenuItemsPaddingProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuItemsPadding"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty MenuItemsPaddingProperty
+            = DependencyProperty.Register(nameof(MenuItemsPadding), typeof(Thickness), typeof(ContentControlWithMenu),
+            new FrameworkPropertyMetadata(new Thickness(2)));
+
 
         #endregion
 
@@ -658,8 +680,8 @@ namespace SolidShineUi
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
         /// <remarks>
-        /// The base method will by default set the <see cref="System.Windows.Controls.Control.BorderBrush"/> value to match the theme; if a custom
-        /// border brush is needed, then update it again after this is called.
+        /// The base method will by default set the <see cref="Control.BorderBrush"/> value to match the theme; if a different
+        /// border brush is needed, then update it again in your override method.
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
@@ -718,6 +740,8 @@ namespace SolidShineUi
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
