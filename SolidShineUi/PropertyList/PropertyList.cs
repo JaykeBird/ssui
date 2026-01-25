@@ -272,6 +272,7 @@ namespace SolidShineUi.PropertyList
 
         }
 
+        /// <inheritdoc/>
         protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
             base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
@@ -1346,6 +1347,7 @@ namespace SolidShineUi.PropertyList
 
         #endregion
 
+        /// <inheritdoc/>
         public SsuiAppTheme GetThemeForDialogs()
         {
             if (DialogSsuiTheme != null)

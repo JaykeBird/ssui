@@ -1457,7 +1457,7 @@ namespace SolidShineUi.PropertyList
             return Window.GetWindow(this);
         }
 
-
+        /// <inheritdoc/>
         public SsuiAppTheme GetThemeForDialogs()
         {
             if (GetWindow() is ThemedWindow tw)

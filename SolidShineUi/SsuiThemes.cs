@@ -87,12 +87,21 @@ namespace SolidShineUi
             return ssat;
         }
 
-
+        /// <summary>
+        /// A standard premade theme, with a lot of light gray/white colors. 
+        /// <para/>
+        /// Use <see cref="CreateLightTheme(Color)"/> to create a light theme with an accent color.
+        /// </summary>
         public static SsuiAppTheme LightTheme
         {
             get => CreateLightTheme(ColorsHelper.CreateFromHex("A8A8A8"));
         }
 
+        /// <summary>
+        /// A standard premade theme, with a lot of dark gray/black colors. 
+        /// <para/>
+        /// Use <see cref="CreateDarkTheme(Color)"/> to create a dark theme with an accent color.
+        /// </summary>
         public static SsuiAppTheme DarkTheme
         {
             get => CreateDarkTheme(ColorsHelper.CreateFromHex("C8C8C8"));
