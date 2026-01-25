@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 using SolidShineUi;
@@ -46,13 +47,42 @@ namespace SsuiSample
                     }
                 }
             };
+
+            //SsuiTheme.BeginAnimation(SolidShineUi.SsuiTheme.ButtonBackgroundProperty, new ObjectAnimationUsingKeyFrames()
+            //{
+            //    Duration = new Duration(TimeSpan.FromSeconds(8)),
+            //    RepeatBehavior = RepeatBehavior.Forever,
+            //    FillBehavior = FillBehavior.HoldEnd,
+            //    KeyFrames = new ObjectKeyFrameCollection()
+            //    {
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Firebrick)),
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Blue)),
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Orange)),
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Yellow), KeyTime.FromPercent(0.95))
+            //    }
+            //});
+
+            //Loaded += (s, e) =>
+            //{
+            //    SolidColorBrush scb = new SolidColorBrush(Colors.Red);
+            //    SsuiTheme.ButtonBackground = scb;
+
+            //    scb.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation()
+            //    {                    
+            //        From = Colors.Red,
+            //        To = Colors.Orange,
+            //        Duration = new Duration(TimeSpan.FromSeconds(10)),
+            //        AutoReverse = true,
+            //        RepeatBehavior = RepeatBehavior.Forever
+            //    });
+            //};
         }
 
         private void MainWindow_SourceInitialized(object sender, EventArgs e)
         {
-//#if NET8_0
-//            SsuiWindows11Interop.FlatWindowInterop.RenderWindowsCaptionButtons(this);
-//#endif
+            //#if NET8_0
+            //            SsuiWindows11Interop.FlatWindowInterop.RenderWindowsCaptionButtons(this);
+            //#endif
         }
 
         private bool TestIfPointIsMaximizeButton(Point p)

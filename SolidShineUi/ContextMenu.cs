@@ -489,54 +489,42 @@ namespace SolidShineUi
 
             if (ssuiTheme is SsuiAppTheme sat)
             {
-                if (useAccentTheme)
-                {
-                    ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
-                    ApplyTheme(sat.AccentTheme);
-                }
-                else
-                {
-                    ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
-                    ApplyTheme(ssuiTheme);
-                }
-
-                if (useAccentTheme)
-                {
-                    ApplyThemeBinding(BackgroundProperty, SsuiTheme.BaseBackgroundProperty, sat.AccentTheme);
-                }
-                else
-                {
-                    ApplyThemeBinding(BackgroundProperty, SsuiTheme.BaseBackgroundProperty, sat);
-                }
-
                 if (sat.UseSubitemThemeWithMenus)
                 {
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.SubitemTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.SubitemTheme);
+
+                    ApplyTheme(useAccentTheme ? sat.AccentTheme : ssuiTheme);
                 }
                 else if (useAccentTheme)
                 {
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.AccentTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.AccentTheme);
+
+                    ApplyTheme(sat.AccentTheme);
                 }
                 else
                 {
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty);
+
+                    ApplyTheme(ssuiTheme);
                 }
             }
             else
             {
-                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
 
                 ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty);
                 ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty);
-                ApplyThemeBinding(BackgroundProperty, SsuiTheme.BaseBackgroundProperty);
+
                 ApplyTheme(ssuiTheme);
             }
 
             void ApplyTheme(SsuiTheme theme)
             {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.BaseBackgroundProperty, theme);
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, theme);
+
                 ApplyThemeBinding(MenuBackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
