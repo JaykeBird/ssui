@@ -108,13 +108,14 @@
             </MenuItem>
         </flat:Menu>
 
-        <flat:SelectPanel x:Name="stkTabs" Grid.Row="1" MultiSelect="False" BorderThickness="0,0,1,0" />
+        <flat:SelectPanel x:Name="stkTabs" Grid.Row="1" MultiSelect="False" BorderThickness="0,0,1,0" ThemeValueExclude="CornerRadius" />
         <TextBlock x:Name="lblStart" Grid.Column="1" Grid.Row="1" Margin="20,20,0,0">
             <Run Text="Select a test from the left to get started!" /><LineBreak />
             <LineBreak />
             <Run Text="You can also change the UI's color from the Application menu in the top-left." />
         </TextBlock>
         <Grid x:Name="grdTests" Grid.Column="1" Grid.Row="1">
+            <local:BrushSerializerTest x:Name="serializerTest" Visibility="Collapsed" />
             <local:ButtonsTest x:Name="buttonsTest" Visibility="Collapsed" />
             <local:CheckBoxTest x:Name="checkBoxTest" Visibility="Collapsed" />
             <local:DialogsTest x:Name="dialogsTest" Visibility="Collapsed" />
@@ -128,7 +129,6 @@
             <local:TwoPositionSelectTest x:Name="twoSelTest" Visibility="Collapsed" />
             <local:SelectPanelTest x:Name="selectPanelTest" Visibility="Collapsed" />
             <local:SelectPanelScrollTest x:Name="selscrollTest" Visibility="Collapsed" />
-            <local:SerializerTest x:Name="serializerTest" Visibility="Collapsed" />
             <local:SpinnersTest x:Name="spinnersTest" Visibility="Collapsed" />
             <local:WildcardMatchTest x:Name="wildcardTest" Visibility="Collapsed" />
         </Grid>

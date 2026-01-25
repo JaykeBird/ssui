@@ -17,9 +17,9 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for SerializerTest.xaml
     /// </summary>
-    public partial class SerializerTest : ThemedUserControl, IPropertyEditorHost
+    public partial class BrushSerializerTest : ThemedUserControl, IPropertyEditorHost
     {
-        public SerializerTest()
+        public BrushSerializerTest()
         {
             InitializeComponent();
 
