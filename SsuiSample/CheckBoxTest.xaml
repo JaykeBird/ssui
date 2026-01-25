@@ -31,7 +31,7 @@
         <flat:CheckBox x:Name="chkSingle_Copy" HorizontalAlignment="Left" Margin="275,220,0,0" VerticalAlignment="Top" OnlyAllowCheckBoxClick="True"
                        Content="Only clicking on the box (not this text) works" />
         <TextBlock HorizontalAlignment="Left" Margin="275,200,0,0" Text="Only Allow CheckBox Click" VerticalAlignment="Top"/>
-        <flat:ContentControlWithMenu Margin="316,270,0,0" HorizontalAlignment="Left" Width="186" Height="157" VerticalAlignment="Top">
+        <flat:ContentControlWithMenu Margin="316,270,0,0" HorizontalAlignment="Left" Width="Auto" Height="160" VerticalAlignment="Top" >
             <TextBlock Text="Wow" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <flat:ContentControlWithMenu.Items>
                 <MenuItem Header="Item 1" />
@@ -40,7 +40,7 @@
                     <MenuItem Header="Subitem 2" />
                     <MenuItem Header="Subitem 3" />
                 </MenuItem>
-                <MenuItem Header="Item 3 with a long name" />
+                <MenuItem Header="Item 3 with a long name" x:Name="mnuName" />
             </flat:ContentControlWithMenu.Items>
         </flat:ContentControlWithMenu>
 
