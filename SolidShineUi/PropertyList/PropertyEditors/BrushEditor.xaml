@@ -18,7 +18,7 @@
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
         </flat:FlatButton>
 
-        <Popup x:Name="popBrush">
+        <Popup x:Name="popBrush" KeyDown="popBrush_KeyDown" IsKeyboardFocusWithinChanged="popBrush_IsKeyboardFocusWithinChanged" >
             <flat:ContentControlWithMenu x:Name="brdrPop" BorderThickness="1" BorderBrush="Black" Background="White" >
                 <Grid>
                     <Grid.RowDefinitions>

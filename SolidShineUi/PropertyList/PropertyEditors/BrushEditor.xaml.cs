@@ -562,6 +562,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             popBrush.IsOpen = true;
             popBrush.StaysOpen = false;
+
+            brdrPop.Focus();
         }
 
         #region Change Brush
@@ -701,5 +703,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         #endregion
+
+        private void popBrush_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                // close the popup
+                popBrush.IsOpen = false;
+            }
+        }
+
+        private void popBrush_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool b && b == false)
+            {
+                popBrush.IsOpen = false;
+            }
+        }
     }
 }
