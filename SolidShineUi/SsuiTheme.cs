@@ -1189,6 +1189,19 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(UseSubitemThemeWithRibbons), typeof(bool), typeof(SsuiAppTheme),
             new FrameworkPropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set if the <see cref="Menu"/> control should use the <see cref="WindowTitleBackground"/> brush for its background, to appear to blend in with
+        /// the title bar of a window.
+        /// <para/>
+        /// (Even if this is set to <c>true</c>, this can be turned off for individual menus by setting the <see cref="Menu.UseTitleBarThemeBrush"/> property.)
+        /// </summary>
+        public bool AllowTitleBarBrushWithMenus { get => (bool)GetValue(AllowTitleBarBrushWithMenusProperty); set => SetValue(AllowTitleBarBrushWithMenusProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="AllowTitleBarBrushWithMenus"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty AllowTitleBarBrushWithMenusProperty
+            = DependencyProperty.Register(nameof(AllowTitleBarBrushWithMenus), typeof(bool), typeof(SsuiAppTheme),
+            new FrameworkPropertyMetadata(true));
+
         #endregion
 
         #region Freezable Methods

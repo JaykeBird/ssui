@@ -134,6 +134,8 @@ namespace SolidShineUi
         public bool UseSubitemThemeWithPanels { get; set; } = false;
         public bool UseSubitemThemeWithRibbons { get; set; } = true;
 
+        public bool AllowTitleBarBrushWithMenus { get; set; } = true;
+
         #endregion
 
         #region Conversion Methods
@@ -213,6 +215,7 @@ namespace SolidShineUi
                 s.UseSubitemThemeWithMenus = ssat.UseSubitemThemeWithMenus;
                 s.UseSubitemThemeWithPanels = ssat.UseSubitemThemeWithPanels;
                 s.UseSubitemThemeWithRibbons = ssat.UseSubitemThemeWithRibbons;
+                s.AllowTitleBarBrushWithMenus = ssat.AllowTitleBarBrushWithMenus;
             }
 
             return s;
@@ -351,6 +354,7 @@ namespace SolidShineUi
                 UseSubitemThemeWithMenus = UseSubitemThemeWithMenus,
                 UseSubitemThemeWithPanels = UseSubitemThemeWithPanels,
                 UseSubitemThemeWithRibbons = UseSubitemThemeWithRibbons,
+                AllowTitleBarBrushWithMenus = AllowTitleBarBrushWithMenus
             };
 
             if (!string.IsNullOrEmpty(IconVariation) && Enum.TryParse<IconVariation>(IconVariation, out var iv))

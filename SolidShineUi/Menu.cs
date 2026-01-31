@@ -405,9 +405,10 @@ namespace SolidShineUi
         /// at the top of the window next to the title bar. Sometimes this effect is undesirable, so set this to <c>false</c> to disable
         /// this effect, and the background of the menu will instead use <see cref="SsuiTheme.BaseBackground"/> when the theme is applied.
         /// <para/>
-        /// For this to work, the <see cref="SsuiTheme"/> property needs to be set to an object of type <see cref="SsuiAppTheme"/>.
+        /// For this to work, the <see cref="SsuiTheme"/> property needs to be set to an object of type <see cref="SsuiAppTheme"/>,
+        /// and its <see cref="SsuiAppTheme.AllowTitleBarBrushWithMenus"/> property needs to also be set to <c>true</c>.
         /// If this menu is being placed in a <see cref="ThemedWindow"/> or <see cref="FlatWindow"/>, then setting the window's
-        /// <c>SsuiTheme</c> property will suffice, as then this control will inherit from that window's property.
+        /// <c>SsuiTheme</c> property should suffice, as then this control will inherit from that window's property.
         /// <para/>
         /// If you do not use <see cref="SsuiTheme"/> or use a SSUI-themed window, then this property has no effect.
         /// </remarks>
@@ -518,7 +519,7 @@ namespace SolidShineUi
 
             if (ssuiTheme is SsuiAppTheme sat)
             {
-                if (UseTitleBarThemeBrush)
+                if (UseTitleBarThemeBrush && sat.AllowTitleBarBrushWithMenus)
                 {
                     ApplyThemeBinding(BackgroundProperty, SsuiAppTheme.WindowTitleBackgroundProperty, sat);
                 }

@@ -78,7 +78,8 @@ namespace SolidShineUi
                 UseSubitemThemeWithPanels = false,
                 UseSubitemThemeWithRibbons = false,
                 CornerRadius = cornerRadius,
-                IconVariation = Utils.IconVariation.Color
+                IconVariation = Utils.IconVariation.Color,
+                AllowTitleBarBrushWithMenus = false
             };
 
             ssat.AccentTheme = ssat.Copy();
@@ -257,6 +258,7 @@ namespace SolidShineUi
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
+                    AllowTitleBarBrushWithMenus = false
                 };
 
                 ssat.AccentTheme = ssat.Copy();
@@ -287,7 +289,7 @@ namespace SolidShineUi
                     ButtonBackground = Colors.Black.ToBrush(),
                     BorderBrush = Colors.White.ToBrush(),
                     Foreground = ColorsHelper.HighContrastGreen.ToBrush(),
-                    HighlightForeground = Colors.Black.ToBrush(),
+                    HighlightForeground = Colors.White.ToBrush(),
                     HighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
                     WindowCaptionsHighlight = ColorsHelper.HighContrastBlue.ToBrush(),
                     ClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
@@ -316,6 +318,7 @@ namespace SolidShineUi
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
+                    AllowTitleBarBrushWithMenus = false
                 };
 
                 ssat.AccentTheme = ssat.Copy();
@@ -375,6 +378,7 @@ namespace SolidShineUi
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
+                    AllowTitleBarBrushWithMenus = false
                 };
 
                 ssat.AccentTheme = ssat.Copy();
