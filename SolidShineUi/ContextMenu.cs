@@ -1,13 +1,14 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using SolidShineUi.Utils;
+using System.Windows.Media;
 
 namespace SolidShineUi
 {
@@ -140,7 +141,8 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the top-level menu items in the menu bar. This is not used in a ContextMenu; instead look at the HighlightSubitemBrush property.
+        /// Get or set the brush used for the top-level menu items in the menu bar. 
+        /// This is not used in a ContextMenu; instead look at the HighlightSubitemBrush property.
         /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
@@ -172,6 +174,23 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Get or set the brush used for the foreground elements of menu items that aren't top-level on the menu bar, 
+        /// when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightSubitemForegroundBrush
+        {
+            get
+            {
+                return (Brush)GetValue(HighlightSubitemForegroundBrushProperty);
+            }
+            set
+            {
+                SetValue(HighlightSubitemForegroundBrushProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Get or set the brush to use for the check highlight for checked menu items.
         /// </summary>
         [Category("Brushes")]
@@ -191,7 +210,7 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="MenuBackground"/>. See that related property for details.</summary>
         public static readonly DependencyProperty MenuBackgroundProperty = DependencyProperty.Register(
             nameof(MenuBackground), typeof(Brush), typeof(ContextMenu),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
+            new PropertyMetadata(new SolidColorBrush(Colors.White)));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See that related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
@@ -212,6 +231,11 @@ namespace SolidShineUi
         public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
             nameof(CheckedBrush), typeof(Brush), typeof(ContextMenu),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
+
+        /// <summary>The backing dependency property for <see cref="HighlightSubitemForegroundBrush"/>. See that related property for details.</summary>
+        public static readonly DependencyProperty HighlightSubitemForegroundBrushProperty = DependencyProperty.Register(
+            nameof(HighlightSubitemForegroundBrush), typeof(Brush), typeof(ContextMenu),
+            new PropertyMetadata(new SolidColorBrush(ColorsHelper.DarkerGray)));
 
         #endregion
 
@@ -492,6 +516,7 @@ namespace SolidShineUi
                 if (sat.UseSubitemThemeWithMenus)
                 {
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.SubitemTheme);
+                    ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.SubitemTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.SubitemTheme);
 
                     ApplyTheme(useAccentTheme ? sat.AccentTheme : ssuiTheme);
@@ -499,6 +524,7 @@ namespace SolidShineUi
                 else if (useAccentTheme)
                 {
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.AccentTheme);
+                    ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.AccentTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.AccentTheme);
 
                     ApplyTheme(sat.AccentTheme);
@@ -506,6 +532,7 @@ namespace SolidShineUi
                 else
                 {
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty);
+                    ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty);
 
                     ApplyTheme(ssuiTheme);

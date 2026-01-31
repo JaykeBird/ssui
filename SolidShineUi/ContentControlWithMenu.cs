@@ -224,7 +224,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the top-level menu items in the menu bar. This is not used in a ContextMenu; instead look at the HighlightSubitemBrush property.
+        /// Get or set the brush used for the top-level menu items in the control itself, when the mouse is over them or they have keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
@@ -240,7 +240,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for menu items that aren't top-level on the menu bar, when the mouse is over them or they have keyboard focus.
+        /// Get or set the brush used for menu items that aren't top-level in the control, when the mouse is over them or they have keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush HighlightSubitemBrush
@@ -252,6 +252,40 @@ namespace SolidShineUi
             set
             {
                 SetValue(HighlightSubitemBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground elements of the top-level menu items in the control, 
+        /// when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightForegroundBrush
+        {
+            get
+            {
+                return (Brush)GetValue(HighlightForegroundBrushProperty);
+            }
+            set
+            {
+                SetValue(HighlightForegroundBrushProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground elements of menu items that aren't top-level in the control, 
+        /// when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightSubitemForegroundBrush
+        {
+            get
+            {
+                return (Brush)GetValue(HighlightSubitemForegroundBrushProperty);
+            }
+            set
+            {
+                SetValue(HighlightSubitemForegroundBrushProperty, value);
             }
         }
 
@@ -286,6 +320,14 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="CheckedBrush"/>. See that related property for details.</summary>
         public static readonly DependencyProperty CheckedBrushProperty = SolidShineUi.ContextMenu.CheckedBrushProperty.AddOwner(typeof(ContentControlWithMenu));
+
+        /// <summary>The backing dependency property for <see cref="HighlightForegroundBrush"/>. See that related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundBrushProperty = 
+            Menu.HighlightForegroundBrushProperty.AddOwner(typeof(ContentControlWithMenu));
+
+        /// <summary>The backing dependency property for <see cref="HighlightSubitemForegroundBrush"/>. See that related property for details.</summary>
+        public static readonly DependencyProperty HighlightSubitemForegroundBrushProperty =
+            Menu.HighlightSubitemForegroundBrushProperty.AddOwner(typeof(ContentControlWithMenu));
 
         #endregion
 
