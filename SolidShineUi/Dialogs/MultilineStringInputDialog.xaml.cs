@@ -13,7 +13,7 @@ namespace SolidShineUi
         #region Window Actions
 
         /// <summary>
-        /// Create a StringInputDialog with nothing preset.
+        /// Create a MultilineStringInputDialog with nothing preset.
         /// </summary>
         public MultilineStringInputDialog()
         {
@@ -129,9 +129,11 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the description text to display above the text box. This text should describe what the user should enter into the text box.
         /// </summary>
-        /// <remarks>Try to keep the description to about a sentence long. If you do have a lengthier description, you may need to resize the window to make it fit properly.
+        /// <remarks>
+        /// Try to keep the description to about a sentence long. If you do have a lengthier description, you may need to resize the window to make it fit properly.
         /// Ideally, the overall design of the program should make it apparent what the user should enter into the text box without reading the description.
-        /// However, the description is helpful to remind the user what is being asked of them here, and also to potentially clarify the types of values that are valid or invalid.</remarks>
+        /// However, the description is helpful to remind the user what is being asked of them here, and also to potentially clarify the types of values that are valid or invalid.
+        /// </remarks>
         public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
         /// <summary>
