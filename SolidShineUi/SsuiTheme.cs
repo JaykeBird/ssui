@@ -70,7 +70,7 @@ namespace SolidShineUi
 
             BaseBackground = cs.BackgroundColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();
-            CheckBrush = cs.ForegroundColor.ToBrush();
+            CheckBrush = Colors.Black.ToBrush();
             ClickBrush = cs.SecondHighlightColor.ToBrush();
             ButtonBackground = cs.SecondaryColor.ToBrush();
             TabBackground = cs.SecondaryColor.ToBrush();
@@ -91,6 +91,8 @@ namespace SolidShineUi
             SelectedBackgroundBrush = cs.ThirdHighlightColor.ToBrush();
             SelectedBorderBrush = cs.SelectionColor.ToBrush();
             TabSelectedBrush = cs.LightBackgroundColor.ToBrush();
+            CommandBarBackground = cs.LightBackgroundColor.ToBrush();
+            CommandBarBorderBrush = cs.BorderColor.ToBrush();
         }
 
         /// <summary>
@@ -835,17 +837,28 @@ namespace SolidShineUi
         public SsuiAppTheme(ColorScheme cs) : base(cs)
         {
             WindowTitleBackground = cs.WindowTitleBarColor.ToBrush();
-            WindowInactiveBackground = cs.WindowInactiveColor.ToBrush();
             WindowTitleForeground = cs.WindowTitleBarTextColor.ToBrush();
+            WindowInactiveBackground = cs.WindowInactiveColor.ToBrush();
+            WindowInactiveForeground = cs.WindowTitleBarTextColor.ToBrush();
             WindowCaptionsBackground = cs.WindowTitleBarColor.ToBrush();
             WindowCaptionsForeground = cs.WindowTitleBarTextColor.ToBrush();
             WindowCaptionsHighlight = cs.HighlightColor.ToBrush();
-            WindowCaptionsClickBrush = cs.SelectionColor.ToBrush();
             WindowCaptionsHighlightForeground = cs.WindowTitleBarTextColor.ToBrush();
+            WindowCaptionsClickBrush = cs.SelectionColor.ToBrush();
             WindowBackground = cs.BackgroundColor.ToBrush();
 
             AccentTheme = new SsuiTheme(cs.AccentMainColor);
-            SubitemTheme = new SsuiTheme(cs.MainColor);
+
+            if (cs.MenusUseAccent)
+            {
+                SubitemTheme = new SsuiTheme(cs.AccentMainColor);
+                UseSubitemThemeWithMenus = true;
+            }
+            else
+            {
+                SubitemTheme = new SsuiTheme(cs.MainColor);
+                UseSubitemThemeWithMenus = false;
+            }
         }
 
         /// <summary>
@@ -897,6 +910,7 @@ namespace SolidShineUi
             UseSubitemThemeWithMenus = theme.UseSubitemThemeWithMenus;
             UseSubitemThemeWithPanels = theme.UseSubitemThemeWithPanels;
             UseSubitemThemeWithRibbons = theme.UseSubitemThemeWithRibbons;
+            AllowTitleBarBrushWithMenus = theme.AllowTitleBarBrushWithMenus;
 
             if (!string.IsNullOrEmpty(theme.IconVariation) && Enum.TryParse<IconVariation>(theme.IconVariation, out var iv))
             {
