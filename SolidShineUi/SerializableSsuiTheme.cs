@@ -36,104 +36,174 @@ namespace SolidShineUi
 
         #region Properties
 
+        /// <summary>The value for the <see cref="SsuiTheme.ButtonBackground"/> property.</summary>
         public string ButtonBackground { get; set; } = sGainsboro;
 
+        /// <summary>The value for the <see cref="SsuiTheme.ControlBackground"/> property.</summary>
         public string ControlBackground { get; set; } = sWhite;
 
+        /// <summary>The value for the <see cref="SsuiTheme.PanelBackground"/> property.</summary>
         public string PanelBackground { get; set; } = sWhite;
 
+        /// <summary>The value for the <see cref="SsuiTheme.BaseBackground"/> property.</summary>
         public string BaseBackground { get; set; } = sWhite;
 
+        /// <summary>The value for the <see cref="SsuiTheme.ControlSatBrush"/> property.</summary>
         public string ControlSatBrush { get; set; } = sGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.BorderBrush"/> property.</summary>
         public string BorderBrush { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiTheme.Foreground"/> property.</summary>
         public string Foreground { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiTheme.DisabledBackground"/> property.</summary>
         public string DisabledBackground { get; set; } = sDisabledBkgd;
 
+        /// <summary>The value for the <see cref="SsuiTheme.DisabledBorderBrush"/> property.</summary>
         public string DisabledBorderBrush { get; set; } = sDisabledBorder;
 
+        /// <summary>The value for the <see cref="SsuiTheme.DisabledForeground"/> property.</summary>
         public string DisabledForeground { get; set; } = sDisabledBorder;
 
+        /// <summary>The value for the <see cref="SsuiTheme.HighlightBrush"/> property.</summary>
         public string HighlightBrush { get; set; } = sGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.HighlightBorderBrush"/> property.</summary>
         public string HighlightBorderBrush { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiTheme.ClickBrush"/> property.</summary>
         public string ClickBrush { get; set; } = sLightGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.HighlightForeground"/> property.</summary>
         public string HighlightForeground { get; set; } = sDarkerGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.TabBackground"/> property.</summary>
         public string TabBackground { get; set; } = sGainsboro;
 
+        /// <summary>The value for the <see cref="SsuiTheme.TabSelectedBrush"/> property.</summary>
         public string TabSelectedBrush { get; set; } = sWhite;
 
+        /// <summary>The value for the <see cref="SsuiTheme.TabHighlightBrush"/> property.</summary>
         public string TabHighlightBrush { get; set; } = sGainsboro;
 
+        /// <summary>The value for the <see cref="SsuiTheme.TabHighlightBorderBrush"/> property.</summary>
         public string TabHighlightBorderBrush { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiTheme.SelectedBackgroundBrush"/> property.</summary>
         public string SelectedBackgroundBrush { get; set; } = sGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.SelectedBorderBrush"/> property.</summary>
         public string SelectedBorderBrush { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiTheme.LightBorderBrush"/> property.</summary>
         public string LightBorderBrush { get; set; } = sDarkGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.CheckBrush"/> property.</summary>
         public string CheckBrush { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiTheme.CheckHighlightBrush"/> property.</summary>
         public string CheckHighlightBrush { get; set; } = sDarkerGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.CheckBackgroundHighlightBrush"/> property.</summary>
         public string CheckBackgroundHighlightBrush { get; set; } = sWhiteLightHighlight;
 
+        /// <summary>The value for the <see cref="SsuiTheme.ControlPopBrush"/> property.</summary>
         public string ControlPopBrush { get; set; } = sDarkGray;
 
+        /// <summary>The value for the <see cref="SsuiTheme.CommandBarBackground"/> property.</summary>
         public string CommandBarBackground { get; set; } = sWhite;
 
+        /// <summary>The value for the <see cref="SsuiTheme.CommandBarBorderBrush"/> property.</summary>
         public string CommandBarBorderBrush { get; set; } = sDarkGray;
 
         // non-Brush values
+
+        /// <summary>The value for the <see cref="SsuiTheme.CornerRadius"/> property.</summary>
         public string CornerRadius { get; set; } = "0";
 
         // IconVariation stored as enum name
+
+        /// <summary>The value for the <see cref="SsuiTheme.IconVariation"/> property.</summary>
         public string IconVariation { get; set; } = nameof(Utils.IconVariation.Color);
 
         // SsuiAppTheme-specific properties
+
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowTitleBackground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowTitleBackground { get; set; } = sLightGray;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowTitleForeground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowTitleForeground { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowInactiveBackground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowInactiveBackground { get; set; } = sWhite;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowInactiveForeground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowInactiveForeground { get; set; } = sWindowInactiveFore;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowCaptionsBackground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowCaptionsBackground { get; set; } = sLightGray;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowCaptionsForeground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowCaptionsForeground { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowCaptionsHighlight"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowCaptionsHighlight { get; set; } = sGray;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowCaptionsHighlightForeground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowCaptionsHighlightForeground { get; set; } = sBlack;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowCaptionsClickBrush"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowCaptionsClickBrush { get; set; } = sGray;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.WindowBackground"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be an empty string.</summary>
         public string WindowBackground { get; set; } = sWhite;
 
 
 #if NETCOREAPP
         // subthemes
+        /// <summary>The value for the <see cref="SsuiAppTheme.AccentTheme"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be null.</summary>
         public SerializableSsuiTheme? AccentTheme { get; set; } = null;
-
+        
+        /// <summary>The value for the <see cref="SsuiAppTheme.SubitemTheme"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be null.</summary>
         public SerializableSsuiTheme? SubitemTheme { get; set; } = null;
 #else
         // subthemes
+        /// <summary>The value for the <see cref="SsuiAppTheme.AccentTheme"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be null.</summary>
         public SerializableSsuiTheme AccentTheme { get; set; } = null;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.SubitemTheme"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be null.</summary>
         public SerializableSsuiTheme SubitemTheme { get; set; } = null;
 #endif
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.UseSubitemThemeWithMenus"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be false.</summary>
         public bool UseSubitemThemeWithMenus { get; set; } = false;
+
+        /// <summary>The value for the <see cref="SsuiAppTheme.UseSubitemThemeWithPanels"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be false.</summary>
         public bool UseSubitemThemeWithPanels { get; set; } = false;
+
+        /// <summary>The value for the <see cref="SsuiAppTheme.UseSubitemThemeWithRibbons"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be false.</summary>
         public bool UseSubitemThemeWithRibbons { get; set; } = true;
 
+        /// <summary>The value for the <see cref="SsuiAppTheme.AllowTitleBarBrushWithMenus"/> property.
+        /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be false.</summary>
         public bool AllowTitleBarBrushWithMenus { get; set; } = true;
 
         #endregion
@@ -217,6 +287,27 @@ namespace SolidShineUi
                 s.UseSubitemThemeWithRibbons = ssat.UseSubitemThemeWithRibbons;
                 s.AllowTitleBarBrushWithMenus = ssat.AllowTitleBarBrushWithMenus;
             }
+            else
+            {
+                s.WindowTitleBackground = "";
+                s.WindowTitleForeground = "";
+                s.WindowInactiveBackground = "";
+                s.WindowInactiveForeground = "";
+                s.WindowCaptionsBackground = "";
+                s.WindowCaptionsForeground = "";
+                s.WindowCaptionsHighlight = "";
+                s.WindowCaptionsHighlightForeground = "";
+                s.WindowCaptionsClickBrush = "";
+                s.WindowBackground = "";
+
+                s.AccentTheme = null;
+                s.SubitemTheme = null;
+
+                s.UseSubitemThemeWithMenus = false;
+                s.UseSubitemThemeWithPanels = false;
+                s.UseSubitemThemeWithRibbons = false;
+                s.AllowTitleBarBrushWithMenus = false;
+            }
 
             return s;
         }
@@ -247,33 +338,33 @@ namespace SolidShineUi
         {
             var theme = new SsuiTheme
             {
-                ButtonBackground = StringToBrush(ButtonBackground, freeze),
-                ControlBackground = StringToBrush(ControlBackground, freeze),
-                PanelBackground = StringToBrush(PanelBackground, freeze),
-                BaseBackground = StringToBrush(BaseBackground, freeze),
-                ControlSatBrush = StringToBrush(ControlSatBrush, freeze),
-                BorderBrush = StringToBrush(BorderBrush, freeze),
-                Foreground = StringToBrush(Foreground, freeze),
-                DisabledBackground = StringToBrush(DisabledBackground, freeze),
-                DisabledBorderBrush = StringToBrush(DisabledBorderBrush, freeze),
-                DisabledForeground = StringToBrush(DisabledForeground, freeze),
-                HighlightBrush = StringToBrush(HighlightBrush, freeze),
-                HighlightBorderBrush = StringToBrush(HighlightBorderBrush, freeze),
-                ClickBrush = StringToBrush(ClickBrush, freeze),
-                HighlightForeground = StringToBrush(HighlightForeground, freeze),
-                TabBackground = StringToBrush(TabBackground, freeze),
-                TabSelectedBrush = StringToBrush(TabSelectedBrush, freeze),
-                TabHighlightBrush = StringToBrush(TabHighlightBrush, freeze),
-                TabHighlightBorderBrush = StringToBrush(TabHighlightBorderBrush, freeze),
-                SelectedBackgroundBrush = StringToBrush(SelectedBackgroundBrush, freeze),
-                SelectedBorderBrush = StringToBrush(SelectedBorderBrush, freeze),
-                LightBorderBrush = StringToBrush(LightBorderBrush, freeze),
-                CheckBrush = StringToBrush(CheckBrush, freeze),
-                CheckHighlightBrush = StringToBrush(CheckHighlightBrush, freeze),
-                CheckBackgroundHighlightBrush = StringToBrush(CheckBackgroundHighlightBrush, freeze),
-                ControlPopBrush = StringToBrush(ControlPopBrush, freeze),
-                CommandBarBackground = StringToBrush(CommandBarBackground, freeze),
-                CommandBarBorderBrush = StringToBrush(CommandBarBorderBrush, freeze),
+                ButtonBackground = ParseBrush(ButtonBackground, freeze),
+                ControlBackground = ParseBrush(ControlBackground, freeze),
+                PanelBackground = ParseBrush(PanelBackground, freeze),
+                BaseBackground = ParseBrush(BaseBackground, freeze),
+                ControlSatBrush = ParseBrush(ControlSatBrush, freeze),
+                BorderBrush = ParseBrush(BorderBrush, freeze),
+                Foreground = ParseBrush(Foreground, freeze),
+                DisabledBackground = ParseBrush(DisabledBackground, freeze),
+                DisabledBorderBrush = ParseBrush(DisabledBorderBrush, freeze),
+                DisabledForeground = ParseBrush(DisabledForeground, freeze),
+                HighlightBrush = ParseBrush(HighlightBrush, freeze),
+                HighlightBorderBrush = ParseBrush(HighlightBorderBrush, freeze),
+                ClickBrush = ParseBrush(ClickBrush, freeze),
+                HighlightForeground = ParseBrush(HighlightForeground, freeze),
+                TabBackground = ParseBrush(TabBackground, freeze),
+                TabSelectedBrush = ParseBrush(TabSelectedBrush, freeze),
+                TabHighlightBrush = ParseBrush(TabHighlightBrush, freeze),
+                TabHighlightBorderBrush = ParseBrush(TabHighlightBorderBrush, freeze),
+                SelectedBackgroundBrush = ParseBrush(SelectedBackgroundBrush, freeze),
+                SelectedBorderBrush = ParseBrush(SelectedBorderBrush, freeze),
+                LightBorderBrush = ParseBrush(LightBorderBrush, freeze),
+                CheckBrush = ParseBrush(CheckBrush, freeze),
+                CheckHighlightBrush = ParseBrush(CheckHighlightBrush, freeze),
+                CheckBackgroundHighlightBrush = ParseBrush(CheckBackgroundHighlightBrush, freeze),
+                ControlPopBrush = ParseBrush(ControlPopBrush, freeze),
+                CommandBarBackground = ParseBrush(CommandBarBackground, freeze),
+                CommandBarBorderBrush = ParseBrush(CommandBarBorderBrush, freeze),
                 CornerRadius = ParseCornerRadius(CornerRadius)
             };
 
@@ -311,45 +402,45 @@ namespace SolidShineUi
         {
             var ssat = new SsuiAppTheme()
             {
-                ButtonBackground = StringToBrush(ButtonBackground, freeze),
-                ControlBackground = StringToBrush(ControlBackground, freeze),
-                PanelBackground = StringToBrush(PanelBackground, freeze),
-                BaseBackground = StringToBrush(BaseBackground, freeze),
-                ControlSatBrush = StringToBrush(ControlSatBrush, freeze),
-                BorderBrush = StringToBrush(BorderBrush, freeze),
-                Foreground = StringToBrush(Foreground, freeze),
-                DisabledBackground = StringToBrush(DisabledBackground, freeze),
-                DisabledBorderBrush = StringToBrush(DisabledBorderBrush, freeze),
-                DisabledForeground = StringToBrush(DisabledForeground, freeze),
-                HighlightBrush = StringToBrush(HighlightBrush, freeze),
-                HighlightBorderBrush = StringToBrush(HighlightBorderBrush, freeze),
-                ClickBrush = StringToBrush(ClickBrush, freeze),
-                HighlightForeground = StringToBrush(HighlightForeground, freeze),
-                TabBackground = StringToBrush(TabBackground, freeze),
-                TabSelectedBrush = StringToBrush(TabSelectedBrush, freeze),
-                TabHighlightBrush = StringToBrush(TabHighlightBrush, freeze),
-                TabHighlightBorderBrush = StringToBrush(TabHighlightBorderBrush, freeze),
-                SelectedBackgroundBrush = StringToBrush(SelectedBackgroundBrush, freeze),
-                SelectedBorderBrush = StringToBrush(SelectedBorderBrush, freeze),
-                LightBorderBrush = StringToBrush(LightBorderBrush, freeze),
-                CheckBrush = StringToBrush(CheckBrush, freeze),
-                CheckHighlightBrush = StringToBrush(CheckHighlightBrush, freeze),
-                CheckBackgroundHighlightBrush = StringToBrush(CheckBackgroundHighlightBrush, freeze),
-                ControlPopBrush = StringToBrush(ControlPopBrush, freeze),
-                CommandBarBackground = StringToBrush(CommandBarBackground, freeze),
-                CommandBarBorderBrush = StringToBrush(CommandBarBorderBrush, freeze),
+                ButtonBackground = ParseBrush(ButtonBackground, freeze),
+                ControlBackground = ParseBrush(ControlBackground, freeze),
+                PanelBackground = ParseBrush(PanelBackground, freeze),
+                BaseBackground = ParseBrush(BaseBackground, freeze),
+                ControlSatBrush = ParseBrush(ControlSatBrush, freeze),
+                BorderBrush = ParseBrush(BorderBrush, freeze),
+                Foreground = ParseBrush(Foreground, freeze),
+                DisabledBackground = ParseBrush(DisabledBackground, freeze),
+                DisabledBorderBrush = ParseBrush(DisabledBorderBrush, freeze),
+                DisabledForeground = ParseBrush(DisabledForeground, freeze),
+                HighlightBrush = ParseBrush(HighlightBrush, freeze),
+                HighlightBorderBrush = ParseBrush(HighlightBorderBrush, freeze),
+                ClickBrush = ParseBrush(ClickBrush, freeze),
+                HighlightForeground = ParseBrush(HighlightForeground, freeze),
+                TabBackground = ParseBrush(TabBackground, freeze),
+                TabSelectedBrush = ParseBrush(TabSelectedBrush, freeze),
+                TabHighlightBrush = ParseBrush(TabHighlightBrush, freeze),
+                TabHighlightBorderBrush = ParseBrush(TabHighlightBorderBrush, freeze),
+                SelectedBackgroundBrush = ParseBrush(SelectedBackgroundBrush, freeze),
+                SelectedBorderBrush = ParseBrush(SelectedBorderBrush, freeze),
+                LightBorderBrush = ParseBrush(LightBorderBrush, freeze),
+                CheckBrush = ParseBrush(CheckBrush, freeze),
+                CheckHighlightBrush = ParseBrush(CheckHighlightBrush, freeze),
+                CheckBackgroundHighlightBrush = ParseBrush(CheckBackgroundHighlightBrush, freeze),
+                ControlPopBrush = ParseBrush(ControlPopBrush, freeze),
+                CommandBarBackground = ParseBrush(CommandBarBackground, freeze),
+                CommandBarBorderBrush = ParseBrush(CommandBarBorderBrush, freeze),
                 CornerRadius = ParseCornerRadius(CornerRadius),
 
-                WindowTitleBackground = StringToBrush(WindowTitleBackground, freeze),
-                WindowTitleForeground = StringToBrush(WindowTitleForeground, freeze),
-                WindowInactiveBackground = StringToBrush(WindowInactiveBackground, freeze),
-                WindowInactiveForeground = StringToBrush(WindowInactiveForeground, freeze),
-                WindowCaptionsBackground = StringToBrush(WindowCaptionsBackground, freeze),
-                WindowCaptionsForeground = StringToBrush(WindowCaptionsForeground, freeze),
-                WindowCaptionsHighlight = StringToBrush(WindowCaptionsHighlight, freeze),
-                WindowCaptionsHighlightForeground = StringToBrush(WindowCaptionsHighlightForeground, freeze),
-                WindowCaptionsClickBrush = StringToBrush(WindowCaptionsClickBrush, freeze),
-                WindowBackground = StringToBrush(WindowBackground, freeze),
+                WindowTitleBackground = ParseBrush(WindowTitleBackground, freeze),
+                WindowTitleForeground = ParseBrush(WindowTitleForeground, freeze),
+                WindowInactiveBackground = ParseBrush(WindowInactiveBackground, freeze),
+                WindowInactiveForeground = ParseBrush(WindowInactiveForeground, freeze),
+                WindowCaptionsBackground = ParseBrush(WindowCaptionsBackground, freeze),
+                WindowCaptionsForeground = ParseBrush(WindowCaptionsForeground, freeze),
+                WindowCaptionsHighlight = ParseBrush(WindowCaptionsHighlight, freeze),
+                WindowCaptionsHighlightForeground = ParseBrush(WindowCaptionsHighlightForeground, freeze),
+                WindowCaptionsClickBrush = ParseBrush(WindowCaptionsClickBrush, freeze),
+                WindowBackground = ParseBrush(WindowBackground, freeze),
 
                 UseSubitemThemeWithMenus = UseSubitemThemeWithMenus,
                 UseSubitemThemeWithPanels = UseSubitemThemeWithPanels,
@@ -380,10 +471,11 @@ namespace SolidShineUi
 
         #region Helper / Parser methods
 
-        // Small helpers
-
-        static Brush StringToBrush(string s, bool freeze)
+        static Brush ParseBrush(string s, bool freeze)
         {
+            // try to use the BrushSerializer if I can, but if the string is null, empty, or can't be parsed, we'll return a Transparent solid color brush
+            // a Transparent brush is probably not what's really desired, but in this situation where data may have been corrupted, not sure what else to do
+
             if (string.IsNullOrEmpty(s))
             {
                 Brush b = Colors.Transparent.ToBrush();
@@ -443,7 +535,7 @@ namespace SolidShineUi
                 }
                 else
                 {
-                    return new CornerRadius(0);
+                    return new CornerRadius(0); // fallback value
                 }
             }
         }
