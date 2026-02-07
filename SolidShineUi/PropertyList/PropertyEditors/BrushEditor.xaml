@@ -57,7 +57,7 @@
                                             BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
                     </Grid>
                     <TextBlock Text="Change to:" Margin="5,3" Grid.Row="2" />
-                    <Border BorderThickness="1" x:Name="brdrBottom" Grid.Row="3" Height="1" />
+                    <Border BorderThickness="0" x:Name="brdrBottom" Grid.Row="3" Height="1" />
                 </Grid>
                 <flat:ContentControlWithMenu.Items>
                     <MenuItem Header="Nothing (null)" x:Name="siNothing" Click="siNothing_Click" />

@@ -2723,7 +2723,7 @@
                                         <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                         <Style.Triggers>
                                             <Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
-                                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}" />
+                                                <Setter Property="BorderBrush" Value="{Binding Path=MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -2782,7 +2782,7 @@
                                         <Grid Margin="0,0,5,5">
                                             <!--Border 2-->
                                             <Border x:Name="SubMenuBorder"
-                                                    BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"
+                                                    BorderBrush="{Binding Path=MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"
                                                     BorderThickness="1" Background="{Binding Path=MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"
                                                     SnapsToDevicePixels="True">
                                                 <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True" Margin="2">
@@ -2890,8 +2890,8 @@
                                         <Condition Property="Role" Value="TopLevelHeader"/>
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
-                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
-                                    <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderThickness" Value="0"/>
                                 </MultiTrigger>
                                 <!--<Trigger Property="IsSubmenuOpen" Value="true">
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:ContentControlWithMenu}}}"/>
@@ -2929,6 +2929,7 @@
 
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="SeparatorBrush" Value="Gray" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -2938,13 +2939,15 @@
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}" >
                         <DockPanel>
-                            <ssut:ForeBorder x:Name="MenuBorder">
+                            <ssut:ForeBorder x:Name="MenuBorder" BorderBrush="{TemplateBinding SeparatorBrush}" 
+                                             Background="{TemplateBinding MenuBackground}" >
                                 <ssut:ForeBorder.Style>
                                     <Style TargetType="{x:Type ssut:ForeBorder}">
                                         <Setter Property="Visibility" Value="Visible" />
                                         <Setter Property="DockPanel.Dock" Value="Bottom" />
                                         <Setter Property="VerticalAlignment" Value="Bottom" />
                                         <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                        <Setter Property="BorderThickness" Value="0,1,0,0" />
                                     </Style>
                                 </ssut:ForeBorder.Style>
                                 <StackPanel IsItemsHost="True" x:Name="MenuStack" Grid.IsSharedSizeScope="True" 
@@ -2961,20 +2964,24 @@
                             <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Right" />
                             <Setter Property="VerticalAlignment" TargetName="MenuBorder" Value="Stretch" />
                             <Setter Property="HorizontalAlignment" TargetName="MenuBorder" Value="Right" />
+                            <Setter Property="BorderThickness" TargetName="MenuBorder" Value="1,0,0,0" />
                         </Trigger>
                         <Trigger Property="MenuPlacement" Value="Top">
                             <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Top" />
                             <Setter Property="VerticalAlignment" TargetName="MenuBorder" Value="Top" />
                             <Setter Property="HorizontalAlignment" TargetName="MenuBorder" Value="Stretch" />
+                            <Setter Property="BorderThickness" TargetName="MenuBorder" Value="0,0,0,1" />
                         </Trigger>
                         <Trigger Property="MenuPlacement" Value="Left">
                             <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Left" />
                             <Setter Property="VerticalAlignment" TargetName="MenuBorder" Value="Stretch" />
                             <Setter Property="HorizontalAlignment" TargetName="MenuBorder" Value="Left" />
+                            <Setter Property="BorderThickness" TargetName="MenuBorder" Value="0,0,1,0" />
                         </Trigger>
                         <Trigger Property="MenuPlacement" Value="Hidden">
                             <Setter Property="DockPanel.Dock" TargetName="MenuBorder" Value="Left" />
                             <Setter Property="Visibility" TargetName="MenuBorder" Value="Collapsed" />
+                            <Setter Property="BorderThickness" TargetName="MenuBorder" Value="0,0,0,0" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
