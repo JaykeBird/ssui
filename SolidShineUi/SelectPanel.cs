@@ -533,6 +533,8 @@ namespace SolidShineUi
                 return;
             }
 
+            ItemsTheme = new SsuiTheme(cs);
+
             if (cs.IsHighContrast)
             {
                 Background = cs.BackgroundColor.ToBrush();
@@ -560,21 +562,21 @@ namespace SolidShineUi
                 }
             }
 
-            UpdateChildrenAppearance();
+            //UpdateChildrenColorScheme();
 
             runApply = true;
         }
 
-        private void UpdateChildrenAppearance()
-        {
-            foreach (IClickSelectableControl item in ItemsSource)
-            {
-                item.SelectedBrush = SelectedBrush;
-                item.HighlightBrush = HighlightBrush;
-                item.ClickBrush = ClickBrush;
-                item.ApplyColorScheme(ColorScheme);
-            }
-        }
+        //private void UpdateChildrenColorScheme()
+        //{
+        //    foreach (IClickSelectableControl item in ItemsSource)
+        //    {
+        //        item.SelectedBrush = SelectedBrush;
+        //        item.HighlightBrush = HighlightBrush;
+        //        item.ClickBrush = ClickBrush;
+        //        item.ApplyColorScheme(ColorScheme);
+        //    }
+        //}
         #endregion
 
         #region SsuiTheme / child SsuiTheme
@@ -598,10 +600,12 @@ namespace SolidShineUi
                 {
                     // subitems should use the subitem theme
                     SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.SubitemTheme)) { Source = this.SsuiTheme });
+                    subitemTheme = sat.SubitemTheme;
                 }
                 else if (useAccentTheme)
                 {
                     SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.AccentTheme)) { Source = this.SsuiTheme });
+                    subitemTheme = sat.AccentTheme;
                 }
                 else
                 {
@@ -619,7 +623,17 @@ namespace SolidShineUi
             ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, mainTheme);
             ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, mainTheme);
 
-            // apply subitem brushes using subitemTheme
+            // these brushes are applied directly from ItemsTheme
+            // however, we'll directly set these properties so that people can see what they are
+
+            _internalThemeAction = true;
+
+            HighlightBrush = subitemTheme.HighlightBrush;
+            ClickBrush = subitemTheme.ClickBrush;
+            SelectedBrush = subitemTheme.SelectedBackgroundBrush;
+
+            _internalThemeAction = false;
+
             //ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, subitemTheme);
             //ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, subitemTheme);
             //ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, subitemTheme);
@@ -627,20 +641,17 @@ namespace SolidShineUi
             // UpdateChildrenAppearance();
         }
 
-        // updating brushes should update the equivalent values in this SsuiTheme, and setting the SsuiTheme property
-        // should then set this value to that theme (or its subitem theme)
-
-        // TODO: actually set this property within OnApplySsuiTheme, and adjust the brush properties to
-        // create a clone of this property and then set the appropriate brush in there
+        bool _internalThemeAction = false;
 
         /// <summary>
-        /// The theme and brushes this panel will use for its child items.
-        /// To update the theme/brushes, set the <c>SsuiTheme</c> property or the various brush properties.
+        /// Get or set the theme and brushes this panel will use for its child items.
+        /// <para/>
+        /// This is set automatically when the <c>SsuiTheme</c> or <c>ColorScheme</c> property is updated.
         /// </summary>
-        protected internal SsuiTheme ItemsTheme { get => (SsuiTheme)GetValue(ItemsThemeProperty); set => SetValue(ItemsThemeProperty, value); }
+        public SsuiTheme ItemsTheme { get => (SsuiTheme)GetValue(ItemsThemeProperty); set => SetValue(ItemsThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ItemsTheme"/>. See the related property for details.</summary>
-        protected internal static readonly DependencyProperty ItemsThemeProperty
+        public static readonly DependencyProperty ItemsThemeProperty
             = DependencyProperty.Register(nameof(ItemsTheme), typeof(SsuiTheme), typeof(SelectPanel),
             new FrameworkPropertyMetadata(new SsuiTheme(), (d, e) => d.PerformAs<SelectPanel>((o) => o.OnItemsThemeChange(e))));
 
@@ -825,11 +836,7 @@ namespace SolidShineUi
         public Brush ClickBrush
         {
             get => (Brush)GetValue(ClickBrushProperty);
-            set
-            {
-                SetValue(ClickBrushProperty, value);
-                UpdateChildrenAppearance();
-            }
+            set => SetValue(ClickBrushProperty, value);
         }
 
         /// <summary>
@@ -839,25 +846,17 @@ namespace SolidShineUi
         public Brush SelectedBrush
         {
             get => (Brush)GetValue(SelectedBrushProperty);
-            set
-            {
-                SetValue(SelectedBrushProperty, value);
-                UpdateChildrenAppearance();
-            }
+            set => SetValue(SelectedBrushProperty, value);
         }
 
         /// <summary>
-        /// Get or set the brush used when an item in this control is highlighted (i.e. has the mouse over it or has keyboard focus).
+        /// Get or set the brush used when an item in this control is highlighted (e.g., has the mouse over it or has keyboard focus).
         /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
         {
             get => (Brush)GetValue(HighlightBrushProperty);
-            set
-            {
-                SetValue(HighlightBrushProperty, value);
-                UpdateChildrenAppearance();
-            }
+            set => SetValue(HighlightBrushProperty, value);
         }
 
         /// <summary>
@@ -884,36 +883,64 @@ namespace SolidShineUi
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(Colors.LightSalmon.ToBrush()));
+            nameof(ClickBrush), typeof(Brush), typeof(SelectPanel),
+            new PropertyMetadata(Colors.LightSalmon.ToBrush(), ChildBrushChanged));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(Colors.MistyRose.ToBrush()));
+            nameof(SelectedBrush), typeof(Brush), typeof(SelectPanel),
+            new PropertyMetadata(Colors.MistyRose.ToBrush(), ChildBrushChanged));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(Colors.Salmon.ToBrush()));
+            nameof(HighlightBrush), typeof(Brush), typeof(SelectPanel),
+            new PropertyMetadata(Colors.Salmon.ToBrush(), ChildBrushChanged));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(SelectPanel),
+            nameof(DisabledBrush), typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(SelectPanel),
+            nameof(BorderDisabledBrush), typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
+
+        private static void ChildBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SelectPanel sp && e.NewValue is Brush b)
+            {
+                if (sp._internalThemeAction) return;
+
+                if (sp.ItemsTheme.IsFrozen) // if it's frozen, we'll want to unfreeze it to make sure we can edit it
+                {
+                    sp.ItemsTheme = sp.ItemsTheme.CloneCurrentValue();
+                }
+
+                switch (e.Property.Name)
+                {
+                    case nameof(HighlightBrush):
+                        sp.ItemsTheme.HighlightBrush = b;
+                        break;
+                    case nameof(ClickBrush):
+                        sp.ItemsTheme.ClickBrush = b;
+                        break;
+                    case nameof(SelectedBrush):
+                        sp.ItemsTheme.SelectedBackgroundBrush = b;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
         #endregion
 
