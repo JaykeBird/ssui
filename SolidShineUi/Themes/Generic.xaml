@@ -1844,6 +1844,7 @@
                                          SelectedBrush="{Binding SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
                                          Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent},
                                                            Converter={StaticResource dovc}}" 
+                                         UseAccentTheme="{Binding UseAccentTheme, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          ForegroundHighlightBrush="{Binding ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
                                          ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
@@ -1870,6 +1871,7 @@
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                          SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
                                          ForegroundHighlightBrush="{TemplateBinding ForegroundHighlightBrush}" 
+                                         UseAccentTheme="{Binding UseAccentTheme, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          ThemeValueExclude="CornerRadius,ForegroundHighlightBrush"
                                          IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
                             <flat:FlatButton.Style>

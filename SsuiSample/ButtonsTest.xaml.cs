@@ -34,5 +34,18 @@ namespace SsuiSample
         {
             txtResult.Text = $"{(sender as FrameworkElement).Name} was clicked on the menu";
         }
+
+        int executeCount = 0;
+
+        private void Button_Execute(object sender, RoutedEventArgs e)
+        {
+            executeCount++;
+            txtResult.Text = $"{(sender as FrameworkElement).Name} held, count {executeCount}";
+        }
+
+        private void Button_EndPress(object sender, RoutedEventArgs e)
+        {
+            executeCount = 0;
+        }
     }
 }

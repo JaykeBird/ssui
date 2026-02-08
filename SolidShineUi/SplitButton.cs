@@ -305,9 +305,14 @@ namespace SolidShineUi
 
         void UpdateFromUseAccentTheme(bool useAccentTheme)
         {
-            if (SsuiTheme != null) return;
-
-            ApplyColorScheme(ColorScheme, useAccentTheme);
+            if (SsuiTheme != null)
+            {
+                ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
+            }
+            else
+            {
+                ApplyColorScheme(ColorScheme, useAccentTheme);
+            }
         }
 
         ///// <summary>
