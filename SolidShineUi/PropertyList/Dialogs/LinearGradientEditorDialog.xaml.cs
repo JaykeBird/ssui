@@ -69,7 +69,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             imgLeft.Source = IconLoader.LoadIcon("LeftArrow", SsuiTheme.IconVariation);
             imgRight.Source = IconLoader.LoadIcon("RightArrow", SsuiTheme.IconVariation);
 
-            if (Owner != null && Owner.Icon != null)
+            if (Icon == null && Owner != null && Owner.Icon != null)
             {
                 Icon = Owner.Icon.Clone();
             }

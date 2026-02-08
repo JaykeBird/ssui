@@ -149,7 +149,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             txtHex.Focus();
 
-            if (Owner != null && Owner.Icon != null)
+            if (Icon == null && Owner != null && Owner.Icon != null)
             {
                 Icon = Owner.Icon.Clone();
             }

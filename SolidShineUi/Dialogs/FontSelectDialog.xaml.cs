@@ -22,7 +22,7 @@ namespace SolidShineUi
 
         private void window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Owner != null && Owner.Icon != null)
+            if (Icon == null && Owner != null && Owner.Icon != null)
             {
                 Icon = Owner.Icon.Clone();
             }
