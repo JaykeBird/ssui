@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -34,8 +32,10 @@ namespace SolidShineUi
 
             DependencyPropertyDescriptor.FromProperty(BackgroundProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(BackgroundProperty, Background));
             DependencyPropertyDescriptor.FromProperty(BorderBrushProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(BorderBrushProperty, BorderBrush));
-            DependencyPropertyDescriptor.FromProperty(BorderThicknessProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(BorderThicknessProperty, BorderThickness));
             DependencyPropertyDescriptor.FromProperty(ForegroundProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyValueToButtons(ForegroundProperty, Foreground));
+            DependencyPropertyDescriptor.FromProperty(UseAccentThemeProperty, typeof(ThemedContentControl)).AddValueChanged(this, (s, e) => UpdateFromUseAccentTheme(UseAccentTheme));
+            DependencyPropertyDescriptor.FromProperty(BorderThicknessProperty, typeof(Control)).AddValueChanged(this, (s, e) => ApplyBorderThicknessToButtons(BorderThickness));
+
         }
 
         private void OnColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -219,20 +219,6 @@ namespace SolidShineUi
 
         #endregion
 
-        private static void ApplyPropertyUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is SplitButton sb)
-            {
-                sb.ApplyValueToButtons(e.Property, e.NewValue);
-            }
-        }
-
-        private void ApplyValueToButtons(DependencyProperty property, object value)
-        {
-            btnMain?.SetValue(property, value);
-            btnMenu?.SetValue(property, value);
-        }
-
         #region TransparentBack
 
         /// <summary>
@@ -295,7 +281,7 @@ namespace SolidShineUi
         /// Internal function used for debugging the state of the internal buttons.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string GetMainButtonBackgroundBinding
+        protected string GetMainButtonBackgroundBinding
         {
             get
             {
@@ -315,6 +301,13 @@ namespace SolidShineUi
 
                 return "(not found)";
             }
+        }
+
+        void UpdateFromUseAccentTheme(bool useAccentTheme)
+        {
+            if (SsuiTheme != null) return;
+
+            ApplyColorScheme(ColorScheme, useAccentTheme);
         }
 
         ///// <summary>
@@ -338,6 +331,168 @@ namespace SolidShineUi
         //        //btnMenu.SsuiTheme = copy;
         //    }
         //}
+
+        #endregion
+
+        #region Apply Values to Buttons
+
+        private static void ApplyPropertyUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SplitButton sb)
+            {
+                sb.ApplyValueToButtons(e.Property, e.NewValue);
+            }
+        }
+
+        private void ApplyValueToButtons(DependencyProperty property, object value)
+        {
+            btnMain?.SetValue(property, value);
+            btnMenu?.SetValue(property, value);
+        }
+
+        void ApplyCornerRadiusToButtons(CornerRadius cr)
+        {
+            if (btnMenu == null || btnMain == null) return;
+
+            switch (MenuButtonPlacement)
+            {
+                case PlacementDirection.Hidden:
+                    // no menu button
+                    // apply all to main button
+                    btnMenu.CornerRadius = new CornerRadius(0);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, cr.BottomRight, cr.BottomLeft);
+                    break;
+                case PlacementDirection.Top:
+                    // menu button on top (top left, top right)
+                    // main button on bottom
+                    btnMenu.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, 0, 0);
+                    btnMain.CornerRadius = new CornerRadius(0, 0, cr.BottomRight, cr.BottomLeft);
+                    break;
+                case PlacementDirection.Left:
+                    // menu button on left (top left, bottom left)
+                    // main button on right
+                    btnMenu.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
+                    btnMain.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
+                    break;
+                case PlacementDirection.Right:
+                    // menu button on right (top right, bottom right)
+                    // main button on left
+                    btnMenu.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
+                    break;
+                case PlacementDirection.Bottom:
+                    // menu button on bottom (bottom left, bottom right)
+                    // main button on top
+                    btnMenu.CornerRadius = new CornerRadius(0, 0, cr.BottomRight, cr.BottomLeft);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, 0, 0);
+                    break;
+                default:
+                    // treat it as Right, as that's the default value
+                    btnMenu.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
+                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
+                    break;
+            }
+        }
+
+        void ApplyBorderThicknessToButtons(Thickness th)
+        {
+            if (btnMenu == null || btnMain == null) return;
+
+            byte menuVal = 0;
+            byte mainVal = 0;
+
+            switch (MenuButtonPlacement)
+            {
+                case PlacementDirection.Hidden:
+                    // no menu button
+                    // apply all to main button
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(false, false, false, false);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(true, true, true, true);
+                    break;
+                case PlacementDirection.Top:
+                    // menu button on top (top, left, right)
+                    // main button on bottom
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: true, bottom: false);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: false, right: true, bottom: true);
+                    break;
+                case PlacementDirection.Left:
+                    // menu button on left (left, top, bottom)
+                    // main button on right
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                    break;
+                case PlacementDirection.Right:
+                    // menu button on right (right, top, bottom)
+                    // main button on left
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+                    break;
+                case PlacementDirection.Bottom:
+                    // menu button on bottom (bottom, left, right)
+                    // main button on top
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: false, right: true, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: true, bottom: false);
+                    break;
+                default:
+                    // treat it as Right, as that's the default value
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+                    break;
+            }
+
+            btnMenu.BorderThickness = PartialValueHelper.GetThicknessPartialValue(th, menuVal);
+            btnMain.BorderThickness = PartialValueHelper.GetThicknessPartialValue(th, mainVal);
+        }
+
+        void ApplyBorderSelectionThicknessToButtons(Thickness th)
+        {
+            if (btnMenu == null || btnMain == null) return;
+
+            byte menuVal = 0;
+            byte mainVal = 0;
+
+            switch (MenuButtonPlacement)
+            {
+                case PlacementDirection.Hidden:
+                    // no menu button
+                    // apply all to main button
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(false, false, false, false);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(true, true, true, true);
+                    break;
+                case PlacementDirection.Top:
+                    // menu button on top (top, left, right)
+                    // main button on bottom
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: true, bottom: false);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: false, right: true, bottom: true);
+                    break;
+                case PlacementDirection.Left:
+                    // menu button on left (left, top, bottom)
+                    // main button on right
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                    break;
+                case PlacementDirection.Right:
+                    // menu button on right (right, top, bottom)
+                    // main button on left
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+                    break;
+                case PlacementDirection.Bottom:
+                    // menu button on bottom (bottom, left, right)
+                    // main button on top
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: false, right: true, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: true, bottom: false);
+                    break;
+                default:
+                    // treat it as Right, as that's the default value
+                    menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                    mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+                    break;
+            }
+
+            btnMenu.BorderSelectionThickness = PartialValueHelper.GetThicknessPartialValue(th, menuVal);
+            btnMain.BorderSelectionThickness = PartialValueHelper.GetThicknessPartialValue(th, mainVal);
+        }
 
         #endregion
 
@@ -438,7 +593,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="cs">The color scheme to apply</param>
         /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
-        /// This can also be achieved with the <c>UseAccentColors</c> property.
+        /// This can also be achieved with the <c>UseAccentTheme</c> property.
         /// </param>
         public void ApplyColorScheme(ColorScheme cs, bool useAccentColors = false)
         {
@@ -544,11 +699,8 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = FlatButton.BorderSelectionThicknessProperty.AddOwner(typeof(SplitButton),
-            new PropertyMetadata(ApplyPropertyUpdate));
-
-        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty CornerRadiusProperty = FlatButton.CornerRadiusProperty.AddOwner(typeof(SplitButton), 
-            new PropertyMetadata((o, e) => o.PerformAs<SplitButton, CornerRadius>(e.NewValue, (s, v) => s.ApplyCornerRadiusToButtons(v))));
+            new PropertyMetadata((d, e) => d.PerformAs<SplitButton, Thickness>(e.NewValue, 
+                (o, nv) => o.ApplyBorderSelectionThicknessToButtons(nv))));
 
         /// <summary>
         /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
@@ -561,6 +713,10 @@ namespace SolidShineUi
             set => SetValue(BorderSelectionThicknessProperty, value);
         }
 
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CornerRadiusProperty = FlatButton.CornerRadiusProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata((o, e) => o.PerformAs<SplitButton, CornerRadius>(e.NewValue, (s, v) => s.ApplyCornerRadiusToButtons(v))));
+
         /// <summary>
         /// Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.
         /// </summary>
@@ -570,50 +726,6 @@ namespace SolidShineUi
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
-        }
-
-        void ApplyCornerRadiusToButtons(CornerRadius cr)
-        {
-            if (btnMenu == null || btnMain == null) return;
-
-            switch (MenuButtonPlacement)
-            {
-                case PlacementDirection.Hidden:
-                    // no menu button
-                    // apply all to main button
-                    btnMenu.CornerRadius = new CornerRadius(0);
-                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, cr.BottomRight, cr.BottomLeft);
-                    break;
-                case PlacementDirection.Top:
-                    // menu button on top (top left, top right)
-                    // main button on bottom
-                    btnMenu.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, 0, 0);
-                    btnMain.CornerRadius = new CornerRadius(0, 0, cr.BottomRight, cr.BottomLeft);
-                    break;
-                case PlacementDirection.Left:
-                    // menu button on left (top left, bottom left)
-                    // main button on right
-                    btnMenu.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
-                    btnMain.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
-                    break;
-                case PlacementDirection.Right:
-                    // menu button on right (top right, bottom right)
-                    // main button on left
-                    btnMenu.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
-                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
-                    break;
-                case PlacementDirection.Bottom:
-                    // menu button on bottom (bottom left, bottom right)
-                    // main button on top
-                    btnMenu.CornerRadius = new CornerRadius(0, 0, cr.BottomRight, cr.BottomLeft);
-                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, 0, 0);
-                    break;
-                default:
-                    // treat it as Right, as that's the default value
-                    btnMenu.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
-                    btnMain.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
-                    break;
-            }
         }
 
         #region Separator Border
