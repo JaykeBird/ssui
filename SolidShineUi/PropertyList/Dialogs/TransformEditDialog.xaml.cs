@@ -15,6 +15,9 @@ namespace SolidShineUi.PropertyList.Dialogs
     /// </summary>
     public partial class TransformEditDialog : FlatWindow
     {
+
+        #region Window Constructor / Loaded
+
         /// <summary>
         /// Create a new TransformEditDialog.
         /// </summary>
@@ -23,6 +26,18 @@ namespace SolidShineUi.PropertyList.Dialogs
             InitializeComponent();
             SetupWindow();
             SourceInitialized += TransformEditDialog_SourceInitialized;
+        }
+
+        void SetupWindow()
+        {
+            SetValue(TransformListProperty, new SelectableCollection<TransformSelectableControl>());
+            TransformList.SelectionChanged += TransformList_SelectionChanged;
+            TransformList.CanSelectMultiple = false;
+
+            imgAdd.Source = IconLoader.LoadIcon("Add", SsuiTheme.IconVariation);
+            imgDelete.Source = IconLoader.LoadIcon("Delete", SsuiTheme.IconVariation);
+            imgMoveDown.Source = IconLoader.LoadIcon("Down", SsuiTheme.IconVariation);
+            imgMoveUp.Source = IconLoader.LoadIcon("Up", SsuiTheme.IconVariation);
         }
 
 #if NETCOREAPP
@@ -34,19 +49,21 @@ namespace SolidShineUi.PropertyList.Dialogs
             DisableMinimizeAction();
         }
 
-        bool singleEditMode = false;
-
-        void SetupWindow()
+        private void window_Loaded(object sender, RoutedEventArgs e)
         {
-            SetValue(TransformListProperty, new SelectableCollection<TransformSelectableControl>());
-            TransformList.SelectionChanged += TransformList_SelectionChanged;
-            TransformList.CanSelectMultiple = false;
-
-            imgAdd.Source = IconLoader.LoadIcon("Add", ColorScheme);
-            imgDelete.Source = IconLoader.LoadIcon("Delete", ColorScheme);
-            imgMoveDown.Source = IconLoader.LoadIcon("Down", ColorScheme);
-            imgMoveUp.Source = IconLoader.LoadIcon("Up", ColorScheme);
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
+
+        #endregion
+
+        bool singleEditMode = false;
 
         /// <summary>
         /// Get or set the list of controls that represents each transform to display in the dialog. This is generally used internally, but this can also be used as a reference of what's currently in the dialog.

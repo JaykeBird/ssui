@@ -16,7 +16,7 @@ namespace SolidShineUi
     /// </summary>
     public partial class ColorPickerDialog : FlatWindow
     {
-        #region Window Actions
+        #region Window Constructors / Loaded
 
         /// <summary>
         /// Create a ColorPickerDialog.
@@ -58,6 +58,18 @@ namespace SolidShineUi
             ColorScheme = cs;
             
             LoadInSelectedColor(color);
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion

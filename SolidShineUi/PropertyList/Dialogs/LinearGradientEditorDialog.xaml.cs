@@ -64,10 +64,19 @@ namespace SolidShineUi.PropertyList.Dialogs
             //    nudEndY.Value = edtPoints.SelectedHeight2;
             //});
 
-            imgDown.Source = IconLoader.LoadIcon("DownArrow", ColorScheme);
-            imgUp.Source = IconLoader.LoadIcon("UpArrow", ColorScheme);
-            imgLeft.Source = IconLoader.LoadIcon("LeftArrow", ColorScheme);
-            imgRight.Source = IconLoader.LoadIcon("RightArrow", ColorScheme);
+            imgDown.Source = IconLoader.LoadIcon("DownArrow", SsuiTheme.IconVariation);
+            imgUp.Source = IconLoader.LoadIcon("UpArrow", SsuiTheme.IconVariation);
+            imgLeft.Source = IconLoader.LoadIcon("LeftArrow", SsuiTheme.IconVariation);
+            imgRight.Source = IconLoader.LoadIcon("RightArrow", SsuiTheme.IconVariation);
+
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK". <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>

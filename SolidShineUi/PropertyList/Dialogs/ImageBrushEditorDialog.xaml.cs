@@ -45,6 +45,18 @@ namespace SolidShineUi.PropertyList.Dialogs
             imgOpen.Source = IconLoader.LoadIcon("Open", SsuiTheme.IconVariation);
         }
 
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
+        }
+
         //private void dialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
         //{
         //    imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);

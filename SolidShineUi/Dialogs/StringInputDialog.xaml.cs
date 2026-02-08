@@ -17,7 +17,7 @@ namespace SolidShineUi
     public partial class StringInputDialog : FlatWindow
     {
 
-        #region Constructors / Window Loaded
+        #region Window Constructors / Loaded
 
         /// <summary>
         /// Create a StringInputDialog with nothing preset.
@@ -75,6 +75,15 @@ namespace SolidShineUi
         {
             txtValue.Focus();
             CheckValidation();
+
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion

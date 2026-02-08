@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Text; // needed for .NET Rune
 using System.Threading.Tasks;
 using System.Windows;
 using SolidShineUi;
@@ -12,7 +12,7 @@ namespace SolidShineUi.PropertyList.Dialogs
     public partial class CharInputDialog : FlatWindow
     {
 
-        #region Window Actions / constructors
+        #region Window Constructors / Loaded / EnterIntoRuneMode
 
         #region Constructors / EnterIntoRuneMode (.NET)
 
@@ -148,6 +148,15 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
 
             txtHex.Focus();
+
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion

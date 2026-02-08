@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ssut="clr-namespace:SolidShineUi.Utils"
     x:Class="SolidShineUi.ColorPickerDialog"
-    mc:Ignorable="d" Title="Pick a Color" Height="535" Width="410"
+    mc:Ignorable="d" Title="Pick a Color" Height="535" Width="410" Loaded="window_Loaded"
     ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" CaptionDisplayType="Close" >
     <flat:FlatWindow.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />

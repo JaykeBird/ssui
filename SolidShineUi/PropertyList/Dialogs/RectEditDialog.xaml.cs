@@ -14,7 +14,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         // bool _internalAction = false;
 
-        #region Window Actions / constructors
+        #region Window Constructors / Loaded
 
         /// <summary>
         /// Create a CharInputDialog.
@@ -37,7 +37,14 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion

@@ -6,7 +6,7 @@
         xmlns:pl="clr-namespace:SolidShineUi.PropertyList"
         xmlns:flat="clr-namespace:SolidShineUi"
         xmlns:conv="clr-namespace:SolidShineUi.Converters"
-        mc:Ignorable="d" SourceInitialized="window_SourceInitialized"
+        mc:Ignorable="d" SourceInitialized="window_SourceInitialized" Loaded="window_Loaded"
         Title="List Viewer/Editor" Height="450" Width="600" MinWidth="500" MinHeight="300" CaptionDisplayType="MaximizeClose" >
     <flat:FlatWindow.Resources>
         <conv:ColorToBrushConverter x:Key="ctb" />

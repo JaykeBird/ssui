@@ -106,7 +106,9 @@ namespace SsuiSample
 
             cpd.ShowTransparencyControls = true;
 
+
             cpd.Owner = Window.GetWindow(this);
+            cpd.SsuiTheme = TryGetSsuiAppTheme();
             cpd.ShowDialog();
 
             if (cpd.DialogResult)

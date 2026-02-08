@@ -10,7 +10,7 @@ namespace SolidShineUi
     public partial class MultilineStringInputDialog : FlatWindow
     {
 
-        #region Window Actions
+        #region Window Construction / Loaded
 
         /// <summary>
         /// Create a MultilineStringInputDialog with nothing preset.
@@ -67,6 +67,15 @@ namespace SolidShineUi
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
             txtValue.Focus();
+
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         private void window_SourceInitialized(object sender, EventArgs e)

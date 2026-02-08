@@ -20,6 +20,18 @@ namespace SolidShineUi
             AutoCompleteBehavior.SetAutoCompleteItemsSource(txtFont, FontFamiliesByString());
         }
 
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
+        }
+
         //private FontFamily _fam = new FontFamily("Segoe UI");
         //private FontWeight _weight;
         //private double _size;

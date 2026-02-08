@@ -14,6 +14,9 @@ namespace SolidShineUi.PropertyList.Dialogs
     /// </summary>
     public partial class ListEditorDialog : FlatWindow
     {
+
+        #region Window Constructor / Loaded
+
         /// <summary>
         /// Create a ListEditorDialog.
         /// </summary>
@@ -22,10 +25,24 @@ namespace SolidShineUi.PropertyList.Dialogs
             InitializeComponent();
         }
 
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
+        }
+
         private void window_SourceInitialized(object sender, EventArgs e)
         {
             DisableMinimizeAction();
         }
+
+        #endregion
 
         #region Base variables
 

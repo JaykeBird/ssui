@@ -60,6 +60,15 @@ namespace SolidShineUi.PropertyList.Dialogs
             //    nudEndX.Value = edtStart.SelectedWidth2;
             //    nudEndY.Value = edtStart.SelectedHeight2;
             //});
+
+            if (Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         /// <summary>

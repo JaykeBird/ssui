@@ -7,10 +7,10 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:conv="clr-namespace:SolidShineUi.Converters"
         xmlns:flat="clr-namespace:SolidShineUi"
-                 xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-                 mc:Ignorable="d"
+        xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
         Title="Select Font" Height="550" Width="480" x:Name="window" BorderBrush="Black" FontSize="12"
-                ResizeMode="NoResize" CaptionDisplayType="Close" >
+        ResizeMode="NoResize" CaptionDisplayType="Close" Loaded="window_Loaded" >
     <flat:FlatWindow.Resources>
         <conv:ColorToBrushConverter x:Key="ColorConverter" />
         <conv:FontWeightValueConverter x:Key="fvc" />
