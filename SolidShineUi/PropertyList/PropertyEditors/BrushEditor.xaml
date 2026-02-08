@@ -38,7 +38,7 @@
                         <TextBlock Text="Currently set to:" FontWeight="Bold" Margin="8,10,0,0" FontSize="12" Grid.Row="0" />
                         <TextBlock Text="(unknown)" FontSize="16" Margin="8,3" x:Name="txtCurrentBrush" Grid.Row="1" />
                         <TextBlock Text="(value unset)" FontSize="12" Margin="8,3" x:Name="txtCurrentValue" Grid.Row="2" />
-                        <flat:FlatButton Content="Edit..." x:Name="btnEditBrush" FontSize="12" HorizontalAlignment="Right" Margin="0,3,10,2" Click="btnBrush_Click" Grid.Row="3" />
+                        <flat:FlatButton Content="Edit..." x:Name="btnEditBrush" FontSize="12" HorizontalAlignment="Left" Margin="32,3,8,2" Click="btnBrush_Click" Grid.Row="3" />
                     </Grid>
                     <Grid Grid.Row="1" x:Name="grdTransform" >
                         <Grid.RowDefinitions>
@@ -49,10 +49,10 @@
                         </Grid.RowDefinitions>
                         <!--<Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform" 
                                             BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
-                        <flat:LinkTextBlock Text="Edit Transform..." FontSize="12" Margin="8,2" x:Name="txtTransform" Click="btnEditTransform_Click" Grid.Row="1" 
-                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Right" />
-                        <flat:LinkTextBlock Text="Edit Relative Transform..." FontSize="12" Margin="8,2" x:Name="txtRelative" Click="btnEditRelativeTransform_Click" Grid.Row="2" 
-                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Right" />
+                        <flat:LinkTextBlock Text="Edit Transform..." FontSize="12" Margin="32,8,8,2" x:Name="txtTransform" Click="btnEditTransform_Click" Grid.Row="1" 
+                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Left" />
+                        <flat:LinkTextBlock Text="Edit Relative Transform..." FontSize="12" Margin="32,2,8,4" x:Name="txtRelative" Click="btnEditRelativeTransform_Click" Grid.Row="2" 
+                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Left" />
                         <!--<Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform2" Grid.Row="3" 
                                             BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
                     </Grid>
