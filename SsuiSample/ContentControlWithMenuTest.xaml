@@ -52,5 +52,17 @@
             </flat:ContentControlWithMenu.Items>
             <TextBlock Text="Wow" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </flat:ContentControlWithMenu>
+        <flat:ContentControlWithMenu Margin="226,260,0,0" HorizontalAlignment="Left" Width="Auto" Height="160" VerticalAlignment="Top" UseAccentTheme="True" >
+            <flat:ContentControlWithMenu.Items>
+                <MenuItem Header="Item 1" />
+                <MenuItem Header="Item 2">
+                    <MenuItem Header="Subitem 1" />
+                    <MenuItem Header="Subitem 2" />
+                    <MenuItem Header="Subitem 3" />
+                </MenuItem>
+                <MenuItem Header="Item 3 with a long name" x:Name="mnuName1" />
+            </flat:ContentControlWithMenu.Items>
+            <TextBlock Text="Wow" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </flat:ContentControlWithMenu>
     </Grid>
 </flat:ThemedUserControl>

@@ -40,7 +40,8 @@ namespace SsuiSample
 
         private void SerializerTest_SsuiThemeApplied(object sender, RoutedEventArgs e)
         {
-            //brushEditor.ApplySsuiTheme(SsuiTheme ?? SsuiThemes.SystemTheme);
+            if (brushEditor == null) return;
+            brushEditor.ApplySsuiTheme(SsuiTheme ?? SsuiThemes.SystemTheme);
         }
 
         SsuiAppTheme TryGetSsuiAppTheme()
