@@ -118,6 +118,7 @@
             <local:BrushSerializerTest x:Name="serializerTest" Visibility="Collapsed" />
             <local:ButtonsTest x:Name="buttonsTest" Visibility="Collapsed" />
             <local:CheckBoxTest x:Name="checkBoxTest" Visibility="Collapsed" />
+            <local:ContentControlWithMenuTest x:Name="contentTest" Visibility="Collapsed" />
             <local:DialogsTest x:Name="dialogsTest" Visibility="Collapsed" />
             <local:FileSelectTest x:Name="fileSelectTest" Visibility="Collapsed" />
             <local:FlatWindowTest x:Name="flatWindowTest" Visibility="Collapsed" />

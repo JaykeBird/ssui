@@ -8,9 +8,49 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <flat:ContentControlWithMenu Margin="35,60,0,0" HorizontalAlignment="Left" Width="Auto" Height="160" VerticalAlignment="Top" Padding="10" >
-            <TextBlock Text="Whaaaat" />
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="ContentControlWithMenu Test" FontSize="16" VerticalAlignment="Top"/>
+        <flat:ContentControlWithMenu Margin="20,80,0,0" HorizontalAlignment="Left" Width="Auto" Height="160" VerticalAlignment="Top" Padding="10" MenuPlacement="Right" >
+            <TextBlock Text="Main content" />
+            <flat:ContentControlWithMenu.Items>
+                <MenuItem Header="Item 1" />
+                <MenuItem Header="Item 2" />
+                <Separator/>
+                <MenuItem Header="Kinda long item">
+                    <MenuItem Header="Subitem 1" />
+                    <MenuItem Header="Subitem 2" />
+                    <Separator />
+                    <MenuItem Header="Subitem 3" />
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Item 3" />
+                <MenuItem Header="Item 4" />
+            </flat:ContentControlWithMenu.Items>
         </flat:ContentControlWithMenu>
-
+        <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" Text="With menu on right" VerticalAlignment="Top"/>
+        <flat:ContentControlWithMenu Margin="271,80,0,0" HorizontalAlignment="Left" Width="Auto" Height="160" VerticalAlignment="Top" Padding="10" MenuPlacement="Bottom" >
+            <flat:ContentControlWithMenu.Items>
+                <MenuItem Header="Item 1" />
+                <MenuItem Header="Item 2" />
+                <Separator/>
+                <MenuItem Header="Kinda long item">
+                    <MenuItem Header="Subitem 1" />
+                    <MenuItem Header="Subitem 2" />
+                </MenuItem>
+            </flat:ContentControlWithMenu.Items>
+            <TextBlock Text="Main content" />
+        </flat:ContentControlWithMenu>
+        <TextBlock HorizontalAlignment="Left" Margin="271,60,0,0" Text="With menu on bottom" VerticalAlignment="Top"/>
+        <flat:ContentControlWithMenu Margin="20,260,0,0" HorizontalAlignment="Left" Width="Auto" Height="160" VerticalAlignment="Top" >
+            <flat:ContentControlWithMenu.Items>
+                <MenuItem Header="Item 1" />
+                <MenuItem Header="Item 2">
+                    <MenuItem Header="Subitem 1" />
+                    <MenuItem Header="Subitem 2" />
+                    <MenuItem Header="Subitem 3" />
+                </MenuItem>
+                <MenuItem Header="Item 3 with a long name" x:Name="mnuName" />
+            </flat:ContentControlWithMenu.Items>
+            <TextBlock Text="Wow" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </flat:ContentControlWithMenu>
     </Grid>
 </flat:ThemedUserControl>

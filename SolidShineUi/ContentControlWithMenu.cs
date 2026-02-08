@@ -152,13 +152,29 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="HasContent"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HasContentProperty = HasContentPropertyKey.DependencyProperty;
 
-        ///// <summary>
-        ///// Get or set the template to use for displaying the <see cref="Content"/> in this control.
-        ///// </summary>
-        //public DataTemplate ContentTemplate { get => (DataTemplate)GetValue(ContentTemplateProperty); set => SetValue(ContentTemplateProperty, value); }
+        /// <summary>
+        /// Get or set the template to use for displaying the <see cref="Content"/> in this control.
+        /// </summary>
+        public DataTemplate ContentTemplate { get => (DataTemplate)GetValue(ContentTemplateProperty); set => SetValue(ContentTemplateProperty, value); }
 
-        ///// <summary>The backing dependency property for <see cref="ContentTemplate"/>. See the related property for details.</summary>
-        //public static readonly DependencyProperty ContentTemplateProperty = ContentControl.ContentTemplateProperty.AddOwner(typeof(ContentControlWithMenu));
+        /// <summary>The backing dependency property for <see cref="ContentTemplate"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ContentTemplateProperty = ContentControl.ContentTemplateProperty.AddOwner(typeof(ContentControlWithMenu));
+
+        /// <summary>
+        /// Get or set a composite string that specifies how to format the <see cref="Content"/> property if it is displayed as a string.
+        /// </summary>
+        public string ContentStringFormat { get => (string)GetValue(ContentStringFormatProperty); set => SetValue(ContentStringFormatProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ContentStringFormat"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ContentStringFormatProperty = ContentControl.ContentStringFormatProperty.AddOwner(typeof(ContentControlWithMenu));
+
+        /// <summary>
+        /// Get or set a template selector that can provide custom template-selection logic.
+        /// </summary>
+        public DataTemplateSelector ContentTemplateSelector { get => (DataTemplateSelector)GetValue(ContentTemplateSelectorProperty); set => SetValue(ContentTemplateSelectorProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ContentTemplateSelector"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ContentTemplateSelectorProperty = ContentControl.ContentTemplateSelectorProperty.AddOwner(typeof(ContentControlWithMenu));
 
         #endregion
 
