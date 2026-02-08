@@ -72,7 +72,10 @@ namespace SolidShineUi.Utils
         /// <param name="top">indicate if the top edge should be applied</param>
         /// <param name="right">indicate if the right edge should be applied</param>
         /// <param name="bottom">indicate if the bottom edge should be applied</param>
-        /// <returns>A byte that indicates the selected corner values should be applied when used with a <see cref="PartialThicknessConverter"/>.</returns>
+        /// <returns>
+        /// A byte that indicates the selected corner values should be applied when used with a <see cref="PartialThicknessConverter"/>
+        /// or the <see cref="GetThicknessPartialValue(Thickness, byte)"/> method.
+        /// </returns>
         /// <remarks>
         /// The specific byte values returned are not the only ones that are allowed by <see cref="PartialThicknessConverter"/>, but are some of the easiest to calculate
         /// given any possible combination of inputs. These byte values indicate which edges of the border/margins values to flow through the converter from the inputted value into the result,
@@ -96,7 +99,10 @@ namespace SolidShineUi.Utils
         /// Get a byte value to indicate the edges/borders to use with <see cref="PartialThicknessConverter"/>.
         /// </summary>
         /// <param name="s">The string value to use to indicate which corner values to apply; can contain any values of "L", "T", "R", and/or "B"</param>
-        /// <returns>A byte that indicates the selected corner values should be applied when used with a <see cref="PartialThicknessConverter"/>.</returns>
+        /// <returns>
+        /// A byte that indicates the selected corner values should be applied when used with a <see cref="PartialThicknessConverter"/>
+        /// or the <see cref="GetCornerRadiusPartialValue(CornerRadius, byte)"/> method.
+        /// </returns>
         /// <remarks>
         /// The specific byte values returned are not the only ones that are allowed by <see cref="PartialThicknessConverter"/>, but are some of the easiest to calculate
         /// given any possible combination of inputs. These byte values indicate which edges of the border/margins values to flow through the converter from the inputted value into the result,
@@ -412,5 +418,52 @@ namespace SolidShineUi.Utils
 
 #endif
 
+        /// <summary>
+        /// Get a partial value of a Thickness object, by inputting a base Thickness and the values that you want to keep.
+        /// </summary>
+        /// <param name="baseVal">the base Thickness value</param>
+        /// <param name="partialValue">the byte indicating which values to keep</param>
+        /// <returns>A new Thickness object with the values kept still the same, and the remaining values changed to 0</returns>
+        public static Thickness GetThicknessPartialValue(Thickness baseVal, byte partialValue)
+        {
+            var vals = DecodeThicknessPartialValue(partialValue);
+            return new Thickness(vals.left ? baseVal.Left : 0, vals.top ? baseVal.Top : 0, vals.right ? baseVal.Right : 0, vals.bottom ? baseVal.Bottom : 0);
+        }
+
+        /// <summary>
+        /// Get a partial value of a Thickness object, by inputting a base Thickness and the values that you want to keep.
+        /// </summary>
+        /// <param name="baseVal">the base Thickness value</param>
+        /// <param name="partialValue">the string indicating which values to keep</param>
+        /// <returns>A new Thickness object with the values kept still the same, and the remaining values changed to 0</returns>
+        public static Thickness GetThicknessPartialValue(Thickness baseVal, string partialValue)
+        {
+            var vals = DecodeThicknessPartialValue(partialValue);
+            return new Thickness(vals.left ? baseVal.Left : 0, vals.top ? baseVal.Top : 0, vals.right ? baseVal.Right : 0, vals.bottom ? baseVal.Bottom : 0);
+        }
+
+        /// <summary>
+        /// Get a partial value of a CornerRadius object, by inputting a base CornerRadius and the values that you want to keep.
+        /// </summary>
+        /// <param name="baseVal">the base CornerRadius value</param>
+        /// <param name="partialValue">the byte indicating which values to keep</param>
+        /// <returns>A new CornerRadius object with the values kept still the same, and the remaining values changed to 0</returns>
+        public static CornerRadius GetCornerRadiusPartialValue(CornerRadius baseVal, byte partialValue)
+        {
+            var vals = DecodeCornerRadiusPartialValue(partialValue);
+            return new CornerRadius(vals.topLeft ? baseVal.TopLeft : 0, vals.topRight ? baseVal.TopRight : 0, vals.bottomRight ? baseVal.BottomRight : 0, vals.bottomLeft ? baseVal.BottomLeft : 0);
+        }
+
+        /// <summary>
+        /// Get a partial value of a CornerRadius object, by inputting a base CornerRadius and the values that you want to keep.
+        /// </summary>
+        /// <param name="baseVal">the base CornerRadius value</param>
+        /// <param name="partialValue">the string indicating which values to keep</param>
+        /// <returns>A new CornerRadius object with the values kept still the same, and the remaining values changed to 0</returns>
+        public static CornerRadius GetCornerRadiusPartialValue(CornerRadius baseVal, string partialValue)
+        {
+            var vals = DecodeCornerRadiusPartialValue(partialValue);
+            return new CornerRadius(vals.topLeft ? baseVal.TopLeft : 0, vals.topRight ? baseVal.TopRight : 0, vals.bottomRight ? baseVal.BottomRight : 0, vals.bottomLeft ? baseVal.BottomLeft : 0);
+        }
     }
 }
