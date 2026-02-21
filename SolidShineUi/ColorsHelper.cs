@@ -153,7 +153,10 @@ namespace SolidShineUi
             return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
-        // TODO: perform benchmark to see if ToHexString or ToHexStringLegacy is faster
+        // I expect that ToHexStringLegacy is probably a bit faster / less resource intensive,
+        // but for consistency in code/approach between ToHexString and ToHexStringWithAlpha, I went with the same approach for both functions
+        // if performance does become a concern, then either reimplement this legacy one instead (and/or rename it to ToHexStringFast or something lol)
+        // for now, others that may want this can just take this code to implement in their own libraries/projects
 
         //taken from http://www.cambiaresearch.com/articles/1/convert-dotnet-color-to-hex-string
         //written by Steve Lautenschlager

@@ -2118,15 +2118,15 @@
                                 </flat:MenuButton.Content>
                                 <flat:MenuButton.Menu>
                                     <flat:ContextMenu>
-                                        <MenuItem Header="Sort by Name" Command="{x:Static pl:PropertyListCommands.SortByName}" />
-                                        <MenuItem Header="Sort by Category" Command="{x:Static pl:PropertyListCommands.SortByCategory}" />
+                                        <MenuItem Header="{TemplateBinding SortByNameLabel}" Command="{x:Static pl:PropertyListCommands.SortByName}" />
+                                        <MenuItem Header="{TemplateBinding SortByCategoryLabel}" Command="{x:Static pl:PropertyListCommands.SortByCategory}" />
                                         <Separator />
-                                        <MenuItem Header="Show Inherited" IsChecked="{TemplateBinding ShowInheritedProperties}"
+                                        <MenuItem Header="{TemplateBinding ShowInheritedLabel}" IsChecked="{TemplateBinding ShowInheritedProperties}"
                                                   Command="{x:Static pl:PropertyListCommands.ToggleInheritedProperties}" />
-                                        <MenuItem Header="Show Read-only Values" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
+                                        <MenuItem Header="{TemplateBinding ShowReadOnlyValuesLabel}" IsChecked="{TemplateBinding ShowReadOnlyProperties}" 
                                                   Command="{x:Static pl:PropertyListCommands.ToggleReadOnlyProperties}" />
                                         <Separator />
-                                        <MenuItem Header="Show Types Column" IsChecked="{TemplateBinding ShowTypesColumn}"
+                                        <MenuItem Header="{TemplateBinding ShowTypesColumnLabel}" IsChecked="{TemplateBinding ShowTypesColumn}"
                                                   Command="{x:Static pl:PropertyListCommands.ToggleTypesColumn}" />
                                         <!--<Separator />
                                         <MenuItem Header="Show Gridlines" IsChecked="{TemplateBinding ShowGridlines}" 

@@ -177,7 +177,7 @@ namespace SolidShineUi.PropertyList
         }
         #endregion
 
-        #region ColorScheme
+        #region ColorScheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -357,7 +357,7 @@ namespace SolidShineUi.PropertyList
             new FrameworkPropertyMetadata(null));
 
 
-#endregion
+        #endregion
 
         #region Basics / Object Loading
 
@@ -1364,7 +1364,7 @@ namespace SolidShineUi.PropertyList
             }
         }
 
-#endregion
+        #endregion
 
         #region Visual Elements
 
@@ -1386,7 +1386,7 @@ namespace SolidShineUi.PropertyList
         public string TypeLabel { get => (string)GetValue(TypeLabelProperty); set => SetValue(TypeLabelProperty, value); }
 
         /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// The backing dependency property for <see cref="TypeLabel"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty TypeLabelProperty
             = DependencyProperty.Register(nameof(TypeLabel), typeof(string), typeof(PropertyList),
@@ -1400,7 +1400,7 @@ namespace SolidShineUi.PropertyList
         public string ViewMenuLabel { get => (string)GetValue(ViewMenuLabelProperty); set => SetValue(ViewMenuLabelProperty, value); }
 
         /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// The backing dependency property for <see cref="ViewMenuLabel"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ViewMenuLabelProperty
             = DependencyProperty.Register(nameof(ViewMenuLabel), typeof(string), typeof(PropertyList),
@@ -1414,7 +1414,7 @@ namespace SolidShineUi.PropertyList
         public string NameHeaderLabel { get => (string)GetValue(NameHeaderLabelProperty); set => SetValue(NameHeaderLabelProperty, value); }
 
         /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// The backing dependency property for <see cref="NameHeaderLabel"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty NameHeaderLabelProperty
             = DependencyProperty.Register(nameof(NameHeaderLabel), typeof(string), typeof(PropertyList),
@@ -1428,7 +1428,7 @@ namespace SolidShineUi.PropertyList
         public string TypeHeaderLabel { get => (string)GetValue(TypeHeaderLabelProperty); set => SetValue(TypeHeaderLabelProperty, value); }
 
         /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// The backing dependency property for <see cref="TypeHeaderLabel"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty TypeHeaderLabelProperty
             = DependencyProperty.Register(nameof(TypeHeaderLabel), typeof(string), typeof(PropertyList),
@@ -1442,7 +1442,7 @@ namespace SolidShineUi.PropertyList
         public string ValueHeaderLabel { get => (string)GetValue(ValueHeaderLabelProperty); set => SetValue(ValueHeaderLabelProperty, value); }
 
         /// <summary>
-        /// Identifies a dependency property for this control. Please see the related property for more details.
+        /// The backing dependency property for <see cref="ValueHeaderLabel"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty ValueHeaderLabelProperty
             = DependencyProperty.Register(nameof(ValueHeaderLabel), typeof(string), typeof(PropertyList),
@@ -1461,6 +1461,67 @@ namespace SolidShineUi.PropertyList
         public static readonly DependencyProperty FilterBoxToolTipProperty
             = DependencyProperty.Register(nameof(FilterBoxToolTip), typeof(string), typeof(PropertyList),
             new FrameworkPropertyMetadata("Filter (use @ to filter by name only)"));
+
+        /// <summary>
+        /// Get or set the label for the "Sort by Name" option in the View menu.
+        /// </summary>
+        [Category("Text Labels")]
+        [Description("Get or set the label for the \"Sort by Name\" option in the View menu.")]
+        public string SortByNameLabel { get => (string)GetValue(SortByNameLabelProperty); set => SetValue(SortByNameLabelProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SortByNameLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SortByNameLabelProperty
+            = DependencyProperty.Register(nameof(SortByNameLabel), typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Sort by Name"));
+
+        /// <summary>
+        /// Get or set the label for the "Sort by Category" option in the View menu.
+        /// </summary>
+        [Category("Text Labels")]
+        [Description("Get or set the label for the \"Sort by Category\" option in the View menu.")]
+        public string SortByCategoryLabel { get => (string)GetValue(SortByCategoryLabelProperty); set => SetValue(SortByCategoryLabelProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SortByCategoryLabel"/>. See the related property for details.</summary>
+        public static DependencyProperty SortByCategoryLabelProperty
+            = DependencyProperty.Register(nameof(SortByCategoryLabel), typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Sort by Category"));
+
+        /// <summary>
+        /// Get or set the label for the "Show Inherited" option in the View menu.
+        /// </summary>
+        [Category("Text Labels")]
+        [Description("Get or set the label for the \"Show Inherited\" option in the View menu.")]
+        public string ShowInheritedLabel { get => (string)GetValue(ShowInheritedLabelProperty); set => SetValue(ShowInheritedLabelProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowInheritedLabel"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowInheritedLabelProperty
+            = DependencyProperty.Register(nameof(ShowInheritedLabel), typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Show Inherited"));
+
+        /// <summary>
+        /// Get or set the label for the "Show Read-only Values" option in the View menu.
+        /// </summary>
+        [Category("Text Labels")]
+        [Description("Get or set the label for the \"Show Read-only Values\" option in the View menu.")]
+        public string ShowReadOnlyValuesLabel { get => (string)GetValue(ShowReadOnlyValuesLabelProperty); set => SetValue(ShowReadOnlyValuesLabelProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowReadOnlyValuesLabel"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowReadOnlyValuesLabelProperty
+            = DependencyProperty.Register(nameof(ShowReadOnlyValuesLabel), typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Show Read-only Values"));
+
+        /// <summary>
+        /// Get or set the label for the "Show Types Column" option in the View menu.
+        /// </summary>
+        [Category("Text Labels")]
+        [Description("Get or set the label for the \"Show Types Column\" option in the View menu.")]
+        public string ShowTypesColumnLabel { get => (string)GetValue(ShowTypesColumnLabelProperty); set => SetValue(ShowTypesColumnLabelProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowTypesColumnLabel"/>. See the related property for details.</summary>
+        public static DependencyProperty ShowTypesColumnLabelProperty
+            = DependencyProperty.Register(nameof(ShowTypesColumnLabel), typeof(string), typeof(PropertyList),
+            new FrameworkPropertyMetadata("Show Types Column"));
+
 
         #endregion
 
