@@ -235,6 +235,14 @@ namespace SolidShineUi.PropertyList
             }
         }
 
+        /// <summary>
+        /// Call the <see cref="RequestRemove"/> event, to have this item removed from its parent.
+        /// </summary>
+        public void CallRequestRemove()
+        {
+            RequestRemove?.Invoke(this, EventArgs.Empty);
+        }
+
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
             RequestRemove?.Invoke(this, e);

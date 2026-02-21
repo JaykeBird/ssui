@@ -341,9 +341,15 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             lei.PropertyEditorValueChanged += (s, e) =>
             {
+                // we're only going to support editing lists, not general IEnumerables
+                // since with a list, we can search for and get the item and then change it
                 if (isList && canEdit)
                 {
-                    ValueChanged(e.NewValue, e.OldValue, e);
+                    bool remove = ValueChanged(e.NewValue, e.OldValue, e);
+                    if (remove && s is ListEditorItem li)
+                    {
+                        li.CallRequestRemove();
+                    }
                 }
                 else
                 {
@@ -356,10 +362,12 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
         #endregion
 
+        // this is for updating the value of the item in the actual list object itself
+
 #if NETCOREAPP
-        void ValueChanged(object? newValue, object? baseItem, PropertyEditorValueChangedEventArgs e)
+        bool ValueChanged(object? newValue, object? baseItem, PropertyEditorValueChangedEventArgs e)
 #else
-        void ValueChanged(object newValue, object baseItem, PropertyEditorValueChangedEventArgs e)
+        bool ValueChanged(object newValue, object baseItem, PropertyEditorValueChangedEventArgs e)
 #endif
         {
             if (baseObject is IList icol)
@@ -368,14 +376,15 @@ namespace SolidShineUi.PropertyList.Dialogs
                 if (index == -1)
                 {
                     // this means the base list actually removed this item in the interim
-                    // for now, we'll mark this as a failed change
-                    // TODO: actually remove the offending ListEditorItem from the dialog
+                    // we'll mark this as a failed change, and remove this item from the list editor (by returning true)
                     e.ChangeFailed = true;
                     e.FailedChangePropertyValue = null;
-                    return;
+                    return true;
                 }
                 icol[index] = newValue;
             }
+
+            return false;
         }
 
         private void btnEnumWarning_Click(object sender, RoutedEventArgs e)
@@ -426,11 +435,13 @@ namespace SolidShineUi.PropertyList.Dialogs
                         }
                         break;
                     case AddModeType.StringMode:
-                        StringInputDialog sid = new StringInputDialog(ColorScheme, "Add Item", "Enter a string value to use for creating a new item:");
+                        StringInputDialog sid = new StringInputDialog("Add Item", "Enter a string value to use for creating a new item:");
                         sid.Owner = this;
+                        sid.SsuiTheme = this.SsuiTheme;
                         sid.ShowDialog();
                         if (sid.DialogResult)
                         {
+
                             var newSItem = Activator.CreateInstance(baseType, new object[] { sid.Value });
                             if (newSItem != null)
                             {
@@ -442,7 +453,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                         // let's go down the list of basic types
                         // I've tried to sort by what is probably the most common first
                         if (baseType == typeof(bool)) { CreateItem(false); }
-                        else if (baseType == typeof(string)) { CreateItem(""); }
+                        else if (baseType == typeof(string)) { CreateStringItem(); }
                         else if (baseType == typeof(int)) { CreateItem(0); }
                         else if (baseType == typeof(byte)) { CreateItem((byte)0); }
                         else if (baseType == typeof(double)) { CreateItem(0.0d); }
@@ -453,7 +464,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                         else if (baseType == typeof(short)) { CreateItem((short)0); }
                         else if (baseType == typeof(ushort)) { CreateItem((ushort)0); }
                         else if (baseType == typeof(sbyte)) { CreateItem((sbyte)0); }
-                        else if (baseType == typeof(char)) { CreateItem('A'); }
+                        else if (baseType == typeof(char)) { CreateCharItem(); }
                         else if (baseType == typeof(decimal)) { CreateItem(0.0m); }
                         break;
                     default:
@@ -465,6 +476,30 @@ namespace SolidShineUi.PropertyList.Dialogs
             else
             {
                 btnAdd.IsEnabled = false;
+            }
+
+            void CreateStringItem()
+            {
+                StringInputDialog sid = new StringInputDialog("Add Item", "Enter a string value to use for creating a new item:");
+                sid.Owner = this;
+                sid.SsuiTheme = this.SsuiTheme;
+                sid.ShowDialog();
+                if (sid.DialogResult)
+                {
+                    CreateItem(sid.Value);
+                }
+            }
+
+            void CreateCharItem()
+            {
+                CharInputDialog sid = new CharInputDialog();
+                sid.Owner = this;
+                sid.SsuiTheme = this.SsuiTheme;
+                sid.ShowDialog();
+                if (sid.DialogResult)
+                {
+                    CreateItem(sid.ValueAsChar);
+                }
             }
 
 #if NETCOREAPP
