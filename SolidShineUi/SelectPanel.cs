@@ -599,22 +599,34 @@ namespace SolidShineUi
                 if (sat.UseSubitemThemeWithPanels)
                 {
                     // subitems should use the subitem theme
-                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.SubitemTheme)) { Source = this.SsuiTheme });
+                    if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                    {
+                        SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.SubitemTheme)) { Source = this.SsuiTheme });
+                    }
                     subitemTheme = sat.SubitemTheme;
                 }
                 else if (useAccentTheme)
                 {
-                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.AccentTheme)) { Source = this.SsuiTheme });
+                    if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                    {
+                        SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.AccentTheme)) { Source = this.SsuiTheme });
+                    }
                     subitemTheme = sat.AccentTheme;
                 }
                 else
                 {
-                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+                    if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                    {
+                        SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+                    }
                 }
             }
             else
             {
-                SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+                if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                {
+                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+                }
             }
 
             // apply brushes using mainTheme
@@ -633,10 +645,6 @@ namespace SolidShineUi
             SelectedBrush = subitemTheme.SelectedBackgroundBrush;
 
             _internalThemeAction = false;
-
-            //ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, subitemTheme);
-            //ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, subitemTheme);
-            //ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, subitemTheme);
 
             // UpdateChildrenAppearance();
         }
