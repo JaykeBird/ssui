@@ -54,7 +54,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NETCOREAPP
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+#endif
 
+
+#if NETCOREAPP
         /// <inheritdoc/>
         public object? GetValue()
         {
@@ -77,42 +83,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return null;
             }
         }
-
-        /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
-        {
-            if (type == typeof(bool))
-            {
-                _propType = type;
-                chkValue.IsChecked = (bool)(value ?? false);
-            }
-            else if (type == typeof(Nullable<bool>) || type == typeof(bool?))
-            {
-                _propType = type;
-
-                chkValue.TriStateClick = true;
-                var val = (bool?)value;
-                if (val == null)
-                {
-                    chkValue.CheckState = CheckState.Indeterminate;
-                    txtValue.Text = "(null)";
-                }
-                else
-                {
-                    chkValue.CheckState = val.Value ? CheckState.Checked : CheckState.Unchecked;
-                    txtValue.Text = val.Value ? "True" : "False";
-                }
-            }
-            else
-            {
-                // this is not a boolean
-                // this shouldn't be encountered, but if this is, just do nothing
-            }
-        }
 #else
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-
         /// <inheritdoc/>
         public object GetValue()
         {
@@ -140,28 +111,44 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#endif
+
+#if NETCOREAPP
+        /// <inheritdoc/>
+        public void LoadValue(object? value, Type type)
+#else
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             if (type == typeof(bool))
             {
-                chkValue.IsChecked = (bool)value;
+                _propType = type;
+                chkValue.IsChecked = (bool) (value ?? false);
             }
-            else if (type == typeof(Nullable<bool>))
+            else if (type == typeof(Nullable<bool>) || type == typeof(bool?))
             {
+                _propType = type;
+
                 chkValue.TriStateClick = true;
-                var val = (Nullable<bool>)value;
+                var val = (bool?)value;
                 if (val == null)
                 {
                     chkValue.CheckState = CheckState.Indeterminate;
+                    // txtValue.Text = "(null)";
                 }
                 else
                 {
                     chkValue.CheckState = val.Value ? CheckState.Checked : CheckState.Unchecked;
+                    // txtValue.Text = val.Value ? "True" : "False";
                 }
             }
+            else
+            {
+                // this is not a boolean
+                // this shouldn't be encountered, but if this is, just do nothing
+            }
         }
-#endif
 
         private void chkValue_CheckChanged(object sender, RoutedEventArgs e)
         {
