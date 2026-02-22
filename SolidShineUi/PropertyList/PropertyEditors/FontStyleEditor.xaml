@@ -13,9 +13,9 @@
         </Grid.ColumnDefinitions>
         <Image x:Name="imgItalic" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/SolidShineUi;component/Images/TextItalicColor.png" />
         <ComboBox x:Name="cbbStyles" Grid.Column="1" SelectionChanged="cbbStyles_SelectionChanged" SelectedIndex="0" >
-            <ComboBoxItem Content="Normal" />
-            <ComboBoxItem Content="Italic" />
-            <ComboBoxItem Content="Oblique" />
+            <ComboBoxItem Content="Normal" x:Name="cbbNormal" />
+            <ComboBoxItem Content="Italic" x:Name="cbbItalic" />
+            <ComboBoxItem Content="Oblique" x:Name="cbbOblique" />
             <ComboBoxItem Content="(null)" x:Name="cbbNull" Visibility="Collapsed" />
         </ComboBox>
     </Grid>

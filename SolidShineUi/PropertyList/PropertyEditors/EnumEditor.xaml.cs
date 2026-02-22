@@ -83,7 +83,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (type.GetCustomAttribute<FlagsAttribute>() != null)
             {
                 // this is an enum that supports flags
-                // in the future, I'll need to enable a way to select multiple items
+                // TODO: enable a way to select multiple items
             }
 
             if (value == null)

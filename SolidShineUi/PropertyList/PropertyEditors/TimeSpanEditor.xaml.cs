@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
@@ -22,6 +21,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             InitializeComponent();
             mnuSetNull.IsEnabledChanged += MnuSetNull_IsEnabledChanged;
+
+            // load in string values
+            mnuCurrent.Header = Strings.SetToCurrentTime;
+            mnuCurrentShort.Header = Strings.SetToCurrentTimeNoMilliseconds;
+            mnuNoon.Header = Strings.SetToNoon;
+            mnuMidnight.Header = Strings.SetToMidnight;
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuDisplayClock.Header = Strings.DisplayAs12HourClock;
         }
 
         private void MnuSetNull_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)

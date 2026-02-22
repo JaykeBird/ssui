@@ -155,16 +155,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             switch (chkValue.CheckState)
             {
                 case CheckState.Unchecked:
-                    txtValue.Text = "False";
+                    txtValue.Text = Strings.False;
                     break;
                 case CheckState.Checked:
-                    txtValue.Text = "True";
+                    txtValue.Text = Strings.True;
                     break;
                 case CheckState.Indeterminate:
-                    txtValue.Text = "(null)";
+                    txtValue.Text = Strings.Null;
                     break;
                 default:
-                    txtValue.Text = "(null)";
+                    txtValue.Text = Strings.Null;
                     break;
             }
             ValueChanged?.Invoke(sender, e);

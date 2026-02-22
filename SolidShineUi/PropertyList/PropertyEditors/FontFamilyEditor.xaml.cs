@@ -19,6 +19,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public FontFamilyEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            lblEdit.Text = Strings.Edit;
         }
 
         /// <inheritdoc/>
@@ -61,6 +64,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (font == null)
             {
@@ -72,44 +82,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
-        {
-            if (value == null)
-            {
-                font = null;
-                txtFontName.Text = "(null)";
-            }
-            else if (value is FontFamily f)
-            {
-                font = f;
-                txtFontName.Text = f.Source;
-            }
-            else
-            {
-                // this object is not a FontFamily? what is it here???
-                font = null;
-                txtFontName.Text = "(no font selected)";
-            }
-        }
-
 #else
         /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            return font;
-        }
-        
-        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             if (value == null)
             {
                 font = null;
-                txtFontName.Text = "(null)";
+                txtFontName.Text = Strings.Null;
             }
             else if (value is FontFamily f)
             {
@@ -120,10 +104,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 // this object is not a FontFamily? what is it here???
                 font = null;
-                txtFontName.Text = "(no font selected)";
+                txtFontName.Text = Strings.NoFontSelected;
             }
         }
-#endif
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {

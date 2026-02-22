@@ -1152,17 +1152,14 @@ namespace SolidShineUi.PropertyList
         #region Generator Property Editors / Editor Value Changed
 
         /// <summary>
-        /// Populate the property list UI, by generating property editors (where possible) for each property from a list.
+        /// Populate the property list UI, by generating property editors (where possible) for each property from a list (this also removes the existing property editors).
         /// </summary>
         /// <param name="properties">The list of properties to use for generation and population.</param>
         void GeneratePropertyEditors(IEnumerable<PropertyInfo> properties)
         {
             if (stkProperties == null) return; // kinda need that if I'm gonna actually do anything
 
-            //foreach (object item in stkProperties.Children)
-            //{
-            //    RemoveLogicalChild(item);
-            //}
+            // remove all of the existing editors
             stkProperties.Children.Clear();
 
             Type baseType = _baseObject?.GetType() ?? typeof(object);
@@ -1181,10 +1178,6 @@ namespace SolidShineUi.PropertyList
 #else
                 IPropertyEditor ipe = null;
 #endif
-                //if (!item.CanWrite)
-                //{
-                //    // readonly property
-                //}
 
                 if (item.DeclaringType != baseType)
                 {
@@ -1205,13 +1198,12 @@ namespace SolidShineUi.PropertyList
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
 
-                pei.LoadProperty(item, item.CanRead ? item.GetValue(_baseObject) : null, ipe);
+                pei.LoadProperty(item, item.GetValue(_baseObject), ipe);
                 pei.PropertyEditorValueChanged += editor_PropertyEditorValueChanged;
                 //pei.UpdateColumnWidths(colNames.Width, colTypes.Width, colValues.Width);
                 pei.ShowGridlines = ShowGridlines;
                 pei.GridlineBrush = GridlineBrush;
 
-                //AddLogicalChild(pei);
                 stkProperties.Children.Add(pei);
             }
         }

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -21,6 +20,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public DoubleEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuSetNan.Header = Strings.SetAsNaN;
         }
 
         /// <inheritdoc/>
@@ -53,7 +56,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => dblSpinner.IsEnabled;
+            get => mnuSetNan.IsEnabled;
             set { dblSpinner.IsEnabled = value; mnuSetNan.IsEnabled = value; }
         }
 

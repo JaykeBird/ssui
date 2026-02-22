@@ -9,19 +9,19 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="Auto" MinWidth="80" />
         </Grid.ColumnDefinitions>
         <TextBox x:Name="txtFontName" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" Background="Transparent" BorderBrush="Transparent" />
         <flat:MenuButton x:Name="btnMenu" Grid.Column="1" ShowMenuArrow="True" >
             <StackPanel Orientation="Horizontal">
                 <Image Height="16" Width="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
-                <TextBlock Text="Edit" Margin="3,0" />
+                <TextBlock Text="Edit" Margin="3,0" x:Name="lblEdit" />
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="Edit..." x:Name="mnuEdit" Click="mnuEdit_Click" />
                     <MenuItem Header="Set to Empty" x:Name="mnuEmpty" Click="mnuEmpty_Click" />
-                    <MenuItem Header="Set to 1,1" x:Name="mnu11Rect" Click="mnu11Rect_Click" />
+                    <MenuItem Header="Set to 1,1 Rect" x:Name="mnu11Rect" Click="mnu11Rect_Click" />
                     <Separator />
                     <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />
                 </flat:ContextMenu>

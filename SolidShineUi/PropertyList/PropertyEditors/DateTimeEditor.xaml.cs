@@ -20,6 +20,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public DateTimeEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuCurrent.Header = Strings.SetToCurrentTime;
+            mnuNoon.Header = Strings.SetToNoon;
+            mnuMidnight.Header = Strings.SetToMidnight;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
 #if NET6_0_OR_GREATER

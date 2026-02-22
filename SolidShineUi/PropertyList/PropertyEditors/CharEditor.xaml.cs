@@ -21,6 +21,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public CharEditor()
         {
             InitializeComponent();
+
+            // set up strings
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuMultiline.Header = Strings.EnterInUnicodeValue;
         }
 
         private Type _itemType = typeof(char);
@@ -82,7 +86,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             nullSet = true;
             txtText.IsEnabled = false;
             mnuSetNull.IsChecked = true;
-            txtText.Text = "(null)";
+            txtText.Text = Strings.Null;
             txtValue.Text = "";
         }
 
@@ -97,7 +101,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (char.IsSurrogate((char)(_value ?? 'a')))
                 {
                     txtText.IsEnabled = false;
-                    txtText.Text = "(surrogate)";
+                    txtText.Text = Strings.Surrogate;
                 }
                 else
                 {
@@ -178,7 +182,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 char c = (char)(value ?? '\0');
                 if (char.IsSurrogate(c))
                 {
-                    txtText.Text = "(surrogate)";
+                    txtText.Text = Strings.Surrogate;
                     txtText.IsEnabled = false;
                 }
                 else
@@ -203,7 +207,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     if (char.IsSurrogate(c ?? '\0'))
                     {
-                        txtText.Text = "(surrogate)";
+                        txtText.Text = Strings.Surrogate;
                         txtText.IsEnabled = false;
                     }
                     else
@@ -243,7 +247,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 // this isn't a char or Rune?
                 _value = value;
-                txtText.Text = "(not a char)";
+                txtText.Text = Strings.NotAChar;
                 txtText.IsEnabled = false;
                 txtValue.Text = "";
             }
@@ -301,7 +305,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else
             {
                 _internalAction = true;
-                txtText.Text = "(not a char)";
+                txtText.Text = Strings.NotAChar;
                 _internalAction = false;
                 txtText.IsEnabled = false;
             }
@@ -351,7 +355,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     char c = sid.ValueAsChar;
                     if (char.IsSurrogate(c))
                     {
-                        txtText.Text = "(surrogate)";
+                        txtText.Text = Strings.Surrogate;
                         txtText.IsEnabled = false;
                     }
                     else

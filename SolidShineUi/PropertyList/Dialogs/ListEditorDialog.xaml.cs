@@ -238,8 +238,8 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types
-        private static Type[] basicTypes = new Type[] { typeof(bool), typeof(byte), typeof(double), typeof(float), typeof(int), typeof(uint), typeof(long), typeof(short), typeof(string),
-            typeof(sbyte), typeof(char), typeof(decimal), typeof(ulong), typeof(ushort)};
+        private static Type[] basicTypes = new Type[] { typeof(bool), typeof(byte), typeof(double), typeof(float), typeof(int), typeof(uint), typeof(long), 
+            typeof(short), typeof(string), typeof(sbyte), typeof(char), typeof(decimal), typeof(ulong), typeof(ushort)};
 
         private void DetermineIfCanAdd()
         {
@@ -252,6 +252,9 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else if (baseType.IsAbstract || baseType.IsInterface)
             {
+                // Visual Studio's collection editor gives users the ability to find and select types that match the criteria
+                // (e.g. a type that inherits from the abstract class or implements the interface), but I currently don't have
+                // the time to go into all of that... so for now, I'll just disable adding
                 CannotAdd();
             }
             else if (baseType.GetConstructor(Type.EmptyTypes) == null)
@@ -435,7 +438,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                         }
                         break;
                     case AddModeType.StringMode:
-                        StringInputDialog sid = new StringInputDialog("Add Item", "Enter a string value to use for creating a new item:");
+                        StringInputDialog sid = new StringInputDialog("Add Item", Strings.EnterAStringValue);
                         sid.Owner = this;
                         sid.SsuiTheme = this.SsuiTheme;
                         sid.ShowDialog();
@@ -480,7 +483,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             void CreateStringItem()
             {
-                StringInputDialog sid = new StringInputDialog("Add Item", "Enter a string value to use for creating a new item:");
+                StringInputDialog sid = new StringInputDialog("Add Item", Strings.EnterAStringValue);
                 sid.Owner = this;
                 sid.SsuiTheme = this.SsuiTheme;
                 sid.ShowDialog();

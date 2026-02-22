@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
@@ -21,6 +20,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public DecimalEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuCopy.Header = Strings.CopyFullValue;
+            mnuSetValue.Header = Strings.SetExactValue;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>

@@ -19,9 +19,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public EnumerableEditor()
         {
             InitializeComponent();
-        }
 
-        // TODO: add section to load in the propertyeditor type needed for child items in the list
+            // load in string values
+            lblView.Text = Strings.View;
+            mnuEdit.Header = Strings.ViewItems;
+        }
 
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(IEnumerable<>) };
@@ -156,11 +158,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 led.LoadEnumerable(listVal, _listType, propEditorType);
                 if (listVal is ICollection icol)
                 {
-                    led.Description = $"collection of {_listType.Name} ({icol.Count} items), stored in a {listVal.GetType().Name.Replace("`1", "")}:";
+                    led.Description = $"collection of {_listType.Name} ({icol.Count} {Strings.Items}), in a {listVal.GetType().Name.Replace("`1", "")}:";
                 }
                 else
                 {
-                    led.Description = $"collection of {_listType.Name}, stored in a {listVal.GetType().Name.Replace("`1", "")}:";
+                    led.Description = $"collection of {_listType.Name}, in a {listVal.GetType().Name.Replace("`1", "")}:";
                 }
 
                 led.Owner = Window.GetWindow(this);
@@ -168,7 +170,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else
             {
-                MessageBox.Show("No value is set for this property (it is set to null).");
+                MessageBox.Show(Strings.NoValueIsSet);
             }
         }
 
@@ -200,17 +202,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (value == null)
                 {
                     // null value
-                    contentsData = "(null)";
+                    contentsData = Strings.Null;
                 }
                 else
                 {
                     if (listVal is ICollection icol)
                     {
-                        contentsData = icol.Count + " items";
+                        contentsData = icol.Count + " " + Strings.Items;
                     }
                     else
                     {
-                        contentsData = "collection";
+                        contentsData = Strings.Collection;
                     }
                 }
 
@@ -220,7 +222,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 if (value == null)
                 {
-                    txtListData.Text = "(null)";
+                    txtListData.Text = Strings.Null;
                 }
                 else
                 {

@@ -14,7 +14,7 @@
         <flat:MenuButton x:Name="btnMenu" Grid.Column="1" ShowMenuArrow="True" >
             <StackPanel Orientation="Horizontal">
                 <Image Height="16" Width="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
-                <TextBlock Text="View" Margin="3,0" />
+                <TextBlock Text="View" Margin="3,0" x:Name="lblView" />
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>

@@ -94,22 +94,22 @@ namespace SolidShineUi.Utils
         }
 #endif
 
-            /// <summary>
-            /// Get a shorter version of this string, by removing extra characters beyond a certain maximum value.
-            /// </summary>
-            /// <param name="str">the string to truncaste</param>
-            /// <param name="maxLength">the max number of characters to have in the truncated version</param>
-            /// <param name="includeEllipses">if truncated, display the ellipses (<c>"..."</c>) at the end</param>
-            /// <returns>A truncated string (or the string itself if the string is less than the maximum length)</returns>
-            /// <remarks>
-            /// This is good for scenarios where you wish to display a long string in the UI but have a space constraint. Note that this is inherently a loss of data,
-            /// as this simply removes characters from the end of the string. As a result, this should only be used for temporary purposes, like displaying in UI,
-            /// and not used in relation to memory or data storage. Alternatively, I recommend utilizing <see cref="System.Windows.Controls.TextBlock.TextTrimming"/>
-            /// as an in-built way to temporary truncate long strings in the UI, where possible.
-            /// <para/>
-            /// This function checks if the <see cref="char"/> at the specified <paramref name="maxLength"/> is part of a surrogate pair. Truncating strings in the middle 
-            /// of a surrogate pair results in corrupted data at the end of a string. Instead, this function decreases the length by 1 and truncates there.
-            /// </remarks>
+        /// <summary>
+        /// Get a shorter version of this string, by removing extra characters beyond a certain maximum value.
+        /// </summary>
+        /// <param name="str">the string to truncaste</param>
+        /// <param name="maxLength">the max number of characters to have in the truncated version</param>
+        /// <param name="includeEllipses">if truncated, display the ellipses (<c>"..."</c>) at the end</param>
+        /// <returns>A truncated string (or the string itself if the string is less than the maximum length)</returns>
+        /// <remarks>
+        /// This is good for scenarios where you wish to display a long string in the UI but have a space constraint. Note that this is inherently a loss of data,
+        /// as this simply removes characters from the end of the string. As a result, this should only be used for temporary purposes, like displaying in UI,
+        /// and not used in relation to memory or data storage. Alternatively, I recommend utilizing <see cref="System.Windows.Controls.TextBlock.TextTrimming"/>
+        /// as an in-built way to temporary truncate long strings in the UI, where possible.
+        /// <para/>
+        /// This function checks if the <see cref="char"/> at the specified <paramref name="maxLength"/> is part of a surrogate pair. Truncating strings in the middle 
+        /// of a surrogate pair results in corrupted data at the end of a string. Instead, this function decreases the length by 1 and truncates there.
+        /// </remarks>
         public static string Truncate(this string str, int maxLength, bool includeEllipses = true)
         {
             if (str.Length > maxLength)

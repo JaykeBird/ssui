@@ -20,7 +20,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => nudUpLeft.IsEnabled;
+        public bool IsPropertyWritable { get => btnMenu.IsEnabled;
             set
             {
                 nudUpLeft.IsEnabled = value;
@@ -57,6 +57,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public CornerRadiusEditor()
         {
             InitializeComponent();
+
+            // set string values
+            nudUpLeft.ToolTip = Strings.TopLeft;
+            nudUpRight.ToolTip = Strings.TopRight;
+            nudDownLeft.ToolTip = Strings.BottomLeft;
+            nudDownRight.ToolTip = Strings.BottomRight;
+
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetOne.Header = Strings.SetAllToFive;
         }
 
         /// <inheritdoc/>

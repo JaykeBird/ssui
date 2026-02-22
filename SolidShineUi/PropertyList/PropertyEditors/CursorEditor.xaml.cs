@@ -19,6 +19,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public CursorEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuDropdown.Header = Strings.SelectSystemCursor;
+            mnuFileSelect.Header = Strings.LoadCursorFromFile;
+            mnuNull.Header = Strings.SetAsNull;
+            txtNull.Text = Strings.Null;
+            lblFromFile.Text = Strings.FromFile;
+
+            fs.NoFilesSelectedMessage = Strings.NoFilesSelected;
+            fs.BrowseButtonText = Strings.Browse;
         }
 
         /// <inheritdoc/>
@@ -30,7 +40,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => cbbCursors.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 cbbCursors.IsEnabled = value;

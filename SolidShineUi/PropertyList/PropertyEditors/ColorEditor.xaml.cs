@@ -21,6 +21,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ColorEditor()
         {
             InitializeComponent();
+
+            // set string values
+            mnuColor.Header = Strings.SelectColor;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>

@@ -21,9 +21,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ListEditor()
         {
             InitializeComponent();
-        }
 
-        // TODO: add section to load in the propertyeditor type needed for child items in the list
+            // load in string values
+            lblViewEdit.Text = Strings.ViewEdit;
+            mnuEdit.Header = Strings.ViewEditList;
+            mnuEmptyList.Header = Strings.SetToNewEmptyList;
+        }
 
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(List<>) };
@@ -34,7 +37,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         bool _writable = true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => _writable; set { _writable = value; mnuEmptyGuid.IsEnabled = value; } }
+        public bool IsPropertyWritable { get => _writable; set { _writable = value; mnuEmptyList.IsEnabled = value; } }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
@@ -127,7 +130,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     // there is more than one Add method
                     // let's try to find the one that only has 1 parameter
-                    addmi = type.GetMethods().Where((mi) => mi.Name == "Add" && mi.GetParameters().Length == 1).FirstOrDefault();
+                    addmi = type.GetMethods().FirstOrDefault((mi) => mi.Name == "Add" && mi.GetParameters().Length == 1);
                 }
 
                 if (addmi != null)
@@ -162,11 +165,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (listVal == null)
             {
                 // null value
-                contentsData = "(null)";
+                contentsData = Strings.Null;
             }
             else
             {
-                contentsData = listVal.Count + " items";
+                contentsData = listVal.Count + " " + Strings.Items;
             }
 
             txtListData.Text = contentsData + " (" + _listType.Name + ")";
@@ -196,7 +199,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 led.SsuiTheme = _parent?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
                 led.Owner = _parent?.GetWindow();
                 led.LoadEnumerable(listVal, _listType, propEditorType);
-                led.Description = $"collection of {_listType.Name} ({listVal.Count} items), stored in a {listVal.GetType().Name.Replace("`1", "")}:";
+                led.Description = $"collection of {_listType.Name} ({listVal.Count} {Strings.Items}), in a {listVal.GetType().Name.Replace("`1", "")}:";
 
                 led.ShowDialog();
             }
@@ -204,7 +207,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuEmptyList_Click(object sender, RoutedEventArgs e)
         {
+            MessageDialog md = new MessageDialog();
+            md.SsuiTheme = _parent?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
+            md.ShowDialog(Strings.AreYouSureNewEmptyList, null, _parent?.GetWindow(), Strings.ConfirmEmptyList, 
+                image: MessageDialogImage.Warning, buttonDisplay: MessageDialogButtonDisplay.Two, okButtonText: "Yes", cancelButtonText: "No");
 
+            if (md.DialogResult != MessageDialogResult.OK) return;
+
+            // TODO: look into exceptions to handle
+            var newList = Activator.CreateInstance(typeof(List<>).MakeGenericType(_listType));
+
+            if (newList != null && newList is IList il)
+            {
+                listVal = il;
+                RenderListDataText();
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)

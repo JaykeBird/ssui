@@ -20,6 +20,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public RectEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnu11Rect.Header = Strings.SetTo11Rect;
+            mnuEmpty.Header = Strings.SetToEmpty;
+            mnuEdit.Header = Strings.Edit;
+            lblEdit.Text = Strings.Edit2;
         }
 
         /// <inheritdoc/>
@@ -114,7 +121,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
-            txtFontName.Text = "(null)";
+            txtFontName.Text = Strings.Null;
         }
 
         void UnsetAsNull()

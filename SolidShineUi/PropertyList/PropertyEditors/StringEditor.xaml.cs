@@ -19,6 +19,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public StringEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuMultiline.Header = Strings.MultilineEditor;
         }
 
         /// <inheritdoc/>

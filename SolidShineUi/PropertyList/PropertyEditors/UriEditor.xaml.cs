@@ -19,6 +19,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public UriEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuOpenUrl.Header = Strings.OpenUrl;
+            mnuSelectFile.Header = Strings.SelectAFile;
+            // mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>
@@ -123,7 +128,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     _uri = new Uri("file://C:/");
                     _internalAction = true;
-                    txtText.Text = "(null)";
+                    txtText.Text = Strings.Null;
                     _internalAction = false;
                 }
                 else
@@ -140,7 +145,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     {
                         _uri = new Uri("file://C:/");
                         _internalAction = true;
-                        txtText.Text = "(null)";
+                        txtText.Text = Strings.Null;
                         _internalAction = false;
                     }
                 }
@@ -174,7 +179,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
             ofd.Filter = "All Files|*.*";
             ofd.Multiselect = false;
-            ofd.Title = "Select File";
+            ofd.Title = Strings.SelectAFile;
 
             var res = ofd.ShowDialog(Window.GetWindow(this));
 
@@ -193,7 +198,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     _uri = new Uri("file://C:/");
                     _internalAction = true;
-                    txtText.Text = "(null)";
+                    txtText.Text = Strings.Null;
                     _internalAction = false;
                 }
             }

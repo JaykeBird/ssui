@@ -22,7 +22,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         { 
-            get => nudLeft.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 nudLeft.IsEnabled = value;
@@ -56,6 +56,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ThicknessEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            nudLeft.ToolTip = Strings.Left;
+            nudTop.ToolTip = Strings.Top;
+            nudRight.ToolTip = Strings.Right;
+            nudBottom.ToolTip = Strings.Bottom;
+
+            mnuAddOne.Header = Strings.IncreaseAllByOne;
+            mnuSubtractOne.Header = Strings.DecreaseAllByOne;
+            mnuSetOne.Header = Strings.SetAllToOne;
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>

@@ -35,7 +35,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Currently set to:" FontWeight="Bold" Margin="8,10,0,0" FontSize="12" Grid.Row="0" />
+                        <TextBlock Text="Current value:" x:Name="lblCurrentValue" FontWeight="Bold" Margin="8,10,0,0" FontSize="12" Grid.Row="0" />
                         <TextBlock Text="(unknown)" FontSize="16" Margin="8,3" x:Name="txtCurrentBrush" Grid.Row="1" />
                         <TextBlock Text="(value unset)" FontSize="12" Margin="8,3" x:Name="txtCurrentValue" Grid.Row="2" />
                         <flat:FlatButton Content="Edit..." x:Name="btnEditBrush" FontSize="12" HorizontalAlignment="Left" Margin="32,3,8,2" Click="btnBrush_Click" Grid.Row="3" />
@@ -56,7 +56,7 @@
                         <!--<Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform2" Grid.Row="3" 
                                             BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
                     </Grid>
-                    <TextBlock Text="Change to:" Margin="5,3" Grid.Row="2" />
+                    <TextBlock Text="Change to:" x:Name="lblChangeTo" Margin="5,3" Grid.Row="2" />
                     <Border BorderThickness="0" x:Name="brdrBottom" Grid.Row="3" Height="1" />
                 </Grid>
                 <flat:ContentControlWithMenu.Items>

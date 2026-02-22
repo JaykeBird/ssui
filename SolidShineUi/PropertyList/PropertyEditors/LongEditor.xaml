@@ -9,14 +9,13 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="110" />
+            <ColumnDefinition Width="Auto" MinWidth="110" />
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
         <flat:LongSpinner x:Name="intSpinner" ValueChanged="intSpinner_ValueChanged" AcceptExpressions="True" Grid.ColumnSpan="2" />
-        <TextBlock x:Name="txtUlongLong" Grid.Column="0" Margin="5" VerticalAlignment="Center" Text="0" TextTrimming="CharacterEllipsis" Visibility="Collapsed" />
-        <flat:FlatButton x:Name="btnEnableEdit" Click="btnEnableEdit_Click" Grid.Column="1" Visibility="Collapsed" >
-            <TextBlock>Decrease and Edit</TextBlock>
-        </flat:FlatButton>
+        <TextBox x:Name="txtUlongLong" Grid.Column="0" VerticalContentAlignment="Center" Text="0" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                 Background="Transparent" BorderBrush="Transparent" Visibility="Collapsed" />
+        <flat:FlatButton x:Name="btnEnableEdit" Click="btnEnableEdit_Click" Grid.Column="1" Visibility="Collapsed" Content="Decrease and Edit" />
         <!-- Menu -->
         <flat:MenuButton x:Name="btnMenu" Grid.Column="2" ShowMenuArrow="False" TransparentBack="True" >
             <StackPanel Orientation="Horizontal">
@@ -24,7 +23,7 @@
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
-                    <MenuItem Header="Copy Full Value" x:Name="mnuCopy" Click="mnuCopy_Click" />
+                    <MenuItem Header="Copy Exact Value" x:Name="mnuCopy" Click="mnuCopy_Click" />
                     <MenuItem Header="Display as Hex" x:Name="mnuDisplayHex" Click="mnuDisplayHex_Click" />
                     <Separator />
                     <MenuItem Header="Set as Null" x:Name="mnuSetNull" Click="mnuSetNull_Click" IsEnabled="False" />

@@ -435,7 +435,6 @@ namespace SolidShineUi
 
             if (cs.IsHighContrast)
             {
-                // TODO: change how check foreground is figured out based upon the color scheme
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
                 CheckForeground = ColorsHelper.Black.ToBrush();
                 CheckHighlightBrush = ColorsHelper.Black.ToBrush();

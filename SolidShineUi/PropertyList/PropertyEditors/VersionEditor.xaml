@@ -34,7 +34,7 @@
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
-                    <MenuItem Header="Copy Full Value" x:Name="mnuCopy" Click="mnuCopy_Click" />
+                    <MenuItem Header="Copy Exact Value" x:Name="mnuCopy" Click="mnuCopy_Click" />
                     <MenuItem Header="Enter/Paste Value..." x:Name="mnuParse" Click="mnuParse_Click" />
                 </flat:ContextMenu>
             </flat:MenuButton.Menu>

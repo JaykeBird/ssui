@@ -20,11 +20,12 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="From File:" VerticalAlignment="Center" Margin="5,0" />
+            <TextBlock Text="From File:" VerticalAlignment="Center" Margin="5,0" x:Name="lblFromFile" />
             <flat:FileSelect Grid.Column="1" Padding="0" FileListPadding="4,-1" AllowMultipleFiles="False" FileFilter="*.ani;*.cur" x:Name="fs" 
-                             SelectionChanged="fs_SelectionChanged" MinHeight="24" Height="24" DisplayFilenames="True" ShowIcon="False" />
+                             SelectionChanged="fs_SelectionChanged" MinHeight="24" Height="24" DisplayFilenames="True" ShowIcon="False"
+                              />
         </Grid>
-        <TextBlock Grid.Column="1" x:Name="txtNull" Text="(set to null)" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" />
+        <TextBlock Grid.Column="1" x:Name="txtNull" Text="(null)" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" />
         <!-- Menu -->
         <flat:MenuButton x:Name="btnMenu" Grid.Column="3" ShowMenuArrow="False" TransparentBack="True" >
             <StackPanel Orientation="Horizontal">

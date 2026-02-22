@@ -19,6 +19,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public LongEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuCopy.Header = Strings.CopyFullValue;
+            mnuDisplayHex.Header = Strings.DisplayAsHex;
+            mnuSetNull.Header = Strings.SetAsNull;
+
+            btnEnableEdit.Content = Strings.DecreaseAndEdit;
         }
 
         /// <inheritdoc/>
@@ -37,6 +44,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             intSpinner.SsuiTheme = theme;
             btnMenu.SsuiTheme = theme;
             imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
+            btnEnableEdit.SsuiTheme = theme;
         }
 
         /// <inheritdoc/>
@@ -48,8 +56,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => intSpinner.IsEnabled;
-            set => intSpinner.IsEnabled = value;
+            get => btnMenu.IsEnabled;
+            set { intSpinner.IsEnabled = value; btnMenu.IsEnabled = value; }
         }
 
         Type _propType = typeof(long);

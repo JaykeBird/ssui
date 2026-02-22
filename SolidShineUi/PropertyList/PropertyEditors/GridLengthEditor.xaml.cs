@@ -17,6 +17,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public GridLengthEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>

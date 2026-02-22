@@ -22,7 +22,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => nudHeight.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 nudHeight.IsEnabled = value;
@@ -50,6 +50,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public PointEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>

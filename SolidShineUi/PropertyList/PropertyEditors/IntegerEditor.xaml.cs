@@ -17,6 +17,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public IntegerEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuDisplayHex.Header = Strings.DisplayAsHex;
         }
 
         /// <inheritdoc/>
@@ -46,8 +50,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => intSpinner.IsEnabled;
-            set => intSpinner.IsEnabled = value;
+            get => btnMenu.IsEnabled;
+            set { intSpinner.IsEnabled = value; btnMenu.IsEnabled = value; }
         }
 
         Type _propType = typeof(int);
@@ -58,93 +62,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         
         /// <inheritdoc/>
         public object? GetValue()
-        {
-            if (_propType == typeof(int))
-            {
-                return intSpinner.Value;
-            }
-            else if (_propType == typeof(short))
-            {
-                return (short)intSpinner.Value;
-            }
-            else if (_propType == typeof(ushort))
-            {
-                return (ushort)intSpinner.Value;
-            }
-            else if (_propType == typeof(byte))
-            {
-                return (byte)intSpinner.Value;
-            }
-            else if (_propType == typeof(sbyte))
-            {
-                return (sbyte)intSpinner.Value;
-            }
-            else if (_propType == typeof(int?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(short?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (short)intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(ushort?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (ushort)intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(byte?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (byte)intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(sbyte?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (sbyte)intSpinner.Value;
-                }
-            }
-            else
-            {
-                return intSpinner.Value;
-            }
-        }
 #else
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
 
         /// <inheritdoc/>
         public object GetValue()
+#endif
         {
             if (_propType == typeof(int))
             {
@@ -226,7 +150,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return intSpinner.Value;
             }
         }
-#endif
 
 #if NETCOREAPP
         /// <inheritdoc/>

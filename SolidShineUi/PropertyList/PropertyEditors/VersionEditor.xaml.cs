@@ -12,6 +12,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     public partial class VersionEditor : UserControl, IPropertyEditor
     {
         // if using this to backport to your code using Solid Shine UI 1.9.x, replace usages of "SsuiTheme" below with "ColorScheme"
+        // and change the constructor below to just only have "InitializeComponent();" in it, removing the other lines
         // you will also need to refer back to the source code for 1.9.10's VersionEditor to fix the other erroring lines/sections
         // (such as the lines in mnuParse_Click, the missing ParentPropertyList property, and IPropertyEditorHost not existing)
 
@@ -24,7 +25,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => nudLeft.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 nudLeft.IsEnabled = value;
@@ -62,6 +63,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public VersionEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuCopy.Header = Strings.CopyFullValue;
+            mnuParse.Header = Strings.EnterPasteValue;
+
+            nudLeft.ToolTip = Strings.Major;
+            nudTop.ToolTip = Strings.Minor;
+            nudRight.ToolTip = Strings.Build;
+            nudBottom.ToolTip = Strings.Revision;
         }
 
         /// <inheritdoc/>
@@ -172,13 +182,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuCopy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(GetValue()?.ToString() ?? "null");
+            Clipboard.SetText(GetValue()?.ToString() ?? Strings.Null);
         }
 
         private void mnuParse_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog("Parse Version from String",
-                "Enter a Version string (numbers and periods only):");
+            StringInputDialog sid = new StringInputDialog(Strings.ParseVersionFromString,
+                Strings.EnterAVersionString);
 
             sid.ValidationFunction = (s) => { return Version.TryParse(s, out _); };
             sid.ValidationFailureString = "Not a valid Version value";

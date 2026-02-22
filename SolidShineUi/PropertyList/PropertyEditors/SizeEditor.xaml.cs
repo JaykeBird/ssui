@@ -51,6 +51,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public SizeEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuSetZero.Header = Strings.SetAllToZero;
         }
 
         /// <inheritdoc/>
