@@ -682,7 +682,7 @@ namespace SolidShineUi
                 else
                 {
                     // on the rare off-chance it's not a framework element, then we'll just do plain-old property assignment
-                    item.SsuiTheme = SsuiTheme;
+                    item.SsuiTheme = ItemsTheme;
                 }
             }
         }
