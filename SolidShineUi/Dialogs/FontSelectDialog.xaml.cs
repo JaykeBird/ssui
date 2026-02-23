@@ -650,7 +650,8 @@ namespace SolidShineUi
 
         private void btnText_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Preview Text", "Set the text to appear in the Preview box.", txtPreview.Text);
+            StringInputDialog sid = new StringInputDialog("Set Preview Text", "Set the text to appear in the Preview box.", txtPreview.Text);
+            sid.SsuiTheme = SsuiTheme;
             sid.ShowDialog();
             if (sid.DialogResult)
             {
