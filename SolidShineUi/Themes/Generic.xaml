@@ -1613,7 +1613,7 @@
     </Style>
 
     <Style TargetType="{x:Type flat:FileSelect}">
-        <Setter Property="Focusable" Value="True" />
+        <!--<Setter Property="Focusable" Value="True" />-->
         <Setter Property="AllowDrop" Value="True" />
         <Setter Property="BorderBrush" Value="DarkGray" />
         <Setter Property="ContextMenu">
@@ -1630,6 +1630,19 @@
                     <MenuItem Header="Clear All Files" Command="{x:Static flat:FileSelect.ClearSelectedFiles}"
                               CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
                 </flat:ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style>
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Rectangle Margin="2" StrokeThickness="1" Stroke="Black" StrokeDashArray="1 2"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
@@ -1717,7 +1730,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </ScrollViewer.Style>
-                                    <ItemsControl x:Name="PART_Ic" ItemsSource="{TemplateBinding SelectedFiles}">
+                                    <ItemsControl x:Name="PART_Ic" Focusable="False" ItemsSource="{TemplateBinding SelectedFiles}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Vertical" IsItemsHost="True" />
@@ -1780,7 +1793,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                    <ssut:ImageTextListItem x:Name="itleNonList" CanRemove="False" CanSelect="False"
+                                    <ssut:ImageTextListItem x:Name="itleNonList" CanRemove="False" CanSelect="False" Focusable="False"
                                                             ShowIcon="{Binding Path=ShowIcon, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                             HighlightBrush="#01FFFFFF" ClickBrush="#01FFFFFF" >
                                         <ssut:ImageTextListItem.Style>
@@ -1794,6 +1807,7 @@
                                                     </Setter.Value>-->
                                                 </Setter>
                                                 <Setter Property="Icon" Value="/SolidShineUi;component/Images/StackColor.png" />
+                                                <Setter Property="Focusable" Value="False" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Path=SelectedFiles.Count, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="0">
                                                         <Setter Property="Title" Value="{Binding Path=NoFilesSelectedMessage, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
