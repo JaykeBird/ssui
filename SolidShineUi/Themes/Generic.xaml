@@ -1615,6 +1615,7 @@
     <Style TargetType="{x:Type flat:FileSelect}">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="BorderBrush" Value="DarkGray" />
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <flat:ContextMenu>

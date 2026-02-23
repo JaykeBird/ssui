@@ -264,20 +264,21 @@ namespace SolidShineUi
 
         #region Brushes
 
-        /// <summary>
-        /// Get or set the brush used for the background of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
+        ///// <summary>
+        ///// Get or set the brush used for the background of the control.
+        ///// </summary>
+        //[Category("Brushes")]
+        //public new Brush Background
+        //{
+        //    get => (Brush)GetValue(BackgroundProperty);
+        //    set => SetValue(BackgroundProperty, value);
+        //}
 
         /// <summary>
         /// Get or set the brush used for the background of the Browse button in the control.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the background of the Browse button in the control.")]
         public Brush ButtonBackground
         {
             get => (Brush)GetValue(ButtonBackgroundProperty);
@@ -288,6 +289,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the background of the Browse button while the mouse is over it.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the background of the Browse button while the mouse is over it.")]
         public Brush ButtonHighlightBrush
         {
             get => (Brush)GetValue(ButtonHighlightBrushProperty);
@@ -298,6 +300,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the background of the Browse button while the mouse is clicking it.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the background of the Browse button while the mouse is clicking it.")]
         public Brush ButtonClickBrush
         {
             get => (Brush)GetValue(ButtonClickBrushProperty);
@@ -308,6 +311,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the background of the control (and button) when the control is disabled.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the background of the control (and button) when the control is disabled.")]
         public Brush BackgroundDisabledBrush
         {
             get => (Brush)GetValue(BackgroundDisabledBrushProperty);
@@ -318,51 +322,55 @@ namespace SolidShineUi
         /// Get or set the brush used for the border of the control (and button) when the control is disabled.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the border of the control (and button) when the control is disabled.")]
         public Brush BorderDisabledBrush
         {
             get => (Brush)GetValue(BorderDisabledBrushProperty);
             set => SetValue(BorderDisabledBrushProperty, value);
         }
 
-        /// <summary>
-        /// Get or set the brush used for the border around the edges of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
+        ///// <summary>
+        ///// Get or set the brush used for the border around the edges of the control.
+        ///// </summary>
+        //[Category("Brushes")]
+        //public new Brush BorderBrush
+        //{
+        //    get => (Brush)GetValue(BorderBrushProperty);
+        //    set => SetValue(BorderBrushProperty, value);
+        //}
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="BackgroundDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
-            "BackgroundDisabledBrush", typeof(Brush), typeof(FileSelect),
+            nameof(BackgroundDisabledBrush), typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(FileSelect),
+            nameof(BorderDisabledBrush), typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(FileSelect),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+        //public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
+        //    "BorderBrush", typeof(Brush), typeof(FileSelect),
+        //    new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
-        public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(FileSelect),
-            new PropertyMetadata(new SolidColorBrush(Colors.White)));
+        //public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
+        //    "Background", typeof(Brush), typeof(FileSelect),
+        //    new PropertyMetadata(new SolidColorBrush(Colors.White)));
 
+        /// <summary>The backing dependency property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
-            "ButtonBackground", typeof(Brush), typeof(FileSelect),
+            nameof(ButtonBackground), typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="ButtonHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ButtonHighlightBrushProperty = DependencyProperty.Register(
-            "ButtonHighlightBrush", typeof(Brush), typeof(FileSelect),
+            nameof(ButtonHighlightBrush), typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
+        /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ButtonClickBrushProperty = DependencyProperty.Register(
-            "ButtonClickBrush", typeof(Brush), typeof(FileSelect),
+            nameof(ButtonClickBrush), typeof(Brush), typeof(FileSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
