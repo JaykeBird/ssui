@@ -100,6 +100,8 @@ namespace SolidShineUi
                     {
                         AddVerticalSnapPoint(item);
                     }
+
+                    UpdateSnaplinesOpacity(SnaplineOpacity);
                 }
 
             }
@@ -583,7 +585,7 @@ namespace SolidShineUi
             }
 
             Border b = new Border();
-            b.BorderThickness = new Thickness(0.75);
+            b.BorderThickness = new Thickness(1);
             b.BorderBrush = SnapLineBrush;
             b.Width = 1;
             b.Tag = point;
@@ -634,7 +636,7 @@ namespace SolidShineUi
             }
 
             Border b = new Border();
-            b.BorderThickness = new Thickness(0.75);
+            b.BorderThickness = new Thickness(1);
             b.BorderBrush = SnapLineBrush;
             b.Height = 1;
             b.Tag = point;
@@ -769,6 +771,22 @@ namespace SolidShineUi
         }
 
         #endregion
+
+        /// <summary>
+        /// Get or set how opaque/transparent the snaplines should be over the background. Default is <c>0.6</c>.
+        /// </summary>
+        public double SnaplineOpacity { get => (double)GetValue(SnaplineOpacityProperty); set => SetValue(SnaplineOpacityProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SnaplineOpacity"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SnaplineOpacityProperty
+            = DependencyProperty.Register(nameof(SnaplineOpacity), typeof(double), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<PositionSelect, double>(e.NewValue, (o, v) => o.UpdateSnaplinesOpacity(v))));
+
+        private void UpdateSnaplinesOpacity(double d)
+        {
+            if (canVertical != null) canVertical.Opacity = d;
+            if (canHorizontal != null) canHorizontal.Opacity = d;
+        }
 
         #endregion
 

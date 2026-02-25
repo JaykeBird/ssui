@@ -24,8 +24,8 @@
               MouseDown="grdGuidelines_MouseDown" MouseUp="grdGuidelines_MouseUp" MouseMove="grdGuidelines_MouseMove" MouseLeave="grdGuidelines_MouseLeave" >
             <Border x:Name="brdrKeyFocus" IsHitTestVisible="False" BorderThickness="4.5" BorderBrush="Transparent" />
             <Grid x:Name="grdGuidelines" IsHitTestVisible="False" Margin="4.5" >
-                <Grid x:Name="canVertical" />
-                <Grid x:Name="canHorizontal" />
+                <Grid x:Name="canVertical" Opacity="0.5" />
+                <Grid x:Name="canHorizontal" Opacity="0.5" />
             </Grid>
             <Canvas x:Name="grdSelArea" Margin="4.5" IsHitTestVisible="True" ClipToBounds="False" Background="{x:Null}" >
                 <Ellipse x:Name="ellSelect" HorizontalAlignment="Left" VerticalAlignment="Top" Width="9" Height="9" Canvas.Top="0" Canvas.Left="0" MouseDown="ellSelect_MouseDown" >

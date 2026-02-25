@@ -39,6 +39,9 @@
                             HorizontalAlignment="Left" IsChecked="{Binding ElementName=selPos1, Path=SnapToSnaplines, Mode=TwoWay}" />
         <flat:CheckBox Grid.Row="1" Margin="290,0,0,0" Content="Is Enabled" x:Name="chkEnabled"
                             HorizontalAlignment="Left" IsChecked="{Binding ElementName=selPos1, Path=IsEnabled, Mode=TwoWay}" />
+        <TextBlock Grid.Row="1" Margin="385,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Snapline Opacity:" />
+        <flat:DoubleSpinner Grid.Row="1" Margin="485,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Decimals="3" 
+            MinValue="0" MaxValue="1" Step="0.1" x:Name="nudSnaplineOpacity" Value="{Binding SnaplineOpacity, ElementName=selPos1}" />
         <TextBlock Grid.Row="2" Margin="160,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Snap distance:" />
         <flat:DoubleSpinner Grid.Row="2" Margin="240,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="70" Decimals="3" 
                             MinValue="0" MaxValue="20" Step="1" x:Name="nudSnapsize" Value="{Binding ElementName=selPos1, Path=SnapDistance}" />

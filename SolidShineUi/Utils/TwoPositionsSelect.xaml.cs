@@ -574,7 +574,7 @@ namespace SolidShineUi.Utils
         {
             //double sshalf = SelectorSize / 2;
             Border b = new Border();
-            b.BorderThickness = new Thickness(0.75);
+            b.BorderThickness = new Thickness(1);
             b.BorderBrush = SnapLineBrush;
             b.Width = 1;
             b.Tag = point;
@@ -620,7 +620,7 @@ namespace SolidShineUi.Utils
         {
             //double sshalf = SelectorSize / 2;
             Border b = new Border();
-            b.BorderThickness = new Thickness(0.75);
+            b.BorderThickness = new Thickness(1);
             b.BorderBrush = SnapLineBrush;
             b.Height = 1;
             b.Tag = point;
@@ -707,6 +707,26 @@ namespace SolidShineUi.Utils
                 }
                 Canvas.SetTop(ellSelect, (grdSelArea.ActualHeight * SelectedHeight1) - sshalf);
                 Canvas.SetTop(ellSelect2, (grdSelArea.ActualHeight * SelectedHeight2) - sshalf);
+            }
+        }
+
+
+        /// <summary>
+        /// Get or set how opaque/transparent the snaplines should be over the background. Default is <c>0.6</c>.
+        /// </summary>
+        public double SnaplineOpacity { get => (double)GetValue(SnaplineOpacityProperty); set => SetValue(SnaplineOpacityProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SnaplineOpacity"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SnaplineOpacityProperty
+            = DependencyProperty.Register(nameof(SnaplineOpacity), typeof(double), typeof(TwoPositionsSelect),
+            new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<TwoPositionsSelect>((o) => o.UpdateSnaplinesOpacity(e))));
+
+        private void UpdateSnaplinesOpacity(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is double d)
+            {
+                if (canVertical != null) canVertical.Opacity = d;
+                if (canHorizontal != null) canHorizontal.Opacity = d;
             }
         }
 
