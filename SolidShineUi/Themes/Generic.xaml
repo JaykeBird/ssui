@@ -1089,7 +1089,7 @@
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=OnlyAllowCheckBoxClick}" Value="True" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="BorderBrush" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </MultiDataTrigger>
@@ -1152,7 +1152,7 @@
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
-                                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=OnlyAllowCheckBoxClick}" Value="True" />
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Background" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                             </MultiDataTrigger>
