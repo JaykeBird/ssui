@@ -54,11 +54,11 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             //RunUpdateAction(() =>
             //{
-            //    nudStartX.Value = edtStart.SelectedWidth1;
-            //    nudStartY.Value = edtStart.SelectedHeight1;
+            //    nudStartX.Value = edtStart.SelectedX1;
+            //    nudStartY.Value = edtStart.SelectedY1;
 
-            //    nudEndX.Value = edtStart.SelectedWidth2;
-            //    nudEndY.Value = edtStart.SelectedHeight2;
+            //    nudEndX.Value = edtStart.SelectedX2;
+            //    nudEndY.Value = edtStart.SelectedY2;
             //});
 
             if (Icon == null && Owner != null && Owner.Icon != null)
@@ -81,11 +81,11 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             if (rgb.MappingMode == BrushMappingMode.RelativeToBoundingBox)
             {
-                edtStart.SelectedHeight = rgb.GradientOrigin.Y;
-                edtStart.SelectedWidth = rgb.GradientOrigin.X;
+                edtStart.SelectedY = rgb.GradientOrigin.Y;
+                edtStart.SelectedX = rgb.GradientOrigin.X;
 
-                edtCenter.SelectedHeight = rgb.Center.Y;
-                edtCenter.SelectedWidth = rgb.Center.X;
+                edtCenter.SelectedY = rgb.Center.Y;
+                edtCenter.SelectedX = rgb.Center.X;
 
                 nudSizeX.Value = rgb.RadiusX;
                 nudSizeY.Value = rgb.RadiusY;
@@ -138,8 +138,8 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             if (rgb.MappingMode == BrushMappingMode.RelativeToBoundingBox)
             {
-                rgb.GradientOrigin = new Point(edtStart.SelectedWidth, edtStart.SelectedHeight);
-                rgb.Center = new Point(edtCenter.SelectedWidth, edtCenter.SelectedHeight);
+                rgb.GradientOrigin = new Point(edtStart.SelectedX, edtStart.SelectedY);
+                rgb.Center = new Point(edtCenter.SelectedX, edtCenter.SelectedY);
                 rgb.RadiusX = nudSizeX.Value;
                 rgb.RadiusY = nudSizeY.Value;
             }
@@ -170,27 +170,27 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         bool updateValues = false;
 
-        private void edtStart_SelectedPositionChanged(object sender, EventArgs e)
+        private void edtStart_SelectedPositionChanged(object sender, RoutedPropertyChangedEventArgs<Point> e)
         {
             if (nudStartX == null) return;
 
             RunUpdateAction(() =>
             {
-                nudStartX.Value = edtStart.SelectedWidth;
-                nudStartY.Value = edtStart.SelectedHeight;
+                nudStartX.Value = edtStart.SelectedX;
+                nudStartY.Value = edtStart.SelectedY;
             });
 
             UpdatePreview();
         }
 
-        private void edtCenter_SelectedPositionChanged(object sender, EventArgs e)
+        private void edtCenter_SelectedPositionChanged(object sender, RoutedPropertyChangedEventArgs<Point> e)
         {
             if (nudEndX == null) return;
 
             RunUpdateAction(() =>
             {
-                nudEndX.Value = edtCenter.SelectedWidth;
-                nudEndY.Value = edtCenter.SelectedHeight;
+                nudEndX.Value = edtCenter.SelectedX;
+                nudEndY.Value = edtCenter.SelectedY;
             });
 
             UpdatePreview();
@@ -202,7 +202,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             RunUpdateAction(() =>
             {
-                edtStart.SelectedWidth = nudStartX.Value;
+                edtStart.SelectedX = nudStartX.Value;
             });
         }
 
@@ -210,7 +210,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             RunUpdateAction(() =>
             {
-                edtStart.SelectedHeight = nudStartY.Value;
+                edtStart.SelectedY = nudStartY.Value;
             });
         }
 
@@ -218,7 +218,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             RunUpdateAction(() =>
             {
-                edtCenter.SelectedWidth = nudEndX.Value;
+                edtCenter.SelectedX = nudEndX.Value;
             });
         }
 
@@ -226,7 +226,7 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             RunUpdateAction(() =>
             {
-                edtCenter.SelectedWidth = nudEndY.Value;
+                edtCenter.SelectedY = nudEndY.Value;
             });
         }
 #pragma warning restore IDE0051 // Remove unused private members
@@ -316,8 +316,8 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else
             {
-                rgb.GradientOrigin = new Point(edtStart.SelectedWidth, edtStart.SelectedHeight);
-                rgb.Center = new Point(edtCenter.SelectedWidth, edtCenter.SelectedHeight);
+                rgb.GradientOrigin = new Point(edtStart.SelectedX, edtStart.SelectedY);
+                rgb.Center = new Point(edtCenter.SelectedX, edtCenter.SelectedY);
                 rgb.RadiusX = nudSizeX.Value;
                 rgb.RadiusY = nudSizeY.Value;
             }

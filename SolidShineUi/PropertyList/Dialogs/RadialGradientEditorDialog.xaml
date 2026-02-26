@@ -35,9 +35,9 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Utils:RelativePositionSelect x:Name="edtStart" SelectedHeight="0.0" SelectedWidth="0.0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+            <flat:PositionSelect x:Name="edtStart" SelectedX="0.0" SelectedY="0.0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
                                       HorizontalAlignment="Center" Width="100" Grid.Row="1" SelectorSize="11" SelectedPositionChanged="edtStart_SelectedPositionChanged" Grid.ColumnSpan="2" />
-            <Utils:RelativePositionSelect x:Name="edtCenter" SelectedHeight="0.0" SelectedWidth="0.0" ColorScheme="{Binding ColorScheme, ElementName=window}"
+            <flat:PositionSelect x:Name="edtCenter" SelectedX="0.0" SelectedY="0.0" ColorScheme="{Binding ColorScheme, ElementName=window}"
                                       HorizontalAlignment="Center" Width="100" Grid.Row="1" SelectorSize="11" SelectedPositionChanged="edtCenter_SelectedPositionChanged" Grid.ColumnSpan="2" Grid.Column="3" />
             
             <TextBlock HorizontalAlignment="Left" Margin="0,5,0,0" Text="Start point (origin):" VerticalAlignment="Top"/>
