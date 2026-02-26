@@ -216,10 +216,18 @@ namespace SolidShineUi
             if (Decimals > 15) Decimals = 15;
             if (Decimals < 0) Decimals = 0;
 
+            // we'll round the value now to the Decimal value
+            // to prevent edge cases where we end up with a value that would end up rounding up/down to a
+            // number outside of the MaxValue or MinValue range, we'll just clamp it here
+            // (otherwise we can end up with a stack overflow as the code keeps repeatedly
+            // trying to clamp the value and also round it over and over)
             double oldVal = Value;
-            Value = Math.Round(Value, Decimals);
+            double newVal = Math.Round(Value, Decimals);
+            if (newVal > MaxValue) newVal = MaxValue;
+            if (newVal < MinValue) newVal = MinValue;
+            Value = newVal;
 
-            if (oldVal != Value)
+            if (oldVal != newVal)
             {
                 // redo the underlying value updates again
                 base.ValidateValue();
