@@ -709,7 +709,7 @@ namespace SolidShineUi
             if (sldAlpha == null) return;
 
             _internalAlphaChange = true;
-            sldAlpha.Value = (e.NewValue is double oval) ? oval : 0.0d;
+            sldAlpha.Value = (e.NewValue is int oval) ? oval : 0;
             UpdateSelectedColor(SelectedColor);
             _internalAlphaChange = false;
         }
