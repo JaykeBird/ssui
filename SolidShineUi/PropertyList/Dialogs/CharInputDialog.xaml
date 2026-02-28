@@ -27,7 +27,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Text="As Hexadecimal (A-F,0-9):" VerticalAlignment="Top" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,15,0,0" Text="As Decimal:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Text="Preview:" VerticalAlignment="Top" Grid.Row="3"/>
-        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" Grid.Column="1" />
-        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" Grid.Column="1" />
+        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,15" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" Grid.Column="1" />
+        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,15" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" Grid.Column="1" />
     </Grid>
 </flat:FlatWindow>
