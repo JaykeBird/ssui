@@ -81,7 +81,8 @@
         <flat:FlatButton x:Name="btnProperties" Click="btnProperties_Click" MinWidth="120"
                          Content="Show Property List" Margin="0,24,30,0" HorizontalAlignment="Right" Width="80" Height="24" VerticalAlignment="Top" />
         <Popup x:Name="popProps" Placement="Bottom" >
-            <Border x:Name="border" BorderThickness="1" BorderBrush="{Binding SsuiTheme.BorderBrush, ElementName=userControl}" >
+            <Border x:Name="border" BorderThickness="1" BorderBrush="{Binding SsuiTheme.BorderBrush, ElementName=userControl}" 
+                    Background="{Binding SsuiTheme.PanelBackground, ElementName=userControl}" >
                 <pl:PropertyList x:Name="pl" ShowInheritedProperties="False" Height="400" SsuiTheme="{Binding SsuiTheme, ElementName=userControl}" />
             </Border>
         </Popup>
