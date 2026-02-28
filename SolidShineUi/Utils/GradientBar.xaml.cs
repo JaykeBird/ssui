@@ -47,6 +47,8 @@ namespace SolidShineUi.Utils
         /// When setting a list of gradient stops, a deep-copy clone of all the stops are actually made, to avoid situations where 
         /// edits are applied when not wanted or if the inputted collection is frozen.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the list of gradient stops to display in this GradientBar.")]
         public GradientStopCollection GradientStops
         {
             get
@@ -177,7 +179,7 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-        #region ColorScheme
+        #region ColorScheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -213,6 +215,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the color scheme used for this control.")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -391,6 +395,8 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <exception cref="ArgumentNullException">thrown if attempting to set this property to <c>null</c>; use <see cref="Deselect"/> instead</exception>
         /// <exception cref="ArgumentException">thrown if attempting to set this property to a <see cref="GradientStop"/> that isn't in this editor</exception>
+        [Category("Common")]
+        [Description("Get or set the gradient stop that is currently selected.")]
 #if NETCOREAPP
         public GradientStop? SelectedGradientStop
 #else
@@ -411,13 +417,16 @@ namespace SolidShineUi.Utils
                 SelectStop(value);
             }
         }
-#endregion
+        #endregion
 
         #region ShowControls
 
         /// <summary>
         /// Get or set if editing and navigation controls should be visible in the gradient bar. If not, then only the bar and stops are shown.
         /// </summary>
+
+        [Category("Appearance")]
+        [Description("Get or set if editing and navigation controls should be visible in the gradient bar.")]
         public bool ShowControls { get => (bool)GetValue(ShowControlsProperty); set => SetValue(ShowControlsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowControls"/>. See the related property for details.</summary>
@@ -817,13 +826,15 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Check if two <see cref="GradientStop"/> objects have the same values. This is different from doing an equality check (<c>==</c>), 
-        /// as that checks if they are the same object in memory; if there are two different gradient stops with the same values, the equality
-        /// check wouldn't see them as equal but this function will.
+        /// Check if two <see cref="GradientStop"/> objects have the same values.
         /// </summary>
         /// <param name="gs1">the first stop to compare</param>
         /// <param name="gs2">the second stop to compare</param>
+        /// <returns>
+        /// <c>true</c> if the two stops have the same <c>Color</c> and <c>Offset</c> value; otherwise <c>false</c>
+        /// </returns>
         /// <remarks>
+        /// This is different from doing an equality check (<c>==</c>), which checks if they are the same object in memory.
         /// This only checks the two stops' <see cref="GradientStop.Color"/> and <see cref="GradientStop.Offset"/> properties.
         /// </remarks>
         public static bool AreStopsEqual(GradientStop gs1, GradientStop gs2)
