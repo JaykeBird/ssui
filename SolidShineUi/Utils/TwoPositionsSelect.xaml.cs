@@ -45,7 +45,7 @@ namespace SolidShineUi.Utils
             // might consider hiding snap lines while control is disabled
         }
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -58,7 +58,7 @@ namespace SolidShineUi.Utils
 
         /// <summary>The dependency property object for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TwoPositionsSelect),
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(TwoPositionsSelect),
             new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
 
         /// <summary>
@@ -84,6 +84,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the color scheme used for this TwoPositionsSelect. For easier color scheme management, bind this to the window or larger control you're using.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the color scheme used for this control.")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -369,6 +371,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set if the selector should snap to the snap lines within the control.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set if the selector should snap to the snap lines within the control.")]
         public bool SnapToSnapLines { get => (bool)GetValue(SnapToSnapLinesProperty); set => SetValue(SnapToSnapLinesProperty, value); }
 
         /// <summary>
@@ -383,6 +387,8 @@ namespace SolidShineUi.Utils
         /// The distance, in pixels, within which the selector should snap to the nearest snap line.
         /// The larger the distance, the further the selector can be away from a snap line before it snaps to the line.
         /// </summary>
+        [Category("Common")]
+        [Description("The distance, in pixels, within which the selector should snap to the nearest snap line.")]
         public double SnapDistance { get => (double)GetValue(SnapDistanceProperty); set => SetValue(SnapDistanceProperty, value); }
 
         /// <summary>
@@ -398,6 +404,8 @@ namespace SolidShineUi.Utils
         /// Get or set the list of snap points that are displayed along the horizontal (X) axis of the control.
         /// <c>0.0</c> represents the far left of the control, and <c>1.0</c> represents the far right of the control.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the list of snap points that are displayed along the horizontal (X) axis of the control.")]
         public ObservableCollection<double> HorizontalSnapPoints
         {
             get => (ObservableCollection<double>)GetValue(HorizontalSnapPointsProperty);
@@ -413,6 +421,8 @@ namespace SolidShineUi.Utils
         /// Get or set the list of snap points that are displayed along the vertical (Y) axis of the control.
         /// <c>0.0</c> represents the far top of the control, and <c>1.0</c> represents the far bottom of the control.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the list of snap points that are displayed along the vertical (Y) axis of the control.")]
         public ObservableCollection<double> VerticalSnapPoints
         {
             get => (ObservableCollection<double>)GetValue(VerticalSnapPointsProperty);
@@ -712,8 +722,10 @@ namespace SolidShineUi.Utils
 
 
         /// <summary>
-        /// Get or set how opaque/transparent the snaplines should be over the background. Default is <c>0.6</c>.
+        /// Get or set how opaque/transparent the snaplines should be over the background. Default is <c>0.5</c>.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set how opaque/transparent the snaplines should be over the background. Default is 0.5.")]
         public double SnaplineOpacity { get => (double)GetValue(SnaplineOpacityProperty); set => SetValue(SnaplineOpacityProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SnaplineOpacity"/>. See the related property for details.</summary>
@@ -792,6 +804,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).")]
         public double KeyMoveStep { get => (double)GetValue(KeyMoveStepProperty); set => SetValue(KeyMoveStepProperty, value); }
 
         /// <summary>
@@ -1178,6 +1192,8 @@ namespace SolidShineUi.Utils
         /// Get or set the first selected value on the horizontal (X) axis.
         /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the horizontal (X) axis for the first selector.")]
         public double SelectedWidth1
         {
             get { return oWidth; }
@@ -1206,6 +1222,8 @@ namespace SolidShineUi.Utils
         /// Get or set the first selected value on the vertical (Y) axis.
         /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the vertical (Y) axis for the first selector.")]
         public double SelectedHeight1
         {
             get { return oHeight; }
@@ -1234,6 +1252,8 @@ namespace SolidShineUi.Utils
         /// Get or set the second selected value on the horizontal (X) axis.
         /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the horizontal (X) axis for the second selector.")]
         public double SelectedWidth2
         {
             get { return qWidth; }
@@ -1262,6 +1282,8 @@ namespace SolidShineUi.Utils
         /// Get or set the second selected value on the vertical (Y) axis.
         /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the vertical (Y) axis for the second selector.")]
         public double SelectedHeight2
         {
             get { return qHeight; }

@@ -106,6 +106,7 @@ namespace SolidShineUi
 
             }
         }
+
         #endregion
 
         #region Brushes / Brush Handling
@@ -273,6 +274,7 @@ namespace SolidShineUi
         /// Get or set the color scheme used for this RelativePositionSelect. This can be used to set all of the brushes at once.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the color scheme used for this control.")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -362,6 +364,8 @@ namespace SolidShineUi
 
         #region Snaplines
 
+        #region Properties
+
         /// <summary>
         /// Get or set if the selector should snap to the snap lines within the control.
         /// </summary>
@@ -391,8 +395,6 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty SnapDistanceProperty
             = DependencyProperty.Register(nameof(SnapDistance), typeof(double), typeof(PositionSelect), new FrameworkPropertyMetadata(3.0));
-
-        #region ObservableCollection handling
 
         /// <summary>
         /// Get or set the list of snap points that are displayed along the horizontal (X) axis of the control.
@@ -429,6 +431,29 @@ namespace SolidShineUi
         public static readonly DependencyProperty VerticalSnapPointsProperty
             = DependencyProperty.Register(nameof(VerticalSnapPoints), typeof(ObservableCollection<double>), typeof(PositionSelect),
                 new FrameworkPropertyMetadata(new PropertyChangedCallback((d, e) => d.PerformAs<PositionSelect>((r) => r.VerticalSnapPointsChanged(r, e)))));
+
+
+        /// <summary>
+        /// Get or set how opaque/transparent the snaplines should be over the background. Default is <c>0.5</c>.
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set how opaque/transparent the snaplines should be over the background. Default is 0.5.")]
+        public double SnaplineOpacity { get => (double)GetValue(SnaplineOpacityProperty); set => SetValue(SnaplineOpacityProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SnaplineOpacity"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SnaplineOpacityProperty
+            = DependencyProperty.Register(nameof(SnaplineOpacity), typeof(double), typeof(PositionSelect),
+            new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<PositionSelect, double>(e.NewValue, (o, v) => o.UpdateSnaplinesOpacity(v))));
+
+        private void UpdateSnaplinesOpacity(double d)
+        {
+            if (canVertical != null) canVertical.Opacity = d;
+            if (canHorizontal != null) canHorizontal.Opacity = d;
+        }
+
+        #endregion
+
+        #region ObservableCollection handling
 
         private void HorizontalSnapPointsChanged(PositionSelect sender, DependencyPropertyChangedEventArgs e)
         {
@@ -772,22 +797,6 @@ namespace SolidShineUi
 
         #endregion
 
-        /// <summary>
-        /// Get or set how opaque/transparent the snaplines should be over the background. Default is <c>0.6</c>.
-        /// </summary>
-        public double SnaplineOpacity { get => (double)GetValue(SnaplineOpacityProperty); set => SetValue(SnaplineOpacityProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="SnaplineOpacity"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty SnaplineOpacityProperty
-            = DependencyProperty.Register(nameof(SnaplineOpacity), typeof(double), typeof(PositionSelect),
-            new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<PositionSelect, double>(e.NewValue, (o, v) => o.UpdateSnaplinesOpacity(v))));
-
-        private void UpdateSnaplinesOpacity(double d)
-        {
-            if (canVertical != null) canVertical.Opacity = d;
-            if (canHorizontal != null) canHorizontal.Opacity = d;
-        }
-
         #endregion
 
         #region Other Visual Properties
@@ -799,7 +808,7 @@ namespace SolidShineUi
         /// but also harder to precisely get to or visualize a specific value (although snaplines can help rectify this).
         /// </summary>
         [Category("Common")]
-        [Description("Get or set the size of the selector (the circle used to select a value).")]
+        [Description("Get or set the size of the selector.")]
         public double SelectorSize { get => (double)GetValue(SelectorSizeProperty); set => SetValue(SelectorSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectorSize"/>. See the related property for details.</summary>
@@ -829,6 +838,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
         /// </summary>
+        [Category("Common")]
         [Description("Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).")]
         public double Step { get => (double)GetValue(StepProperty); set => SetValue(StepProperty, value); }
 
