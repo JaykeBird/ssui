@@ -37,14 +37,14 @@ namespace SolidShineUi
         #region ValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Value"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(long), typeof(LongSpinner),
+            nameof(Value), typeof(long), typeof(LongSpinner),
             new FrameworkPropertyMetadata(0L, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, OnValueChanged));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the value of the spinner.")]
         public override long Value
         {
             get => (long)GetValue(ValueProperty);
@@ -64,13 +64,13 @@ namespace SolidShineUi
         #region StepProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Step"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(long), typeof(LongSpinner), new PropertyMetadata(1L));
+            nameof(Step), typeof(long), typeof(LongSpinner), new PropertyMetadata(1L));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set how much to change the value by when you press the up or down buttons.")]
         public override long Step
         {
             get => (long)GetValue(StepProperty);
@@ -82,14 +82,14 @@ namespace SolidShineUi
         #region MinValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MinValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(long), typeof(LongSpinner),
+            nameof(MinValue), typeof(long), typeof(LongSpinner),
             new PropertyMetadata(long.MinValue, (d, e) => d.PerformAs<LongSpinner>(i => i.OnMinValueChanged(e))));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the minimum value allowed.")]
         public override long MinValue
         {
             get { return (long)GetValue(MinValueProperty); }
@@ -111,14 +111,14 @@ namespace SolidShineUi
         #region MaxValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MaxValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(long), typeof(LongSpinner),
+            nameof(MaxValue), typeof(long), typeof(LongSpinner),
             new PropertyMetadata(long.MaxValue, (d, e) => d.PerformAs<LongSpinner>(s => s.OnMaxValueChanged(e))));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the maximum value allowed.")]
         public override long MaxValue
         {
             get { return (long)GetValue(MaxValueProperty); }
@@ -143,8 +143,27 @@ namespace SolidShineUi
         /// The backing dependency property object for <see cref="DisplayAsHex"/>. Please see the related property for details.
         /// </summary>
         public static readonly DependencyProperty DisplayAsHexProperty = DependencyProperty.Register(
-            "DisplayAsHex", typeof(bool), typeof(LongSpinner),
+            nameof(DisplayAsHex), typeof(bool), typeof(LongSpinner),
             new PropertyMetadata(false, new PropertyChangedCallback((d, e) => d.PerformAs<LongSpinner>((s) => s.OnDisplayAsHexChanged(e)))));
+
+        /// <summary>
+        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while this is set to <c>true</c>, <c>AcceptExpressions</c> is ignored.
+        /// </summary>
+        /// <remarks>
+        /// Certain situations, particularly involving computer representations of data or memory, may benefit more with displaying numbers as hexadecimals rather than decimals.
+        /// With hexadecimals, the letters A-F are allowed along with 0-9, and the number "15" in decimal turns into "F" in hexadecimal. Please view online resources like
+        /// Wikipedia for more details.
+        /// <para/>
+        /// <see cref="ArithmeticParser"/> is currently not built to correctly handle hexadecimal values, and so math expressions cannot be entered if this is set to <c>true</c>,
+        /// and will instead be treated as an invalid value.
+        /// </remarks>
+        [Category("Common")]
+        [Description("Get or set whether to show the value as a hexadecimal value. If this is set to true, AcceptExpressions is ignored.")]
+        public bool DisplayAsHex
+        {
+            get => (bool)GetValue(DisplayAsHexProperty);
+            set => SetValue(DisplayAsHexProperty, value);
+        }
 
         /// <summary>
         /// The backing routed event object for <see cref="DisplayAsHexChanged"/>. Please see the related event for details.
@@ -168,24 +187,6 @@ namespace SolidShineUi
             RaiseEvent(re);
 
             UpdateUI();
-        }
-
-        /// <summary>
-        /// Get or set whether to show the value as a hexadecimal or decimal value. Note that while this is set to <c>true</c>, <c>AcceptExpressions</c> is ignored.
-        /// </summary>
-        /// <remarks>
-        /// Certain situations, particularly involving computer representations of data or memory, may benefit more with displaying numbers as hexadecimals rather than decimals.
-        /// With hexadecimals, the letters A-F are allowed along with 0-9, and the number "15" in decimal turns into "F" in hexadecimal. Please view online resources like
-        /// Wikipedia for more details.
-        /// <para/>
-        /// <see cref="ArithmeticParser"/> is currently not built to correctly handle hexadecimal values, and so math expressions cannot be entered, and will instead be treated
-        /// as an invalid value.
-        /// </remarks>
-        [Category("Common")]
-        public bool DisplayAsHex
-        {
-            get => (bool)GetValue(DisplayAsHexProperty);
-            set => SetValue(DisplayAsHexProperty, value);
         }
 
         #endregion

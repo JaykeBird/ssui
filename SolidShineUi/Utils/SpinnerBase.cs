@@ -986,8 +986,8 @@ namespace SolidShineUi.Utils
         public abstract T Value { get; set; }
 
         /// <summary>
-        /// Get or set the maximum value allowed in this spinner (inclusive).
-        /// By default, this corresponds to the max value allowed by the underlying type (<typeparamref name="T"/>).
+        /// Get or set the minimum value allowed in this spinner (inclusive).
+        /// By default, this corresponds to the min value allowed by the underlying type (<typeparamref name="T"/>).
         /// </summary>
         public abstract T MinValue { get; set; }
 

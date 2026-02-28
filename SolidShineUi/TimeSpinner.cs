@@ -83,14 +83,14 @@ namespace SolidShineUi
         #region ValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Value"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(TimeSpan), typeof(TimeSpinner),
+            nameof(Value), typeof(TimeSpan), typeof(TimeSpinner),
             new FrameworkPropertyMetadata(new TimeSpan(12, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, OnValueChanged));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the value of the spinner.")]
         public override TimeSpan Value
         {
             get => (TimeSpan)GetValue(ValueProperty);
@@ -110,15 +110,15 @@ namespace SolidShineUi
         #region StepProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Step"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(TimeSpan), typeof(TimeSpinner), new PropertyMetadata(new TimeSpan(0, 1, 0)));
+            nameof(Step), typeof(TimeSpan), typeof(TimeSpinner), new PropertyMetadata(new TimeSpan(0, 1, 0)));
 
         /// <summary>
         /// Get or set how much to change the value by when you press the up or down button, or use the Up and Down arrow keys.
         /// </summary>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set how much to change the value by when you press the up or down buttons.")]
         public override TimeSpan Step
         {
             get => (TimeSpan)GetValue(StepProperty);
@@ -130,17 +130,17 @@ namespace SolidShineUi
         #region MinValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MinValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(TimeSpan), typeof(TimeSpinner),
+            nameof(MinValue), typeof(TimeSpan), typeof(TimeSpinner),
             new PropertyMetadata(new TimeSpan(0, 0, 0), (d, e) => d.PerformAs<TimeSpinner>(i => i.OnMinValueChanged(e))));
 
         /// <summary>
         /// Get or set the maximum value allowed in this spinner (inclusive).
         /// By default for the TimeSpinner, this is a <see cref="TimeSpan"/> set to <c>00:00:00</c>, but this can be lowered to negative values (see <see cref="TimeSpan.MinValue"/>).
         /// </summary>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the minimum value allowed.")]
         public override TimeSpan MinValue
         {
             get { return (TimeSpan)GetValue(MinValueProperty); }
@@ -162,17 +162,17 @@ namespace SolidShineUi
         #region MaxValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MaxValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(TimeSpan), typeof(TimeSpinner),
+            nameof(MaxValue), typeof(TimeSpan), typeof(TimeSpinner),
             new PropertyMetadata(new TimeSpan(23, 59, 59), (d, e) => d.PerformAs<TimeSpinner>(s => s.OnMaxValueChanged(e))));
 
         /// <summary>
         /// Get or set the maximum value allowed in this spinner (inclusive).
         /// By default for the TimeSpinner, this is a <see cref="TimeSpan"/> set to <c>23:59:59</c>, but this can be raised to higher values (see <see cref="TimeSpan.MaxValue"/>).
         /// </summary>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the maximum value allowed.")]
         public override TimeSpan MaxValue
         {
             get { return (TimeSpan)GetValue(MaxValueProperty); }
@@ -206,6 +206,8 @@ namespace SolidShineUi
         /// <see cref="TimeSpan.Zero"/>. Standard or custom strings do not support using a 12-hour clock with "AM" and "PM" values; if a 12-hour clock is desired,
         /// set <see cref="Use12HourClock"/> to true, which will prompt the TimeSpinner to add a culture-sensitive "AM" or "PM" at the end of the string.
         /// </remarks>
+        [Category("Appearance"), DefaultValue("g")]
+        [Description("Get or set how the Value is displayed in the text box. Default is \"g\".")]
         public string DisplayFormatString { get => (string)GetValue(DisplayFormatStringProperty); set => SetValue(DisplayFormatStringProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="DisplayFormatString"/>. See the related property for details.</summary>
@@ -218,7 +220,7 @@ namespace SolidShineUi
         #region Use12HourClockProperty
 
         /// <summary>
-        /// Get or set if a 12-hour clock display should be used when displaying the <see cref="Value"/>.
+        /// Get or set if a 12-hour clock time should be used when displaying the <see cref="Value"/>.
         /// </summary>
         /// <remarks>
         /// The <see cref="CultureInfo.CurrentUICulture"/> is used to determine the "AM" and "PM" string values, which will be appended to the end of the display string,
@@ -227,6 +229,8 @@ namespace SolidShineUi
         /// Customizing the "AM" or "PM" string values can be done throughout your application by making a clone of the current culture's
         /// <see cref="DateTimeFormatInfo"/>, changing the <c>AMDesignator</c> and <c>PMDesignator</c> properties, and then setting that as part of the current culture.
         /// </remarks>
+        [Category("Common"), DefaultValue(false)]
+        [Description("Get or set if a 12-hour clock time should be used when displaying the Value.")]
         public bool Use12HourClock { get => (bool)GetValue(Use12HourClockProperty); set => SetValue(Use12HourClockProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Use12HourClock"/>. See the related property for details.</summary>

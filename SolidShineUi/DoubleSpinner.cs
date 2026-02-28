@@ -40,14 +40,14 @@ namespace SolidShineUi
         #region ValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Value"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(DoubleSpinner),
+            nameof(Value), typeof(double), typeof(DoubleSpinner),
             new FrameworkPropertyMetadata(0.0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, OnValueChanged));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the value of the spinner.")]
         public override double Value
         {
             get => (double)GetValue(ValueProperty);
@@ -67,13 +67,13 @@ namespace SolidShineUi
         #region StepProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Step"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(1.0d));
+            nameof(Step), typeof(double), typeof(DoubleSpinner), new PropertyMetadata(1.0d));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set how much to change the value by when you press the up or down buttons.")]
         public override double Step
         {
             get => (double)GetValue(StepProperty);
@@ -85,14 +85,14 @@ namespace SolidShineUi
         #region MinValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MinValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(double), typeof(DoubleSpinner),
+            nameof(MinValue), typeof(double), typeof(DoubleSpinner),
             new PropertyMetadata(double.MinValue, (d, e) => d.PerformAs<DoubleSpinner>(i => i.OnMinValueChanged(e))));
 
         ///<inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the minimum value allowed.")]
         public override double MinValue
         {
             get { return (double)GetValue(MinValueProperty); }
@@ -117,11 +117,11 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(double), typeof(DoubleSpinner),
+            nameof(MaxValue), typeof(double), typeof(DoubleSpinner),
             new PropertyMetadata(double.MaxValue, (d, e) => d.PerformAs<DoubleSpinner>(s => s.OnMaxValueChanged(e))));
 
         ///<inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the maximum value allowed.")]
         public override double MaxValue
         {
             get { return (double)GetValue(MaxValueProperty); }
@@ -157,7 +157,8 @@ namespace SolidShineUi
         /// The spinner will modify and round the inputted value to make sure it only has at most this many decimal places.
         /// Excess trailing zeroes are not displayed if a number doesn't need this many decimal places.
         ///</remarks>
-        [Category("Common")]
+        [Category("Common"), DefaultValue(15)]
+        [Description("Get or set how many decimal places to display.")]
         public int Decimals
         {
             get => (int)GetValue(DecimalsProperty);
