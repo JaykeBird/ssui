@@ -3031,7 +3031,143 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style TargetType="{x:Type ssut:TemplateButton}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="5,0,5,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ssut:TemplateButton}">
+                    <ssut:ForeBorder x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
+                        <ssut:ForeBorder.Style>
+                            <Style TargetType="ssut:ForeBorder">
+                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </Style>
+                        </ssut:ForeBorder.Style>
+                        <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                                <ContentPresenter x:Name="btn_Cc" Margin="{Binding Path=Padding, RelativeSource={RelativeSource Mode=TemplatedParent}}" RecognizesAccessKey="True" >
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="{x:Type ContentPresenter}" >
+                                            <Setter Property="Opacity" Value="1.0" />
+                                            <Setter Property="HorizontalAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                            <Setter Property="VerticalAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                </ContentPresenter>
+                                <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
+                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                    </ssut:ForeBorder>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TransparentBack" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="#01000000" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="#01000000" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="TransparentBack" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                                <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="TransparentBack" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                                <Setter Property="Background" TargetName="btn_Border" Value="#01000000" />
+                                <Setter Property="BorderBrush" TargetName="btn_Border" Value="#01000000" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" TargetName="btn_Border" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="HighlightOnKeyboardFocus" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsStylusOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <!--<Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>-->
+                        <Trigger Property="IsMouseDown" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="IsMouseDown" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </MultiTrigger>
+                        <!--<Trigger Property="IsFocused" Value="True" >
+                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                        </Trigger>-->
+                        <Trigger Property="IsKeyboardFocused" Value="True" >
+                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--</ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>-->
 
