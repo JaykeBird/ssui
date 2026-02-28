@@ -19,7 +19,7 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="20,10,0,0" Text="Gradient stops:" VerticalAlignment="Top"/>
-        <Utils:GradientBar x:Name="stopBar" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" GradientChanged="stopBar_GradientChanged" Grid.Row="1" />
+        <Utils:GradientBar x:Name="stopBar" GradientChanged="stopBar_GradientChanged" Grid.Row="1" />
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="30,5,10,5" Grid.Row="3" Height="150" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Utils:TwoPositionsSelect x:Name="edtPoints" SelectedHeight1="0.0" SelectedHeight2="1.0" SelectedWidth1="0.0" SelectedWidth2="1.0"  ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+            <Utils:TwoPositionsSelect x:Name="edtPoints" SelectedHeight1="0.0" SelectedHeight2="1.0" SelectedWidth1="0.0" SelectedWidth2="1.0"
                                       HorizontalAlignment="Center" Width="140" Grid.Row="1" Grid.RowSpan="3" SelectorSize="11" SelectedPositionChanged="edtPoints_SelectedPositionChanged" />
             <!--<Utils:TwoPositionsSelect.HorizontalSnapPoints>
                     <sys:Double>0.0</sys:Double>
@@ -49,35 +49,35 @@
             <TextBlock Text="Start point:" Grid.Column="2" Margin="0,0,3,1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <TextBlock Text="End point:" Grid.Column="2" Margin="0,0,3,1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" >
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="359.999" Decimals="2" Margin="3,3,8,3" x:Name="nudAngle" Step="1" ValueChanged="nudAngle_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:FlatButton x:Name="btnAngleLeft" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleLeft_Click" >
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="359.999" Decimals="2" Margin="3,3,8,3" x:Name="nudAngle" Step="1" ValueChanged="nudAngle_ValueChanged" />
+                <flat:FlatButton x:Name="btnAngleLeft" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" Click="btnAngleLeft_Click" >
                     <Image x:Name="imgLeft" />
                 </flat:FlatButton>
-                <flat:FlatButton x:Name="btnAngleUp" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleUp_Click" >
+                <flat:FlatButton x:Name="btnAngleUp" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" Click="btnAngleUp_Click" >
                     <Image x:Name="imgUp" />
                 </flat:FlatButton>
-                <flat:FlatButton x:Name="btnAngleRight" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleRight_Click" >
+                <flat:FlatButton x:Name="btnAngleRight" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" Click="btnAngleRight_Click" >
                     <Image x:Name="imgRight" />
                 </flat:FlatButton>
-                <flat:FlatButton x:Name="btnAngleDown" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Click="btnAngleDown_Click" >
+                <flat:FlatButton x:Name="btnAngleDown" Width="24" Height="24" Padding="0" VerticalAlignment="Center" TransparentBack="True" Click="btnAngleDown_Click" >
                     <Image x:Name="imgDown" />
                 </flat:FlatButton>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" >
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudStartX" ValueChanged="nudStartX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudStartY" ValueChanged="nudStartY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudStartX" ValueChanged="nudStartX_ValueChanged" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudStartY" ValueChanged="nudStartY_ValueChanged" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudStartAX" AcceptExpressions="True"
-                                    ValueChanged="nudStartX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Visibility="Collapsed" />
+                                    ValueChanged="nudStartX_ValueChanged" Visibility="Collapsed" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudStartAY" AcceptExpressions="True"
-                                    ValueChanged="nudStartY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Visibility="Collapsed" />
+                                    ValueChanged="nudStartY_ValueChanged" Visibility="Collapsed" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" >
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudEndX" ValueChanged="nudEndX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
-                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudEndY" ValueChanged="nudEndY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudEndX" ValueChanged="nudEndX_ValueChanged" />
+                <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="1" Decimals="3" Step="0.1" Margin="3" x:Name="nudEndY" ValueChanged="nudEndY_ValueChanged" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudEndAX" AcceptExpressions="True"
-                                    ValueChanged="nudEndX_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Visibility="Collapsed" />
+                                    ValueChanged="nudEndX_ValueChanged" Visibility="Collapsed" />
                 <flat:DoubleSpinner Width="80" MinValue="0" MaxValue="5000" Decimals="2" Step="1" Margin="3" x:Name="nudEndAY" AcceptExpressions="True"
-                                    ValueChanged="nudEndY_ValueChanged" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Visibility="Collapsed" />
+                                    ValueChanged="nudEndY_ValueChanged" Visibility="Collapsed" />
             </StackPanel>
         </Grid>
 
@@ -103,7 +103,7 @@
                                Enum="{x:Type BrushMappingMode}" SelectionChanged="cbbMappingMode_SelectionChanged" />
             <flat:EnumComboBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" x:Name="cbbSpreadMethod" Width="70"
                                Enum="{x:Type GradientSpreadMethod}" SelectionChanged="cbbSpreadMethod_SelectionChanged" />
-            <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" x:Name="nudOpacity" Width="60" ColorScheme="{Binding ElementName=window, Path=ColorScheme}"
+            <flat:DoubleSpinner HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" x:Name="nudOpacity" Width="60"
                                 MinValue="0.0" MaxValue="1.0" Value="1.0" Decimals="2" Step="0.05" ValueChanged="nudOpacity_ValueChanged" />
         </Grid>
 
@@ -131,8 +131,8 @@
 
         <!-- dialog buttons -->
         <flat:FlatButton Content="OK" HorizontalAlignment="Right" Margin="0,0,110,0" Width="80" Grid.Row="6" VerticalAlignment="Center" 
-                         x:Name="btnOK" Click="btnOK_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                         x:Name="btnOK" Click="btnOK_Click" />
         <flat:FlatButton Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,0" Width="80" Grid.Row="6" VerticalAlignment="Center" 
-                         x:Name="btnCancel" Click="btnCancel_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" />
+                         x:Name="btnCancel" Click="btnCancel_Click" />
     </Grid>
 </flat:FlatWindow>
