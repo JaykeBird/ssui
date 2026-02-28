@@ -16,6 +16,7 @@ namespace SolidShineUi
     /// A control that displays two buttons: a main button on the left which activates like a normal button, 
     /// and a secondary button on the right that displays a menu of additional options.
     /// </summary>
+    [Localizability(LocalizationCategory.Button)]
     public class SplitButton : ThemedContentControl, IClickSelectableControl
     {
         static SplitButton()
@@ -533,6 +534,7 @@ namespace SolidShineUi
         /// Get or set the color scheme to apply to this button. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the color scheme to apply to this button.")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -886,6 +888,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement mode for the SplitButton's menu. Default is <c>Bottom</c>.
         /// </summary>
+        [Category("Common")]
         [Description("Get or set the placement mode for the SplitButton's menu. Default is Bottom.")]
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
@@ -897,6 +900,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement target for the SplitButton's menu. Set to <c>null</c> to set the target to this SplitButton. Default is <c>null</c>.
         /// </summary>
+        [Category("Appearance")]
         [Description("Get or set the placement target for the SplitButton's menu. Set to null to set the target to this SplitButton. Default is null.")]
 #if NETCOREAPP
         public UIElement? MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
@@ -911,6 +915,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement rectangle for the SplitButton's menu. This sets the area relative to the button that the menu is positioned.
         /// </summary>
+        [Category("Appearance")]
         [Description("Get or set the placement rectangle for the SplitButton's menu. This sets the area relative to the button that the menu is positioned.")]
         public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
 
@@ -921,6 +926,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set how far offset the menu is horizontally (left or right) from its placement target/rectangle when it's opened.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set how far offset the menu is horizontally from its placement target/rectangle when it's opened.")]
         public double MenuHorizontalOffset { get => (double)GetValue(MenuHorizontalOffsetProperty); set => SetValue(MenuHorizontalOffsetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuHorizontalOffset"/>. See the related property for details.</summary>
@@ -929,6 +936,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set how far offset the menu is vertically (up or down) from its placement target/rectangle when it's opened.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set how far offset the menu is vertically from its placement target/rectangle when it's opened.")]
         public double MenuVerticalOffset { get => (double)GetValue(MenuVerticalOffsetProperty); set => SetValue(MenuVerticalOffsetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuVerticalOffset"/>. See the related property for details.</summary>

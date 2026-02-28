@@ -98,6 +98,7 @@ namespace SolidShineUi
         /// Get or set the menu that appears when the button is clicked.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set the menu that appears when the button is clicked.")]
         public ContextMenu Menu
         {
             get { return (ContextMenu)GetValue(MenuProperty); }
@@ -121,7 +122,7 @@ namespace SolidShineUi
 #endif
 
         /// <summary>
-        /// Get or set if the menu should close automatically. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
+        /// Get or set if the menu should close automatically upon selecting an item. Remember to set the <c>StaysOpenOnClick</c> property for child menu items as well.
         /// </summary>
         /// <remarks>
         /// When this is set to <c>false</c>, the menu will close when a menu item is selected, or when the user clicks outside of the menu or moves focus.
@@ -134,6 +135,7 @@ namespace SolidShineUi
         /// long as you want this behavior.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set if the menu should close automatically upon selecting an item.")]
         public bool StaysOpen
         {
             get
@@ -163,6 +165,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement mode for the MenuButton's menu.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the placement mode for the MenuButton's menu.")]
         public PlacementMode MenuPlacement { get => (PlacementMode)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
@@ -174,6 +178,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement target for the MenuButton's menu. Set to <c>null</c> to set the target to this MenuButton.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the placement target for the MenuButton's menu. Set to null to set the target to this MenuButton.")]
 #if NETCOREAPP
         public UIElement? MenuPlacementTarget { get => (UIElement)GetValue(MenuPlacementTargetProperty); set => SetValue(MenuPlacementTargetProperty, value); }
 #else
@@ -189,6 +195,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the placement rectangle for the MenuButton's menu. This sets the area relative to the button that the menu is positioned.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the placement rectangle for the MenuButton's menu.")]
         public Rect MenuPlacementRectangle { get => (Rect)GetValue(MenuPlacementRectangleProperty); set => SetValue(MenuPlacementRectangleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacementRectangle"/>. See the related property for details.</summary>
@@ -199,6 +207,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set how far offset the menu is horizontally (left or right) from its placement target/rectangle when it's opened.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set how far offset the menu is horizontally from its placement target/rectangle when it's opened.")]
         public double MenuHorizontalOffset { get => (double)GetValue(MenuHorizontalOffsetProperty); set => SetValue(MenuHorizontalOffsetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuHorizontalOffset"/>. See the related property for details.</summary>
@@ -209,6 +219,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set how far offset the menu is vertically (up or down) from its placement target/rectangle when it's opened.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set how far offset the menu is vertically from its placement target/rectangle when it's opened.")]
         public double MenuVerticalOffset { get => (double)GetValue(MenuVerticalOffsetProperty); set => SetValue(MenuVerticalOffsetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuVerticalOffset"/>. See the related property for details.</summary>
@@ -233,6 +245,7 @@ namespace SolidShineUi
         /// Get or set if an arrow should be shown to the right of the button content to indicate the button as a menu button.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set if an arrow should be shown to the right of the button content.")]
         public bool ShowMenuArrow
         {
             get => (bool)GetValue(ShowMenuArrowProperty);
@@ -250,6 +263,7 @@ namespace SolidShineUi
         /// (via <see cref="Control.HorizontalContentAlignment"/>).
         /// </summary>
         [Category("Common")]
+        [Description("Get or set if the arrow should be kept to the right side of the butotn, even if the content of the button is left or center aligned.")]
         public bool KeepMenuArrowOnRight
         {
             get => (bool)GetValue(KeepMenuArrowOnRightProperty);

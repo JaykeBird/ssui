@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -12,7 +11,7 @@ using System.Windows.Threading;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A <see cref="FlatButton"/> with extra functionality that activates when the button is pressed.
+    /// A <see cref="FlatButton"/> with extra functionality that activates while the button is pressed.
     /// This includes repeatedly firing an Execute event while the button is pressed down, and executing commands when pressing starts and stops.
     /// </summary>
     /// <remarks>
@@ -20,6 +19,7 @@ namespace SolidShineUi
     /// over and over while this button is being pressed, rather than activating the Click event. This provides some finer control over when certain events or actions
     /// are raised/performed (as you could have a separate action for Click and Execute, for example; if this is your scenario, please also see <see cref="ExecuteOnFirstClick"/>).
     /// </remarks>
+    [Localizability(LocalizationCategory.Button)]
     public class FlatRepeatButton : FlatButton
     {
         /// <summary>
