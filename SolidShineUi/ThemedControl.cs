@@ -26,7 +26,7 @@ namespace SolidShineUi
 
         #region SsuiTheme Property
 
-        // references to follow up on this:
+        // references about how dependency property inheritance works
         // https://github.com/dotnet/wpf/blob/8223378b6fdddd3ae4e0577e90d9953b5469f076/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/FrameworkElement.cs#L3623
         // https://github.com/dotnet/wpf/blob/8223378b6fdddd3ae4e0577e90d9953b5469f076/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Documents/Block.cs#L253
 
@@ -45,6 +45,7 @@ namespace SolidShineUi
         /// so if you had set a control to use a specific brush, you will need to re-update that after calling this property.
         /// </remarks>
         [Category("Appearance")]
+        [Description("Get or set the theme to apply to the appearance of this control.")]
 #if NETCOREAPP
         public SsuiTheme? SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
 #else
@@ -122,13 +123,15 @@ namespace SolidShineUi
             RaiseEvent(re);
         }
 
-#endregion
+        #endregion
 
         #region UseLightBorder
 
         /// <summary>
-        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control, rather than the <see cref="SsuiTheme.BorderBrush"/>.
+        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control when applying a SsuiTheme, rather than the <see cref="SsuiTheme.BorderBrush"/>.
         /// </summary>
+        [Category("Appearance"), DefaultValue(false)]
+        [Description("Get or set if the LightBorderBrush should be used for the border of this control, when applying a SsuiTheme.")]
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
@@ -154,6 +157,8 @@ namespace SolidShineUi
         /// The value of the <see cref="SsuiTheme"/> property needs to be of an <see cref="SsuiAppTheme"/> type, or otherwise this property does nothing.
         /// This should already be taken care of if you're putting this control in a <see cref="ThemedWindow"/> and inheriting from that SsuiTheme property.
         /// </remarks>
+        [Category("Appearance"),DefaultValue(false)]
+        [Description("Get or set if the SsuiTheme's accent theme should be used rather than the standard theme for this control.")]
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
@@ -186,6 +191,8 @@ namespace SolidShineUi
         /// Note that this functionality is designed for comparing dependency properties' names (<see cref="DependencyProperty.Name"/>) 
         /// to the list provided here. This will also likely not have any effect on any property that isn't a dependency property.
         /// </remarks>
+        [Category("Appearance"), DefaultValue("")]
+        [Description("Get or set a comma-separated list of properties to not edit/overwrite when applying a SsuiTheme.")]
         public string ThemeValueExclude { get => (string)GetValue(ThemeValueExcludeProperty); set => SetValue(ThemeValueExcludeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ThemeValueExclude"/>. See the related property for details.</summary>
@@ -404,6 +411,7 @@ namespace SolidShineUi
         /// so if you had set a control to use a specific brush, you will need to re-update that after calling this property.
         /// </remarks>
         [Category("Appearance")]
+        [Description("Get or set the theme to apply to the appearance of this control.")]
 #if NETCOREAPP
         public SsuiTheme? SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
 #else
@@ -441,8 +449,10 @@ namespace SolidShineUi
         #region UseLightBorder
 
         /// <summary>
-        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control, rather than the <see cref="SsuiTheme.BorderBrush"/>.
+        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control when applying a SsuiTheme, rather than the <see cref="SsuiTheme.BorderBrush"/>.
         /// </summary>
+        [Category("Appearance"), DefaultValue(false)]
+        [Description("Get or set if the LightBorderBrush should be used for the border of this control, when applying a SsuiTheme.")]
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
@@ -467,6 +477,8 @@ namespace SolidShineUi
         /// The value of the <see cref="SsuiTheme"/> property needs to be of an <see cref="SsuiAppTheme"/> type, or otherwise this property does nothing.
         /// This should already be taken care of if you're putting this control in a <see cref="ThemedWindow"/> and inheriting from that SsuiTheme property.
         /// </remarks>
+        [Category("Appearance"), DefaultValue(false)]
+        [Description("Get or set if the SsuiTheme's accent theme should be used rather than the standard theme for this control.")]
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
@@ -498,6 +510,8 @@ namespace SolidShineUi
         /// Note that this functionality is designed for comparing dependency properties' names (<see cref="DependencyProperty.Name"/>) 
         /// to the list provided here. This will also likely not have any effect on any property that isn't a dependency property.
         /// </remarks>
+        [Category("Appearance"), DefaultValue("")]
+        [Description("Get or set a comma-separated list of properties to not edit/overwrite when applying a SsuiTheme.")]
         public string ThemeValueExclude { get => (string)GetValue(ThemeValueExcludeProperty); set => SetValue(ThemeValueExcludeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ThemeValueExclude"/>. See the related property for details.</summary>
@@ -712,6 +726,7 @@ namespace SolidShineUi
         /// so if you had set a control to use a specific brush, you will need to re-update that after calling this property.
         /// </remarks>
         [Category("Appearance")]
+        [Description("Get or set the theme to apply to the appearance of this control.")]
 #if NETCOREAPP
         public SsuiTheme? SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
 #else
@@ -749,8 +764,10 @@ namespace SolidShineUi
         #region UseLightBorder
 
         /// <summary>
-        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control, rather than the <see cref="SsuiTheme.BorderBrush"/>.
+        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control when applying a SsuiTheme, rather than the <see cref="SsuiTheme.BorderBrush"/>.
         /// </summary>
+        [Category("Appearance"), DefaultValue(false)]
+        [Description("Get or set if the LightBorderBrush should be used for the border of this control, when applying a SsuiTheme.")]
         public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
@@ -775,6 +792,8 @@ namespace SolidShineUi
         /// The value of the <see cref="SsuiTheme"/> property needs to be of an <see cref="SsuiAppTheme"/> type, or otherwise this property does nothing.
         /// This should already be taken care of if you're putting this control in a <see cref="ThemedWindow"/> and inheriting from that SsuiTheme property.
         /// </remarks>
+        [Category("Appearance"), DefaultValue(false)]
+        [Description("Get or set if the SsuiTheme's accent theme should be used rather than the standard theme for this control.")]
         public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
@@ -806,6 +825,8 @@ namespace SolidShineUi
         /// Note that this functionality is designed for comparing dependency properties' names (<see cref="DependencyProperty.Name"/>) 
         /// to the list provided here. This will also likely not have any effect on any property that isn't a dependency property.
         /// </remarks>
+        [Category("Appearance"), DefaultValue("")]
+        [Description("Get or set a comma-separated list of properties to not edit/overwrite when applying a SsuiTheme.")]
         public string ThemeValueExclude { get => (string)GetValue(ThemeValueExcludeProperty); set => SetValue(ThemeValueExcludeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ThemeValueExclude"/>. See the related property for details.</summary>
