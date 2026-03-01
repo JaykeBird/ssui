@@ -13,10 +13,10 @@
         <Product>SolidShineUi</Product>
         <Title>Solid Shine UI</Title>
         <Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
-        <Copyright>Copyright 2018-2023 Jayke R. Huempfner, other contributors</Copyright>
-        <Version>1.9.6</Version>
-        <AssemblyVersion>1.9.6</AssemblyVersion>
-        <FileVersion>1.9.6</FileVersion>
+        <Copyright>Copyright 2018-2026 Jayke R. Huempfner, other contributors</Copyright>
+        <Version>2.0</Version>
+        <AssemblyVersion>2.0</AssemblyVersion>
+        <FileVersion>2.0</FileVersion>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <Authors>Jayke R. Huempfner, other contributors</Authors>
         <PackageIconUrl></PackageIconUrl>
@@ -30,22 +30,14 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Version 1.9.6
-            - Fix bug in SelectPanel
-            - Add LoadFromType to CommandKeyAction
-            - Set-only properties are skipped in PropertyList control
-            
-            Version 1.9.5
-            - Add ShowIcon property, command support to FlatWindow
-            - Add many properties and options to PropertyList control
-            - Add validation check feature to StringInputDialog
-            - New control: LongSpinner - like an IntegerSpinner, but with longs
-            - Improvements to SelectableItem, IntegerSpinner/DoubleSpinner, ColorsHelper
-            
-            Version 1.9.4
-            - Fix bugs with ColorPickerDialog, ImageBrushEditorDialog
-            - Minor improvements to TabControl and CheckBox
-            - Add FileListPadding property to FileSelect control
+        <PackageReleaseNotes>Version 2.0
+            - Introduce SsuiTheme to replace ColorScheme
+            - Fully rewritten spinner controls
+            - New TimeSpinner, StringSpinner controls
+            - New PropertyList, PositionSelect controls to replace old versions
+            - New ParticleEmitter control
+            - New BrushSerializer helper class
+            - Major improvements to FlatWindow, CheckBox, TabControl, LinkTextBlock
 
             See website for more details!</PackageReleaseNotes>
     </PropertyGroup>
