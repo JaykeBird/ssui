@@ -131,44 +131,28 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            nameof(ClickBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.Gainsboro.ToBrush()));
+        public static readonly DependencyProperty ClickBrushProperty = FlatButton.ClickBrushProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            nameof(SelectedBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
+        public static readonly DependencyProperty SelectedBrushProperty = FlatButton.SelectedBrushProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            nameof(HighlightBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.LightGray.ToBrush()));
+        public static readonly DependencyProperty HighlightBrushProperty = FlatButton.HighlightBrushProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="ForegroundHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ForegroundHighlightBrushProperty = DependencyProperty.Register(
-            nameof(ForegroundHighlightBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        public static readonly DependencyProperty ForegroundHighlightBrushProperty = FlatButton.ForegroundHighlightBrushProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            nameof(DisabledBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.Gray.ToBrush()));
+        public static readonly DependencyProperty DisabledBrushProperty = FlatButton.DisabledBrushProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            nameof(BorderDisabledBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.DarkGray.ToBrush()));
+        public static readonly DependencyProperty BorderDisabledBrushProperty = FlatButton.BorderDisabledBrushProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            nameof(BorderHighlightBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        public static readonly DependencyProperty BorderHighlightBrushProperty = FlatButton.BorderHighlightBrushProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            nameof(BorderSelectedBrush), typeof(Brush), typeof(TemplateButton),
-            new PropertyMetadata(Colors.DimGray.ToBrush()));
+        public static readonly DependencyProperty BorderSelectedBrushProperty = FlatButton.BorderSelectedBrushProperty.AddOwner(typeof(TemplateButton));
 
         #endregion
 
@@ -243,8 +227,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// The backing dependency property for <see cref="TransparentBack"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty TransparentBackProperty
-            = DependencyProperty.Register(nameof(TransparentBack), typeof(bool), typeof(TemplateButton), new PropertyMetadata(false));
+        public static readonly DependencyProperty TransparentBackProperty = FlatButton.TransparentBackProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>
         /// Get or set whether the button should have a transparent background when the button is not focused or selected.
@@ -262,14 +245,10 @@ namespace SolidShineUi.Utils
         #region Border
 
         /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
-            nameof(BorderSelectionThickness), typeof(Thickness), typeof(TemplateButton),
-            new PropertyMetadata(new Thickness(2)));
+        public static readonly DependencyProperty BorderSelectionThicknessProperty = FlatButton.BorderSelectionThicknessProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            nameof(CornerRadius), typeof(CornerRadius), typeof(TemplateButton),
-            new PropertyMetadata(new CornerRadius(0)));
+        public static readonly DependencyProperty CornerRadiusProperty = FlatButton.CornerRadiusProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>
         /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
@@ -306,9 +285,7 @@ namespace SolidShineUi.Utils
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty
-            = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(false));
+        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty = FlatButton.HighlightOnKeyboardFocusProperty.AddOwner(typeof(TemplateButton));
 
         #endregion
 
@@ -390,8 +367,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// The backing dependency property for <see cref="IsSelected"/>. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-            nameof(IsSelected), typeof(bool), typeof(TemplateButton), new PropertyMetadata(false, OnIsSelectedChanged));
+        public static readonly DependencyProperty IsSelectedProperty = FlatButton.IsSelectedProperty.AddOwner(typeof(TemplateButton),
+            new FrameworkPropertyMetadata(OnIsSelectedChanged));
 
         /// <summary>
         /// Perform an action when a property of an object has changed. Primarily used internally.
@@ -481,8 +458,7 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// The backing dependency property object for the <see cref="SelectOnClick"/> property. See the related property for more details.
         /// </summary>
-        public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            nameof(SelectOnClick), typeof(bool), typeof(TemplateButton), new PropertyMetadata(false));
+        public static readonly DependencyProperty SelectOnClickProperty = FlatButton.SelectOnClickProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
@@ -515,10 +491,10 @@ namespace SolidShineUi.Utils
         void PerformRightClick()
         {
             if (initiatingClick)
-        {
+            {
                 RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
                 RaiseEvent(rre);
-        }
+            }
         }
 
         /// <summary>
@@ -620,145 +596,150 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-
         /// <summary>
         /// Get or set if the execute timer should be set up for this button, to provide RepeatButton-like functionality.
         /// </summary>
-        public bool UseExecuteTimer { get; set; } = false;
+        public bool UseExecuteTimer { get => (bool)GetValue(UseExecuteTimerProperty); set => SetValue(UseExecuteTimerProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="UseExecuteTimer"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty UseExecuteTimerProperty
+            = DependencyProperty.Register(nameof(UseExecuteTimer), typeof(bool), typeof(TemplateButton),
+            new FrameworkPropertyMetadata(false));
+
 
         #region Events / Command Properties
 
         #region Press Begins
 
-        /// <summary>
-        /// The backing value for the <see cref="PressBegins"/> event. See the related event for more details.
-        /// </summary>
-        public static readonly RoutedEvent PressBeginsEvent = EventManager.RegisterRoutedEvent(
-            nameof(PressBegins), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TemplateButton));
+        ///// <summary>
+        ///// The backing value for the <see cref="PressBegins"/> event. See the related event for more details.
+        ///// </summary>
+        //public static readonly RoutedEvent PressBeginsEvent = EventManager.RegisterRoutedEvent(
+        //    nameof(PressBegins), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TemplateButton));
 
-        /// <summary>
-        /// Raised when the user starts clicking/pressing this button.
-        /// </summary>
-        /// <remarks>
-        /// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>true</c>. This occurs when the user clicks down on
-        /// the button, or presses the Space or Enter key on the button, or presses on the button via touch, pen, or other pointer.
-        /// </remarks>
-        public event RoutedEventHandler PressBegins
-        {
-            add { AddHandler(PressBeginsEvent, value); }
-            remove { RemoveHandler(PressBeginsEvent, value); }
-        }
+        ///// <summary>
+        ///// Raised when the user starts clicking/pressing this button.
+        ///// </summary>
+        ///// <remarks>
+        ///// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>true</c>. This occurs when the user clicks down on
+        ///// the button, or presses the Space or Enter key on the button, or presses on the button via touch, pen, or other pointer.
+        ///// </remarks>
+        //public event RoutedEventHandler PressBegins
+        //{
+        //    add { AddHandler(PressBeginsEvent, value); }
+        //    remove { RemoveHandler(PressBeginsEvent, value); }
+        //}
 
-        /// <summary>
-        /// Get or set the command to execute when this button begins being pressed.
-        /// </summary>
-        /// <remarks>
-        /// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>true</c>. This occurs when the user clicks down on
-        /// the button, or presses the Space or Enter key on the button, or presses on the button via touch, pen, or other pointer.
-        /// </remarks>
-        [Category("Common")]
-        [Description("Get or set the command to execute when this button begins being pressed.")]
-        public ICommand PressBeginsCommand { get => (ICommand)GetValue(PressBeginsCommandProperty); set => SetValue(PressBeginsCommandProperty, value); }
+        ///// <summary>
+        ///// Get or set the command to execute when this button begins being pressed.
+        ///// </summary>
+        ///// <remarks>
+        ///// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>true</c>. This occurs when the user clicks down on
+        ///// the button, or presses the Space or Enter key on the button, or presses on the button via touch, pen, or other pointer.
+        ///// </remarks>
+        //[Category("Common")]
+        //[Description("Get or set the command to execute when this button begins being pressed.")]
+        //public ICommand PressBeginsCommand { get => (ICommand)GetValue(PressBeginsCommandProperty); set => SetValue(PressBeginsCommandProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="PressBeginsCommand"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty PressBeginsCommandProperty
-            = DependencyProperty.Register(nameof(PressBeginsCommand), typeof(ICommand), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        ///// <summary>The backing dependency property for <see cref="PressBeginsCommand"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty PressBeginsCommandProperty
+        //    = DependencyProperty.Register(nameof(PressBeginsCommand), typeof(ICommand), typeof(TemplateButton),
+        //    new FrameworkPropertyMetadata(null));
 
-        /// <summary>
-        /// Get or set the parameter to pass with <see cref="PressBeginsCommand"/> when it is executed. Default value is <c>null</c>.
-        /// </summary>
-        [Category("Common")]
-        [Description("Get or set the parameter to pass with PressBeginsCommand when it is executed.")]
-        public object PressBeginsCommandParameter { get => GetValue(PressBeginsCommandParameterProperty); set => SetValue(PressBeginsCommandParameterProperty, value); }
+        ///// <summary>
+        ///// Get or set the parameter to pass with <see cref="PressBeginsCommand"/> when it is executed. Default value is <c>null</c>.
+        ///// </summary>
+        //[Category("Common")]
+        //[Description("Get or set the parameter to pass with PressBeginsCommand when it is executed.")]
+        //public object PressBeginsCommandParameter { get => GetValue(PressBeginsCommandParameterProperty); set => SetValue(PressBeginsCommandParameterProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="PressBeginsCommandParameter"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty PressBeginsCommandParameterProperty
-            = DependencyProperty.Register(nameof(PressBeginsCommandParameter), typeof(object), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        ///// <summary>The backing dependency property for <see cref="PressBeginsCommandParameter"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty PressBeginsCommandParameterProperty
+        //    = DependencyProperty.Register(nameof(PressBeginsCommandParameter), typeof(object), typeof(TemplateButton),
+        //    new FrameworkPropertyMetadata(null));
 
-        /// <summary>
-        /// Get or set the target element that will receive <see cref="PressBeginsCommand"/> when it is executed. Default value is <c>null</c>.
-        /// </summary>
-        /// <remarks>
-        /// WPF's <see cref="RoutedCommand"/> supports indicating a command target, but other <see cref="ICommand"/> implementations may not. In those cases, this property
-        /// will not do anything.
-        /// </remarks>
-        [Description("Get or set the target element that will receive PressBeginsCommand when it is executed.")]
-        public IInputElement PressBeginsCommandTarget { get => (IInputElement)GetValue(PressBeginsCommandTargetProperty); set => SetValue(PressBeginsCommandTargetProperty, value); }
+        ///// <summary>
+        ///// Get or set the target element that will receive <see cref="PressBeginsCommand"/> when it is executed. Default value is <c>null</c>.
+        ///// </summary>
+        ///// <remarks>
+        ///// WPF's <see cref="RoutedCommand"/> supports indicating a command target, but other <see cref="ICommand"/> implementations may not. In those cases, this property
+        ///// will not do anything.
+        ///// </remarks>
+        //[Description("Get or set the target element that will receive PressBeginsCommand when it is executed.")]
+        //public IInputElement PressBeginsCommandTarget { get => (IInputElement)GetValue(PressBeginsCommandTargetProperty); set => SetValue(PressBeginsCommandTargetProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="PressBeginsCommandTarget"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty PressBeginsCommandTargetProperty
-            = DependencyProperty.Register(nameof(PressBeginsCommandTarget), typeof(IInputElement), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        ///// <summary>The backing dependency property for <see cref="PressBeginsCommandTarget"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty PressBeginsCommandTargetProperty
+        //    = DependencyProperty.Register(nameof(PressBeginsCommandTarget), typeof(IInputElement), typeof(TemplateButton),
+        //    new FrameworkPropertyMetadata(null));
 
         #endregion
 
         #region Press Ends
 
-        /// <summary>
-        /// The backing value for the <see cref="PressEnds"/> event. See the related event for more details.
-        /// </summary>
-        public static readonly RoutedEvent PressEndsEvent = EventManager.RegisterRoutedEvent(
-            nameof(PressEnds), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TemplateButton));
+        ///// <summary>
+        ///// The backing value for the <see cref="PressEnds"/> event. See the related event for more details.
+        ///// </summary>
+        //public static readonly RoutedEvent PressEndsEvent = EventManager.RegisterRoutedEvent(
+        //    nameof(PressEnds), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TemplateButton));
 
-        /// <summary>
-        /// Raised when the user stops clicking/pressing this button.
-        /// </summary>
-        /// <remarks>
-        /// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>false</c>. This occurs when the user releases a
-        /// mouse button while over this button, or releases the Space or Enter key, or moves the touch, pen, or other pointer away from the button. This also occurs if the user
-        /// moves the mouse cursor away from the button while still holding down a mouse button (and bringing the mouse cursor back to trigger the press begins actions again).
-        /// </remarks>
-        public event RoutedEventHandler PressEnds
-        {
-            add { AddHandler(PressEndsEvent, value); }
-            remove { RemoveHandler(PressEndsEvent, value); }
-        }
+        ///// <summary>
+        ///// Raised when the user stops clicking/pressing this button.
+        ///// </summary>
+        ///// <remarks>
+        ///// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>false</c>. This occurs when the user releases a
+        ///// mouse button while over this button, or releases the Space or Enter key, or moves the touch, pen, or other pointer away from the button. This also occurs if the user
+        ///// moves the mouse cursor away from the button while still holding down a mouse button (and bringing the mouse cursor back to trigger the press begins actions again).
+        ///// </remarks>
+        //public event RoutedEventHandler PressEnds
+        //{
+        //    add { AddHandler(PressEndsEvent, value); }
+        //    remove { RemoveHandler(PressEndsEvent, value); }
+        //}
 
-        /// <summary>
-        /// Get or set the command to execute when this button is no longer being pressed.
-        /// </summary>
-        /// <remarks>
-        /// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>false</c>. This occurs when the user releases a
-        /// mouse button while over this button, or releases the Space or Enter key, or moves the touch, pen, or other pointer away from the button. This also occurs if the user
-        /// moves the mouse cursor away from the button while still holding down a mouse button (and bringing the mouse cursor back to trigger the press begins actions again).
-        /// </remarks>
-        [Category("Common")]
-        [Description("Get or set the command to execute when this button is no longer being pressed.")]
-        public ICommand PressEndsCommand { get => (ICommand)GetValue(PressEndsCommandProperty); set => SetValue(PressEndsCommandProperty, value); }
+        ///// <summary>
+        ///// Get or set the command to execute when this button is no longer being pressed.
+        ///// </summary>
+        ///// <remarks>
+        ///// This will execute whenever <see cref="System.Windows.Controls.Primitives.ButtonBase.IsPressed"/> is changed to <c>false</c>. This occurs when the user releases a
+        ///// mouse button while over this button, or releases the Space or Enter key, or moves the touch, pen, or other pointer away from the button. This also occurs if the user
+        ///// moves the mouse cursor away from the button while still holding down a mouse button (and bringing the mouse cursor back to trigger the press begins actions again).
+        ///// </remarks>
+        //[Category("Common")]
+        //[Description("Get or set the command to execute when this button is no longer being pressed.")]
+        //public ICommand PressEndsCommand { get => (ICommand)GetValue(PressEndsCommandProperty); set => SetValue(PressEndsCommandProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="PressEndsCommand"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty PressEndsCommandProperty
-            = DependencyProperty.Register(nameof(PressEndsCommand), typeof(ICommand), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        ///// <summary>The backing dependency property for <see cref="PressEndsCommand"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty PressEndsCommandProperty
+        //    = DependencyProperty.Register(nameof(PressEndsCommand), typeof(ICommand), typeof(TemplateButton),
+        //    new FrameworkPropertyMetadata(null));
 
-        /// <summary>
-        /// Get or set the parameter to pass with <see cref="PressEndsCommand"/> when it is executed. Default value is <c>null</c>.
-        /// </summary>
-        [Category("Common")]
-        [Description("Get or set the parameter to pass with PressEndsCommand when it is executed.")]
-        public object PressEndsCommandParameter { get => GetValue(PressEndsCommandParameterProperty); set => SetValue(PressEndsCommandParameterProperty, value); }
+        ///// <summary>
+        ///// Get or set the parameter to pass with <see cref="PressEndsCommand"/> when it is executed. Default value is <c>null</c>.
+        ///// </summary>
+        //[Category("Common")]
+        //[Description("Get or set the parameter to pass with PressEndsCommand when it is executed.")]
+        //public object PressEndsCommandParameter { get => GetValue(PressEndsCommandParameterProperty); set => SetValue(PressEndsCommandParameterProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="PressEndsCommandParameter"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty PressEndsCommandParameterProperty
-            = DependencyProperty.Register(nameof(PressEndsCommandParameter), typeof(object), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        ///// <summary>The backing dependency property for <see cref="PressEndsCommandParameter"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty PressEndsCommandParameterProperty
+        //    = DependencyProperty.Register(nameof(PressEndsCommandParameter), typeof(object), typeof(TemplateButton),
+        //    new FrameworkPropertyMetadata(null));
 
-        /// <summary>
-        /// Get or set the target element that will receive <see cref="PressEndsCommand"/> when it is executed. Default value is <c>null</c>.
-        /// </summary>
-        /// <remarks>
-        /// WPF's <see cref="RoutedCommand"/> supports indicating a command target, but other <see cref="ICommand"/> implementations may not. In those cases, this property
-        /// will not do anything.
-        /// </remarks>
-        [Description("Get or set the target element that will receive PressEndsCommand when it is executed.")]
-        public IInputElement PressEndsCommandTarget { get => (IInputElement)GetValue(PressEndsCommandTargetProperty); set => SetValue(PressEndsCommandTargetProperty, value); }
+        ///// <summary>
+        ///// Get or set the target element that will receive <see cref="PressEndsCommand"/> when it is executed. Default value is <c>null</c>.
+        ///// </summary>
+        ///// <remarks>
+        ///// WPF's <see cref="RoutedCommand"/> supports indicating a command target, but other <see cref="ICommand"/> implementations may not. In those cases, this property
+        ///// will not do anything.
+        ///// </remarks>
+        //[Description("Get or set the target element that will receive PressEndsCommand when it is executed.")]
+        //public IInputElement PressEndsCommandTarget { get => (IInputElement)GetValue(PressEndsCommandTargetProperty); set => SetValue(PressEndsCommandTargetProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="PressEndsCommandTarget"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty PressEndsCommandTargetProperty
-            = DependencyProperty.Register(nameof(PressEndsCommandTarget), typeof(IInputElement), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        ///// <summary>The backing dependency property for <see cref="PressEndsCommandTarget"/>. See the related property for details.</summary>
+        //public static readonly DependencyProperty PressEndsCommandTargetProperty
+        //    = DependencyProperty.Register(nameof(PressEndsCommandTarget), typeof(IInputElement), typeof(TemplateButton),
+        //    new FrameworkPropertyMetadata(null));
 
         #endregion
 
@@ -805,9 +786,7 @@ namespace SolidShineUi.Utils
         public ICommand ExecuteCommand { get => (ICommand)GetValue(ExecuteCommandProperty); set => SetValue(ExecuteCommandProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommand"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ExecuteCommandProperty
-            = DependencyProperty.Register(nameof(ExecuteCommand), typeof(ICommand), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty ExecuteCommandProperty = FlatRepeatButton.ExecuteCommandProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>
         /// Get or set the parameter to pass with <see cref="ExecuteCommand"/> when it is executed. Default value is <c>null</c>.
@@ -817,9 +796,7 @@ namespace SolidShineUi.Utils
         public object ExecuteCommandParameter { get => GetValue(ExecuteCommandParameterProperty); set => SetValue(ExecuteCommandParameterProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommandParameter"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ExecuteCommandParameterProperty
-            = DependencyProperty.Register(nameof(ExecuteCommandParameter), typeof(object), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty ExecuteCommandParameterProperty = FlatRepeatButton.ExecuteCommandParameterProperty.AddOwner(typeof(TemplateButton));
 
 
         /// <summary>
@@ -834,9 +811,7 @@ namespace SolidShineUi.Utils
         public IInputElement ExecuteCommandTarget { get => (IInputElement)GetValue(ExecuteCommandTargetProperty); set => SetValue(ExecuteCommandTargetProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteCommandTarget"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ExecuteCommandTargetProperty
-            = DependencyProperty.Register(nameof(ExecuteCommandTarget), typeof(IInputElement), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty ExecuteCommandTargetProperty = FlatRepeatButton.ExecuteCommandTargetProperty.AddOwner(typeof(TemplateButton));
 
         #endregion
 
@@ -900,9 +875,7 @@ namespace SolidShineUi.Utils
         public int Interval { get => (int)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Interval"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty IntervalProperty
-            = DependencyProperty.Register(nameof(Interval), typeof(int), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(200));
+        public static readonly DependencyProperty IntervalProperty = FlatRepeatButton.IntervalProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>
         /// Get or set how long the delay should be after the button is initially pressed, before starting to raise <see cref="Execute"/>. Measured in milliseconds.
@@ -912,9 +885,7 @@ namespace SolidShineUi.Utils
         public int Delay { get => (int)GetValue(DelayProperty); set => SetValue(DelayProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Delay"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty DelayProperty
-            = DependencyProperty.Register(nameof(Delay), typeof(int), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(200));
+        public static readonly DependencyProperty DelayProperty = FlatRepeatButton.DelayProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>
         /// Get or set if the Execute event should be activated when the button is initially clicked, even if the <see cref="Delay"/> time hasn't been reached.
@@ -929,9 +900,7 @@ namespace SolidShineUi.Utils
         public bool ExecuteOnFirstClick { get => (bool)GetValue(ExecuteOnFirstClickProperty); set => SetValue(ExecuteOnFirstClickProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ExecuteOnFirstClick"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ExecuteOnFirstClickProperty
-            = DependencyProperty.Register(nameof(ExecuteOnFirstClick), typeof(bool), typeof(TemplateButton),
-            new FrameworkPropertyMetadata(true));
+        public static readonly DependencyProperty ExecuteOnFirstClickProperty = FlatRepeatButton.ExecuteOnFirstClickProperty.AddOwner(typeof(TemplateButton));
 
         #endregion
 
@@ -958,12 +927,12 @@ namespace SolidShineUi.Utils
 
         void PressBegan()
         {
-            if (PressBeginsCommand != null)
-            {
-                ActivateCommand(PressBeginsCommand, PressBeginsCommandParameter, PressBeginsCommandTarget);
-            }
-            RoutedEventArgs re = new RoutedEventArgs(PressBeginsEvent, this);
-            RaiseEvent(re);
+            //if (PressBeginsCommand != null)
+            //{
+            //    ActivateCommand(PressBeginsCommand, PressBeginsCommandParameter, PressBeginsCommandTarget);
+            //}
+            //RoutedEventArgs re = new RoutedEventArgs(PressBeginsEvent, this);
+            //RaiseEvent(re);
 
             firstRun = true;
             if (UseExecuteTimer) ExecuteTimer.Start();
@@ -971,12 +940,12 @@ namespace SolidShineUi.Utils
 
         void PressEnded()
         {
-            if (PressEndsCommand != null)
-            {
-                ActivateCommand(PressEndsCommand, PressEndsCommandParameter, PressEndsCommandTarget);
-            }
-            RoutedEventArgs re = new RoutedEventArgs(PressEndsEvent, this);
-            RaiseEvent(re);
+            //if (PressEndsCommand != null)
+            //{
+            //    ActivateCommand(PressEndsCommand, PressEndsCommandParameter, PressEndsCommandTarget);
+            //}
+            //RoutedEventArgs re = new RoutedEventArgs(PressEndsEvent, this);
+            //RaiseEvent(re);
 
             ResetTimer();
         }
