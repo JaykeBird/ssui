@@ -717,6 +717,8 @@ namespace SolidShineUi
                 DisabledBrush = cs.BackgroundColor.ToBrush();
                 Foreground = cs.ForegroundColor.ToBrush();
                 ClickBrush = cs.ThirdHighlightColor.ToBrush();
+                HighlightForeground = cs.ForegroundColor.ToBrush();
+                SelectedForeground = cs.ForegroundColor.ToBrush();
 
                 //if (transparentBack || TransparentBack)
                 //{
@@ -743,6 +745,8 @@ namespace SolidShineUi
                     BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
                     BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
+                    HighlightForeground = cs.ForegroundColor.ToBrush();
+                    SelectedForeground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
 
                     UseAccentColors = true;
@@ -758,6 +762,8 @@ namespace SolidShineUi
                     BorderHighlightBrush = cs.HighlightColor.ToBrush();
                     BorderSelectedBrush = cs.SelectionColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
+                    HighlightForeground = cs.ForegroundColor.ToBrush();
+                    SelectedForeground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.ThirdHighlightColor.ToBrush();
                 }
 #pragma warning restore CS0618 // Type or member is obsolete
