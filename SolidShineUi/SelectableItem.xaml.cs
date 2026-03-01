@@ -82,6 +82,26 @@ namespace SolidShineUi
             //lblText.TextBrush = cs.ForegroundColor.ToBrush();
             //lblText.HighlightBrush = cs.ForegroundColor.ToBrush();
 
+            if (!IsEnabled)
+            {
+                brdr.Foreground = DisabledForeground;
+            }
+            else
+            {
+                if (Highlighting && CanSelect && SelectOnClick)
+                {
+                    brdr.Foreground = HighlightForeground;
+                }
+                else if (IsSelected)
+                {
+                    brdr.Foreground = SelectedForeground;
+                }
+                else
+                {
+                    brdr.Foreground = BaseForeground;
+                }
+            }
+
             chkSel.ApplyColorScheme(cs);
         }
 
@@ -93,6 +113,26 @@ namespace SolidShineUi
             //DisabledForeground = ssuiTheme.DisabledForeground;
             //Foreground = ssuiTheme.Foreground;
             //HighlightForeground = ssuiTheme.HighlightForeground;
+
+            if (!IsEnabled)
+            {
+                brdr.Foreground = DisabledForeground;
+            }
+            else
+            {
+                if (Highlighting && CanSelect && SelectOnClick)
+                {
+                    brdr.Foreground = HighlightForeground;
+                }
+                else if (IsSelected)
+                {
+                    brdr.Foreground = SelectedForeground;
+                }
+                else
+                {
+                    brdr.Foreground = BaseForeground;
+                }
+            }
 
             chkSel.SsuiTheme = ssuiTheme;
         }
