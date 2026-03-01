@@ -274,7 +274,7 @@ namespace SolidShineUi
 
                 ApplyThemeBinding(BaseForegroundProperty, SsuiTheme.ForegroundProperty, theme);
                 ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
-                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
                 ApplyThemeBinding(DisabledForegroundProperty, SsuiTheme.DisabledForegroundProperty, theme);
             }
         }

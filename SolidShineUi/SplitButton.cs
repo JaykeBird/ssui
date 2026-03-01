@@ -115,8 +115,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the background of this button while it is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the background of this button while it is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
@@ -139,10 +138,20 @@ namespace SolidShineUi
         /// Get or set the brush used for the foreground of the control while the mouse is over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
-        public Brush ForegroundHighlightBrush
+        public Brush HighlightForeground
         {
-            get => (Brush)GetValue(ForegroundHighlightBrushProperty);
-            set => SetValue(ForegroundHighlightBrushProperty, value);
+            get => (Brush)GetValue(HighlightForegroundProperty);
+            set => SetValue(HighlightForegroundProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
         }
 
         /// <summary>
@@ -176,8 +185,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush BorderSelectedBrush
@@ -198,8 +206,12 @@ namespace SolidShineUi
         public static readonly DependencyProperty HighlightBrushProperty = FlatButton.HighlightBrushProperty.AddOwner(typeof(SplitButton),
             new PropertyMetadata(ApplyPropertyUpdate));
 
-        /// <summary>The backing dependency property for <see cref="ForegroundHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ForegroundHighlightBrushProperty = FlatButton.ForegroundHighlightBrushProperty.AddOwner(typeof(SplitButton),
+        /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundProperty = FlatButton.HighlightForegroundProperty.AddOwner(typeof(SplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
+
+        /// <summary>The backing dependency property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty = FlatButton.SelectedForegroundProperty.AddOwner(typeof(SplitButton),
             new PropertyMetadata(ApplyPropertyUpdate));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
@@ -271,7 +283,8 @@ namespace SolidShineUi
                 ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
                 ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
-                ApplyThemeBinding(ForegroundHighlightBrushProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
                 ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
 
                 ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);

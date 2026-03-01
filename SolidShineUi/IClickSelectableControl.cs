@@ -247,11 +247,15 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
-        Brush ForegroundHighlightBrush { get; set; }
+        Brush HighlightForeground { get; set; }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        Brush SelectedForeground { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         Brush BorderSelectedBrush { get; set; }
 

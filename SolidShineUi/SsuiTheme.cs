@@ -18,7 +18,7 @@ namespace SolidShineUi
     /// A class containing various brushes and other settings that can be used to set the appearance of various Solid Shine UI controls.
     /// </summary>
     /// <remarks>
-    /// This can be used in all SSUI-themed controls. For SSUI-themed windows (see <see cref="ThemedWindow"/>)
+    /// This can be used in all SSUI-themed controls. For using with SSUI-themed windows (see <see cref="ThemedWindow"/>)
     /// or to have more options for applying across an entire application, use a <see cref="SsuiAppTheme"/> instead.
     /// <para/>
     /// Note that this class is not meant to be used for serialization. Use the <see cref="ToSerializableObject"/> method to create a copy of this
@@ -113,14 +113,15 @@ namespace SolidShineUi
             DisabledForeground = StringToBrush(theme.DisabledForeground);
             HighlightBrush = StringToBrush(theme.HighlightBrush);
             HighlightBorderBrush = StringToBrush(theme.HighlightBorderBrush);
-            ClickBrush = StringToBrush(theme.ClickBrush);
             HighlightForeground = StringToBrush(theme.HighlightForeground);
+            ClickBrush = StringToBrush(theme.ClickBrush);
             TabBackground = StringToBrush(theme.TabBackground);
             TabSelectedBrush = StringToBrush(theme.TabSelectedBrush);
             TabHighlightBrush = StringToBrush(theme.TabHighlightBrush);
             TabHighlightBorderBrush = StringToBrush(theme.TabHighlightBorderBrush);
             SelectedBackgroundBrush = StringToBrush(theme.SelectedBackgroundBrush);
             SelectedBorderBrush = StringToBrush(theme.SelectedBorderBrush);
+            SelectedForeground = StringToBrush(theme.SelectedForeground);
             LightBorderBrush = StringToBrush(theme.LightBorderBrush);
             CheckBrush = StringToBrush(theme.CheckBrush);
             CheckHighlightBrush = StringToBrush(theme.CheckHighlightBrush);
@@ -285,6 +286,10 @@ namespace SolidShineUi
             float bHigh = GetColorBrightness(((SolidColorBrush)HighlightBrush).Color);
             HighlightForeground = (bHigh < 0.55 ? Colors.LightGray : ColorsHelper.DarkerGray).ToBrush();
 
+            // the highlight foreground against the highlight brush,
+            float bSel = GetColorBrightness(((SolidColorBrush)SelectedBackgroundBrush).Color);
+            SelectedForeground = (bSel < 0.55 ? Colors.White : ColorsHelper.Black).ToBrush();
+
             // and the check brush against the panel background
             float bPane = GetColorBrightness(((SolidColorBrush)PanelBackground).Color);
             CheckBrush = (bPane < 0.55 ? Colors.White : Colors.Black).ToBrush();
@@ -361,7 +366,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty BaseBackgroundProperty
             = DependencyProperty.Register(nameof(BaseBackground), typeof(Brush), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
-
 
         /// <summary>
         /// Get or set the brush to use for saturated parts or elements of certain controls.
@@ -447,16 +451,6 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>
-        /// Get or set the brush to use for when a SSUI-themed control is being clicked/pressed.
-        /// </summary>
-        public Brush ClickBrush { get => (Brush)GetValue(ClickBrushProperty); set => SetValue(ClickBrushProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ClickBrushProperty
-            = DependencyProperty.Register(nameof(ClickBrush), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
-
-        /// <summary>
         /// Get or set the brush to use for foreground elements of a SSUI-themed control while it is being highlighted.
         /// </summary>
         /// <remarks>
@@ -469,6 +463,70 @@ namespace SolidShineUi
         public static readonly DependencyProperty HighlightForegroundProperty
             = DependencyProperty.Register(nameof(HighlightForeground), typeof(Brush), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for when a SSUI-themed control is being clicked/pressed.
+        /// </summary>
+        public Brush ClickBrush { get => (Brush)GetValue(ClickBrushProperty); set => SetValue(ClickBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ClickBrushProperty
+            = DependencyProperty.Register(nameof(ClickBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the background of SSUI-themed controls while they are selected 
+        /// (e.g. <see cref="IClickSelectableControl.IsSelected"/> is <c>true</c>).
+        /// </summary>
+        public Brush SelectedBackgroundBrush { get => (Brush)GetValue(SelectedBackgroundBrushProperty); set => SetValue(SelectedBackgroundBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedBackgroundBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedBackgroundBrushProperty
+            = DependencyProperty.Register(nameof(SelectedBackgroundBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the border around the edges of SSUI-themed controls while they are selected
+        /// (e.g. <see cref="IClickSelectableControl.IsSelected"/> is <c>true</c>).
+        /// </summary>
+        public Brush SelectedBorderBrush { get => (Brush)GetValue(SelectedBorderBrushProperty); set => SetValue(SelectedBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedBorderBrushProperty
+            = DependencyProperty.Register(nameof(SelectedBorderBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the foreground of SSUI-themed controls while they are selected
+        /// (e.g. <see cref="IClickSelectableControl.IsSelected"/> is <c>true</c>).
+        /// </summary>
+        public Brush SelectedForeground { get => (Brush)GetValue(SelectedForegroundProperty); set => SetValue(SelectedForegroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty
+            = DependencyProperty.Register(nameof(SelectedForeground), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for the borders around the edges of SSUI-themed controls where a lighter border color is used.
+        /// </summary>
+        public Brush LightBorderBrush { get => (Brush)GetValue(LightBorderBrushProperty); set => SetValue(LightBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="LightBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty LightBorderBrushProperty
+            = DependencyProperty.Register(nameof(LightBorderBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush to use for key elements in certain SSUI-themed controls that should be distinguished or stand out (or "pop")
+        /// against the background (e.g. the selector in the <see cref="RelativePositionSelect"/>).
+        /// </summary>
+        public Brush ControlPopBrush { get => (Brush)GetValue(ControlPopBrushProperty); set => SetValue(ControlPopBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ControlPopBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ControlPopBrushProperty
+            = DependencyProperty.Register(nameof(ControlPopBrush), typeof(Brush), typeof(SsuiTheme),
+            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
 
         /// <summary>
         /// Get or set the brush to use for the background of the tabs in a tabbed control like <see cref="TabControl"/> when they are not selected.
@@ -514,39 +572,6 @@ namespace SolidShineUi
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>
-        /// Get or set the brush to use for the background of SSUI-themed controls while they are selected 
-        /// (e.g. <see cref="IClickSelectableControl.IsSelected"/> is <c>true</c>).
-        /// </summary>
-        public Brush SelectedBackgroundBrush { get => (Brush)GetValue(SelectedBackgroundBrushProperty); set => SetValue(SelectedBackgroundBrushProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="SelectedBackgroundBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty SelectedBackgroundBrushProperty
-            = DependencyProperty.Register(nameof(SelectedBackgroundBrush), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
-
-        /// <summary>
-        /// Get or set the brush to use for the border around the edges of SSUI-themed controls while they are selected
-        /// (e.g. <see cref="IClickSelectableControl.IsSelected"/> is <c>true</c>).
-        /// </summary>
-        public Brush SelectedBorderBrush { get => (Brush)GetValue(SelectedBorderBrushProperty); set => SetValue(SelectedBorderBrushProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="SelectedBorderBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty SelectedBorderBrushProperty
-            = DependencyProperty.Register(nameof(SelectedBorderBrush), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
-
-
-        /// <summary>
-        /// Get or set the brush to use for the borders around the edges of SSUI-themed controls where a lighter border color is used.
-        /// </summary>
-        public Brush LightBorderBrush { get => (Brush)GetValue(LightBorderBrushProperty); set => SetValue(LightBorderBrushProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="LightBorderBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty LightBorderBrushProperty
-            = DependencyProperty.Register(nameof(LightBorderBrush), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
-
-        /// <summary>
         /// Get or set the brush to use for checkmark symbols in certain SSUI-themed controls such as <see cref="CheckBox"/>.
         /// </summary>
         public Brush CheckBrush { get => (Brush)GetValue(CheckBrushProperty); set => SetValue(CheckBrushProperty, value); }
@@ -575,17 +600,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty CheckBackgroundHighlightBrushProperty
             = DependencyProperty.Register(nameof(CheckBackgroundHighlightBrush), typeof(Brush), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(ColorsHelper.WhiteLightHighlight.ToBrush()));
-
-        /// <summary>
-        /// Get or set the brush to use for key elements in certain SSUI-themed controls that should be distinguished or stand out (or "pop")
-        /// against the background (e.g. the selector in the <see cref="RelativePositionSelect"/>).
-        /// </summary>
-        public Brush ControlPopBrush { get => (Brush)GetValue(ControlPopBrushProperty); set => SetValue(ControlPopBrushProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="ControlPopBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ControlPopBrushProperty
-            = DependencyProperty.Register(nameof(ControlPopBrush), typeof(Brush), typeof(SsuiTheme),
-            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
 
         /// <summary>
         /// Get or set the corner radius to use around the edges of many SSUI-themed controls.
@@ -623,7 +637,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty CommandBarBackgroundProperty
             = DependencyProperty.Register(nameof(CommandBarBackground), typeof(Brush), typeof(SsuiTheme),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
-
 
         /// <summary>
         /// The brush to use for the border around command bars, such as toolbars or the main bar of Ribbons.

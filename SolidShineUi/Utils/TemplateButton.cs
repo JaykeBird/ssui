@@ -59,8 +59,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the brush used for the background of this button while it is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the background of this button while it is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
@@ -83,10 +82,20 @@ namespace SolidShineUi.Utils
         /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
-        public Brush ForegroundHighlightBrush
+        public Brush HighlightForeground
         {
             get => (Brush)GetValue(BorderHighlightBrushProperty);
             set => SetValue(BorderHighlightBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
         }
 
         /// <summary>
@@ -120,8 +129,7 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush BorderSelectedBrush
@@ -139,8 +147,11 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = FlatButton.HighlightBrushProperty.AddOwner(typeof(TemplateButton));
 
-        /// <summary>The backing dependency property for <see cref="ForegroundHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ForegroundHighlightBrushProperty = FlatButton.ForegroundHighlightBrushProperty.AddOwner(typeof(TemplateButton));
+        /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundProperty = FlatButton.HighlightForegroundProperty.AddOwner(typeof(TemplateButton));
+
+        /// <summary>The backing dependency property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty = FlatButton.SelectedForegroundProperty.AddOwner(typeof(TemplateButton));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = FlatButton.DisabledBrushProperty.AddOwner(typeof(TemplateButton));
@@ -214,7 +225,7 @@ namespace SolidShineUi.Utils
                 BorderHighlightBrush = value.HighlightBorderBrush;
                 BorderSelectedBrush = value.SelectedBorderBrush;
                 Foreground = value.Foreground;
-                ForegroundHighlightBrush = value.HighlightForeground;
+                HighlightForeground = value.HighlightForeground;
                 ClickBrush = value.ClickBrush;
                 BorderBrush = value.BorderBrush;
 

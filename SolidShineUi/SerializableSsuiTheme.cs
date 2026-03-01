@@ -1,9 +1,7 @@
 ﻿using SolidShineUi.Utils;
 using System;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace SolidShineUi
@@ -11,7 +9,7 @@ namespace SolidShineUi
     /// <summary>
     /// A basic class that can be converted to and from a <see cref="SsuiTheme"/> or <see cref="SsuiAppTheme"/>, 
     /// built specifically to use in serialization scenarios, such as storing in a settings file.
-    /// Each brush property is stored as the compact string format produced/consumed by <see cref="BrushSerializer"/>.
+    /// Each brush property is stored as the compact string format produced by <see cref="BrushSerializer"/>.
     /// </summary>
 #if NET8_0_OR_GREATER
     public class SerializableSsuiTheme
@@ -72,11 +70,11 @@ namespace SolidShineUi
         /// <summary>The value for the <see cref="SsuiTheme.HighlightBorderBrush"/> property.</summary>
         public string HighlightBorderBrush { get; set; } = sBlack;
 
-        /// <summary>The value for the <see cref="SsuiTheme.ClickBrush"/> property.</summary>
-        public string ClickBrush { get; set; } = sLightGray;
-
         /// <summary>The value for the <see cref="SsuiTheme.HighlightForeground"/> property.</summary>
         public string HighlightForeground { get; set; } = sDarkerGray;
+
+        /// <summary>The value for the <see cref="SsuiTheme.ClickBrush"/> property.</summary>
+        public string ClickBrush { get; set; } = sLightGray;
 
         /// <summary>The value for the <see cref="SsuiTheme.TabBackground"/> property.</summary>
         public string TabBackground { get; set; } = sGainsboro;
@@ -95,6 +93,9 @@ namespace SolidShineUi
 
         /// <summary>The value for the <see cref="SsuiTheme.SelectedBorderBrush"/> property.</summary>
         public string SelectedBorderBrush { get; set; } = sBlack;
+
+        /// <summary>The value for the <see cref="SsuiTheme.SelectedForeground"/> property.</summary>
+        public string SelectedForeground { get; set; } = sBlack;
 
         /// <summary>The value for the <see cref="SsuiTheme.LightBorderBrush"/> property.</summary>
         public string LightBorderBrush { get; set; } = sDarkGray;
@@ -241,14 +242,15 @@ namespace SolidShineUi
                 DisabledForeground = BrushSerializer.Serialize(theme.DisabledForeground),
                 HighlightBrush = BrushSerializer.Serialize(theme.HighlightBrush),
                 HighlightBorderBrush = BrushSerializer.Serialize(theme.HighlightBorderBrush),
-                ClickBrush = BrushSerializer.Serialize(theme.ClickBrush),
                 HighlightForeground = BrushSerializer.Serialize(theme.HighlightForeground),
+                ClickBrush = BrushSerializer.Serialize(theme.ClickBrush),
                 TabBackground = BrushSerializer.Serialize(theme.TabBackground),
                 TabSelectedBrush = BrushSerializer.Serialize(theme.TabSelectedBrush),
                 TabHighlightBrush = BrushSerializer.Serialize(theme.TabHighlightBrush),
                 TabHighlightBorderBrush = BrushSerializer.Serialize(theme.TabHighlightBorderBrush),
                 SelectedBackgroundBrush = BrushSerializer.Serialize(theme.SelectedBackgroundBrush),
                 SelectedBorderBrush = BrushSerializer.Serialize(theme.SelectedBorderBrush),
+                SelectedForeground = BrushSerializer.Serialize(theme.SelectedForeground),
                 LightBorderBrush = BrushSerializer.Serialize(theme.LightBorderBrush),
                 CheckBrush = BrushSerializer.Serialize(theme.CheckBrush),
                 CheckHighlightBrush = BrushSerializer.Serialize(theme.CheckHighlightBrush),
@@ -350,14 +352,15 @@ namespace SolidShineUi
                 DisabledForeground = ParseBrush(DisabledForeground, freeze),
                 HighlightBrush = ParseBrush(HighlightBrush, freeze),
                 HighlightBorderBrush = ParseBrush(HighlightBorderBrush, freeze),
-                ClickBrush = ParseBrush(ClickBrush, freeze),
                 HighlightForeground = ParseBrush(HighlightForeground, freeze),
+                ClickBrush = ParseBrush(ClickBrush, freeze),
                 TabBackground = ParseBrush(TabBackground, freeze),
                 TabSelectedBrush = ParseBrush(TabSelectedBrush, freeze),
                 TabHighlightBrush = ParseBrush(TabHighlightBrush, freeze),
                 TabHighlightBorderBrush = ParseBrush(TabHighlightBorderBrush, freeze),
                 SelectedBackgroundBrush = ParseBrush(SelectedBackgroundBrush, freeze),
                 SelectedBorderBrush = ParseBrush(SelectedBorderBrush, freeze),
+                SelectedForeground = ParseBrush(SelectedForeground, freeze),
                 LightBorderBrush = ParseBrush(LightBorderBrush, freeze),
                 CheckBrush = ParseBrush(CheckBrush, freeze),
                 CheckHighlightBrush = ParseBrush(CheckHighlightBrush, freeze),
@@ -414,14 +417,15 @@ namespace SolidShineUi
                 DisabledForeground = ParseBrush(DisabledForeground, freeze),
                 HighlightBrush = ParseBrush(HighlightBrush, freeze),
                 HighlightBorderBrush = ParseBrush(HighlightBorderBrush, freeze),
-                ClickBrush = ParseBrush(ClickBrush, freeze),
                 HighlightForeground = ParseBrush(HighlightForeground, freeze),
+                ClickBrush = ParseBrush(ClickBrush, freeze),
                 TabBackground = ParseBrush(TabBackground, freeze),
                 TabSelectedBrush = ParseBrush(TabSelectedBrush, freeze),
                 TabHighlightBrush = ParseBrush(TabHighlightBrush, freeze),
                 TabHighlightBorderBrush = ParseBrush(TabHighlightBorderBrush, freeze),
                 SelectedBackgroundBrush = ParseBrush(SelectedBackgroundBrush, freeze),
                 SelectedBorderBrush = ParseBrush(SelectedBorderBrush, freeze),
+                SelectedForeground = ParseBrush(SelectedForeground, freeze),
                 LightBorderBrush = ParseBrush(LightBorderBrush, freeze),
                 CheckBrush = ParseBrush(CheckBrush, freeze),
                 CheckHighlightBrush = ParseBrush(CheckHighlightBrush, freeze),
@@ -499,12 +503,12 @@ namespace SolidShineUi
         {
             // I could probably figure out some way to make this work with the CornerRadiusConverter, but meh
 
-            // check if the corner radius value is the same all the way around - if so, we can just use the double value all alone
+            // check if the corner radius value is the same all the way around; if so, we can just use the double value all alone
             if (cr.TopLeft == cr.TopRight && cr.TopLeft == cr.BottomRight && cr.TopLeft == cr.BottomLeft)
             {
                 return cr.TopLeft.ToString(CultureInfo.InvariantCulture);
             }
-            // else, we'll make a comma-separated list for all of the corners - this should be easily parseable with the CornerRadiusConverter
+            // else, we'll make a comma-separated list for all of the corners; this should be parseable with the CornerRadiusConverter
             return string.Join(",", cr.TopLeft.ToString(CultureInfo.InvariantCulture),
                                      cr.TopRight.ToString(CultureInfo.InvariantCulture),
                                      cr.BottomRight.ToString(CultureInfo.InvariantCulture),
