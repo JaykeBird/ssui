@@ -78,9 +78,9 @@ namespace SolidShineUi
         {
             base.ApplyColorScheme(cs);
 
-            lblText.DisabledBrush = cs.DarkDisabledColor.ToBrush();
-            lblText.TextBrush = cs.ForegroundColor.ToBrush();
-            lblText.HighlightBrush = cs.ForegroundColor.ToBrush();
+            //lblText.DisabledBrush = cs.DarkDisabledColor.ToBrush();
+            //lblText.TextBrush = cs.ForegroundColor.ToBrush();
+            //lblText.HighlightBrush = cs.ForegroundColor.ToBrush();
 
             chkSel.ApplyColorScheme(cs);
         }
@@ -90,9 +90,9 @@ namespace SolidShineUi
         {
             base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
 
-            lblText.DisabledBrush = ssuiTheme.DisabledForeground;
-            lblText.TextBrush = ssuiTheme.Foreground;
-            lblText.HighlightBrush = ssuiTheme.HighlightForeground;
+            //DisabledForeground = ssuiTheme.DisabledForeground;
+            //Foreground = ssuiTheme.Foreground;
+            //HighlightForeground = ssuiTheme.HighlightForeground;
 
             chkSel.SsuiTheme = ssuiTheme;
         }
@@ -101,7 +101,59 @@ namespace SolidShineUi
         {
             lblText.IsEnabled = IsEnabled;
             chkSel.IsEnabled = IsEnabled;
+
+            if (!IsEnabled)
+            {
+                brdr.Foreground = DisabledForeground;
+            }
+            else
+            {
+                if (Highlighting && CanSelect && SelectOnClick)
+                {
+                    brdr.Foreground = HighlightForeground;
+                }
+                else if (IsSelected)
+                {
+                    brdr.Foreground = SelectedForeground;
+                }
+                else
+                {
+                    brdr.Foreground = BaseForeground;
+                }
+            }
         }
+
+
+        #region Highlight / Unhighlight
+
+        /// <inheritdoc/>
+        protected override void Highlight()
+        {
+            base.Highlight();
+
+            if (CanSelect && SelectOnClick)
+            {
+                brdr.Foreground = HighlightForeground;
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void Unhighlight()
+        {
+            base.Unhighlight();
+
+
+            if (IsSelected)
+            {
+                brdr.Foreground = SelectedForeground;
+            }
+            else
+            {
+                brdr.Foreground = BaseForeground;
+            }
+        }
+
+        #endregion
 
         #region UI Elements / Layout
 
@@ -193,13 +245,19 @@ namespace SolidShineUi
         /// </remarks>
         [Category("Common")]
         [Description("Get or set if the checkbox's value should be changed if this control is selected (and vice-versa). By default, this value is true.")]
-        public bool MatchCheckboxValueToSelect { get; set; } = true;
+        public bool SelectOnCheck { get => (bool)GetValue(SelectOnCheckProperty); set => SetValue(SelectOnCheckProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectOnCheck"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectOnCheckProperty
+            = DependencyProperty.Register(nameof(SelectOnCheck), typeof(bool), typeof(SelectableItem),
+            new FrameworkPropertyMetadata(true));
+
 
         bool updatingCheck = false;
 
         private void ChkSel_CheckChanged(object sender, RoutedEventArgs e)
         {
-            if (MatchCheckboxValueToSelect && !updatingCheck)
+            if (SelectOnCheck && !updatingCheck)
             {
                 updatingCheck = true;
                 SetIsSelectedWithSource(chkSel.IsChecked, SelectionChangeTrigger.CheckBox, this);
@@ -209,11 +267,24 @@ namespace SolidShineUi
 
         private void SelectableItem_SelectionChanged(object sender, ItemSelectionChangedEventArgs e)
         {
-            if (MatchCheckboxValueToSelect && !updatingCheck)
+            if (SelectOnCheck && !updatingCheck)
             {
                 updatingCheck = true;
                 chkSel.IsChecked = IsSelected;
                 updatingCheck = false;
+            }
+
+            if (IsMouseOver || IsKeyboardFocusWithin)
+            {
+                brdr.Foreground = HighlightForeground;
+            }
+            else if (IsSelected)
+            {
+                brdr.Foreground = SelectedForeground;
+            }
+            else
+            {
+                brdr.Foreground = BaseForeground;
             }
         }
 

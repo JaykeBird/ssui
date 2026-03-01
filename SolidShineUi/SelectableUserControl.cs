@@ -198,7 +198,7 @@ namespace SolidShineUi
             {
                 Background = ClickBrush;
             }
-            else if (highlighting)
+            else if (Highlighting)
             {
                 Background = HighlightBrush;
             }
@@ -215,7 +215,7 @@ namespace SolidShineUi
             {
                 Foreground = DisabledForeground;
             }
-            else if (highlighting || performingClick)
+            else if (Highlighting || performingClick)
             {
                 Foreground = HighlightForeground;
             }
@@ -240,6 +240,9 @@ namespace SolidShineUi
         {
             BaseForeground = cs.ForegroundColor.ToBrush();
             DisabledForeground = cs.DarkDisabledColor.ToBrush();
+            SelectedForeground = cs.ForegroundColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+            HighlightBrush = cs.ForegroundColor.ToBrush();
 
             UpdateBrushes();
         }
@@ -459,13 +462,22 @@ namespace SolidShineUi
 
         #region Base Functions
 
+        /// <summary>
+        /// Get if this control is currently in a "highlight" state.
+        /// <para/>
+        /// Use <see cref="Highlight"/> and <see cref="Unhighlight"/> to change states.
+        /// </summary>
+        protected bool Highlighting { get; private set; } = false;
+
         bool performingClick = false;
-        bool highlighting = false;
         bool rightClick = false;
 
-        void Highlight()
+        /// <summary>
+        /// Change the control to a highlighted state, while it has focus or has the mouse or stylus over it.
+        /// </summary>
+        protected virtual void Highlight()
         {
-            highlighting = true;
+            Highlighting = true;
             if (CanSelect && SelectOnClick)
             {
                 Background = HighlightBrush;
@@ -473,9 +485,12 @@ namespace SolidShineUi
             }
         }
 
-        void Unhighlight()
+        /// <summary>
+        /// Change the control to an unhighlighted state, when it no longer has focus or has the mouse or stylus over it.
+        /// </summary>
+        protected virtual void Unhighlight()
         {
-            highlighting = false;
+            Highlighting = false;
 
             if (IsSelected)
             {
