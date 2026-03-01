@@ -17,7 +17,7 @@ namespace SolidShineUi
     /// </summary>
     [DefaultEvent("Click")]
     [Localizability(LocalizationCategory.Button)]
-    public class FlatButton : ButtonBase, IClickSelectableControl
+    public class FlatButton : ButtonBase, ISsuiButton
     {
         static FlatButton()
         {

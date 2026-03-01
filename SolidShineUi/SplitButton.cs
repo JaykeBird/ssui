@@ -17,7 +17,7 @@ namespace SolidShineUi
     /// and a secondary button on the right that displays a menu of additional options.
     /// </summary>
     [Localizability(LocalizationCategory.Button)]
-    public class SplitButton : ThemedContentControl, IClickSelectableControl
+    public class SplitButton : ThemedContentControl, ISsuiButton
     {
         static SplitButton()
         {
@@ -80,19 +80,19 @@ namespace SolidShineUi
         bool itemsLoaded = false;
 
 #if NETCOREAPP
-        FlatButton? btnMain = null;
-        FlatButton? btnMenu = null;
+        ISsuiButton? btnMain = null;
+        ISsuiButton? btnMenu = null;
 #else
-        FlatButton btnMain = null;
-        FlatButton btnMenu = null;
+        ISsuiButton btnMain = null;
+        ISsuiButton btnMenu = null;
 #endif
 
         void LoadTemplateItems()
         {
             if (!itemsLoaded)
             {
-                btnMain = (FlatButton)GetTemplateChild("PART_Main");
-                btnMenu = (FlatButton)GetTemplateChild("PART_Menu");
+                btnMain = (ISsuiButton)GetTemplateChild("PART_Main");
+                btnMenu = (ISsuiButton)GetTemplateChild("PART_Menu");
 
                 if (btnMain != null && btnMenu != null)
                 {
@@ -278,31 +278,31 @@ namespace SolidShineUi
             }
         }
 
-        /// <summary>
-        /// Internal function used for debugging the state of the internal buttons.
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected string GetMainButtonBackgroundBinding
-        {
-            get
-            {
-                if (btnMain != null)
-                {
-                    Binding b = BindingOperations.GetBinding(btnMain, BackgroundProperty);
+        ///// <summary>
+        ///// Internal function used for debugging the state of the internal buttons.
+        ///// </summary>
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //protected string GetMainButtonBackgroundBinding
+        //{
+        //    get
+        //    {
+        //        if (btnMain != null)
+        //        {
+        //            Binding b = BindingOperations.GetBinding(btnMain, BackgroundProperty);
                     
-                    if (b != null)
-                    {
-                        return $"{b.Source}: {b.Path.Path} (+ {btnMain?.SsuiTheme?.ToString() ?? "(theme null)"})";
-                    }
-                    else
-                    {
-                        return "(no binding)";
-                    }
-                }
+        //            if (b != null)
+        //            {
+        //                return $"{b.Source}: {b.Path.Path} (+ {btnMain?.SsuiTheme?.ToString() ?? "(theme null)"})";
+        //            }
+        //            else
+        //            {
+        //                return "(no binding)";
+        //            }
+        //        }
 
-                return "(not found)";
-            }
-        }
+        //        return "(not found)";
+        //    }
+        //}
 
         void UpdateFromUseAccentTheme(bool useAccentTheme)
         {

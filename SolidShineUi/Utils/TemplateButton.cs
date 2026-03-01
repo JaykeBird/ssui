@@ -15,7 +15,7 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// A button similar to <see cref="TemplateButton"/>, for usage in control templates.
     /// </summary>
-    public class TemplateButton : ButtonBase
+    public class TemplateButton : ButtonBase, ISsuiButton
     {
         static TemplateButton()
         {
@@ -27,18 +27,18 @@ namespace SolidShineUi.Utils
         /// </summary>
         public TemplateButton()
         {
-            //MouseDown += UserControl_MouseDown;
-            //MouseUp += UserControl_MouseUp;
-            //MouseLeave += UserControl_MouseLeave;
+            MouseDown += UserControl_MouseDown;
+            MouseUp += UserControl_MouseUp;
+            MouseLeave += UserControl_MouseLeave;
 
-            //PreviewMouseDown += UserControl_PreviewMouseDown;
-            //PreviewMouseUp += UserControl_PreviewMouseUp;
+            PreviewMouseDown += UserControl_PreviewMouseDown;
+            PreviewMouseUp += UserControl_PreviewMouseUp;
 
-            //LostFocus += UserControl_LostFocus;
-            //LostKeyboardFocus += UserControl_LostKeyboardFocus;
+            LostFocus += UserControl_LostFocus;
+            LostKeyboardFocus += UserControl_LostKeyboardFocus;
 
-            //KeyDown += UserControl_KeyDown;
-            //KeyUp += UserControl_KeyUp;
+            KeyDown += UserControl_KeyDown;
+            KeyUp += UserControl_KeyUp;
 
             //KeyboardNavigation.SetIsTabStop(this, true);
 
@@ -172,6 +172,72 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        /// <summary>
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs == null)
+            {
+                return;
+            }
+
+            if (cs.IsHighContrast)
+            {
+                Background = cs.BackgroundColor.ToBrush();
+                HighlightBrush = cs.HighlightColor.ToBrush();
+                SelectedBrush = cs.HighlightColor.ToBrush();
+                BorderHighlightBrush = cs.BorderColor.ToBrush();
+                BorderSelectedBrush = cs.BorderColor.ToBrush();
+                BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                DisabledBrush = cs.BackgroundColor.ToBrush();
+                Foreground = cs.ForegroundColor.ToBrush();
+                ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            }
+            else
+            {
+                Background = cs.SecondaryColor.ToBrush();
+                BorderBrush = cs.BorderColor.ToBrush();
+                HighlightBrush = cs.SecondHighlightColor.ToBrush();
+                DisabledBrush = cs.LightDisabledColor.ToBrush();
+                BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                SelectedBrush = cs.ThirdHighlightColor.ToBrush();
+                BorderHighlightBrush = cs.HighlightColor.ToBrush();
+                BorderSelectedBrush = cs.SelectionColor.ToBrush();
+                Foreground = cs.ForegroundColor.ToBrush();
+                ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            }
+        }
+
+
+#if NETCOREAPP
+        SsuiTheme? IClickSelectableControl.SsuiTheme
+#else
+        SsuiTheme IClickSelectableControl.SsuiTheme
+#endif
+        {
+            get => new SsuiTheme();
+            set
+            {
+                if (value == null) return;
+
+                Background = value.ButtonBackground;
+                HighlightBrush = value.HighlightBrush;
+                DisabledBrush = value.DisabledBackground;
+                BorderDisabledBrush = value.DisabledBorderBrush;
+                SelectedBrush = value.SelectedBackgroundBrush;
+                BorderHighlightBrush = value.HighlightBorderBrush;
+                BorderSelectedBrush = value.SelectedBorderBrush;
+                Foreground = value.Foreground;
+                ForegroundHighlightBrush = value.HighlightForeground;
+                ClickBrush = value.ClickBrush;
+                BorderBrush = value.BorderBrush;
+
+                CornerRadius = value.CornerRadius;
+            }
+        }
+
         #region TransparentBack
 
         /// <summary>
@@ -246,9 +312,76 @@ namespace SolidShineUi.Utils
 
         #endregion
 
+        #region Click / Selection Handling
+
+        #region Routed Events
+
+        /// <summary>
+        /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
+        /// </summary>
+        public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
+            nameof(RightClick), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TemplateButton));
+
+        /// <summary>
+        /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
+        /// </summary>
+        public event RoutedEventHandler RightClick
+        {
+            add { AddHandler(RightClickEvent, value); }
+            remove { RemoveHandler(RightClickEvent, value); }
+        }
+
+        #endregion
+
+        #region IsMouseDown
+
+        // from https://stackoverflow.com/questions/10667545/why-ismouseover-is-recognized-and-mousedown-isnt-wpf-style-trigger
+
+        /// <summary>
+        /// The internal dependency property for <see cref="IsMouseDown"/>. See that property for more details.
+        /// </summary>
+        protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly(nameof(IsMouseDown),
+            typeof(bool), typeof(TemplateButton), new FrameworkPropertyMetadata(false));
+
+        /// <summary>
+        /// Get if there is a mouse button currently being pressed, while the mouse cursor is over this control.
+        /// </summary>
+        public static readonly DependencyProperty IsMouseDownProperty = IsMouseDownPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Set the IsMouseDown property for a TemplateButton.
+        /// </summary>
+        /// <param name="obj">The TemplateButton to apply the property change to.</param>
+        /// <param name="value">The new value to set for the property.</param>
+        protected static void SetIsMouseDown(DependencyObject obj, bool value)
+        {
+            obj.SetValue(IsMouseDownPropertyKey, value);
+        }
+
+        /// <summary>
+        /// Get the IsMouseDown property for a TemplateButton.
+        /// </summary>
+        /// <param name="obj">The TemplateButton to get the property value from.</param>
+        public static bool GetIsMouseDown(DependencyObject obj)
+        {
+            return (bool)obj.GetValue(IsMouseDownProperty);
+        }
+
+        /// <summary>
+        /// Get if a mouse button is currently being pressed while the cursor is over this TemplateButton.
+        /// </summary>
+        [ReadOnly(true)]
+        public bool IsMouseDown
+        {
+            get => (bool)GetValue(IsMouseDownProperty);
+            protected set => SetValue(IsMouseDownPropertyKey, value);
+        }
+
+        #endregion
+
         #region Variables/Properties
 
-        // bool initiatingClick = false;
+        bool initiatingClick = false;
 
         #region IsSelected / IsSelectedChanged
 
@@ -370,52 +503,23 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-        #region IsMouseDown
+        #region Base Click Functions
 
-        // from https://stackoverflow.com/questions/10667545/why-ismouseover-is-recognized-and-mousedown-isnt-wpf-style-trigger
-
-        /// <summary>
-        /// The internal dependency property for <see cref="IsMouseDown"/>. See that property for more details.
-        /// </summary>
-        protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly(nameof(IsMouseDown),
-            typeof(bool), typeof(TemplateButton), new FrameworkPropertyMetadata(false));
-
-        /// <summary>
-        /// Get if there is a mouse button currently being pressed, while the mouse cursor is over this control.
-        /// </summary>
-        public static readonly DependencyProperty IsMouseDownProperty = IsMouseDownPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Set the IsMouseDown property for a TemplateButton.
-        /// </summary>
-        /// <param name="obj">The TemplateButton to apply the property change to.</param>
-        /// <param name="value">The new value to set for the property.</param>
-        protected static void SetIsMouseDown(DependencyObject obj, bool value)
+        // Sets up the button to be clicked. This must be run before PerformClick.
+        void PressRightClick()
         {
-            obj.SetValue(IsMouseDownPropertyKey, value);
+            initiatingClick = true;
         }
 
-        /// <summary>
-        /// Get the IsMouseDown property for a TemplateButton.
-        /// </summary>
-        /// <param name="obj">The TemplateButton to get the property value from.</param>
-        public static bool GetIsMouseDown(DependencyObject obj)
+        // If the button is prepared by PerformPress, perform the Click actions, including raising the Click event.
+        void PerformRightClick()
         {
-            return (bool)obj.GetValue(IsMouseDownProperty);
-        }
-
-        /// <summary>
-        /// Get if a mouse button is currently being pressed while the cursor is over this FlatButton.
-        /// </summary>
-        [ReadOnly(true)]
-        public bool IsMouseDown
+            if (initiatingClick)
         {
-            get => (bool)GetValue(IsMouseDownProperty);
-            protected set => SetValue(IsMouseDownPropertyKey, value);
+                RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
+                RaiseEvent(rre);
         }
-
-        #endregion
-
+        }
 
         /// <summary>
         /// Perform a click programmatically. The button responds the same way as if it was clicked by the user.
@@ -437,6 +541,90 @@ namespace SolidShineUi.Utils
 
             base.OnClick();
         }
+
+        #endregion
+
+        #region Event handlers
+
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //if (e.ChangedButton == MouseButton.Right)
+            //{
+            //    PressRightClick();
+            //}
+        }
+
+        private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            //if (e.ChangedButton == MouseButton.Right)
+            //{
+            //    PerformRightClick();
+            //}
+        }
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (ClickMode == ClickMode.Press && e.Key == Key.Apps)
+            //{
+            //    PressRightClick();
+            //    PerformRightClick();
+            //}
+        }
+
+        private void UserControl_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Apps)
+            {
+                PressRightClick();
+                PerformRightClick();
+            }
+        }
+
+        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                PressRightClick();
+            }
+            SetIsMouseDown(this, true);
+        }
+
+        private void UserControl_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                PerformRightClick();
+            }
+            SetIsMouseDown(this, false);
+        }
+
+
+        private void UserControl_LostFocus(object sender, RoutedEventArgs e)
+        {
+            initiatingClick = false;
+        }
+
+        private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            initiatingClick = false;
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SetIsMouseDown(this, false);
+            initiatingClick = false;
+        }
+
+
+        #endregion
+
+        #endregion
+
+
+        /// <summary>
+        /// Get or set if the execute timer should be set up for this button, to provide RepeatButton-like functionality.
+        /// </summary>
+        public bool UseExecuteTimer { get; set; } = false;
 
         #region Events / Command Properties
 
@@ -778,7 +966,7 @@ namespace SolidShineUi.Utils
             RaiseEvent(re);
 
             firstRun = true;
-            ExecuteTimer.Start();
+            if (UseExecuteTimer) ExecuteTimer.Start();
         }
 
         void PressEnded()

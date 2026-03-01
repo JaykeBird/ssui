@@ -217,4 +217,78 @@ namespace SolidShineUi
         CodeUnknown = 9,
     }
 
+    /// <summary>
+    /// An interface of common properties and methods for Solid Shine UI's button controls.
+    /// </summary>
+    public interface ISsuiButton : IClickSelectableControl
+    {
+        #region Brushes
+
+        /// <summary>
+        /// Get or set the brush used for the background of the control when the control is disabled.
+        /// </summary>
+        Brush DisabledBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border around the edges of the control.
+        /// </summary>
+        Brush BorderBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border of the control when the control is disabled.
+        /// </summary>
+        Brush BorderDisabledBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        Brush BorderHighlightBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        Brush ForegroundHighlightBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border while the control is selected
+        /// (i.e. the <c>IsSelected</c> property is true).
+        /// </summary>
+        Brush BorderSelectedBrush { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// Get or set whether the button should have a transparent background when the button is not focused or selected.
+        /// </summary>
+        bool TransparentBack { get; set; }
+
+        /// <summary>
+        /// Get or set the thickness of the border around the button.
+        /// </summary>
+        Thickness BorderThickness { get; set; }
+
+        /// <summary>
+        /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
+        /// </summary>
+        Thickness BorderSelectionThickness { get; set; }
+
+        /// <summary>
+        /// Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.
+        /// </summary>
+        CornerRadius CornerRadius { get; set; }
+
+        /// <summary>
+        /// Get or set if the button should be highlighted (using the <see cref="IClickSelectableControl.HighlightBrush"/> and <see cref="BorderHighlightBrush"/>)
+        /// when it has keyboard focus. If <c>false</c>, only the keyboard focus outline appears, and highlighting only occurs on mouse/stylus over.
+        /// </summary>
+        bool HighlightOnKeyboardFocus { get; set; }
+
+        /// <summary>
+        /// Update the value to a dependency property of this control.
+        /// </summary>
+        /// <param name="dp">the property to update</param>
+        /// <param name="value">the value to update the property to</param>
+        void SetValue(DependencyProperty dp, object value);
+    }
+
 }
