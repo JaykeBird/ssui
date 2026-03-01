@@ -1857,11 +1857,12 @@
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                          ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
                                          SelectedBrush="{Binding SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
-                                         Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent},
-                                                           Converter={StaticResource dovc}}" 
+                                         Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
                                          Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          ForegroundHighlightBrush="{Binding ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
+                                         IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}"
+                                         Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                         ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" >
                             <ssut:TemplateButton.Style>
                                 <Style TargetType="ssut:TemplateButton">
                                     <Setter Property="Grid.Row" Value="1" />
@@ -1876,7 +1877,6 @@
                                     <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </ssut:TemplateButton.Style>
-                            <ContentPresenter ContentSource="Content" RecognizesAccessKey="True" />
                         </ssut:TemplateButton>
                         <ssut:TemplateButton x:Name="PART_Menu" Padding="0" TransparentBack="{TemplateBinding TransparentBack}"
                                          BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
