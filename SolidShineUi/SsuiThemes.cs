@@ -82,6 +82,13 @@ namespace SolidShineUi
                 AllowTitleBarBrushWithMenus = false
             };
 
+            // reduce the saturation of SelectedBackground
+            ColorsHelper.ToHSV(SystemColors.HighlightBrush.Color, out double h, out double s, out double v);
+            if (s > 0.5)
+            {
+                ssat.SelectedBackgroundBrush = ColorsHelper.CreateFromHSV(h, 0.3, v).ToBrush();
+            }
+
             ssat.AccentTheme = ssat.Copy();
             ssat.SubitemTheme = ssat.Copy();
 
