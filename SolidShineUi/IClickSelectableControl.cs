@@ -289,6 +289,25 @@ namespace SolidShineUi
         /// <param name="dp">the property to update</param>
         /// <param name="value">the value to update the property to</param>
         void SetValue(DependencyProperty dp, object value);
+
+        #region Content Control Properties
+
+        /// <summary>
+        /// Get or set the content to display within this control.
+        /// </summary>
+        object Content { get; set; }
+
+        /// <summary>
+        /// Gets or sets a composite string that specifies how to format the Content property if it is displayed as a string.
+        /// </summary>
+        string ContentStringFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data template used to display the content of the control.
+        /// </summary>
+        DataTemplate ContentTemplate { get; set; }
+
+        #endregion
     }
 
 }

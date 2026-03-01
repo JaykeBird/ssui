@@ -92,15 +92,15 @@ namespace SolidShineUi
         ScrollViewer? sv = null;
 
         MenuButton? tlm = null;
-        FlatButton? bsl = null;
-        FlatButton? bsr = null;
+        ISsuiButton? bsl = null;
+        ISsuiButton? bsr = null;
 #else
         ItemsControl ic = null;
         ScrollViewer sv = null;
 
         MenuButton tlm = null;
-        FlatButton bsl = null;
-        FlatButton bsr = null;
+        ISsuiButton bsl = null;
+        ISsuiButton bsr = null;
 #endif
 
         void LoadTemplateItems()
@@ -110,8 +110,8 @@ namespace SolidShineUi
                 ic = (ItemsControl)GetTemplateChild("PART_TabBar");
                 sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
                 tlm = (MenuButton)GetTemplateChild("PART_TabMenu");
-                bsl = (FlatButton)GetTemplateChild("btnScrollLeft");
-                bsr = (FlatButton)GetTemplateChild("btnScrollRight");
+                bsl = (ISsuiButton)GetTemplateChild("btnScrollLeft");
+                bsr = (ISsuiButton)GetTemplateChild("btnScrollRight");
 
                 if (ic != null && sv != null)
                 {
