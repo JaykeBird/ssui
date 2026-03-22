@@ -286,13 +286,14 @@ debug, make sure you have Visual Studio set to the Debug configuration, and not 
 button, or you can access it via `Build > Configuration Manager...` and set the active configuration there).
 
 ## License
+
 This library is released under the [MIT License](License.md).
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_large)
 
 ## Credits/Usage
 
-For credits/attribution for when you use the library, please use one of the versions below (the first one is preferred):
+For credits/attribution for when you use the library, please use one of the credit blocks below:
 
 > Developed/compiled by Jayke R. Huempfner (JaykeBird)
 > 
@@ -310,5 +311,5 @@ For credits/attribution for when you use the library, please use one of the vers
 > 
 > Licensed under MIT License. See website for more details.
 
-The full credits is available on [the Credits page on my website](https://jaykebird.com/software/ssui/credits).
+The full credits are available on [the Credits page on my website](https://jaykebird.com/software/ssui/credits).
 
