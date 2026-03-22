@@ -50,9 +50,9 @@
                         <!--<Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform" 
                                             BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
                         <flat:LinkTextBlock Text="Edit Transform..." FontSize="12" Margin="32,8,8,2" x:Name="txtTransform" Click="btnEditTransform_Click" Grid.Row="1" 
-                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Left" />
+                                            TextBrush="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}" HorizontalAlignment="Left" />
                         <flat:LinkTextBlock Text="Edit Relative Transform..." FontSize="12" Margin="32,2,8,4" x:Name="txtRelative" Click="btnEditRelativeTransform_Click" Grid.Row="2" 
-                                            TextBrush="{Binding ElementName=control, Path=Foreground}" HorizontalAlignment="Left" />
+                                            TextBrush="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}" HorizontalAlignment="Left" />
                         <!--<Border Margin="5,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" BorderThickness="1" x:Name="brdrTransform2" Grid.Row="3" 
                                             BorderBrush="{Binding ElementName=control, Path=Foreground}" />-->
                     </Grid>
