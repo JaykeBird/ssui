@@ -16,7 +16,11 @@ namespace SolidShineUi.KeyboardShortcuts
     /// A helper class to manage keyboard shortcut support for a given WPF window. Connect this to a window to easily add and manage keyboard shortcuts.
     /// </summary>
     /// <remarks>
-    /// This class listens to a Window's KeyDown and KeyUp events to detect when keyboard shortcuts are pressed and activate them. See online documentation for more info about keyboard shortcut support.
+    /// This class listens to a Window's KeyDown and KeyUp events to detect when keyboard shortcuts are pressed and activate them.
+    /// Use <c>KeyRegistry.RegisterKeyShortcut</c> to register shortcuts directly to this handler's registry, or use 
+    /// <c>LoadShortcutsFromFile</c> or <c>LoadShortcutsFromList</c> to register shortcuts from other existing sources.
+    /// <para/>
+    /// See online documentation for more info about keyboard shortcut support.
     /// </remarks>
     public class KeyboardShortcutHandler
     {
@@ -44,6 +48,10 @@ namespace SolidShineUi.KeyboardShortcuts
         /// </summary>
         public KeyRegistry KeyRegistry { get; } = new KeyRegistry();
 
+        /// <summary>
+        /// A timer that runs after a key change (KeyUp or KeyDown) to make sure that the recorded modifier key states are still accurate.
+        /// I've had situations in the past where for some reason the changes in modifier key states weren't caught.
+        /// </summary>
         private DispatcherTimer keyCheck;
 
         bool CtrlPressed = false;
@@ -63,7 +71,7 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         /// <summary>
-        /// Load in and register keyboard shortcuts from a file. A KeyActionList is needed to map the shortcuts to their actions.
+        /// Load in and register keyboard shortcuts from an XML file. A KeyActionList is needed to map the shortcuts to their actions.
         /// </summary>
         /// <param name="file">The file to load from.</param>
         /// <param name="methodList">The list of actions available for keyboard shortcuts, to use for mapping.</param>
@@ -90,10 +98,9 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         /// <summary>
-        /// Write the currently registered keyboard shortcuts to a file, which can be loaded in later.
+        /// Write the currently registered keyboard shortcuts to an XML file, which can be loaded in later.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="file">the name of the file to write to</param>
         public async Task WriteShortcutsToFileAsync(string file)
         {
             await KeyboardShortcutsIo.WriteToFileAsync(KeyRegistry, file);

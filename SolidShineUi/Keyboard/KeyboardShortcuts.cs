@@ -51,8 +51,14 @@ namespace SolidShineUi.KeyboardShortcuts
     }
 
     /// <summary>
-    /// A helper class to save or load keyboard shortcuts into files.
+    /// A helper class to save or load keyboard shortcuts into XML files. See remarks for more details.
     /// </summary>
+    /// <remarks>
+    /// When writing to a file, the shortcut keys and key combinations are written, along with the ID of the key action that it activates.
+    /// <para/>
+    /// When reading from a file, the list of key actions needs to be supplied so that the read shortcuts can then be mapped to the key action with that ID.
+    /// Keyboard shortcuts in the file where there isn't a key action with its ID are skipped.
+    /// </remarks>
     public static class KeyboardShortcutsIo
     {
         /// <summary>
@@ -62,7 +68,10 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <param name="list">A list of actions available to be accessed via keyboard shortcuts.</param>
         /// <returns>A list of keyboard shortcuts, which can be loaded into a KeyRegistry.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the file does not exist.</exception>
-        /// <remarks>If there is a shortcut in this file that reference an action ID that isn't on the <paramref name="list"/>, then that shortcut is skipped.</remarks>
+        /// <remarks>
+        /// When reading from a file, the list of key actions needs to be supplied so that the read shortcuts can then be mapped to the key action with that ID.
+        /// If there is a shortcut in this file that reference an action ID that isn't on the <paramref name="list"/>, then that shortcut is skipped.
+        /// </remarks>
         public static List<KeyboardShortcut> LoadFromFile(string file, KeyActionList list)
         {
             if (!File.Exists(file))
@@ -93,7 +102,7 @@ namespace SolidShineUi.KeyboardShortcuts
 #endif
                     if (string.IsNullOrEmpty(m))
                     {
-                        m = xr.GetAttribute("methodid");
+                        m = xr.GetAttribute("methodid"); // fallback for older files where "methodid" was used instead of "action"
                     }
 
                     if (string.IsNullOrEmpty(c) || string.IsNullOrEmpty(k) || string.IsNullOrEmpty(m))
@@ -275,8 +284,10 @@ namespace SolidShineUi.KeyboardShortcuts
     public class KeyboardShortcut
     {
         /// <summary>
-        /// Get a list of keys that are safe to use for keyboard shortcuts without having Ctrl or Alt pressed.
-        /// Using keys other than these in a program that has text input may end up with conflicts or unintended issues as users try to type.
+        /// Get a list of keys that are safe to use for keyboard shortcuts without having Ctrl or Alt pressed (i.e., only Shift or no modifier keys at all).
+        /// Using keys other than these in a program that has text input may end up with conflicts or unintended issues as users try to type.<para/>
+        /// For programs without text input, set <see cref="KeyRegistry.AllowAllNonModifiedKeysInShortcuts"/> to <c>false</c> to allow all keys 
+        /// beyond just these in "Shift+[key]" or just "[key]" shortcuts.
         /// </summary>
         public static readonly Key[] UnmodifiedSafeKeys = { Key.F1, Key.F2, Key.F3, Key.F4, Key.F5, Key.F6, Key.F7, Key.F8, Key.F9, Key.F10, Key.F11, Key.F12, Key.F13,
             Key.F14, Key.F15, Key.F16, Key.F17, Key.F18, Key.F19, Key.F20, Key.F21, Key.F22, Key.F23, Key.F24, Key.Delete, Key.Home, Key.PageDown,
