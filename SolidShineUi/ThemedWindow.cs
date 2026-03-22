@@ -31,7 +31,7 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set the SSUI theme to use for this window. This theme will affect the appearance of this window, as well as any child controls that
-        /// support SSUI theming.
+        /// support SSUI theming. See remarks for more details.
         /// </summary>
         /// <remarks>
         /// This property will set the <see cref="ThemedControl.SsuiThemeProperty"/> property for this window, which any child controls will inherit.
@@ -44,6 +44,7 @@ namespace SolidShineUi
         /// to <c>true</c> on that control.
         /// </remarks>
         [Category("Appearance")]
+        [Description("Get or set the SsuiAppTheme to use for this window, and child controls that support SSUI theming.")]
         public SsuiAppTheme SsuiTheme { get => (SsuiAppTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
@@ -137,6 +138,8 @@ namespace SolidShineUi
         /// Note that this functionality is designed for comparing dependency properties' names (<see cref="DependencyProperty.Name"/>) 
         /// to the list provided here. This will also likely not have any effect on any property that isn't a dependency property.
         /// </remarks>
+        [Category("Appearance"), DefaultValue("")]
+        [Description("Get or set a comma-separated list of properties to not edit/overwrite when applying a SsuiTheme.")]
         public string ThemeValueExclude { get => (string)GetValue(ThemeValueExcludeProperty); set => SetValue(ThemeValueExcludeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ThemeValueExclude"/>. See the related property for details.</summary>
