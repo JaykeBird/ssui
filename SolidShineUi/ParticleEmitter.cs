@@ -382,6 +382,11 @@ namespace SolidShineUi
         /// </summary>
         public bool IsShutdown { get; private set; } = false;
 
+        /// <summary>
+        /// Get if this particle emitter has been initialized. This is changed to <c>true</c> after <see cref="Start"/> is called.
+        /// </summary>
+        public bool HasInitialized { get; private set; } = false;
+
         // internal call to clear all particles
         bool cullAll = false;
 
@@ -390,7 +395,7 @@ namespace SolidShineUi
         #region Emitter Commands
 
         /// <summary>
-        /// Start the emitter.
+        /// Initialize and start the emitter.
         /// </summary>
         public void Start()
         {
@@ -425,12 +430,14 @@ namespace SolidShineUi
             // let's get rolling
             active = true;
             enabled = true;
+            HasInitialized = true;
 
             rthr.Start();
         }
 
         /// <summary>
-        /// Pause the already-started emitter.
+        /// Pause the already-started emitter. <para/>
+        /// If the emitter hasn't been started yet (via <see cref="Start"/>), this does nothing.
         /// </summary>
         public void Pause()
         {
@@ -438,10 +445,13 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Resume the emitter from being paused.
+        /// Resume the emitter after it was paused. <para/>
+        /// If the emitter hasn't been started yet (via <see cref="Start"/>), this does nothing.
         /// </summary>
         public void Resume()
         {
+            if (!IsInitialized) return;
+
             emitMax = EmitRate;
             updateMax = UpdateRate;
 
