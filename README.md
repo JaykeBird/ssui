@@ -13,6 +13,79 @@ The entire library is available under the MIT License.
 
 View more details about this library at [my website, jaykebird.com](https://jaykebird.com/software/ssui).
 
+## Included
+
+### Basic Windows
+
+- **ThemedWindow** - a basic WPF window, with the SsuiTheme property added in
+- **FlatWindow** - drop-in replacement for a WPF window, with a flat appearance and additional functionality
+
+### Dialogs
+
+- **ColorPickerDialog** - a WPF dialog for selecting colors, either from swatches, using sliders, or from an image or color palette file
+- **FontSelectDialog** - a WPF dialog that allows the user to select a font, as well as other properties like size and style
+- **MessageDialog** - a MessageBox dialog in the FlatWindow/SSUI style, with additional functions and buttons (similar to the Windows TaskDialog)
+- **StringInputDialog** - a WPF dialog to allow users to input a string, similar to the input dialog JOptionPane from Java's Swing library
+- **MultilineStringInputDialog** - similar to the StringInputDialog, but allows users to include multiple lines of text
+- **LinearGradientEditorDialog** - found in *SolidShineUi.PropertyList.Dialogs*, allows you to edit a LinearGradientBrush
+- **RadialGradientEditorDialog** - found in *SolidShineUi.PropertyList.Dialogs*, allows you to edit a RadialGradientBrush
+
+### Controls
+
+- **CheckBox** - a box that can be checked; it is larger than the standard WPF CheckBox and offers more customization
+- **ClickSelectTextBox** - a TextBox, that automatically selects all the text within when you click on it
+- **ContentControlWithMenu** - displays some UI elements on one side, and then a menu on the other side (or below)
+- **ContextMenu** - a context menu with a flat style to match the rest of the library
+- **DoubleSpinner** - also known as a NumericUpDown; select a number by typing it in, clicking up or down, or entering in a math expression
+- **EnumComboBox** - a ComboBox pre-filled with the values of an enumerator
+- **FileSelect** - select one or more files, via the Browse button or drag-and-drop
+- **FlatButton** - a flat-styled button with a lot of customization options (including toggle-button functions)
+- **FlatRepeatButton** - similar to the WPF RepeatButton, but with the appearance of the FlatButton, and a few extra fine-control options
+- **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values (and can display hex numbers)
+- **LinkTextBlock** - a TextBlock that acts as a hyperlink
+- **LongSpinner** - the same as the IntegerSpinner, but stores numbers as a `long` (for larger values)
+- **Menu** - a menu bar and menu with a flat, colored style
+- **MenuButton** - a flat-styled button that opens a menu when you click on it
+- **ParticleEmitter** - generate a bunch of 2-D particles for your app, to add some sparkles or motion
+- **PositionSelect** - select a 2-D coordinate between (0,0) and (1,1) (use `PointMultiplerConverter` to use with a larger range)
+- **PropertyList** - view and edit the properties of any WPF control or C# object
+- **SelectPanel** - a powerful panel to easily manage a list and select items from it
+- **SelectableItem** - a type of SelectableUserControl, use to display items in SelectPanel
+- **SplitButton** - a button that can display content and also a menu with more options
+- **StringSpinner** - similar to the DomainUpDown control in Windows Forms. allows users to select a value from a list of strings
+- **TabControl** - a flat-styled tab control, where each tab has a title, icon, and close button
+- **TimeSpinner** - a spinner that allows users to enter in a time value (supports any TimeSpan value, or TimeOnly in .NET 6+)
+
+### Other Classes
+
+- **ArithmeticParser** - parse math expressions (`"(5+4)/2"`) quickly and easily. [Available separately](https://github.com/JaykeBird/ArithmeticParser) as well
+- **AutoCompleteBehavior** - adds basic auto-complete behavior to text boxes. [Available separately](https://github.com/Nimgoble/WPFTextBoxAutoComplete) as well
+- **BindableChild** - allows you to use WPF binding for a control's Child property (such as the WPF Border control)
+- **BrushFactory** - easy and convenient way to create various brushes
+- **BrushSerializer** - convert solid color or gradient brushes to a short string that can be stored or transferred (and then later deserialized)
+- **ColorPaletteFileReader** - load a list of colors from various color palette file formats
+- **ColorScheme** - a palette/scheme of colors to use throughout your UI. Used in Solid Shine UI 1.x, new projects should use `SsuiAppTheme`
+- **ColorsHelper** - contains various methods for interacting with colors and color spaces
+- **ImageColorPicker** - select colors from an image, used in the ColorPickerDialog
+- **IKeyAction** - represents an action that can occur when a keyboard shortcut is pressed (such as CommandKeyAction and RoutedEventKeyAction)
+- **KeyboardShortcut** - represents a single keyboard shortcut (and the action to take when it is pressed)
+- **KeyboardShortcutHandler** - a helper class that can be added to any WPF window to add keyboard shortcut support
+- **KeyboardShortcutsIo** - a helper class to load/save keyboard shortcut settings to/from a file
+- **KeyRegistry** - represents a list of keyboard shortcuts currently set, and the actions to take when a shortcut is pressed
+- **SelectableCollection** - an extension on ObservableCollection, with additional functions/properties for selecting items in the collection
+- **SelectableUserControl** - the base class from which you can create your own controls to use with a SelectPanel (or implement `IClickSelectableControl`)
+- **SubKeyRegistry** - when combined with a master KeyRegistry, allows you to create layers of keyboard shortcuts in more complex apps
+- **SsuiTheme** - a scheme of colors and brushes to use in particular SSUI controls (or controls that inherit from `ThemedControl`)
+- **SsuiAppTheme** - a scheme of colors and brushes to use throughout your whole UI; has the ability to set an accent theme too
+- **SsuiThemes** - a collection of pre-made SsuiAppTheme objects that you can quickly apply to your app
+- **TabItem** - a tab to use with the TabControl
+- **TransformSerializer** - convert a WPF Transform object to a short string that can be stored or transferred (and then later deserialized)
+- **WildcardMatch** - match file names/paths (or any text) using wildcard characters like `*` and `?`. [Available separately](https://bitbucket.org/hasullivan/fast-wildcard-matching/) as well
+
+### WPF XAML Converters
+
+SolidShineUi also includes a lot of WPF XAML converters. See [the Value Converters wiki page](https://github.com/JaykeBird/ssui/wiki/Value-Converters) for the full list and how to use them.
+
 ## Use it now
 
 The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries 
@@ -181,79 +254,6 @@ needs to be set up in C#, rather than being doable in XAML.
 
 To get started with my keyboard shortcut handling system, I recommend looking at the [Adding Keyboard Support](https://github.com/JaykeBird/ssui/wiki/KeyboardSupport) 
 file for a step-by-step process and other notes and remarks.
-
-## Included
-
-### Basic Windows
-
-- **ThemedWindow** - a basic WPF window, with the SsuiTheme property added in
-- **FlatWindow** - drop-in replacement for a WPF window, with a flat appearance and additional functionality
-
-### Dialogs
-
-- **ColorPickerDialog** - a WPF dialog for selecting colors, either from swatches, using sliders, or from an image or color palette file
-- **FontSelectDialog** - a WPF dialog that allows the user to select a font, as well as other properties like size and style
-- **MessageDialog** - a MessageBox dialog in the FlatWindow/SSUI style, with additional functions and buttons (similar to the Windows TaskDialog)
-- **StringInputDialog** - a WPF dialog to allow users to input a string, similar to the input dialog JOptionPane from Java's Swing library
-- **MultilineStringInputDialog** - similar to the StringInputDialog, but allows users to include multiple lines of text
-- **LinearGradientEditorDialog** - found in *SolidShineUi.PropertyList.Dialogs*, allows you to edit a LinearGradientBrush
-- **RadialGradientEditorDialog** - found in *SolidShineUi.PropertyList.Dialogs*, allows you to edit a RadialGradientBrush
-
-### Controls
-
-- **CheckBox** - a box that can be checked; it is larger than the standard WPF CheckBox and offers more customization
-- **ClickSelectTextBox** - a TextBox, that automatically selects all the text within when you click on it
-- **ContentControlWithMenu** - displays some UI elements on one side, and then a menu on the other side (or below)
-- **ContextMenu** - a context menu with a flat style to match the rest of the library
-- **DoubleSpinner** - also known as a NumericUpDown; select a number by typing it in, clicking up or down, or entering in a math expression
-- **EnumComboBox** - a ComboBox pre-filled with the values of an enumerator
-- **FileSelect** - select one or more files, via the Browse button or drag-and-drop
-- **FlatButton** - a flat-styled button with a lot of customization options (including toggle-button functions)
-- **FlatRepeatButton** - similar to the WPF RepeatButton, but with the appearance of the FlatButton, and a few extra fine-control options
-- **IntegerSpinner** - the same as the DoubleSpinner, but only allows integer values (and can display hex numbers)
-- **LinkTextBlock** - a TextBlock that acts as a hyperlink
-- **LongSpinner** - the same as the IntegerSpinner, but stores numbers as a `long` (for larger values)
-- **Menu** - a menu bar and menu with a flat, colored style
-- **MenuButton** - a flat-styled button that opens a menu when you click on it
-- **ParticleEmitter** - generate a bunch of 2-D particles for your app, to add some sparkles or motion
-- **PositionSelect** - select a 2-D coordinate between (0,0) and (1,1) (use `PointMultiplerConverter` to use with a larger range)
-- **PropertyList** - view and edit the properties of any WPF control or C# object
-- **SelectPanel** - a powerful panel to easily manage a list and select items from it
-- **SelectableItem** - a type of SelectableUserControl, use to display items in SelectPanel
-- **SplitButton** - a button that can display content and also a menu with more options
-- **StringSpinner** - similar to the DomainUpDown control in Windows Forms. allows users to select a value from a list of strings
-- **TabControl** - a flat-styled tab control, where each tab has a title, icon, and close button
-- **TimeSpinner** - a spinner that allows users to enter in a time value (supports any TimeSpan value, or TimeOnly in .NET 6+)
-
-### Other Classes
-
-- **ArithmeticParser** - parse math expressions (`"(5+4)/2"`) quickly and easily. [Available separately](https://github.com/JaykeBird/ArithmeticParser) as well
-- **AutoCompleteBehavior** - adds basic auto-complete behavior to text boxes. [Available separately](https://github.com/Nimgoble/WPFTextBoxAutoComplete) as well
-- **BindableChild** - allows you to use WPF binding for a control's Child property (such as the WPF Border control)
-- **BrushFactory** - easy and convenient way to create various brushes
-- **BrushSerializer** - convert solid color or gradient brushes to a short string that can be stored or transferred (and then later deserialized)
-- **ColorPaletteFileReader** - load a list of colors from various color palette file formats
-- **ColorScheme** - a palette/scheme of colors to use throughout your UI. Used in Solid Shine UI 1.x, new projects should use `SsuiAppTheme`
-- **ColorsHelper** - contains various methods for interacting with colors and color spaces
-- **ImageColorPicker** - select colors from an image, used in the ColorPickerDialog
-- **IKeyAction** - represents an action that can occur when a keyboard shortcut is pressed (such as CommandKeyAction and RoutedEventKeyAction)
-- **KeyboardShortcut** - represents a single keyboard shortcut (and the action to take when it is pressed)
-- **KeyboardShortcutHandler** - a helper class that can be added to any WPF window to add keyboard shortcut support
-- **KeyboardShortcutsIo** - a helper class to load/save keyboard shortcut settings to/from a file
-- **KeyRegistry** - represents a list of keyboard shortcuts currently set, and the actions to take when a shortcut is pressed
-- **SelectableCollection** - an extension on ObservableCollection, with additional functions/properties for selecting items in the collection
-- **SelectableUserControl** - the base class from which you can create your own controls to use with a SelectPanel (or implement `IClickSelectableControl`)
-- **SubKeyRegistry** - when combined with a master KeyRegistry, allows you to create layers of keyboard shortcuts in more complex apps
-- **SsuiTheme** - a scheme of colors and brushes to use in particular SSUI controls (or controls that inherit from `ThemedControl`)
-- **SsuiAppTheme** - a scheme of colors and brushes to use throughout your whole UI; has the ability to set an accent theme too
-- **SsuiThemes** - a collection of pre-made SsuiAppTheme objects that you can quickly apply to your app
-- **TabItem** - a tab to use with the TabControl
-- **TransformSerializer** - convert a WPF Transform object to a short string that can be stored or transferred (and then later deserialized)
-- **WildcardMatch** - match file names/paths (or any text) using wildcard characters like `*` and `?`. [Available separately](https://bitbucket.org/hasullivan/fast-wildcard-matching/) as well
-
-### WPF XAML Converters
-
-SolidShineUi also includes a lot of WPF XAML converters. See [the Value Converters wiki page](https://github.com/JaykeBird/ssui/wiki/Value-Converters) for the full list and how to use them.
 
 ## Coming Soon
 
