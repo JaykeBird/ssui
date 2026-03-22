@@ -1,9 +1,12 @@
 SolidShineUi UI Library
 =======================
 
-This is a library containing controls and windows for WPF .NET programs (many new, some a replacement of built-in controls). This library also contains helper classes and functions to customize the UI and provide other various bits of additional functionality. I use this for all of my modern software projects, and hopefully it will be of use to you as well!
+This is a library containing controls and windows for WPF .NET programs (many new, some a replacement of built-in controls). This library also 
+contains helper classes and functions to customize the UI and provide other various bits of additional functionality. I use this for all of my modern 
+software projects, and hopefully it will be of use to you as well!
 
-This library is created and maintained by JaykeBird (Jayke R. Huempfner). While a majority of the code and functionality was built by me, a portion of it was originally created by others. Please see the credits on my website for more details (linked below).
+This library is created and maintained by JaykeBird (Jayke R. Huempfner). While a large majority of the code and functionality was built by me, 
+I did reuse some code created by others. Please see the credits on my website for more details (linked below).
 
 The entire library is available under the MIT License.
 ( [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJaykeBird%2Fssui.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FJaykeBird%2Fssui?ref=badge_shield) )
@@ -12,7 +15,8 @@ View more details about this library at [my website, jaykebird.com](https://jayk
 
 ## Use it now
 
-The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries [directly from here on GitHub](https://github.com/JaykeBird/ssui/releases/latest).
+The library is available [on NuGet](https://www.nuget.org/packages/SolidShineUi/), or you can download the binaries 
+[directly from here on GitHub](https://github.com/JaykeBird/ssui/releases/latest).
 
 ### Getting set up
 
@@ -28,27 +32,31 @@ using SolidShineUi;
 
 After that, you can start using the controls listed below!
 
-You can use just the one or two controls you need, or you can rebuild existing UIs or design all-new UIs with the Solid Shine UI controls. You can use these alongside the standard WPF controls with no issues or changes in their behavior.
+You can use just the one or two controls you need, or you can rebuild existing UIs or design all-new UIs with the Solid Shine UI controls. 
+You can use these alongside the standard WPF controls with no changes in their appearance or behavior.
 
-Each window and control in Solid Shine UI includes a `ColorScheme` property, but if you don't want to use that, you can modify each control's appearance using the various brush properties (like any other WPF control). The `ColorScheme` property is useful if you're using multiple controls or windows from my library, and you want them all to share a similar appearance. For more details, continue to the next section.
-
-You can use the SsuiSample app included here as an example to get started with or to see the capabilities of the library.
+You can build and run the SsuiSample app included in this repo as an example to get started with or to see the capabilities of the library.
 
 Documentation is available on [the wiki here on GitHub](https://github.com/JaykeBird/ssui/wiki).
 
 ### Adding/using a ColorScheme
 
-If you're building your application's UI with many of my controls/windows (or almost entirely from these controls/windows), it's recommended that you set up a `ColorScheme` that all the windows and controls can access. Each window and control class in Solid Shine UI includes a ColorScheme property, which you can use with WPF's binding features.
+If you're building your application's UI with many of my controls/windows (or almost entirely from these controls/windows), it's recommended that you set up a
+`ColorScheme` that all the windows can access. Each window and control class in Solid Shine UI includes a ColorScheme property, which you can use with WPF's binding features.
 
-There could be a number of ways to set this up, but here's the way that I personally use and I recommend to others. You start with placing a static ColorScheme class in your App.xaml.cs file:
+There could be a number of ways to set this up, but here's the way that I personally use and I recommend to others. You start with placing a static ColorScheme class 
+in your App.xaml.cs file:
 
 ```csharp
     public static ColorScheme ColorScheme { get; set; } = new ColorScheme(Colors.Green);
 ```
 
-You can create a ColorScheme based upon any base color you want to use (such as your app's branding color), or you can use `ColorScheme.CreateLightTheme()` or `ColorScheme.CreateDarkTheme()` for more standard light or dark themes. High-contrast color schemes are also built-in. You can also start from scratch and set each value individually if you'd like, too.
+You can create a ColorScheme based upon any base color you want to use (such as your app's branding color), or you can use 
+`ColorScheme.CreateLightTheme()` or `ColorScheme.CreateDarkTheme()` for more standard light or dark themes. High-contrast color schemes are also built-in. 
+You can also start from scratch and set each value individually if you'd like, too.
 
-From there, you can use a `FlatWindow` (drop-in replacement of the standard WPF window), which contains a `ColorScheme` property that all the child Solid Shine UI controls can bind to. Set up the UI and binding in the XAML side:
+From there, you can use a `FlatWindow` (drop-in replacement of the standard WPF window), which contains a `ColorScheme` property that all the 
+child Solid Shine UI controls can bind to. Set up the UI and binding in the XAML side:
 
 ```XAML
 <flat:FlatWindow x:Class="MyApp.MyWindow" x:Name="window"
@@ -89,7 +97,8 @@ namespace MyApp
 }
 ```
 
-If you want to keep using WPF's standard windows, that's fine too! You'll probably want to create your own ColorScheme property for the window then, which controls can bind to. (Of course, you can also just directly set or change each control's ColorScheme in C# as well.)
+If you want to keep using WPF's standard windows, that's fine too! You'll probably want to create your own ColorScheme property for the window then, 
+which controls can bind to. (Of course, you can also just directly set or change each control's ColorScheme in C# as well.)
 
 Here's how to create your own ColorScheme property that you can add to a standard WPF window (then, you can bind to it just like in the XAML code above):
 
@@ -113,7 +122,9 @@ Here's how to create your own ColorScheme property that you can add to a standar
         }
 ```
 
-Some controls (like the `FlatButton`, `MenuButton`, and `Menu`) will also utilize an accent color, if you set that in the `ColorScheme`. Use this to highlight or bring focus to particular buttons. Be sure to set `UseAccentColors` on the buttons you want to use the accent color on, and `MenusUseAccent` in the `ColorScheme` if you want it with any `Menu` controls in your UI.
+Some controls (like the `FlatButton`, `MenuButton`, and `Menu`) will also utilize an accent color, if you set that in the `ColorScheme`. Use this to 
+highlight or bring focus to particular buttons. Be sure to set `UseAccentColors` on the buttons you want to use the accent color on, and `MenusUseAccent` 
+in the `ColorScheme` if you want it with any `Menu` controls in your UI.
 
 From here, you should be on your way!
 
@@ -121,9 +132,12 @@ From here, you should be on your way!
 
 One part of Solid Shine UI is a keyboard shortcut handling system that I built.
 
-While WPF has its own method of handling keyboard shortcuts (via InputBindings), my system is a bit more flexible and customizable, and these customizations can also be saved to/loaded from a XML file. However, my system is not an easy drop-in replacement, and has the drawback that it mostly needs to be set up in C# (with or without a XML file), rather than being doable in XAML.
+While WPF has its own method of handling keyboard shortcuts (via InputBindings), my system is a bit more flexible and customizable, and these 
+customizations can also be saved to/loaded from a XML file. However, my system is not an easy drop-in replacement, and has the drawback that it mostly 
+needs to be set up in C# (with or without a XML file), rather than being doable in XAML.
 
-To get started with my keyboard shortcut handling system, I recommend looking at the [Adding Keyboard Support](https://github.com/JaykeBird/ssui/wiki/KeyboardSupport) file for a step-by-step process and other notes and remarks.
+To get started with my keyboard shortcut handling system, I recommend looking at the [Adding Keyboard Support](https://github.com/JaykeBird/ssui/wiki/KeyboardSupport) 
+file for a step-by-step process and other notes and remarks.
 
 ## Included
 
@@ -177,7 +191,8 @@ To get started with my keyboard shortcut handling system, I recommend looking at
 
 ## Coming Soon
 
-Version 2.0 will be coming later this year! Don't be surprised if don't see much activity on the Main branch for some periods of time, as I'll be using sub-branches to develop various features, including an upcoming **Ribbon** control!
+Version 2.0 will be coming later this year! Don't be surprised if don't see much activity on the Main branch for some periods of time, as I'll be using 
+sub-branches to develop various features, including an upcoming **Ribbon** control!
 
 View the [roadmap](Docs/ROADMAP.md) for more details on my plans.
 
@@ -185,19 +200,21 @@ View the [roadmap](Docs/ROADMAP.md) for more details on my plans.
 
 To build this library you will need:
 
-- .NET Framework developer tools (4.7.1 and 4.8)
+- .NET Framework developer tools/targeting packs (4.6.1 through 4.8.1)
 - latest .NET Core SDK
-- (In the future, I will be adding AvaloniaUI support, so this will become a requirement as well.)
+- (for the Avalonia version, I'd also recommend installing the latest Avalonia UI extension for your IDE)
 
-If in Visual Studio 2019 or 2022, you can select the ".NET desktop development" workload, and then add on the individual components ".NET Framework 4.7.1 targeting pack" and ".NET Framework 4.8 targeting pack".
+I recommend using Visual Studio 2026 (or the latest version) for this library. When opened up, you should be able to just build and run the library (to build the .NET Framework
+versions, you may need to have the individual components for .NET Framework targeting packs installed).
 
-I recommend using Visual Studio 2022 (or the latest version) for this library. When opened up, you should be able to just build and run the library without any further action needed.
-
-Included is the SsuiSample program, which is useful for demonstrating the library and its functions. I also use this to test the library and its controls. Feel free to use SsuiSample as a basis for your implementations.
+Included is the SsuiSample program, which is useful for demonstrating the library and its functions. I also use this to test the library and its controls. 
+Feel free to use SsuiSample as a basis for your implementations.
 
 ### Notes
 
-If you receive this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start button, or you can access it via `Build > Configuration Manager...` and set the active configuration there).
+If you receive this message (`SourceRoot items must include at least one top-level (not nested) item when DeterministicSourcePaths is true`) when trying to 
+debug, make sure you have Visual Studio set to the Debug configuration, and not the Release configuration (this is the drop-down to the left of the Start 
+button, or you can access it via `Build > Configuration Manager...` and set the active configuration there).
 
 ## License
 This library is released under the [MIT License](License.md).
@@ -212,7 +229,8 @@ For credits/attribution for when you use the library, please use one of the vers
 > 
 > https://jaykebird.com/software/ssui
 > 
-> Contains work by Manuel Schweigert, Pete Laker, Steve Lautenschlager, Richard Moss (Cyotek Ltd.), Warren Galyen (Mechanika Design), Yassine (Stopbyte), Hector Pulido, Sebastien Lambla, Nimgoble, H.A. Sullivan, and ControlzEx (batzen and punker76). See website for more details.
+> Contains work by Manuel Schweigert, Pete Laker, Steve Lautenschlager, Richard Moss (Cyotek Ltd.), Warren Galyen (Mechanika Design), Yassine (Stopbyte), 
+> Hector Pulido, Sebastien Lambla, Nimgoble, H.A. Sullivan, and ControlzEx (batzen and punker76). See website for more details.
 >
 > Licensed under MIT License
 
