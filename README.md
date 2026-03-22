@@ -145,6 +145,8 @@ For storing your SsuiAppTheme in a settings file or cache, get a serializable ve
 
 From here, you should be on your way!
 
+View the wiki page on [SsuiTheme and themed controls](https://github.com/JaykeBird/ssui/wiki/UsingSsuiTheme) for more info on using SsuiAppTheme.
+
 ### Accent theme
 
 The `SsuiAppTheme` class allows you to set an accent theme that you can use in any SSUI-themed control.
