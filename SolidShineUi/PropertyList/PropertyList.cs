@@ -40,6 +40,8 @@ namespace SolidShineUi.PropertyList
         {
             PreregisterEditors();
 
+            Loaded += PropertyList_Loaded;
+
             ShowInheritedPropertiesChanged += (s, e) => { FilterProperties(); };
             ShowReadOnlyPropertiesChanged += (s, e) => { FilterProperties(); };
             FilterTextChanged += (s, e) => { FilterProperties(); };
@@ -542,6 +544,15 @@ namespace SolidShineUi.PropertyList
             new FrameworkPropertyMetadata(NO_NAME));
 
         #endregion
+
+        private void PropertyList_Loaded(object sender, RoutedEventArgs e)
+        {
+            // adding this in to force the property list to update when it's loaded, since it seems to not load things properly at first
+            if (HasObjectLoaded)
+            {
+                ReloadObject();
+            }
+        }
 
         #endregion
 
