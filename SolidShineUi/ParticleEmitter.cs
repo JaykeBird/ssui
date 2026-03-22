@@ -16,6 +16,11 @@ namespace SolidShineUi
     public class ParticleEmitter : Control, IDisposable
     {
 
+        static ParticleEmitter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ParticleEmitter), new FrameworkPropertyMetadata(typeof(ParticleEmitter)));
+        }
+
 #if NETCOREAPP
         Grid? g;
 #else

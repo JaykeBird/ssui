@@ -1,0 +1,41 @@
+﻿<flat:ThemedUserControl x:Class="SsuiSample.ParticleEmitterTest" x:Name="window"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SsuiSample"
+             xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
+             xmlns:pl="clr-namespace:SolidShineUi.PropertyList;assembly=SolidShineUi"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" ThemeValueExclude="Background," >
+    <flat:ThemedUserControl.Resources>
+        <Style TargetType="flat:FlatButton" x:Key="BaseStyle">
+            <Setter Property="TransparentBack" Value="True" />
+            <Setter Property="Padding" Value="8,1" />
+            <Setter Property="BorderSelectionThickness" Value="1" />
+        </Style>
+        <Style TargetType="flat:FlatButton" BasedOn="{StaticResource BaseStyle}" x:Key="IndentedStyle">
+            <Setter Property="Margin" Value="8,0,0,0" />
+        </Style>
+    </flat:ThemedUserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <flat:ParticleEmitter Grid.RowSpan="2" x:Name="emitter" />
+        <StackPanel Orientation="Horizontal" x:Name="toolbar" Background="White" >
+            <flat:FlatButton x:Name="btnStart" Content="Start" Click="btnStart_Click" Style="{StaticResource BaseStyle}" />
+            <flat:FlatButton x:Name="btnPause" Content="Pause" Click="btnPause_Click" Style="{StaticResource BaseStyle}" />
+            <flat:FlatButton x:Name="btnClear" Content="Clear" Click="btnClear_Click" Style="{StaticResource IndentedStyle}" />
+            <flat:FlatButton x:Name="btnSettings" Content="Emitter Settings" Click="btnSettings_Click" Style="{StaticResource IndentedStyle}" />
+            <flat:FlatButton x:Name="btnBackground" Content="Change Background..." Click="btnBackground_Click" Style="{StaticResource BaseStyle}" />
+        </StackPanel>
+        <Border Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Height="400" Width="350" Margin="0,10,0,0"
+                BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=SsuiTheme.BorderBrush, FallbackValue=Black}"
+                Background="{Binding ElementName=window, Path=SsuiTheme.PanelBackground, FallbackValue=White}" Visibility="Collapsed"
+                CornerRadius="{Binding ElementName=window, Path=SsuiTheme.CornerRadius, FallbackValue=0}" x:Name="brdrSettings" >
+            <pl:PropertyList ShowNameDisplay="False" ShowTypeDisplay="False" ShowViewMenu="False" x:Name="pl" ShowInheritedProperties="False" />
+        </Border>
+    </Grid>
+</flat:ThemedUserControl>

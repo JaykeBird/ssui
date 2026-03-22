@@ -123,6 +123,7 @@
             <local:FileSelectTest x:Name="fileSelectTest" Visibility="Collapsed" />
             <local:FlatWindowTest x:Name="flatWindowTest" Visibility="Collapsed" />
             <local:FlowDocumentTest x:Name="flowDocTest" Visibility="Collapsed" />
+            <local:ParticleEmitterTest x:Name="particleEmitterTest" Visibility="Collapsed" />
             <local:PositionSelectTest x:Name="posSelTest" Visibility="Collapsed" />
             <local:PropertyListTest x:Name="propListTest" Visibility="Collapsed" />
             <local:TabControlTest x:Name="tabControlTest" Visibility="Collapsed" />
