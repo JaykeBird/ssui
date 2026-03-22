@@ -294,6 +294,11 @@ namespace SolidShineUi
         /// <param name="value">the value to update the property to</param>
         void SetValue(DependencyProperty dp, object value);
 
+        /// <summary>
+        /// Get or set an arbitrary object that can be used to store custom information about this element.
+        /// </summary>
+        object Tag { get; set; }
+
         #region Content Control Properties
 
         /// <summary>
