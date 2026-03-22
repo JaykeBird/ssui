@@ -1111,6 +1111,8 @@ namespace SolidShineUi.PropertyList
             RegisterEditor(typeof(Size?), typeof(SizeEditor));
             RegisterEditor(typeof(Point), typeof(PointEditor));
             RegisterEditor(typeof(Point?), typeof(PointEditor));
+            RegisterEditor(typeof(Vector), typeof(PointEditor));
+            RegisterEditor(typeof(Vector?), typeof(PointEditor));
             RegisterEditor(typeof(List<>), typeof(ListEditor));
             RegisterEditor(typeof(IEnumerable<>), typeof(EnumerableEditor));
             RegisterEditor(typeof(Version), typeof(VersionEditor));
