@@ -419,5 +419,37 @@ namespace SolidShineUi
                     return HighContrastWhiteOnBlack;
             }
         }
+
+#if NET9_0_OR_GREATER
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> that corresponds to the current Windows accent color.
+        /// </summary>
+        /// <remarks>
+        /// This is only available on projects using .NET 9 or later, as <see cref="SystemColors.AccentColor"/> was added in .NET 9.
+        /// This specifically uses <c>AccentColorLight1</c>.
+        /// </remarks>
+        public static SsuiAppTheme WindowsAccentColorTheme
+        {
+            get
+            {
+                return new SsuiAppTheme(SystemColors.AccentColorLight1);
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> that corresponds to the current Windows accent color, and has rounded corners.
+        /// </summary>
+        /// <remarks>
+        /// This is only available on projects using .NET 9 or later, as <see cref="SystemColors.AccentColor"/> was added in .NET 9.
+        /// This specifically uses <c>AccentColorLight1</c>.
+        /// </remarks>
+        public static SsuiAppTheme WindowsAccentColorThemeRoundedCorners
+        {
+            get
+            {
+                return new SsuiAppTheme(SystemColors.AccentColorLight1) { CornerRadius = new CornerRadius(3) };
+            }
+        }
+#endif
     }
 }
