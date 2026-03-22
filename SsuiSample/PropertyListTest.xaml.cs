@@ -101,6 +101,10 @@ namespace SsuiSample
             public DateTime? OldTime { get; set; } = new DateTime(1981, 06, 12, 15, 16, 20);
 
             public Rect BoxBox { get; set; } = new Rect(5, 5, 10, 10);
+
+            public long LongestTime { get; set; } = 1_771_871_836L; // epoch time of February 23, 2026 at 6:37 PM, apparently lol
+
+            public uint PositiveNumber { get; set; } = 21u;
         }
     }
 }
