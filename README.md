@@ -39,57 +39,59 @@ You can build and run the SsuiSample app included in this repo as an example to 
 
 Documentation is available on [the wiki here on GitHub](https://github.com/JaykeBird/ssui/wiki).
 
-### Adding/using a ColorScheme
+### Adding/using SsuiTheme
 
 If you're building your application's UI with many of my controls/windows (or almost entirely from these controls/windows), it's recommended that you set up a
-`ColorScheme` that all the windows can access. Each window and control class in Solid Shine UI includes a ColorScheme property, which you can use with WPF's binding features.
+`SsuiTheme` that all the windows can access. Almost all window and control classes in Solid Shine UI includes a SsuiTheme property, which you can use with WPF's binding features.
 
-There could be a number of ways to set this up, but here's the way that I personally use and I recommend to others. You start with placing a static ColorScheme class 
+There could be a number of ways to set this up, but the way I personally use and I recommend to others is to place a static SsuiAppTheme property 
 in your App.xaml.cs file:
 
 ```csharp
-    public static ColorScheme ColorScheme { get; set; } = new ColorScheme(Colors.Green);
+    // the app theme can be based on any color; here, we'll use green
+    // there's also pre-made themes available in the SolidShineUi.SsuiThemes class
+    public static SsuiAppTheme AppTheme { get; set; } = new SsuiAppTheme(Colors.Green);
 ```
 
-You can create a ColorScheme based upon any base color you want to use (such as your app's branding color), or you can use 
-`ColorScheme.CreateLightTheme()` or `ColorScheme.CreateDarkTheme()` for more standard light or dark themes. High-contrast color schemes are also built-in. 
-You can also start from scratch and set each value individually if you'd like, too.
+You can create a SsuiAppTheme based upon any base color you want to use (such as your app's branding color), or you can use 
+`SsuiThemes.CreateLightTheme()` or `SsuiThemes.CreateDarkTheme()` for more standard light or dark themes, or even `SsuiThemes.SystemTheme` for a more standard Windows-looking theme.
+High-contrast color schemes are also built-in in the `SsuiThemes` class. You can also start from scratch and custom set each value if you'd like, too (including using gradients!).
 
-From there, you can use a `FlatWindow` (drop-in replacement of the standard WPF window), which contains a `ColorScheme` property that all the 
-child Solid Shine UI controls can bind to. Set up the UI and binding in the XAML side:
+From there, you can use a `ThemedWindow` (drop-in replacement of the standard WPF window), which contains a `SsuiTheme` property that all the 
+child Solid Shine UI controls can bind to. Change the Window to be a ThemedWindow on the XAML side:
 
 ```XAML
-<flat:FlatWindow x:Class="MyApp.MyWindow" x:Name="window"
+<flat:ThemedWindow x:Class="MyApp.MyWindow" x:Name="window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi"
-        mc:Ignorable="d"
-        Title="My Window" >
+        mc:Ignorable="d" Title="My Window" >
+   <!-- make sure to include the above xmlns:flat reference -->
    <!-- Whatever your UI is... For example: -->
-   <flat:IntegerSpinner ColorScheme="{Binding ColorScheme, ElementName=window}" MinValue="0" />
-   <!-- for all SolidShineUi controls, you can bind the ColorScheme to the FlatWindow's ColorScheme property if you're using a FlatWindow -->
-</flat:FlatWindow>
+   <flat:IntegerSpinner MinValue="0" />
+   <!-- for all SolidShineUi controls, they'll automatically inherit the SsuiTheme value from the parent ThemedWindow -->
+</flat:ThemedWindow>
 ```
 
-And in the C# side, set the window's `ColorScheme` property, and it'll set it for all the binded controls too.
+And in the C# side, set the window's `SsuiTheme` property, and it'll set it for all the child SSUI-themed controls too.
 
 ```csharp
 using System;
 using System.Windows;
-using SolidShineUi;
+using SolidShineUi; // <--- don't forget the reference to SolidShineUi
 
 namespace MyApp
 {
 
-    public partial class MyWindow : FlatWindow
+    public partial class MyWindow : ThemedWindow // <--- make sure to update this to be a ThemedWindow too
     {
     
         public MyWindow()
         {
             InitializeComponent();
             
-            ColorScheme = App.ColorScheme; // <--- this sets up the color scheme for the window
+            SsuiTheme = App.AppTheme; // <--- this sets up the color scheme for the window
         }
         
         // the rest of your code-behind as normal   
@@ -97,36 +99,73 @@ namespace MyApp
 }
 ```
 
-If you want to keep using WPF's standard windows, that's fine too! You'll probably want to create your own ColorScheme property for the window then, 
-which controls can bind to. (Of course, you can also just directly set or change each control's ColorScheme in C# as well.)
+Solid Shine UI also includes another window class called `FlatWindow`, which has all the features of a standard WPF window, but with a custom title bar
+and a custom appearance (and with it, a few extra features and options about what to put into the title bar). It is a drop-in replacement if you want to
+use `FlatWindow` instead of `ThemedWindow`.
 
-Here's how to create your own ColorScheme property that you can add to a standard WPF window (then, you can bind to it just like in the XAML code above):
+If you're building your own controls, they can also use `SsuiTheme` by having them inherit from `ThemedControl`, `ThemedContentControl`, or `ThemedUserControl`.
+Make sure to then override the `OnApplySsuiTheme` method to set your control's appearance based upon the SsuiTheme's values. Use this to get started:
 
 ```csharp
-        // in your window's .xaml.cs (code-behind) file
+    /// <inheritdoc/>
+    protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+    {
+        base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
 
-        /// <summary>
-        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
-        /// </summary>
-        public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(MyWindowClassName),
-            new FrameworkPropertyMetadata(new ColorScheme()));
-
-        /// <summary>
-        /// Get or set the color scheme used for this control/window. This can be used for binding with the combined <see cref="ColorSchemeProperty"/>.
-        /// </summary>
-        public ColorScheme ColorScheme
+        if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
         {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
+            ApplyTheme(ssuiAppTheme.AccentTheme);
         }
+        else
+        {
+            ApplyTheme(ssuiTheme);
+        }
+
+        void ApplyTheme(SsuiTheme theme)
+        {
+            // update your appearance and properties in here
+                
+            // use ApplyThemeBinding() to bind the properties so that changing the value in the SsuiTheme automatically updates this control:
+            ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+            ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
+
+            // note that "theme" can be null; ApplyThemeBinding handles that and also handles the ThemeValueExclude property
+        }
+    }
 ```
 
-Some controls (like the `FlatButton`, `MenuButton`, and `Menu`) will also utilize an accent color, if you set that in the `ColorScheme`. Use this to 
-highlight or bring focus to particular buttons. Be sure to set `UseAccentColors` on the buttons you want to use the accent color on, and `MenusUseAccent` 
-in the `ColorScheme` if you want it with any `Menu` controls in your UI.
+If you want to customize the appearance of specific controls while still using SsuiTheme, you can either look into using an accent theme (see below) or 
+set that control's `ThemeValueExclude` property to make sure that your brushes don't get overwritten by the SsuiTheme:
+
+```xaml
+    <flat:FlatButton Content="My Button" x:Name="btn1" Background="Orchid" BorderBrush="Purple" ThemeValueExclude="Background,BorderBrush" />
+```
 
 From here, you should be on your way!
+
+### Accent theme
+
+The `SsuiAppTheme` class allows you to set an accent theme that you can use in any SSUI-themed control.
+
+```csharp
+    // we'll use Green as the main color, and Yellow as the accent color
+    public static SsuiAppTheme AppTheme { get; set; } = new SsuiAppTheme(Colors.Green, Colors.Yellow);
+```
+
+From there, you can set `UseAccentTheme` on any control to have them use the accent theme's colors/brushes instead.
+
+```xaml
+    <flat:FlatButton Content="My Button 2" x:Name="btn2" UseAccentTheme="true" />
+```
+
+There is also a subitem theme that you can set in `SsuiAppTheme`, if you want the `Menu`, `ContextMenu`, and `SelectPanel` controls to use that for its child items instead.
+Make sure to also set the `UseSubitemThemeWith...` properties in the SsuiAppTheme to set which types of controls to use the subitem theme with.
+
+### ColorScheme
+
+Versions prior to 2.0 don't have `SsuiTheme`, and instead use `ColorScheme`. The basic idea is the same, but I'd recommend everyone use 2.0 and start using `SsuiTheme` instead.
+
+The old ColorScheme class had names for its properties that didn't have the best descriptions for what they were used for, and was limited to only using solid colors.
 
 ### Keyboard shortcuts
 
@@ -134,7 +173,7 @@ One part of Solid Shine UI is a keyboard shortcut handling system that I built.
 
 While WPF has its own method of handling keyboard shortcuts (via InputBindings), my system is a bit more flexible and customizable, and these 
 customizations can also be saved to/loaded from a XML file. However, my system is not an easy drop-in replacement, and has the drawback that it mostly 
-needs to be set up in C# (with or without a XML file), rather than being doable in XAML.
+needs to be set up in C#, rather than being doable in XAML.
 
 To get started with my keyboard shortcut handling system, I recommend looking at the [Adding Keyboard Support](https://github.com/JaykeBird/ssui/wiki/KeyboardSupport) 
 file for a step-by-step process and other notes and remarks.
