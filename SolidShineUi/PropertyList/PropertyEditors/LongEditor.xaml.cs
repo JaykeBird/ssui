@@ -181,6 +181,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 mnuDisplayHex.IsEnabled = false;
                 intSpinner.Visibility = Visibility.Collapsed;
             }
+            else if (value is uint ui)
+            {
+                intSpinner.Value = (long)ui;
+            }
             else
             {
                 intSpinner.Value = (long)(value ?? 0);
