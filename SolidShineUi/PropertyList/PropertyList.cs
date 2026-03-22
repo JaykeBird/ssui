@@ -420,13 +420,16 @@ namespace SolidShineUi.PropertyList
         public static string NOTHING_LOADED = "Nothing loaded";
 
         #region Public Object Loading Functions
+        
         /// <summary>
         /// Set the object to observe. All properties of the observed object will be displayed in the PropertyList, alongside the values of these properties.
         /// </summary>
         /// <param name="o">The object to load and observe.</param>
         /// <remarks>
-        /// Note that if the object has a property called "Name", that name will be displayed at the top of the PropertyList control.
+        /// If the object has a property called "Name", that name will be displayed at the top of the PropertyList control.
         /// If this object doesn't have a Name property, or you want to set a different name, please use the <see cref="ObjectDisplayName"/> property.
+        /// You can also hide the name at the top by setting <see cref="ShowNameDisplay"/> to <c>false</c>.
+        /// <para/>
         /// Properties that are set-only (i.e. has no public <c>get</c> portion) will not be displayed.
         /// </remarks>
         public void LoadObject(object o)
@@ -453,12 +456,11 @@ namespace SolidShineUi.PropertyList
             properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).ToList();
             SortList();
 
+
             GeneratePropertyEditors(properties);
 
-            // set default values
-            FilterText = "";
-            ShowInheritedProperties = true;
-            ShowReadOnlyProperties = true;
+            // this will reapply the FilterText, ShowInheritedProperties, and ShowReadOnlyProperties values
+            FilterProperties();
 
             HasObjectLoaded = !_clearing;
             LoadedObjectChanged?.Invoke(this, new PropertyListObjectEventArgs(_baseObject, type, _isReloading));
@@ -504,23 +506,24 @@ namespace SolidShineUi.PropertyList
             if (_baseObject != null)
             {
                 _isReloading = true;
-
-                string _oldFilter = FilterText;
-                string _displName = ObjectDisplayName;
-                bool _oldInherits = ShowInheritedProperties;
-                bool _oldReadOnly = ShowReadOnlyProperties;
+                _internalAction = true;
 
                 LoadObject(_baseObject);
 
-                if (!resetViewSettings)
+                if (resetViewSettings)
                 {
-                    ShowReadOnlyProperties = _oldReadOnly;
-                    ShowInheritedProperties = _oldInherits;
-                    ObjectDisplayName = _displName;
-                    FilterText = _oldFilter;
-                    Focus();
+                    ShowReadOnlyProperties = true;
+                    ShowInheritedProperties = true;
+                    FilterText = "";
+                    _internalAction = false;
+
                     FilterProperties();
                 }
+                else
+                {
+                    _internalAction = false;
+                }
+
                 _isReloading = false;
             }
         }
@@ -632,6 +635,8 @@ namespace SolidShineUi.PropertyList
 
         #region Internal Functions
 
+        bool _internalAction = false;
+
         #region Property Check
 
         /// <summary>
@@ -738,6 +743,7 @@ namespace SolidShineUi.PropertyList
         private void FilterProperties()
 #endif
         {
+            if (_internalAction) return;
 
             ///// <param name="filter">
             ///// The filter text to apply. Use <c>null</c> or an empty string to not apply a filter. Start the string with "@" to only filter by property name only (not name or type).
