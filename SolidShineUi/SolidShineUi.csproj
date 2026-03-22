@@ -14,9 +14,9 @@
         <Title>Solid Shine UI</Title>
         <Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
         <Copyright>Copyright 2018-2026 Jayke R. Huempfner, other contributors</Copyright>
-        <Version>2.0</Version>
-        <AssemblyVersion>2.0</AssemblyVersion>
-        <FileVersion>2.0</FileVersion>
+        <Version>2.0.1</Version>
+        <AssemblyVersion>2.0.1</AssemblyVersion>
+        <FileVersion>2.0.1</FileVersion>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <Authors>Jayke R. Huempfner, other contributors</Authors>
         <PackageIconUrl></PackageIconUrl>
@@ -30,7 +30,12 @@
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageReleaseNotes>Version 2.0
+        <PackageReleaseNotes>Version 2.0.1
+            - Fix broken ParticleEmitter control
+            - Improvements/fixes to PropertyList control and editors
+            - Fix small issues with SplitButton, KeyRegistry, ThemedWindow
+            
+            Version 2.0
             - Introduce SsuiTheme to replace ColorScheme
             - Fully rewritten spinner controls
             - New TimeSpinner, StringSpinner controls
