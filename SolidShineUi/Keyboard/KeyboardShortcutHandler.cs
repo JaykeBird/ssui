@@ -107,6 +107,22 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         /// <summary>
+        /// Generate a <see cref="KeyActionList"/> from the currently registered shortcuts in the registry.
+        /// <para/>
+        /// Note that this only contains the actions that used by shortcuts that are currently registered. If there are other actions that aren't currently registered
+        /// to a shortcut, they will have to be added after this. Otherwise, consider creating and managing your own KeyActionList.
+        /// </summary>
+        public KeyActionList GenerateKeyActionList()
+        {
+            KeyActionList kal = new KeyActionList();
+            foreach (KeyboardShortcut item in KeyRegistry.RegisteredShortcuts)
+            {
+                kal.Add(item.Action);
+            }
+            return kal;
+        }
+
+        /// <summary>
         /// Get or set if this keyboard shortcut handler is currently active. If <c>false</c>, then it will not detect keyboard shortcuts or invoke actions.
         /// </summary>
         public bool IsActive { get; set; } = true;
@@ -142,16 +158,6 @@ namespace SolidShineUi.KeyboardShortcuts
             {
                 AltPressed = true;
                 keyCheck.Start();
-
-                //if (!gwi.MenuBarVisible && !CtrlPressed && !ShiftPressed)
-                //{
-
-                //    firstMenuShow = true;
-                //    txtMnu.Text = "true";
-                //    ShowMenuBarTemporarily();
-                //}
-
-                //menu.Focus();
 
                 return;
             }

@@ -115,34 +115,7 @@ namespace SolidShineUi.KeyboardShortcuts
                         // from https://docs.microsoft.com/en-us/dotnet/api/system.windows.input.key?view=net-5.0 (the middle column)
                         if (int.TryParse(k, out int kv))
                         {
-#if NETCOREAPP
-                            IKeyAction? a = null;
-#else
-                            IKeyAction a = null;
-#endif
-
-                            if (list != null)
-                            {
-                                // checks the key action list for "Xxx", "mnuXxx", and "btnXxx"
-                                // this is a carryover from internal usage, but I figure it should still be helpful
-                                // if desired, I can remove this or make a toggle for it in a future release
-                                if (list.ContainsId(m))
-                                {
-                                    a = list[m];
-                                }
-                                else if (list.ContainsId("mnu" + m))
-                                {
-                                    m = "mnu" + m;
-
-                                    a = list[m];
-                                }
-                                else if (list.ContainsId("btn" + m))
-                                {
-                                    m = "btn" + m;
-
-                                    a = list[m];
-                                }
-                            }
+                            var a = GetActionFromList(m);
 
                             if (a != null)
                             {
@@ -156,34 +129,7 @@ namespace SolidShineUi.KeyboardShortcuts
                             // again from https://docs.microsoft.com/en-us/dotnet/api/system.windows.input.key?view=net-5.0 (the left column)
                             if (Enum.TryParse(k, out Key kz))
                             {
-#if NETCOREAPP
-                                IKeyAction? a = null;
-#else
-                                IKeyAction a = null;
-#endif
-
-                                if (list != null)
-                                {
-                                    // checks the key action list for "Xxx", "mnuXxx", and "btnXxx"
-                                    // this is a carryover from internal usage, but I figure it should still be helpful
-                                    // if desired, I can remove this or make a toggle for it in a future release
-                                    if (list.ContainsId(m))
-                                    {
-                                        a = list[m];
-                                    }
-                                    else if (list.ContainsId("mnu" + m))
-                                    {
-                                        m = "mnu" + m;
-
-                                        a = list[m];
-                                    }
-                                    else if (list.ContainsId("btn" + m))
-                                    {
-                                        m = "btn" + m;
-
-                                        a = list[m];
-                                    }
-                                }
+                                var a = GetActionFromList(m);
 
                                 if (a != null)
                                 {
@@ -202,6 +148,38 @@ namespace SolidShineUi.KeyboardShortcuts
             xr.Close();
 
             return entries;
+
+#if NETCOREAPP
+            IKeyAction? GetActionFromList(string m)
+#else
+            IKeyAction GetActionFromList(string m)
+#endif
+            {
+                if (list != null)
+                {
+                    // checks the key action list for "Xxx", "mnuXxx", and "btnXxx"
+                    // this is a carryover from internal usage, but I figure it should still be helpful
+                    // if desired, I can remove this or make a toggle for it in a future release
+                    if (list.ContainsId(m))
+                    {
+                        return list[m];
+                    }
+                    else if (list.ContainsId("mnu" + m))
+                    {
+                        m = "mnu" + m;
+
+                        return list[m];
+                    }
+                    else if (list.ContainsId("btn" + m))
+                    {
+                        m = "btn" + m;
+
+                        return list[m];
+                    }
+                }
+
+                return null;
+            }
         }
 
         /// <summary>
