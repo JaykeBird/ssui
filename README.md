@@ -103,10 +103,10 @@ After you get the library from a location listed above, you can add a reference 
 using SolidShineUi;
 ```
 
-After that, you can start using the controls listed below!
+After that, you can start using the controls listed above!
 
 You can use just the one or two controls you need, or you can rebuild existing UIs or design all-new UIs with the Solid Shine UI controls. 
-You can use these alongside the standard WPF controls with no changes in their appearance or behavior.
+You can also use these alongside the standard WPF controls with no changes in their appearance or behavior.
 
 You can build and run the SsuiSample app included in this repo as an example to get started with or to see the capabilities of the library.
 
@@ -125,6 +125,9 @@ in your App.xaml.cs file:
     // there's also pre-made themes available in the SolidShineUi.SsuiThemes class
     public static SsuiAppTheme AppTheme { get; set; } = new SsuiAppTheme(Colors.Green);
 ```
+
+(If you're planning to offer customization and/or storing the SsuiAppTheme in your settings, make sure to use `SerializableSsuiTheme` to store the SsuiAppTheme data in your
+settings file. You can create one by using `AppTheme.ToSerializableObject()`.)
 
 You can create a SsuiAppTheme based upon any base color you want to use (such as your app's branding color), or you can use 
 `SsuiThemes.CreateLightTheme()` or `SsuiThemes.CreateDarkTheme()` for more standard light or dark themes, or even `SsuiThemes.SystemTheme` for a more standard Windows-looking theme.
