@@ -227,8 +227,10 @@ namespace SolidShineUi
         /// <summary>Get a color by blending one color onto another color by a specified amount.</summary>
         /// <param name="color">The color to blend onto the background color.</param>
         /// <param name="backColor">The color that is the background or base (that is being blended onto).</param>
-        /// <param name="amount">How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
-        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between the two colors, and 1 leaves only the new color (blended in 100%).</param>
+        /// <param name="amount">
+        /// How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
+        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between the two colors, and 1 leaves only the new color (blended in 100%).
+        /// </param>
         /// <returns>The color that is the result of blending the two colors together.</returns>
         /// <remarks>
         /// The alpha value of the new color will be 255 (opaque). No gamma correction is applied.
@@ -236,12 +238,54 @@ namespace SolidShineUi
         public static Color Blend(Color color, Color backColor, double amount)
         {
             // https://stackoverflow.com/a/3722337/2987285
-            if (amount < 0) amount = 0;
-            else if (amount > 1) amount = 1;
+            amount = Math.Max(0.0, Math.Min(1.0, amount));
 
-            byte r = (byte)(color.R * amount + backColor.R * amount);
-            byte g = (byte)(color.G * amount + backColor.G * amount);
-            byte b = (byte)(color.B * amount + backColor.B * amount);
+            byte r = (byte)(color.R * amount + backColor.R * (1 - amount));
+            byte g = (byte)(color.G * amount + backColor.G * (1 - amount));
+            byte b = (byte)(color.B * amount + backColor.B * (1 - amount));
+            return Color.FromRgb(r, g, b);
+        }
+
+        /// <summary>
+        /// Get a color by blending one color onto another color by a specified amount, with gamma correction.
+        /// </summary>
+        /// <summary>Get a color by blending one color onto another color by a specified amount.</summary>
+        /// <param name="color">The color to blend onto the background color.</param>
+        /// <param name="backColor">The color that is the background or base (that is being blended onto).</param>
+        /// <param name="amount">
+        /// How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
+        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between the two colors, and 1 leaves only the new color (blended in 100%).
+        /// </param>
+        /// <param name="gamma">The gamma correction value to use while blending (for the sRGB color space, use 2.2).</param>
+        /// <returns>The color that is the result of blending the two colors together.</returns>
+        /// <remarks>
+        /// The alpha value of the new color will be 255 (opaque).
+        /// </remarks>
+        public static Color BlendWithGamma(Color color, Color backColor, double amount, double gamma = 2.2)
+        {
+            // https://en.wikipedia.org/wiki/Gamma_correction
+
+            amount = Math.Max(0.0, Math.Min(1.0, amount));
+
+            // Gammaify it
+            double r1 = Math.Pow(color.R / 255.0, gamma);
+            double g1 = Math.Pow(color.G / 255.0, gamma);
+            double b1 = Math.Pow(color.B / 255.0, gamma);
+
+            double r2 = Math.Pow(backColor.R / 255.0, gamma);
+            double g2 = Math.Pow(backColor.G / 255.0, gamma);
+            double b2 = Math.Pow(backColor.B / 255.0, gamma);
+
+            // Blend
+            double gLin = g1 * amount + g2 * (1 - amount);
+            double rLin = r1 * amount + r2 * (1 - amount);
+            double bLin = b1 * amount + b2 * (1 - amount);
+
+            // Un-gammaify it
+            byte r = (byte)Math.Round(Math.Pow(rLin, 1.0 / gamma) * 255);
+            byte g = (byte)Math.Round(Math.Pow(gLin, 1.0 / gamma) * 255);
+            byte b = (byte)Math.Round(Math.Pow(bLin, 1.0 / gamma) * 255);
+
             return Color.FromRgb(r, g, b);
         }
 
