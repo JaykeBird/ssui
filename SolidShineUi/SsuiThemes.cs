@@ -472,84 +472,104 @@ namespace SolidShineUi
         /// <returns></returns>
         public static SsuiAppTheme CreateAeroTheme(CornerRadius cornerRadius, Color? accentColor = null)
         {
+            LinearGradientBrush baseChromeBrush = new LinearGradientBrush(new GradientStopCollection
+            (
+                new List<GradientStop>()
+                {
+                    new GradientStop(ColorsHelper.CreateFromHex("F3F3F3"), 0.0d),
+                    new GradientStop(ColorsHelper.CreateFromHex("EBEBEB"), 0.5d),
+                    new GradientStop(ColorsHelper.CreateFromHex("DDDDDD"), 0.5d),
+                    new GradientStop(ColorsHelper.CreateFromHex("CDCDCD"), 1.0d),
+                }
+            ), 90.0d);
+
             LinearGradientBrush chromeBrush = 
             (accentColor.HasValue ?
                 new LinearGradientBrush(new GradientStopCollection
                 (
                     new List<GradientStop>()
                     {
-                        new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.3d), 0.0d),
-                        new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.3d), 0.5d),
-                        new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.3d), 0.5d),
-                        new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.3d), 1.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.7d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.7d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.7d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.7d), 1.0d),
                     }
-                ), 90.0d) :
+                ), 90.0d) : baseChromeBrush
+            );
+
+            Color selColor = ColorsHelper.CreateFromHex("99CCFF");
+            Color selDarkColor = ColorsHelper.CreateFromHex("7aa3cc");
+
+            LinearGradientBrush selectedBrush = (accentColor.HasValue ?
                 new LinearGradientBrush(new GradientStopCollection
                 (
                     new List<GradientStop>()
                     {
-                        new GradientStop(ColorsHelper.CreateFromHex("F3F3F3"), 0.0d),
-                        new GradientStop(ColorsHelper.CreateFromHex("EBEBEB"), 0.5d),
-                        new GradientStop(ColorsHelper.CreateFromHex("DDDDDD"), 0.5d),
-                        new GradientStop(ColorsHelper.CreateFromHex("CDCDCD"), 1.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.9d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.9d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.9d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.9d), 1.0d),
+                    }
+                ), 90.0d) : 
+                new LinearGradientBrush(new GradientStopCollection
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), selColor, 0.8d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), selColor, 0.8d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), selColor, 0.8d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), selColor, 0.8d), 1.0d),
                     }
                 ), 90.0d)
             );
-
-            LinearGradientBrush selectedBrush = new LinearGradientBrush(new GradientStopCollection
-            (
-                new List<GradientStop>()
-                {
-                    new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("F3F3F3"), ColorsHelper.CreateFromHex("99CCFF"), 0.6d), 0.0d),
-                    new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("EBEBEB"), ColorsHelper.CreateFromHex("99CCFF"), 0.6d), 0.5d),
-                    new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("DDDDDD"), ColorsHelper.CreateFromHex("99CCFF"), 0.6d), 0.5d),
-                    new GradientStop(ColorsHelper.Blend(ColorsHelper.CreateFromHex("CDCDCD"), ColorsHelper.CreateFromHex("99CCFF"), 0.6d), 1.0d),
-                }
-            ), 90.0d);
 
             Color windowTitleBar = accentColor.HasValue ? accentColor.Value : Colors.PowderBlue;
 
             Color offWhite = ColorsHelper.CreateFromHex("F6F6F6");
             Color lightGray = ColorsHelper.CreateFromHex("F1F1F1");
 
+            // TODO: figure out what the MenuHighlight color is and store that here
+            // then, utilize the color blending systems used in SsuiTheme's constructor to
+            // create new colors for highlight
+
             SsuiAppTheme ssat = new SsuiAppTheme()
             {
                 BaseBackground = Colors.White.ToBrush(),
                 PanelBackground = offWhite.ToBrush(),
-                ControlBackground = chromeBrush,
+                ControlBackground = offWhite.ToBrush(),
                 ButtonBackground = chromeBrush,
                 BorderBrush = BrushFactory.Create("8E8F8F"),
                 LightBorderBrush = SystemColors.ControlDarkBrush,
-                ControlPopBrush = SystemColors.HighlightBrush,
+                ControlPopBrush = selDarkColor.ToBrush(),
                 ControlSatBrush = SystemColors.ControlLightBrush,
                 CheckBrush = SystemColors.ControlTextBrush,
                 ClickBrush = SystemColors.MenuHighlightBrush,
-                SelectedBackgroundBrush = selectedBrush,
+                SelectedBackgroundBrush = (accentColor.HasValue ? baseChromeBrush : selectedBrush),
                 SelectedBorderBrush = (accentColor.HasValue ? accentColor.Value.ToBrush() : BrushFactory.Create("3399FF")),
                 SelectedForeground = SystemColors.ControlTextBrush,
-                HighlightBrush = SystemColors.HighlightBrush,
+                HighlightBrush = selDarkColor.ToBrush(),
                 HighlightBorderBrush = Colors.DarkGray.ToBrush(),
-                HighlightForeground = SystemColors.HighlightTextBrush,
+                HighlightForeground = Colors.White.ToBrush(),
                 DisabledBackground = lightGray.ToBrush(),
                 DisabledForeground = Colors.LightGray.ToBrush(),
                 DisabledBorderBrush = Colors.LightGray.ToBrush(),
-                Foreground = SystemColors.ControlTextBrush,
-                WindowCaptionsForeground = SystemColors.ActiveCaptionTextBrush,
+                Foreground = Colors.Black.ToBrush(),
+                WindowCaptionsForeground = Colors.Black.ToBrush(),
                 WindowBackground = Colors.White.ToBrush(),
                 WindowCaptionsBackground = Color.FromArgb(1, 255, 255, 255).ToBrush(), // almost entirely transparent
                 WindowTitleBackground = windowTitleBar.ToBrush(),
                 WindowTitleForeground = Colors.Black.ToBrush(),
-                WindowInactiveBackground = ColorsHelper.Blend(windowTitleBar, Colors.White, 0.3d).ToBrush(),
+                WindowInactiveBackground = ColorsHelper.BlendWithGamma(windowTitleBar, Colors.White, 0.3d).ToBrush(),
                 WindowInactiveForeground = Colors.DimGray.ToBrush(),
                 WindowCaptionsHighlight = Color.FromArgb(60, Colors.SteelBlue.R, Colors.SteelBlue.G, Colors.SteelBlue.B).ToBrush(),
                 WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
                 WindowCaptionsClickBrush = Color.FromArgb(96, Colors.SteelBlue.R, Colors.SteelBlue.G, Colors.SteelBlue.B).ToBrush(),
                 TabBackground = chromeBrush,
-                TabHighlightBorderBrush = SystemColors.ControlDarkDarkBrush,
-                TabHighlightBrush = SystemColors.ControlDarkBrush,
-                TabSelectedBrush = SystemColors.ControlLightLightBrush,
-                CommandBarBackground = SystemColors.ControlLightBrush,
-                CommandBarBorderBrush = SystemColors.ControlDarkDarkBrush,
+                TabHighlightBorderBrush = BrushFactory.Create("8E8F8F"),
+                TabHighlightBrush = Colors.Gainsboro.ToBrush(),
+                TabSelectedBrush = offWhite.ToBrush(),
+                CommandBarBackground = offWhite.ToBrush(),
+                CommandBarBorderBrush = BrushFactory.Create("8E8F8F"),
                 UseSubitemThemeWithMenus = false,
                 UseSubitemThemeWithPanels = false,
                 UseSubitemThemeWithRibbons = false,
@@ -559,11 +579,11 @@ namespace SolidShineUi
             };
 
             // reduce the saturation of SelectedBackground
-            ColorsHelper.ToHSV(SystemColors.HighlightBrush.Color, out double h, out double s, out double v);
-            if (s > 0.5)
-            {
-                ssat.SelectedBackgroundBrush = ColorsHelper.CreateFromHSV(h, 0.3, v).ToBrush();
-            }
+            //ColorsHelper.ToHSV(SystemColors.HighlightBrush.Color, out double h, out double s, out double v);
+            //if (s > 0.5)
+            //{
+            //    ssat.SelectedBackgroundBrush = ColorsHelper.CreateFromHSV(h, 0.3, v).ToBrush();
+            //}
 
             ssat.AccentTheme = ssat.Copy();
             ssat.SubitemTheme = ssat.Copy();
