@@ -32,11 +32,14 @@
                     <MenuItem Header="_Light Theme" x:Name="mnuLightTheme" Click="mnuLightTheme_Click" />
                     <MenuItem Header="_Dark Theme" x:Name="mnuDarkTheme" Click="mnuDarkTheme_Click" />
                     <Separator />
-                    <MenuItem Header="_High Contrast - White on Black" x:Name="mnuHcTheme1" Click="mnuHcTheme1_Click" />
-                    <MenuItem Header="_High Contrast - Green on Black" x:Name="mnuHcTheme2" Click="mnuHcTheme2_Click" />
-                    <MenuItem Header="_High Contrast - Black on White" x:Name="mnuHcTheme3" Click="mnuHcTheme3_Click" />
+                    <MenuItem Header="High Contrast - _White on Black" x:Name="mnuHcTheme1" Click="mnuHcTheme1_Click" />
+                    <MenuItem Header="High Contrast - _Green on Black" x:Name="mnuHcTheme2" Click="mnuHcTheme2_Click" />
+                    <MenuItem Header="High Contrast - _Black on White" x:Name="mnuHcTheme3" Click="mnuHcTheme3_Click" />
                     <Separator />
                     <MenuItem Header="_System" x:Name="mnuSystem" Click="mnuSystem_Click" />
+                    <Separator />
+                    <MenuItem Header="_Aero" x:Name="mnuAero" Click="mnuAero_Click" />
+                    <MenuItem Header="_Colored Aero..." x:Name="mnuColoredAero" Click="mnuColoredAero_Click" />
                     <Separator />
                     <MenuItem Header="D_efault New" x:Name="mnuDefaultCs" Click="mnuDefaultCs_Click" />
                 </MenuItem>

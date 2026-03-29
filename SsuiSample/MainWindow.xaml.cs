@@ -221,6 +221,23 @@ namespace SsuiSample
             SsuiTheme = SsuiThemes.SystemThemeRoundedCorners;
         }
 
+        private void mnuAero_Click(object sender, RoutedEventArgs e)
+        {
+            SsuiTheme = SsuiThemes.AeroTheme;
+        }
+
+        private void mnuColoredAero_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPickerDialog cpd = new ColorPickerDialog(Colors.Orange);
+            cpd.SsuiTheme = SsuiTheme;
+            cpd.ShowDialog();
+
+            if (cpd.DialogResult)
+            {
+                SsuiTheme = SsuiThemes.CreateAeroTheme(new CornerRadius(3), cpd.SelectedColor);
+            }
+        }
+
         void SetupSidebar()
         {
             foreach (UserControl item in grdTests.Children)
