@@ -462,7 +462,6 @@
 
     <Style TargetType="{x:Type flat:ContextMenu}" >
         <!--x:Key="StandardMenu"-->
-
         <Style.Resources>
             <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
                 <Setter Property="Height" Value="1"/>
@@ -1054,7 +1053,7 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
                             <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
-                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=ForegroundHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                         <!--<Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" />
