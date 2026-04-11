@@ -28,6 +28,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="1" Text="Standard Appearance" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Column="2" Text="With TransparentBack" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="3" Text="With AccentTheme" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Column="4" Text="Disabled State" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="1" Text="FlatButton" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="2" Text="MenuButton" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -39,6 +40,7 @@
             </TextBlock>
             <flat:FlatButton x:Name="btnFlat1" Content="_Button Text" Width="100" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" RightClick="Button_RightClick" />
             <flat:FlatButton x:Name="btnFlat2" Content="B_utton Text" Width="100" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" TransparentBack="True" Click="Button_Click" RightClick="Button_RightClick" />
+            <flat:FlatButton x:Name="btnFlat2Accent" Content="B_utton Text" Width="100" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" UseAccentTheme="True" Click="Button_Click" RightClick="Button_RightClick" />
             <flat:FlatButton x:Name="btnFlat3" Content="Bu_tton Text" Width="100" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False" Click="Button_Click" RightClick="Button_RightClick" />
             <flat:MenuButton x:Name="btnMenu1" Content="_Menu Button" Width="100" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" RightClick="Button_RightClick" >
                 <flat:MenuButton.Menu>
@@ -51,10 +53,22 @@
             </flat:MenuButton>
             <flat:MenuButton x:Name="btnMenu2" Content="Me_nu Button" Width="100" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" RightClick="Button_RightClick" TransparentBack="True" >
                 <flat:MenuButton.Menu>
-                    <flat:ContextMenu>
+                    <flat:ContentContextMenu >
+                        <flat:ContentContextMenu.Content>
+                            <TextBlock Text="Content!" Margin="10" />
+                        </flat:ContentContextMenu.Content>
                         <MenuItem x:Name="mnuMenu2_Item1" Header="Item 1" Click="Button_Click" />
                         <MenuItem x:Name="mnuMenu2_Item2" Header="Item 2" Click="Button_Click" />
                         <MenuItem x:Name="mnuMenu2_Item3" Header="Item 3" Click="Button_Click" />
+                    </flat:ContentContextMenu>
+                </flat:MenuButton.Menu>
+            </flat:MenuButton>
+            <flat:MenuButton x:Name="btnMenuAccent" Content="Me_nu Button" Width="100" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" RightClick="Button_RightClick" UseAccentTheme="True" >
+                <flat:MenuButton.Menu>
+                    <flat:ContextMenu UseAccentTheme="True">
+                        <MenuItem x:Name="mnuMenuAccent_Item1" Header="Item 1" Click="Button_Click" />
+                        <MenuItem x:Name="mnuMenuAccent_Item2" Header="Item 2" Click="Button_Click" />
+                        <MenuItem x:Name="mnuMenuAccent_Item3" Header="Item 3" Click="Button_Click" />
                     </flat:ContextMenu>
                 </flat:MenuButton.Menu>
             </flat:MenuButton>
@@ -69,6 +83,7 @@
             </flat:MenuButton>
             <flat:FlatButton x:Name="btnTogg1" Content="To_ggle Button" Width="100" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" />
             <flat:FlatButton x:Name="btnTogg2" Content="Togg_le Button" Width="100" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" TransparentBack="True" />
+            <flat:FlatButton x:Name="btnTogg2Accent" Content="Togg_le Button" Width="100" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" UseAccentTheme="True" />
             <flat:FlatButton x:Name="btnTogg3" Content="Toggle Button" Width="100" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" IsEnabled="False" />
             <flat:FlatRepeatButton x:Name="btnRep1" Content="Press and Hold" Width="100" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Execute="Button_Execute" PressEnds="Button_EndPress" RightClick="Button_RightClick" />
             <flat:FlatRepeatButton x:Name="btnRep2" Content="Press and Hold" Width="100" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Execute="Button_Execute" PressEnds="Button_EndPress" TransparentBack="True" RightClick="Button_RightClick" />
@@ -92,29 +107,17 @@
                     </flat:ContextMenu>
                 </flat:SplitButton.Menu>
             </flat:SplitButton>
-            <flat:SplitButton x:Name="btnSpl3" Content="Button Text" Width="100" Grid.Column="4" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False" Click="Button_Click" RightClick="Button_RightClick" MenuClick="Button_MenuClick" >
+            <flat:SplitButton x:Name="btnSpl2Accent" Content="Button Text" Width="100" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" UseAccentTheme="True" Click="Button_Click" RightClick="Button_RightClick" MenuClick="Button_MenuClick" >
                 <flat:SplitButton.Menu>
-                    <flat:ContextMenu>
+                    <flat:ContextMenu UseAccentTheme="True" >
                         <MenuItem Header="Item 1" />
                         <MenuItem Header="Item 2" />
                     </flat:ContextMenu>
                 </flat:SplitButton.Menu>
             </flat:SplitButton>
-            <TextBlock Grid.Column="3" Text="With AccentTheme" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <flat:FlatButton x:Name="btnFlat2Accent" Content="B_utton Text" Width="100" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" UseAccentTheme="True" Click="Button_Click" RightClick="Button_RightClick" />
-            <flat:MenuButton x:Name="btnMenuAccent" Content="Me_nu Button" Width="100" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" RightClick="Button_RightClick" UseAccentTheme="True" >
-                <flat:MenuButton.Menu>
-                    <flat:ContextMenu UseAccentTheme="True">
-                        <MenuItem x:Name="mnuMenuAccent_Item1" Header="Item 1" Click="Button_Click" />
-                        <MenuItem x:Name="mnuMenuAccent_Item2" Header="Item 2" Click="Button_Click" />
-                        <MenuItem x:Name="mnuMenuAccent_Item3" Header="Item 3" Click="Button_Click" />
-                    </flat:ContextMenu>
-                </flat:MenuButton.Menu>
-            </flat:MenuButton>
-            <flat:FlatButton x:Name="btnTogg2Accent" Content="Togg_le Button" Width="100" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" SelectOnClick="True" Click="ToggleButton_Click" RightClick="Button_RightClick" UseAccentTheme="True" />
-            <flat:SplitButton x:Name="btnSpl2Accent" Content="Button Text" Width="100" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" UseAccentTheme="True" Click="Button_Click" RightClick="Button_RightClick" MenuClick="Button_MenuClick" >
+            <flat:SplitButton x:Name="btnSpl3" Content="Button Text" Width="100" Grid.Column="4" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" IsEnabled="False" Click="Button_Click" RightClick="Button_RightClick" MenuClick="Button_MenuClick" >
                 <flat:SplitButton.Menu>
-                    <flat:ContextMenu UseAccentTheme="True" >
+                    <flat:ContextMenu>
                         <MenuItem Header="Item 1" />
                         <MenuItem Header="Item 2" />
                     </flat:ContextMenu>

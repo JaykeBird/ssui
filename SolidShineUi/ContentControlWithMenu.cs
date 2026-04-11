@@ -111,6 +111,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the radius to use for the corners of the control, to provide a rounded corner appearance if desired.
         /// </summary>
+        [Category("Appearance")]
         public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
@@ -126,6 +127,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the content to display in the main area of the control.
         /// </summary>
+        [Category("Common")]
         public object Content { get => GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Content"/>. See the related property for details.</summary>
@@ -183,6 +185,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the side of the control to place the menu items in <c>Items</c>.
         /// </summary>
+        [Category("Common")]
         public PlacementDirection MenuPlacement { get => (PlacementDirection)GetValue(MenuPlacementProperty); set => SetValue(MenuPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
@@ -193,6 +196,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the padding to have around the menu items in the menu part of the control. Default value is 2.
         /// </summary>
+        [Category("Appearance")]
         public Thickness MenuItemsPadding { get => (Thickness)GetValue(MenuItemsPaddingProperty); set => SetValue(MenuItemsPaddingProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuItemsPadding"/>. See the related property for details.</summary>
