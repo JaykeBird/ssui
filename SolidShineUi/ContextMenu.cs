@@ -515,6 +515,7 @@ namespace SolidShineUi
             {
                 if (sat.UseSubitemThemeWithMenus)
                 {
+                    // because of this case, we can't put these ApplyThemeBindings within the ApplyTheme
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.SubitemTheme);
                     ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.SubitemTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.SubitemTheme);
@@ -540,8 +541,8 @@ namespace SolidShineUi
             }
             else
             {
-
                 ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty);
+                ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty);
                 ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty);
 
                 ApplyTheme(ssuiTheme);
