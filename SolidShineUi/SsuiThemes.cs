@@ -523,10 +523,29 @@ namespace SolidShineUi
                 ), 90.0d)
             );
 
-            Color windowTitleBar = accentColor.HasValue ? accentColor.Value : Colors.PowderBlue;
+            Color highlightLight = ColorsHelper.CreateFromHex("ebf0f6");
+            Color highlightBase = ColorsHelper.CreateFromHex("d4e4f5");
+            Color clickDark = ColorsHelper.CreateFromHex("b9daf8");
+            Color highlightBorder = ColorsHelper.CreateFromHex("85c2f7");
+
+            if (accentColor.HasValue)
+            {
+                // TODO: use grayscale base, rather than the original colors (the end result always ends up with a blue tint)
+                highlightLight = ColorsHelper.BlendWithGamma(highlightLight, accentColor.Value, 0.6d);
+                highlightBase = ColorsHelper.BlendWithGamma(highlightBase, accentColor.Value, 0.7d);
+                clickDark = ColorsHelper.BlendWithGamma(clickDark, accentColor.Value, 0.7d);
+                highlightBorder = ColorsHelper.BlendWithGamma(highlightBorder, accentColor.Value, 0.6d);
+            }
+
+            Color windowTitleBar = accentColor.HasValue ? accentColor.Value : highlightBase;
 
             Color offWhite = ColorsHelper.CreateFromHex("F6F6F6");
             Color lightGray = ColorsHelper.CreateFromHex("F1F1F1");
+            Color nearWhiteBlue = ColorsHelper.CreateFromHex("fafbfc");
+            Color nearWhiteBlue2 = ColorsHelper.CreateFromHex("eff4f7"); //ColorsHelper.CreateFromHex("e7eef8");
+
+            LinearGradientBrush menuHighlight = BrushFactory.Create(highlightLight, highlightBase, 90);
+            LinearGradientBrush menuClick = BrushFactory.Create(highlightBase, clickDark, 90);
 
             // TODO: figure out what the MenuHighlight color is and store that here
             // then, utilize the color blending systems used in SsuiTheme's constructor to
@@ -536,20 +555,20 @@ namespace SolidShineUi
             {
                 BaseBackground = Colors.White.ToBrush(),
                 PanelBackground = offWhite.ToBrush(),
-                ControlBackground = offWhite.ToBrush(),
+                ControlBackground = nearWhiteBlue.ToBrush(),
                 ButtonBackground = chromeBrush,
                 BorderBrush = BrushFactory.Create("8E8F8F"),
                 LightBorderBrush = SystemColors.ControlDarkBrush,
-                ControlPopBrush = selDarkColor.ToBrush(),
+                ControlPopBrush = clickDark.ToBrush(),
                 ControlSatBrush = SystemColors.ControlLightBrush,
                 CheckBrush = SystemColors.ControlTextBrush,
                 ClickBrush = SystemColors.MenuHighlightBrush,
                 SelectedBackgroundBrush = (accentColor.HasValue ? baseChromeBrush : selectedBrush),
                 SelectedBorderBrush = (accentColor.HasValue ? accentColor.Value.ToBrush() : BrushFactory.Create("3399FF")),
                 SelectedForeground = SystemColors.ControlTextBrush,
-                HighlightBrush = selDarkColor.ToBrush(),
-                HighlightBorderBrush = Colors.DarkGray.ToBrush(),
-                HighlightForeground = Colors.White.ToBrush(),
+                HighlightBrush = highlightBase.ToBrush(),
+                HighlightBorderBrush = highlightBorder.ToBrush(),
+                HighlightForeground = Colors.Black.ToBrush(),
                 DisabledBackground = lightGray.ToBrush(),
                 DisabledForeground = Colors.LightGray.ToBrush(),
                 DisabledBorderBrush = Colors.LightGray.ToBrush(),
@@ -570,8 +589,8 @@ namespace SolidShineUi
                 TabSelectedBrush = offWhite.ToBrush(),
                 CommandBarBackground = offWhite.ToBrush(),
                 CommandBarBorderBrush = BrushFactory.Create("8E8F8F"),
-                UseSubitemThemeWithMenus = false,
-                UseSubitemThemeWithPanels = false,
+                UseSubitemThemeWithMenus = true,
+                UseSubitemThemeWithPanels = true,
                 UseSubitemThemeWithRibbons = false,
                 CornerRadius = cornerRadius,
                 IconVariation = Utils.IconVariation.Color,
@@ -587,6 +606,10 @@ namespace SolidShineUi
 
             ssat.AccentTheme = ssat.Copy();
             ssat.SubitemTheme = ssat.Copy();
+
+            ssat.SubitemTheme.HighlightBrush = menuHighlight;
+            ssat.SubitemTheme.HighlightForeground = Colors.Black.ToBrush();
+            ssat.SubitemTheme.ClickBrush = menuClick;
 
             return ssat;
         }
