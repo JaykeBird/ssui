@@ -530,14 +530,14 @@ namespace SolidShineUi
 
             if (accentColor.HasValue)
             {
-                // TODO: use grayscale base, rather than the original colors (the end result always ends up with a blue tint)
-                highlightLight = ColorsHelper.BlendWithGamma(highlightLight, accentColor.Value, 0.6d);
-                highlightBase = ColorsHelper.BlendWithGamma(highlightBase, accentColor.Value, 0.7d);
-                clickDark = ColorsHelper.BlendWithGamma(clickDark, accentColor.Value, 0.7d);
-                highlightBorder = ColorsHelper.BlendWithGamma(highlightBorder, accentColor.Value, 0.6d);
+                // use the grayscale versions of the colors above, to avoid the accent colors end up with a blue tint
+                highlightLight = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("efefef"), accentColor.Value, 0.6d);
+                highlightBase = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("e2e2e2"), accentColor.Value, 0.7d);
+                clickDark = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("d5d5d5"), accentColor.Value, 0.7d);
+                highlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "b7b7b7"), accentColor.Value, 0.6d);
             }
 
-            Color windowTitleBar = accentColor.HasValue ? accentColor.Value : highlightBase;
+            Color windowTitleBar = accentColor ?? highlightBase;
 
             Color offWhite = ColorsHelper.CreateFromHex("F6F6F6");
             Color lightGray = ColorsHelper.CreateFromHex("F1F1F1");

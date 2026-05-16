@@ -579,7 +579,7 @@ namespace SolidShineUi
         // backed up by https://en.wikipedia.org/wiki/HSL_and_HSV#Formal_derivation
 
         /// <summary>
-        /// Get the HSV values for a particular color.
+        /// Get the HSL values for a particular color.
         /// </summary>
         /// <param name="color">The color to convert to HSV.</param>
         /// <param name="hue">The hue value of the color.</param>
