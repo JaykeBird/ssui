@@ -289,6 +289,73 @@ namespace SolidShineUi
             return Color.FromRgb(r, g, b);
         }
 
+        /// <summary>
+        /// Converts a Color to a grayscale Color (no hue).
+        /// </summary>
+        /// <remarks>
+        /// This uses the ITU-R Recommendation 709 method's luma coefficients to create a grayscale
+        /// color that should line up with human perception of the colors in the RGB color space.
+        /// </remarks>
+        /// <param name="col">The color to convert to grayscale.</param>
+        /// <returns>A new grayscale Color based upon the inputted Color.</returns>
+        public static Color ToGrayscale(this Color col)
+        {
+            double gamma = 2.2;
+            double r2 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+            double g2 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+            double b2 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+            byte val = (byte)Math.Round(Math.Pow((0.2126 * r2) + (0.7152 * g2) + (0.0722 * b2), gamma) * 255);
+            return Color.FromRgb(val, val, val);
+        }
+
+        /// <summary>
+        /// Converts a Color to a grayscale Color (no hue).
+        /// </summary>
+        /// <remarks>
+        /// Some methods (such as the ones based on ITU-R Rec luma coefficients) will take into account
+        /// the human perception of colors, while others are more mathematical calculations that may
+        /// not line up with how you'd expect the results to appear.
+        /// </remarks>
+        /// <param name="col">The color to convert to grayscale.</param>
+        /// <param name="method">The method to use for getting the grayscale color.</param>
+        /// <returns>A new grayscale Color based upon the inputted Color.</returns>
+        public static Color ToGrayscale(this Color col, ColorGrayscaleMethod method)
+        {
+            double gamma = 2.2;
+            byte val;
+            switch (method)
+            {
+                case ColorGrayscaleMethod.FlatAverage:
+                    val = (byte)((col.R + col.G + col.B) / 3);
+                    break;
+                case ColorGrayscaleMethod.Rec601:
+                    double r1 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+                    double g1 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+                    double b1 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+                    val = (byte)Math.Round(Math.Pow((0.299 * r1) + (0.587 * g1) + (0.114 * b1), gamma) * 255);
+                    break;
+                case ColorGrayscaleMethod.Rec709:
+                    double r2 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+                    double g2 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+                    double b2 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+                    val = (byte)Math.Round(Math.Pow((0.2126 * r2) + (0.7152 * g2) + (0.0722 * b2), gamma) * 255);
+                    break;
+                case ColorGrayscaleMethod.Rec601_NoGamma:
+                    val = (byte)((0.299 * col.R) + (0.587 * col.G) + (0.114 * col.B));
+                    break;
+                case ColorGrayscaleMethod.Rec709_NoGamma:
+                    val = (byte)((0.2126 * col.R) + (0.7152 * col.G) + (0.0722 * col.B));
+                    break;
+                case ColorGrayscaleMethod.RemoveSaturation:
+                    ToHSV(col, out double h, out double _, out double v);
+                    return CreateFromHSV(h, 0, v);
+                default:
+                    val = (byte)((0.2126 * col.R) + (0.7152 * col.G) + (0.0722 * col.B));
+                    break;
+            }
+            return Color.FromRgb(val, val, val);
+        }
+
         /// <summary>Convert a GDI+ ARGB integer that represent a color into a WPF/Avalonia Color struct.</summary>
         /// <param name="color">The integer that represents the color. Its bits are in the format 0xAARRGGBB (with 1 byte dedicated to each value).</param>
         /// <returns>A Color with the same values of the ARGB integer.</returns>
@@ -313,7 +380,7 @@ namespace SolidShineUi
             return (uint)((color.A << 24) + (color.R << 16) + (color.G << 8) + color.B);
         }
 
-        #endregion
+#endregion
 
         #region HSV Math (used for color schemes)
 
@@ -812,5 +879,39 @@ namespace SolidShineUi
 
         #endregion
 
+    }
+
+    /// <summary>
+    /// A list of methods to use for getting a grayscale version of a color.
+    /// </summary>
+    public enum ColorGrayscaleMethod
+    {
+        /// <summary>
+        /// A simple average of the R, G, and B values of the color added together.
+        /// While this removes variance based upon weighing the B value higher than the others,
+        /// it doesn't account for human perception of how the colors should appear when turned to grayscale.
+        /// </summary>
+        FlatAverage = 0,
+        /// <summary>
+        /// Use the luma coefficients in ITU-R Recommendation 601, which is meant for standard definition (pre-HD) TVs.
+        /// </summary>
+        Rec601 = 1,
+        /// <summary>
+        /// Use the luma coefficients in ITU-R Recommendation 709, which is meant for high definition TVs.
+        /// </summary>
+        Rec709 = 2,
+        /// <summary>
+        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 601 and no gamma compression.
+        /// </summary>
+        Rec601_NoGamma = 3,
+        /// <summary>
+        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 601 and no gamma compression.
+        /// </summary>
+        Rec709_NoGamma = 4,
+        /// <summary>
+        /// Use the HSV values of the color, and change the saturation to 0. While this results in a grayscale color,
+        /// the end results may look a bit unexpected.
+        /// </summary>
+        RemoveSaturation = 5,
     }
 }
