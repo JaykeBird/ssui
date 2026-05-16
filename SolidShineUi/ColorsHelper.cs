@@ -530,12 +530,33 @@ namespace SolidShineUi
             throw new ArgumentException("There is no color with this name.", nameof(colorName));
         }
 
-//#if DEBUG
-//        public static List<Color> ListOfColors =
-//            new List<Color> { DarkBlue, Blue, Yellow, Orange, Red, SkyBlue, Pink, Green,
-//            Cyan, LightGreen, GrayGreen, LightViolet, Violet, Purple,
-//            Gray, RedBrown, Salmon, Brown, White, Black, LightGray, DarkGray, Olive};
-//#endif
+        /// <summary>
+        /// Get a collection of all the colors in the X11 Color table, as they appear in <c>System.Windows.Media.Colors</c>,
+        /// as well as the name of each color.
+        /// </summary>
+        /// <remarks>This uses reflection to go through each property in <see cref="Colors"/>, and returns a list containing all of 
+        /// their values and their names.</remarks>
+        public static IEnumerable<(Color col, string name)> GetAllX11ColorsAndNames()
+        {
+            PropertyInfo[] propInfo = typeof(Colors).GetProperties();
+            foreach (PropertyInfo p in propInfo)
+            {
+                if (p.PropertyType == typeof(Color))
+                {
+                    if (p.GetValue(new Color(), BindingFlags.GetProperty, null, null, null) is Color c)
+                    {
+                        yield return (c, p.Name);
+                    }
+                }
+            }
+        }
+
+        //#if DEBUG
+        //        public static List<Color> ListOfColors =
+        //            new List<Color> { DarkBlue, Blue, Yellow, Orange, Red, SkyBlue, Pink, Green,
+        //            Cyan, LightGreen, GrayGreen, LightViolet, Violet, Purple,
+        //            Gray, RedBrown, Salmon, Brown, White, Black, LightGray, DarkGray, Olive};
+        //#endif
 
         #endregion
 
