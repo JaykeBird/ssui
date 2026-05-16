@@ -46,6 +46,7 @@ namespace SolidShineUi
             LoadTemplateItems();
             if (itemsLoaded && sv != null)
             {
+                sv.ScrollChanged += Sv_ScrollChanged;
                 sv.PreviewMouseWheel += HandlePreviewMouseWheel;
                 sv.Unloaded += (s, _) => sv.PreviewMouseWheel -= HandlePreviewMouseWheel;
             }
@@ -71,6 +72,7 @@ namespace SolidShineUi
                 }
             }
         }
+
         #endregion
 
         #region ItemsSource
@@ -973,6 +975,124 @@ namespace SolidShineUi
         }
 
         #endregion
+
+        #endregion
+
+        #region Scroll Viewer functions
+
+        // TODO: see if I can change these to be dependency properties and bind in the template?
+
+        /// <summary>
+        /// Get the current vertical offset of the scroll viewer in this SelectPanel.
+        /// </summary>
+        public double VerticalOffset
+        {
+            get => sv != null ? sv.VerticalOffset : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current horizontal offset of the scroll viewer in this SelectPanel.
+        /// </summary>
+        public double HorizontalOffset
+        {
+            get => sv != null ? sv.HorizontalOffset : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current horizontal size (width) of the viewport of the content in this SelectPanel.
+        /// </summary>
+        public double ViewportWidth
+        {
+            get => sv != null ? sv.ViewportWidth : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current vertical size (height) of the viewport of the content in this SelectPanel.
+        /// </summary>
+        public double ViewportHeight
+        {
+            get => sv != null ? sv.ViewportHeight : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current horizontal size (width) of the extent of the content in this SelectPanel.
+        /// </summary>
+        public double ExtentWidth
+        {
+            get => sv != null ? sv.ExtentWidth : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current vertical size (height) of the extent of the content in this SelectPanel.
+        /// </summary>
+        public double ExtentHeight
+        {
+            get => sv != null ? sv.ExtentHeight : -1.0;
+        }
+
+        /// <summary>
+        /// Occurs when changes are detected in the scroll position, extent, or viewport size.
+        /// </summary>
+#if NETCOREAPP
+        public event ScrollChangedEventHandler? ScrollChanged;
+#else
+        public event ScrollChangedEventHandler ScrollChanged;
+#endif
+
+        private void Sv_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            ScrollChanged?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Scroll vertically to beginning (top edge) of the content.
+        /// </summary>
+        public void ScrollToTop()
+        {
+            sv?.ScrollToTop();
+        }
+
+        /// <summary>
+        /// Scroll vertically to end (bottom edge) of the content.
+        /// </summary>
+        public void ScrollToBottom()
+        {
+            sv?.ScrollToBottom();
+        }
+
+        /// <summary>
+        /// Scroll horizontally to the left edge of the content.
+        /// </summary>
+        public void ScrollToLeftEnd()
+        {
+            sv?.ScrollToLeftEnd();
+        }
+
+        /// <summary>
+        /// Scroll horizontally to the right edge of the content.
+        /// </summary>
+        public void ScrollToRightEnd()
+        {
+            sv?.ScrollToRightEnd();
+        }
+
+        /// <summary>
+        /// Scroll the content to the specified vertical offset position.
+        /// </summary>
+        /// <param name="offset">the offset value to scroll to</param>
+        public void ScrollToVerticalOffset(double offset)
+        {
+            sv?.ScrollToVerticalOffset(offset);
+        }
+
+        /// <summary>
+        /// Scroll the content to the specified horizontal offset position.
+        /// </summary>
+        /// <param name="offset">the offset value to scroll to</param>
+        public void ScrollToHorizontalOffset(double offset)
+        {
+            sv?.ScrollToHorizontalOffset(offset);
+        }
 
         #endregion
 
