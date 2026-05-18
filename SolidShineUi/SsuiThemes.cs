@@ -501,7 +501,7 @@ namespace SolidShineUi
             Color selDarkColor = ColorsHelper.CreateFromHex("7aa3cc");
 
             LinearGradientBrush selectedBrush = (accentColor.HasValue ?
-                new LinearGradientBrush(new GradientStopCollection
+                new LinearGradientBrush(new GradientStopCollection // with accent color
                 (
                     new List<GradientStop>()
                     {
@@ -511,7 +511,7 @@ namespace SolidShineUi
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.9d), 1.0d),
                     }
                 ), 90.0d) : 
-                new LinearGradientBrush(new GradientStopCollection
+                new LinearGradientBrush(new GradientStopCollection // no accent color
                 (
                     new List<GradientStop>()
                     {

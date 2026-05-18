@@ -229,7 +229,8 @@ namespace SolidShineUi
         /// <param name="backColor">The color that is the background or base (that is being blended onto).</param>
         /// <param name="amount">
         /// How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
-        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between the two colors, and 1 leaves only the new color (blended in 100%).
+        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between
+        /// the two colors, and 1 leaves only the new color (blended in 100%).
         /// </param>
         /// <returns>The color that is the result of blending the two colors together.</returns>
         /// <remarks>
@@ -254,7 +255,8 @@ namespace SolidShineUi
         /// <param name="backColor">The color that is the background or base (that is being blended onto).</param>
         /// <param name="amount">
         /// How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
-        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between the two colors, and 1 leaves only the new color (blended in 100%).
+        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between 
+        /// the two colors, and 1 leaves only the new color (blended in 100%).
         /// </param>
         /// <param name="gamma">The gamma correction value to use while blending (for the sRGB color space, use 2.2).</param>
         /// <returns>The color that is the result of blending the two colors together.</returns>
@@ -300,10 +302,12 @@ namespace SolidShineUi
         /// <returns>A new grayscale Color based upon the inputted Color.</returns>
         public static Color ToGrayscale(this Color col)
         {
+            // gamma compression
             double gamma = 2.2;
             double r2 = Math.Pow(col.R / 255.0, 1.0 / gamma);
             double g2 = Math.Pow(col.G / 255.0, 1.0 / gamma);
             double b2 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+            // adding with coefficients and then gammaifying it
             byte val = (byte)Math.Round(Math.Pow((0.2126 * r2) + (0.7152 * g2) + (0.0722 * b2), gamma) * 255);
             return Color.FromRgb(val, val, val);
         }
