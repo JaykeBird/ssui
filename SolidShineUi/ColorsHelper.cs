@@ -591,9 +591,9 @@ namespace SolidShineUi
         /// <param name="luminance">The luminance (also known as lightness) value of the color.</param>
         public static void ToHSL(Color color, out double hue, out double saturation, out double luminance)
         {
-            double r = Convert.ToDouble(color.R);
-            var g = Convert.ToDouble(color.G);
-            var b = Convert.ToDouble(color.B);
+            double r = Convert.ToDouble(color.R) / 255;
+            double g = Convert.ToDouble(color.G) / 255;
+            double b = Convert.ToDouble(color.B) / 255;
 
             var min = Math.Min(r, Math.Min(g, b));
             var max = Math.Max(r, Math.Max(g, b));
@@ -628,7 +628,7 @@ namespace SolidShineUi
                 hue += 360;
             }
 
-            luminance = ((1 / 2) * (max + min)) / 255;
+            luminance = 0.5d * (max + min); // / 255d; // these needs to be doubles
 
 
             if (CheckEqualViaEpsilon(luminance, 0) || CheckEqualViaEpsilon(luminance, 1))
@@ -637,7 +637,7 @@ namespace SolidShineUi
             }
             else
             {
-                saturation = delta / (255 * (1 - Math.Abs((2 * luminance) - 1)));
+                saturation = delta / (1 - Math.Abs((2 * luminance) - 1));
             }
 
             bool CheckEqualViaEpsilon(double val1, double val2)
