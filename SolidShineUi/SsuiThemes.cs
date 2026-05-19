@@ -523,18 +523,40 @@ namespace SolidShineUi
                 ), 90.0d)
             );
 
+            LinearGradientBrush mainHighlightBrush = (accentColor.HasValue ? 
+                new LinearGradientBrush(new GradientStopCollection // with accent color
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F4F4F4"), accentColor.Value, 0.8d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("E4E4E4"), accentColor.Value, 0.8d), 1.0d),
+                    }
+                ), 90.0d):
+                new LinearGradientBrush(new GradientStopCollection // no accent color
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(ColorsHelper.CreateFromHex("E9F2FC"), 0.0d),
+                        new GradientStop(ColorsHelper.CreateFromHex("CCE3F9"), 1.0d),  // DDECFC
+                    }
+                ), 90.0d));
+
             Color highlightLight = ColorsHelper.CreateFromHex("ebf0f6");
             Color highlightBase = ColorsHelper.CreateFromHex("d4e4f5");
-            Color clickDark = ColorsHelper.CreateFromHex("b9daf8");
-            Color highlightBorder = ColorsHelper.CreateFromHex("85c2f7");
+            Color clickLight = ColorsHelper.CreateFromHex("b9daf8");
+            Color clickDark = ColorsHelper.CreateFromHex("4095D6");
+            Color highlightBorder = ColorsHelper.CreateFromHex("85c2f7"); // 7EB4EA
+            Color checkBkgdHighlight = ColorsHelper.CreateFromHex("F3F9FF");
 
             if (accentColor.HasValue)
             {
                 // use the grayscale versions of the colors above, to avoid the accent colors end up with a blue tint
                 highlightLight = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("efefef"), accentColor.Value, 0.6d);
                 highlightBase = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("e2e2e2"), accentColor.Value, 0.7d);
-                clickDark = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("d5d5d5"), accentColor.Value, 0.7d);
+                clickLight = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("d5d5d5"), accentColor.Value, 0.7d);
+                clickDark = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("848484"), accentColor.Value, 0.7d);
                 highlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "b7b7b7"), accentColor.Value, 0.6d);
+                checkBkgdHighlight = ColorsHelper.BlendWithGamma(Colors.White, accentColor.Value, 0.8d);
             }
 
             Color windowTitleBar = accentColor ?? highlightBase;
@@ -545,11 +567,13 @@ namespace SolidShineUi
             Color nearWhiteBlue2 = ColorsHelper.CreateFromHex("eff4f7"); //ColorsHelper.CreateFromHex("e7eef8");
 
             LinearGradientBrush menuHighlight = BrushFactory.Create(highlightLight, highlightBase, 90);
-            LinearGradientBrush menuClick = BrushFactory.Create(highlightBase, clickDark, 90);
+            LinearGradientBrush menuClick = BrushFactory.Create(highlightBase, clickLight, 90);
 
             // TODO: figure out what the MenuHighlight color is and store that here
             // then, utilize the color blending systems used in SsuiTheme's constructor to
             // create new colors for highlight
+
+            // menu highlight brush: 0078D7
 
             SsuiAppTheme ssat = new SsuiAppTheme()
             {
@@ -562,11 +586,13 @@ namespace SolidShineUi
                 ControlPopBrush = clickDark.ToBrush(),
                 ControlSatBrush = SystemColors.ControlLightBrush,
                 CheckBrush = SystemColors.ControlTextBrush,
-                ClickBrush = SystemColors.MenuHighlightBrush,
+                CheckHighlightBrush = BrushFactory.Create("001644"),
+                CheckBackgroundHighlightBrush = checkBkgdHighlight.ToBrush(),
+                ClickBrush = clickLight.ToBrush(),
                 SelectedBackgroundBrush = (accentColor.HasValue ? baseChromeBrush : selectedBrush),
                 SelectedBorderBrush = (accentColor.HasValue ? accentColor.Value.ToBrush() : BrushFactory.Create("3399FF")),
                 SelectedForeground = SystemColors.ControlTextBrush,
-                HighlightBrush = highlightBase.ToBrush(),
+                HighlightBrush = mainHighlightBrush,
                 HighlightBorderBrush = highlightBorder.ToBrush(),
                 HighlightForeground = Colors.Black.ToBrush(),
                 DisabledBackground = lightGray.ToBrush(),
