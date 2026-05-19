@@ -344,11 +344,20 @@ namespace SolidShineUi
                     double b2 = Math.Pow(col.B / 255.0, 1.0 / gamma);
                     val = (byte)Math.Round(Math.Pow((0.2126 * r2) + (0.7152 * g2) + (0.0722 * b2), gamma) * 255);
                     break;
+                case ColorGrayscaleMethod.Rec2020:
+                    double r3 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+                    double g3 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+                    double b3 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+                    val = (byte)Math.Round(Math.Pow((0.2627 * r3) + (0.678 * g3) + (0.0593 * b3), gamma) * 255);
+                    break;
                 case ColorGrayscaleMethod.Rec601_NoGamma:
                     val = (byte)((0.299 * col.R) + (0.587 * col.G) + (0.114 * col.B));
                     break;
                 case ColorGrayscaleMethod.Rec709_NoGamma:
                     val = (byte)((0.2126 * col.R) + (0.7152 * col.G) + (0.0722 * col.B));
+                    break;
+                case ColorGrayscaleMethod.Rec2020_NoGamma:
+                    val = (byte)((0.2627 * col.R) + (0.678 * col.G) + (0.0593 * col.B));
                     break;
                 case ColorGrayscaleMethod.Desaturate:
                     ToHSV(col, out double h, out double _, out double v);
@@ -935,22 +944,31 @@ namespace SolidShineUi
         /// </summary>
         Rec709 = 2,
         /// <summary>
-        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 601 and no gamma compression.
+        /// Use the luma coefficients in ITU-R Recommendation 2020, which is meant for colors with 10-bit depth, and thus
+        /// may not produce the most accurate results within the sRGB color space.
         /// </summary>
-        Rec601_NoGamma = 3,
+        Rec2020 = 3,
         /// <summary>
         /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 601 and no gamma compression.
         /// </summary>
-        Rec709_NoGamma = 4,
+        Rec601_NoGamma = 4,
+        /// <summary>
+        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 601 and no gamma compression.
+        /// </summary>
+        Rec709_NoGamma = 5,
+        /// <summary>
+        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 2020 and no gamma compression.
+        /// </summary>
+        Rec2020_NoGamma = 6,
         /// <summary>
         /// Use the HSV values of the color, and change the saturation to 0. While this results in a grayscale color,
         /// the end results may look a bit unexpected.
         /// </summary>
-        Desaturate = 5,
+        Desaturate = 7,
         /// <summary>
         /// Use only the luminance value from the HSL values of the color. While this results in a grayscale color,
         /// the end results may look a bit unexpected.
         /// </summary>
-        Luminance = 6,
+        Luminance = 8,
     }
 }

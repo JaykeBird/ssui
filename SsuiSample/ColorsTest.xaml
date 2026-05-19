@@ -37,8 +37,10 @@
                     <ComboBoxItem>Grayscale (Flat)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Rec 601)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Rec 709)</ComboBoxItem>
+                    <ComboBoxItem>Grayscale (Rec 2020)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Rec 601, no gamma)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Rec 709, no gamma)</ComboBoxItem>
+                    <ComboBoxItem>Grayscale (Rec 2020, no gamma)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Desaturate)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Luminance)</ComboBoxItem>
                     <ComboBoxItem>Convert to Pure Hue</ComboBoxItem>
