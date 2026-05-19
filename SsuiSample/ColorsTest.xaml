@@ -40,6 +40,7 @@
                     <ComboBoxItem>Grayscale (Rec 601, no gamma)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Rec 709, no gamma)</ComboBoxItem>
                     <ComboBoxItem>Grayscale (Desaturate)</ComboBoxItem>
+                    <ComboBoxItem>Grayscale (Luminance)</ComboBoxItem>
                     <ComboBoxItem>Convert to Pure Hue</ComboBoxItem>
                     <ComboBoxItem>Blend 25%</ComboBoxItem>
                     <ComboBoxItem>Blend 50%</ComboBoxItem>
@@ -49,6 +50,7 @@
                     <ComboBoxItem>Blend 75%, no gamma</ComboBoxItem>
                     <ComboBoxItem>Convert to HSV and Back</ComboBoxItem>
                     <ComboBoxItem>Convert to HSL and Back</ComboBoxItem>
+                    <ComboBoxItem>Multiply by 2</ComboBoxItem>
                 </ComboBox>
                 <TextBlock Text="Blend color:" Margin="0,6,0,0"/>
                 <utils:ColorSwatchButton Margin="0,4" Color="White" x:Name="btnColor" Click="btnColor_Click" />

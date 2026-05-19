@@ -122,46 +122,52 @@ namespace SsuiSample
                     RunCalculation((c) => c.ToGrayscale(ColorGrayscaleMethod.Rec709_NoGamma));
                     break;
                 case 6: //<ComboBoxItem>Grayscale (Desaturate)</ComboBoxItem>
-                    RunCalculation((c) => c.ToGrayscale(ColorGrayscaleMethod.RemoveSaturation));
+                    RunCalculation((c) => c.ToGrayscale(ColorGrayscaleMethod.Desaturate));
                     break;
-                case 7: //<ComboBoxItem>Convert to Pure Hue</ComboBoxItem>
+                case 7:
+                    RunCalculation((c) => c.ToGrayscale(ColorGrayscaleMethod.Luminance));
+                    break;
+                case 8: //<ComboBoxItem>Convert to Pure Hue</ComboBoxItem>
                     RunCalculation((c) =>
                     {
                         ColorsHelper.ToHSV(c, out double h, out double _, out double _);
-                        return ColorsHelper.CreateFromHSV(h, 0, 0);
+                        return ColorsHelper.CreateFromHSV(h, 1, 1);
                     });
                     break;
-                case 8: //<ComboBoxItem>Blend 25%</ComboBoxItem>
+                case 9: //<ComboBoxItem>Blend 25%</ComboBoxItem>
                     RunCalculation((c) => ColorsHelper.BlendWithGamma(btnColor.Color, c, 0.25));
                     break;
-                case 9: //<ComboBoxItem>Blend 50%</ComboBoxItem>
+                case 10: //<ComboBoxItem>Blend 50%</ComboBoxItem>
                     RunCalculation((c) => ColorsHelper.BlendWithGamma(btnColor.Color, c, 0.5));
                     break;
-                case 10: //<ComboBoxItem>Blend 75%</ComboBoxItem>
+                case 11: //<ComboBoxItem>Blend 75%</ComboBoxItem>
                     RunCalculation((c) => ColorsHelper.BlendWithGamma(btnColor.Color, c, 0.75));
                     break;
-                case 11: //<ComboBoxItem>Blend 25%, no gamma</ComboBoxItem>
+                case 12: //<ComboBoxItem>Blend 25%, no gamma</ComboBoxItem>
                     RunCalculation((c) => ColorsHelper.Blend(btnColor.Color, c, 0.25));
                     break;
-                case 12: //<ComboBoxItem>Blend 50%, no gamma</ComboBoxItem>
+                case 13: //<ComboBoxItem>Blend 50%, no gamma</ComboBoxItem>
                     RunCalculation((c) => ColorsHelper.Blend(btnColor.Color, c, 0.5));
                     break;
-                case 13: //<ComboBoxItem>Blend 75%, no gamma</ComboBoxItem>
+                case 14: //<ComboBoxItem>Blend 75%, no gamma</ComboBoxItem>
                     RunCalculation((c) => ColorsHelper.Blend(btnColor.Color, c, 0.75));
                     break;
-                case 14: //<ComboBoxItem>Convert to HSV and Back</ComboBoxItem>
+                case 15: //<ComboBoxItem>Convert to HSV and Back</ComboBoxItem>
                     RunCalculation((c) =>
                     {
                         ColorsHelper.ToHSV(c, out double h, out double s, out double v);
                         return ColorsHelper.CreateFromHSV(h, s, v);
                     });
                     break;
-                case 15: //<ComboBoxItem>Convert to HSL and Back</ComboBoxItem>
+                case 16: //<ComboBoxItem>Convert to HSL and Back</ComboBoxItem>
                     RunCalculation((c) =>
                     {
                         ColorsHelper.ToHSL(c, out double h, out double s, out double l);
                         return ColorsHelper.CreateFromHSL(h, s, l);
                     });
+                    break;
+                case 17: //<ComboBoxItem>Multiply By 2</ComboBoxItem>
+                    RunCalculation((c) => c * 2);
                     break;
                 default:
                     break;

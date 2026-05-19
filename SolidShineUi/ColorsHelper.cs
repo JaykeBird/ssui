@@ -350,9 +350,18 @@ namespace SolidShineUi
                 case ColorGrayscaleMethod.Rec709_NoGamma:
                     val = (byte)((0.2126 * col.R) + (0.7152 * col.G) + (0.0722 * col.B));
                     break;
-                case ColorGrayscaleMethod.RemoveSaturation:
+                case ColorGrayscaleMethod.Desaturate:
                     ToHSV(col, out double h, out double _, out double v);
                     return CreateFromHSV(h, 0, v);
+                case ColorGrayscaleMethod.Luminance:
+                    double r = Convert.ToDouble(col.R) / 255;
+                    double g = Convert.ToDouble(col.G) / 255;
+                    double b = Convert.ToDouble(col.B) / 255;
+
+                    var min = Math.Min(r, Math.Min(g, b));
+                    var max = Math.Max(r, Math.Max(g, b));
+                    double luminance = 0.5d * (max + min);
+                    return CreateFromHSL(0, 0, luminance);
                 default:
                     val = (byte)((0.2126 * col.R) + (0.7152 * col.G) + (0.0722 * col.B));
                     break;
@@ -669,7 +678,7 @@ namespace SolidShineUi
             }
         }
 
-#endregion
+        #endregion
 
         #region Color Resources
 
@@ -913,8 +922,8 @@ namespace SolidShineUi
     {
         /// <summary>
         /// A simple average of the R, G, and B values of the color added together.
-        /// While this removes variance based upon weighing the B value higher than the others,
-        /// it doesn't account for human perception of how the colors should appear when turned to grayscale.
+        /// This is the most mathematically simple calculation, but it doesn't account for human perception of 
+        /// how the colors should appear when turned to grayscale, like <c>Rec601</c> or <c>Rec709</c> do.
         /// </summary>
         FlatAverage = 0,
         /// <summary>
@@ -937,6 +946,11 @@ namespace SolidShineUi
         /// Use the HSV values of the color, and change the saturation to 0. While this results in a grayscale color,
         /// the end results may look a bit unexpected.
         /// </summary>
-        RemoveSaturation = 5,
+        Desaturate = 5,
+        /// <summary>
+        /// Use only the luminance value from the HSL values of the color. While this results in a grayscale color,
+        /// the end results may look a bit unexpected.
+        /// </summary>
+        Luminance = 6,
     }
 }
