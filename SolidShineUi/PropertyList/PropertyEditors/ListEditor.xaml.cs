@@ -212,7 +212,33 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuEmptyList_Click(object sender, RoutedEventArgs e)
         {
+            MessageDialog md = new MessageDialog();
+            md.ColorScheme = _cs;
+            md.ShowDialog("Are you sure you want to replace the current list with a new empty list?", null, _parent?.GetWindow(), "Confirm Empty List", 
+                image: MessageDialogImage.Warning, buttonDisplay: MessageDialogButtonDisplay.Two, okButtonText: "Yes", cancelButtonText: "No");
 
+            if (md.DialogResult != MessageDialogResult.OK) return;
+
+            try
+            {
+                var newList = Activator.CreateInstance(typeof(List<>).MakeGenericType(_listType));
+
+                if (newList != null && newList is IList il)
+                {
+                    listVal = il;
+                    RenderListDataText();
+                    ValueChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+            catch (InvalidOperationException) { }
+            catch (MissingMethodException) { }
+            catch (NotSupportedException) { }
+            catch (TargetInvocationException) { }
+            catch (MemberAccessException) { }
+            catch (TypeLoadException) { }
+            catch (ArgumentException) { }
+            catch (System.Runtime.InteropServices.COMException) { }
+            catch (System.Runtime.InteropServices.InvalidComObjectException) { }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
