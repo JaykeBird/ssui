@@ -244,7 +244,7 @@
                         <ControlTemplate TargetType="{x:Type MenuItem}">
                             <!--Border 1-->
                             <ssut:ForeBorder x:Name="Border" Background="#01FFFFFF" BorderBrush="Transparent"
-                                    BorderThickness="1" SnapsToDevicePixels="False">
+                                    BorderThickness="1" SnapsToDevicePixels="False" CornerRadius="{Binding Path=MenuItemCornerRadius, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" >
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
@@ -372,6 +372,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -380,6 +381,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -389,6 +391,7 @@
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -398,6 +401,7 @@
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -408,6 +412,7 @@
                                     <Setter TargetName="Border" Property="BorderBrush" Value="{Binding MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
                                     <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
+                                    <Setter TargetName="Border" Property="CornerRadius" Value="0" />
                                 </MultiTrigger>
                                 <!--<Trigger Property="IsSubmenuOpen" Value="true">
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:Menu}}}"/>
@@ -492,7 +497,7 @@
                             <!--Border 1-->
                             <!-- individual menu item (top-level menu) -->
                             <ssut:ForeBorder x:Name="Border" Background="#01FFFFFF" BorderBrush="Transparent"
-                                    BorderThickness="1" SnapsToDevicePixels="False">
+                                    BorderThickness="1" SnapsToDevicePixels="False" CornerRadius="{Binding Path=MenuItemCornerRadius, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" >
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
@@ -604,6 +609,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -612,6 +618,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -620,6 +627,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
@@ -629,6 +637,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
@@ -639,6 +648,7 @@
                                     <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
+                                    <Setter TargetName="Border" Property="CornerRadius" Value="0" />
                                 </MultiTrigger>
                                 <!--<Trigger Property="IsSubmenuOpen" Value="true">
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}"/>
@@ -758,7 +768,7 @@
                             <!--Border 1-->
                             <!-- individual menu item (top-level menu) -->
                             <ssut:ForeBorder x:Name="Border" Background="#01FFFFFF" BorderBrush="Transparent"
-                                    BorderThickness="1" SnapsToDevicePixels="False">
+                                    BorderThickness="1" SnapsToDevicePixels="False" CornerRadius="{Binding Path=MenuItemCornerRadius, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}">
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
@@ -870,6 +880,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -878,6 +889,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -886,6 +898,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
@@ -893,9 +906,10 @@
                                         <Condition Property="IsHighlighted" Value="true"/>
                                         <Condition Property="Role" Value="SubmenuItem"/>
                                     </MultiTrigger.Conditions>
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
-                                    <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
-                                    <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
+                                    <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -905,6 +919,7 @@
                                     <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}"/>
                                     <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
+                                    <Setter TargetName="Border" Property="CornerRadius" Value="0" />
                                 </MultiTrigger>
                                 <!--<Trigger Property="IsSubmenuOpen" Value="true">
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:ContextMenu}}}"/>
@@ -3109,7 +3124,7 @@
                             <!--Border 1-->
                             <!-- individual menu item (top-level menu) -->
                             <ssut:ForeBorder x:Name="Border" Background="#01FFFFFF" BorderBrush="Transparent"
-                                    BorderThickness="1" SnapsToDevicePixels="False">
+                                    BorderThickness="1" SnapsToDevicePixels="False" CornerRadius="{Binding Path=MenuItemCornerRadius, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}" >
                                 <Grid x:Name="Grid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="Col0" MinWidth="20" Width="Auto"
@@ -3223,6 +3238,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
@@ -3232,6 +3248,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
@@ -3241,6 +3258,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
@@ -3250,6 +3268,7 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="Border" Property="Foreground" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{Binding HighlightSubitemBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemForegroundBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                 </MultiTrigger>
                                 <MultiTrigger>
@@ -3260,6 +3279,7 @@
                                     <Setter TargetName="Border" Property="Background" Value="{Binding MenuBackground, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="Border" Property="BorderBrush" Value="{Binding MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}"/>
                                     <Setter TargetName="Border" Property="BorderThickness" Value="0"/>
+                                    <Setter TargetName="Border" Property="CornerRadius" Value="0" />
                                 </MultiTrigger>
                                 <!--<Trigger Property="IsSubmenuOpen" Value="true">
                                     <Setter TargetName="ArrowPanelPath" Property="Fill" Value="{Binding HighlightSubitemBrush, RelativeSource={RelativeSource AncestorType={x:Type simply:ContentControlWithMenu}}}"/>

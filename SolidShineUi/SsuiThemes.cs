@@ -551,7 +551,8 @@ namespace SolidShineUi
             Color highlightBase = ColorsHelper.CreateFromHex("d4e4f5");
             Color clickLight = ColorsHelper.CreateFromHex("b9daf8");
             Color clickDark = ColorsHelper.CreateFromHex("4095D6");
-            Color highlightBorder = ColorsHelper.CreateFromHex("3C7FB1"); // (r:60, g:127, b:177); // ColorsHelper.CreateFromHex("85c2f7"); // 7EB4EA
+            Color highlightBorder = ColorsHelper.CreateFromHex("3C7FB1"); // (r:60, g:127, b:177); 
+            Color menuHighlightBorder = ColorsHelper.CreateFromHex("85c2f7"); // 7EB4EA
             Color checkBkgdHighlight = ColorsHelper.CreateFromHex("F3F9FF");
 
             if (accentColor.HasValue)
@@ -562,6 +563,7 @@ namespace SolidShineUi
                 clickLight = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("d5d5d5"), accentColor.Value, 0.7d);
                 clickDark = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("848484"), accentColor.Value, 0.7d);
                 highlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "727272"), accentColor.Value, 0.6d);
+                menuHighlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "b7b7b7"), accentColor.Value, 0.6d);
                 checkBkgdHighlight = ColorsHelper.BlendWithGamma(Colors.White, accentColor.Value, 0.8d);
             }
 
@@ -638,6 +640,7 @@ namespace SolidShineUi
 
             ssat.SubitemTheme.HighlightBrush = menuHighlight;
             ssat.SubitemTheme.HighlightForeground = Colors.Black.ToBrush();
+            ssat.SubitemTheme.HighlightBorderBrush = menuHighlightBorder.ToBrush();
             ssat.SubitemTheme.ClickBrush = menuClick;
 
             return ssat;
