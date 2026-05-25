@@ -457,7 +457,7 @@ namespace SolidShineUi
         /// </summary>
         public static SsuiAppTheme AeroTheme
         {     
-            get => CreateAeroTheme(new CornerRadius(3)); 
+            get => CreateAeroTheme(new CornerRadius(2)); 
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="cornerRadius">
         /// set the radius of the corners of various controls;
-        /// use uniform "3" for the Windows Vista/7 appearance, or "0" for a Windows 8 appearance
+        /// use uniform "2" for the Windows Vista/7 appearance, or "0" for a Windows 8 appearance
         /// </param>
         /// <param name="accentColor">the accent color to use, if any, to color/tint the theme</param>
         /// <returns></returns>
@@ -489,10 +489,10 @@ namespace SolidShineUi
                 (
                     new List<GradientStop>()
                     {
-                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.7d), 0.0d),
-                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.7d), 0.5d),
-                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.7d), 0.5d),
-                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.7d), 1.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.6d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.6d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.6d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.6d), 1.0d),
                     }
                 ), 90.0d) : baseChromeBrush
             );
@@ -529,6 +529,8 @@ namespace SolidShineUi
                     new List<GradientStop>()
                     {
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F4F4F4"), accentColor.Value, 0.8d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.8d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.8d), 0.5d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("E4E4E4"), accentColor.Value, 0.8d), 1.0d),
                     }
                 ), 90.0d):
@@ -536,16 +538,21 @@ namespace SolidShineUi
                 (
                     new List<GradientStop>()
                     {
-                        new GradientStop(ColorsHelper.CreateFromHex("E9F2FC"), 0.0d),
-                        new GradientStop(ColorsHelper.CreateFromHex("CCE3F9"), 1.0d),  // DDECFC
+                        new GradientStop(Color.FromRgb(234,246,253), 0.0d),
+                        new GradientStop(Color.FromRgb(217,240,252), 0.5d),
+                        new GradientStop(Color.FromRgb(190,230,253), 0.5d),
+                        new GradientStop(Color.FromRgb(167,217,245), 1.0d),
                     }
                 ), 90.0d));
+
+            // TODO: create gradient click brush
 
             Color highlightLight = ColorsHelper.CreateFromHex("ebf0f6");
             Color highlightBase = ColorsHelper.CreateFromHex("d4e4f5");
             Color clickLight = ColorsHelper.CreateFromHex("b9daf8");
             Color clickDark = ColorsHelper.CreateFromHex("4095D6");
-            Color highlightBorder = ColorsHelper.CreateFromHex("85c2f7"); // 7EB4EA
+            Color highlightBorder = ColorsHelper.CreateFromHex("3C7FB1"); // (r:60, g:127, b:177); 
+            Color menuHighlightBorder = ColorsHelper.CreateFromHex("85c2f7"); // 7EB4EA
             Color checkBkgdHighlight = ColorsHelper.CreateFromHex("F3F9FF");
 
             if (accentColor.HasValue)
@@ -555,23 +562,21 @@ namespace SolidShineUi
                 highlightBase = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("e2e2e2"), accentColor.Value, 0.7d);
                 clickLight = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("d5d5d5"), accentColor.Value, 0.7d);
                 clickDark = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("848484"), accentColor.Value, 0.7d);
-                highlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "b7b7b7"), accentColor.Value, 0.6d);
+                highlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "727272"), accentColor.Value, 0.6d);
+                menuHighlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "b7b7b7"), accentColor.Value, 0.6d);
                 checkBkgdHighlight = ColorsHelper.BlendWithGamma(Colors.White, accentColor.Value, 0.8d);
             }
 
             Color windowTitleBar = accentColor ?? highlightBase;
 
-            Color offWhite = ColorsHelper.CreateFromHex("F6F6F6");
+            Color offWhite = ColorsHelper.CreateFromHex("F8F8F8");
             Color lightGray = ColorsHelper.CreateFromHex("F1F1F1");
             Color nearWhiteBlue = ColorsHelper.CreateFromHex("fafbfc");
             Color nearWhiteBlue2 = ColorsHelper.CreateFromHex("eff4f7"); //ColorsHelper.CreateFromHex("e7eef8");
 
+            // TODO: make menuHighlight pop a little bit more
             LinearGradientBrush menuHighlight = BrushFactory.Create(highlightLight, highlightBase, 90);
             LinearGradientBrush menuClick = BrushFactory.Create(highlightBase, clickLight, 90);
-
-            // TODO: figure out what the MenuHighlight color is and store that here
-            // then, utilize the color blending systems used in SsuiTheme's constructor to
-            // create new colors for highlight
 
             // menu highlight brush: 0078D7
 
@@ -635,6 +640,7 @@ namespace SolidShineUi
 
             ssat.SubitemTheme.HighlightBrush = menuHighlight;
             ssat.SubitemTheme.HighlightForeground = Colors.Black.ToBrush();
+            ssat.SubitemTheme.HighlightBorderBrush = menuHighlightBorder.ToBrush();
             ssat.SubitemTheme.ClickBrush = menuClick;
 
             return ssat;

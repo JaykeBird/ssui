@@ -214,15 +214,26 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (md.DialogResult != MessageDialogResult.OK) return;
 
-            // TODO: look into exceptions to handle
-            var newList = Activator.CreateInstance(typeof(List<>).MakeGenericType(_listType));
-
-            if (newList != null && newList is IList il)
+            try
             {
-                listVal = il;
-                RenderListDataText();
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                var newList = Activator.CreateInstance(typeof(List<>).MakeGenericType(_listType));
+
+                if (newList != null && newList is IList il)
+                {
+                    listVal = il;
+                    RenderListDataText();
+                    ValueChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
+            catch (InvalidOperationException) { }
+            catch (MissingMethodException) { }
+            catch (NotSupportedException) { }
+            catch (TargetInvocationException) { }
+            catch (MemberAccessException) { }
+            catch (TypeLoadException) { }
+            catch (ArgumentException) { }
+            catch (System.Runtime.InteropServices.COMException) { }
+            catch (System.Runtime.InteropServices.InvalidComObjectException) { }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
