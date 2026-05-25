@@ -318,11 +318,11 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="HighlightBorderBrush"/>. See that related property for details.</summary>
         public static readonly DependencyProperty HighlightBorderBrushProperty = DependencyProperty.Register(
-            nameof(HighlightBorderBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(ColorsHelper.DarkerGray)));
+            nameof(HighlightBorderBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(Brushes.Transparent));
 
         /// <summary>The backing dependency property for <see cref="HighlightSubitemBorderBrush"/>. See that related property for details.</summary>
         public static readonly DependencyProperty HighlightSubitemBorderBrushProperty = DependencyProperty.Register(
-            nameof(HighlightSubitemBorderBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(ColorsHelper.DarkerGray)));
+            nameof(HighlightSubitemBorderBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(Brushes.Transparent));
 
         /// <summary>The backing dependency property for <see cref="MenuItemCornerRadius"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MenuItemCornerRadiusProperty = DependencyProperty.Register(
@@ -598,7 +598,7 @@ namespace SolidShineUi
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.SubitemTheme);
                     ApplyThemeBinding(HighlightForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.SubitemTheme);
                     ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.SubitemTheme);
-                    ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, sat.SubitemTheme);
+                    // ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, sat.SubitemTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.SubitemTheme);
 
                     ApplyTheme(useAccentTheme ? sat.AccentTheme : ssuiTheme);
@@ -608,7 +608,7 @@ namespace SolidShineUi
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty, sat.AccentTheme);
                     ApplyThemeBinding(HighlightForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.AccentTheme);
                     ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty, sat.AccentTheme);
-                    ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, sat.AccentTheme);
+                    // ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, sat.AccentTheme);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, sat.AccentTheme);
 
                     ApplyTheme(sat.AccentTheme);
@@ -618,7 +618,7 @@ namespace SolidShineUi
                     ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty);
                     ApplyThemeBinding(HighlightForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty);
                     ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty);
-                    ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty);
+                    // ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty);
                     ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty);
 
                     ApplyTheme(ssuiTheme);
@@ -629,7 +629,7 @@ namespace SolidShineUi
                 ApplyThemeBinding(HighlightSubitemBrushProperty, SsuiTheme.HighlightBrushProperty);
                 ApplyThemeBinding(HighlightForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty);
                 ApplyThemeBinding(HighlightSubitemForegroundBrushProperty, SsuiTheme.HighlightForegroundProperty);
-                ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty);
+                // ApplyThemeBinding(HighlightSubitemBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty);
                 ApplyThemeBinding(CheckedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty);
                 ApplyThemeBinding(BackgroundProperty, SsuiTheme.BaseBackgroundProperty);
 
@@ -644,7 +644,7 @@ namespace SolidShineUi
                 ApplyThemeBinding(MenuBackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
-                ApplyThemeBinding(HighlightBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                // ApplyThemeBinding(HighlightBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
                 ApplyThemeBinding(MenuItemCornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
                 ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
             }
