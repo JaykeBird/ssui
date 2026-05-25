@@ -123,6 +123,7 @@
             <local:CheckBoxTest x:Name="checkBoxTest" Visibility="Collapsed" />
             <local:ColorsTest x:Name="colorsTest" Visibility="Collapsed" />
             <local:ContentControlWithMenuTest x:Name="contentTest" Visibility="Collapsed" />
+            <local:CsvLineTest x:Name="csvTest" Visibility="Collapsed" />
             <local:DialogsTest x:Name="dialogsTest" Visibility="Collapsed" />
             <local:FileSelectTest x:Name="fileSelectTest" Visibility="Collapsed" />
             <local:FlatWindowTest x:Name="flatWindowTest" Visibility="Collapsed" />
