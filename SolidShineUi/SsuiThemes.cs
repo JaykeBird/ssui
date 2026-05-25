@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -454,6 +455,8 @@ namespace SolidShineUi
 
         /// <summary>
         /// Create a SsuiAppTheme that is inspired by the Aero theme of Windows Vista and Windows 7.
+        /// <para/>
+        /// This is still being designed, and will be finalized in version 2.1.
         /// </summary>
         public static SsuiAppTheme AeroTheme
         {     
@@ -463,13 +466,14 @@ namespace SolidShineUi
         /// <summary>
         /// Create a SsuiAppTheme that is inspired by the Aero theme of Windows Vista and Windows 7,
         /// with the ability to set an accent color that can be used to tint the controls.
+        /// <para/>
+        /// This is still being designed, and will be finalized in version 2.1.
         /// </summary>
         /// <param name="cornerRadius">
         /// set the radius of the corners of various controls;
         /// use uniform "2" for the Windows Vista/7 appearance, or "0" for a Windows 8 appearance
         /// </param>
         /// <param name="accentColor">the accent color to use, if any, to color/tint the theme</param>
-        /// <returns></returns>
         public static SsuiAppTheme CreateAeroTheme(CornerRadius cornerRadius, Color? accentColor = null)
         {
             LinearGradientBrush baseChromeBrush = new LinearGradientBrush(new GradientStopCollection
@@ -574,11 +578,10 @@ namespace SolidShineUi
             Color nearWhiteBlue = ColorsHelper.CreateFromHex("fafbfc");
             Color nearWhiteBlue2 = ColorsHelper.CreateFromHex("eff4f7"); //ColorsHelper.CreateFromHex("e7eef8");
 
-            // TODO: make menuHighlight pop a little bit more
             LinearGradientBrush menuHighlight = BrushFactory.Create(highlightLight, highlightBase, 90);
             LinearGradientBrush menuClick = BrushFactory.Create(highlightBase, clickLight, 90);
 
-            // menu highlight brush: 0078D7
+            // System theme menu highlight brush: 0078D7
 
             SsuiAppTheme ssat = new SsuiAppTheme()
             {
@@ -645,5 +648,6 @@ namespace SolidShineUi
 
             return ssat;
         }
+
     }
 }
