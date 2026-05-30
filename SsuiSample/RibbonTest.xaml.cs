@@ -13,7 +13,7 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for RibbonTest.xaml
     /// </summary>
-    public partial class RibbonTest : UserControl
+    public partial class RibbonTest : ThemedUserControl
     {
         public RibbonTest()
         {

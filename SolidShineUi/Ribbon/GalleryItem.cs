@@ -14,7 +14,7 @@ namespace SolidShineUi.Ribbon
     /// <summary>
     /// A control to display content, for usage within a <see cref="Gallery"/>.
     /// </summary>
-    public class GalleryItem : ContentControl, IClickSelectableControl
+    public class GalleryItem : ThemedContentControl, IClickSelectableControl
     {
         static GalleryItem()
         {
@@ -123,6 +123,17 @@ namespace SolidShineUi.Ribbon
                 ClickBrush = cs.ThirdHighlightColor.ToBrush();
             }
         }
+        #endregion
+
+        #region SsuiTheme
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+        }
+
         #endregion
 
         #region Gallery Item Appearance

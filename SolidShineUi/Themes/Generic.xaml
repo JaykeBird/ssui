@@ -2703,20 +2703,22 @@
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="TransparentBack" Value="True" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderSelectionThickness" Value="1" />
         <Setter Property="Padding" Value="4,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:RibbonButton}">
-                    <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                    <ssut:ForeBorder x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
+                        <ssut:ForeBorder.Style>
+                            <Style TargetType="ssut:ForeBorder">
+                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             </Style>
-                        </Border.Style>
+                        </ssut:ForeBorder.Style>
 
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                             <Grid x:Name="btn_Cc" Margin="{TemplateBinding Padding}" >
@@ -2752,7 +2754,7 @@
                                 </Rectangle.Style>
                             </Rectangle>
                         </Grid>
-                    </Border>
+                    </ssut:ForeBorder>
                     <ControlTemplate.Triggers>
                         <!-- button element size states -->
                         <MultiTrigger>
@@ -2852,6 +2854,10 @@
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <!-- other triggers from FlatButton -->
+                        <Trigger Property="TransparentBack" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="#01000000" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="#01000000" />
+                        </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsEnabled" Value="False" />
@@ -2882,16 +2888,37 @@
                                 <Condition Property="IsSelected" Value="True" />
                                 <Condition Property="IsMouseOver" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=SelectedForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                         <Trigger Property="IsMouseOver" Value="True" >
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="HighlightOnKeyboardFocus" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsStylusOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <!--<Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>-->
                         <Trigger Property="IsMouseDown" Value="True">
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True" >
                             <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
@@ -2907,20 +2934,22 @@
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="TransparentBack" Value="True" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderSelectionThickness" Value="1" />
         <Setter Property="Padding" Value="4,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:RibbonMenuButton}">
-                    <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
-                        <Border.Style>
+                    <ssut:ForeBorder x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
+                        <ssut:ForeBorder.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <!--<Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />-->
                             </Style>
-                        </Border.Style>
+                        </ssut:ForeBorder.Style>
 
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                             <Grid x:Name="btn_Cc" Margin="{TemplateBinding Padding}" >
@@ -2967,8 +2996,12 @@
                                 </Rectangle.Style>
                             </Rectangle>
                         </Grid>
-                    </Border>
+                    </ssut:ForeBorder>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="TransparentBack" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="#01000000" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="#01000000" />
+                        </Trigger>
                         <!-- button element size states -->
                         <Trigger Property="ShowMenuArrow" Value="False">
                             <Trigger.Setters>
@@ -3192,7 +3225,7 @@
                             <RowDefinition Height="32" x:Name="rowLargeMain" />
                             <RowDefinition Height="34" x:Name="rowLargeMenu" />
                         </Grid.RowDefinitions>
-                        <flat:FlatButton x:Name="PART_Main"
+                        <ssut:TemplateButton x:Name="PART_Main"
                                          TransparentBack="{Binding Path=TransparentBack, RelativeSource={RelativeSource TemplatedParent}}"
                                          Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"    
                                          HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
@@ -3214,8 +3247,8 @@
                                 <Image x:Name="Part_LargeIcon" Grid.Row="0" Source="{TemplateBinding LargeIcon}" Width="32" Height="32" HorizontalAlignment="Center" />
                                 <TextBlock x:Name="Part_SmallTitle" Grid.Column="2" Text="{TemplateBinding Title}" VerticalAlignment="Center" />
                             </Grid>
-                        </flat:FlatButton>
-                        <flat:FlatButton Margin="0" Padding="0" x:Name="PART_Menu"
+                        </ssut:TemplateButton>
+                        <ssut:TemplateButton Margin="0" Padding="0" x:Name="PART_Menu"
                                          TransparentBack="{Binding Path=TransparentBack, RelativeSource={RelativeSource TemplatedParent}}"
                                          Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"    
                                          HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
@@ -3236,7 +3269,7 @@
                                                   LineHeight="14px" LineStackingStrategy="BlockLineHeight" Margin="1,1,0,0" Grid.Row="2"
                                                   PathFill="{TemplateBinding Foreground}" PathStroke="{TemplateBinding Foreground}" PathData="M0,0 L4,0 2,3 z" />
                             </StackPanel>
-                        </flat:FlatButton>
+                        </ssut:TemplateButton>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <!-- button element size states -->
@@ -3467,6 +3500,10 @@
         <Setter Property="Height" Value="24" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Focusable" Value="True" />
+        <Setter Property="Background" Value="#01000000" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ribbon:RibbonCheckBox" >
@@ -3482,46 +3519,37 @@
                             </Border.InputBindings>
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="Background" Value="{Binding Path=CheckBackground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                                    <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                                    <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                                    <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                                    <Setter Property="Background" Value="{Binding Path=CheckBackground, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" Value="True">
-                                            <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                                        <DataTrigger Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                            <Setter Property="BorderThickness" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </DataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}, Path=OnlyAllowCheckBoxClick}" Value="True" />
-                                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}, TargetNullValue=False}" Value="False" />
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=OnlyAllowCheckBoxClick}" Value="True" />
                                             </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter Property="BorderBrush" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
-                                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" Value="True" />
-                                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}, TargetNullValue=False}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Background" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                                            <Setter Property="BorderBrush" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <Grid>
-                                <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                            <Grid Background="Transparent" x:Name="gridBkgd" >
+                                <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
+                                      Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
                                     <Path.Style>
                                         <Style TargetType="Path">
-                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource TemplatedParent}}" />
                                             <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" Value="True" />
-                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" Value="False" />
+                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True" />
+                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="False" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </MultiDataTrigger>
@@ -3532,13 +3560,13 @@
                                 <Rectangle x:Name="markInd" Fill="Black" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" >
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                                            <Setter Property="Fill" Value="{Binding Path=CheckForeground, RelativeSource={RelativeSource TemplatedParent}}" />
                                             <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" Value="True" />
-                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" Value="True" />
+                                                        <Condition Binding="{Binding IsChecked, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True" />
+                                                        <Condition Binding="{Binding IsIndeterminate, Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Value="True" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </MultiDataTrigger>
@@ -3546,6 +3574,19 @@
                                         </Style>
                                     </Rectangle.Style>
                                 </Rectangle>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=OnlyAllowCheckBoxClick}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Background" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
                             </Grid>
                         </Border>
                         <TextBlock x:Name="cc" VerticalAlignment="Center" Grid.Column="2">
@@ -3562,19 +3603,13 @@
                     <ControlTemplate.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
                                 <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=Self}}" Value="False" />
-                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="False" />
                             </MultiDataTrigger.Conditions>
-                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="True" />
-                                <Condition Binding="{Binding Path=OnlyAllowCheckBoxClick, RelativeSource={RelativeSource Mode=Self}}" Value="False" />
-                                <Condition Binding="{Binding Path=ColorScheme.IsHighContrast, RelativeSource={RelativeSource Mode=Self}, TargetNullValue=False}" Value="True" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Background" TargetName="gridBkgd" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -3591,15 +3626,15 @@
                             <Setter Property="Visibility" TargetName="cc" Value="Collapsed" />
                         </MultiDataTrigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Focusable" Value="False" />
                             <Setter Property="Opacity" TargetName="cc" Value="0.6" />
-                            <Setter Property="Background" TargetName="brdrChk" Value="{Binding Path=BackgroundDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
-                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                            <Setter Property="Background" TargetName="gridBkgd" Value="{Binding Path=BackgroundDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="brdrChk" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markCheck" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter Property="Fill" TargetName="markInd" Value="{Binding Path=CheckDisabledBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

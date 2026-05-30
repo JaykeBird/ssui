@@ -2,13 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Markup;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace SolidShineUi.Ribbon
@@ -17,7 +14,7 @@ namespace SolidShineUi.Ribbon
     /// A control that displays two buttons: a main button on the left which activates like a normal button, 
     /// and a secondary button that is attached and that displays a menu of additional options.
     /// </summary>
-    public class RibbonSplitButton : Control, IRibbonItem, IClickSelectableControl
+    public class RibbonSplitButton : ThemedControl, IRibbonItem, ISsuiButton
     {
         static RibbonSplitButton()
         {
@@ -202,17 +199,62 @@ namespace SolidShineUi.Ribbon
 
         #endregion
 
-        #region Brushes
+        #region SsuiTheme
 
-        /// <summary>
-        /// Get or set the brush used for the background of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            Menu?.SetBinding(ThemedControl.SsuiThemeProperty, new Binding(nameof(SsuiTheme)) { Source = this });
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            {
+                // ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                // ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
+            }
         }
+
+        private static void ApplyPropertyUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is RibbonSplitButton sb)
+            {
+                sb.ApplyValueToButtons(e.Property, e.NewValue);
+            }
+        }
+
+        private void ApplyValueToButtons(DependencyProperty property, object value)
+        {
+            btnMain?.SetValue(property, value);
+            btnMenu?.SetValue(property, value);
+        }
+
+        #endregion
+
+        #region Brushes
 
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse is clicking it.
@@ -225,8 +267,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the background of this button while it is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the background of this button while it is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
@@ -243,6 +284,26 @@ namespace SolidShineUi.Ribbon
         {
             get => (Brush)GetValue(HighlightBrushProperty);
             set => SetValue(HighlightBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground of the control while the mouse is over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightForeground
+        {
+            get => (Brush)GetValue(HighlightForegroundProperty);
+            set => SetValue(HighlightForegroundProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
         }
 
         /// <summary>
@@ -266,17 +327,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around the edges of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush BorderHighlightBrush
@@ -286,8 +337,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush BorderSelectedBrush
@@ -296,43 +346,41 @@ namespace SolidShineUi.Ribbon
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.White.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ClickBrushProperty = FlatButton.ClickBrushProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.Gainsboro.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedBrushProperty = FlatButton.SelectedBrushProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightBrushProperty = FlatButton.HighlightBrushProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.LightGray.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundProperty = FlatButton.HighlightForegroundProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.Gray.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty = FlatButton.SelectedForegroundProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.DarkGray.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty DisabledBrushProperty = FlatButton.DisabledBrushProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderDisabledBrushProperty = FlatButton.BorderDisabledBrushProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderHighlightBrushProperty = FlatButton.BorderHighlightBrushProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(RibbonSplitButton),
-            new PropertyMetadata(Colors.DimGray.ToBrush()));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderSelectedBrushProperty = FlatButton.BorderSelectedBrushProperty.AddOwner(typeof(RibbonSplitButton),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
         #endregion
 
@@ -468,19 +516,19 @@ namespace SolidShineUi.Ribbon
         bool itemsLoaded = false;
 
 #if NETCOREAPP
-        FlatButton? btnMain = null;
-        FlatButton? btnMenu = null;
+        ISsuiButton? btnMain = null;
+        ISsuiButton? btnMenu = null;
 #else
-        FlatButton btnMain = null;
-        FlatButton btnMenu = null;
+        ISsuiButton btnMain = null;
+        ISsuiButton btnMenu = null;
 #endif
 
         void LoadTemplateItems()
         {
             if (!itemsLoaded)
             {
-                btnMain = (FlatButton)GetTemplateChild("PART_Main");
-                btnMenu = (FlatButton)GetTemplateChild("PART_Menu");
+                btnMain = (ISsuiButton)GetTemplateChild("PART_Main");
+                btnMenu = (ISsuiButton)GetTemplateChild("PART_Menu");
 
                 if (btnMain != null && btnMenu != null)
                 {
@@ -524,6 +572,7 @@ namespace SolidShineUi.Ribbon
             OnClick();
         }
 
+        /// <inheritdoc/>
         public bool TransparentBack { get => (bool)GetValue(TransparentBackProperty); set => SetValue(TransparentBackProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TransparentBack"/>. See the related property for details.</summary>
@@ -556,7 +605,7 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// This event is raised when this RibbonSplitButton's menu is closed.
         /// </summary>
-        public EventHandler? MenuClosed;
+        public event EventHandler? MenuClosed;
 #else
         /// <summary>
         /// Get or set the menu that appears when the menu button is clicked.
@@ -571,7 +620,7 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// This event is raised when this RibbonSplitButton's menu is closed.
         /// </summary>
-        public EventHandler MenuClosed;
+        public event EventHandler MenuClosed;
 #endif
 
         /// <summary>
@@ -831,6 +880,52 @@ namespace SolidShineUi.Ribbon
             RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
             RaiseEvent(rre);
         }
+
+        #endregion
+
+        #region ISsuiButton Members
+
+        /// <inheritdoc/>
+        public bool HighlightOnKeyboardFocus
+        { 
+            get => btnMain?.HighlightOnKeyboardFocus ?? false; 
+            set
+            {
+                if (btnMain != null)
+                {
+                    btnMain.HighlightOnKeyboardFocus = value;
+                }
+                if (btnMenu != null)
+                {
+                    btnMenu.HighlightOnKeyboardFocus = value;
+                }
+            }
+        }
+        
+        
+        object ISsuiButton.Content
+        {
+            get { return Title; }
+            set 
+            {
+                if (value is string s)
+                {
+                    Title = s;
+                }
+                else if (value is IFormattable f)
+                {
+                    Title = f.ToString((this as ISsuiButton).ContentStringFormat, CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    Title = value?.ToString() ?? "";
+                }
+            }
+        }
+
+        string ISsuiButton.ContentStringFormat { get; set; } = "g";
+
+        DataTemplate ISsuiButton.ContentTemplate { get; set; }
 
         #endregion
 

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:SolidShineUi.Ribbon.Utils"
              xmlns:utils="clr-namespace:SolidShineUi.Utils"
              xmlns:flat="clr-namespace:SolidShineUi"
+             xmlns:conv="clr-namespace:SolidShineUi.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="24"
              MouseEnter="UserControl_MouseEnter" MouseLeave="UserControl_MouseLeave" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp"
@@ -18,7 +19,7 @@
              GiveFeedback="control_GiveFeedback" PreviewGiveFeedback="control_PreviewGiveFeedback" MouseMove="control_MouseMove" Foreground="Black" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
-        <flat:ColorToBrushConverter x:Key="ctb" />
+        <conv:ColorToBrushConverter x:Key="ctb" />
         <flat:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>
