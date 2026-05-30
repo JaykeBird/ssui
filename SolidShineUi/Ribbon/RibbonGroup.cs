@@ -289,8 +289,11 @@ namespace SolidShineUi.Ribbon
         /// </remarks>
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
-        public static DependencyProperty CompactOrderProperty
-            = DependencyProperty.Register("CompactOrder", typeof(int), typeof(RibbonGroup),
+        /// <summary>
+        /// The backing dependency property for <see cref="CompactOrder"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty CompactOrderProperty
+            = DependencyProperty.Register(nameof(CompactOrder), typeof(int), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(0));
 
         /// <summary>
@@ -310,8 +313,8 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// The backing dependency property for <see cref="CompactSize"/>. See the related property for details.
         /// </summary>
-        public static DependencyProperty CompactSizeProperty
-            = DependencyProperty.Register("CompactSize", typeof(GroupSizeMode), typeof(RibbonGroup),
+        public static readonly DependencyProperty CompactSizeProperty
+            = DependencyProperty.Register(nameof(CompactSize), typeof(GroupSizeMode), typeof(RibbonGroup),
             new FrameworkPropertyMetadata(GroupSizeMode.Standard, FrameworkPropertyMetadataOptions.AffectsMeasure, (d, e) => d.PerformAs<RibbonGroup>((o) => o.UpdateCompactSize())));
 
         void UpdateCompactSize()
@@ -330,7 +333,6 @@ namespace SolidShineUi.Ribbon
                     item.IsCompacted = CompactSize == GroupSizeMode.Compact;
                 }
             }
-
         }
 
         /// <summary>
@@ -342,9 +344,9 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// The backing dependency property for <see cref="GroupIcon"/>. See the related property for details.
         /// </summary>
-        public static DependencyProperty GroupIconProperty
-            = DependencyProperty.Register("GroupIcon", typeof(ImageSource), typeof(RibbonGroup),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty GroupIconProperty
+            = DependencyProperty.Register(nameof(GroupIcon), typeof(ImageSource), typeof(RibbonGroup),
+            new FrameworkPropertyMetadata(defaultValue: null));
 
         #endregion
 

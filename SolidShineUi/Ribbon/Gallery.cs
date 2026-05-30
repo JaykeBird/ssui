@@ -19,7 +19,7 @@ namespace SolidShineUi.Ribbon
     /// <summary>
     /// A dynamic control for use on a <see cref="Ribbon"/>, designed to display a list of options with a more visual layout.
     /// </summary>
-    [ContentProperty("Items")]
+    [ContentProperty(nameof(Items))]
     [Localizability(LocalizationCategory.ListBox)]
     public class Gallery : ThemedControl, IRibbonItem
     {

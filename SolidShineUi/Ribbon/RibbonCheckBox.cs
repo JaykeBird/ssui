@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using SolidShineUi.Utils;
 
@@ -16,6 +17,7 @@ namespace SolidShineUi.Ribbon
     /// <summary>
     /// A checkbox control to display in a <see cref="RibbonGroup"/>.
     /// </summary>
+    [ContentProperty(nameof(Title))]
     public class RibbonCheckBox : ThemedControl, ISsuiButton, IRibbonItem
     {
         static RibbonCheckBox()

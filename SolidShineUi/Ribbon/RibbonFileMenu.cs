@@ -18,7 +18,7 @@ namespace SolidShineUi.Ribbon
     /// <summary>
     /// A file menu, built to be displayed in the top-left corner of a <see cref="Ribbon"/>.
     /// </summary>
-    [ContentProperty("Items")]
+    [ContentProperty(nameof(Items))]
     public class RibbonFileMenu : ButtonBase
     {
         static RibbonFileMenu()
@@ -198,6 +198,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("ButtonClickBrush", typeof(Brush), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(Color.FromArgb(70, 120, 120, 120).ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush to use for the border around the menu popup of this control.
+        /// </summary>
         public Brush MenuBorderBrush { get => (Brush)GetValue(MenuBorderBrushProperty); set => SetValue(MenuBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuBorderBrush"/>. See the related property for details.</summary>
@@ -205,6 +208,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("MenuBorderBrush", typeof(Brush), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush to use for the background of the main area of the menu popup of this control.
+        /// </summary>
         public Brush MenuBackground { get => (Brush)GetValue(MenuBackgroundProperty); set => SetValue(MenuBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuBackground"/>. See the related property for details.</summary>
@@ -212,6 +218,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("MenuBackground", typeof(Brush), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush to use for the background of the secondary area of the menu popup of this control.
+        /// </summary>
         public Brush MenuSecondaryPanelBackground { get => (Brush)GetValue(MenuSecondaryPanelBackgroundProperty); set => SetValue(MenuSecondaryPanelBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuSecondaryPanelBackground"/>. See the related property for details.</summary>
@@ -219,6 +228,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("MenuSecondaryPanelBackground", typeof(Brush), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush to use for the background of the button when this control is disabled.
+        /// </summary>
         public Brush DisabledBrush { get => (Brush)GetValue(DisabledBrushProperty); set => SetValue(DisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
@@ -226,6 +238,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("DisabledBrush", typeof(Brush), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush to use for the background of the border of this button when this control is disabled.
+        /// </summary>
         public Brush BorderDisabledBrush { get => (Brush)GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
@@ -233,6 +248,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register(nameof(BorderDisabledBrush), typeof(Brush), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
 
+        /// <summary>
+        /// Get or set the brush to use for the background of the border of this button when this control is highlighted (e.g., mouse over).
+        /// </summary>
         public Brush BorderHighlightBrush { get => (Brush)GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
@@ -332,6 +350,9 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("IsSubmenuOpen", typeof(bool), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata(false));
 
+        /// <summary>
+        /// Get or set if a submenu in this control is currently open. Use this for binding.
+        /// </summary>
         [Bindable(true)]
         [Browsable(false)]
         [Category("Appearance")]
@@ -342,6 +363,9 @@ namespace SolidShineUi.Ribbon
             set => SetValue(IsSubmenuOpenProperty, value);
         }
 
+        /// <summary>
+        /// Get or set if the menu of this control should stay open even after an item is selected/clicked.
+        /// </summary>
         public bool MenuStaysOpen { get => (bool)GetValue(MenuStaysOpenProperty); set => SetValue(MenuStaysOpenProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MenuStaysOpen"/>. See the related property for details.</summary>

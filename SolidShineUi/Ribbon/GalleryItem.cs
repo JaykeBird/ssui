@@ -138,10 +138,13 @@ namespace SolidShineUi.Ribbon
 
         #region Gallery Item Appearance
 
+        // TODO: change LayoutType to an attached property?
+
         /// <summary>
         /// A property to control the layout and appearance of the GalleryItem within a <see cref="Gallery"/>. Used internally.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public GalleryItemLayout LayoutType { get => (GalleryItemLayout)GetValue(LayoutTypeProperty); set => SetValue(LayoutTypeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="LayoutType"/>. Used internally.</summary>
@@ -149,20 +152,29 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register("LayoutType", typeof(GalleryItemLayout), typeof(GalleryItem),
             new FrameworkPropertyMetadata(GalleryItemLayout.LargeIconAndText));
 
+        /// <summary>
+        /// Get or set the large icon to use, when using a layout that allows large icons.
+        /// </summary>
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="LargeIcon"/>. See the related property for details.</summary>
         public static DependencyProperty LargeIconProperty
             = DependencyProperty.Register("LargeIcon", typeof(ImageSource), typeof(GalleryItem),
-            new FrameworkPropertyMetadata(null));
+            new FrameworkPropertyMetadata(defaultValue: null));
 
+        /// <summary>
+        /// Get or set the small icon to use, when using a layout that allows small icons.
+        /// </summary>
         public ImageSource SmallIcon { get => (ImageSource)GetValue(SmallIconProperty); set => SetValue(SmallIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SmallIcon"/>. See the related property for details.</summary>
         public static DependencyProperty SmallIconProperty
             = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(GalleryItem),
-            new FrameworkPropertyMetadata(null));
+            new FrameworkPropertyMetadata(defaultValue: null));
 
+        /// <summary>
+        /// Get or set the title or label of this item.
+        /// </summary>
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Title"/>. See the related property for details.</summary>
@@ -429,7 +441,7 @@ namespace SolidShineUi.Ribbon
         {
             if (e.NewValue is bool se)
             {
-                bool old = Convert.ToBoolean(e.OldValue);
+                bool old = (e.OldValue is bool oval) ? oval : false;
 
                 if (d is GalleryItem f)
                 {
@@ -461,12 +473,12 @@ namespace SolidShineUi.Ribbon
         /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
         /// </summary>
         /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
-        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="trigger">The source or method used to trigger the change in selection.</param>
         /// <param name="triggerSource">The object that triggered the change.</param>
 #if NETCOREAPP
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object? triggerSource = null)
 #else
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object triggerSource = null)
 #endif
         {
             bool old = IsSelected;
@@ -475,7 +487,7 @@ namespace SolidShineUi.Ribbon
             IsSelected = value;
             _runSelChangeEvent = true;
 
-            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, trigger, triggerSource);
             RaiseEvent(re);
         }
         #endregion

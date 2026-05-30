@@ -755,7 +755,7 @@ namespace SolidShineUi.Ribbon
         {
             if (e.NewValue is bool se)
             {
-                bool old = Convert.ToBoolean(e.OldValue);
+                bool old = (e.OldValue is bool oval) ? oval : false;
 
                 if (d is RibbonSplitButton f)
                 {
@@ -807,12 +807,12 @@ namespace SolidShineUi.Ribbon
         /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
         /// </summary>
         /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
-        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="trigger">The source or method used to trigger the change in selection.</param>
         /// <param name="triggerSource">The object that triggered the change.</param>
 #if NETCOREAPP
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object? triggerSource = null)
 #else
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object triggerSource = null)
 #endif
         {
             bool old = IsSelected;
@@ -821,7 +821,7 @@ namespace SolidShineUi.Ribbon
             IsSelected = value;
             _runSelChangeEvent = true;
 
-            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, triggerMethod, triggerSource);
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, trigger, triggerSource);
             RaiseEvent(re);
         }
 
@@ -901,9 +901,12 @@ namespace SolidShineUi.Ribbon
                 }
             }
         }
-        
-        
+
+#if NETCOREAPP
+        object? ISsuiButton.Content
+#else
         object ISsuiButton.Content
+#endif
         {
             get { return Title; }
             set 
@@ -925,7 +928,11 @@ namespace SolidShineUi.Ribbon
 
         string ISsuiButton.ContentStringFormat { get; set; } = "g";
 
-        DataTemplate ISsuiButton.ContentTemplate { get; set; }
+#if NETCOREAPP
+        DataTemplate? ISsuiButton.ContentTemplate { get; set; } = null;
+#else
+        DataTemplate ISsuiButton.ContentTemplate { get; set; } = null;
+#endif
 
         #endregion
 

@@ -259,10 +259,14 @@ namespace SolidShineUi.Ribbon.Utils
         /// <exception cref="ArgumentNullException">thrown if <paramref name="element"/> is null</exception>
         public static Geometry GetPathData(DependencyObject element)
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(element, nameof(element));
+#else
             if (element == null)
             {
                 throw new ArgumentNullException(nameof(element));
             }
+#endif
             return (Geometry)element.GetValue(PathDataProperty);
         }
 
@@ -274,10 +278,14 @@ namespace SolidShineUi.Ribbon.Utils
         /// <exception cref="ArgumentNullException">thrown if <paramref name="element"/> is null</exception>
         public static void SetPathData(DependencyObject element, Geometry value)
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(element, nameof(element));
+#else
             if (element == null)
             {
                 throw new ArgumentNullException(nameof(element));
             }
+#endif
             element.SetValue(PathDataProperty, value);
         }
 
@@ -314,10 +322,14 @@ namespace SolidShineUi.Ribbon.Utils
         /// </summary>
         public static bool GetHasTwoLines(DependencyObject element)
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(element, nameof(element));
+#else
             if (element == null)
             {
                 throw new ArgumentNullException(nameof(element));
             }
+#endif
             return (bool)element.GetValue(HasTwoLinesProperty);
         }
 
@@ -327,19 +339,24 @@ namespace SolidShineUi.Ribbon.Utils
         /// </summary>
         public static void SetHasTwoLines(DependencyObject element, bool value)
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(element, nameof(element));
+#else
             if (element == null)
             {
                 throw new ArgumentNullException(nameof(element));
             }
+#endif
             element.SetValue(HasTwoLinesProperty, value);
         }
 
         #endregion
 
-        #endregion
+#endregion
 
         #region Measuring
 
+#pragma warning disable CA1725 // Parameter names should match base declaration
         /// <inheritdoc/>
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -410,6 +427,7 @@ namespace SolidShineUi.Ribbon.Utils
             }
             return base.MeasureOverride(availableSize);
         }
+#pragma warning restore CA1725 // Parameter names should match base declaration
 
         /// <summary>
         /// Layout Text into two lines when width is restricted and determine if a LineBreak occurs.

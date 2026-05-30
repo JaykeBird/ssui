@@ -86,7 +86,9 @@ namespace SolidShineUi.Ribbon
         }
 
         bool itemsLoaded = false;
+#pragma warning disable CS0414
         bool _internalAction = false;
+#pragma warning restore CS0414
 
 #if NETCOREAPP
         ItemsControl? tabContainer = null;
@@ -136,7 +138,7 @@ namespace SolidShineUi.Ribbon
         #region Tabs
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
-            = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<RibbonTab>), typeof(Ribbon),
+            = DependencyProperty.RegisterReadOnly(nameof(Items), typeof(ObservableCollection<RibbonTab>), typeof(Ribbon),
             new FrameworkPropertyMetadata(new ObservableCollection<RibbonTab>()));
 
         /// <summary>The backing dependency property for <see cref="Items"/>. See the related property for details.</summary>
@@ -409,8 +411,13 @@ namespace SolidShineUi.Ribbon
         public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
         private static readonly DependencyPropertyKey SelectedTabPropertyKey
-            = DependencyProperty.RegisterReadOnly("SelectedTab", typeof(RibbonTab), typeof(Ribbon), 
+            = DependencyProperty.RegisterReadOnly(nameof(SelectedTab), typeof(RibbonTab), typeof(Ribbon), 
                 new FrameworkPropertyMetadata(null, (d, e) => d.PerformAs<Ribbon>((r) => r.OnSelectedTabChange(e))));
+
+        /// <summary>
+        /// The backing dependency property for <see cref="SelectedTab"/>. See that property for more details.
+        /// </summary>
+        public static readonly DependencyProperty SelectedTabProperty = SelectedTabPropertyKey.DependencyProperty;
 
         void OnSelectedTabChange(DependencyPropertyChangedEventArgs e)
         {
@@ -425,18 +432,9 @@ namespace SolidShineUi.Ribbon
         public RibbonTab? SelectedTab { get => (RibbonTab)GetValue(SelectedTabProperty); private set => SetValue(SelectedTabPropertyKey, value); }
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
-        /// </summary>
-        public static readonly DependencyProperty SelectedTabProperty = SelectedTabPropertyKey!.DependencyProperty;
-
-        /// <summary>
         /// Raised when the tab currently selected is changed.
         /// </summary>
         public event DependencyPropertyChangedEventHandler? SelectedTabChanged;
-        /// <summary>
-        /// Raised when all tabs are closed at once (via <c>Items.Clear()</c>).
-        /// </summary>
-        public event EventHandler? TabsCleared;
 #else
         /// <summary>
         /// Get the tab currently selected. Use <c>Items.Select()</c> to select another tab.
@@ -445,18 +443,9 @@ namespace SolidShineUi.Ribbon
         public RibbonTab SelectedTab { get => (RibbonTab)GetValue(SelectedTabProperty); private set => SetValue(SelectedTabPropertyKey, value); }
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
-        /// </summary>
-        public static readonly DependencyProperty SelectedTabProperty = SelectedTabPropertyKey.DependencyProperty;
-
-        /// <summary>
         /// Raised when the tab currently selected is changed.
         /// </summary>
         public event DependencyPropertyChangedEventHandler SelectedTabChanged;
-        /// <summary>
-        /// Raised when all tabs are closed at once (via <c>Items.Clear()</c>).
-        /// </summary>
-        public event EventHandler TabsCleared;
 #endif
 
         #endregion
@@ -1213,10 +1202,11 @@ namespace SolidShineUi.Ribbon
         /// </summary>
         public string GetSizeStatuses()
         {
-            return "main container: " + (mainContainer?.ActualWidth.ToString() ?? "(not defined)") + "\n"
-                + "main scroll actual: " + (mainScrollContainer?.ActualWidth.ToString() ?? "(not defined)") + "\n"
-                + "main scroll viewport: " + (mainScrollContainer?.ViewportWidth.ToString() ?? "(not defined)") + "\n"
-                + "main bar: " + (mainBar?.ActualWidth.ToString() ?? "(not defined)") + "\n"
+            IFormatProvider current = System.Globalization.CultureInfo.CurrentCulture;
+            return "main container: " + (mainContainer?.ActualWidth.ToString(current) ?? "(not defined)") + "\n"
+                + "main scroll actual: " + (mainScrollContainer?.ActualWidth.ToString(current) ?? "(not defined)") + "\n"
+                + "main scroll viewport: " + (mainScrollContainer?.ViewportWidth.ToString(current) ?? "(not defined)") + "\n"
+                + "main bar: " + (mainBar?.ActualWidth.ToString(current) ?? "(not defined)") + "\n"
                 + "show scroll buttons: " + MainScrollButtonsVisible.ToString();
         }
 
