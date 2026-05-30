@@ -140,7 +140,7 @@ namespace SolidShineUi
                         throw new InvalidDataException("Invalid palette file");
                     }
 
-                    colorCount = Convert.ToInt32(reader.ReadLine());
+                    colorCount = Convert.ToInt32(reader.ReadLine(), System.Globalization.CultureInfo.InvariantCulture);
                     char[] spaces = new[] { ' ', '\t' };
 
                     for (int i = 0; i < colorCount; i++)
@@ -151,9 +151,14 @@ namespace SolidShineUi
                         data = reader.ReadLine() ?? "";
                         parts = !string.IsNullOrEmpty(data) ? data.Split(spaces, StringSplitOptions.RemoveEmptyEntries) : Array.Empty<string>();
 
+                        if (parts.Length == 0)
+                        {
+                            throw new InvalidDataException($"Invalid palette contents found with data '{data}'");
+                        }
+
                         if (!int.TryParse(parts[0], out int r) || !int.TryParse(parts[1], out int g) || !int.TryParse(parts[2], out int b))
                         {
-                            throw new InvalidDataException(string.Format("Invalid palette contents found with data '{0}'", data));
+                            throw new InvalidDataException($"Invalid palette contents found with data '{data}'");
                         }
 
                         results.Add(Color.FromRgb((byte)r, (byte)g, (byte)b));
@@ -301,7 +306,12 @@ namespace SolidShineUi
 
             buffer = new byte[length * 2];
 
-            stream.Read(buffer, 0, buffer.Length);
+            int actuallyRead = stream.Read(buffer, 0, buffer.Length);
+
+            if (buffer.Length != actuallyRead) // if the amount of data read from the stream isn't actually of size "length"
+            {
+                Array.Resize(ref buffer, actuallyRead);
+            }
 
             return Encoding.BigEndianUnicode.GetString(buffer);
         }
@@ -385,7 +395,7 @@ namespace SolidShineUi
                         results.Add(Color.FromRgb((byte)gray, (byte)gray, (byte)gray));
                         break;
                     default:
-                        throw new InvalidDataException(string.Format("Color space '{0}' not supported.", colorSpace));
+                        throw new InvalidDataException($"Color space '{colorSpace}' not supported.");
                 }
             }
 
@@ -590,7 +600,7 @@ namespace SolidShineUi
                         {
                             continue;
                         }
-                        else if (line.StartsWith("#"))
+                        else if (line.StartsWith("#", StringComparison.Ordinal))
                         {
                             continue;
                         }
@@ -681,9 +691,9 @@ namespace SolidShineUi
 
             try
             {
-                byte iR = byte.Parse(r);
-                byte iG = byte.Parse(g);
-                byte iB = byte.Parse(b);
+                byte iR = byte.Parse(r, System.Globalization.CultureInfo.InvariantCulture);
+                byte iG = byte.Parse(g, System.Globalization.CultureInfo.InvariantCulture);
+                byte iB = byte.Parse(b, System.Globalization.CultureInfo.InvariantCulture);
 
                 return Color.FromRgb(iR, iG, iB);
             }
@@ -760,7 +770,7 @@ namespace SolidShineUi
                         {
                             continue;
                         }
-                        else if (line.StartsWith("#"))
+                        else if (line.StartsWith("#", StringComparison.Ordinal))
                         {
                             // PowerToys lines currently doesn't have comments, but... why not lol
                             continue;
@@ -778,7 +788,7 @@ namespace SolidShineUi
                             if (formatSort == null)
                             {
                                 // don't know what it is yet
-                                if (entries[0].StartsWith("color"))
+                                if (entries[0].StartsWith("color", StringComparison.Ordinal))
                                 {
                                     // likely by color
                                     formatSort = false;
@@ -880,20 +890,20 @@ namespace SolidShineUi
             {
                 foreach (string item in entries)
                 {
-                    if (item.StartsWith("HEX"))
+                    if (item.StartsWith("HEX", StringComparison.Ordinal))
                     {
                         string hex = item.Substring(item.IndexOf('#'));
                         Color c = ColorsHelper.CreateFromHex(hex);
                         return c;
                     }
-                    else if (item.StartsWith("RGB"))
+                    else if (item.StartsWith("RGB", StringComparison.Ordinal))
                     {
                         string rgb = GetStringInsideParantheses(item);
                         string[] vals = rgb.Split(',');
                         Color c = Color.FromRgb(TryParseByte(vals[0]), TryParseByte(vals[1]), TryParseByte(vals[2]));
                         return c;
                     }
-                    else if (item.StartsWith("HSV"))
+                    else if (item.StartsWith("HSV", StringComparison.Ordinal))
                     {
                         string rgb = GetStringInsideParantheses(item);
                         string[] vals = rgb.Split(',');
@@ -914,7 +924,7 @@ namespace SolidShineUi
             {
                 try
                 {
-                    return byte.Parse(value);
+                    return byte.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
                 }
                 catch (FormatException)
                 {
@@ -926,7 +936,7 @@ namespace SolidShineUi
             {
                 try
                 {
-                    return double.Parse(value);
+                    return double.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
                 }
                 catch (FormatException)
                 {

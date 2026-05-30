@@ -1,13 +1,14 @@
-﻿using System;
+﻿using SolidShineUi.PropertyList.Dialogs;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text; // need this for handling Rune support in .NET
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
 using static SolidShineUi.Utils.IconLoader;
-using SolidShineUi.PropertyList.Dialogs;
-using System.Text;
-using System.IO;
-using System.Diagnostics;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -20,6 +21,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public CharEditor()
         {
             InitializeComponent();
+
+            // set up strings
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuMultiline.Header = Strings.EnterInUnicodeValue;
         }
 
         private Type _itemType = typeof(char);
@@ -41,26 +46,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _parent = host; */ }
+        public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
 
-        ColorScheme _cs = new ColorScheme();
-        //IPropertyEditorHost _parent = null;
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+        // ColorScheme _cs = new ColorScheme();
+#if NETCOREAPP
+        IPropertyEditorHost? _parent = null;
+#else
+        IPropertyEditorHost _parent = null;
+#endif
 
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -87,7 +86,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             nullSet = true;
             txtText.IsEnabled = false;
             mnuSetNull.IsChecked = true;
-            txtText.Text = "(null)";
+            txtText.Text = Strings.Null;
             txtValue.Text = "";
         }
 
@@ -102,7 +101,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (char.IsSurrogate((char)(_value ?? 'a')))
                 {
                     txtText.IsEnabled = false;
-                    txtText.Text = "(surrogate)";
+                    txtText.Text = Strings.Surrogate;
                 }
                 else
                 {
@@ -110,7 +109,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.Text = ((char)(_value ?? 'a')).ToString();
                 }
 
-                txtValue.Text = ((int)(char)(_value ?? 'a')).ToString("X4");
+                txtValue.Text = ((int)(char)(_value ?? 'a')).ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #if NETCOREAPP
             else if (_itemType == typeof(Rune?) || _itemType == typeof(Rune))
@@ -118,7 +117,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                 txtText.IsEnabled = true;
                 txtText.Text = ((Rune)(_value ?? 'a')).ToString();
-                txtValue.Text = ((Rune)(_value ?? 'a')).Value.ToString("X4");
+                txtValue.Text = ((Rune)(_value ?? 'a')).Value.ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #endif
             else
@@ -183,7 +182,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 char c = (char)(value ?? '\0');
                 if (char.IsSurrogate(c))
                 {
-                    txtText.Text = "(surrogate)";
+                    txtText.Text = Strings.Surrogate;
                     txtText.IsEnabled = false;
                 }
                 else
@@ -192,7 +191,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.IsEnabled = true;
                 }
                 _value = c;
-                txtValue.Text = ((int)c).ToString("X4");
+                txtValue.Text = ((int)c).ToString("X4", NumberFormatInfo.CurrentInfo);
             }
             else if (type == typeof(char?))
             {
@@ -208,7 +207,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     if (char.IsSurrogate(c ?? '\0'))
                     {
-                        txtText.Text = "(surrogate)";
+                        txtText.Text = Strings.Surrogate;
                         txtText.IsEnabled = false;
                     }
                     else
@@ -216,7 +215,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                         txtText.Text = c.ToString();
                         txtText.IsEnabled = true;
                     }
-                    txtValue.Text = ((int)(c ?? '\0')).ToString("X4");
+                    txtValue.Text = ((int)(c ?? '\0')).ToString("X4", NumberFormatInfo.CurrentInfo);
                 }
             }
 #if NETCOREAPP
@@ -225,7 +224,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Rune r = (Rune)(value ?? '\0');
                 txtText.Text = r.ToString();
                 _value = r;
-                txtValue.Text = r.Value.ToString("X4");
+                txtValue.Text = r.Value.ToString("X4", NumberFormatInfo.CurrentInfo);
             }
             else if (type == typeof(Rune?))
             {
@@ -240,7 +239,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 else
                 {
                     txtText.Text = (r ?? (Rune)'a').ToString();
-                    txtValue.Text = (r ?? (Rune)'a').Value.ToString("X4");
+                    txtValue.Text = (r ?? (Rune)'a').Value.ToString("X4", NumberFormatInfo.CurrentInfo);
                 }
             }
 #endif
@@ -248,7 +247,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 // this isn't a char or Rune?
                 _value = value;
-                txtText.Text = "(not a char)";
+                txtText.Text = Strings.NotAChar;
                 txtText.IsEnabled = false;
                 txtValue.Text = "";
             }
@@ -278,7 +277,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.Text = val[0].ToString();
                     _internalAction = false;
                 }
-                txtValue.Text = ((int)(char)(_value ?? '\0')).ToString("X4");
+                txtValue.Text = ((int)(char)(_value ?? '\0')).ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #if NETCOREAPP
             else if (_itemType == typeof(Rune) || _itemType == typeof(Rune?))
@@ -300,13 +299,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     txtText.Text = _value.ToString();
                     _internalAction = false;
                 }
-                txtValue.Text = ((Rune)(_value ?? '\0')).Value.ToString("X4");
+                txtValue.Text = ((Rune)(_value ?? '\0')).Value.ToString("X4", NumberFormatInfo.CurrentInfo);
             }
 #endif
             else
             {
                 _internalAction = true;
-                txtText.Text = "(not a char)";
+                txtText.Text = Strings.NotAChar;
                 _internalAction = false;
                 txtText.IsEnabled = false;
             }
@@ -319,9 +318,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NETCOREAPP
             if (_itemType == typeof(Rune) || _itemType == typeof(Rune?))
             {
-                CharInputDialog sid = new CharInputDialog(_cs, (Rune)(_value ?? '\0'));
+                CharInputDialog sid = new CharInputDialog((Rune)(_value ?? '\0'));
                 sid.Title = "Enter Rune as Unicode";
-                sid.Owner = Window.GetWindow(this);
+                sid.Owner = _parent?.GetWindow() ?? Window.GetWindow(this);
+                sid.SsuiTheme = _parent?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 sid.ShowDialog();
 
                 if (sid.DialogResult)
@@ -330,7 +330,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     Rune r = sid.ValueAsRune;
                     txtText.Text = r.ToString();
                     _value = r;
-                    txtValue.Text = r.Value.ToString("X4");
+                    txtValue.Text = r.Value.ToString("X4", NumberFormatInfo.CurrentInfo);
                     _internalAction = false;
                 }
             }
@@ -344,8 +344,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             void LoadDialogAsChar()
             {
-                CharInputDialog sid = new CharInputDialog(_cs, (char)(_value ?? '\0'));
-                sid.Owner = Window.GetWindow(this);
+                CharInputDialog sid = new CharInputDialog((char)(_value ?? '\0'));
+                sid.Owner = _parent?.GetWindow() ?? Window.GetWindow(this);
+                sid.SsuiTheme = _parent?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 sid.ShowDialog();
 
                 if (sid.DialogResult)
@@ -354,7 +355,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     char c = sid.ValueAsChar;
                     if (char.IsSurrogate(c))
                     {
-                        txtText.Text = "(surrogate)";
+                        txtText.Text = Strings.Surrogate;
                         txtText.IsEnabled = false;
                     }
                     else
@@ -363,7 +364,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                         txtText.IsEnabled = true;
                     }
                     _value = c;
-                    txtValue.Text = ((int)c).ToString("X4");
+                    txtValue.Text = ((int)c).ToString("X4", NumberFormatInfo.CurrentInfo);
                     _internalAction = false;
                 }
             }

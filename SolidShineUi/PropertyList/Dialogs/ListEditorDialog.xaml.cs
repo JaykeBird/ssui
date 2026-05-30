@@ -14,6 +14,9 @@ namespace SolidShineUi.PropertyList.Dialogs
     /// </summary>
     public partial class ListEditorDialog : FlatWindow
     {
+
+        #region Window Constructor / Loaded
+
         /// <summary>
         /// Create a ListEditorDialog.
         /// </summary>
@@ -22,10 +25,24 @@ namespace SolidShineUi.PropertyList.Dialogs
             InitializeComponent();
         }
 
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Icon == null && Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
+        }
+
         private void window_SourceInitialized(object sender, EventArgs e)
         {
             DisableMinimizeAction();
         }
+
+        #endregion
 
         #region Base variables
 
@@ -58,42 +75,62 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         int count = -1;
 
-        int addMode = ADD_CANNOT_ADD;
-        const int ADD_CANNOT_ADD = 0;
-        const int ADD_PRIMITIVE_TYPE = 1;
-        const int ADD_STRING_MODE = 2;
-        const int ADD_STANDARD = 3;
+        AddModeType addMode = AddModeType.CannotAdd;
+
+        private enum AddModeType
+        {
+            /// <summary>
+            /// Adding new items is not supported, as this type doesn't match any of the other add types
+            /// </summary>
+            CannotAdd = 0,
+            /// <summary>
+            /// The type is a primitive type, explicit support for adding has been added
+            /// </summary>
+            PrimitiveType = 1,
+            /// <summary>
+            /// The type has a constructor that takes a string; this can be used for adding
+            /// </summary>
+            StringMode = 2,
+            /// <summary>
+            /// The type has a constructor that takes no parameters; this can be used for adding
+            /// </summary>
+            Standard = 3,
+        }
 
         #endregion
 
         #region Dependency Properties
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static DependencyProperty DescriptionProperty
+        /// <summary>The backing dependency property for <see cref="Description"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty DescriptionProperty
             = DependencyProperty.Register("Description", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Edit and view collection:"));
 
-        public static DependencyProperty ListOfItemsLabelProperty
+        /// <summary>The backing dependency property for <see cref="ListOfItemsLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ListOfItemsLabelProperty
             = DependencyProperty.Register("ListOfItemsLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("List of items:"));
 
-        public static DependencyProperty EditItemLabelProperty
+        /// <summary>The backing dependency property for <see cref="EditItemLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EditItemLabelProperty
             = DependencyProperty.Register("EditItemLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Edit current item:"));
 
-        public static DependencyProperty EnumerableWarningTitleLabelProperty
+        /// <summary>The backing dependency property for <see cref="EnumerableWarningTitleLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EnumerableWarningTitleLabelProperty
             = DependencyProperty.Register("EnumerableWarningTitleLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Full Collection May Not Be Available"));
 
-        public static DependencyProperty EnumerableWarningDescriptionLabelProperty
+        /// <summary>The backing dependency property for <see cref="EnumerableWarningDescriptionLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty EnumerableWarningDescriptionLabelProperty
             = DependencyProperty.Register("EnumerableWarningDescriptionLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Note that with this collection, it may not yet be fully populated. For example, this collection could require some processing or downloading" +
             "to populate.You can load in what's currently in this collection, but it may be incomplete, or it may take time or cause additional code to be executed."));
 
-        public static DependencyProperty LoadCollectionLabelProperty
+        /// <summary>The backing dependency property for <see cref="LoadCollectionLabel"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty LoadCollectionLabelProperty
             = DependencyProperty.Register("LoadCollectionLabel", typeof(string), typeof(ListEditorDialog),
             new FrameworkPropertyMetadata("Load Collection"));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the description text to display at the top of the dialog.
@@ -201,8 +238,8 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
 
         // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types
-        private static Type[] basicTypes = new Type[] { typeof(bool), typeof(byte), typeof(double), typeof(float), typeof(int), typeof(uint), typeof(long), typeof(short), typeof(string),
-            typeof(sbyte), typeof(char), typeof(decimal), typeof(ulong), typeof(ushort)};
+        private static Type[] basicTypes = new Type[] { typeof(bool), typeof(byte), typeof(double), typeof(float), typeof(int), typeof(uint), typeof(long), 
+            typeof(short), typeof(string), typeof(sbyte), typeof(char), typeof(decimal), typeof(ulong), typeof(ushort)};
 
         private void DetermineIfCanAdd()
         {
@@ -215,6 +252,9 @@ namespace SolidShineUi.PropertyList.Dialogs
             }
             else if (baseType.IsAbstract || baseType.IsInterface)
             {
+                // Visual Studio's collection editor gives users the ability to find and select types that match the criteria
+                // (e.g. a type that inherits from the abstract class or implements the interface), but I currently don't have
+                // the time to go into all of that... so for now, I'll just disable adding
                 CannotAdd();
             }
             else if (baseType.GetConstructor(Type.EmptyTypes) == null)
@@ -222,12 +262,12 @@ namespace SolidShineUi.PropertyList.Dialogs
                 // does not have a parameterless constructor
                 if (basicTypes.Contains(baseType))
                 {
-                    addMode = ADD_PRIMITIVE_TYPE;
+                    addMode = AddModeType.PrimitiveType;
                 }
                 else if (baseType.GetConstructor(new Type[] { typeof(string) }) != null)
                 {
                     // there is a string-based constructor that we can use
-                    addMode = ADD_STRING_MODE;
+                    addMode = AddModeType.StringMode;
                 }
                 else
                 {
@@ -237,12 +277,12 @@ namespace SolidShineUi.PropertyList.Dialogs
             else
             {
                 // has a parameterless constructor
-                addMode = ADD_STANDARD;
+                addMode = AddModeType.Standard;
             }
 
             void CannotAdd()
             {
-                addMode = ADD_CANNOT_ADD;
+                addMode = AddModeType.CannotAdd;
                 btnAdd.IsEnabled = false;
                 txtCannotAdd.Visibility = Visibility.Visible;
             }
@@ -271,7 +311,7 @@ namespace SolidShineUi.PropertyList.Dialogs
 
                 if (editor != null)
                 {
-                    editor.ColorScheme = ColorScheme;
+                    editor.ApplySsuiTheme(SsuiTheme);
                     if (parentList != null)
                     {
                         editor.SetHostControl(parentList);
@@ -304,9 +344,15 @@ namespace SolidShineUi.PropertyList.Dialogs
 
             lei.PropertyEditorValueChanged += (s, e) =>
             {
+                // we're only going to support editing lists, not general IEnumerables
+                // since with a list, we can search for and get the item and then change it
                 if (isList && canEdit)
                 {
-                    ValueChanged(e.NewValue, e.OldValue, e);
+                    bool remove = ValueChanged(e.NewValue, e.OldValue, e);
+                    if (remove && s is ListEditorItem li)
+                    {
+                        li.CallRequestRemove();
+                    }
                 }
                 else
                 {
@@ -319,10 +365,12 @@ namespace SolidShineUi.PropertyList.Dialogs
         }
         #endregion
 
+        // this is for updating the value of the item in the actual list object itself
+
 #if NETCOREAPP
-        void ValueChanged(object? newValue, object? baseItem, PropertyEditorValueChangedEventArgs e)
+        bool ValueChanged(object? newValue, object? baseItem, PropertyEditorValueChangedEventArgs e)
 #else
-        void ValueChanged(object newValue, object baseItem, PropertyEditorValueChangedEventArgs e)
+        bool ValueChanged(object newValue, object baseItem, PropertyEditorValueChangedEventArgs e)
 #endif
         {
             if (baseObject is IList icol)
@@ -331,14 +379,15 @@ namespace SolidShineUi.PropertyList.Dialogs
                 if (index == -1)
                 {
                     // this means the base list actually removed this item in the interim
-                    // for now, we'll mark this as a failed change
-                    // TODO: actually remove the offending ListEditorItem from the dialog
+                    // we'll mark this as a failed change, and remove this item from the list editor (by returning true)
                     e.ChangeFailed = true;
                     e.FailedChangePropertyValue = null;
-                    return;
+                    return true;
                 }
                 icol[index] = newValue;
             }
+
+            return false;
         }
 
         private void btnEnumWarning_Click(object sender, RoutedEventArgs e)
@@ -377,7 +426,7 @@ namespace SolidShineUi.PropertyList.Dialogs
             {
                 switch (addMode)
                 {
-                    case ADD_STANDARD:
+                    case AddModeType.Standard:
                         var newItem = Activator.CreateInstance(baseType);
                         if (newItem != null)
                         {
@@ -388,12 +437,14 @@ namespace SolidShineUi.PropertyList.Dialogs
                             btnAdd.IsEnabled = false;
                         }
                         break;
-                    case ADD_STRING_MODE:
-                        StringInputDialog sid = new StringInputDialog(ColorScheme, "Add Item", "Enter a string value to use for creating a new item:");
+                    case AddModeType.StringMode:
+                        StringInputDialog sid = new StringInputDialog("Add Item", Strings.EnterAStringValue);
                         sid.Owner = this;
+                        sid.SsuiTheme = this.SsuiTheme;
                         sid.ShowDialog();
                         if (sid.DialogResult)
                         {
+
                             var newSItem = Activator.CreateInstance(baseType, new object[] { sid.Value });
                             if (newSItem != null)
                             {
@@ -401,11 +452,11 @@ namespace SolidShineUi.PropertyList.Dialogs
                             }
                         }
                         break;
-                    case ADD_PRIMITIVE_TYPE:
+                    case AddModeType.PrimitiveType:
                         // let's go down the list of basic types
                         // I've tried to sort by what is probably the most common first
                         if (baseType == typeof(bool)) { CreateItem(false); }
-                        else if (baseType == typeof(string)) { CreateItem(""); }
+                        else if (baseType == typeof(string)) { CreateStringItem(); }
                         else if (baseType == typeof(int)) { CreateItem(0); }
                         else if (baseType == typeof(byte)) { CreateItem((byte)0); }
                         else if (baseType == typeof(double)) { CreateItem(0.0d); }
@@ -416,7 +467,7 @@ namespace SolidShineUi.PropertyList.Dialogs
                         else if (baseType == typeof(short)) { CreateItem((short)0); }
                         else if (baseType == typeof(ushort)) { CreateItem((ushort)0); }
                         else if (baseType == typeof(sbyte)) { CreateItem((sbyte)0); }
-                        else if (baseType == typeof(char)) { CreateItem('A'); }
+                        else if (baseType == typeof(char)) { CreateCharItem(); }
                         else if (baseType == typeof(decimal)) { CreateItem(0.0m); }
                         break;
                     default:
@@ -428,6 +479,30 @@ namespace SolidShineUi.PropertyList.Dialogs
             else
             {
                 btnAdd.IsEnabled = false;
+            }
+
+            void CreateStringItem()
+            {
+                StringInputDialog sid = new StringInputDialog("Add Item", Strings.EnterAStringValue);
+                sid.Owner = this;
+                sid.SsuiTheme = this.SsuiTheme;
+                sid.ShowDialog();
+                if (sid.DialogResult)
+                {
+                    CreateItem(sid.Value);
+                }
+            }
+
+            void CreateCharItem()
+            {
+                CharInputDialog sid = new CharInputDialog();
+                sid.Owner = this;
+                sid.SsuiTheme = this.SsuiTheme;
+                sid.ShowDialog();
+                if (sid.DialogResult)
+                {
+                    CreateItem(sid.ValueAsChar);
+                }
             }
 
 #if NETCOREAPP

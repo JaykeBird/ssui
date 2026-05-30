@@ -2,18 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -28,6 +19,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public CursorEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuDropdown.Header = Strings.SelectSystemCursor;
+            mnuFileSelect.Header = Strings.LoadCursorFromFile;
+            mnuNull.Header = Strings.SetAsNull;
+            txtNull.Text = Strings.Null;
+            lblFromFile.Text = Strings.FromFile;
+
+            fs.NoFilesSelectedMessage = Strings.NoFilesSelected;
+            fs.BrowseButtonText = Strings.Browse;
         }
 
         /// <inheritdoc/>
@@ -39,7 +40,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => cbbCursors.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 cbbCursors.IsEnabled = value;
@@ -49,19 +50,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { get => _cs; set => ApplyColorScheme(value); }
-
-        private ColorScheme _cs = new ColorScheme();
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme colorScheme)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = colorScheme;
-
-            fs.ColorScheme = _cs;
-            btnMenu.ColorScheme = _cs;
-            imgItalic.Source = IconLoader.LoadIcon("Select", _cs);
-            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", _cs);
+            fs.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgItalic.Source = IconLoader.LoadIcon("Select", theme.IconVariation);
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

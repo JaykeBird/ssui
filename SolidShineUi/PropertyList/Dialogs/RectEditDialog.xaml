@@ -15,8 +15,12 @@
             <RowDefinition Height="40" MinHeight="34" />
         </Grid.RowDefinitions>
         <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,20,0,0" Text="Edit a rectangle:" VerticalAlignment="Top" />
-        <flat:FlatButton x:Name="btnOK" Content="OK" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" />
-        <flat:FlatButton x:Name="btnCancel" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" />
-        <Utils:RectEdit HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Center" Height="180" Width="280" x:Name="edtRect" ColorScheme="{Binding ColorScheme, ElementName=window}" />
+        <Utils:RectEdit HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Center" Height="180" Width="300" 
+                        x:Name="edtRect" ColorScheme="{Binding ColorScheme, ElementName=window}" MeasureTypeOptionsPadding="12" />
+        
+        <flat:FlatButton x:Name="btnOK" Content="OK" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" 
+                         Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="4" />
+        <flat:FlatButton x:Name="btnCancel" Content="Cancel" ColorScheme="{Binding ColorScheme, ElementName=window}" HorizontalAlignment="Right" 
+                         Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="4" />
     </Grid>
 </flat:FlatWindow>

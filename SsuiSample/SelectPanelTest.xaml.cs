@@ -11,7 +11,7 @@ using SolidShineUi.Utils;
 namespace SsuiSample
 {
 
-    public partial class SelectPanelTest : UserControl
+    public partial class SelectPanelTest : ThemedUserControl
     {
         public SelectPanelTest()
         {
@@ -139,51 +139,6 @@ namespace SsuiSample
             lblTotalItems.Text = selPanel.Items.Count.ToString();
             lblSelItems.Text = selPanel.Items.SelectedItems.Count.ToString();
         }
-
-        #endregion
-
-        #region ColorScheme
-
-        /// <summary>
-        /// Raised when the value of <see cref="ColorScheme"/> changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-#endif
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(SelectPanelTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is ColorScheme cs)
-            {
-                if (d is SelectPanelTest s)
-                {
-                    s.ColorSchemeChanged?.Invoke(d, e);
-                    s.ApplyColorScheme(cs);
-                }
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
 
         #endregion
 

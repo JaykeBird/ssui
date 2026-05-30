@@ -18,7 +18,7 @@
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <!--<MenuItem Header="Set to Null" Click="mnuSetNull_Click" x:Name="mnuSetNull" IsEnabled="False" Visibility="Collapsed" />-->
-                    <MenuItem Header="Select File URL..." IsEnabled="True" x:Name="mnuSelectFile" Click="mnuSelectFile_Click" />
+                    <MenuItem Header="Select a File..." IsEnabled="True" x:Name="mnuSelectFile" Click="mnuSelectFile_Click" />
                     <Separator />
                     <MenuItem Header="Open URL" IsEnabled="True" x:Name="mnuOpenUrl" Click="mnuOpenUrl_Click" />
                 </flat:ContextMenu>

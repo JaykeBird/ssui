@@ -26,7 +26,7 @@ namespace SolidShineUi
     /// </remarks>
     [DefaultEvent(nameof(CheckChanged))]
     [Localizability(LocalizationCategory.CheckBox)]
-    public class CheckBox : ContentControl
+    public class CheckBox : ThemedContentControl
     {
         // in my personal experience, I've run into difficulties and annoyances with the standard WPF CheckBox
         // while I understand the usage of nullable bool for IsChecked, to cover the potential of it being an indeterminate mark, I've personally never used tri-state checkboxes
@@ -48,14 +48,12 @@ namespace SolidShineUi
         /// </summary>
         public CheckBox()
         {
-            Padding = new Thickness(5, 0, 0, 0);
-
             CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
 
-            SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
-            SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
+            //SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
+            //SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
 
-            KeyboardNavigation.SetIsTabStop(this, true);
+            // KeyboardNavigation.SetIsTabStop(this, true);
 
             MouseDown += UserControl_MouseDown;
             MouseUp += UserControl_MouseUp;
@@ -69,6 +67,7 @@ namespace SolidShineUi
         }
 
         #region CheckBoxClick
+
         /// <summary>
         /// The command that activates when the box of the checkbox itself has been clicked.
         /// </summary>
@@ -113,7 +112,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty OnlyAllowCheckBoxClickProperty
+        public static readonly DependencyProperty OnlyAllowCheckBoxClickProperty
             = DependencyProperty.Register("OnlyAllowCheckBoxClick", typeof(bool), typeof(CheckBox),
             new FrameworkPropertyMetadata(false));
 
@@ -122,10 +121,12 @@ namespace SolidShineUi
         #region CheckState
 
         #region Routed Events
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        /// <summary>
+        /// The backing routed event object for <see cref="CheckChanged"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent CheckChangedEvent = EventManager.RegisterRoutedEvent(
-            "CheckChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(CheckChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed, either to Checked, Indeterminate, or Unchecked.
@@ -136,10 +137,11 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckChangedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing routed event object for <see cref="Checked"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent CheckedEvent = EventManager.RegisterRoutedEvent(
-            "Checked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(Checked), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed to Checked.
@@ -150,10 +152,11 @@ namespace SolidShineUi
             remove { RemoveHandler(CheckedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing routed event object for <see cref="Unchecked"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent UncheckedEvent = EventManager.RegisterRoutedEvent(
-            "Unchecked", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(Unchecked), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed to Unchecked.
@@ -164,10 +167,11 @@ namespace SolidShineUi
             remove { RemoveHandler(UncheckedEvent, value); }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>
+        /// The backing routed event object for <see cref="Indeterminate"/>. Please see the related event for details.
+        /// </summary>
         public static readonly RoutedEvent IndeterminateEvent = EventManager.RegisterRoutedEvent(
-            "Indeterminate", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+            nameof(Indeterminate), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CheckBox));
 
         /// <summary>
         /// Raised when the CheckState property is changed to Indeterminate.
@@ -229,7 +233,7 @@ namespace SolidShineUi
         public CheckState CheckState { get => (CheckState)GetValue(CheckStateProperty); set => SetValue(CheckStateProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckState"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckStateProperty
+        public static readonly DependencyProperty CheckStateProperty
             = DependencyProperty.Register(nameof(CheckState), typeof(CheckState), typeof(CheckBox),
             new FrameworkPropertyMetadata(CheckState.Unchecked, (d, e) => d.PerformAs<CheckBox>((o) => o.OnCheckStateChanged(e))));
 
@@ -365,7 +369,8 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
+
         /// <summary>
         /// Raised when the ColorScheme property is changed.
         /// </summary>
@@ -380,7 +385,7 @@ namespace SolidShineUi
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(CheckBox),
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(CheckBox),
             new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
@@ -430,19 +435,18 @@ namespace SolidShineUi
 
             if (cs.IsHighContrast)
             {
-                // TODO: change how check foreground is figured out based upon the color scheme
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
                 CheckForeground = ColorsHelper.Black.ToBrush();
-                HighlightBrush = ColorsHelper.Black.ToBrush();
-                BackgroundHighlightBrush = cs.HighlightColor.ToBrush();
+                CheckHighlightBrush = ColorsHelper.Black.ToBrush();
+                HighlightBrush = cs.HighlightColor.ToBrush();
                 BorderHighlightBrush = cs.BorderColor.ToBrush();
             }
             else
             {
                 BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
                 CheckForeground = Colors.Black.ToBrush();
-                HighlightBrush = ColorsHelper.DarkerGray.ToBrush();
-                BackgroundHighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
+                CheckHighlightBrush = ColorsHelper.DarkerGray.ToBrush();
+                HighlightBrush = ColorsHelper.WhiteLightHighlight.ToBrush();
                 BorderHighlightBrush = cs.HighlightColor.ToBrush();
             }
 
@@ -453,17 +457,51 @@ namespace SolidShineUi
             Foreground = cs.ForegroundColor.ToBrush();
             BorderSelectedBrush = cs.BorderColor.ToBrush();
         }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(CheckForegroundProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(CheckHighlightBrushProperty, SsuiTheme.CheckHighlightBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.CheckBackgroundHighlightBrushProperty, theme);
+
+                ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(CheckDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
+            }
+        }
+
         #endregion
 
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used for the background of the checkbox's box. This value is not modified by the <see cref="ColorScheme"/> property.
+        /// Get or set the brush used for the background of the checkbox's box. This value is not modified by the <see cref="ColorScheme"/> 
+        /// or <see cref="ThemedContentControl.SsuiTheme"/> property.
         /// </summary>
         public Brush CheckBackground { get => (Brush)GetValue(CheckBackgroundProperty); set => SetValue(CheckBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckBackgroundProperty
+        public static readonly DependencyProperty CheckBackgroundProperty
             = DependencyProperty.Register(nameof(CheckBackground), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.White.ToBrush()));
 
@@ -473,29 +511,29 @@ namespace SolidShineUi
         public Brush CheckForeground { get => (Brush)GetValue(CheckForegroundProperty); set => SetValue(CheckForegroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckForeground"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckForegroundProperty
+        public static readonly DependencyProperty CheckForegroundProperty
             = DependencyProperty.Register(nameof(CheckForeground), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.Black.ToBrush()));
 
         /// <summary>
         /// Get or set the brush used for the check mark in the checkbox's box, while the mouse is over the control or it has keyboard focus. 
         /// </summary>
-        public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
+        public Brush CheckHighlightBrush { get => (Brush)GetValue(CheckHighlightBrushProperty); set => SetValue(CheckHighlightBrushProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty HighlightBrushProperty
-            = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(CheckBox),
+        /// <summary>The backing dependency property for <see cref="CheckHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CheckHighlightBrushProperty
+            = DependencyProperty.Register(nameof(CheckHighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.DarkerGray.ToBrush()));
 
 
         /// <summary>
         /// Get or set the brush used for the background of the checkbox's box, while the mouse is over the control or it has keyboard focus.
         /// </summary>
-        public Brush BackgroundHighlightBrush { get => (Brush)GetValue(BackgroundHighlightBrushProperty); set => SetValue(BackgroundHighlightBrushProperty, value); }
+        public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
-        /// <summary>The backing dependency property for <see cref="BackgroundHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BackgroundHighlightBrushProperty
-            = DependencyProperty.Register(nameof(BackgroundHighlightBrush), typeof(Brush), typeof(CheckBox),
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightBrushProperty
+            = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.WhiteLightHighlight.ToBrush()));
 
         /// <summary>
@@ -504,7 +542,7 @@ namespace SolidShineUi
         public Brush BackgroundDisabledBrush { get => (Brush)GetValue(BackgroundDisabledBrushProperty); set => SetValue(BackgroundDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BackgroundDisabledBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BackgroundDisabledBrushProperty
+        public static readonly DependencyProperty BackgroundDisabledBrushProperty
             = DependencyProperty.Register(nameof(BackgroundDisabledBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.CreateFromHex("c4d9d9d9").ToBrush()));
 
@@ -514,7 +552,7 @@ namespace SolidShineUi
         public Brush BorderDisabledBrush { get => (Brush)GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BorderDisabledBrushProperty
+        public static readonly DependencyProperty BorderDisabledBrushProperty
             = DependencyProperty.Register(nameof(BorderDisabledBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
 
@@ -524,7 +562,7 @@ namespace SolidShineUi
         public Brush CheckDisabledBrush { get => (Brush)GetValue(CheckDisabledBrushProperty); set => SetValue(CheckDisabledBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CheckDisabledBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty CheckDisabledBrushProperty
+        public static readonly DependencyProperty CheckDisabledBrushProperty
             = DependencyProperty.Register(nameof(CheckDisabledBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
 
@@ -534,7 +572,7 @@ namespace SolidShineUi
         public Brush BorderHighlightBrush { get => (Brush)GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BorderHighlightBrushProperty
+        public static readonly DependencyProperty BorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(BorderHighlightBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
@@ -544,22 +582,13 @@ namespace SolidShineUi
         public Brush BorderSelectedBrush { get => (Brush)GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty BorderSelectedBrushProperty
+        public static readonly DependencyProperty BorderSelectedBrushProperty
             = DependencyProperty.Register(nameof(BorderSelectedBrush), typeof(Brush), typeof(CheckBox),
             new FrameworkPropertyMetadata(ColorsHelper.Black.ToBrush()));
-
-
 
         #endregion
 
         #region Border
-
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
-        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(CheckBox),
-            new PropertyMetadata(new Thickness(1)));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
@@ -574,16 +603,6 @@ namespace SolidShineUi
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
             "CornerRadius", typeof(CornerRadius), typeof(CheckBox),
             new PropertyMetadata(new CornerRadius(0)));
-
-        /// <summary>
-        /// Get or set the thickness of the border of the check box.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
 
         /// <summary>
         /// Get or set the thickness of the border of the check box, while the check box's IsChecked property is true.
@@ -619,7 +638,7 @@ namespace SolidShineUi
         public PlacementDirection BoxPlacement { get => (PlacementDirection)GetValue(BoxPlacementProperty); set => SetValue(BoxPlacementProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="BoxPlacement"/>. See the related property for details.</summary>
-        public static DependencyProperty BoxPlacementProperty
+        public static readonly DependencyProperty BoxPlacementProperty
             = DependencyProperty.Register(nameof(BoxPlacement), typeof(PlacementDirection), typeof(CheckBox),
             new FrameworkPropertyMetadata(PlacementDirection.Left));
 
@@ -681,7 +700,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty TriStateClickProperty
+        public static readonly DependencyProperty TriStateClickProperty
             = DependencyProperty.Register("TriStateClick", typeof(bool), typeof(CheckBox),
             new FrameworkPropertyMetadata(false));
 
@@ -717,12 +736,12 @@ namespace SolidShineUi
                     return;
                 }
 
-                //if (OnlyAllowCheckBoxClick && !checkBoxClick)
-                //{
-                //    // exit out
-                //    initiatingClick = false;
-                //    return;
-                //}
+                if (OnlyAllowCheckBoxClick && !checkBoxClick)
+                {
+                    // exit out
+                    initiatingClick = false;
+                    return;
+                }
 
                 if (TriStateClick)
                 {
@@ -818,7 +837,10 @@ namespace SolidShineUi
         {
             if (e.Key == Key.Enter || e.Key == Key.Space)
             {
+                // special handling for OnlyAllowCheckBoxClick, to allow this to be clicked via the keyboard
+                if (OnlyAllowCheckBoxClick) checkBoxClick = true;
                 PerformClick();
+                if (OnlyAllowCheckBoxClick) checkBoxClick = false;
             }
             else if (e.Key == Key.Apps)
             {

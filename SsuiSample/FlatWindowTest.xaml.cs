@@ -1,21 +1,16 @@
-﻿using SolidShineUi;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SolidShineUi;
 
 namespace SsuiSample
 {
     /// <summary>
     /// Interaction logic for FlatWindowTest.xaml
     /// </summary>
-    public partial class FlatWindowTest : UserControl
+    public partial class FlatWindowTest : ThemedUserControl
     {
         public FlatWindowTest()
         {
@@ -28,62 +23,43 @@ namespace SsuiSample
         FlatWindow fwRunning = null;
 #endif
 
-        #region ColorScheme
-
-        /// <summary>
-        /// Raised when the value of <see cref="ColorScheme"/> changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-#endif
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(FlatWindowTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is ColorScheme cs)
-            {
-                if (d is FlatWindowTest s)
-                {
-                    s.ColorSchemeChanged?.Invoke(d, e);
-                    s.ApplyColorScheme(cs);
-                }
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
-
-#endregion
+//#if NETCOREAPP
+//        FlatWindow? fwRunning = null;
+//#else
+//        FlatWindow fwRunning = null;
+//#endif
 
         Color selColor = Colors.Salmon;
 
         private void btnColorSet_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, selColor);
+            ColorPickerDialog cpd = new ColorPickerDialog(selColor);
+            cpd.SsuiTheme = TryGetSsuiAppTheme();
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
             {
                 selColor = cpd.SelectedColor;
                 rdoCustomColor.IsChecked = true;
+            }
+        }
+
+        SsuiAppTheme TryGetSsuiAppTheme()
+        {
+            if (SsuiTheme is SsuiAppTheme sat)
+            {
+                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
+                return sat;
+            }
+            else if (Window.GetWindow(this) is ThemedWindow fw)
+            {
+                // okay, let's try to pull from the parent window if possible, as it should have a SsuiAppTheme as its theme
+                return fw.SsuiTheme;
+            }
+            else
+            {
+                // okay, I guess we'll just go with the default
+                return new SsuiAppTheme();
             }
         }
 
@@ -99,8 +75,7 @@ namespace SsuiSample
             {
                 Width = nudWidth.Value,
                 Height = nudHeight.Value,
-                ColorScheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? ColorScheme : new ColorScheme(selColor),
-                //CornerRadius = new CornerRadius(nudCornerRadius.Value)
+                SsuiTheme = rdoCurrentColor.IsChecked.GetValueOrDefault(true) ? TryGetSsuiAppTheme() : new SsuiAppTheme(selColor),
             };
 
             if (btnSetIcon.SelectedFiles.Count > 0)
@@ -155,7 +130,7 @@ namespace SsuiSample
 
             if (rdoDisplayText.IsChecked.GetValueOrDefault(true))
             {
-                fw.ShowTitle = true; // it's already true by default, but I'm putting this here anyway lol
+                fw.ShowTitle = true; // it's already true by default, but I'm putting it here for clarity
             }
             else if (rdoDisplayImage.IsChecked.GetValueOrDefault(false))
             {
@@ -163,7 +138,7 @@ namespace SsuiSample
 
                 // set up a TopLeftElement
                 // with ShowTitle being set to false, you can create a different UI element to appear in the place of the title
-                // (if you still show the title ("ShowTitle = true"), the TopLeftElement is displayed even left of the window title)
+                // (if you still show the title ("ShowTitle = true"), the TopLeftElement is displayed to the left of the window title)
                 // just like TopRightElement, this can be set via XAML but I'm creating it in C# here
                 Image uii = new Image
                 {
@@ -196,6 +171,7 @@ namespace SsuiSample
             colProperties.MinWidth = 0;
             colProperties.Width = new GridLength(0, GridUnitType.Pixel);
             btnShowProperties.Visibility = Visibility.Collapsed;
+            propList.Clear();
         }
 
 #if NETCOREAPP

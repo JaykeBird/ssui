@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SsuiSample.FileSelectTest" x:Name="control"
+﻿<flat:ThemedUserControl x:Class="SsuiSample.FileSelectTest" x:Name="control"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,22 +8,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" Text="File Select Test" FontSize="16" VerticalAlignment="Top"/>
-        <flat:FileSelect x:Name="fsSingle" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" AllowMultipleFiles="False" DisplayFilenames="True" />
+        <flat:FileSelect x:Name="fsSingle" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="240" AllowMultipleFiles="False" DisplayFilenames="True" />
         <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" Text="Select a single file" VerticalAlignment="Top"/>
-        <flat:FileSelect x:Name="fsMultiple" HorizontalAlignment="Left" Margin="20,145,0,0" VerticalAlignment="Top" AllowMultipleFiles="True" DisplayFilenames="False" Width="240" ColorScheme="{Binding ElementName=control, Path=ColorScheme}"/>
+        <flat:FileSelect x:Name="fsMultiple" HorizontalAlignment="Left" Margin="20,145,0,0" VerticalAlignment="Top" AllowMultipleFiles="True" DisplayFilenames="False" Width="240" />
         <TextBlock HorizontalAlignment="Left" Margin="20,125,0,0" Text="Select multiple files, show count only" VerticalAlignment="Top" />
-        <flat:FileSelect x:Name="fsLimited" HorizontalAlignment="Left" Margin="20,210,0,0" VerticalAlignment="Top" FileFilter="*.png;*.jpg;*.gif;*.bmp" Width="240" DisplayFilenames="False" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+        <flat:FileSelect x:Name="fsLimited" HorizontalAlignment="Left" Margin="20,210,0,0" VerticalAlignment="Top" FileFilter="*.png;*.jpg;*.gif;*.bmp" Width="240" DisplayFilenames="False" />
         <TextBlock HorizontalAlignment="Left" Margin="20,190,0,0" Text="Select only image files, show count only" VerticalAlignment="Top" />
-        <flat:FileSelect x:Name="fsLimited2" HorizontalAlignment="Left" Margin="20,275,0,0" VerticalAlignment="Top" FileFilter="a*" ShowIcon="False" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" DisplayFilenames="True" />
+        <flat:FileSelect x:Name="fsLimited2" HorizontalAlignment="Left" Margin="20,275,0,0" VerticalAlignment="Top" FileFilter="a*" ShowIcon="False" Width="240" DisplayFilenames="True" />
         <TextBlock HorizontalAlignment="Left" Margin="20,255,0,0" Text="Select a file that starts with 'A'; no file icon shown" VerticalAlignment="Top" />
-        <flat:FileSelect x:Name="fsDisabled" HorizontalAlignment="Left" Margin="20,343,0,0" VerticalAlignment="Top" FileFilter="a*" IsEnabled="False" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}" />
+        <flat:FileSelect x:Name="fsDisabled" HorizontalAlignment="Left" Margin="20,343,0,0" VerticalAlignment="Top" FileFilter="a*" IsEnabled="False" Width="240" />
         <TextBlock HorizontalAlignment="Left" Margin="20,323,0,0" Text="Disabled FileSelect" VerticalAlignment="Top" />
-        <flat:FileSelect x:Name="fsNewSingle_Copy" HorizontalAlignment="Left" Margin="320,150,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}"
+        <flat:FileSelect x:Name="fsNewSingle_Copy" HorizontalAlignment="Left" Margin="320,150,0,0" VerticalAlignment="Top" Width="240"
                             Padding="2" AllowMultipleFiles="True" DisplayFilenames="True" Height="122" ButtonPlacement="Bottom" NoFilesSelectedMessage="(custom no files selected message)" />
         <TextBlock HorizontalAlignment="Left" Margin="320,130,0,0" Text="Select multiple files, show filenames" VerticalAlignment="Top"/>
-        <flat:FileSelect x:Name="fsNewSingle_Copy1" HorizontalAlignment="Left" Margin="320,310,0,0" VerticalAlignment="Top" Width="240" ColorScheme="{Binding ColorScheme, ElementName=control}"
+        <flat:FileSelect x:Name="fsNewSingle_Copy1" HorizontalAlignment="Left" Margin="320,310,0,0" VerticalAlignment="Top" Width="240"
             Padding="2" AllowMultipleFiles="True" DisplayFilenames="True" Height="70" ButtonPlacement="Left" FileFilter="*.png;*.jpg;*.gif;*.bmp" ShowIcon="False" FileListPadding="3,0" />
         <TextBlock HorizontalAlignment="Left" Margin="320,290,0,0" Text="Select only image files, show filenames" VerticalAlignment="Top"/>
-
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>

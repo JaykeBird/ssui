@@ -8,12 +8,15 @@ using System.Collections;
 
 namespace SolidShineUi
 {
+#pragma warning disable CA1710 // Identifiers should have correct suffix (matching naming convention of ListCollectionView instead)
     /// <summary>
     /// A type of CollectionView that operates as a SelectableCollection. This can be used as a SelectPanel's ItemsSource if <typeparamref name="T"/> derives from SelectableUserControl.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
     public class SelectableCollectionView<T> : ListCollectionView, ISelectableCollection<T>, ICollection<T>, ISelectableCollection
     {
+#pragma warning restore CA1710 // Identifiers should have correct suffix
+
         /// <summary>
         /// Create a SelectableCollectionView, that represents a view of the specified list.
         /// </summary>
@@ -140,12 +143,20 @@ namespace SolidShineUi
         /// Add an item to the existing list of selected items.
         /// </summary>
         /// <param name="item">The item to select.</param>
-        public void AddToSelection(T item)
+        public bool AddToSelection(T item)
         {
             if (baseCollection.Contains(item))
             {
-                selectedItems.Add(item);
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
+                if (!selectedItems.Contains(item))
+                {
+                    selectedItems.Add(item);
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
+                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -153,7 +164,7 @@ namespace SolidShineUi
         /// Select an item, replacing the current list of selected items.
         /// </summary>
         /// <param name="item">The item to select.</param>
-        public void Select(T item)
+        public void SelectItem(T item)
         {
             if (baseCollection.Contains(item))
             {
@@ -294,19 +305,23 @@ namespace SolidShineUi
         /// <inheritdoc/>
         public bool IsReadOnly => true;
 
-        void ISelectableCollection.AddToSelection(object item)
+        bool ISelectableCollection.AddToSelection(object item)
         {
             if (item is T t)
             {
-                AddToSelection(t);
+                return AddToSelection(t);
+            }
+            else
+            {
+                return false;
             }
         }
 
-        void ISelectableCollection.Select(object item)
+        void ISelectableCollection.SelectItem(object item)
         {
             if (item is T t)
             {
-                Select(t);
+                SelectItem(t);
             }
         }
 
@@ -334,12 +349,12 @@ namespace SolidShineUi
         /// Copy the elements of this Collection to an Array, starting at the specified index in the Array.
         /// </summary>
         /// <param name="array">The array to copy values into.</param>
-        /// <param name="index">The starting index at which to start copying values.</param>
+        /// <param name="arrayIndex">The starting index at which to start copying values.</param>
         /// <exception cref="ArgumentException">Raised if this Array is not an Array of type <typeparamref name="T"/>, 
         /// or if this Array isn't large enough to fit all the items in this Collection.</exception>
-        public void CopyTo(T[] array, int index)
+        public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array.Length - index < Count)
+            if (array.Length - arrayIndex < Count)
             {
                 throw new ArgumentException("The inputted array is not large enough to fit all of the elements in this collection.");
             }
@@ -347,7 +362,7 @@ namespace SolidShineUi
             {
                 for (int i = 0; i < Count; i++)
                 {
-                    array[index + i] = this[i];
+                    array[arrayIndex + i] = this[i];
                 }
             }
         }

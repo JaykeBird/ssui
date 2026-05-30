@@ -1,79 +1,48 @@
-﻿using SolidShineUi;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using SolidShineUi;
 
 namespace SsuiSample
 {
     /// <summary>
     /// Interaction logic for DialogsTest.xaml
     /// </summary>
-    public partial class DialogsTest : UserControl
+    public partial class DialogsTest : ThemedUserControl
     {
         public DialogsTest()
         {
             InitializeComponent();
         }
 
-        #region ColorScheme
-
-        /// <summary>
-        /// Raised when the value of <see cref="ColorScheme"/> changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-#endif
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(DialogsTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        SsuiAppTheme TryGetSsuiAppTheme()
         {
-            if (e.NewValue is ColorScheme cs)
+            if (SsuiTheme is SsuiAppTheme sat)
             {
-                if (d is DialogsTest s)
-                {
-                    s.ColorSchemeChanged?.Invoke(d, e);
-                    s.ApplyColorScheme(cs);
-                }
+                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
+                return sat;
+            }
+            else if (Window.GetWindow(this) is ThemedWindow fw)
+            {
+                // okay, let's try to pull from the parent window if possible, as it should have a SsuiAppTheme as its theme
+                return fw.SsuiTheme;
+            }
+            else
+            {
+                // okay, I guess we'll just go with the default
+                return new SsuiAppTheme();
             }
         }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-        #endregion
 
         private void btnSetText_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Text", "Set the sample text to use:", txtSampleText.Text);
+            StringInputDialog sid = new StringInputDialog("Set Text", "Set the sample text to use:", txtSampleText.Text);
 
             // by default, these are all set to true, but I'll list them here so you can play with them if desired
             sid.SelectTextOnFocus = true;
             sid.EnterKeyConfirms = true;
             sid.EscapeKeyCancels = true;
+            sid.SsuiTheme = TryGetSsuiAppTheme();
 
             sid.Owner = Window.GetWindow(this);
             sid.ShowDialog();
@@ -87,7 +56,7 @@ namespace SsuiSample
         private void btnSetFont_Click(object sender, RoutedEventArgs e)
         {
             FontSelectDialog fsd = new FontSelectDialog();
-            fsd.ColorScheme = ColorScheme;
+            fsd.SsuiTheme = TryGetSsuiAppTheme();
 
             // load in from control
             fsd.SelectedFontFamily = txtSampleText.FontFamily;
@@ -132,7 +101,7 @@ namespace SsuiSample
             {
                 c = sc.Color;
             }
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, c);
+            ColorPickerDialog cpd = new ColorPickerDialog(c);
 
             // by default, these are all set to true, but I'll list them here so you can play with them if desired
             cpd.ShowImageTab = true;
@@ -142,13 +111,23 @@ namespace SsuiSample
 
             cpd.ShowTransparencyControls = true;
 
+
             cpd.Owner = Window.GetWindow(this);
+            cpd.SsuiTheme = TryGetSsuiAppTheme();
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
             {
-                txtSampleText.Foreground = new SolidColorBrush(cpd.SelectedColor);
+                txtSampleText.TextBrush = new SolidColorBrush(cpd.SelectedColor);
+                txtSampleText.HighlightBrush = new SolidColorBrush(cpd.SelectedColor);
             }
+        }
+
+        private void txtSampleText_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog md = new MessageDialog();
+            md.SsuiTheme = TryGetSsuiAppTheme();
+            md.ShowDialog(txtSampleText.Text, Window.GetWindow(this), "Dialog Test", MessageDialogImage.Info);
         }
     }
 }

@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// A converter to modify one <see cref="CornerRadius"/>, by adding on a constant value or another CornerRadius object.
     /// </summary>
+    [ValueConversion(typeof(CornerRadius), typeof(CornerRadius))]
+    [ValueConversion(typeof(double), typeof(CornerRadius))]
     public class CornerRadiusModifierConverter : IValueConverter
     {
         /// <summary>

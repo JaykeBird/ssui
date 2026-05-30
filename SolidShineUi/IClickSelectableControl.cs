@@ -63,6 +63,16 @@ namespace SolidShineUi
         void ApplyColorScheme(ColorScheme cs);
 
         /// <summary>
+        /// Get or set the SsuiTheme to apply for this control. Each control will apply the theme's colors appropriately via its own
+        /// <c>OnApplySsuiTheme</c> method.
+        /// </summary>
+#if NETCOREAPP
+        SsuiTheme? SsuiTheme { get; set; }
+#else
+        SsuiTheme SsuiTheme { get; set; }
+#endif
+
+        /// <summary>
         /// Get or set the background brush used for this control, when it isn't being clicked or selected.
         /// </summary>
         Brush Background { get; set; }
@@ -87,7 +97,7 @@ namespace SolidShineUi
         /// </summary>
         Brush SelectedBrush { get; set; }
 
-        #endregion
+#endregion
     }
 
 
@@ -205,6 +215,108 @@ namespace SolidShineUi
         /// The selection was changed via directly setting the value in code, or via a different undefined method.
         /// </summary>
         CodeUnknown = 9,
+    }
+
+    /// <summary>
+    /// An interface of common properties and methods for Solid Shine UI's button controls.
+    /// </summary>
+    public interface ISsuiButton : IClickSelectableControl
+    {
+        #region Brushes
+
+        /// <summary>
+        /// Get or set the brush used for the background of the control when the control is disabled.
+        /// </summary>
+        Brush DisabledBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border around the edges of the control.
+        /// </summary>
+        Brush BorderBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border of the control when the control is disabled.
+        /// </summary>
+        Brush BorderDisabledBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        Brush BorderHighlightBrush { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        Brush HighlightForeground { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        Brush SelectedForeground { get; set; }
+
+        /// <summary>
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        Brush BorderSelectedBrush { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// Get or set whether the button should have a transparent background when the button is not focused or selected.
+        /// </summary>
+        bool TransparentBack { get; set; }
+
+        /// <summary>
+        /// Get or set the thickness of the border around the button.
+        /// </summary>
+        Thickness BorderThickness { get; set; }
+
+        /// <summary>
+        /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
+        /// </summary>
+        Thickness BorderSelectionThickness { get; set; }
+
+        /// <summary>
+        /// Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.
+        /// </summary>
+        CornerRadius CornerRadius { get; set; }
+
+        /// <summary>
+        /// Get or set if the button should be highlighted (using the <see cref="IClickSelectableControl.HighlightBrush"/> and <see cref="BorderHighlightBrush"/>)
+        /// when it has keyboard focus. If <c>false</c>, only the keyboard focus outline appears, and highlighting only occurs on mouse/stylus over.
+        /// </summary>
+        bool HighlightOnKeyboardFocus { get; set; }
+
+        /// <summary>
+        /// Update the value to a dependency property of this control.
+        /// </summary>
+        /// <param name="dp">the property to update</param>
+        /// <param name="value">the value to update the property to</param>
+        void SetValue(DependencyProperty dp, object value);
+
+        /// <summary>
+        /// Get or set an arbitrary object that can be used to store custom information about this element.
+        /// </summary>
+        object Tag { get; set; }
+
+        #region Content Control Properties
+
+        /// <summary>
+        /// Get or set the content to display within this control.
+        /// </summary>
+        object Content { get; set; }
+
+        /// <summary>
+        /// Gets or sets a composite string that specifies how to format the Content property if it is displayed as a string.
+        /// </summary>
+        string ContentStringFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data template used to display the content of the control.
+        /// </summary>
+        DataTemplate ContentTemplate { get; set; }
+
+        #endregion
     }
 
 }

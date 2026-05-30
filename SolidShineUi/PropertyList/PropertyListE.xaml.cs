@@ -16,12 +16,19 @@ using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList
 {
+
     /// <summary>
     /// A control that can display the properties and values of a .NET object, with support for live editing of many of them.
     /// This is the old version used in the Solid Shine UI 1.9 releases; please transition to the new <see cref="PropertyList"/> control.
     /// </summary>
+#if NETCOREAPP
+    [Obsolete("This is the old ExperimentalPropertyList control used in Solid Shine UI 1.9; please transition to the new PropertyList control."
+         , DiagnosticId = "SSUI002")]
+    public partial class ExperimentalPropertyList : UserControl, IPropertyEditorHost
+#else
     [Obsolete("This is the old ExperimentalPropertyList control used in Solid Shine UI 1.9; please transition to the new PropertyList control.")]
     public partial class ExperimentalPropertyList : UserControl, IPropertyEditorHost
+#endif
     {
         /// <summary>
         /// Create a PropertyList.
@@ -73,7 +80,7 @@ namespace SolidShineUi.PropertyList
 #else
         public event PropertyListObjectEventHandler LoadedObjectChanged;
 #endif
-        #endregion
+#endregion
 
         /// <summary>
         /// Get the internal contents of this PropertyList control.
@@ -135,6 +142,8 @@ namespace SolidShineUi.PropertyList
                 return;
             }
 
+            SsuiTheme sTheme = new SsuiTheme(cs);
+
 #if NETCOREAPP
             foreach (UIElement? item in stkProperties.Children)
 #else
@@ -146,7 +155,7 @@ namespace SolidShineUi.PropertyList
                 {
                     if (pei.PropertyEditorControl != null)
                     {
-                        pei.PropertyEditorControl.ColorScheme = cs;
+                        pei.PropertyEditorControl.ApplySsuiTheme(sTheme);
                     }
                 }
             }
@@ -419,6 +428,8 @@ namespace SolidShineUi.PropertyList
 
             Type baseType = _baseObject?.GetType() ?? typeof(object);
 
+            SsuiTheme sTheme = new SsuiTheme(ColorScheme);
+
             foreach (PropertyInfo item in properties)
             {
                 // first, check the property against the DisplayOptions
@@ -451,7 +462,7 @@ namespace SolidShineUi.PropertyList
 
                 if (ipe != null)
                 {
-                    ipe.ApplyColorScheme(ColorScheme);
+                    ipe.ApplySsuiTheme(sTheme);
                     ipe.SetHostControl(this);
                     ipe.IsPropertyWritable = item.CanWrite;
                 }
@@ -694,7 +705,7 @@ namespace SolidShineUi.PropertyList
             else
             {
                 IEnumerable<PropertyInfo> propInfos;
-                if (filter.StartsWith("@"))
+                if (filter.StartsWith("@", StringComparison.Ordinal))
                 {
                     propInfos = FilterNameOnly(filter.Substring(1));
                 }
@@ -1414,7 +1425,7 @@ namespace SolidShineUi.PropertyList
             {
                 var generics = type.GetGenericArguments();
 
-                if (typeString.StartsWith("System.Nullable"))
+                if (typeString.StartsWith("System.Nullable", StringComparison.Ordinal))
                 {
                     return (fullName ? generics[0].FullName : generics[0].Name) + "?";
                 }
@@ -1444,6 +1455,19 @@ namespace SolidShineUi.PropertyList
 #endif
         {
             return Window.GetWindow(this);
+        }
+
+        /// <inheritdoc/>
+        public SsuiAppTheme GetThemeForDialogs()
+        {
+            if (GetWindow() is ThemedWindow tw)
+            {
+                return tw.SsuiTheme;
+            }
+            else
+            {
+                return SsuiThemes.SystemTheme;
+            }
         }
     }
 }

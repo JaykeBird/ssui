@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi.PropertyList.Dialogs;
-using System.Security.Cryptography;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -22,6 +20,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public RectEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnu11Rect.Header = Strings.SetTo11Rect;
+            mnuEmpty.Header = Strings.SetToEmpty;
+            mnuEdit.Header = Strings.Edit;
+            lblEdit.Text = Strings.Edit2;
         }
 
         /// <inheritdoc/>
@@ -36,33 +41,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
 
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            btnMenu.ColorScheme = cs;
-            _cs = cs;
-
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                // imgNew.Source = LoadIcon("Reload", Utils.IconVariation.White);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                // imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Black);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
-            }
-            else
-            {
-                // imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Color);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
-            }
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
-
-        private ColorScheme _cs = new ColorScheme();
 
         private Rect rect = Rect.Empty;
 
@@ -122,13 +107,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else if (value is Rect g)
             {
                 rect = g;
-                txtFontName.Text = rect.ToString();
+                txtFontName.Text = rect.ToString(null);
             }
             else
             {
                 // this object is not a Guid? what is it here???
                 rect = Rect.Empty;
-                txtFontName.Text = rect.ToString();
+                txtFontName.Text = rect.ToString(null);
             }
         }
 
@@ -136,13 +121,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
-            txtFontName.Text = "(null)";
+            txtFontName.Text = Strings.Null;
         }
 
         void UnsetAsNull()
         {
             mnuSetNull.IsChecked = false;
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
         }
 
         private void mnuSetNull_Click(object sender, RoutedEventArgs e)
@@ -161,16 +146,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnu11Rect_Click(object sender, RoutedEventArgs e)
         {
             rect = new Rect(0, 0, 1, 1);
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
             UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void mnuEdit_Click(object sender, RoutedEventArgs e)
         {
-            RectEditDialog red = new RectEditDialog(_cs);
+            RectEditDialog red = new RectEditDialog();
             red.SetRect(rect);
             red.Owner = _host?.GetWindow();
+            red.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             red.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             red.ShowDialog();
 
@@ -179,7 +165,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 rect = red.GetRect();
             }
 
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
             UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -187,7 +173,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnuEmpty_Click(object sender, RoutedEventArgs e)
         {
             rect = Rect.Empty;
-            txtFontName.Text = rect.ToString();
+            txtFontName.Text = rect.ToString(null);
             UnsetAsNull();
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }

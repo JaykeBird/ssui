@@ -46,6 +46,7 @@ namespace SolidShineUi
             LoadTemplateItems();
             if (itemsLoaded && sv != null)
             {
+                sv.ScrollChanged += Sv_ScrollChanged;
                 sv.PreviewMouseWheel += HandlePreviewMouseWheel;
                 sv.Unloaded += (s, _) => sv.PreviewMouseWheel -= HandlePreviewMouseWheel;
             }
@@ -71,6 +72,7 @@ namespace SolidShineUi
                 }
             }
         }
+
         #endregion
 
         #region ItemsSource
@@ -187,6 +189,7 @@ namespace SolidShineUi
         /// If you're using <see cref="ItemsSource"/> to set the items in this control, you should instead modify/manage your items through that items source, rather than using this property.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set the list of items in this SelectPanel.")]
         public SelectableCollection<IClickSelectableControl> Items
         {
             get { return (SelectableCollection<IClickSelectableControl>)GetValue(ItemsProperty); }
@@ -195,7 +198,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Helper Methods
+        #region MultiSelect
 
         /// <summary>
         /// Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.
@@ -206,6 +209,7 @@ namespace SolidShineUi
         /// </remarks>
         /// <exception cref="NotSupportedException">Thrown if the underlying <see cref="ISelectableCollection"/> in <see cref="ItemsSource"/> doesn't allow changing this value</exception>
         [Category("Common")]
+        [Description("Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.")]
         public bool MultiSelect
         {
             get
@@ -225,10 +229,14 @@ namespace SolidShineUi
                 if (ItemsSource is ISelectableCollection isl)
                 {
                     isl.CanSelectMultiple = value;
-                    // some ISelectionCollection types may not allow this property to be changed, in theory
+                    // some ISelectionCollection types may not allow this property to be changed. at that point, an exception is raised
                 }
             }
         }
+
+        #endregion
+
+        #region Helper Methods
 
         void RefreshVisualSelection()
         {
@@ -417,16 +425,16 @@ namespace SolidShineUi
                         }
                         else
                         {
-                            isl.Select(item);
+                            isl.SelectItem(item);
                         }
 
-                        RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<IClickSelectableControl>());
+                        RaiseSelectionChangedEvent((new[] { item }).ToList(), null);
                     }
                     else
                     {
                         isl.Deselect(item);
 
-                        RaiseSelectionChangedEvent(new List<IClickSelectableControl>(), (new[] { item }).ToList());
+                        RaiseSelectionChangedEvent(null, (new[] { item }).ToList());
                     }
                 }
 
@@ -527,6 +535,8 @@ namespace SolidShineUi
                 return;
             }
 
+            ItemsTheme = new SsuiTheme(cs);
+
             if (cs.IsHighContrast)
             {
                 Background = cs.BackgroundColor.ToBrush();
@@ -554,24 +564,24 @@ namespace SolidShineUi
                 }
             }
 
-            UpdateChildrenAppearance();
+            //UpdateChildrenColorScheme();
 
             runApply = true;
         }
 
-        private void UpdateChildrenAppearance()
-        {
-            foreach (IClickSelectableControl item in ItemsSource)
-            {
-                item.SelectedBrush = SelectedBrush;
-                item.HighlightBrush = HighlightBrush;
-                item.ClickBrush = ClickBrush;
-                item.ApplyColorScheme(ColorScheme);
-            }
-        }
+        //private void UpdateChildrenColorScheme()
+        //{
+        //    foreach (IClickSelectableControl item in ItemsSource)
+        //    {
+        //        item.SelectedBrush = SelectedBrush;
+        //        item.HighlightBrush = HighlightBrush;
+        //        item.ClickBrush = ClickBrush;
+        //        item.ApplyColorScheme(ColorScheme);
+        //    }
+        //}
         #endregion
 
-        #region SsuiTheme
+        #region SsuiTheme / child SsuiTheme
 
         /// <inheritdoc/>
         protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
@@ -591,20 +601,95 @@ namespace SolidShineUi
                 if (sat.UseSubitemThemeWithPanels)
                 {
                     // subitems should use the subitem theme
+                    if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                    {
+                        SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.SubitemTheme)) { Source = this.SsuiTheme });
+                    }
                     subitemTheme = sat.SubitemTheme;
                 }
                 else if (useAccentTheme)
                 {
+                    if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                    {
+                        SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiAppTheme.AccentTheme)) { Source = this.SsuiTheme });
+                    }
                     subitemTheme = sat.AccentTheme;
+                }
+                else
+                {
+                    if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                    {
+                        SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
+                    }
+                }
+            }
+            else
+            {
+                if (!ThemeValueExclude.Split(',').Contains(nameof(ItemsTheme)))
+                {
+                    SetBinding(ItemsThemeProperty, new System.Windows.Data.Binding(nameof(SsuiTheme)) { Source = this });
                 }
             }
 
             // apply brushes using mainTheme
+            ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, mainTheme);
+            ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, mainTheme);
+            ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, mainTheme);
+            ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, mainTheme);
 
-            // apply subitem brushes using subitemTheme
+            // these brushes are applied directly from ItemsTheme
+            // however, we'll directly set these properties so that people can see what they are
+
+            _internalThemeAction = true;
+
+            HighlightBrush = subitemTheme.HighlightBrush;
+            ClickBrush = subitemTheme.ClickBrush;
+            SelectedBrush = subitemTheme.SelectedBackgroundBrush;
+
+            _internalThemeAction = false;
+
+            // UpdateChildrenAppearance();
         }
 
-#endregion
+        bool _internalThemeAction = false;
+
+        /// <summary>
+        /// Get or set the theme and brushes this panel will use for its child items.
+        /// <para/>
+        /// This is set automatically when the <c>SsuiTheme</c> or <c>ColorScheme</c> property is updated.
+        /// </summary>
+        public SsuiTheme ItemsTheme { get => (SsuiTheme)GetValue(ItemsThemeProperty); set => SetValue(ItemsThemeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ItemsTheme"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ItemsThemeProperty
+            = DependencyProperty.Register(nameof(ItemsTheme), typeof(SsuiTheme), typeof(SelectPanel),
+            new FrameworkPropertyMetadata(new SsuiTheme(), (d, e) => d.PerformAs<SelectPanel>((o) => o.OnItemsThemeChange(e))));
+
+        //public static readonly DependencyProperty ItemsThemeProperty = ItemsThemePropertyKey.DependencyProperty;
+
+        private void OnItemsThemeChange(DependencyPropertyChangedEventArgs e)
+        {
+            foreach (IClickSelectableControl item in ItemsSource)
+            {
+                if (item is FrameworkElement dobj)
+                {
+                    // most (if not all) IClickSelectableControl objects will be at least FrameworkElements, if not Controls
+                    // so we can pretty reliably set this property here. we will need to inform in the documentation that
+                    // implementers of this property will need to AddOwner this property so that it'll actually work
+
+                    // we want to do binding in case the ItemsTheme is itself bound to a single or central SsuiTheme somewhere
+                    // that way, the end user or developer can just change that SsuiTheme and it'll propogate down to here
+                    dobj.SetBinding(SsuiThemeProperty, new System.Windows.Data.Binding(nameof(ItemsTheme)) { Source = this });
+                }
+                else
+                {
+                    // on the rare off-chance it's not a framework element, then we'll just do plain-old property assignment
+                    item.SsuiTheme = ItemsTheme;
+                }
+            }
+        }
+
+        #endregion
 
         #region Routed Events
 
@@ -623,12 +708,14 @@ namespace SolidShineUi
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 
-        void RaiseSelectionChangedEvent(List<IClickSelectableControl> addedItems, List<IClickSelectableControl> removedItems)
-        {
 #if NETCOREAPP
+        void RaiseSelectionChangedEvent(List<IClickSelectableControl>? addedItems, List<IClickSelectableControl>? removedItems)
+        {
             addedItems ??= new List<IClickSelectableControl>();
             removedItems ??= new List<IClickSelectableControl>();
 #else
+        void RaiseSelectionChangedEvent(List<IClickSelectableControl> addedItems, List<IClickSelectableControl> removedItems)
+        {
             if (addedItems == null)
             {
                 addedItems = new List<IClickSelectableControl>();
@@ -716,13 +803,14 @@ namespace SolidShineUi
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty
-            = DependencyProperty.Register("HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
+            = DependencyProperty.Register(nameof(HorizontalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Disabled));
 
         /// <summary>
         /// Get or set the appearance of the horizontal scroll bar for this control.
         /// </summary>
         [Category("Layout")]
+        [Description("Get or set the appearance of the horizontal scroll bar for this control.")]
         public ScrollBarVisibility HorizontalScrollBarVisibility
         {
             get { return (ScrollBarVisibility)GetValue(HorizontalScrollBarVisibilityProperty); }
@@ -733,13 +821,14 @@ namespace SolidShineUi
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty VerticalScrollBarVisibilityProperty
-            = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(SelectPanel),
+            = DependencyProperty.Register(nameof(VerticalScrollBarVisibility), typeof(ScrollBarVisibility), typeof(SelectPanel),
             new FrameworkPropertyMetadata(ScrollBarVisibility.Auto));
 
         /// <summary>
         /// Get or set the appearance of the vertical scroll bar for this control.
         /// </summary>
         [Category("Layout")]
+        [Description("Get or set the appearance of the vertical scroll bar for this control.")]
         public ScrollBarVisibility VerticalScrollBarVisibility
         {
             get { return (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty); }
@@ -751,27 +840,13 @@ namespace SolidShineUi
         #region Brushes
 
         /// <summary>
-        /// Get or set the brush used for the background of this control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-
-        /// <summary>
         /// Get or set the brush used when an item in this control is being clicked.
         /// </summary>
         [Category("Brushes")]
         public Brush ClickBrush
         {
             get => (Brush)GetValue(ClickBrushProperty);
-            set
-            {
-                SetValue(ClickBrushProperty, value);
-                UpdateChildrenAppearance();
-            }
+            set => SetValue(ClickBrushProperty, value);
         }
 
         /// <summary>
@@ -781,25 +856,17 @@ namespace SolidShineUi
         public Brush SelectedBrush
         {
             get => (Brush)GetValue(SelectedBrushProperty);
-            set
-            {
-                SetValue(SelectedBrushProperty, value);
-                UpdateChildrenAppearance();
-            }
+            set => SetValue(SelectedBrushProperty, value);
         }
 
         /// <summary>
-        /// Get or set the brush used when an item in this control is highlighted (i.e. has the mouse over it or has keyboard focus).
+        /// Get or set the brush used when an item in this control is highlighted (e.g., has the mouse over it or has keyboard focus).
         /// </summary>
         [Category("Brushes")]
         public Brush HighlightBrush
         {
             get => (Brush)GetValue(HighlightBrushProperty);
-            set
-            {
-                SetValue(HighlightBrushProperty, value);
-                UpdateChildrenAppearance();
-            }
+            set => SetValue(HighlightBrushProperty, value);
         }
 
         /// <summary>
@@ -823,97 +890,84 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around this control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
-
-        /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(Colors.LightSalmon.ToBrush()));
+            nameof(ClickBrush), typeof(Brush), typeof(SelectPanel),
+            new PropertyMetadata(Colors.LightSalmon.ToBrush(), ChildBrushChanged));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(Colors.MistyRose.ToBrush()));
+            nameof(SelectedBrush), typeof(Brush), typeof(SelectPanel),
+            new PropertyMetadata(Colors.MistyRose.ToBrush(), ChildBrushChanged));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(Colors.Salmon.ToBrush()));
+            nameof(HighlightBrush), typeof(Brush), typeof(SelectPanel),
+            new PropertyMetadata(Colors.Salmon.ToBrush(), ChildBrushChanged));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(SelectPanel),
+            nameof(DisabledBrush), typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(SelectPanel),
+            nameof(BorderDisabledBrush), typeof(Brush), typeof(SelectPanel),
             new PropertyMetadata(new SolidColorBrush(Colors.DarkGray)));
 
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(SelectPanel),
-            new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+        private static void ChildBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SelectPanel sp && e.NewValue is Brush b)
+            {
+                if (sp._internalThemeAction) return;
+
+                if (sp.ItemsTheme.IsFrozen) // if it's frozen, we'll want to unfreeze it to make sure we can edit it
+                {
+                    sp.ItemsTheme = sp.ItemsTheme.CloneCurrentValue();
+                }
+
+                switch (e.Property.Name)
+                {
+                    case nameof(HighlightBrush):
+                        sp.ItemsTheme.HighlightBrush = b;
+                        break;
+                    case nameof(ClickBrush):
+                        sp.ItemsTheme.ClickBrush = b;
+                        break;
+                    case nameof(SelectedBrush):
+                        sp.ItemsTheme.SelectedBackgroundBrush = b;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
         #endregion
 
-        #region Border
-
-        /// <summary>
-        /// A dependency property object backing the related property. See the property itself for more details.
-        /// </summary>
-        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(SelectPanel),
-            new PropertyMetadata(new Thickness(1)));
+        #region CornerRadius
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(SelectPanel),
+            nameof(CornerRadius), typeof(CornerRadius), typeof(SelectPanel),
             new PropertyMetadata(new CornerRadius(0)));
 
         /// <summary>
-        /// Get or set the thickness of the border around this control.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
-
-        /// <summary>
         /// Get or set the corner radius (or radii) to use for the control's border. Setting the corners to 0 means there is no rounding; square corners are used.
-        /// Any corners with a higher number will be rounded.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the corner radius (or radii) to use for the control's border.")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -921,6 +975,124 @@ namespace SolidShineUi
         }
 
         #endregion
+
+        #endregion
+
+        #region Scroll Viewer functions
+
+        // TODO: see if I can change these to be dependency properties and bind in the template?
+
+        /// <summary>
+        /// Get the current vertical offset of the scroll viewer in this SelectPanel.
+        /// </summary>
+        public double VerticalOffset
+        {
+            get => sv != null ? sv.VerticalOffset : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current horizontal offset of the scroll viewer in this SelectPanel.
+        /// </summary>
+        public double HorizontalOffset
+        {
+            get => sv != null ? sv.HorizontalOffset : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current horizontal size (width) of the viewport of the content in this SelectPanel.
+        /// </summary>
+        public double ViewportWidth
+        {
+            get => sv != null ? sv.ViewportWidth : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current vertical size (height) of the viewport of the content in this SelectPanel.
+        /// </summary>
+        public double ViewportHeight
+        {
+            get => sv != null ? sv.ViewportHeight : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current horizontal size (width) of the extent of the content in this SelectPanel.
+        /// </summary>
+        public double ExtentWidth
+        {
+            get => sv != null ? sv.ExtentWidth : -1.0;
+        }
+
+        /// <summary>
+        /// Get the current vertical size (height) of the extent of the content in this SelectPanel.
+        /// </summary>
+        public double ExtentHeight
+        {
+            get => sv != null ? sv.ExtentHeight : -1.0;
+        }
+
+        /// <summary>
+        /// Occurs when changes are detected in the scroll position, extent, or viewport size.
+        /// </summary>
+#if NETCOREAPP
+        public event ScrollChangedEventHandler? ScrollChanged;
+#else
+        public event ScrollChangedEventHandler ScrollChanged;
+#endif
+
+        private void Sv_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            ScrollChanged?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Scroll vertically to beginning (top edge) of the content.
+        /// </summary>
+        public void ScrollToTop()
+        {
+            sv?.ScrollToTop();
+        }
+
+        /// <summary>
+        /// Scroll vertically to end (bottom edge) of the content.
+        /// </summary>
+        public void ScrollToBottom()
+        {
+            sv?.ScrollToBottom();
+        }
+
+        /// <summary>
+        /// Scroll horizontally to the left edge of the content.
+        /// </summary>
+        public void ScrollToLeftEnd()
+        {
+            sv?.ScrollToLeftEnd();
+        }
+
+        /// <summary>
+        /// Scroll horizontally to the right edge of the content.
+        /// </summary>
+        public void ScrollToRightEnd()
+        {
+            sv?.ScrollToRightEnd();
+        }
+
+        /// <summary>
+        /// Scroll the content to the specified vertical offset position.
+        /// </summary>
+        /// <param name="offset">the offset value to scroll to</param>
+        public void ScrollToVerticalOffset(double offset)
+        {
+            sv?.ScrollToVerticalOffset(offset);
+        }
+
+        /// <summary>
+        /// Scroll the content to the specified horizontal offset position.
+        /// </summary>
+        /// <param name="offset">the offset value to scroll to</param>
+        public void ScrollToHorizontalOffset(double offset)
+        {
+            sv?.ScrollToHorizontalOffset(offset);
+        }
 
         #endregion
 
@@ -1154,10 +1326,11 @@ namespace SolidShineUi
 
         #region Move Items
 
-        private class SortByParentIndex : IComparer<IClickSelectableControl>
+        private sealed class SortByParentIndex : IComparer<IClickSelectableControl>
         {
             // A class to sort a collection of IClickSelectableControls by their index in the parent SelectableCollection.
 
+#pragma warning disable CA1859 // for code readability purposes and future proofing, this will stay as it is
 #if NETCOREAPP
             public IList<IClickSelectableControl>? ParentCollection { get; set; }
 
@@ -1167,6 +1340,7 @@ namespace SolidShineUi
 
             public int Compare(IClickSelectableControl a, IClickSelectableControl b)
 #endif
+#pragma warning restore CA1859
             {
                 // do null checks first
                 // I don't think we'll run into a situation where these will actually be null, but better safe than sorry
@@ -1354,7 +1528,7 @@ namespace SolidShineUi
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
                         isl.Insert(moveIndex, suc);
-                        if (resel) isc.Select(suc);
+                        if (resel) isc.SelectItem(suc);
                     }
                     else
                     {
@@ -1413,7 +1587,7 @@ namespace SolidShineUi
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
                         isl.Insert(moveIndex, suc);
-                        if (resel) isc.Select(suc);
+                        if (resel) isc.SelectItem(suc);
                     }
                     else
                     {
@@ -1457,6 +1631,8 @@ namespace SolidShineUi
         /// <summary>
         /// Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll. Note that enabling this may prevent any child items from scrolling.
         /// </summary>
+        [Category("Common")]
+        [Description("Set whether the SelectPanel should allow its parent to scroll if the SelectPanel doesn't need to scroll.")]
         public bool AllowParentScrolling
         {
             get => (bool)GetValue(AllowParentScrollingProperty);

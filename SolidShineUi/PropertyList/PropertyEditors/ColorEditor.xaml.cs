@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Linq;
-using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi;
 using SolidShineUi.PropertyList.Dialogs;
 using SolidShineUi.Utils;
+using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -20,6 +21,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ColorEditor()
         {
             InitializeComponent();
+
+            // set string values
+            mnuColor.Header = Strings.SelectColor;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>
@@ -33,7 +38,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        ColorScheme _cs = new ColorScheme();
 #if NETCOREAPP
         IPropertyEditorHost? _host = null;
 #else
@@ -42,25 +46,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         Color _col = Colors.White;
 
         /// <summary>
-        /// Set the visual appearance of this control via the ColorScheme.
+        /// Set the visual appearance of this control via the SsuiTheme.
         /// </summary>
-        /// <param name="value">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme value)
+        /// <param name="theme">the value to apply</param>
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = value;
-            nudValue.ColorScheme = value;
-            btnMenu.ColorScheme = value;
-            btnColor.ColorScheme = value;
-            imgMenu.Source = LoadIcon("ThreeDots", value);
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            nudValue.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            btnColor.SsuiTheme = theme;
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -175,7 +169,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Color ccol = col.Value;
 
                 string hex = ccol.GetHexStringWithAlpha();
-                nudValue.Value = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                nudValue.Value = int.Parse(hex, NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo);
                 brdrColor.Background = new SolidColorBrush(ccol);
             }
 
@@ -188,7 +182,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (_internalAction) return;
 
-            _col = ColorsHelper.CreateFromHex(nudValue.Value.ToString("X8"));
+            _col = ColorsHelper.CreateFromHex(nudValue.Value.ToString("X8", NumberFormatInfo.CurrentInfo));
             brdrColor.Background = new SolidColorBrush(_col);
 
             ValueChanged?.Invoke(this, EventArgs.Empty);
@@ -204,10 +198,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuColor_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerDialog cpd = new ColorPickerDialog(_cs, _col);
+            ColorPickerDialog cpd = new ColorPickerDialog(_col);
             if (_host != null)
             {
                 cpd.Owner = _host.GetWindow();
+                cpd.SsuiTheme = _host.GetThemeForDialogs();
             }
 
             cpd.ShowDialog();
@@ -216,7 +211,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 _internalAction = true;
                 _col = cpd.SelectedColor;
-                nudValue.Value = int.Parse(_col.GetHexStringWithAlpha(), System.Globalization.NumberStyles.HexNumber);
+                nudValue.Value = int.Parse(_col.GetHexStringWithAlpha(), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo);
                 brdrColor.Background = new SolidColorBrush(_col);
                 _internalAction = false;
             }

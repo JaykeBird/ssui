@@ -9,17 +9,17 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="Auto" MinWidth="80" />
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="txtFontName" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center" Opacity="0.8" />
+        <TextBox x:Name="txtFontName" IsReadOnly="True" IsReadOnlyCaretVisible="True" VerticalContentAlignment="Center"  Background="Transparent" BorderBrush="Transparent" />
         <flat:MenuButton x:Name="btnMenu" Grid.Column="1" ShowMenuArrow="True" >
             <StackPanel Orientation="Horizontal">
                 <Image Height="16" Width="16" x:Name="imgFontEdit" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" UseLayoutRounding="True" />
-                <TextBlock Text="Edit" Margin="3,0" />
+                <TextBlock Text="Edit" Margin="3,0" x:Name="lblEdit" />
             </StackPanel>
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
-                    <MenuItem Header="Generate New Guid" x:Name="mnuNewGuid" Click="btnEdit_Click">
+                    <MenuItem Header="Generate New Guid" x:Name="mnuNewGuid" Click="btnNewGuid_Click">
                         <MenuItem.Icon>
                             <Image x:Name="imgNew" />
                         </MenuItem.Icon>

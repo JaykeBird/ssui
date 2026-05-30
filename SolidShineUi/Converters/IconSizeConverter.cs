@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Diagnostics;
 using System.Windows.Media;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     // from https://stackoverflow.com/a/54738646/2987285
 
@@ -18,6 +18,9 @@ namespace SolidShineUi.Utils
     /// Select an icon from a ICO file/resource, that matches a given width or height.
     /// If the exact size wanted isn't available, this will instead return the nearest available size that's smaller than the given width or height.
     /// </summary>
+    [ValueConversion(typeof(BitmapFrame), typeof(BitmapFrame))]
+    [ValueConversion(typeof(BitmapImage), typeof(BitmapFrame))]
+    [ValueConversion(typeof(string), typeof(BitmapFrame))]
     public class IconSizeConverter : IValueConverter
     {
         /// <summary>
@@ -51,7 +54,7 @@ namespace SolidShineUi.Utils
             int size = 0;
             try
             {
-                size = string.IsNullOrWhiteSpace(parameter?.ToString()) ? 0 : System.Convert.ToInt32(parameter);
+                size = string.IsNullOrWhiteSpace(parameter?.ToString()) ? 0 : System.Convert.ToInt32(parameter, culture);
             }
             catch (FormatException) { }
             catch (InvalidCastException) { }
@@ -82,7 +85,7 @@ namespace SolidShineUi.Utils
                     // not sure why this was returning the string, so now this is removed
                     // return suri;
                 }
-                else if (!suri.StartsWith("pack:"))
+                else if (!suri.StartsWith("pack:", StringComparison.Ordinal))
                 {
                     suri = $"pack://application:,,,{suri}";
                 }
@@ -100,8 +103,8 @@ namespace SolidShineUi.Utils
                 BitmapFrame? result = decoder.Frames.Where(f => f.Width <= size).OrderByDescending(f => f.Width).FirstOrDefault()
                     ?? decoder.Frames.OrderBy(f => f.Width).FirstOrDefault();
 #else
-            BitmapFrame result = decoder.Frames.Where(f => f.Width <= size).OrderByDescending(f => f.Width).FirstOrDefault()
-                ?? decoder.Frames.OrderBy(f => f.Width).FirstOrDefault();
+                BitmapFrame result = decoder.Frames.Where(f => f.Width <= size).OrderByDescending(f => f.Width).FirstOrDefault()
+                    ?? decoder.Frames.OrderBy(f => f.Width).FirstOrDefault();
 #endif
 
                 //Debug.WriteLine("SELECTED FRAME: " + result?.Width ?? "(null)");

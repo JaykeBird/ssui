@@ -16,12 +16,12 @@ using System.Windows.Media;
 namespace SolidShineUi
 {
     /// <summary>
-    /// A control that can house multiple controls under a number of tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
+    /// A control that can house multiple controls under one or more tabs. Each tab has a title, icon, and close button (see <see cref="TabItem"/>).
     /// </summary>
-    [ContentProperty("Items")]
+    [ContentProperty(nameof(Items))]
     [DefaultEvent(nameof(TabChanged))]
     [Localizability(LocalizationCategory.None)]
-    public class TabControl : Control
+    public class TabControl : ThemedControl
     {
 
         static TabControl()
@@ -54,20 +54,27 @@ namespace SolidShineUi
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, DoCloseCurrentTab, CanExecuteIfAnyTabSelected));
         }
 
+        #region Loaded event
+
         /// <summary>
         /// Get or set if the first tab should be selected right away when the control is loaded. This property has no effect after the control is loaded.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set if the first tab should be selected right away when the control is loaded. This property has no effect after the control is loaded.")]
         public bool SelectFirstTabOnLoad { get; set; } = true;
 
         private void TabControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (Items.Count > 0 && SelectFirstTabOnLoad)
             {
-                Items.Select(Items[0]);
+                Items.SelectItem(Items[0]);
             }
         }
 
+        #endregion
+
         #region Template IO
+
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -85,15 +92,15 @@ namespace SolidShineUi
         ScrollViewer? sv = null;
 
         MenuButton? tlm = null;
-        FlatButton? bsl = null;
-        FlatButton? bsr = null;
+        ISsuiButton? bsl = null;
+        ISsuiButton? bsr = null;
 #else
         ItemsControl ic = null;
         ScrollViewer sv = null;
 
         MenuButton tlm = null;
-        FlatButton bsl = null;
-        FlatButton bsr = null;
+        ISsuiButton bsl = null;
+        ISsuiButton bsr = null;
 #endif
 
         void LoadTemplateItems()
@@ -103,8 +110,8 @@ namespace SolidShineUi
                 ic = (ItemsControl)GetTemplateChild("PART_TabBar");
                 sv = (ScrollViewer)GetTemplateChild("PART_TabScroll");
                 tlm = (MenuButton)GetTemplateChild("PART_TabMenu");
-                bsl = (FlatButton)GetTemplateChild("btnScrollLeft");
-                bsr = (FlatButton)GetTemplateChild("btnScrollRight");
+                bsl = (ISsuiButton)GetTemplateChild("btnScrollLeft");
+                bsr = (ISsuiButton)GetTemplateChild("btnScrollRight");
 
                 if (ic != null && sv != null)
                 {
@@ -139,12 +146,13 @@ namespace SolidShineUi
 
         #region SelectableCollection handling
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey = DependencyProperty.RegisterReadOnly("Items", typeof(SelectableCollection<TabItem>), typeof(TabControl),
             new FrameworkPropertyMetadata(new SelectableCollection<TabItem>()));
 
+        /// <summary>
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of tabs in this TabControl. This Items property can be used to add tabs, remove tabs, and also select tabs via the Select method.
@@ -259,11 +267,7 @@ namespace SolidShineUi
                         // from https://stackoverflow.com/a/1876534/2987285
                         ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                         c.ApplyTemplate();
-                        //#if NETCOREAPP
-                        //                        TabDisplayItem? tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-                        //#else
-                        //#endif
-                        if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+                        if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                         {
                             if (tb.TabItem != null && tb.TabItem == newItem)
                             {
@@ -295,36 +299,36 @@ namespace SolidShineUi
                                 // nothing to do
                                 break;
                             case SelectedTabCloseAction.SelectFirstTab:
-                                Items.Select(Items[0]);
+                                Items.SelectItem(Items[0]);
                                 break;
                             case SelectedTabCloseAction.SelectLastTab:
-                                Items.Select(Items[Items.Count - 1]);
+                                Items.SelectItem(Items[Items.Count - 1]);
                                 break;
                             case SelectedTabCloseAction.SelectTabToLeft:
                                 if (closedTabIndex == -1)
                                 {
                                     // most likely closed via Items.Remove command
-                                    Items.Select(Items[0]);
+                                    Items.SelectItem(Items[0]);
                                 }
                                 else if (closedTabIndex == 0)
                                 {
                                     // left most tab closed
-                                    Items.Select(Items[0]);
+                                    Items.SelectItem(Items[0]);
                                 }
                                 else
                                 {
-                                    Items.Select(Items[closedTabIndex - 1]);
+                                    Items.SelectItem(Items[closedTabIndex - 1]);
                                 }
                                 break;
                             case SelectedTabCloseAction.SelectTabToRight:
                                 if (closedTabIndex == -1)
                                 {
                                     // most likely closed via Items.Remove command
-                                    Items.Select(Items[Items.Count - 1]);
+                                    Items.SelectItem(Items[Items.Count - 1]);
                                 }
                                 else
                                 {
-                                    Items.Select(Items[closedTabIndex]);
+                                    Items.SelectItem(Items[closedTabIndex]);
                                 }
                                 break;
                             default:
@@ -564,7 +568,7 @@ namespace SolidShineUi
                 {
                     if (Items.Contains(tab))
                     {
-                        Items.Select(tab);
+                        Items.SelectItem(tab);
                         tab.BringIntoView();
                     }
                 }
@@ -619,7 +623,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set if the tab bar should be shown at the bottom of the control, rather than the top.")]
         public bool ShowTabsOnBottom
         {
             get { return (bool)GetValue(ShowTabsOnBottomProperty); }
@@ -647,7 +652,8 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the height of the horizontal tab bar. The default value is 24.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set the height of the horizontal tab bar. The default value is 24.")]
         public double HorizontalTabBarHeight
         {
             get { return (double)GetValue(HorizontalTabBarHeightProperty); }
@@ -667,12 +673,14 @@ namespace SolidShineUi
         #region LeftTabBarElement and RightTabBarElement
 
         /// <summary>The backing dependency property object for the related property. See <see cref="LeftTabBarElement"/> for details.</summary>
-        public static readonly DependencyProperty LeftTabBarElementProperty = DependencyProperty.Register("LeftTabBarElement", typeof(UIElement), typeof(TabControl),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty LeftTabBarElementProperty = 
+            DependencyProperty.Register(nameof(LeftTabBarElement), typeof(UIElement), typeof(TabControl), new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// Get or set the element to display on the left side of the tab bar.
         /// </summary>
+        [Category("Layout")]
+        [Description("Get or set the element to display on the left side of the tab bar.")]
         public UIElement LeftTabBarElement
         {
             get { return (UIElement)GetValue(LeftTabBarElementProperty); }
@@ -680,12 +688,14 @@ namespace SolidShineUi
         }
 
         /// <summary>The backing dependency property object for the related property. See <see cref="RightTabBarElement"/> for details.</summary>
-        public static readonly DependencyProperty RightTabBarElementProperty = DependencyProperty.Register("RightTabBarElement", typeof(UIElement), typeof(TabControl),
-            new FrameworkPropertyMetadata(null));
+        public static readonly DependencyProperty RightTabBarElementProperty = 
+            DependencyProperty.Register(nameof(RightTabBarElement), typeof(UIElement), typeof(TabControl), new FrameworkPropertyMetadata(null));
 
         /// <summary>
         /// Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).
         /// </summary>
+        [Category("Layout")]
+        [Description("Get or set the element to display on the right side of the tab bar (to the left of the Tab List Menu).")]
         public UIElement RightTabBarElement
         {
             get { return (UIElement)GetValue(RightTabBarElementProperty); }
@@ -699,13 +709,16 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="ShowTabListMenu"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty ShowTabListMenuProperty = DependencyProperty.Register("ShowTabListMenu", typeof(bool), typeof(TabControl),
+        public static readonly DependencyProperty ShowTabListMenuProperty = 
+            DependencyProperty.Register(nameof(ShowTabListMenu), typeof(bool), typeof(TabControl),
             new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<TabControl>((t) => t.ShowTabListMenuChanged?.Invoke(t, e)))));
 
         /// <summary>
-        /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs. This mimics a similar menu found in Visual Studio.
+        /// Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs.
+        /// This mimics a similar menu found in Visual Studio.
         /// </summary>
-        [Category("Common")]
+        [Category("Appearance")]
+        [Description("Get or set if a tab list menu should be shown on the far-right edge of the control's tab bar, listing all the open tabs.")]
         public bool ShowTabListMenu
         {
             get { return (bool)GetValue(ShowTabListMenuProperty); }
@@ -728,13 +741,15 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="TabMinWidth"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty TabMinWidthProperty = DependencyProperty.Register("TabMinWidth", typeof(double), typeof(TabControl),
+        public static readonly DependencyProperty TabMinWidthProperty = 
+            DependencyProperty.Register(nameof(TabMinWidth), typeof(double), typeof(TabControl),
             new FrameworkPropertyMetadata(120.0d, new PropertyChangedCallback((d, e) => d.PerformAs<TabControl>((t) => t.OnTabMinWidthChanged(e)))));
 
         /// <summary>
         /// Get or set the minimum width a tab should have in the tab bar. While tabs may be wider than this width, they will never be shorter than it.
         /// </summary>
-        [Category("Layout")]
+        [Category("Appearance")]
+        [Description("Get or set the minimum width a tab should have in the tab bar. While tabs may be wider than this width, they will never be shorter than it.")]
         public double TabMinWidth
         {
             get { return (double)GetValue(TabMinWidthProperty); }
@@ -763,7 +778,7 @@ namespace SolidShineUi
                     ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                     c.ApplyTemplate();
 
-                    if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+                    if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                     {
                         tb.MinWidth = (double)e.NewValue;
                     }
@@ -777,7 +792,8 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="SelectedTabClosedAction"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty SelectedTabClosedActionProperty = DependencyProperty.Register("SelectedTabClosedAction", typeof(SelectedTabCloseAction), typeof(TabControl),
+        public static readonly DependencyProperty SelectedTabClosedActionProperty = 
+            DependencyProperty.Register(nameof(SelectedTabClosedAction), typeof(SelectedTabCloseAction), typeof(TabControl),
             new PropertyMetadata(SelectedTabCloseAction.SelectTabToLeft));
 
         /// <summary>
@@ -793,6 +809,8 @@ namespace SolidShineUi
         /// This property is only for situations affecting a change in the selected tab. If a different (not selected) tab is closed, no extra action is needed
         /// and this property has no effect or relation to that.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the action to take when the currently selected tab is closed.")]
         public SelectedTabCloseAction SelectedTabClosedAction
         {
             get { return (SelectedTabCloseAction)GetValue(SelectedTabClosedActionProperty); }
@@ -805,7 +823,8 @@ namespace SolidShineUi
         /// <summary>
         /// The dependency property object for the <see cref="AllowTabDragDrop"/> property. See the related property for details.
         /// </summary>
-        public static readonly DependencyProperty AllowTabDragDropProperty = DependencyProperty.Register("AllowTabDragDrop", typeof(bool), typeof(TabControl),
+        public static readonly DependencyProperty AllowTabDragDropProperty = 
+            DependencyProperty.Register(nameof(AllowTabDragDrop), typeof(bool), typeof(TabControl),
             new PropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<TabControl>((t) => t.AllowTabDragDropChanged?.Invoke(t, e)))));
 
         /// <summary>
@@ -815,6 +834,7 @@ namespace SolidShineUi
         /// Note that dragging and dropping tabs between TabControls is not currently supported.
         /// </remarks>
         [Category("Common")]
+        [Description("Get or set if tabs can be dragged and dropped. If true, users can drag tabs around to rearrange them in the control's tab bar.")]
         public bool AllowTabDragDrop
         {
             get { return (bool)GetValue(AllowTabDragDropProperty); }
@@ -834,7 +854,7 @@ namespace SolidShineUi
         
         #endregion
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -928,6 +948,48 @@ namespace SolidShineUi
                 ButtonHighlightBorderBrush = cs.HighlightColor.ToBrush();
             }
         }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(ContentAreaBackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
+
+                ApplyThemeBinding(ButtonClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBackgroundProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(ButtonHighlightBorderBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+
+                ApplyThemeBinding(TabBackgroundProperty, SsuiTheme.TabBackgroundProperty, theme);
+                ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.TabHighlightBrushProperty, theme);
+                ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.TabHighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.TabSelectedBrushProperty, theme);
+                ApplyThemeBinding(TabCloseBrushProperty, SsuiTheme.ForegroundProperty, theme);
+                
+                if (useLightBorder)
+                {
+                    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
+                }
+                else
+                {
+                    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                }
+            }
+        }
+
         #endregion
 
         #region Brushes
@@ -936,32 +998,35 @@ namespace SolidShineUi
         /// Get or set the background used for the content area of the TabControl.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the background used for the content area of the TabControl.")]
         public Brush ContentAreaBackground { get => (Brush)GetValue(ContentAreaBackgroundProperty); set => SetValue(ContentAreaBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty ContentAreaBackgroundProperty
+        public static readonly DependencyProperty ContentAreaBackgroundProperty
             = DependencyProperty.Register(nameof(ContentAreaBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnContentAreaBackgroundUpdate));
 
         /// <summary>
-        /// Get or set the brush used for the background of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// Get or set the brush used for the background of a tab while it is highlighted (e.g., mouse over, keyboard focus).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the background of a tab while it is highlighted (e.g., mouse over, keyboard focus).")]
         public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabHighlightBrushProperty
+        public static readonly DependencyProperty TabHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabHighlightBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
-        /// Get or set the brush used for the borders of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// Get or set the brush used for the borders of a tab while it is highlighted (e.g., mouse over, keyboard focus).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the borders of a tab while it is highlighted (e.g., mouse over, keyboard focus).")]
         public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBorderHighlightBrushProperty
+        public static readonly DependencyProperty TabBorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabBorderHighlightBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -969,10 +1034,11 @@ namespace SolidShineUi
         /// Get or set the brush used for the borders of tabs. This is different from the <see cref="Control.BorderBrush"/> used for the rest of the TabControl.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the borders of tabs.")]
         public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBorderBrushProperty
+        public static readonly DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -980,10 +1046,11 @@ namespace SolidShineUi
         /// Get or set the brush used for the close glyph used in the tabs (where <see cref="TabItem.CanClose"/> is set to <c>true</c>).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the close glyph used in the tabs.")]
         public Brush TabCloseBrush { get => (Brush)GetValue(TabCloseBrushProperty); set => SetValue(TabCloseBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabCloseBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabCloseBrushProperty
+        public static readonly DependencyProperty TabCloseBrushProperty
             = DependencyProperty.Register(nameof(TabCloseBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -991,10 +1058,11 @@ namespace SolidShineUi
         /// Get or set the brush used for the background of a tab. Individual tabs can overwrite their backgrounds by changing <see cref="TabItem.TabBackground"/>.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the background of a tab.")]
         public Brush TabBackground { get => (Brush)GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBackgroundProperty
+        public static readonly DependencyProperty TabBackgroundProperty
             = DependencyProperty.Register(nameof(TabBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.LightGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
@@ -1002,43 +1070,47 @@ namespace SolidShineUi
         /// Get or set the brush used for the background of a selected tab.
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the background of a selected tab.")]
         public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectedTabBackgroundProperty
+        public static readonly DependencyProperty SelectedTabBackgroundProperty
             = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, UpdateChildBrushes));
 
         /// <summary>
-        /// Get or set the brush used for buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// Get or set the brush used for buttons in the TabControl, when they are highlighted (e.g., mouse over).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for buttons in the TabControl, when they are highlighted (e.g., mouse over).")]
         public Brush ButtonHighlightBackground { get => (Brush)GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonHighlightBackgroundProperty
+        public static readonly DependencyProperty ButtonHighlightBackgroundProperty
             = DependencyProperty.Register(nameof(ButtonHighlightBackground), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.Silver.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBrushUpdate));
 
         /// <summary>
-        /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (e.g., mouse over).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (e.g., mouse over).")]
         public Brush ButtonHighlightBorderBrush { get => (Brush)GetValue(ButtonHighlightBorderBrushProperty); set => SetValue(ButtonHighlightBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonHighlightBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonHighlightBorderBrushProperty
+        public static readonly DependencyProperty ButtonHighlightBorderBrushProperty
             = DependencyProperty.Register(nameof(ButtonHighlightBorderBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnHighlightBorderBrushUpdate));
 
         /// <summary>
-        /// Get or set the brush used for buttons in the TabControl, when they are being clicked (i.e. mouse down, key down).
+        /// Get or set the brush used for buttons in the TabControl, when they are being clicked (e.g., mouse down, key down).
         /// </summary>
         [Category("Brushes")]
+        [Description("Get or set the brush used for buttons in the TabControl, when they are being clicked (e.g., mouse down, key down).")]
         public Brush ButtonClickBrush { get => (Brush)GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty ButtonClickBrushProperty
+        public static readonly DependencyProperty ButtonClickBrushProperty
             = DependencyProperty.Register(nameof(ButtonClickBrush), typeof(Brush), typeof(TabControl),
             new FrameworkPropertyMetadata(Colors.LightGray.ToBrush(), FrameworkPropertyMetadataOptions.AffectsRender, OnClickBrushUpdate));
 
@@ -1144,11 +1216,17 @@ namespace SolidShineUi
         #region Setup TabDisplayItem / Tdi Event Handlers
 
         /// <summary>
-        /// Set up a new TabDisplayItem that was added to this TabControl.
-        /// This will set up the necessary event handlers and other properties to allow the TabDisplayItem to interact with the TabControl.
+        /// Set up a new ITabDisplayItem that was added to this TabControl.
+        /// This will set up the necessary event handlers and other properties to allow the ITabDisplayItem to interact with the TabControl.
+        /// <para/>
+        /// This is used internally for handling tabs, and calling this should be avoided except from within your own 
+        /// <see cref="ITabDisplayItem"/> control.
         /// </summary>
-        /// <param name="tdi">The TabDisplayItem to set up.</param>
-        internal protected void SetupTabDisplay(TabDisplayItem tdi)
+        /// <param name="tdi">The ITabDisplayItem to set up.</param>
+        /// <remarks>
+        /// This is not for adding tabs to this control. To add a tab, use <c>Items.Add</c>.
+        /// </remarks>
+        public void RegisterTabDisplayItem(ITabDisplayItem tdi)
         {
             tdi.RequestClose += tdi_RequestClose;
             tdi.Click += tdi_Click;
@@ -1165,7 +1243,7 @@ namespace SolidShineUi
         private void tdi_RightClick(object sender, EventArgs e)
 #endif
         {
-            if (sender is TabDisplayItem tdi)
+            if (sender is ITabDisplayItem tdi)
             {
                 if (tdi.TabItem.TabContextMenu != null)
                 {
@@ -1217,7 +1295,7 @@ namespace SolidShineUi
 
             if (selItem != null)
             {
-                Items.Select(selItem);
+                Items.SelectItem(selItem);
             }
 
             // fix to make sure the correct tab has the IsSelected state
@@ -1229,11 +1307,8 @@ namespace SolidShineUi
                     // from https://stackoverflow.com/a/1876534/2987285
                     ContentPresenter c = (ContentPresenter)ic.ItemContainerGenerator.ContainerFromItem(ic.Items[i]);
                     c.ApplyTemplate();
-                    //#if NETCOREAPP
-                    //#else
-                    //                    TabDisplayItem tb = c.ContentTemplate.FindName("PART_TabItem", c) as TabDisplayItem;
-                    //#endif
-                    if (c.ContentTemplate.FindName("PART_TabItem", c) is TabDisplayItem tb)
+
+                    if (c.ContentTemplate.FindName("PART_TabItem", c) is ITabDisplayItem tb)
                     {
                         if (tb.TabItem != null && tb.TabItem == selItem)
                         {
@@ -1256,11 +1331,11 @@ namespace SolidShineUi
         private void tdi_Click(object sender, EventArgs e)
 #endif
         {
-            if (sender != null && sender is TabDisplayItem tdi)
+            if (sender != null && sender is ITabDisplayItem tdi)
             {
                 if (tdi.TabItem != null && tdi.CanSelect)
                 {
-                    Items.Select(tdi.TabItem);
+                    Items.SelectItem(tdi.TabItem);
                 }
             }
         }
@@ -1273,7 +1348,7 @@ namespace SolidShineUi
         private void tdi_RequestClose(object sender, EventArgs e)
 #endif
         {
-            if (sender != null && sender is TabDisplayItem tdi)
+            if (sender != null && sender is ITabDisplayItem tdi)
             {
                 if (tdi.TabItem != null)
                 {
@@ -1317,6 +1392,7 @@ namespace SolidShineUi
         /// <summary>
         /// Get if the scroll buttons are currently visible in the tab bar.
         /// </summary>
+        [ReadOnly(true)]
         public bool ScrollButtonsVisible
         {
             get { return (bool)GetValue(ScrollButtonsVisibleProperty); }
@@ -1394,6 +1470,7 @@ namespace SolidShineUi
         }
 
         #endregion
+    
     }
 
     /// <summary>

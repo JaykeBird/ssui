@@ -1,11 +1,10 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -20,6 +19,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public LongEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuCopy.Header = Strings.CopyFullValue;
+            mnuDisplayHex.Header = Strings.DisplayAsHex;
+            mnuSetNull.Header = Strings.SetAsNull;
+
+            btnEnableEdit.Content = Strings.DecreaseAndEdit;
         }
 
         /// <inheritdoc/>
@@ -32,35 +38,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
-        /// <summary>
-        /// Set the visual appearance of this control via a ColorScheme.
-        /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            intSpinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
-        }
-
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            intSpinner.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
+            btnEnableEdit.SsuiTheme = theme;
         }
 
         /// <inheritdoc/>
@@ -72,8 +56,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => intSpinner.IsEnabled;
-            set => intSpinner.IsEnabled = value;
+            get => btnMenu.IsEnabled;
+            set { intSpinner.IsEnabled = value; btnMenu.IsEnabled = value; }
         }
 
         Type _propType = typeof(long);
@@ -189,13 +173,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 ulongbig = ul;
                 intSpinner.Value = 0L;
 
-                txtUlongLong.Text = ul.ToString();
-                txtUlongLong.ToolTip = ul.ToString("D");
+                txtUlongLong.Text = ul.ToString(NumberFormatInfo.CurrentInfo);
+                txtUlongLong.ToolTip = ul.ToString("D", NumberFormatInfo.CurrentInfo);
 
                 btnEnableEdit.Visibility = Visibility.Visible;
                 txtUlongLong.Visibility = Visibility.Visible;
                 mnuDisplayHex.IsEnabled = false;
                 intSpinner.Visibility = Visibility.Collapsed;
+            }
+            else if (value is uint ui)
+            {
+                intSpinner.Value = (long)ui;
             }
             else
             {
@@ -303,17 +291,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (ulong2long)
             {
-                Clipboard.SetText(ulongbig.ToString("D"));
+                Clipboard.SetText(ulongbig.ToString("D", NumberFormatInfo.CurrentInfo));
             }
             else
             {
                 if (intSpinner.DisplayAsHex)
                 {
-                    Clipboard.SetText(intSpinner.Value.ToString("X"));
+                    Clipboard.SetText(intSpinner.Value.ToString("X", NumberFormatInfo.CurrentInfo));
                 }
                 else
                 {
-                    Clipboard.SetText(intSpinner.Value.ToString("D"));
+                    Clipboard.SetText(intSpinner.Value.ToString("D", NumberFormatInfo.CurrentInfo));
                 }
             }
         }

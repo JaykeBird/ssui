@@ -224,13 +224,13 @@ namespace SolidShineUi
         /// <remarks>If <c>CanSelectMultiple</c> is true, use <see cref="AddToSelection(T)"/> to add more items to the selected list,
         /// or <see cref="SelectRange(IEnumerable{T})"/> to select multiple items at once.
         /// This function will always replace whatever is currently selected.</remarks>
-        public void Select(T item)
+        public void SelectItem(T item)
         {
             if (Contains(item))
             {
                 List<T> old = selectedItems;
                 selectedItems = new List<T>() { item };
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), new List<T>(selectedItems)));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(old), selectedItems));
             }
         }
 
@@ -242,7 +242,7 @@ namespace SolidShineUi
         /// <c>AddToSelection</c> should be used if preserving the existing selection is more important while <c>CanSelectMultiple</c> is false.
         /// <c>AddToOrReplaceSelection</c> should be used if selecting the item in the parameter is more important while <c>CanSelectMultiple</c> is false.
         /// While <c>CanSelectMultiple</c> is true, the two functions are identical.</remarks>
-        public void AddToSelection(T item)
+        public bool AddToSelection(T item)
         {
             if (CanSelectMultiple)
             {
@@ -251,12 +251,19 @@ namespace SolidShineUi
                     selectedItems.Add(item);
                     SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T>(), new List<T> { item }));
                 }
+
+                return true;
             }
             else
             {
                 if (selectedItems.Count == 0)
                 {
-                    Select(item);
+                    SelectItem(item);
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
         }
@@ -281,7 +288,7 @@ namespace SolidShineUi
             }
             else
             {
-                Select(item);
+                SelectItem(item);
             }
         }
 
@@ -397,19 +404,23 @@ namespace SolidShineUi
         #region Non-generic ISelectableCollectionSource handling
         ICollection ISelectableCollection.SelectedItems => SelectedItems;
 
-        void ISelectableCollection.AddToSelection(object item)
+        bool ISelectableCollection.AddToSelection(object item)
         {
             if (item is T t)
             {
-                AddToSelection(t);
+                return AddToSelection(t);
+            }
+            else
+            {
+                return false;
             }
         }
 
-        void ISelectableCollection.Select(object item)
+        void ISelectableCollection.SelectItem(object item)
         {
             if (item is T t)
             {
-                Select(t);
+                SelectItem(t);
             }
         }
 

@@ -2,31 +2,40 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Windows.Data;
-using System.IO;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
 
     /// <summary>
-    /// Convert a fully-qualified path to a file into just displaying the filename, for use in XAML.
+    /// Converts a fully-qualified file path into a 16x16 icon for display in XAML.
     /// </summary>
-    public class FilePathToNameConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(BitmapSource))]
+    public class FilePathToIconConverter : IValueConverter
     {
+
         /// <summary>
-        /// Convert a file's full path to only display the filename.
+        /// Converts a file's full path to a 16x16 <see cref="BitmapSource"/> icon.
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is IEnumerable<string> ie)
             {
                 string first = ie.FirstOrDefault() ?? "";
-                return GetFileNameFromFullPath(first);
+                return GetImageFromFilePath(first);
             }
             else if (value is string s)
             {
-                return GetFileNameFromFullPath(s);
+                try
+                {
+                    return GetImageFromFilePath(s);
+                }
+                catch (ArgumentNullException)
+                {
+                    return DependencyProperty.UnsetValue;
+                }
             }
             else
             {
@@ -34,9 +43,9 @@ namespace SolidShineUi.Utils
             }
         }
 
-        private static string GetFileNameFromFullPath(string path)
+        private static BitmapSource GetImageFromFilePath(string path)
         {
-            return Path.GetFileName(path);
+            return NativeMethods.GetSmallIcon(path);
         }
 
         /// <summary>
@@ -46,6 +55,5 @@ namespace SolidShineUi.Utils
         {
             return DependencyProperty.UnsetValue;
         }
-
     }
 }

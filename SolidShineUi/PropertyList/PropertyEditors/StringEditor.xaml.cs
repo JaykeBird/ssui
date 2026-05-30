@@ -7,7 +7,6 @@ using System.Windows.Media.Imaging;
 using System.Linq;
 using static SolidShineUi.Utils.IconLoader;
 using SolidShineUi.PropertyList.Dialogs;
-using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -20,6 +19,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public StringEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuMultiline.Header = Strings.MultilineEditor;
         }
 
         /// <inheritdoc/>
@@ -28,8 +31,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
 
-        ColorScheme _cs = new ColorScheme();
-
 #if NETCOREAPP
         IPropertyEditorHost? _parent = null;
 #else
@@ -37,20 +38,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -170,8 +161,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuMultiline_Click(object sender, RoutedEventArgs e)
         {
-            MultilineStringInputDialog sid = new MultilineStringInputDialog(_cs, "String Multi-Line Editor", "Enter a value:", txtText.Text);
-            sid.Owner = Window.GetWindow(this);
+            MultilineStringInputDialog sid = new MultilineStringInputDialog("String Multi-Line Editor", "Enter a value:", txtText.Text);
+            sid.Owner = _parent?.GetWindow();
+            sid.SsuiTheme = _parent?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             sid.ShowDialog();
 
             if (sid.DialogResult)
@@ -205,8 +197,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
 
                 ListEditorDialog led = new ListEditorDialog();
-                led.Owner = Window.GetWindow(this);
-                led.ColorScheme = _cs;
+                led.Owner = _parent?.GetWindow();
+                led.SsuiTheme = _parent?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
                 led.LoadEnumerable(txtText.Text, typeof(char), propEditorType);
                 led.Description = "collection string, of type char, with " + txtText.Text.Length + " items:";
 

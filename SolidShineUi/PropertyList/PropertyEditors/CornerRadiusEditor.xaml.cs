@@ -20,7 +20,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => nudUpLeft.IsEnabled;
+        public bool IsPropertyWritable { get => btnMenu.IsEnabled;
             set
             {
                 nudUpLeft.IsEnabled = value;
@@ -35,56 +35,38 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <summary>
-        /// Set the visual appearance of this control via a ColorScheme.
+        /// Set the visual appearance of this control via a SsuiTheme.
         /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
+        /// <param name="theme">the color scheme to apply</param>
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            nudUpLeft.ColorScheme = cs;
-            nudUpRight.ColorScheme = cs;
-            nudDownLeft.ColorScheme = cs;
-            nudDownRight.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
+            nudUpLeft.SsuiTheme = theme;
+            nudUpRight.SsuiTheme = theme;
+            nudDownLeft.SsuiTheme = theme;
+            nudDownRight.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
 
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgLeft.Source = LoadIcon("UpLeftArrow", Utils.IconVariation.White);
-                imgTop.Source = LoadIcon("UpRightArrow", Utils.IconVariation.White);
-                imgRight.Source = LoadIcon("DownRightArrow", Utils.IconVariation.White);
-                imgBottom.Source = LoadIcon("DownLeftArrow", Utils.IconVariation.White);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgLeft.Source = LoadIcon("UpLeftArrow", Utils.IconVariation.Black);
-                imgTop.Source = LoadIcon("UpRightArrow", Utils.IconVariation.Black);
-                imgRight.Source = LoadIcon("DownRightArrow", Utils.IconVariation.Black);
-                imgBottom.Source = LoadIcon("DownLeftArrow", Utils.IconVariation.Black);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
-            }
-            else
-            {
-                imgLeft.Source = LoadIcon("UpLeftArrow", Utils.IconVariation.Color);
-                imgTop.Source = LoadIcon("UpRightArrow", Utils.IconVariation.Color);
-                imgRight.Source = LoadIcon("DownRightArrow", Utils.IconVariation.Color);
-                imgBottom.Source = LoadIcon("DownLeftArrow", Utils.IconVariation.Color);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
-            }
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            imgLeft.Source = LoadIcon("UpLeftArrow", theme.IconVariation);
+            imgTop.Source = LoadIcon("UpRightArrow", theme.IconVariation);
+            imgRight.Source = LoadIcon("DownRightArrow", theme.IconVariation);
+            imgBottom.Source = LoadIcon("DownLeftArrow", theme.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
         public CornerRadiusEditor()
         {
             InitializeComponent();
+
+            // set string values
+            nudUpLeft.ToolTip = Strings.TopLeft;
+            nudUpRight.ToolTip = Strings.TopRight;
+            nudDownLeft.ToolTip = Strings.BottomLeft;
+            nudDownRight.ToolTip = Strings.BottomRight;
+
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetOne.Header = Strings.SetAllToFive;
         }
 
         /// <inheritdoc/>

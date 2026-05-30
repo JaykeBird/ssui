@@ -1,61 +1,18 @@
-﻿using SolidShineUi;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
+using SolidShineUi;
 
 namespace SsuiSample
 {
     /// <summary>
     /// Interaction logic for ButtonsTest.xaml
     /// </summary>
-    public partial class ButtonsTest : UserControl
+    public partial class ButtonsTest : ThemedUserControl
     {
         public ButtonsTest()
         {
             InitializeComponent();
         }
-
-        #region ColorScheme
-
-        /// <summary>
-        /// Raised when the value of <see cref="ColorScheme"/> changed.
-        /// </summary>
-#if NETCOREAPP
-        public event DependencyPropertyChangedEventHandler? ColorSchemeChanged;
-#else
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-#endif
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(ButtonsTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is ColorScheme cs)
-            {
-                if (d is ButtonsTest s)
-                {
-                    s.ColorSchemeChanged?.Invoke(d, e);
-                    s.ApplyColorScheme(cs);
-                }
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-        #endregion
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -76,6 +33,19 @@ namespace SsuiSample
         private void Button_MenuClick(object sender, RoutedEventArgs e)
         {
             txtResult.Text = $"{(sender as FrameworkElement)?.Name} was clicked on the menu";
+        }
+
+        int executeCount = 0;
+
+        private void Button_Execute(object sender, RoutedEventArgs e)
+        {
+            executeCount++;
+            txtResult.Text = $"{(sender as FrameworkElement).Name} held, count {executeCount}";
+        }
+
+        private void Button_EndPress(object sender, RoutedEventArgs e)
+        {
+            executeCount = 0;
         }
     }
 }

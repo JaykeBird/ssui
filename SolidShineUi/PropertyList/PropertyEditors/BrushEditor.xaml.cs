@@ -23,6 +23,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public BrushEditor()
         {
             InitializeComponent();
+
+            // enter in string values
+            lblCurrentValue.Text = Strings.CurrentValue;
+            lblChangeTo.Text = Strings.ChangeTo;
+
+            txtTransform.Text = Strings.EditTransform;
+            txtRelative.Text = Strings.EditRelativeTransform;
+
+            siNothing.Header = Strings.NothingNull;
+            siSolid.Header = Strings.SolidColorBrush;
+            siLinear.Header = Strings.LinearGradientBrush;
+            siRadial.Header = Strings.RadialGradientBrush;
+            siImage.Header = Strings.ImageBrush;
         }
 
         /// <inheritdoc/>
@@ -33,68 +46,38 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        private ColorScheme _cs = new ColorScheme();
+        // private SsuiTheme _cs = new SsuiTheme();
+
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
 
         /// <summary>
         /// Set the visual apperance of this control via a ColorScheme.
         /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
+        /// <param name="theme">the color scheme to apply</param>
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            btnEditBrush.ColorScheme = cs;
-            selChange.ColorScheme = cs;
-            brdrPop.BorderBrush = cs.BorderColor.ToBrush();
+            // _cs = theme;
+            btnMenu.SsuiTheme = theme;
+            btnEditBrush.SsuiTheme = theme;
+            brdrPop.SsuiTheme = theme;
 
-            if (cs.IsHighContrast)
-            {
-                btnBrush.BorderBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderHighlightBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderSelectedBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                //btnBrush.DisabledBrush = value.BackgroundColor.ToBrush();
-                btnBrush.Foreground = cs.ForegroundColor.ToBrush();
-                btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            btnBrush.BorderBrush = theme.BorderBrush;
+            btnBrush.BorderDisabledBrush = theme.DisabledBorderBrush;
+            btnBrush.SelectedBrush = theme.SelectedBackgroundBrush;
+            btnBrush.BorderHighlightBrush = theme.HighlightBorderBrush;
+            btnBrush.BorderSelectedBrush = theme.SelectedBorderBrush;
+            btnBrush.Foreground = theme.Foreground;
+            btnBrush.ClickBrush = theme.ClickBrush;
 
-                brdrPop.Background = cs.BackgroundColor.ToBrush();
-            }
-            else
-            {
-                btnBrush.BorderBrush = cs.BorderColor.ToBrush();
-                btnBrush.BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                btnBrush.SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-                btnBrush.BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                btnBrush.BorderSelectedBrush = cs.SelectionColor.ToBrush();
-                btnBrush.Foreground = cs.ForegroundColor.ToBrush();
-                btnBrush.ClickBrush = cs.ThirdHighlightColor.ToBrush();
+            brdrBottom.BorderBrush = theme.BorderBrush;
 
-                brdrPop.Background = cs.ThirdHighlightColor.ToBrush();
-            }
-
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -111,7 +94,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 btnBrush.IsEnabled = value;
                 btnEditBrush.IsEnabled = value;
-                selChange.IsEnabled = value;
+
+                foreach (var item in brdrPop.Items)
+                {
+                    if (item is UIElement ele)
+                    {
+                        ele.IsEnabled = value;
+                    }
+                }
             }
         }
 
@@ -126,9 +116,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         Brush _dataValue = new SolidColorBrush(Colors.Black);
 #endif
 
+
         #region GetValue / LoadValue
 
-        #region Base GetValue / LoadValue
 #if NETCOREAPP
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
@@ -160,22 +150,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 UpdatePreviewToNull();
 
-                txtCurrentBrush.Text = "(null brush)";
+                txtCurrentBrush.Text = Strings.NullBrush;
                 txtCurrentValue.Text = "";
                 btnEditBrush.IsEnabled = false;
-                btnEditBrush.Content = "Edit...";
+                btnEditBrush.Content = Strings.Edit;
                 return;
             }
 
             if (!(value is Brush))
             {
-                UpdatePreviewToNull();
-                txtBrushType.Text = "(unknown)";
+                UpdatePreview(Strings.Unknown2, null);
 
-                txtCurrentBrush.Text = "(unknown)";
+                txtCurrentBrush.Text = Strings.Unknown2;
                 txtCurrentValue.Text = value.ToString();
                 btnEditBrush.IsEnabled = false;
-                btnEditBrush.Content = "Edit...";
+                btnEditBrush.Content = Strings.Edit;
                 return;
             }
 
@@ -195,175 +184,91 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private Brush CopyBrush()
 #endif
         {
-            if (_dataValue == null) return null;
+            // if (_dataValue == null) return null;
 
-            return _dataValue.CloneCurrentValue();
-
-            //// this copying is needed to avoid WPF freezing the internal brush value that I actually use for editing
-            //// and can also prevent some unintentional updates or issues, such as if some other function elsewhere updates the object's brush
-            //Brush b = new SolidColorBrush(Colors.Black);
-
-            //if (_dataValue is SolidColorBrush s)
-            //{
-            //    b = new SolidColorBrush(s.Color);
-            //}
-            //else if (_dataValue is LinearGradientBrush lgb)
-            //{
-            //    b = new LinearGradientBrush(lgb.GradientStops, lgb.StartPoint, lgb.EndPoint)
-            //    {
-            //        ColorInterpolationMode = lgb.ColorInterpolationMode,
-            //        MappingMode = lgb.MappingMode,
-            //        SpreadMethod = lgb.SpreadMethod
-            //    };
-            //}
-            //else if (_dataValue is RadialGradientBrush rgb)
-            //{
-            //    b = new RadialGradientBrush(rgb.GradientStops)
-            //    {
-            //        GradientOrigin = rgb.GradientOrigin,
-            //        RadiusX = rgb.RadiusX,
-            //        RadiusY = rgb.RadiusY,
-            //        ColorInterpolationMode = rgb.ColorInterpolationMode,
-            //        SpreadMethod = rgb.SpreadMethod,
-            //        MappingMode = rgb.MappingMode
-            //    };
-            //}
-            //else if (_dataValue is ImageBrush i)
-            //{
-            //    b = new ImageBrush(i.ImageSource)
-            //    {
-            //        AlignmentX = i.AlignmentX,
-            //        AlignmentY = i.AlignmentY,
-            //        Stretch = i.Stretch,
-            //        TileMode = i.TileMode,
-            //        Viewbox = i.Viewbox,
-            //        ViewboxUnits = i.ViewboxUnits,
-            //        Viewport = i.Viewport,
-            //        ViewportUnits = i.ViewportUnits
-            //    };
-            //}
-            //else if (_dataValue is DrawingBrush db)
-            //{
-            //    b = new DrawingBrush(db.Drawing)
-            //    {
-            //        AlignmentX = db.AlignmentX,
-            //        AlignmentY = db.AlignmentY,
-            //        Stretch = db.Stretch,
-            //        TileMode = db.TileMode,
-            //        Viewbox = db.Viewbox,
-            //        ViewboxUnits = db.ViewboxUnits,
-            //        Viewport = db.Viewport,
-            //        ViewportUnits = db.ViewportUnits
-            //    };
-            //}
-            //else
-            //{
-            //    // right now, we don't support editing this
-            //    b = _dataValue;
-            //}
-
-            //if (includeTransforms)
-            //{
-            //    b.Transform = _dataValue.Transform;
-            //    b.RelativeTransform = _dataValue.RelativeTransform;
-            //    b.Opacity = _dataValue.Opacity;
-            //}
-
-            //return b;
+            return _dataValue?.CloneCurrentValue() ?? null;
         }
 
         #endregion
 
+        #region UI / Editing
+
         #region UI Setups
+
+        private void SetUiButtons(Brush value)
+        {
+            SetUiButtons(value.GetType(), value);
+        }
+        
+        /// <summary>
+        /// Update the text and display of the UI for this BrushEditor. This includes updating the preview and the descriptive text for the brush.
+        /// </summary>
+        /// <param name="brushType">the type of the brush</param>
+        /// <param name="value">the actual brush value (if this is not a Brush, then this is treated as "unknown")</param>
         private void SetUiButtons(Type brushType, object value)
         {
             if (brushType == typeof(SolidColorBrush))
             {
-                txtBrushType.Text = "Solid Color";
-                btnBrush.Background = (SolidColorBrush)value;
-                btnBrush.HighlightBrush = (SolidColorBrush)value;
-                btnBrush.ClickBrush = (SolidColorBrush)value;
-                btnBrush.DisabledBrush = (SolidColorBrush)value;
+                UpdatePreview(Strings.BrushTypeSolidColor, (SolidColorBrush)value);
 
-                txtCurrentBrush.Text = "Solid Color Brush";
+                txtCurrentBrush.Text = Strings.SolidColorBrush;
                 txtCurrentValue.Text = value.ToString();
                 btnEditBrush.IsEnabled = true;
-                btnEditBrush.Content = "Edit Color...";
+                btnEditBrush.Content = Strings.EditColor;
             }
             else if (brushType == typeof(LinearGradientBrush))
             {
-                txtBrushType.Text = "Gradient";
-                btnBrush.Background = (LinearGradientBrush)value;
-                btnBrush.HighlightBrush = (LinearGradientBrush)value;
-                btnBrush.ClickBrush = (LinearGradientBrush)value;
-                btnBrush.DisabledBrush = (LinearGradientBrush)value;
+                UpdatePreview(Strings.BrushTypeGradient, (LinearGradientBrush)value);
 
-                txtCurrentBrush.Text = "Linear Gradient Brush";
+                txtCurrentBrush.Text = Strings.LinearGradientBrush;
                 txtCurrentValue.Text = GetGradientDescriptor((LinearGradientBrush)value);
                 btnEditBrush.IsEnabled = true;
-                btnEditBrush.Content = "Edit Gradient...";
+                btnEditBrush.Content = Strings.EditGradient;
             }
             else if (brushType == typeof(RadialGradientBrush))
             {
-                txtBrushType.Text = "Gradient";
-                btnBrush.Background = (RadialGradientBrush)value;
-                btnBrush.HighlightBrush = (RadialGradientBrush)value;
-                btnBrush.ClickBrush = (RadialGradientBrush)value;
-                btnBrush.DisabledBrush = (RadialGradientBrush)value;
+                UpdatePreview(Strings.BrushTypeGradient, (RadialGradientBrush)value);
 
-                txtCurrentBrush.Text = "Radial Gradient Brush";
+                txtCurrentBrush.Text = Strings.RadialGradientBrush;
                 txtCurrentValue.Text = GetGradientDescriptor((RadialGradientBrush)value);
                 btnEditBrush.IsEnabled = true;
-                btnEditBrush.Content = "Edit Gradient...";
+                btnEditBrush.Content = Strings.EditGradient;
             }
             else if (brushType == typeof(ImageBrush))
             {
-                txtBrushType.Text = "Image";
-                btnBrush.Background = (ImageBrush)value;
-                btnBrush.HighlightBrush = (ImageBrush)value;
-                btnBrush.ClickBrush = (ImageBrush)value;
-                btnBrush.DisabledBrush = (ImageBrush)value;
+                UpdatePreview(Strings.BrushTypeImage, (ImageBrush)value);
 
-                txtCurrentBrush.Text = "Image Brush";
+                txtCurrentBrush.Text = Strings.ImageBrush;
                 txtCurrentValue.Text = GetImageDescriptor((ImageBrush)value);
                 btnEditBrush.IsEnabled = true;
-                btnEditBrush.Content = "Edit Brush...";
+                btnEditBrush.Content = Strings.EditBrush;
             }
             else if (brushType == typeof(BitmapCacheBrush))
             {
-                txtBrushType.Text = "Bitmap Cache";
-                btnBrush.Background = Colors.LightGray.ToBrush();
-                btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
-                btnBrush.ClickBrush = Colors.LightGray.ToBrush();
-                btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
+                UpdatePreview(Strings.BrushTypeBitmapCache, Colors.LightGray.ToBrush());
 
-                txtCurrentBrush.Text = "Bitmap Cache Brush";
+                txtCurrentBrush.Text = Strings.BitmapCacheBrush;
                 txtCurrentValue.Text = value.ToString();
                 btnEditBrush.IsEnabled = false;
-                btnEditBrush.Content = "Edit...";
+                btnEditBrush.Content = Strings.Edit;
             }
             else if (brushType == typeof(DrawingBrush))
             {
-                txtBrushType.Text = "Drawing";
-                btnBrush.Background = Colors.LightGray.ToBrush();
-                btnBrush.HighlightBrush = Colors.LightGray.ToBrush();
-                btnBrush.ClickBrush = Colors.LightGray.ToBrush();
-                btnBrush.DisabledBrush = Colors.LightGray.ToBrush();
+                UpdatePreview(Strings.BrushTypeDrawing, Colors.LightGray.ToBrush());
 
-                txtCurrentBrush.Text = "Drawing Brush";
+                txtCurrentBrush.Text = Strings.DrawingBrush;
                 txtCurrentValue.Text = value.ToString();
                 btnEditBrush.IsEnabled = false;
-                btnEditBrush.Content = "Edit...";
+                btnEditBrush.Content = Strings.Edit;
             }
             else
             {
-                UpdatePreviewToNull();
-                txtBrushType.Text = "(unknown)";
+                UpdatePreview(Strings.BrushTypeUnknown, null);
 
-                txtCurrentBrush.Text = "(unknown)";
+                txtCurrentBrush.Text = Strings.Unknown2;
                 txtCurrentValue.Text = value.ToString();
                 btnEditBrush.IsEnabled = false;
-                btnEditBrush.Content = "Edit...";
+                btnEditBrush.Content = Strings.Edit;
             }
         }
 
@@ -379,7 +284,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else
             {
-                return $"Gradient, {gb.GradientStops.Count} stops";
+                return $"{Strings.BrushTypeGradient}, {gb.GradientStops.Count} stops";
             }
         }
 
@@ -395,20 +300,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (brush.GradientStops.Count == 2)
             {
-                return $"Angle: {angle}º, #{brush.GradientStops[0].Color.GetHexString()} - #{brush.GradientStops[1].Color.GetHexString()}";
+                return $"{Strings.Angle}: {angle}º, #{brush.GradientStops[0].Color.GetHexString()} - #{brush.GradientStops[1].Color.GetHexString()}";
             }
 
-            return $"Angle: {angle}º, {brush.GradientStops.Count} stops";
+            return $"{Strings.Angle}: {angle}º, {brush.GradientStops.Count} stops";
         }
 
         static string GetGradientDescriptor(RadialGradientBrush brush)
         {
             if (brush.GradientStops.Count == 2)
             {
-                return $"Radial, #{brush.GradientStops[0].Color.GetHexString()} - #{brush.GradientStops[1].Color.GetHexString()}";
+                return $"{Strings.Radial}, #{brush.GradientStops[0].Color.GetHexString()} - #{brush.GradientStops[1].Color.GetHexString()}";
             }
 
-            return $"Radial, {brush.GradientStops.Count} stops";
+            return $"{Strings.Radial}, {brush.GradientStops.Count} stops";
         }
 
         static string GetImageDescriptor(ImageBrush br)
@@ -425,23 +330,23 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 else
                 {
                     // stream source
-                    return "(image from stream)";
+                    return Strings.ImageFromStream;
                 }
             }
             else if (isrc is BitmapSource)
             {
                 // bitmap source
-                return "(image from bitmap source)";
+                return Strings.ImageFromBitmapSource;
             }
             else if (isrc is DrawingImage)
             {
                 // maybe in the future, I can display some options or settings
-                return "(image from drawing)";
+                return Strings.ImageFromDrawing;
             }
             else
             {
                 // I don't know
-                return "(image from unknown source)";
+                return Strings.ImageFromUnknown;
             }
         }
 
@@ -512,20 +417,44 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        #endregion
+
+        #region Preview
+
+#if NETCOREAPP
+        Brush? previewBrush = null;
+#else
+        Brush previewBrush = null;
+#endif
+
         void UpdatePreviewToNull()
         {
-            DrawingBrush db = BrushFactory.CreateCheckerboardBrush(6, Colors.Gainsboro.ToBrush(), Colors.Silver.ToBrush());
-
-            txtBrushType.Text = "(null)";
-            btnBrush.Background = db;
-            btnBrush.HighlightBrush = db;
-            btnBrush.ClickBrush = db;
-            btnBrush.DisabledBrush = db;
+            UpdatePreview(Strings.BrushTypeNull, null);
         }
 
-        #endregion
+#if NETCOREAPP
+        private void UpdatePreview(string text, Brush? brushData)
+#else
+        private void UpdatePreview(string text, Brush brushData)
+#endif
+        {
+            if (brushData == null)
+            {
+                previewBrush = BrushFactory.CreateCheckerboardBrush(6, Colors.Gainsboro.ToBrush(), Colors.Silver.ToBrush());
+            }
+            else
+            {
+                previewBrush = brushData;
+            }
 
-        #endregion
+            txtBrushType.Text = text;
+            btnBrush.Background = previewBrush;
+            btnBrush.HighlightBrush = previewBrush;
+            btnBrush.ClickBrush = previewBrush;
+            btnBrush.DisabledBrush = previewBrush;
+        }
+
+#endregion
 
         #region Edit Current Brush
         private void btnBrush_Click(object sender, RoutedEventArgs e)
@@ -538,8 +467,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (_actualType == typeof(SolidColorBrush))
             {
-                ColorPickerDialog cpd = new ColorPickerDialog(_cs, ((SolidColorBrush)_dataValue).Color);
+                ColorPickerDialog cpd = new ColorPickerDialog(((SolidColorBrush)_dataValue).Color);
+                //cpd.SsuiTheme = _cs;
                 cpd.Owner = Window.GetWindow(this);
+                cpd.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 cpd.ShowDialog();
                 if (cpd.DialogResult)
                 {
@@ -549,8 +480,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_actualType == typeof(LinearGradientBrush))
             {
-                LinearGradientEditorDialog lged = new LinearGradientEditorDialog(_cs, (LinearGradientBrush)_dataValue);
+                LinearGradientEditorDialog lged = new LinearGradientEditorDialog((LinearGradientBrush)_dataValue);
                 lged.Owner = Window.GetWindow(this);
+                lged.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 lged.ShowDialog();
 
                 if (lged.DialogResult)
@@ -561,8 +493,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_actualType == typeof(RadialGradientBrush))
             {
-                RadialGradientEditorDialog lged = new RadialGradientEditorDialog(_cs, (RadialGradientBrush)_dataValue);
+                RadialGradientEditorDialog lged = new RadialGradientEditorDialog((RadialGradientBrush)_dataValue);
                 lged.Owner = Window.GetWindow(this);
+                lged.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 lged.ShowDialog();
 
                 if (lged.DialogResult)
@@ -573,9 +506,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (_actualType == typeof(ImageBrush))
             {
-                ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
+                ImageBrushEditorDialog ibre = new ImageBrushEditorDialog();
                 ibre.LoadImage((ImageBrush)_dataValue);
                 ibre.Owner = Window.GetWindow(this);
+                ibre.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 ibre.ShowDialog();
 
                 if (ibre.DialogResult)
@@ -602,10 +536,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 _dataValue = b;
                 Brush brushCopy = b.CloneCurrentValue();
 
-                btnBrush.Background = brushCopy;
-                btnBrush.HighlightBrush = brushCopy;
-                btnBrush.ClickBrush = brushCopy;
-                btnBrush.DisabledBrush = brushCopy;
+                UpdatePreview(txtBrushType.Text, brushCopy);
 
                 if (b is GradientBrush gb)
                 {
@@ -617,7 +548,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
                 else
                 {
-                    txtCurrentValue.Text = b.ToString();
+                    txtCurrentValue.Text = b.ToString(null);
                 }
 
                 ValueChanged?.Invoke(this, EventArgs.Empty);
@@ -632,6 +563,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             popBrush.IsOpen = true;
             popBrush.StaysOpen = false;
+
+            brdrPop.Focus();
         }
 
         #region Change Brush
@@ -645,10 +578,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             UpdatePreviewToNull();
 
-            txtCurrentBrush.Text = "(null brush)";
+            txtCurrentBrush.Text = Strings.NullBrush;
             txtCurrentValue.Text = "";
             btnEditBrush.IsEnabled = false;
-            btnEditBrush.Content = "Edit...";
+            btnEditBrush.Content = Strings.Edit;
         }
 
         private void siSolid_Click(object sender, RoutedEventArgs e)
@@ -658,7 +591,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _actualType = typeof(SolidColorBrush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
-            SetUiButtons(typeof(SolidColorBrush), _dataValue);
+            SetUiButtons(_dataValue);
         }
 
         private void siLinear_Click(object sender, RoutedEventArgs e)
@@ -668,7 +601,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _actualType = typeof(LinearGradientBrush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
-            SetUiButtons(typeof(LinearGradientBrush), _dataValue);
+            SetUiButtons(_dataValue);
         }
 
         private void siRadial_Click(object sender, RoutedEventArgs e)
@@ -678,16 +611,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _actualType = typeof(RadialGradientBrush);
             ValueChanged?.Invoke(this, EventArgs.Empty);
 
-            SetUiButtons(typeof(RadialGradientBrush), _dataValue);
+            SetUiButtons(_dataValue);
         }
 
         private void siImage_Click(object sender, RoutedEventArgs e)
         {
             // change to image brush
             // display image brush editor dialog, don't actually immediately change
-            ImageBrushEditorDialog ibre = new ImageBrushEditorDialog(_cs);
+            ImageBrushEditorDialog ibre = new ImageBrushEditorDialog();
             ibre.LoadImage(new ImageBrush(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, IconVariation.Color)));
             ibre.Owner = Window.GetWindow(this);
+            ibre.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
             ibre.ShowDialog();
 
             if (ibre.DialogResult)
@@ -696,12 +630,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 _dataValue = ibre.GetImageBrush();
                 _actualType = typeof(ImageBrush);
 
-                SetUiButtons(typeof(ImageBrush), _dataValue);
+                SetUiButtons(_dataValue);
 
                 ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         #endregion
+
+        #region Brush Transforms
 
         private void btnEditTransform_Click(object sender, RoutedEventArgs e)
         {
@@ -715,7 +651,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Transform t = _dataValue.Transform;
                 TransformEditDialog ted = new TransformEditDialog();
                 ted.ImportTransforms(t);
-                ted.ColorScheme = _cs;
+                ted.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 ted.ShowDialog();
 
                 if (ted.DialogResult == true)
@@ -743,7 +679,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Transform t = _dataValue.RelativeTransform;
                 TransformEditDialog ted = new TransformEditDialog();
                 ted.ImportTransforms(t);
-                ted.ColorScheme = _cs;
+                ted.SsuiTheme = _host?.GetThemeForDialogs() ?? new SsuiAppTheme();
                 ted.ShowDialog();
 
                 if (ted.DialogResult == true)
@@ -756,6 +692,33 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     _dataValue.RelativeTransform = ted.ExportSingleTransform();
                     ValueChanged?.Invoke(this, EventArgs.Empty);
                 }
+            }
+        }
+
+        #endregion
+
+        private void btnBrush_SsuiThemeChanged(object sender, RoutedEventArgs e)
+        {
+            // reset colors back to the expected ones
+            UpdatePreview(txtBrushType.Text, previewBrush);
+        }
+
+        #endregion
+
+        private void popBrush_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                // close the popup
+                popBrush.IsOpen = false;
+            }
+        }
+
+        private void popBrush_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool b && b == false)
+            {
+                popBrush.IsOpen = false;
             }
         }
     }

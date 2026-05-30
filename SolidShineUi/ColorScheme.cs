@@ -26,6 +26,8 @@ namespace SolidShineUi
 
     /// <summary>
     /// A collection of colors and other settings that can be used to set the color and appearance of various Solid Shine UI controls.
+    /// <para/>
+    /// For new programs using Solid Shine UI, I recommend trying out <see cref="SsuiAppTheme"/> instead.
     /// </summary>
     public class ColorScheme
     {

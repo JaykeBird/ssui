@@ -19,6 +19,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public FontFamilyEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            lblEdit.Text = Strings.Edit;
         }
 
         /// <inheritdoc/>
@@ -31,25 +34,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => btnEdit.IsEnabled; set => btnEdit.IsEnabled = value; }
 
         /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
+
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme value)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = value;
-            btnEdit.ColorScheme = value;
-            imgFontEdit.Source = LoadIcon("Font", value);
+            btnEdit.SsuiTheme = theme;
+            imgFontEdit.Source = LoadIcon("Font", theme.IconVariation);
         }
-
-        private ColorScheme _cs = new ColorScheme();
 
 #if NETCOREAPP
         private FontFamily? font = new FontFamily("Segoe UI");
+        IPropertyEditorHost? _host = null;
 #else
         private FontFamily font = new FontFamily("Segoe UI");
+        IPropertyEditorHost _host = null;
 #endif
 
         /// <inheritdoc/>
@@ -64,6 +64,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (font == null)
             {
@@ -75,44 +82,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
-        {
-            if (value == null)
-            {
-                font = null;
-                txtFontName.Text = "(null)";
-            }
-            else if (value is FontFamily f)
-            {
-                font = f;
-                txtFontName.Text = f.Source;
-            }
-            else
-            {
-                // this object is not a FontFamily? what is it here???
-                font = null;
-                txtFontName.Text = "(no font selected)";
-            }
-        }
-
 #else
         /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            return font;
-        }
-        
-        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             if (value == null)
             {
                 font = null;
-                txtFontName.Text = "(null)";
+                txtFontName.Text = Strings.Null;
             }
             else if (value is FontFamily f)
             {
@@ -123,17 +104,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 // this object is not a FontFamily? what is it here???
                 font = null;
-                txtFontName.Text = "(no font selected)";
+                txtFontName.Text = Strings.NoFontSelected;
             }
         }
-#endif
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             FontSelectDialog dlg = new FontSelectDialog
             {
-                ColorScheme = _cs,
                 Owner = Window.GetWindow(this),
+                SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme,
 
                 ShowDecorations = false,
                 ShowSizes = false,

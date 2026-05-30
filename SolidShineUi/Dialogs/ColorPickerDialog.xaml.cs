@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SolidShineUi.Utils;
-using System.Windows.Navigation;
 
 namespace SolidShineUi
 {
@@ -18,20 +16,14 @@ namespace SolidShineUi
     /// </summary>
     public partial class ColorPickerDialog : FlatWindow
     {
-        ColorScheme cs = new ColorScheme();
-
-        #region Window Actions
+        #region Window Constructors / Loaded
 
         /// <summary>
-        /// Create a ColorPickerDialog. Please use the constructor with the ColorScheme argument.
+        /// Create a ColorPickerDialog.
         /// </summary>
-        [Obsolete("Please use the constructor with the ColorScheme argument.", false)]
         public ColorPickerDialog()
         {
             InitializeComponent();
-            ColorScheme = new ColorScheme();
-
-            UpdateAppearance();
         }
 
         /// <summary>
@@ -40,11 +32,19 @@ namespace SolidShineUi
         /// <param name="cs">The ColorScheme to use with this dialog.</param>
         public ColorPickerDialog(ColorScheme cs)
         {
-            this.cs = cs;
             InitializeComponent();
             ColorScheme = cs;
+        }
 
-            UpdateAppearance();
+        /// <summary>
+        /// Create a ColorPickerDialog.
+        /// </summary>
+        /// <param name="color">The Color to preset as the selected color (i.e. as an existing or default value).</param>
+        public ColorPickerDialog(Color color)
+        {
+            InitializeComponent();
+
+            LoadInSelectedColor(color);
         }
 
         /// <summary>
@@ -54,37 +54,22 @@ namespace SolidShineUi
         /// <param name="color">The Color to preset as the selected color (i.e. as an existing or default value).</param>
         public ColorPickerDialog(ColorScheme cs, Color color)
         {
-            this.cs = cs;
             InitializeComponent();
             ColorScheme = cs;
-
-            UpdateAppearance();
+            
             LoadInSelectedColor(color);
         }
 
-        void UpdateAppearance()
+        private void window_Loaded(object sender, RoutedEventArgs e)
         {
-            ColorScheme = cs;
-            //grid.Background = cs.BackgroundColor.ToBrush();
-
-            colorList.ApplyColorScheme(cs);
-
-            nudB.ApplyColorScheme(cs);
-            nudG.ApplyColorScheme(cs);
-            nudR.ApplyColorScheme(cs);
-
-            nudH.ApplyColorScheme(cs);
-            nudS.ApplyColorScheme(cs);
-            nudV.ApplyColorScheme(cs);
-
-            btnInvert.ApplyColorScheme(cs);
-            btnLoadPal.ApplyColorScheme(cs);
-            btnOpenImage.ApplyColorScheme(cs);
-
-            //nudAlpha.ApplyColorScheme(cs);
-
-            btnOK.ApplyColorScheme(cs);
-            btnCancel.ApplyColorScheme(cs);
+            if (Icon == null && Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion
@@ -724,7 +709,7 @@ namespace SolidShineUi
             if (sldAlpha == null) return;
 
             _internalAlphaChange = true;
-            sldAlpha.Value = Convert.ToDouble(e.NewValue);
+            sldAlpha.Value = (e.NewValue is int oval) ? oval : 0;
             UpdateSelectedColor(SelectedColor);
             _internalAlphaChange = false;
         }

@@ -22,7 +22,8 @@ namespace SolidShineUi.PropertyList.Dialogs
         public ImageBrushEditorDialog()
         {
             InitializeComponent();
-            ColorSchemeChanged += dialog_ColorSchemeChanged;
+            //ColorSchemeChanged += dialog_ColorSchemeChanged;
+            SsuiThemeChanged += ImageBrushEditorDialog_SsuiThemeChanged;
         }
 
         /// <summary>
@@ -31,16 +32,37 @@ namespace SolidShineUi.PropertyList.Dialogs
         public ImageBrushEditorDialog(ColorScheme cs)
         {
             InitializeComponent();
-            ColorSchemeChanged += dialog_ColorSchemeChanged;
+            //ColorSchemeChanged += dialog_ColorSchemeChanged;
+            SsuiThemeChanged += ImageBrushEditorDialog_SsuiThemeChanged;
             ColorScheme = cs;
+
         }
 
-        private void dialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void ImageBrushEditorDialog_SsuiThemeChanged(object sender, RoutedPropertyChangedEventArgs<SsuiAppTheme> e)
         {
-            imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
-            imgSetFullView.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
-            imgOpen.Source = IconLoader.LoadIcon("Open", ColorScheme);
+            imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", SsuiTheme.IconVariation);
+            imgSetFullView.Source = IconLoader.LoadIcon("FullFill", SsuiTheme.IconVariation);
+            imgOpen.Source = IconLoader.LoadIcon("Open", SsuiTheme.IconVariation);
         }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Icon == null && Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
+        }
+
+        //private void dialog_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    imgSetFullPort.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
+        //    imgSetFullView.Source = IconLoader.LoadIcon("FullFill", ColorScheme);
+        //    imgOpen.Source = IconLoader.LoadIcon("Open", ColorScheme);
+        //}
 
         /// <summary>Get or set the result the user selected for this dialog; <c>true</c> is "OK", <c>false</c> is "Cancel" or the window was closed without making a choice.</summary>
         public new bool DialogResult { get; set; } = false;
@@ -171,9 +193,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                     txtSource.FontStyle = FontStyles.Italic;
                     _blankSourceOnEnter = true;
                 }
-                imgSize.Text = Math.Round(bi.Height, 2).ToString() + " x " + Math.Round(bi.Width, 2).ToString();
-                imgSize.ToolTip = $"Device independent size: {bi.Height} x {bi.Width}\nActual pixel size: {bi.PixelHeight} x {bi.PixelWidth}";
                 imageSize = new Size(Math.Round(bi.Width, 2), Math.Round(bi.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = $"Device independent size: {bi.Height} x {bi.Width}\nActual pixel size: {bi.PixelHeight} x {bi.PixelWidth}";
             }
             else if (isrc is BitmapSource bs)
             {
@@ -181,9 +203,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtSource.Text = $"(image from bitmap source, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
-                imgSize.Text = Math.Round(bs.Height, 2).ToString() + " x " + Math.Round(bs.Width, 2).ToString();
-                imgSize.ToolTip = $"Device independent size: {bs.Height} x {bs.Width}\nActual pixel size: {bs.PixelHeight} x {bs.PixelWidth}";
                 imageSize = new Size(Math.Round(bs.Width, 2), Math.Round(bs.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = $"Device independent size: {bs.Height} x {bs.Width}\nActual pixel size: {bs.PixelHeight} x {bs.PixelWidth}";
             }
             else if (isrc is DrawingImage di)
             {
@@ -191,9 +213,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtSource.Text = $"(image from drawing, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
-                imgSize.Text = Math.Round(di.Height, 2).ToString() + " x " + Math.Round(di.Width, 2).ToString();
-                imgSize.ToolTip = null;
                 imageSize = new Size(Math.Round(di.Width, 2), Math.Round(di.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = null;
             }
             else
             {
@@ -201,9 +223,9 @@ namespace SolidShineUi.PropertyList.Dialogs
                 txtSource.Text = $"(image from unknown source, {click_here})";
                 txtSource.FontStyle = FontStyles.Italic;
                 _blankSourceOnEnter = true;
-                imgSize.Text = Math.Round(isrc.Height, 2).ToString() + " x " + Math.Round(isrc.Width, 2).ToString();
-                imgSize.ToolTip = null;
                 imageSize = new Size(Math.Round(isrc.Width, 2), Math.Round(isrc.Height, 2));
+                imgSize.Text = $"{imageSize.Height} x {imageSize.Width}";
+                imgSize.ToolTip = null;
             }
             imgSource.Source = isrc;
             _internalAction = false;
@@ -215,10 +237,11 @@ namespace SolidShineUi.PropertyList.Dialogs
         void DownloadFailed(object sender, ExceptionEventArgs e)
 #endif
         {
-            MessageDialog md = new MessageDialog(ColorScheme);
+            MessageDialog md = new MessageDialog();
+            md.SsuiTheme = this.SsuiTheme;
 
             md.ShowDialog($"The image at the above URL could not be downloaded due to:\n\n{e.ErrorException}", owner: this, title: "Image Download Failed",
-                image: MessageDialogImage.Error, buttonDisplay: MessageDialogButtonDisplay.Auto);
+                image: MessageDialogImage.Error);
 
 #if NETCOREAPP
             LoadImageSource(MessageDialogImageConverter.GetImage(MessageDialogImage.Question, IconVariation.Color)!);

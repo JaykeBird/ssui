@@ -1,0 +1,653 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+
+namespace SolidShineUi
+{
+    /// <summary>
+    /// A collection of premade <see cref="SsuiAppTheme"/> objects.
+    /// </summary>
+    public static class SsuiThemes
+    {
+        /// <summary>
+        /// A SsuiAppTheme that uses the system's colors for the controls.
+        /// </summary>
+        /// <remarks>
+        /// Note that this will have a somewhat old-school (think Windows XP) appearance on modern computers, 
+        /// given that <see cref="SystemColors"/> only provides basic color brushes.
+        /// </remarks>
+        public static SsuiAppTheme SystemTheme
+        {
+            get => CreateSystemTheme(new CornerRadius(0));
+        }
+
+        /// <summary>
+        /// A SsuiAppTheme that uses the system's colors for the controls, and adds a slight rounded corners to the edges of many controls.
+        /// </summary>
+        /// <remarks>
+        /// Note that this will have a somewhat old-school (think Windows XP) appearance on modern computers, 
+        /// given that <see cref="SystemColors"/> only provides basic color brushes.
+        /// </remarks>
+        public static SsuiAppTheme SystemThemeRoundedCorners
+        {
+            get => CreateSystemTheme(new CornerRadius(3));
+        }
+
+        static SsuiAppTheme CreateSystemTheme(CornerRadius cornerRadius)
+        {
+            SsuiAppTheme ssat = new SsuiAppTheme()
+            {
+                BaseBackground = SystemColors.WindowBrush,
+                PanelBackground = SystemColors.ControlLightLightBrush,
+                ControlBackground = SystemColors.ControlLightLightBrush,
+                ButtonBackground = SystemColors.ControlBrush,
+                BorderBrush = SystemColors.ControlDarkDarkBrush,
+                LightBorderBrush = SystemColors.ControlDarkBrush,
+                ControlPopBrush = SystemColors.HighlightBrush,
+                ControlSatBrush = SystemColors.ControlLightBrush,
+                CheckBrush = SystemColors.ControlTextBrush,
+                ClickBrush = SystemColors.MenuHighlightBrush,
+                SelectedBackgroundBrush = SystemColors.HighlightBrush,
+                SelectedBorderBrush = SystemColors.ControlDarkBrush,
+                SelectedForeground = SystemColors.ControlTextBrush,
+                HighlightBrush = SystemColors.MenuHighlightBrush,
+                HighlightBorderBrush = SystemColors.ControlDarkBrush,
+                HighlightForeground = SystemColors.HighlightTextBrush,
+                DisabledBackground = SystemColors.InactiveCaptionBrush,
+                DisabledForeground = SystemColors.GrayTextBrush,
+                DisabledBorderBrush = SystemColors.GrayTextBrush,
+                Foreground = SystemColors.ControlTextBrush,
+                WindowCaptionsForeground = SystemColors.ActiveCaptionTextBrush,
+                WindowBackground = SystemColors.WindowBrush,
+                WindowCaptionsBackground = Color.FromArgb(1, 255, 255, 255).ToBrush(), // almost entirely transparent
+                WindowTitleBackground = new LinearGradientBrush(SystemColors.ActiveCaptionColor, SystemColors.GradientActiveCaptionColor, 0.0d),
+                WindowTitleForeground = SystemColors.ActiveCaptionTextBrush,
+                WindowInactiveBackground = new LinearGradientBrush(SystemColors.InactiveCaptionColor, SystemColors.GradientInactiveCaptionColor, 0.0d),
+                WindowInactiveForeground = SystemColors.InactiveCaptionTextBrush,
+                WindowCaptionsHighlight = SystemColors.MenuHighlightBrush,
+                WindowCaptionsHighlightForeground = SystemColors.HighlightTextBrush,
+                WindowCaptionsClickBrush = SystemColors.MenuHighlightBrush,
+                TabBackground = SystemColors.ControlBrush,
+                TabHighlightBorderBrush = SystemColors.ControlDarkDarkBrush,
+                TabHighlightBrush = SystemColors.ControlDarkBrush,
+                TabSelectedBrush = SystemColors.ControlLightLightBrush,
+                CommandBarBackground = SystemColors.ControlLightBrush,
+                CommandBarBorderBrush = SystemColors.ControlDarkDarkBrush,
+                UseSubitemThemeWithMenus = false,
+                UseSubitemThemeWithPanels = false,
+                UseSubitemThemeWithRibbons = false,
+                CornerRadius = cornerRadius,
+                IconVariation = Utils.IconVariation.Color,
+                AllowTitleBarBrushWithMenus = false
+            };
+
+            // reduce the saturation of SelectedBackground
+            ColorsHelper.ToHSV(SystemColors.HighlightBrush.Color, out double h, out double s, out double v);
+            if (s > 0.5)
+            {
+                ssat.SelectedBackgroundBrush = ColorsHelper.CreateFromHSV(h, 0.3, v).ToBrush();
+            }
+
+            ssat.AccentTheme = ssat.Copy();
+            ssat.SubitemTheme = ssat.Copy();
+
+            return ssat;
+        }
+
+        /// <summary>
+        /// A standard premade theme, with a lot of light gray/white colors. 
+        /// <para/>
+        /// Use <see cref="CreateLightTheme(Color)"/> to create a light theme with an accent color.
+        /// </summary>
+        public static SsuiAppTheme LightTheme
+        {
+            get => CreateLightTheme(ColorsHelper.CreateFromHex("A8A8A8"));
+        }
+
+        /// <summary>
+        /// A standard premade theme, with a lot of dark gray/black colors. 
+        /// <para/>
+        /// Use <see cref="CreateDarkTheme(Color)"/> to create a dark theme with an accent color.
+        /// </summary>
+        public static SsuiAppTheme DarkTheme
+        {
+            get => CreateDarkTheme(ColorsHelper.CreateFromHex("C8C8C8"));
+        }
+
+
+        /// <summary>
+        /// Create a premade light theme color scheme. Lighter gray colors are used, and a custom accent color can be provided to add some more color.
+        /// </summary>
+        /// <param name="accentColor">The accent color to use with the light theme, to add more color to certain elements.</param>
+        public static SsuiAppTheme CreateLightTheme(Color accentColor)
+        {
+            return new SsuiAppTheme(accentColor)
+            {
+                WindowBackground = Color.FromRgb(246, 246, 246).ToBrush(),
+                BaseBackground = Color.FromRgb(246, 246, 246).ToBrush(),
+                PanelBackground = Color.FromRgb(255, 255, 255).ToBrush(),
+                ControlBackground = Color.FromRgb(255, 255, 255).ToBrush(),
+                ControlSatBrush = Color.FromRgb(200, 200, 200).ToBrush(),
+                WindowCaptionsBackground = Color.FromRgb(200, 200, 200).ToBrush(),
+                WindowTitleBackground = Color.FromRgb(200, 200, 200).ToBrush(),
+                WindowInactiveBackground = Color.FromRgb(200, 200, 200).ToBrush(),
+                WindowTitleForeground = Color.FromRgb(0, 0, 0).ToBrush(),
+                ButtonBackground = Color.FromRgb(220, 220, 220).ToBrush(),
+                TabBackground = Color.FromRgb(220, 220, 220).ToBrush(),
+                TabSelectedBrush = Color.FromRgb(255, 255, 255).ToBrush(),
+                BorderBrush = Color.FromRgb(128, 128, 128).ToBrush(),
+                CommandBarBackground = Color.FromRgb(220, 220, 220).ToBrush(),
+                CommandBarBorderBrush = Color.FromRgb(128, 128, 128).ToBrush(),
+                Foreground = Color.FromRgb(0, 0, 0).ToBrush(),
+                HighlightForeground = Color.FromRgb(0, 0, 0).ToBrush(),
+                SelectedForeground = Color.FromRgb(0, 0, 0).ToBrush(),
+                WindowInactiveForeground = Color.FromRgb(0, 0, 0).ToBrush(),
+                WindowCaptionsForeground = Color.FromRgb(0, 0, 0).ToBrush(),
+                WindowCaptionsHighlightForeground = Color.FromRgb(0, 0, 0).ToBrush()
+            };
+        }
+
+        /// <summary>
+        /// Create a premade dark theme color scheme. Darker gray colors are used, and a custom accent color can be provided to add some more color.
+        /// </summary>
+        /// <param name="accentColor">The accent color to use with the dark theme, to add more color to certain elements.</param>
+        public static SsuiAppTheme CreateDarkTheme(Color accentColor)
+        {
+            ColorsHelper.ToHSV(accentColor, out double h, out double s, out double v);
+            double vc3 = -0.45;
+            double vc4 = -0.2;
+            double vc5 = -0.32;
+            Color dark = AddValue(h, s, v, vc3);
+            Color dark2 = AddValue(h, s, v, vc4);
+            Color darkHigh = AddValue(h, s, v, vc5);
+
+            SsuiAppTheme ssat = new SsuiAppTheme(accentColor);
+            ColorsHelper.ToHSV(dark, out h, out s, out v);
+
+            ssat.WindowBackground = Color.FromRgb(15, 15, 15).ToBrush();
+            ssat.BaseBackground = Color.FromRgb(15, 15, 15).ToBrush();
+            ssat.PanelBackground = Color.FromRgb(0, 0, 0).ToBrush();
+            ssat.ControlBackground = Color.FromRgb(0, 0, 0).ToBrush();
+            ssat.ControlSatBrush = Color.FromRgb(55, 55, 55).ToBrush();
+            ssat.WindowTitleBackground = Color.FromRgb(55, 55, 55).ToBrush();
+            ssat.WindowCaptionsBackground = Color.FromRgb(55, 55, 55).ToBrush();
+            ssat.WindowInactiveBackground = Color.FromRgb(55, 55, 55).ToBrush();
+            ssat.WindowTitleForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.WindowInactiveForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.ButtonBackground = Color.FromRgb(40, 40, 40).ToBrush();
+            ssat.HighlightBrush = darkHigh.ToBrush();
+            ssat.TabHighlightBrush = darkHigh.ToBrush();
+            ssat.ClickBrush = dark2.ToBrush();
+            ssat.Foreground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.TabBackground = Color.FromRgb(40, 40, 40).ToBrush();
+            ssat.CommandBarBackground = Color.FromRgb(40, 40, 40).ToBrush();
+            ssat.TabSelectedBrush = Color.FromRgb(0, 0, 0).ToBrush();
+            ssat.BorderBrush = Color.FromRgb(128, 128, 128).ToBrush();
+            ssat.CommandBarBorderBrush = Color.FromRgb(128, 128, 128).ToBrush();
+            ssat.SelectedBackgroundBrush = dark.ToBrush();
+            ssat.SelectedBorderBrush = dark2.ToBrush();
+            ssat.SelectedForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.HighlightForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.WindowCaptionsForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.WindowCaptionsHighlightForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            ssat.WindowCaptionsHighlight = darkHigh.ToBrush();
+            ssat.DisabledForeground = Color.FromRgb(255, 255, 255).ToBrush();
+            //ssat.DisabledBorderBrush = Color.FromRgb(128, 128, 128).ToBrush();
+            ssat.DisabledBackground = ColorsHelper.CreateFromHex("9D9D9D").ToBrush();
+
+            return ssat;
+
+            Color AddValue(double ch, double cs, double cv, double add)
+            {
+                if (cv + add < 0)
+                {
+                    cv = 0;
+                }
+                else if (cv + add > 1)
+                {
+                    cv = 1;
+                }
+                else
+                {
+                    cv += add;
+                }
+
+                return ColorsHelper.CreateFromHSV(ch, cs, cv);
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> with high contrast colors, with white text on a black background.
+        /// </summary>
+        public static SsuiAppTheme HighContrastWhiteOnBlack
+        {
+            get
+            {
+                SsuiAppTheme ssat = new SsuiAppTheme()
+                {
+                    WindowBackground = Colors.Black.ToBrush(),
+                    BaseBackground = Colors.Black.ToBrush(),
+                    PanelBackground = Colors.Black.ToBrush(),
+                    ControlBackground = Colors.Black.ToBrush(),
+                    ButtonBackground = Colors.Black.ToBrush(),
+                    BorderBrush = Colors.White.ToBrush(),
+                    LightBorderBrush = Colors.White.ToBrush(),
+                    Foreground = Colors.White.ToBrush(),
+                    ControlSatBrush = Colors.White.ToBrush(),
+                    ControlPopBrush = Colors.White.ToBrush(),
+                    HighlightForeground = Colors.Black.ToBrush(),
+                    HighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    HighlightBorderBrush = Colors.White.ToBrush(),
+                    ClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowCaptionsBackground = Colors.Black.ToBrush(),
+                    WindowTitleBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                    WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                    WindowTitleForeground = Colors.White.ToBrush(),
+                    WindowCaptionsHighlight = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowCaptionsClickBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowInactiveForeground = Colors.White.ToBrush(),
+                    WindowCaptionsForeground = Colors.White.ToBrush(),
+                    WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                    SelectedBorderBrush = Colors.White.ToBrush(),
+                    SelectedBackgroundBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    SelectedForeground = Colors.Black.ToBrush(),
+                    DisabledBackground = Colors.Black.ToBrush(),
+                    DisabledBorderBrush = ColorsHelper.HighContrastLightGreen.ToBrush(),
+                    DisabledForeground = ColorsHelper.HighContrastLightGreen.ToBrush(),
+                    TabBackground = Colors.Black.ToBrush(),
+                    TabHighlightBorderBrush = Colors.White.ToBrush(),
+                    TabSelectedBrush = Colors.Black.ToBrush(),
+                    TabHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    CommandBarBackground = Colors.Black.ToBrush(),
+                    CommandBarBorderBrush = Colors.White.ToBrush(),
+                    CheckBrush = Colors.Black.ToBrush(),
+                    CheckHighlightBrush = Colors.White.ToBrush(),
+                    CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    IconVariation = Utils.IconVariation.White,
+                    UseSubitemThemeWithMenus = false,
+                    UseSubitemThemeWithPanels = false,
+                    UseSubitemThemeWithRibbons = false,
+                    AllowTitleBarBrushWithMenus = false
+                };
+
+                ssat.AccentTheme = ssat.Copy();
+                ssat.SubitemTheme = ssat.Copy();
+
+                return ssat;
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> with high contrast colors, with green text on a black background.
+        /// </summary>
+        public static SsuiAppTheme HighContrastGreenOnBlack
+        {
+            get
+            {
+                SsuiAppTheme ssat = new SsuiAppTheme()
+                {
+                    WindowBackground = Colors.Black.ToBrush(),
+                    BaseBackground = Colors.Black.ToBrush(),
+                    PanelBackground = Colors.Black.ToBrush(),
+                    ControlBackground = Colors.Black.ToBrush(),
+                    ButtonBackground = Colors.Black.ToBrush(),
+                    BorderBrush = Colors.White.ToBrush(),
+                    LightBorderBrush = Colors.White.ToBrush(),
+                    Foreground = ColorsHelper.HighContrastGreen.ToBrush(),
+                    ControlSatBrush = Colors.Green.ToBrush(),
+                    ControlPopBrush = Colors.White.ToBrush(),
+                    HighlightForeground = Colors.White.ToBrush(),
+                    HighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    HighlightBorderBrush = Colors.White.ToBrush(),
+                    ClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    WindowCaptionsBackground = Colors.Black.ToBrush(),
+                    WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowInactiveBackground = ColorsHelper.HighContrastPurple.ToBrush(),
+                    WindowTitleForeground = Colors.Black.ToBrush(),
+                    WindowCaptionsHighlight = ColorsHelper.HighContrastBlue.ToBrush(),
+                    WindowCaptionsClickBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    WindowInactiveForeground = Colors.White.ToBrush(),
+                    WindowCaptionsForeground = Colors.Black.ToBrush(),
+                    WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                    SelectedBorderBrush = Colors.White.ToBrush(),
+                    SelectedBackgroundBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    SelectedForeground = Colors.White.ToBrush(),
+                    DisabledBackground = Colors.Black.ToBrush(),
+                    DisabledBorderBrush = ColorsHelper.HighContrastGray.ToBrush(),
+                    DisabledForeground = ColorsHelper.HighContrastGray.ToBrush(),
+                    TabBackground = Colors.Black.ToBrush(),
+                    TabHighlightBorderBrush = Colors.White.ToBrush(),
+                    TabSelectedBrush = Colors.Black.ToBrush(),
+                    TabHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    CommandBarBackground = Colors.Black.ToBrush(),
+                    CommandBarBorderBrush = Colors.White.ToBrush(),
+                    CheckBrush = Colors.Black.ToBrush(),
+                    CheckHighlightBrush = Colors.White.ToBrush(),
+                    CheckBackgroundHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
+                    IconVariation = Utils.IconVariation.White,
+                    UseSubitemThemeWithMenus = false,
+                    UseSubitemThemeWithPanels = false,
+                    UseSubitemThemeWithRibbons = false,
+                    AllowTitleBarBrushWithMenus = false
+                };
+
+                ssat.AccentTheme = ssat.Copy();
+                ssat.SubitemTheme = ssat.Copy();
+
+                return ssat;
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> with high contrast colors, with black text on a white background.
+        /// </summary>
+        public static SsuiAppTheme HighContrastBlackOnWhite
+        {
+            get
+            {
+                SsuiAppTheme ssat = new SsuiAppTheme()
+                {
+                    WindowBackground = Colors.White.ToBrush(),
+                    BaseBackground = Colors.White.ToBrush(),
+                    PanelBackground = Colors.White.ToBrush(),
+                    ControlBackground = Colors.White.ToBrush(),
+                    ButtonBackground = Colors.White.ToBrush(),
+                    BorderBrush = Colors.Black.ToBrush(),
+                    LightBorderBrush = Colors.White.ToBrush(),
+                    Foreground = Colors.Black.ToBrush(),
+                    ControlSatBrush = Colors.White.ToBrush(),
+                    ControlPopBrush = Colors.Black.ToBrush(),
+                    HighlightForeground = Colors.Black.ToBrush(),
+                    HighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    HighlightBorderBrush = Colors.Black.ToBrush(),
+                    ClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    WindowCaptionsBackground = Colors.White.ToBrush(),
+                    WindowTitleBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowInactiveBackground = ColorsHelper.HighContrastLightBlue.ToBrush(),
+                    WindowTitleForeground = Colors.Black.ToBrush(),
+                    WindowCaptionsHighlight = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    WindowCaptionsClickBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    WindowInactiveForeground = Colors.White.ToBrush(),
+                    WindowCaptionsForeground = Colors.Black.ToBrush(),
+                    WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                    SelectedBorderBrush = Colors.Black.ToBrush(),
+                    SelectedBackgroundBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    SelectedForeground = Colors.Black.ToBrush(),
+                    DisabledBackground = Colors.White.ToBrush(),
+                    DisabledBorderBrush = ColorsHelper.HighContrastRed.ToBrush(),
+                    DisabledForeground = ColorsHelper.HighContrastRed.ToBrush(),
+                    TabBackground = Colors.White.ToBrush(),
+                    TabHighlightBorderBrush = Colors.Black.ToBrush(),
+                    TabSelectedBrush = Colors.White.ToBrush(),
+                    TabHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    CommandBarBackground = Colors.White.ToBrush(),
+                    CommandBarBorderBrush = Colors.Black.ToBrush(),
+                    CheckBrush = Colors.Black.ToBrush(),
+                    CheckHighlightBrush = Colors.Black.ToBrush(),
+                    CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
+                    IconVariation = Utils.IconVariation.Black,
+                    UseSubitemThemeWithMenus = false,
+                    UseSubitemThemeWithPanels = false,
+                    UseSubitemThemeWithRibbons = false,
+                    AllowTitleBarBrushWithMenus = false
+                };
+
+                ssat.AccentTheme = ssat.Copy();
+                ssat.SubitemTheme = ssat.Copy();
+
+                return ssat;
+            }
+        }
+
+        /// <summary>
+        /// Get a high contrast <see cref="SsuiAppTheme"/> based upon the type of high contrast option selected.
+        /// </summary>
+        /// <param name="option">the type of high contrast theme to get</param>
+        public static SsuiAppTheme GetHighContrastTheme(HighContrastOption option)
+        {
+            switch (option)
+            {
+                case HighContrastOption.WhiteOnBlack:
+                    return HighContrastWhiteOnBlack;
+                case HighContrastOption.GreenOnBlack:
+                    return HighContrastGreenOnBlack;
+                case HighContrastOption.BlackOnWhite:
+                    return HighContrastBlackOnWhite;
+                default:
+                    return HighContrastWhiteOnBlack;
+            }
+        }
+
+#if NET9_0_OR_GREATER
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> that corresponds to the current Windows accent color.
+        /// </summary>
+        /// <remarks>
+        /// This is only available on projects using .NET 9 or later, as <see cref="SystemColors.AccentColor"/> was added in .NET 9.
+        /// This specifically uses <c>AccentColorLight1</c>.
+        /// </remarks>
+        public static SsuiAppTheme WindowsAccentColorTheme
+        {
+            get
+            {
+                return new SsuiAppTheme(SystemColors.AccentColorLight1);
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> that corresponds to the current Windows accent color, and has rounded corners.
+        /// </summary>
+        /// <remarks>
+        /// This is only available on projects using .NET 9 or later, as <see cref="SystemColors.AccentColor"/> was added in .NET 9.
+        /// This specifically uses <c>AccentColorLight1</c>.
+        /// </remarks>
+        public static SsuiAppTheme WindowsAccentColorThemeRoundedCorners
+        {
+            get
+            {
+                return new SsuiAppTheme(SystemColors.AccentColorLight1) { CornerRadius = new CornerRadius(3) };
+            }
+        }
+#endif
+
+        /// <summary>
+        /// Create a SsuiAppTheme that is inspired by the Aero theme of Windows Vista and Windows 7.
+        /// <para/>
+        /// This is still being designed, and will be finalized in version 2.1.
+        /// </summary>
+        public static SsuiAppTheme AeroTheme
+        {     
+            get => CreateAeroTheme(new CornerRadius(2)); 
+        }
+
+        /// <summary>
+        /// Create a SsuiAppTheme that is inspired by the Aero theme of Windows Vista and Windows 7,
+        /// with the ability to set an accent color that can be used to tint the controls.
+        /// <para/>
+        /// This is still being designed, and will be finalized in version 2.1.
+        /// </summary>
+        /// <param name="cornerRadius">
+        /// set the radius of the corners of various controls;
+        /// use uniform "2" for the Windows Vista/7 appearance, or "0" for a Windows 8 appearance
+        /// </param>
+        /// <param name="accentColor">the accent color to use, if any, to color/tint the theme</param>
+        public static SsuiAppTheme CreateAeroTheme(CornerRadius cornerRadius, Color? accentColor = null)
+        {
+            LinearGradientBrush baseChromeBrush = new LinearGradientBrush(new GradientStopCollection
+            (
+                new List<GradientStop>()
+                {
+                    new GradientStop(ColorsHelper.CreateFromHex("F3F3F3"), 0.0d),
+                    new GradientStop(ColorsHelper.CreateFromHex("EBEBEB"), 0.5d),
+                    new GradientStop(ColorsHelper.CreateFromHex("DDDDDD"), 0.5d),
+                    new GradientStop(ColorsHelper.CreateFromHex("CDCDCD"), 1.0d),
+                }
+            ), 90.0d);
+
+            LinearGradientBrush chromeBrush = 
+            (accentColor.HasValue ?
+                new LinearGradientBrush(new GradientStopCollection
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.6d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.6d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.6d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.6d), 1.0d),
+                    }
+                ), 90.0d) : baseChromeBrush
+            );
+
+            Color selColor = ColorsHelper.CreateFromHex("99CCFF");
+            Color selDarkColor = ColorsHelper.CreateFromHex("7aa3cc");
+
+            LinearGradientBrush selectedBrush = (accentColor.HasValue ?
+                new LinearGradientBrush(new GradientStopCollection // with accent color
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.9d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.9d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.9d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.9d), 1.0d),
+                    }
+                ), 90.0d) : 
+                new LinearGradientBrush(new GradientStopCollection // no accent color
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), selColor, 0.8d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), selColor, 0.8d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), selColor, 0.8d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), selColor, 0.8d), 1.0d),
+                    }
+                ), 90.0d)
+            );
+
+            LinearGradientBrush mainHighlightBrush = (accentColor.HasValue ? 
+                new LinearGradientBrush(new GradientStopCollection // with accent color
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F4F4F4"), accentColor.Value, 0.8d), 0.0d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.8d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.8d), 0.5d),
+                        new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("E4E4E4"), accentColor.Value, 0.8d), 1.0d),
+                    }
+                ), 90.0d):
+                new LinearGradientBrush(new GradientStopCollection // no accent color
+                (
+                    new List<GradientStop>()
+                    {
+                        new GradientStop(Color.FromRgb(234,246,253), 0.0d),
+                        new GradientStop(Color.FromRgb(217,240,252), 0.5d),
+                        new GradientStop(Color.FromRgb(190,230,253), 0.5d),
+                        new GradientStop(Color.FromRgb(167,217,245), 1.0d),
+                    }
+                ), 90.0d));
+
+            // TODO: create gradient click brush
+
+            Color highlightLight = ColorsHelper.CreateFromHex("ebf0f6");
+            Color highlightBase = ColorsHelper.CreateFromHex("d4e4f5");
+            Color clickLight = ColorsHelper.CreateFromHex("b9daf8");
+            Color clickDark = ColorsHelper.CreateFromHex("4095D6");
+            Color highlightBorder = ColorsHelper.CreateFromHex("3C7FB1"); // (r:60, g:127, b:177); 
+            Color menuHighlightBorder = ColorsHelper.CreateFromHex("85c2f7"); // 7EB4EA
+            Color checkBkgdHighlight = ColorsHelper.CreateFromHex("F3F9FF");
+
+            if (accentColor.HasValue)
+            {
+                // use the grayscale versions of the colors above, to avoid the accent colors end up with a blue tint
+                highlightLight = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("efefef"), accentColor.Value, 0.6d);
+                highlightBase = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("e2e2e2"), accentColor.Value, 0.7d);
+                clickLight = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("d5d5d5"), accentColor.Value, 0.7d);
+                clickDark = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("848484"), accentColor.Value, 0.7d);
+                highlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "727272"), accentColor.Value, 0.6d);
+                menuHighlightBorder = ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex(hex: "b7b7b7"), accentColor.Value, 0.6d);
+                checkBkgdHighlight = ColorsHelper.BlendWithGamma(Colors.White, accentColor.Value, 0.8d);
+            }
+
+            Color windowTitleBar = accentColor ?? highlightBase;
+
+            Color offWhite = ColorsHelper.CreateFromHex("F8F8F8");
+            Color lightGray = ColorsHelper.CreateFromHex("F1F1F1");
+            Color nearWhiteBlue = ColorsHelper.CreateFromHex("fafbfc");
+            Color nearWhiteBlue2 = ColorsHelper.CreateFromHex("eff4f7"); //ColorsHelper.CreateFromHex("e7eef8");
+
+            LinearGradientBrush menuHighlight = BrushFactory.Create(highlightLight, highlightBase, 90);
+            LinearGradientBrush menuClick = BrushFactory.Create(highlightBase, clickLight, 90);
+
+            // System theme menu highlight brush: 0078D7
+
+            SsuiAppTheme ssat = new SsuiAppTheme()
+            {
+                BaseBackground = Colors.White.ToBrush(),
+                PanelBackground = offWhite.ToBrush(),
+                ControlBackground = nearWhiteBlue.ToBrush(),
+                ButtonBackground = chromeBrush,
+                BorderBrush = BrushFactory.Create("8E8F8F"),
+                LightBorderBrush = SystemColors.ControlDarkBrush,
+                ControlPopBrush = clickDark.ToBrush(),
+                ControlSatBrush = SystemColors.ControlLightBrush,
+                CheckBrush = SystemColors.ControlTextBrush,
+                CheckHighlightBrush = BrushFactory.Create("001644"),
+                CheckBackgroundHighlightBrush = checkBkgdHighlight.ToBrush(),
+                ClickBrush = clickLight.ToBrush(),
+                SelectedBackgroundBrush = (accentColor.HasValue ? baseChromeBrush : selectedBrush),
+                SelectedBorderBrush = (accentColor.HasValue ? accentColor.Value.ToBrush() : BrushFactory.Create("3399FF")),
+                SelectedForeground = SystemColors.ControlTextBrush,
+                HighlightBrush = mainHighlightBrush,
+                HighlightBorderBrush = highlightBorder.ToBrush(),
+                HighlightForeground = Colors.Black.ToBrush(),
+                DisabledBackground = lightGray.ToBrush(),
+                DisabledForeground = Colors.LightGray.ToBrush(),
+                DisabledBorderBrush = Colors.LightGray.ToBrush(),
+                Foreground = Colors.Black.ToBrush(),
+                WindowCaptionsForeground = Colors.Black.ToBrush(),
+                WindowBackground = Colors.White.ToBrush(),
+                WindowCaptionsBackground = Color.FromArgb(1, 255, 255, 255).ToBrush(), // almost entirely transparent
+                WindowTitleBackground = windowTitleBar.ToBrush(),
+                WindowTitleForeground = Colors.Black.ToBrush(),
+                WindowInactiveBackground = ColorsHelper.BlendWithGamma(windowTitleBar, Colors.White, 0.3d).ToBrush(),
+                WindowInactiveForeground = Colors.DimGray.ToBrush(),
+                WindowCaptionsHighlight = Color.FromArgb(60, Colors.SteelBlue.R, Colors.SteelBlue.G, Colors.SteelBlue.B).ToBrush(),
+                WindowCaptionsHighlightForeground = Colors.Black.ToBrush(),
+                WindowCaptionsClickBrush = Color.FromArgb(96, Colors.SteelBlue.R, Colors.SteelBlue.G, Colors.SteelBlue.B).ToBrush(),
+                TabBackground = chromeBrush,
+                TabHighlightBorderBrush = BrushFactory.Create("8E8F8F"),
+                TabHighlightBrush = Colors.Gainsboro.ToBrush(),
+                TabSelectedBrush = offWhite.ToBrush(),
+                CommandBarBackground = offWhite.ToBrush(),
+                CommandBarBorderBrush = BrushFactory.Create("8E8F8F"),
+                UseSubitemThemeWithMenus = true,
+                UseSubitemThemeWithPanels = true,
+                UseSubitemThemeWithRibbons = false,
+                CornerRadius = cornerRadius,
+                IconVariation = Utils.IconVariation.Color,
+                AllowTitleBarBrushWithMenus = false
+            };
+
+            // reduce the saturation of SelectedBackground
+            //ColorsHelper.ToHSV(SystemColors.HighlightBrush.Color, out double h, out double s, out double v);
+            //if (s > 0.5)
+            //{
+            //    ssat.SelectedBackgroundBrush = ColorsHelper.CreateFromHSV(h, 0.3, v).ToBrush();
+            //}
+
+            ssat.AccentTheme = ssat.Copy();
+            ssat.SubitemTheme = ssat.Copy();
+
+            ssat.SubitemTheme.HighlightBrush = menuHighlight;
+            ssat.SubitemTheme.HighlightForeground = Colors.Black.ToBrush();
+            ssat.SubitemTheme.HighlightBorderBrush = menuHighlightBorder.ToBrush();
+            ssat.SubitemTheme.ClickBrush = menuClick;
+
+            return ssat;
+        }
+
+    }
+}

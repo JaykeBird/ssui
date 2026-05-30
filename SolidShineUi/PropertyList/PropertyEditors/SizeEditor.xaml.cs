@@ -34,24 +34,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+            nudHeight.SsuiTheme = theme;
+            nudWidth.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
 
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            nudHeight.ColorScheme = cs;
-            nudWidth.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-
-            imgWidth.Source = LoadIcon("LeftRightArrow", cs);
-            imgHeight.Source = LoadIcon("UpDownArrow", cs);
-            imgFontEdit.Source = LoadIcon("ThreeDots", cs);
+            imgWidth.Source = LoadIcon("LeftRightArrow", theme.IconVariation);
+            imgHeight.Source = LoadIcon("UpDownArrow", theme.IconVariation);
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <summary>
@@ -60,6 +51,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public SizeEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuSetZero.Header = Strings.SetAllToZero;
         }
 
         /// <inheritdoc/>

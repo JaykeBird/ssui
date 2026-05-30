@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
@@ -22,12 +21,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             InitializeComponent();
             mnuSetNull.IsEnabledChanged += MnuSetNull_IsEnabledChanged;
+
+            // load in string values
+            mnuCurrent.Header = Strings.SetToCurrentTime;
+            mnuCurrentShort.Header = Strings.SetToCurrentTimeNoMilliseconds;
+            mnuNoon.Header = Strings.SetToNoon;
+            mnuMidnight.Header = Strings.SetToMidnight;
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuDisplayClock.Header = Strings.DisplayAs12HourClock;
         }
 
         private void MnuSetNull_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
 #if DEBUG
-            Debugger.Log(0, null, "SET NULL CHANGED");
+            Debugger.Log(0, null, "TIMESPANEDITOR: SET NULL CHANGED");
 #endif
             //throw new NotImplementedException();
         }
@@ -45,22 +52,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
         
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            spinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            spinner.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
