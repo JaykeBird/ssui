@@ -10,11 +10,13 @@ using System.Windows.Media;
 
 namespace SolidShineUi.Ribbon
 {
+    // TODO: implement other properties from ContentControl, see ContentControlWithMenu as an inspiration
+
     /// <summary>
     /// A wrapper for displaying a control within a <see cref="RibbonGroup"/> other than any of the premade controls in this namespace.
     /// </summary>
     [ContentProperty("Content")]
-    public class RibbonContentControl : Control, IRibbonItem
+    public class RibbonContentControl : ThemedControl, IRibbonItem
     {
         static RibbonContentControl()
         {

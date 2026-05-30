@@ -21,7 +21,7 @@ namespace SolidShineUi.Ribbon
     /// </summary>
     [ContentProperty("Items")]
     [Localizability(LocalizationCategory.ListBox)]
-    public class Gallery : Control, IRibbonItem
+    public class Gallery : ThemedControl, IRibbonItem
     {
         static Gallery()
         {

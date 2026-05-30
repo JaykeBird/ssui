@@ -52,7 +52,17 @@ namespace SolidShineUi.Toolbars
 
         /// <summary>
         /// Get or set the ColorScheme to use for setting the appearance of this command on the toolbar or Ribbon.
+        /// (This has now been mostly replaced with <see cref="SsuiTheme"/>, please use that for new development.)
         /// </summary>
         ColorScheme ColorScheme { get; set; }
+
+        /// <summary>
+        /// Get or set the SsuiTheme to use for setting the appearance of this control.
+        /// </summary>
+#if NETCOREAPP
+        SsuiTheme? SsuiTheme { get; set; }
+#else
+        SsuiTheme SsuiTheme { get; set; }
+#endif
     }
 }
