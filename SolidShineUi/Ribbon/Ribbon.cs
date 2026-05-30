@@ -4,9 +4,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,8 +17,8 @@ namespace SolidShineUi.Ribbon
     /// <summary>
     /// A toolbar that displays various commands under a series of tabs, similar to what is present in Microsoft Office or Autodesk software.
     /// </summary>
-    [ContentProperty("Items")]
-    public class Ribbon : Control
+    [ContentProperty(nameof(Items))]
+    public class Ribbon : ThemedControl
     {
         #region Constructors / Loaded
 
@@ -1066,8 +1063,8 @@ namespace SolidShineUi.Ribbon
         public Brush MainBarBackground { get => (Brush)GetValue(MainBarBackgroundProperty); set => SetValue(MainBarBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MainBarBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty MainBarBackgroundProperty
-            = DependencyProperty.Register("MainBarBackground", typeof(Brush), typeof(Ribbon),
+        public static readonly DependencyProperty MainBarBackgroundProperty
+            = DependencyProperty.Register(nameof(MainBarBackground), typeof(Brush), typeof(Ribbon),
             new FrameworkPropertyMetadata(Colors.White.ToBrush()));
 
         /// <summary>
@@ -1076,20 +1073,11 @@ namespace SolidShineUi.Ribbon
         public Brush TabBarBackground { get => (Brush)GetValue(TabBarBackgroundProperty); set => SetValue(TabBarBackgroundProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBarBackground"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBarBackgroundProperty
-            = DependencyProperty.Register("TabBarBackground", typeof(Brush), typeof(Ribbon),
-            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+        public static readonly DependencyProperty TabBarBackgroundProperty
+            = DependencyProperty.Register(nameof(TabBarBackground), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Brushes.Transparent));
 
-        /// <summary>
-        /// Get or set the brush to use for borders in the Ribbon - such as the border around the main command bar area and around the tab headers.
-        /// </summary>
-        public new Brush BorderBrush { get => (Brush)GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
-        public new static DependencyProperty BorderBrushProperty
-            = DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Ribbon),
-            new FrameworkPropertyMetadata(Colors.DarkGray.ToBrush()));
-
+        // TODO: add brushes for tab items, will need to modify RibbonTabDisplayItem
 
         #endregion
 
@@ -1157,7 +1145,7 @@ namespace SolidShineUi.Ribbon
 
             MainBarBackground = cs.LightBackgroundColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();
-            TabBarBackground = cs.BackgroundColor.ToBrush();
+            // TabBarBackground = cs.BackgroundColor.ToBrush();
 
             // TODO: replace applying the ColorScheme directly below with applying these yet-to-be-made properties
             // to achieve this, I think I'll need to build for myself a small function that goes into each RibbonItem and each group,
@@ -1194,6 +1182,46 @@ namespace SolidShineUi.Ribbon
         }
         #endregion
 
+        #region SsuiTheme
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(MainBarBackgroundProperty, SsuiTheme.CommandBarBackgroundProperty, theme);
+
+                //ApplyThemeBinding(TabBackgroundProperty, SsuiTheme.TabBackgroundProperty, theme);
+                //ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.TabHighlightBrushProperty, theme);
+                //ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.TabHighlightBorderBrushProperty, theme);
+                //ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.TabSelectedBrushProperty, theme);
+                //ApplyThemeBinding(TabCloseBrushProperty, SsuiTheme.ForegroundProperty, theme);
+
+                //if (useLightBorder)
+                //{
+                //    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
+                //}
+                //else
+                //{
+                //    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                //}
+            }
+        }
+
+        #endregion
 
 #if DEBUG
 

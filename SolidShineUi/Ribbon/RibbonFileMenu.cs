@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -19,7 +16,7 @@ namespace SolidShineUi.Ribbon
     /// A file menu, built to be displayed in the top-left corner of a <see cref="Ribbon"/>.
     /// </summary>
     [ContentProperty(nameof(Items))]
-    public class RibbonFileMenu : ButtonBase
+    public class RibbonFileMenu : ButtonBase // TODO: replace with ThemedControl, implement my own Click and other functions
     {
         static RibbonFileMenu()
         {
@@ -80,16 +77,9 @@ namespace SolidShineUi.Ribbon
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Title"/>. See the related property for details.</summary>
-        public static DependencyProperty TitleProperty
-            = DependencyProperty.Register("Title", typeof(string), typeof(RibbonFileMenu),
+        public static readonly DependencyProperty TitleProperty
+            = DependencyProperty.Register(nameof(Title), typeof(string), typeof(RibbonFileMenu),
             new FrameworkPropertyMetadata("File"));
-
-        private static readonly DependencyPropertyKey ItemsPropertyKey
-            = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<IRibbonItem>), typeof(RibbonFileMenu),
-            new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
-
-        /// <summary>The backing dependency property for <see cref="Items"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Get or set the list of items in this File menu. This Items property can be used to add and remove items.
@@ -100,6 +90,13 @@ namespace SolidShineUi.Ribbon
             get { return (ObservableCollection<IRibbonItem>)GetValue(ItemsProperty); }
             private set { SetValue(ItemsPropertyKey, value); }
         }
+
+        private static readonly DependencyPropertyKey ItemsPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(Items), typeof(ObservableCollection<IRibbonItem>), typeof(RibbonFileMenu),
+            new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
+
+        /// <summary>The backing dependency property for <see cref="Items"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
 
         #region ColorScheme
 

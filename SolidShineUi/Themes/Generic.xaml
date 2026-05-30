@@ -2206,6 +2206,8 @@
         <Setter Property="AllowDrop" Value="False" />
         <Setter Property="Padding" Value="0,3,0,0" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="BorderBrush" Value="DarkGray" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:Ribbon}">
