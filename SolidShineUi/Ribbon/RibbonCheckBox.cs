@@ -30,7 +30,7 @@ namespace SolidShineUi.Ribbon
         /// </summary>
         public RibbonCheckBox()
         {
-            CommandBindings.Add(new CommandBinding(CheckBoxClickCommand, OnCheckBoxClick));
+            CommandBindings.Add(new CommandBinding(CheckBox.CheckBoxClickCommand, OnCheckBoxClick));
 
             //SetValue(BackgroundProperty, ColorsHelper.CreateFromHex("01FFFFFF").ToBrush());
             //SetValue(BorderBrushProperty, ColorsHelper.Black.ToBrush());
@@ -48,11 +48,6 @@ namespace SolidShineUi.Ribbon
             KeyUp += UserControl_KeyUp;
         }
         #region CheckBoxClick
-
-        /// <summary>
-        /// The command that activates when the box of the checkbox itself has been clicked.
-        /// </summary>
-        public static readonly RoutedCommand CheckBoxClickCommand = new RoutedCommand();
 
         /// <summary>
         /// The backing value for the <see cref="CheckBoxClick"/> event. See the related event for more details.
@@ -80,6 +75,7 @@ namespace SolidShineUi.Ribbon
             RoutedEventArgs re = new RoutedEventArgs(CheckBoxClickEvent);
             RaiseEvent(re);
             DoClick();
+            //if (OnlyAllowCheckBoxClick) DoClick();
             checkBoxClick = false;
         }
 
@@ -549,7 +545,7 @@ namespace SolidShineUi.Ribbon
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = CheckBox.BorderSelectionThicknessProperty.AddOwner(typeof(RibbonCheckBox),
-            new PropertyMetadata(defaultValue: 1));
+            new PropertyMetadata(defaultValue: new Thickness(1)));
 
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.

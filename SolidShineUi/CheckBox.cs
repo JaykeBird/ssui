@@ -100,6 +100,7 @@ namespace SolidShineUi
             RoutedEventArgs re = new RoutedEventArgs(CheckBoxClickEvent);
             RaiseEvent(re);
             DoClick();
+            // if (OnlyAllowCheckBoxClick) DoClick();
             checkBoxClick = false;
         }
 
