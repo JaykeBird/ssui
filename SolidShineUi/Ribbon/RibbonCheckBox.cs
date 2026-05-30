@@ -868,7 +868,7 @@ namespace SolidShineUi.Ribbon
         /// Raised when <see cref="CheckState"/> is changed. Using <see cref="CheckChanged"/> rather than this event is recommended instead.
         /// </summary>
 #if NETCOREAPP
-        public event ItemSelectionChangedEventHandler IsSelectedChanged;
+        public event ItemSelectionChangedEventHandler? IsSelectedChanged;
 #else
         public event ItemSelectionChangedEventHandler IsSelectedChanged;
 #endif
@@ -878,11 +878,20 @@ namespace SolidShineUi.Ribbon
         Brush ISsuiButton.SelectedForeground { get => CheckForeground; set => CheckForeground = value; }
         bool ISsuiButton.TransparentBack { get; set; } = true;
         bool ISsuiButton.HighlightOnKeyboardFocus { get; set; } = true;
+
+#if NETCOREAPP
+        object? ISsuiButton.Content
+#else
         object ISsuiButton.Content
+#endif
         {
             get { return Title; }
             set
             {
+                if (value == null)
+                {
+                    Title = "";
+                }
                 if (value is string s)
                 {
                     Title = s;
@@ -900,7 +909,11 @@ namespace SolidShineUi.Ribbon
 
         string ISsuiButton.ContentStringFormat { get; set; } = "g";
 
-        DataTemplate ISsuiButton.ContentTemplate { get; set; }
+#if NETCOREAPP
+        DataTemplate? ISsuiButton.ContentTemplate { get; set; } = null; // matching WPF default behavior
+#else
+        DataTemplate ISsuiButton.ContentTemplate { get; set; } = null;
+#endif
         bool IClickSelectableControl.IsSelected { get => IsChecked; set => IsChecked = value; }
         bool IClickSelectableControl.SelectOnClick { get; set; } = true;
         Brush IClickSelectableControl.ClickBrush { get => CheckHighlightBrush; set => CheckHighlightBrush = value; }
@@ -918,7 +931,7 @@ namespace SolidShineUi.Ribbon
         }
 #endif
 
-        #endregion
+#endregion
 
     }
 }

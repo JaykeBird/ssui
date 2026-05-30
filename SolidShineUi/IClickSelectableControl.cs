@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Media;
 
@@ -302,9 +303,14 @@ namespace SolidShineUi
         #region Content Control Properties
 
         /// <summary>
-        /// Get or set the content to display within this control.
+        /// Get or set the content to display within this control. Note that this may be <c>null</c>.
         /// </summary>
+#if NETCOREAPP
+        [AllowNull, MaybeNull]
+        object Content { [return: MaybeNull] get; [param: AllowNull] set; }
+#else
         object Content { get; set; }
+#endif
 
         /// <summary>
         /// Gets or sets a composite string that specifies how to format the Content property if it is displayed as a string.
@@ -312,9 +318,14 @@ namespace SolidShineUi
         string ContentStringFormat { get; set; }
 
         /// <summary>
-        /// Gets or sets the data template used to display the content of the control.
+        /// Gets or sets the data template used to display the content of the control. Note that this may be <c>null</c>.
         /// </summary>
+#if NETCOREAPP
+        [AllowNull, MaybeNull]
+        DataTemplate ContentTemplate { [return: MaybeNull] get; [param: AllowNull] set; }
+#else
         DataTemplate ContentTemplate { get; set; }
+#endif
 
         #endregion
     }
