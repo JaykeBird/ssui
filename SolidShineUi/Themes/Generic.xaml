@@ -3229,7 +3229,9 @@
                         </Grid.RowDefinitions>
                         <ssut:TemplateButton x:Name="PART_Main"
                                          TransparentBack="{Binding Path=TransparentBack, RelativeSource={RelativeSource TemplatedParent}}"
-                                         Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"    
+                                         Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
+                                         Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource TemplatedParent}}"
+                                         HighlightForeground="{Binding Path=HighlightForeground, RelativeSource={RelativeSource TemplatedParent}}"
                                          HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                          BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"  
                                          BorderHighlightBrush="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
@@ -3252,7 +3254,9 @@
                         </ssut:TemplateButton>
                         <ssut:TemplateButton Margin="0" Padding="0" x:Name="PART_Menu"
                                          TransparentBack="{Binding Path=TransparentBack, RelativeSource={RelativeSource TemplatedParent}}"
-                                         Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"    
+                                         Background="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"
+                                         Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource TemplatedParent}}"
+                                         HighlightForeground="{Binding Path=HighlightForeground, RelativeSource={RelativeSource TemplatedParent}}"
                                          HighlightBrush="{Binding Path=HighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
                                          BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"  
                                          BorderHighlightBrush="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource TemplatedParent}}"
