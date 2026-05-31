@@ -1077,7 +1077,45 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register(nameof(TabBarBackground), typeof(Brush), typeof(Ribbon),
             new FrameworkPropertyMetadata(Brushes.Transparent));
 
-        // TODO: add brushes for tab items, will need to modify RibbonTabDisplayItem
+        /// <summary>
+        /// Get or set the background for the tab while it is selected.
+        /// </summary>
+        public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedTabBackgroundProperty
+            = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush for the background of a tab while it is highlighted (i.e. the mouse is over it, or it has keyboard focus).
+        /// </summary>
+        public Brush TabHighlightBrush { get => (Brush)GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TabHighlightBrushProperty
+            = DependencyProperty.Register(nameof(TabHighlightBrush), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush for the border of a tab while it is highlighted (i.e. the mouse is over it, or it had keyboard focus).
+        /// </summary>
+        public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty TabBorderHighlightBrushProperty
+            = DependencyProperty.Register(nameof(TabBorderHighlightBrush), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush for the border around the tabs in this control.
+        /// </summary>
+        public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
+        public static DependencyProperty TabBorderBrushProperty
+            = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
 
         #endregion
 
@@ -1145,6 +1183,10 @@ namespace SolidShineUi.Ribbon
 
             MainBarBackground = cs.LightBackgroundColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();
+            TabBorderBrush = cs.BorderColor.ToBrush();
+            SelectedTabBackground = cs.LightBackgroundColor.ToBrush();
+            TabHighlightBrush = cs.SecondHighlightColor.ToBrush();
+            TabBorderHighlightBrush = cs.HighlightColor.ToBrush();
             // TabBarBackground = cs.BackgroundColor.ToBrush();
 
             // TODO: replace applying the ColorScheme directly below with applying these yet-to-be-made properties
@@ -1174,7 +1216,6 @@ namespace SolidShineUi.Ribbon
                 }
             }
 
-            // TODO: replace check for RibbonFileMenu with a check for a control that has a ColorScheme/SsuiTheme
             if (FileMenu is RibbonFileMenu rfm)
             {
                 rfm.ColorScheme = cs;
@@ -1204,20 +1245,21 @@ namespace SolidShineUi.Ribbon
                 // Border brush already applied in base
                 ApplyThemeBinding(MainBarBackgroundProperty, SsuiTheme.CommandBarBackgroundProperty, theme);
 
+                ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.TabHighlightBrushProperty, theme);
+                ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.TabHighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.TabSelectedBrushProperty, theme);
+
                 //ApplyThemeBinding(TabBackgroundProperty, SsuiTheme.TabBackgroundProperty, theme);
-                //ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.TabHighlightBrushProperty, theme);
-                //ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.TabHighlightBorderBrushProperty, theme);
-                //ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.TabSelectedBrushProperty, theme);
                 //ApplyThemeBinding(TabCloseBrushProperty, SsuiTheme.ForegroundProperty, theme);
 
-                //if (useLightBorder)
-                //{
-                //    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
-                //}
-                //else
-                //{
-                //    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
-                //}
+                if (useLightBorder)
+                {
+                    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
+                }
+                else
+                {
+                    ApplyThemeBinding(TabBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                }
             }
         }
 

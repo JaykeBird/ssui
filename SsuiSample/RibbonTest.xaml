@@ -25,7 +25,7 @@
             <RowDefinition Height="33"/>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Text="Ribbon Test" FontSize="16" VerticalAlignment="Center" />
-        <ribbon:Ribbon VerticalAlignment="Center" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" Grid.Row="1" x:Name="ribbon" >
+        <ribbon:Ribbon VerticalAlignment="Center" Grid.Row="1" x:Name="ribbon" >
             <ribbon:Ribbon.FileMenu>
                 <ribbon:RibbonFileMenu>
                     <ribbon:RibbonButton StandardSize="Small" SmallIcon="Resources/Images/SaveColor.png" Title="Save" />
@@ -193,16 +193,14 @@
         </ribbon:Ribbon>
         <ScrollViewer Grid.Row="2" MinHeight="24" Margin="5,5,5,5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" >
             <StackPanel Orientation="Horizontal" Height="24" >
-                <flat:CheckBox x:Name="chkContextual" Margin="5,0" Content="Show Contextual Tab" IsChecked="False" CheckChanged="chkContextual_CheckChanged" 
-                               ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
-                <flat:CheckBox Content="Show Only Tabs" Margin="5,0" IsChecked="{Binding ElementName=ribbon, Path=ShowOnlyTabs, Mode=TwoWay}" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+                <flat:CheckBox x:Name="chkContextual" Margin="5,0" Content="Show Contextual Tab" IsChecked="False" CheckChanged="chkContextual_CheckChanged" />
+                <flat:CheckBox Content="Show Only Tabs" Margin="5,0" IsChecked="{Binding ElementName=ribbon, Path=ShowOnlyTabs, Mode=TwoWay}" />
                 <Border Margin="5,0" Width="1" BorderThickness="1" BorderBrush="{Binding ElementName=control, Path=SsuiTheme.BorderBrush}" />
                 <TextBlock Margin="5,0" Text="Main Bar Height:" VerticalAlignment="Center" />
-                <flat:DoubleSpinner x:Name="nudBarHeight" Value="{Binding ElementName=ribbon, Path=MainBarHeight}" MinWidth="50" Step="1" ColorScheme="{Binding ElementName=control, Path=ColorScheme}" />
+                <flat:DoubleSpinner x:Name="nudBarHeight" Value="{Binding ElementName=ribbon, Path=MainBarHeight}" MinWidth="50" Step="1" />
             </StackPanel>
         </ScrollViewer>
-        <flat:MenuButton x:Name="btnPrintOut" Content="Print Status" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="3" VerticalAlignment="Center" 
-                               ColorScheme="{Binding ElementName=control, Path=ColorScheme}">
+        <flat:MenuButton x:Name="btnPrintOut" Content="Print Status" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="3" VerticalAlignment="Center">
             <flat:MenuButton.Menu>
                 <flat:ContextMenu>
                     <MenuItem Header="Ribbon/Tab Widths" Click="mnuWidths_Click" />

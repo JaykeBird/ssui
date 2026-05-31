@@ -1,7 +1,6 @@
-﻿using SolidShineUi.Ribbon;
-using SolidShineUi.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +10,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SolidShineUi.Ribbon;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.Ribbon.Utils
 {
@@ -25,6 +26,8 @@ namespace SolidShineUi.Ribbon.Utils
         public RibbonTabDisplayItem()
         {
             InitializeComponent();
+
+            Background = NearTransparent;
 
             InternalParentChanged += tdi_InternalParentChanged;
             InternalTabItemChanged += tdi_InternalTabItemChanged;
@@ -45,6 +48,8 @@ namespace SolidShineUi.Ribbon.Utils
         {
             InitializeComponent();
 
+            Background = NearTransparent;
+
             InternalParentChanged += tdi_InternalParentChanged;
             InternalTabItemChanged += tdi_InternalTabItemChanged;
 
@@ -63,35 +68,28 @@ namespace SolidShineUi.Ribbon.Utils
         #region Selection
 
         /// <summary>
-        /// Get or set if this tab is currently selected.
+        /// A dependency property object backing the related property. See the property itself for more details.
+        /// </summary>
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(RibbonTabDisplayItem),
+            new PropertyMetadata(false, (d, e) => d.PerformAs<RibbonTabDisplayItem>(i => i.OnIsSelectedChanged(i, e))));
+
+        /// <summary>
+        /// Get or set if this tab is displayed as selected. A selected tab will have visual differences to show that it is selected.
         /// </summary>
         /// <remarks>
-        /// This is only used to update this object's visuals; please use <see cref="Ribbon.Items"/> to actually select a tab on a Ribbon.
+        /// This will only change the visual appearance of this RibbonTabDisplayItem, this does not change the actual selection or affect any logic.
+        /// Use other methods, such as the <c>Select</c> method in <see cref="Ribbon.Items"/> to actually select a tab.
         /// </remarks>
-        public bool IsSelected { get => (bool)GetValue(IsSelectedProperty); set => SetValue(IsSelectedProperty, value); }
-
-        /// <summary>
-        /// The backing dependency property for <see cref="IsSelected"/>. See the related property for details.
-        /// </summary>
-        public static DependencyProperty IsSelectedProperty
-            = DependencyProperty.Register("IsSelected", typeof(bool), typeof(RibbonTabDisplayItem),
-            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<RibbonTabDisplayItem>((i) => i.InternalIsSelectedChanged())));
-
-        /// <summary>
-        /// Raised when <see cref="IsSelected"/> is changed.
-        /// </summary>
-        protected void InternalIsSelectedChanged()
+        public bool IsSelected
         {
-            if (IsSelected)
-            {
-                border.BorderThickness = TabBorderThickSelected;
-                border.Background = SelectedBrush;
-            }
-            else
-            {
-                border.BorderThickness = IsMouseOver ? TabBorderThickHighlite : TabBorderThickStandard;
-                border.Background = (IsMouseOver || IsKeyboardFocused) ? HighlightBrush : NearTransparent;
-            }
+            get { return (bool)GetValue(IsSelectedProperty); }
+            set { SetValue(IsSelectedProperty, value); }
+        }
+
+        private void OnIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            // border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
+            // border.Background = IsSelected ? SelectedTabBackground : Background;
         }
 
         /// <summary>
@@ -234,86 +232,22 @@ namespace SolidShineUi.Ribbon.Utils
 
         #endregion
 
-        #region Color Scheme
-
-        /// <summary>
-        /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
-        /// </summary>
-        public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RibbonTabDisplayItem),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        /// <summary>
-        /// Perform an action when the ColorScheme property has changed. Primarily used internally.
-        /// </summary>
-        /// <param name="d">The object containing the property that changed.</param>
-        /// <param name="e">Event arguments about the property change.</param>
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-#if NETCOREAPP
-            if (d is RibbonTabDisplayItem w)
-            {
-                w.ApplyColorScheme((e.NewValue as ColorScheme)!);
-            }
-#else
-            (d as RibbonTabDisplayItem).ApplyColorScheme(e.NewValue as ColorScheme);
-#endif
-        }
-
-        /// <summary>
-        /// Get or set the color scheme to apply to the window.
-        /// </summary>
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        /// <summary>
-        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply.</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-
-            if (cs.IsHighContrast)
-            {
-                Background = cs.BackgroundColor.ToBrush();
-                BorderBrush = cs.BorderColor.ToBrush();
-                HighlightBrush = cs.HighlightColor.ToBrush();
-                BorderHighlightBrush = cs.BorderColor.ToBrush();
-                SelectedBrush = cs.BackgroundColor.ToBrush();
-            }
-            else
-            {
-                Background = NearTransparent;
-                BorderBrush = cs.BorderColor.ToBrush();
-                HighlightBrush = cs.SecondHighlightColor.ToBrush();
-                BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                SelectedBrush = cs.LightBackgroundColor.ToBrush();
-            }
-
-            if (highlighting)
-            {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-            }
-            else
-            {
-                border.Background = IsSelected ? SelectedBrush : NearTransparent;
-                border.BorderBrush = BorderBrush;
-            }
-        }
-        #endregion
-
         #region Click Handling
 
         bool initiatingClick = false;
+
+        /// <summary>
+        /// Get if this TabDisplayItem is currently highlighted (i.e. has focus or mouse over).
+        /// </summary>
+        [ReadOnly(true)]
+        public bool IsHighlighted { get => (bool)GetValue(IsHighlightedProperty); private set => SetValue(IsHighlightedPropertyKey, value); }
+
+        private static readonly DependencyPropertyKey IsHighlightedPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(IsHighlighted), typeof(bool), typeof(RibbonTabDisplayItem),
+            new FrameworkPropertyMetadata(false));
+
+        /// <summary>The backing dependency property for <see cref="IsHighlighted"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty IsHighlightedProperty = IsHighlightedPropertyKey.DependencyProperty;
 
         void PerformClick(bool rightClick = false)
         {
@@ -388,15 +322,12 @@ namespace SolidShineUi.Ribbon.Utils
         #endregion
 
         #region Focus Events
-        bool highlighting = false;
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
         {
             if (IsEnabled)
             {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-                highlighting = true;
+                IsHighlighted = true;
             }
         }
 
@@ -404,9 +335,7 @@ namespace SolidShineUi.Ribbon.Utils
         {
             if (IsEnabled)
             {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-                highlighting = true;
+                IsHighlighted = true;
             }
         }
 
@@ -414,29 +343,32 @@ namespace SolidShineUi.Ribbon.Utils
         {
             if (IsEnabled)
             {
-                border.Background = HighlightBrush;
-                border.BorderBrush = BorderHighlightBrush;
-                border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickHighlite;
-                highlighting = true;
+                IsHighlighted = true;
+                //border.Background = HighlightBrush;
+                //border.BorderBrush = BorderHighlightBrush;
+                //border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickHighlite;
+                //highlighting = true;
             }
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            border.Background = IsSelected ? SelectedBrush : NearTransparent;
-            border.BorderBrush = BorderBrush;
-            highlighting = false;
+            //border.Background = IsSelected ? SelectedBrush : NearTransparent;
+            //border.BorderBrush = BorderBrush;
+            //highlighting = false;
 
+            IsHighlighted = false;
             initiatingClick = false;
         }
 
         private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            border.Background = IsSelected ? SelectedBrush : NearTransparent;
-            border.BorderBrush = BorderBrush;
-            border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
-            highlighting = false;
+            //border.Background = IsSelected ? SelectedBrush : NearTransparent;
+            //border.BorderBrush = BorderBrush;
+            //border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
+            //highlighting = false;
 
+            IsHighlighted = false;
             initiatingClick = false;
         }
 
@@ -444,43 +376,17 @@ namespace SolidShineUi.Ribbon.Utils
         {
             if (!IsKeyboardFocused)
             {
-                border.Background = IsSelected ? SelectedBrush : NearTransparent;
-                border.BorderBrush = BorderBrush;
-                border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
-                highlighting = false;
+                //border.Background = IsSelected ? SelectedBrush : NearTransparent;
+                //border.BorderBrush = BorderBrush;
+                //border.BorderThickness = IsSelected ? TabBorderThickSelected : TabBorderThickStandard;
+                //highlighting = false;
+                IsHighlighted = false;
             }
 
             initiatingClick = false;
         }
 
         #endregion
-
-        #region Brushes / Border
-
-        /// <summary>
-        /// Get or set the brush for the background while this TabDisplayItem is selected (i.e. <see cref="IsSelected"/> is true).
-        /// </summary>
-        public Brush SelectedBrush { get; set; } = new SolidColorBrush(Colors.Gainsboro);
-
-        /// <summary>
-        /// Get or set the brush for the background while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it has keyboard focus).
-        /// </summary>
-        public Brush HighlightBrush { get; set; } = new SolidColorBrush(Colors.LightGray);
-
-        /// <summary>
-        /// Get or set the brush for the border while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it had keyboard focus).
-        /// </summary>
-        public Brush BorderHighlightBrush { get; set; } = new SolidColorBrush(Colors.DimGray);
-
-        /// <summary>
-        /// Get or set the brush for the border of this control.
-        /// </summary>
-        public new Brush BorderBrush { get; set; } = new SolidColorBrush(Colors.Black);
-
-        private static Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
-        private static Thickness TabBorderThickHighlite = new Thickness(1, 1, 1, 1);
-        private static Thickness TabBorderThickStandard = new Thickness(0, 0, 0, 1);
-        private static Brush NearTransparent = Color.FromArgb(1, 1, 1, 1).ToBrush();
 
         private void border_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -493,6 +399,65 @@ namespace SolidShineUi.Ribbon.Utils
                 brdr_Focus.Visibility = Visibility.Collapsed;
             }
         }
+
+        #region Brushes / Border
+
+        /// <summary>
+        /// Get or set the background for the tab while it is selected (<see cref="IsSelected"/> is <c>true</c>).
+        /// </summary>
+        public Brush SelectedTabBackground { get => (Brush)GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedTabBackgroundProperty
+            = DependencyProperty.Register(nameof(SelectedTabBackground), typeof(Brush), typeof(RibbonTabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.White.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush for the background while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it has keyboard focus).
+        /// </summary>
+        public Brush HighlightBrush { get => (Brush)GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightBrushProperty
+            = DependencyProperty.Register(nameof(HighlightBrush), typeof(Brush), typeof(RibbonTabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush for the border while this TabDisplayItem is highlighted (i.e. the mouse is over it, or it had keyboard focus).
+        /// </summary>
+        public Brush BorderHighlightBrush { get => (Brush)GetValue(BorderHighlightBrushProperty); set => SetValue(BorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderHighlightBrushProperty
+            = DependencyProperty.Register(nameof(BorderHighlightBrush), typeof(Brush), typeof(RibbonTabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush for the border of this control.
+        /// </summary>
+        public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty TabBorderBrushProperty
+            = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(RibbonTabDisplayItem),
+            new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        //private static Thickness TabBorderThickSelected = new Thickness(1, 1, 1, 0);
+        //private static Thickness TabBorderThickHighlite = new Thickness(1, 1, 1, 1);
+        //private static Thickness TabBorderThickStandard = new Thickness(0, 0, 0, 1);
+        private static Brush NearTransparent = Color.FromArgb(1, 1, 1, 1).ToBrush();
+
+        //private void border_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (border.IsKeyboardFocused)
+        //    {
+        //        brdr_Focus.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        brdr_Focus.Visibility = Visibility.Collapsed;
+        //    }
+        //}
         #endregion
 
         #region Drag and Drop

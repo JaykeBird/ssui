@@ -23,7 +23,38 @@
         <flat:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>
-        <Border BorderThickness="0,0,0,1" BorderBrush="Black" x:Name="border" Focusable="True" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
+        <Border BorderBrush="Black" x:Name="border" Focusable="True" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                    <Setter Property="BorderBrush" Value="{Binding ElementName=control, Path=TabBorderBrush, FallbackValue=Black}" />
+                    <Setter Property="Background" Value="{Binding ElementName=control, Path=Background, FallbackValue=White}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=control, Path=IsSelected}" Value="True">
+                            <Setter Property="Background" Value="{Binding ElementName=control, Path=SelectedTabBackground, FallbackValue=Gainsboro}" />
+                            <Setter Property="BorderThickness" Value="1,1,1,0" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=control, Path=IsHighlighted}" Value="True">
+                            <Setter Property="BorderBrush" Value="{Binding ElementName=control, Path=BorderHighlightBrush, FallbackValue=DarkGray}" />
+                            <Setter Property="Background" Value="{Binding ElementName=control, Path=HighlightBrush, FallbackValue=LightGray}" />
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=control, Path=IsSelected}" Value="False" />
+                                <Condition Binding="{Binding ElementName=control, Path=IsHighlighted}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="BorderThickness" Value="1,1,1,1" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=control, Path=IsSelected}" Value="True" />
+                                <Condition Binding="{Binding ElementName=control, Path=IsHighlighted}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="BorderThickness" Value="1,1,1,0" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <!--<Border BorderThickness="0" x:Name="brdrInnerColor" Background="{Binding ElementName=control, Path=TabBackground}" />-->
         </Border>
         <Border BorderThickness="1">

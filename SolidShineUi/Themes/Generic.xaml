@@ -2324,7 +2324,10 @@
                                                 <ributils:RibbonTabDisplayItem x:Name="PART_TabItem"
                                                                      Visibility="{Binding Visibility}" TabItem="{Binding .}" 
                                                                      AllowDataDragDrop="{Binding AllowDrop, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
-                                                                     ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
+                                                                     HighlightBrush="{Binding TabHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
+                                                                     BorderHighlightBrush="{Binding TabBorderHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
+                                                                     TabBorderBrush="{Binding TabBorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
+                                                                     SelectedTabBackground="{Binding SelectedTabBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}"
                                                                      ParentRibbon="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ribbon:Ribbon}}}" />
                                                 <!-- AllowDragDrop="{Binding AllowControlReordering, RelativeSource={RelativeSource TemplatedParent}}" -->
                                             </DataTemplate>
