@@ -227,7 +227,7 @@
                            IsLightDismissEnabled="True"
                            IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
                            Placement="RightEdgeAlignedTop"
-                           OverlayInputPassThroughElement="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}">
+                           OverlayInputPassThroughElement="{Binding $parent[flat:Menu]}">
                         <Border Background="{Binding #PART_Popup.MenuBackground}"
                                 BorderBrush="{Binding #PART_Popup.PopupBorderBrush}"
                                 BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"
@@ -365,7 +365,7 @@
                                MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
                                IsLightDismissEnabled="True" IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
                                Placement="BottomEdgeAlignedLeft"
-                               OverlayInputPassThroughElement="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}">
+                               OverlayInputPassThroughElement="{Binding $parent[flat:Menu]}">
                             <Border Background="{Binding #PART_Popup.MenuBackground}"
                                     BorderBrush="{Binding #PART_Popup.PopupBorderBrush}"
                                     BorderThickness="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}"

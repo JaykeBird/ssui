@@ -152,7 +152,7 @@
                             IsSelected="{TemplateBinding IsSelected}"
                             BorderThickness="{TemplateBinding BorderThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}"
                             BorderSelectionThickness="{TemplateBinding BorderSelectionThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}"
-                            CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftCR}}">
+                            CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pcr}, ConverterParameter={StaticResource byteLeftCR}}">
                         <ContentPresenter x:Name="btn_Cc" Content="{TemplateBinding Content}" />
                     </flat:FlatButton>
                     <flat:FlatButton x:Name="PART_Menu" Grid.Row="1" Grid.Column="2"
@@ -170,7 +170,7 @@
                              IsSelected="{TemplateBinding IsSelected}"
                              BorderThickness="{TemplateBinding BorderThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}"
                              BorderSelectionThickness="{TemplateBinding BorderSelectionThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightTh}}"
-                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pth}, ConverterParameter={StaticResource byteRightCR}}">
+                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pcr}, ConverterParameter={StaticResource byteRightCR}}">
                         <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                       Height="4" Width="8" Margin="0" Stretch="Fill" />
                     </flat:FlatButton>
@@ -181,7 +181,7 @@
                             Background="{TemplateBinding SeparatorBrush}"
                             IsVisible="{TemplateBinding ShowSeparator}"
                             Margin="{TemplateBinding SeparatorEdgeMargin,
-                            Converter={StaticResource pth} ConverterParameter={StaticResource byteTbTh}}" />
+                            Converter={StaticResource pth}, ConverterParameter={StaticResource byteTbTh}}" />
                 </Grid>
             </ControlTemplate>
         </Setter>
