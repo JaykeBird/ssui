@@ -229,7 +229,7 @@ namespace SolidShineUi
             Unlight();
         }
 
-        void LinkTextBlock_GotKeyboardFocus(object? sender, GotFocusEventArgs e)
+        void LinkTextBlock_GotKeyboardFocus(object? sender, FocusChangedEventArgs e)
         {
             Highlight();
         }

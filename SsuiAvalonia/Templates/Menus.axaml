@@ -465,10 +465,10 @@
     </ControlTheme>
 
     <ControlTheme x:Key="{x:Type flat:ContextMenu}" TargetType="flat:ContextMenu">
-        <Setter Property="Background" Value="{TemplateBinding MenuBackground}" />
-        <Setter Property="BorderBrush" Value="{TemplateBinding PopupBorderBrush}" />
+        <!--<Setter Property="Background" Value="{TemplateBinding MenuBackground}" />
+        <Setter Property="BorderBrush" Value="{TemplateBinding PopupBorderBrush}" />-->
         <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}" />
-        <Setter Property="CornerRadius" Value="{TemplateBinding MenuCornerRadius}" />
+        <!--<Setter Property="CornerRadius" Value="{TemplateBinding MenuCornerRadius}" />-->
         <Setter Property="MaxWidth" Value="{DynamicResource FlyoutThemeMaxWidth}" />
         <!--<Setter Property="MinHeight" Value="{DynamicResource MenuFlyoutThemeMinHeight}" />-->
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutPresenterThemePadding}" />
