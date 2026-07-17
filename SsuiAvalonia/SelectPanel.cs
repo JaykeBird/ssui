@@ -34,7 +34,7 @@ namespace SolidShineUi
 
         bool _internalAction = false; 
         bool runApply = true;
-        private bool use_lbrdr = false;
+        //private bool use_lbrdr = false;
 
         /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -212,6 +212,8 @@ namespace SolidShineUi
 
         /// <summary>
         /// Get or set if multiple items can be selected at once. If false, then only 1 item can be selected at a time.
+        /// <para/>
+        /// While this is true, use <see cref="IsMultiSelecting"/> to enable or disable multi-selecting via the GUI.
         /// </summary>
         /// <remarks>
         /// If you're using <see cref="ItemsSource"/> to manage this control's items, this property will not function if <c>ItemsSource</c> is not an <see cref="ISelectableCollection"/>.
@@ -246,6 +248,24 @@ namespace SolidShineUi
         /// <summary>The backing direct property for <see cref="MultiSelect"/>. See the related property for details.</summary>
         public static readonly DirectProperty<SelectPanel, bool> MultiSelectProperty
             = AvaloniaProperty.RegisterDirect<SelectPanel, bool>(nameof(MultiSelect), (s) => s.MultiSelect, (s, v) => s.MultiSelect = v, unsetValue: false);
+
+        /// <summary>
+        /// Get or set if this SelectPanel is currently in "multi-selecting" mode. When both this and <see cref="MultiSelect"/> are true, 
+        /// the control will add newly selected items to the existing selection, rather than replacing the selection.
+        /// <para/>
+        /// If this is false and/or <see cref="MultiSelect"/> is false, then selecting an item will cause any currently selected ones to be deselected.
+        /// </summary>
+        /// <remarks>
+        /// In the WPF version of this control, multi-selecting was activated if the Control key was pressed, but Avalonia does not provide
+        /// access to the keyboard's current key states. Avalonia also operates on devices that may not have a physical keyboard, such as mobile devices.
+        /// Thus, this provides a way to allow multi-selecting on any platform and within Avalonia's limitations. However, you will need to
+        /// implement your own way to enable or disable this property, such as a toggle or checkbox near this control that is bound to this property.
+        /// </remarks>
+        public bool IsMultiSelecting { get => GetValue(IsMultiSelectingProperty); set => SetValue(IsMultiSelectingProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="IsMultiSelecting"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<bool> IsMultiSelectingProperty
+            = AvaloniaProperty.Register<SelectPanel, bool>(nameof(IsMultiSelecting), true);
 
         #endregion
 
@@ -349,6 +369,7 @@ namespace SolidShineUi
             }
         }
 
+        // this is if the SelectableCollection's SelectedItems changes, not a child item reporting an IsSelected property change
         private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
             if (_internalAction) return;
@@ -362,6 +383,7 @@ namespace SolidShineUi
 
         #region Item Selection Changed
 
+        // this is a child item reporting an IsSelected property change, not if the SelectableCollection's SelectedItems changes
         private void Item_SelectionChanged(object? sender, ItemSelectionChangedEventArgs e)
         {
             if (_internalAction) return;
@@ -376,7 +398,7 @@ namespace SolidShineUi
                     if (item.IsSelected && !isl.IsSelected(item))
                     {
                         //if (isl.CanSelectMultiple && (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || e.TriggerMethod == SelectionChangeTrigger.CheckBox))
-                        if (isl.CanSelectMultiple && e.TriggerMethod == SelectionChangeTrigger.CheckBox)
+                        if (isl.CanSelectMultiple && (IsMultiSelecting || e.TriggerMethod == SelectionChangeTrigger.CheckBox))
                         {
                             isl.AddToSelection(item);
                         }

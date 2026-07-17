@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// A simple button that displays a color, for usage in locations where users can select from a list of colors (such as <see cref="ColorPickerDialog"/>).
+    /// A simple button that displays a color, for usage in locations where users can select from a list of colors.
     /// </summary>
     public class ColorSwatchButton : FlatButton
     {
