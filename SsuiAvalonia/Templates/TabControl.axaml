@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:flat="clr-namespace:SolidShineUi" >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
+        <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+
+
+    <ControlTheme x:Key="{x:Type flat:TabControl}" TargetType="flat:TabControl">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+    </ControlTheme>
+
+</ResourceDictionary>
