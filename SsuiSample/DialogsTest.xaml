@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SsuiSample.DialogsTest" x:Name="userControl"
+﻿<flat:ThemedUserControl x:Class="SsuiSample.DialogsTest" x:Name="userControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -20,15 +20,16 @@
                 <RowDefinition Height="105"/>
             </Grid.RowDefinitions>
             <Border Background="#77FFFFFF" BorderThickness="1" BorderBrush="Black" Grid.ColumnSpan="3" Margin="20,10,20,20">
-                <TextBlock x:Name="txtSampleText" Text="Sample Text" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <flat:LinkTextBlock x:Name="txtSampleText" Text="Sample Text" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Click="txtSampleText_Click" TextBrush="Black" HighlightBrush="Black" UnderlineOnHighlight="False" />
             </Border>
-            <flat:FlatButton x:Name="btnSetText" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Text..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Click="btnSetText_Click"/>
-            <flat:FlatButton x:Name="btnSetFont" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Font..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1" Click="btnSetFont_Click"/>
-            <flat:FlatButton x:Name="btnSetColor" ColorScheme="{Binding ElementName=userControl, Path=ColorScheme}" Content="Change Color..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="2" Click="btnSetColor_Click"/>
+            <flat:FlatButton x:Name="btnSetText" Content="Change Text..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Click="btnSetText_Click"/>
+            <flat:FlatButton x:Name="btnSetFont" Content="Change Font..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1" Click="btnSetFont_Click"/>
+            <flat:FlatButton x:Name="btnSetColor" Content="Change Color..." Width="120" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="2" Click="btnSetColor_Click"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" Grid.Row="1" Text="StringInputDialog" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" Grid.Row="1" Text="FontSelectDialog" VerticalAlignment="Top" Grid.Column="1"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,60,0,0" Grid.Row="1" Text="ColorPickerDialog" VerticalAlignment="Top" Grid.Column="2"/>
         </Grid>
 
     </Grid>
-</UserControl>
+</flat:ThemedUserControl>

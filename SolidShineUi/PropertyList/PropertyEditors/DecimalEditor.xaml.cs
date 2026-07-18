@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -20,6 +20,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public DecimalEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuCopy.Header = Strings.CopyFullValue;
+            mnuSetValue.Header = Strings.SetExactValue;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>
@@ -29,42 +34,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        private ColorScheme _cs = new ColorScheme();
 #if NETCOREAPP
-        private ExperimentalPropertyList? _parent = null;
+        private IPropertyEditorHost? _host = null;
 #else
-        private ExperimentalPropertyList _parent = null;
+        private IPropertyEditorHost _host = null;
 #endif
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            _cs = cs;
-            dblSpinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
+            dblSpinner.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -98,6 +81,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
         {
 #if NET5_0_OR_GREATER
+            // being able to return two different types via a conditioner operator is only allowed in .NET 5 or later
             if (_propType == typeof(decimal?))
             {
                 return mnuSetNull.IsChecked ? null : _internalValue;
@@ -194,14 +178,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuSetValue_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(_cs, "Set Decimal", "Enter in the exact decimal value to use:", _internalValue.ToString());
+            StringInputDialog sid = new StringInputDialog("Set Decimal", "Enter in the exact decimal value to use:", _internalValue.ToString(provider: null));
+            sid.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
+            sid.Owner = _host?.GetWindow();
+
             sid.ValidationFunction = (s) => { return decimal.TryParse(s, out _); };
             sid.ValidationFailureString = "Not a valid decimal value";
-            if (_parent != null) sid.Owner = Window.GetWindow(_parent);
+
             sid.ShowDialog();
             if (sid.DialogResult)
             {
-                _internalValue = decimal.Parse(sid.Value);
+                _internalValue = decimal.Parse(sid.Value, null);
                 _internalAction = true;
                 dblSpinner.Value = (double)_internalValue;
                 _internalAction = false;
@@ -212,7 +199,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             // https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#general-format-specifier-g
             // "However, if the number is a Decimal and the precision specifier is omitted, fixed-point notation is always used and trailing zeros are preserved."
-            Clipboard.SetText(_internalValue.ToString("G"));
+            Clipboard.SetText(_internalValue.ToString("G", null));
         }
     }
 }

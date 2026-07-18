@@ -14,16 +14,16 @@
         </Grid.ColumnDefinitions>
         <Image x:Name="imgItalic" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/SolidShineUi;component/Images/TextBoldColor.png" />
         <ComboBox x:Name="cbbWeight" Grid.Column="1" SelectionChanged="cbbStyles_SelectionChanged" SelectedIndex="3" >
-            <ComboBoxItem Content="Thin" /> <!-- 100 -->
-            <ComboBoxItem Content="ExtraLight" />  <!-- 200 -->
-            <ComboBoxItem Content="Light" /> <!-- 300 -->
-            <ComboBoxItem Content="Normal" /> <!-- 400 -->
-            <ComboBoxItem Content="Medium" /> <!-- 500 -->
-            <ComboBoxItem Content="SemiBold" /> <!-- 600 -->
-            <ComboBoxItem Content="Bold" /> <!-- 700 -->
-            <ComboBoxItem Content="ExtraBold" /> <!-- 800 -->
-            <ComboBoxItem Content="Black" /> <!-- 900 -->
-            <ComboBoxItem Content="ExtraBlack" /> <!-- 950 -->
+            <ComboBoxItem x:Name="cbbThin" Content="Thin" /> <!-- 100 -->
+            <ComboBoxItem x:Name="cbbExtraLight" Content="ExtraLight" />  <!-- 200 -->
+            <ComboBoxItem x:Name="cbbLight" Content="Light" /> <!-- 300 -->
+            <ComboBoxItem x:Name="cbbNormal" Content="Normal" /> <!-- 400 -->
+            <ComboBoxItem x:Name="cbbMedium" Content="Medium" /> <!-- 500 -->
+            <ComboBoxItem x:Name="cbbSemiBold" Content="SemiBold" /> <!-- 600 -->
+            <ComboBoxItem x:Name="cbbBold" Content="Bold" /> <!-- 700 -->
+            <ComboBoxItem x:Name="cbbExtraBold" Content="ExtraBold" /> <!-- 800 -->
+            <ComboBoxItem x:Name="cbbBlack" Content="Black" /> <!-- 900 -->
+            <ComboBoxItem x:Name="cbbExtraBlack" Content="ExtraBlack" /> <!-- 950 -->
         </ComboBox>
         <flat:IntegerSpinner Grid.Column="1" x:Name="nudWeight" Value="400" MinValue="1" MaxValue="999" Visibility="Collapsed" ValueChanged="nudWeight_ValueChanged" />
         <!-- Menu -->

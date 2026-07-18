@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Media;
 using SolidShineUi;
 
 namespace SsuiSample
@@ -11,48 +11,31 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for WildcardMatchTest.xaml
     /// </summary>
-    public partial class WildcardMatchTest : UserControl
+    public partial class WildcardMatchTest : ThemedUserControl
     {
         public WildcardMatchTest()
         {
             InitializeComponent();
         }
 
-        #region ColorScheme
-
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(WildcardMatchTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        SsuiAppTheme TryGetSsuiAppTheme()
         {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is WildcardMatchTest s)
+            if (SsuiTheme is SsuiAppTheme sat)
             {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
+                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
+                return sat;
+            }
+            else if (Window.GetWindow(this) is ThemedWindow fw)
+            {
+                // okay, let's try to pull from the parent window if possible, as it should have a SsuiAppTheme as its theme
+                return fw.SsuiTheme;
+            }
+            else
+            {
+                // okay, I guess we'll just go with the default
+                return new SsuiAppTheme();
             }
         }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
-        #endregion
 
         public void RunWildcard()
         {
@@ -74,7 +57,8 @@ namespace SsuiSample
             StringInputDialog sid = new StringInputDialog();
             sid.Owner = Window.GetWindow(this);
             sid.Title = "Wildcard Match";
-            sid.ColorScheme = ColorScheme;
+            sid.SsuiTheme = TryGetSsuiAppTheme();
+            
             sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             sid.Description = "The text to match against:";
 

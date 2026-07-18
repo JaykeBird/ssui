@@ -1,14 +1,14 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Diagnostics;
-using System.Windows.Threading;
 using System.Windows.Controls.Primitives;
-using SolidShineUi.Utils;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SolidShineUi
 {
@@ -17,7 +17,7 @@ namespace SolidShineUi
     /// </summary>
     [DefaultEvent("Click")]
     [Localizability(LocalizationCategory.Button)]
-    public class FlatButton : ButtonBase, IClickSelectableControl
+    public class FlatButton : ButtonBase, ISsuiButton
     {
         static FlatButton()
         {
@@ -42,26 +42,10 @@ namespace SolidShineUi
             KeyDown += UserControl_KeyDown;
             KeyUp += UserControl_KeyUp;
 
-            Focusable = true;
-            KeyboardNavigation.SetIsTabStop(this, true);
-
-            HorizontalContentAlignment = HorizontalAlignment.Center;
-            VerticalContentAlignment = VerticalAlignment.Center;
-
-            Padding = new Thickness(5, 0, 5, 0);
+            //KeyboardNavigation.SetIsTabStop(this, true);
         }
 
         #region Brushes
-
-        /// <summary>
-        /// Get or set the brush used for the background of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
 
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse is clicking it.
@@ -74,8 +58,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the background of this button while it is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the background of this button while it is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
@@ -92,6 +75,26 @@ namespace SolidShineUi
         {
             get => (Brush)GetValue(HighlightBrushProperty);
             set => SetValue(HighlightBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightForeground
+        {
+            get => (Brush)GetValue(BorderHighlightBrushProperty);
+            set => SetValue(BorderHighlightBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
         }
 
         /// <summary>
@@ -115,17 +118,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around the edges of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush BorderHighlightBrush
@@ -135,8 +128,7 @@ namespace SolidShineUi
         }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush BorderSelectedBrush
@@ -145,54 +137,446 @@ namespace SolidShineUi
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-        /// <summary>The backing dependency property for <see cref="Background"/>. See the related property for details.</summary>
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(FlatButton),
-            new PropertyMetadata(Colors.White.ToBrush()));
-
         /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(FlatButton),
+            nameof(ClickBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(FlatButton),
+            nameof(SelectedBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(FlatButton),
+            nameof(HighlightBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundProperty = DependencyProperty.Register(
+            nameof(HighlightForeground), typeof(Brush), typeof(FlatButton),
+            new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(FlatButton),
+            nameof(DisabledBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(FlatButton),
+            nameof(BorderDisabledBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
-
-        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(FlatButton),
-            new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(FlatButton),
+            nameof(BorderHighlightBrush), typeof(Brush), typeof(FlatButton),
+            new PropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty = DependencyProperty.Register(
+            nameof(SelectedForeground), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
         /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(FlatButton),
+            nameof(BorderSelectedBrush), typeof(Brush), typeof(FlatButton),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
 
         #endregion
 
-        #region ColorScheme/TransparentBack/UseAccentColors
+        #region TransparentBack
+
+        /// <summary>
+        /// The backing dependency property for <see cref="TransparentBack"/>. See the related property for details.
+        /// </summary>
+        public static readonly DependencyProperty TransparentBackProperty
+            = DependencyProperty.Register(nameof(TransparentBack), typeof(bool), typeof(FlatButton), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Get or set whether the button should have a transparent background when the button is not focused or selected.
+        /// </summary>
+        [Category("Common")]
+        [Description("Get or set whether the button should have a transparent background when the button is not focused or selected.")]
+        public bool TransparentBack
+        {
+            get => (bool)GetValue(TransparentBackProperty);
+            set => SetValue(TransparentBackProperty, value);
+        }
+
+        #endregion
+
+        #region SsuiTheme
+
+        /// <summary>
+        /// Get or set the theme to apply to the appearance of this control. This will bind the control's brushes to this theme.
+        /// </summary>
+        /// <remarks>
+        /// This theme can be used to centrally apply a consistent appearance to all ThemedControls. Once a theme is set, the control's brushes are bound to the relevant
+        /// values in this SsuiTheme, allowing you to update the control's appearance by changing the relevant values in the SsuiTheme. 
+        /// This has the downside of overwriting any preset brush values set via XAML; to circumvent this, listen to the <see cref="SsuiThemeChanged"/> event and 
+        /// then reapply the brushes in that event handler, or include that brush property's name in this control's <see cref="ThemeValueExclude"/>.
+        /// <para/>
+        /// This is set to null by default, so that brushes are not automatically bound to any SsuiTheme (allowing you to set the brushes via XAML).
+        /// </remarks>
+        [Category("Appearance")]
+#if NETCOREAPP
+        public SsuiTheme? SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#else
+        public SsuiTheme SsuiTheme { get => (SsuiTheme)GetValue(SsuiThemeProperty); set => SetValue(SsuiThemeProperty, value); }
+#endif
+
+        /// <summary>The backing dependency property for <see cref="SsuiTheme"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SsuiThemeProperty = ThemedControl.SsuiThemeProperty.AddOwner(typeof(FlatButton),
+            new FrameworkPropertyMetadata(OnSsuiThemeChanged));
+
+        /// <summary>
+        /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent SsuiThemeChangedEvent = ThemedControl.SsuiThemeChangedEvent.AddOwner(typeof(FlatButton));
+
+        /// <summary>
+        /// Raised after the <see cref="SsuiTheme"/> property has been changed and applied.
+        /// </summary>
+        public event RoutedEventHandler SsuiThemeChanged
+        {
+            add { AddHandler(SsuiThemeChangedEvent, value); }
+            remove { RemoveHandler(SsuiThemeChangedEvent, value); }
+        }
+
+        private static void OnSsuiThemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is FlatButton tc)
+            {
+                tc.ApplyAndRaiseTheme();
+            }
+        }
+
+        /// <summary>
+        /// Update the control's appearance by using <see cref="ApplySsuiTheme(SsuiTheme)"/> and then raise the <see cref="SsuiThemeChanged"/> event.
+        /// </summary>
+        protected internal void ApplyAndRaiseTheme()
+        {
+            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
+
+            RoutedEventArgs re = new RoutedEventArgs(SsuiThemeChangedEvent, this);
+            RaiseEvent(re);
+        }
+
+        #region UseLightBorder
+
+        /// <summary>
+        /// Get or set if the <see cref="SsuiTheme.LightBorderBrush"/> should be used for the border of this control, rather than the <see cref="SsuiTheme.BorderBrush"/>.
+        /// </summary>
+        public bool UseLightBorder { get => (bool)GetValue(UseLightBorderProperty); set => SetValue(UseLightBorderProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="UseLightBorder"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty UseLightBorderProperty = ThemedControl.UseLightBorderProperty.AddOwner(typeof(FlatButton),
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<FlatButton>((o) => o.OnUseLightBorderChange(o, e))));
+
+        void OnUseLightBorderChange(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_skipReapply) return;
+            ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
+        }
+
+        #endregion
+
+        #region UseAccentTheme
+
+        /// <summary>
+        /// Get or set if an accent theme should be used rather than the standard theme for this control. The accent theme, when used in moderation,
+        /// can be used to help particular controls stand out in the UI.
+        /// </summary>
+        /// <remarks>
+        /// The value of the <see cref="SsuiTheme"/> property needs to be of an <see cref="SsuiAppTheme"/> type, or otherwise this property does nothing.
+        /// This should already be taken care of if you're putting this control in a <see cref="ThemedWindow"/> and inheriting from that SsuiTheme property.
+        /// </remarks>
+        public bool UseAccentTheme { get => (bool)GetValue(UseAccentThemeProperty); set => SetValue(UseAccentThemeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="UseAccentTheme"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty UseAccentThemeProperty = ThemedControl.UseAccentThemeProperty.AddOwner(typeof(FlatButton),
+            new FrameworkPropertyMetadata(false, (d, e) => d.PerformAs<FlatButton>((o) => o.OnUseAccentThemeChange(o, e))));
+
+        void OnUseAccentThemeChange(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (SsuiTheme != null)
+            {
+                if (_skipReapply) return;
+                ApplySsuiTheme(SsuiTheme, UseLightBorder, UseAccentTheme);
+            }
+            else
+            {
+                if (!runApply) return;
+                ApplyColorScheme(ColorScheme, UseAccentTheme);
+            }
+        }
+
+        #endregion
+
+        #region ThemeValueExclude
+
+        /// <summary>
+        /// Get or set the properties to not apply the theme values to when applying a SsuiTheme to this control.
+        /// <para/>
+        /// Use a comma-separated list for multiple properties; for each property, the property's value will not be changed when the SsuiTheme is applied.
+        /// </summary>
+        /// <remarks>
+        /// This can be used when you have certain brushes or values set for a particular control and applying a SsuiTheme ends up resetting that value.
+        /// If only one property's value needs to be kept unchanged, then just set this to the name of that property. If multiple properties need this,
+        /// then provide this as a comma-separated list of all the properties' names in a single string (e.g., <c>"Background,Foreground,BorderBrush"</c>).
+        /// When the control is applying a SsuiTheme (such as set via a property directly, or inheriting from a parent), the control will skip over setting
+        /// properties that match one of the names on this list.
+        /// <para/>
+        /// Note that this functionality is designed for comparing dependency properties' names (<see cref="DependencyProperty.Name"/>) 
+        /// to the list provided here. This will also likely not have any effect on any property that isn't a dependency property.
+        /// </remarks>
+        public string ThemeValueExclude { get => (string)GetValue(ThemeValueExcludeProperty); set => SetValue(ThemeValueExcludeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ThemeValueExclude"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ThemeValueExcludeProperty = ThemedControl.ThemeValueExcludeProperty.AddOwner(typeof(FlatButton));
+
+        #endregion
+
+        #region ApplySsuiTheme
+
+        bool _skipReapply = false;
+
+        /// <summary>
+        /// Check the control's properties to make sure they match these values. If not, this will update the properties and then re-call the ApplySsuiTheme function.
+        /// </summary>
+        /// <param name="ssuiTheme">the inputted SsuiTheme value</param>
+        /// <param name="useLightBorder">the inputted UseLightBorder value</param>
+        /// <param name="useAccentTheme">the inputted UseAccentTheme value</param>
+#if NETCOREAPP
+        bool CheckAndUpdateProperties(SsuiTheme? ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#else
+        bool CheckAndUpdateProperties(SsuiTheme ssuiTheme, bool useLightBorder, bool useAccentTheme)
+#endif
+        {
+            _skipReapply = true;
+
+            if (UseLightBorder != useLightBorder) UseLightBorder = useLightBorder;
+            if (UseAccentTheme != useAccentTheme) UseAccentTheme = useAccentTheme;
+
+            _skipReapply = false;
+
+            if (ssuiTheme != SsuiTheme)
+            {
+                SsuiTheme = ssuiTheme;
+                return false; // ApplySsuiTheme will be called again once the property is changed
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Apply a <see cref="SsuiTheme"/> to this control. This applies a consistent appearance to this control and child controls.
+        /// </summary>
+        /// <param name="ssuiTheme">the theme value to apply</param>
+        public void ApplySsuiTheme(SsuiTheme ssuiTheme)
+        {
+            ApplySsuiTheme(ssuiTheme, UseLightBorder, UseAccentTheme);
+        }
+
+        /// <summary>
+        /// Apply a <see cref="SsuiTheme"/> to this control. This applies a consistent appearance to this control and child controls.
+        /// </summary>
+        /// <param name="ssuiTheme">the theme value to apply</param>
+        /// <param name="useLightBorder">whether a light border color should be used in place of the standard one</param>
+        /// <param name="useAccentTheme">
+        /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
+        /// should be of type <see cref="SsuiAppTheme"/>
+        /// </param>
+#if NETCOREAPP
+        public void ApplySsuiTheme(SsuiTheme? ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#else
+        public void ApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+#endif
+        {
+            if (!CheckAndUpdateProperties(ssuiTheme, useLightBorder, useAccentTheme)) return;
+
+            if (ssuiTheme != null) OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            RoutedEventArgs re = new RoutedEventArgs(SsuiThemeAppliedEvent, this);
+            RaiseEvent(re);
+        }
+
+        /// <summary>
+        /// Clear the existing SsuiTheme applied to this control and remove all bindings. This will reset the control's appearance.
+        /// </summary>
+        public void ClearSsuiTheme()
+        {
+            SsuiTheme = null;
+
+            // maybe I should update OnApplySsuiTheme to show that it can support null values, but for now, I'm doing this lol
+#if NETCOREAPP
+            OnApplySsuiTheme(null!);
+#else
+            OnApplySsuiTheme(null);
+#endif
+        }
+
+        /// <summary>
+        /// Raised when the SsuiTheme value is changed, or when <see cref="ApplySsuiTheme(SsuiTheme, bool, bool)"/> is called.
+        /// Inheriting controls should override this to update their brushes to reflect this new theme.
+        /// </summary>
+        /// <param name="ssuiTheme">the theme value to apply</param>
+        /// <param name="useLightBorder">whether a light border color should be used in place of the standard one</param>
+        /// <param name="useAccentTheme">
+        /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
+        /// should be of type <see cref="SsuiAppTheme"/>
+        /// </param>
+        /// <remarks>
+        /// The base method will by default set the <see cref="Control.BorderBrush"/> value to match the theme; if a different
+        /// border brush is needed, then update it again in your override method.
+        /// </remarks>
+        protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
+            }
+        }
+
+        /// <summary>
+        /// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
+        /// </summary>
+        /// <param name="brushProperty">the property on this control to bind</param>
+        /// <param name="ssuiThemeProperty">the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
+        /// <exception cref="ArgumentException">
+        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
+        /// </exception>
+        /// <remarks>
+        /// If <see cref="SsuiTheme"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#else
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty)
+#endif
+        {
+            return ApplyThemeBinding(brushProperty, ssuiThemeProperty, SsuiTheme);
+        }
+
+        /// <summary>
+        /// Create and set a binding for a brush property, by binding it to a property in <see cref="SolidShineUi.SsuiTheme"/>.
+        /// </summary>
+        /// <param name="brushProperty">the property on this control to bind</param>
+        /// <param name="ssuiThemeProperty">the name of the property in <see cref="SolidShineUi.SsuiTheme"/> to bind this control's property to</param>
+        /// <param name="source">the specific SsuiTheme object to bind to (such as <see cref="SsuiAppTheme"/>'s AccentTheme or SubitemTheme)</param>
+        /// <exception cref="ArgumentException">
+        /// thrown if <paramref name="ssuiThemeProperty"/> is not a property in <see cref="SolidShineUi.SsuiTheme"/> or a class that inherits from SsuiTheme
+        /// </exception>
+        /// <remarks>
+        /// If <paramref name="source"/> is <c>null</c>, then instead the binding is cleared, and <c>null</c> is returned.
+        /// </remarks>
+#if NETCOREAPP
+        protected BindingExpressionBase? ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme? source)
+#else
+        protected BindingExpressionBase ApplyThemeBinding(DependencyProperty brushProperty, DependencyProperty ssuiThemeProperty, SsuiTheme source)
+#endif
+        {
+            // if ThemeValueExclude includes this property's name (as part of a comma-separated list), then we'll not do anything here
+            if (!string.IsNullOrEmpty(ThemeValueExclude))
+            {
+                if (ThemeValueExclude.Split(',').Contains(brushProperty.Name)) return null;
+            }
+
+            // if the theme value provided is null, then we'll just undo any binding that exists (which should undo it to the previous SsuiTheme)
+            if (source == null)
+            {
+                BindingOperations.ClearBinding(this, brushProperty);
+                return null;
+            }
+            else
+            {
+                return SetBinding(brushProperty, SsuiTheme.CreateBinding(ssuiThemeProperty, source));
+            }
+        }
+
+        /// <summary>
+        /// The backing routed event object for <see cref="SsuiThemeChanged"/>. Please see the related event for details.
+        /// </summary>
+        public static readonly RoutedEvent SsuiThemeAppliedEvent = ThemedControl.SsuiThemeAppliedEvent.AddOwner(typeof(FlatButton));
+        // EventManager.RegisterRoutedEvent(nameof(SsuiThemeApplied), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ThemedContentControl));
+
+        /// <summary>
+        /// Raised after <see cref="ApplySsuiTheme(SsuiTheme, bool, bool)"/> has completed, and the theme has been applied to the control.
+        /// </summary>
+        /// <remarks>
+        /// If creating your own control that inherits from this class, use this event or override the <see cref="OnApplySsuiTheme(SsuiTheme, bool, bool)"/>
+        /// method to apply any updated brushes from the <see cref="SsuiTheme"/>.
+        /// <para/>
+        /// This event precedes the <see cref="SsuiThemeChanged"/> event.
+        /// </remarks>
+        public event RoutedEventHandler SsuiThemeApplied
+        {
+            add { AddHandler(SsuiThemeAppliedEvent, value); }
+            remove { RemoveHandler(SsuiThemeAppliedEvent, value); }
+        }
+
+        #endregion
+
+        #region Style Generation
+
+        /// <summary>
+        /// Creates a <see cref="Style"/> for a FlatButton, where the visual properties are bound to a SsuiTheme <paramref name="theme"/>.
+        /// </summary>
+        /// <param name="theme">the SsuiTheme object to bind to</param>
+        /// <remarks>
+        /// This is currently unused, but may be experimented with for using in future versions of Solid Shine UI
+        /// </remarks>
+        protected internal static Style GenerateStyle(SsuiTheme theme)
+        {
+            Style os = new Style(typeof(FlatButton));
+
+            // looking at the actual WPF code for Setters, a Setter's Value can be bound by setting its Value to a BindingBase object
+            // https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Setter.cs
+
+            os.Setters.Add(new Setter(BackgroundProperty, SsuiTheme.CreateBinding(SsuiTheme.ButtonBackgroundProperty, theme)));
+            os.Setters.Add(new Setter(HighlightBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.HighlightBrushProperty, theme)));
+            os.Setters.Add(new Setter(DisabledBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.DisabledBackgroundProperty, theme)));
+            os.Setters.Add(new Setter(BorderDisabledBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.DisabledBorderBrushProperty, theme)));
+            os.Setters.Add(new Setter(SelectedBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.SelectedBackgroundBrushProperty, theme)));
+            os.Setters.Add(new Setter(BorderHighlightBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.HighlightBorderBrushProperty, theme)));
+            os.Setters.Add(new Setter(BorderSelectedBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.SelectedBorderBrushProperty, theme)));
+            os.Setters.Add(new Setter(ForegroundProperty, SsuiTheme.CreateBinding(SsuiTheme.ForegroundProperty, theme)));
+            os.Setters.Add(new Setter(HighlightForegroundProperty, SsuiTheme.CreateBinding(SsuiTheme.HighlightForegroundProperty, theme)));
+            os.Setters.Add(new Setter(ClickBrushProperty, SsuiTheme.CreateBinding(SsuiTheme.ClickBrushProperty, theme)));
+
+            os.Setters.Add(new Setter(CornerRadiusProperty, SsuiTheme.CreateBinding(SsuiTheme.CornerRadiusProperty, theme)));
+
+            return os;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region ColorScheme/UseAccentColors
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -243,35 +627,24 @@ namespace SolidShineUi
         bool runApply = true;
 
         /// <summary>
-        /// The backing dependency property for <see cref="TransparentBack"/>. See the related property for details.
-        /// </summary>
-        public static readonly DependencyProperty TransparentBackProperty
-            = DependencyProperty.Register("TransparentBack", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false, 
-                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, v, f.UseAccentColors); }))));
-
-        /// <summary>
-        /// Get or set whether the button should have a transparent background when the button is not focused.
-        /// </summary>
-        [Category("Common")]
-        public bool TransparentBack
-        {
-            get => (bool)GetValue(TransparentBackProperty);
-            set => SetValue(TransparentBackProperty, value);
-        }
-
-        /// <summary>
         /// The backing dependency property for <see cref="UseAccentColors"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty UseAccentColorsProperty
             = DependencyProperty.Register("UseAccentColors", typeof(bool), typeof(FlatButton),
             new PropertyMetadata(false,
-                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, f.TransparentBack, v); }))));
+                new PropertyChangedCallback((d, e) => d.PerformAs<FlatButton, bool>(e.NewValue, (f, v) => { f.ApplyColorScheme(f.ColorScheme, v); }))));
 
         /// <summary>
         /// Get or set if the button should use the accent colors of the color scheme, rather than the standard colors.
+        /// <para/>
+        /// This method will be removed in a future version. Please use <see cref="UseAccentTheme"/> instead.
         /// </summary>
         [Category("Appearance")]
+#if NET5_0_OR_GREATER
+        [Obsolete("This method will be removed in a future version. Please use UseAccentTheme instead.", DiagnosticId = "SSUI001")]
+#else
+        [Obsolete("This method will be removed in a future version. Please use UseAccentTheme instead.")]
+#endif
         public bool UseAccentColors
         {
             get => (bool)GetValue(UseAccentColorsProperty);
@@ -284,18 +657,22 @@ namespace SolidShineUi
         /// <param name="cs">The color scheme to apply</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
-            ApplyColorScheme(cs, TransparentBack, UseAccentColors);
+#pragma warning disable SSUI001 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
+            ApplyColorScheme(cs, UseAccentColors || UseAccentTheme);
+#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore SSUI001 // Type or member is obsolete
         }
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
         /// </summary>
         /// <param name="cs">The color scheme to apply</param>
-        /// <param name="transparentBack">Set if the button should have no background when not focused or highlighted. This can also be achieved with the <c>TransparentBack</c> property.</param>
-        /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
+        /// <param name="useAccentColors">
+        /// Set if accent colors should be used for this button, rather than the main color scheme colors.
         /// This can also be achieved with the <c>UseAccentColors</c> property.
         /// </param>
-        public void ApplyColorScheme(ColorScheme cs, bool transparentBack = false, bool useAccentColors = false)
+        public void ApplyColorScheme(ColorScheme cs, bool useAccentColors = false)
         {
             if (runApply == false)
             {
@@ -310,11 +687,21 @@ namespace SolidShineUi
             if (cs != ColorScheme)
             {
                 runApply = false;
-                TransparentBack = TransparentBack || transparentBack;
+#pragma warning disable SSUI001 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
                 UseAccentColors = UseAccentColors || useAccentColors;
+#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore SSUI001 // Type or member is obsolete
                 runApply = true;
                 ColorScheme = cs;
                 return;
+            }
+
+            if (useAccentColors != UseAccentTheme)
+            {
+                runApply = false;
+                UseAccentTheme = useAccentColors;
+                runApply = true;
             }
 
             runApply = false;
@@ -330,52 +717,24 @@ namespace SolidShineUi
                 DisabledBrush = cs.BackgroundColor.ToBrush();
                 Foreground = cs.ForegroundColor.ToBrush();
                 ClickBrush = cs.ThirdHighlightColor.ToBrush();
+                HighlightForeground = cs.ForegroundColor.ToBrush();
+                SelectedForeground = cs.ForegroundColor.ToBrush();
 
-                if (transparentBack || TransparentBack)
-                {
-                    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-                    TransparentBack = true;
-                }
-                else
-                {
-                    BorderBrush = cs.BorderColor.ToBrush();
-                }
-            }
-            else if (transparentBack || TransparentBack)
-            {
-                Background = Color.FromArgb(1, 0, 0, 0).ToBrush();
-                BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
-
-                if (UseAccentColors || useAccentColors)
-                {
-                    HighlightBrush = cs.AccentSecondHighlightColor.ToBrush();
-                    SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
-                    BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
-                    BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
-                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                    DisabledBrush = cs.LightDisabledColor.ToBrush();
-                    Foreground = cs.ForegroundColor.ToBrush();
-                    ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
-
-                    UseAccentColors = true;
-                }
-                else
-                {
-                    HighlightBrush = cs.SecondHighlightColor.ToBrush();
-                    DisabledBrush = cs.LightDisabledColor.ToBrush();
-                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                    SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-                    BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                    BorderSelectedBrush = cs.SelectionColor.ToBrush();
-                    Foreground = cs.ForegroundColor.ToBrush();
-                    ClickBrush = cs.ThirdHighlightColor.ToBrush();
-                }
-
-                TransparentBack = true;
+                //if (transparentBack || TransparentBack)
+                //{
+                //    BorderBrush = Color.FromArgb(1, 0, 0, 0).ToBrush();
+                //    TransparentBack = true;
+                //}
+                //else
+                //{
+                //    BorderBrush = cs.BorderColor.ToBrush();
+                //}
             }
             else
             {
-                if (UseAccentColors || useAccentColors)
+#pragma warning disable SSUI001 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
+                if (UseAccentColors || useAccentColors || UseAccentTheme)
                 {
                     Background = cs.AccentSecondaryColor.ToBrush();
                     BorderBrush = cs.AccentBorderColor.ToBrush();
@@ -386,6 +745,8 @@ namespace SolidShineUi
                     BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
                     BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
+                    HighlightForeground = cs.ForegroundColor.ToBrush();
+                    SelectedForeground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
 
                     UseAccentColors = true;
@@ -401,8 +762,12 @@ namespace SolidShineUi
                     BorderHighlightBrush = cs.HighlightColor.ToBrush();
                     BorderSelectedBrush = cs.SelectionColor.ToBrush();
                     Foreground = cs.ForegroundColor.ToBrush();
+                    HighlightForeground = cs.ForegroundColor.ToBrush();
+                    SelectedForeground = cs.ForegroundColor.ToBrush();
                     ClickBrush = cs.ThirdHighlightColor.ToBrush();
                 }
+#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore SSUI001 // Type or member is obsolete
             }
 
             runApply = true;
@@ -412,37 +777,21 @@ namespace SolidShineUi
 
         #region Border
 
-        /// <summary>
-        /// The backing value for a dependency property. See the related property for more details.
-        /// </summary>
-        public new static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-            "BorderThickness", typeof(Thickness), typeof(FlatButton),
-            new PropertyMetadata(new Thickness(1)));
-
         /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderSelectionThicknessProperty = DependencyProperty.Register(
-            "BorderSelectionThickness", typeof(Thickness), typeof(FlatButton),
+            nameof(BorderSelectionThickness), typeof(Thickness), typeof(FlatButton),
             new PropertyMetadata(new Thickness(2)));
 
         /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-            "CornerRadius", typeof(CornerRadius), typeof(FlatButton),
+            nameof(CornerRadius), typeof(CornerRadius), typeof(FlatButton),
             new PropertyMetadata(new CornerRadius(0)));
-
-        /// <summary>
-        /// Get or set the thickness of the border around the button.
-        /// </summary>
-        [Category("Appearance")]
-        public new Thickness BorderThickness
-        {
-            get => (Thickness)GetValue(BorderThicknessProperty);
-            set => SetValue(BorderThicknessProperty, value);
-        }
 
         /// <summary>
         /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the thickness of the border around the button, while the button is in a selected state.")]
         public Thickness BorderSelectionThickness
         {
             get => (Thickness)GetValue(BorderSelectionThicknessProperty);
@@ -453,6 +802,7 @@ namespace SolidShineUi
         /// Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.
         /// </summary>
         [Category("Appearance")]
+        [Description("Get or set the corner radius (or radii) to use for the button and its border. Can be used to create a rounded button.")]
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
@@ -467,12 +817,14 @@ namespace SolidShineUi
         /// Get or set if the button should be highlighted (using the <see cref="HighlightBrush"/> and <see cref="BorderHighlightBrush"/>)
         /// when it has keyboard focus. If <c>false</c>, only the keyboard focus outline appears, and highlighting only occurs on mouse/stylus over.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set if the button should be highlighted when it has keyboard focus.")]
         public bool HighlightOnKeyboardFocus { get => (bool)GetValue(HighlightOnKeyboardFocusProperty); set => SetValue(HighlightOnKeyboardFocusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="HighlightOnKeyboardFocus"/>. See the related property for details.</summary>
-        public static DependencyProperty HighlightOnKeyboardFocusProperty
+        public static readonly DependencyProperty HighlightOnKeyboardFocusProperty
             = DependencyProperty.Register(nameof(HighlightOnKeyboardFocus), typeof(bool), typeof(FlatButton),
-            new FrameworkPropertyMetadata(true));
+            new FrameworkPropertyMetadata(false));
 
         #endregion
 
@@ -484,7 +836,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="RightClick"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent RightClickEvent = EventManager.RegisterRoutedEvent(
-            "RightClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
+            nameof(RightClick), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised when the user right-clicks on the button, via a mouse click or via the keyboard.
@@ -501,10 +853,11 @@ namespace SolidShineUi
 
         // from https://stackoverflow.com/questions/10667545/why-ismouseover-is-recognized-and-mousedown-isnt-wpf-style-trigger
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsMouseDown",
+        /// <summary>
+        /// The internal dependency property for <see cref="IsMouseDown"/>. See that property for more details.
+        /// </summary>
+        protected static readonly DependencyPropertyKey IsMouseDownPropertyKey = DependencyProperty.RegisterAttachedReadOnly(nameof(IsMouseDown),
             typeof(bool), typeof(FlatButton), new FrameworkPropertyMetadata(false));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get if there is a mouse button currently being pressed, while the mouse cursor is over this control.
@@ -530,6 +883,16 @@ namespace SolidShineUi
             return (bool)obj.GetValue(IsMouseDownProperty);
         }
 
+        /// <summary>
+        /// Get if a mouse button is currently being pressed while the cursor is over this FlatButton.
+        /// </summary>
+        [ReadOnly(true)]
+        public bool IsMouseDown
+        {
+            get => (bool)GetValue(IsMouseDownProperty);
+            protected set => SetValue(IsMouseDownPropertyKey, value);
+        }
+
         #endregion
 
         #region Variables/Properties
@@ -544,8 +907,7 @@ namespace SolidShineUi
         /// The backing dependency property for <see cref="IsSelected"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-            "IsSelected", typeof(bool), typeof(FlatButton),
-            new PropertyMetadata(false, new PropertyChangedCallback(OnIsSelectedChanged)));
+            nameof(IsSelected), typeof(bool), typeof(FlatButton), new PropertyMetadata(false, OnIsSelectedChanged));
 
         /// <summary>
         /// Perform an action when a property of an object has changed. Primarily used internally.
@@ -556,7 +918,7 @@ namespace SolidShineUi
         {
             if (e.NewValue is bool se)
             {
-                bool old = Convert.ToBoolean(e.OldValue);
+                bool old = (e.OldValue is bool oval) ? oval : false;
 
                 if (d is FlatButton f)
                 {
@@ -580,6 +942,8 @@ namespace SolidShineUi
         /// To listen to changes to this property, use <see cref="IsSelectedChanged"/>, rather than listening to the <c>Click</c> event, as other actions could change this 
         /// property rather than just clicking it.
         /// </remarks>
+        [Category("Common")]
+        [Description("Gets or sets whether this button is selected.")]
         public bool IsSelected
         {
             get
@@ -596,7 +960,7 @@ namespace SolidShineUi
         /// The backing value for the <see cref="IsSelectedChanged"/> event. See the related event for more details.
         /// </summary>
         public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent(
-            "IsSelectedChanged", RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(FlatButton));
+            nameof(IsSelectedChanged), RoutingStrategy.Bubble, typeof(ItemSelectionChangedEventHandler), typeof(FlatButton));
 
         /// <summary>
         /// Raised when the user clicks on the main button (not the menu button), via a mouse click or via the keyboard.
@@ -611,12 +975,12 @@ namespace SolidShineUi
         /// Set the <see cref="IsSelected"/> value of this control, while also defining how the selection was changed.
         /// </summary>
         /// <param name="value">The value to set <see cref="IsSelected"/> to.</param>
-        /// <param name="triggerMethod">The source or method used to trigger the change in selection.</param>
+        /// <param name="trigger">The source or method used to trigger the change in selection.</param>
         /// <param name="triggerSource">The object that triggered the change.</param>
 #if NETCOREAPP
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object? triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object? triggerSource = null)
 #else
-        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger triggerMethod, object triggerSource = null)
+        public void SetIsSelectedWithSource(bool value, SelectionChangeTrigger trigger, object triggerSource = null)
 #endif
         {
             bool old = IsSelected;
@@ -625,7 +989,7 @@ namespace SolidShineUi
             IsSelected = value;
             _runSelChangeEvent = true;
 
-            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, IsSelectedProperty, triggerMethod, triggerSource);
+            ItemSelectionChangedEventArgs re = new ItemSelectionChangedEventArgs(IsSelectedChangedEvent, old, value, IsSelectedProperty, trigger, triggerSource);
             RaiseEvent(re);
         }
         #endregion
@@ -634,18 +998,19 @@ namespace SolidShineUi
         /// The backing dependency property object for the <see cref="SelectOnClick"/> property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty SelectOnClickProperty = DependencyProperty.Register(
-            "SelectOnClick", typeof(bool), typeof(FlatButton), new PropertyMetadata(false));
+            nameof(SelectOnClick), typeof(bool), typeof(FlatButton), new PropertyMetadata(false));
 
         /// <summary>
         /// Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.
         /// </summary>
         /// <remarks>
-        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton). A selected button will, by default, have some visual
-        /// differences to help make it look distinct from unselected buttons. The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
-        /// IsSelected property has already changed. While you could use the Click event to check when the button's IsSelected property is changed, it is better to use the IsSelectedChanged event,
+        /// While SelectOnClick is true, the button will toggle between <see cref="IsSelected"/> being true and false (similar to a ToggleButton).<para/>
+        /// The button's Click event will still be raised while this property is set to <c>true</c>, but the event occurs after the
+        /// IsSelected property has already changed. Do not use Click event to check when the button's IsSelected property is changed, but instead the IsSelectedChanged event,
         /// in case of situations where IsSelected is changed via methods other than clicking, such as programmatically or via WPF binding.
         /// </remarks>
         [Category("Common")]
+        [Description("Gets or sets whether the button should change its IsSelected property when a click is performed. With this enabled, this allows the button to take on the functionality of a ToggleButton.")]
         public bool SelectOnClick
         {
             get => (bool)GetValue(SelectOnClickProperty);
@@ -700,18 +1065,18 @@ namespace SolidShineUi
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PressRightClick();
-            }
+            //if (e.ChangedButton == MouseButton.Right)
+            //{
+            //    PressRightClick();
+            //}
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                PerformRightClick();
-            }
+            //if (e.ChangedButton == MouseButton.Right)
+            //{
+            //    PerformRightClick();
+            //}
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
@@ -770,142 +1135,5 @@ namespace SolidShineUi
 
         #endregion
 
-        #region IsDefault
-
-        // OnDefault code adapted from .NET Core WPF repository
-        // https://github.com/dotnet/wpf/blob/master/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Controls/Button.cs
-
-        // unfortunately, I'm unable to actually achieve the "IsDefault" functionality as is present in WPF
-        // the reason is that the WPF button accesses properties and methods marked as "internal" - which means it only works within that library
-        // the biggest culprits are the KeyboardNavigation instance in FrameworkElement, and the FocusChanged event in KeyboardNavigation
-        // if those two were accessible, then I would be able to mirror the code exactly and set up my buttons as capable of being a "default" button
-        // but now, that's a feature that's only exclusive to WPF's own Buttons, which really sucks
-        // there's a 0% chance Microsoft will change how .NET Framework's WPF acts, and I find it unlikely they'll entertain a PR to make those values public
-        // (since there's probably concerns they have about malicious/imcompetent coders misusing or abusing the KeyboardNavigation instance)
-        // I'd say the best solution is to make access to that specific event available via a protected method in ButtonBase (imo)
-        // anyway, I'd be left with just creating my own instance of a Button and hijacking it, but I'm concerned that might not work either
-
-//#if NETCOREAPP
-//        private KeyboardFocusChangedEventHandler? FocusChangedHandler = null;
-//#else
-//        private KeyboardFocusChangedEventHandler FocusChangedHandler = null;
-//#endif
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public static readonly DependencyProperty IsDefaultProperty
-            = DependencyProperty.Register("IsDefault", typeof(bool), typeof(FlatButton),
-            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsDefaultChanged)));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Get or set if this button is the default button in the dialog or window it is located in. Due to limitations in WPF, this actually does not work.
-        /// </summary>
-        [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
-        public bool IsDefault
-        {
-            get => (bool)GetValue(IsDefaultProperty);
-            set => SetValue(IsDefaultProperty, value);
-        }
-
-        private static void OnIsDefaultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is FlatButton)
-            {
-                //if (b.FocusChangedHandler == null)
-                //{
-                //    b.FocusChangedHandler = new KeyboardFocusChangedEventHandler(b.OnFocusChanged);
-                //}
-
-
-                //if ((bool)e.NewValue)
-                //{
-                //    AccessKeyManager.Register("\x000D", b);
-                //    KeyboardNavigation.FocusChanged += b.FocusChangedHandler;
-                //    b.UpdateIsDefaulted(Keyboard.FocusedElement);
-                //}
-                //else
-                //{
-                //    AccessKeyManager.Unregister("\x000D", b);
-                //    KeyboardNavigation.FocusChanged -= b.FocusChangedHandler;
-                //    b.UpdateIsDefaulted(null);
-                //}
-            }
-        }
-
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        private static readonly DependencyPropertyKey IsDefaultedPropertyKey
-            = DependencyProperty.RegisterReadOnly("IsDefaulted", typeof(bool), typeof(FlatButton),
-            new FrameworkPropertyMetadata(false));
-
-        public static readonly DependencyProperty IsDefaultedProperty = IsDefaultedPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        /// <summary>
-        /// Specifies whether or not this button is the button that would be invoked when Enter is pressed. Due to limitations in WPF, this actually does not work.
-        /// </summary>
-        [Obsolete("Due to limitations with WPF, this property actually does not work. I apologize, but you will need to explore other options.")]
-        public bool IsDefaulted
-        {
-            get
-            {
-                return (bool)GetValue(IsDefaultedProperty);
-            }
-        }
-
-        private void OnFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            UpdateIsDefaulted(Keyboard.FocusedElement);
-        }
-
-#if NETCOREAPP
-        private void UpdateIsDefaulted(IInputElement? focus)
-#else
-        private void UpdateIsDefaulted(IInputElement focus)
-#endif
-        {
-            // If it's not a default button, or nothing is focused, or it's disabled then it's not defaulted.
-#pragma warning disable CS0618 // Type or member is obsolete
-            if (!IsDefault || focus == null || !IsEnabled)
-            {
-                SetValue(IsDefaultedPropertyKey, false);
-                return;
-            }
-#pragma warning restore CS0618 // Type or member is obsolete
-
-            if (focus is DependencyObject focusDO)
-            {
-                object thisScope, focusScope;
-
-                // If the focused thing is not in this scope then IsDefaulted = false
-                AccessKeyPressedEventArgs e;
-
-                object isDefaulted = false;
-                try
-                {
-                    // Step 1: Determine the AccessKey scope from currently focused element
-                    e = new AccessKeyPressedEventArgs();
-                    focus.RaiseEvent(e);
-                    focusScope = e.Scope;
-
-                    // Step 2: Determine the AccessKey scope from this button
-                    e = new AccessKeyPressedEventArgs();
-                    this.RaiseEvent(e);
-                    thisScope = e.Scope;
-
-                    // Step 3: Compare scopes
-                    if (thisScope == focusScope && (focusDO == null || (bool)focusDO.GetValue(KeyboardNavigation.AcceptsReturnProperty) == false))
-                    {
-                        isDefaulted = true;
-                    }
-                }
-                finally
-                {
-                    SetValue(IsDefaultedPropertyKey, isDefaulted);
-                }
-            }
-        }
-
-#endregion
     }
 }

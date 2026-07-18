@@ -1,17 +1,16 @@
-﻿using SolidShineUi;
-using SolidShineUi.PropertyList;
-using System;
-using System.Text;
+﻿using System;
+using System.Text; // needed for the .NET version to test the Rune class
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
+using SolidShineUi;
+using SolidShineUi.PropertyList;
 
 namespace SsuiSample
 {
     /// <summary>
     /// Interaction logic for PropertyListTest.xaml
     /// </summary>
-    public partial class PropertyListTest : UserControl
+    public partial class PropertyListTest : ThemedUserControl
     {
         public PropertyListTest()
         {
@@ -20,42 +19,6 @@ namespace SsuiSample
             // set PropertyList properties
             prop.DisplayOptions = PropertyListDisplayFlags.HidePropertyListHide;
         }
-
-        #region ColorScheme
-
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(PropertyListTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is PropertyListTest s)
-            {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
-            }
-        }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-
-        #endregion
 
         private void btnSel1_Click(object sender, RoutedEventArgs e)
         {
@@ -89,7 +52,10 @@ namespace SsuiSample
 
         private void btnSelCs_Click(object sender, RoutedEventArgs e)
         {
-            prop.LoadObject(ColorScheme);
+            if (Window.GetWindow(this) is FlatWindow fw)
+            {
+                prop.LoadObject(fw.SsuiTheme);
+            }
         }
 
         private void btnSelObj_Click(object sender, RoutedEventArgs e)
@@ -135,6 +101,10 @@ namespace SsuiSample
             public DateTime? OldTime { get; set; } = new DateTime(1981, 06, 12, 15, 16, 20);
 
             public Rect BoxBox { get; set; } = new Rect(5, 5, 10, 10);
+
+            public long LongestTime { get; set; } = 1_771_871_836L; // epoch time of February 23, 2026 at 6:37 PM, apparently lol
+
+            public uint PositiveNumber { get; set; } = 21u;
         }
     }
 }

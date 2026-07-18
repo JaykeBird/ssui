@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,7 +15,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     {
 
         /// <inheritdoc/>
-        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Point?) };
+        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Point?), typeof(Vector), typeof(Vector?) };
 
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
@@ -22,7 +23,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => nudHeight.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 nudHeight.IsEnabled = value;
@@ -32,25 +33,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+            nudHeight.SsuiTheme = theme;
+            nudWidth.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
 
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            nudHeight.ColorScheme = cs;
-            nudWidth.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-
-            imgFontEdit.Source = LoadIcon("ThreeDots", cs);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <summary>
@@ -59,10 +51,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public PointEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement() { return this; }
+
+        bool isVector = false;
 
 #if NETCOREAPP
         /// <inheritdoc/>
@@ -101,6 +99,37 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     SetAllToValue(0);
                 }
             }
+            else if (type == typeof(Vector) || type == typeof(Vector?))
+            {
+                isVector = true;
+
+                if (type == typeof(Vector?))
+                {
+                    mnuSetNull.IsEnabled = true;
+                }
+
+                if (value != null)
+                {
+                    if (value is Vector t)
+                    {
+                        _internalAction = true;
+                        nudWidth.Value = t.X;
+                        nudHeight.Value = t.Y;
+                        _internalAction = false;
+                    }
+                    else
+                    {
+                        // uhhh?
+                        SetAllToValue(0);
+                    }
+                }
+                else
+                {
+                    // null
+                    SetAsNull();
+                    SetAllToValue(0);
+                }
+            }
             else
             {
                 // uhhh?
@@ -108,14 +137,31 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
+        /// <inheritdoc/>
+        public event EventHandler? ValueChanged;
+#else
+
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+#endif
+
 
 #if NETCOREAPP
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (mnuSetNull.IsChecked == true)
             {
                 return null;
+            }
+            else if (isVector)
+            {
+                return new Vector(nudWidth.Value, nudHeight.Value);
             }
             else
             {
@@ -123,26 +169,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        /// <inheritdoc/>
-        public event EventHandler? ValueChanged;
-#else
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (mnuSetNull.IsChecked == true)
-            {
-                return null;
-            }
-            else
-            {
-                return new Point(nudWidth.Value, nudHeight.Value);
-            }
-        }
-        
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-#endif
 
         bool _internalAction = false;
 

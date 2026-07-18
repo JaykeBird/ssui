@@ -40,14 +40,14 @@ namespace SolidShineUi
         #region ValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Value"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(DoubleSpinner),
-            new FrameworkPropertyMetadata(0.0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            nameof(Value), typeof(double), typeof(DoubleSpinner),
+            new FrameworkPropertyMetadata(0.0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, OnValueChanged));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the value of the spinner.")]
         public override double Value
         {
             get => (double)GetValue(ValueProperty);
@@ -67,13 +67,13 @@ namespace SolidShineUi
         #region StepProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="Step"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
-            "Step", typeof(double), typeof(DoubleSpinner), new PropertyMetadata(1.0d));
+            nameof(Step), typeof(double), typeof(DoubleSpinner), new PropertyMetadata(1.0d));
 
         /// <inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set how much to change the value by when you press the up or down buttons.")]
         public override double Step
         {
             get => (double)GetValue(StepProperty);
@@ -85,14 +85,14 @@ namespace SolidShineUi
         #region MinValueProperty
 
         /// <summary>
-        /// A dependency property object backing a related property. See the related property for more details.
+        /// The backing dependency property for <see cref="MinValue"/>. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
-            "MinValue", typeof(double), typeof(DoubleSpinner),
+            nameof(MinValue), typeof(double), typeof(DoubleSpinner),
             new PropertyMetadata(double.MinValue, (d, e) => d.PerformAs<DoubleSpinner>(i => i.OnMinValueChanged(e))));
 
         ///<inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the minimum value allowed.")]
         public override double MinValue
         {
             get { return (double)GetValue(MinValueProperty); }
@@ -117,11 +117,11 @@ namespace SolidShineUi
         /// A dependency property object backing a related property. See the related property for more details.
         /// </summary>
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
-            "MaxValue", typeof(double), typeof(DoubleSpinner),
+            nameof(MaxValue), typeof(double), typeof(DoubleSpinner),
             new PropertyMetadata(double.MaxValue, (d, e) => d.PerformAs<DoubleSpinner>(s => s.OnMaxValueChanged(e))));
 
         ///<inheritdoc/>
-        [Category("Common")]
+        [Category("Common"), Description("Get or set the maximum value allowed.")]
         public override double MaxValue
         {
             get { return (double)GetValue(MaxValueProperty); }
@@ -147,7 +147,7 @@ namespace SolidShineUi
         /// A dependency property object backing the <see cref="Decimals"/> property. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty DecimalsProperty = DependencyProperty.Register(
-            "Decimals", typeof(byte), typeof(DoubleSpinner), new PropertyMetadata((byte)15));
+            "Decimals", typeof(int), typeof(DoubleSpinner), new PropertyMetadata(15));
 
         ///<summary>
         /// Get or set how many decimal places to display. Values entered with a more precise decimal value will be rounded.
@@ -157,10 +157,11 @@ namespace SolidShineUi
         /// The spinner will modify and round the inputted value to make sure it only has at most this many decimal places.
         /// Excess trailing zeroes are not displayed if a number doesn't need this many decimal places.
         ///</remarks>
-        [Category("Common")]
-        public byte Decimals
+        [Category("Common"), DefaultValue(15)]
+        [Description("Get or set how many decimal places to display.")]
+        public int Decimals
         {
-            get => (byte)GetValue(DecimalsProperty);
+            get => (int)GetValue(DecimalsProperty);
             set => SetValue(DecimalsProperty, value);
         }
 
@@ -176,6 +177,7 @@ namespace SolidShineUi
             base.OnApplyTemplate();
 
             LoadTemplateItems();
+            UpdateUI(); // this will make sure the text box is primed with the current Value
         }
 
         bool itemsLoaded = false;
@@ -215,10 +217,18 @@ namespace SolidShineUi
             if (Decimals > 15) Decimals = 15;
             if (Decimals < 0) Decimals = 0;
 
+            // we'll round the value now to the Decimal value
+            // to prevent edge cases where we end up with a value that would end up rounding up/down to a
+            // number outside of the MaxValue or MinValue range, we'll just clamp it here
+            // (otherwise we can end up with a stack overflow as the code keeps repeatedly
+            // trying to clamp the value and also round it over and over)
             double oldVal = Value;
-            Value = Math.Round(Value, Decimals);
+            double newVal = Math.Round(Value, Decimals);
+            if (newVal > MaxValue) newVal = MaxValue;
+            if (newVal < MinValue) newVal = MinValue;
+            Value = newVal;
 
-            if (oldVal != Value)
+            if (oldVal != newVal)
             {
                 // redo the underlying value updates again
                 base.ValidateValue();
@@ -254,7 +264,7 @@ namespace SolidShineUi
         {
             string digitDisplay = "G";
             if (MinimumDigitCount > 0) { digitDisplay = new string('0', MinimumDigitCount) + "." + new string('#', Decimals + 1); }
-            string sVal = Value.ToString(digitDisplay);
+            string sVal = Value.ToString(digitDisplay, null);
 
             if (txtValue == null) return; // this is not good, as it means that the template didn't apply, or the applied template's text box won't get the updated value
 
@@ -283,13 +293,13 @@ namespace SolidShineUi
             _updateBox = false;
             if (double.TryParse(txtValue.Text, out _))
             {
-                Value = Math.Round(double.Parse(txtValue.Text), Decimals);
+                Value = Math.Round(double.Parse(txtValue.Text, null), Decimals);
             }
             else if (AcceptExpressions && ArithmeticParser.IsValidString(txtValue.Text))
             {
                 try
                 {
-                    Value = Math.Round(ArithmeticParser.Evaluate(txtValue.Text), Decimals, MidpointRounding.AwayFromZero);
+                    Value = Math.Round(ArithmeticParser.Evaluate(txtValue.Text, null), Decimals, MidpointRounding.AwayFromZero);
                 }
                 catch (FormatException)
                 {

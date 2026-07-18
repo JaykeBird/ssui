@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 using SolidShineUi;
@@ -24,6 +27,10 @@ namespace SsuiSample
             InitializeComponent();
             //SourceInitialized += MainWindow_SourceInitialized;
             ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
+            SsuiTheme = new SsuiAppTheme(ColorsHelper.CreateFromHex("7AE"), ColorsHelper.CreateFromHex("EA7"));
+
+            defaultCulture = CultureInfo.CurrentCulture;
+
             SetupSidebar();
             KeyDown += (s, e) =>
             {
@@ -40,13 +47,42 @@ namespace SsuiSample
                     }
                 }
             };
+
+            //SsuiTheme.BeginAnimation(SolidShineUi.SsuiTheme.ButtonBackgroundProperty, new ObjectAnimationUsingKeyFrames()
+            //{
+            //    Duration = new Duration(TimeSpan.FromSeconds(8)),
+            //    RepeatBehavior = RepeatBehavior.Forever,
+            //    FillBehavior = FillBehavior.HoldEnd,
+            //    KeyFrames = new ObjectKeyFrameCollection()
+            //    {
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Firebrick)),
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Blue)),
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Orange)),
+            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Yellow), KeyTime.FromPercent(0.95))
+            //    }
+            //});
+
+            //Loaded += (s, e) =>
+            //{
+            //    SolidColorBrush scb = new SolidColorBrush(Colors.Red);
+            //    SsuiTheme.ButtonBackground = scb;
+
+            //    scb.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation()
+            //    {                    
+            //        From = Colors.Red,
+            //        To = Colors.Orange,
+            //        Duration = new Duration(TimeSpan.FromSeconds(10)),
+            //        AutoReverse = true,
+            //        RepeatBehavior = RepeatBehavior.Forever
+            //    });
+            //};
         }
 
         private void MainWindow_SourceInitialized(object sender, EventArgs e)
         {
-//#if NET8_0
-//            SsuiWindows11Interop.FlatWindowInterop.RenderWindowsCaptionButtons(this);
-//#endif
+            //#if NET8_0
+            //            SsuiWindows11Interop.FlatWindowInterop.RenderWindowsCaptionButtons(this);
+            //#endif
         }
 
         private bool TestIfPointIsMaximizeButton(Point p)
@@ -69,50 +105,137 @@ namespace SsuiSample
             return p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound;
         }
 
-        private void mnuExit_Click(object sender, RoutedEventArgs e)
+
+        CultureInfo defaultCulture;
+
+        private void mnuCulture_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            StringInputDialog sid = new StringInputDialog("Set Current Culture", "Set the culture to use for this window", CultureInfo.CurrentCulture.Name);
+            sid.SsuiTheme = SsuiTheme;
+            sid.ValidationFunction = (v) =>
+            {
+                if (string.IsNullOrWhiteSpace(v)) return false;
+                try
+                {
+                    CultureInfo ci = new CultureInfo(v);
+                }
+                catch (CultureNotFoundException)
+                {
+                    if (string.Equals(v, "invariant", StringComparison.InvariantCultureIgnoreCase) || string.Equals(v, "default", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        // special case for invariant or default (use system) culture
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            };
+            sid.ValidationFailureString = "Not a valid culture name";
+            sid.ShowDialog();
+
+            if (sid.DialogResult)
+            {
+                if (string.Equals(sid.Value, "invariant", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+                }
+                else if (string.Equals(sid.Value, "default", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Thread.CurrentThread.CurrentCulture = defaultCulture;
+                    Thread.CurrentThread.CurrentUICulture = defaultCulture;
+                }
+                else
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo(sid.Value);
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(sid.Value);
+                }
+            }
         }
 
         private void mnuColors_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, ColorScheme.MainColor);
+            Color baseColor = Colors.Gray;
+
+            if (SsuiTheme.ControlSatBrush is SolidColorBrush scb)
+            {
+                baseColor = scb.Color;
+            }
+
+            ColorPickerDialog cpd = new ColorPickerDialog(baseColor);
+            cpd.SsuiTheme = SsuiTheme;
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
             {
-                ColorScheme = new ColorScheme(cpd.SelectedColor);
+                SsuiTheme = new SsuiAppTheme(cpd.SelectedColor);
             }
         }
 
         private void mnuLightTheme_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.CreateLightTheme(ColorScheme.AccentMainColor);
+            Color baseColor = ColorsHelper.CreateFromHex("A8A8A8");
+
+            if (SsuiTheme.ControlSatBrush is SolidColorBrush scb)
+            {
+                baseColor = scb.Color;
+            }
+
+            SsuiTheme = SsuiThemes.CreateLightTheme(baseColor);
         }
 
         private void mnuDarkTheme_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.CreateDarkTheme(ColorScheme.AccentMainColor);
+            Color baseColor = ColorsHelper.CreateFromHex("C8C8C8");
+
+            if (SsuiTheme.ControlSatBrush is SolidColorBrush scb)
+            {
+                baseColor = scb.Color;
+            }
+
+            SsuiTheme = SsuiThemes.CreateDarkTheme(baseColor);
         }
 
         private void mnuHcTheme1_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.WhiteOnBlack);
+            SsuiTheme = SsuiThemes.HighContrastWhiteOnBlack;
         }
 
         private void mnuHcTheme2_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.GreenOnBlack);
+            SsuiTheme = SsuiThemes.HighContrastGreenOnBlack;
         }
 
         private void mnuHcTheme3_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = ColorScheme.GetHighContrastScheme(HighContrastOption.BlackOnWhite);
+            SsuiTheme = SsuiThemes.HighContrastBlackOnWhite;
         }
 
         private void mnuDefaultCs_Click(object sender, RoutedEventArgs e)
         {
-            ColorScheme = new ColorScheme();
+            SsuiTheme = new SsuiAppTheme();
+        }
+
+        private void mnuSystem_Click(object sender, RoutedEventArgs e)
+        {
+            SsuiTheme = SsuiThemes.SystemThemeRoundedCorners;
+        }
+
+        private void mnuAero_Click(object sender, RoutedEventArgs e)
+        {
+            SsuiTheme = SsuiThemes.AeroTheme;
+        }
+
+        private void mnuColoredAero_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPickerDialog cpd = new ColorPickerDialog(Colors.Orange);
+            cpd.SsuiTheme = SsuiTheme;
+            cpd.ShowDialog();
+
+            if (cpd.DialogResult)
+            {
+                SsuiTheme = SsuiThemes.CreateAeroTheme(new CornerRadius(3), cpd.SelectedColor);
+            }
         }
 
         void SetupSidebar()
@@ -142,6 +265,12 @@ namespace SsuiSample
             lblStart.Visibility = Visibility.Collapsed;
         }
 
+        private void mnuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+
         #region Help menu
 #pragma warning disable IDE0017 // Simplify object initialization
         private void mnuWebsite_Click(object sender, RoutedEventArgs e)
@@ -166,6 +295,7 @@ namespace SsuiSample
             a.ColorScheme = ColorScheme;
             a.ShowDialog();
         }
+
 #pragma warning restore IDE0017 // Simplify object initialization
         #endregion
 

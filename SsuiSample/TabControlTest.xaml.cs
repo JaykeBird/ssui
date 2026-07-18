@@ -1,8 +1,6 @@
 ﻿using SolidShineUi;
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,7 +11,7 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for DialogsTest.xaml
     /// </summary>
-    public partial class TabControlTest : UserControl
+    public partial class TabControlTest : ThemedUserControl
     {
         public TabControlTest()
         {
@@ -22,45 +20,30 @@ namespace SsuiSample
             pl.LoadObject(tabControl);
         }
 
-        #region ColorScheme
-
-        public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
-
-        public static DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(TabControlTest),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
-
-        public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        SsuiAppTheme TryGetSsuiAppTheme()
         {
-            ColorScheme cs = e.NewValue as ColorScheme;
-
-            if (d is TabControlTest s)
+            if (SsuiTheme is SsuiAppTheme sat)
             {
-                s.ColorSchemeChanged?.Invoke(d, e);
-                s.ApplyColorScheme(cs);
+                // in most cases, it should be this - the inherited SsuiTheme should be an SsuiAppTheme
+                return sat;
+            }
+            else if (Window.GetWindow(this) is ThemedWindow fw)
+            {
+                // okay, let's try to pull from the parent window if possible, as it should have a SsuiAppTheme as its theme
+                return fw.SsuiTheme;
+            }
+            else
+            {
+                // okay, I guess we'll just go with the default
+                return new SsuiAppTheme();
             }
         }
-
-        public ColorScheme ColorScheme
-        {
-            get => (ColorScheme)GetValue(ColorSchemeProperty);
-            set => SetValue(ColorSchemeProperty, value);
-        }
-
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            if (cs != ColorScheme)
-            {
-                ColorScheme = cs;
-                return;
-            }
-        }
-        #endregion
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Text", "Set the title of the new tab:", "New Tab");
+            StringInputDialog sid = new StringInputDialog("Set Text", "Set the title of the new tab:", "New Tab");
             sid.Owner = Window.GetWindow(this);
+            sid.SsuiTheme = TryGetSsuiAppTheme();
             sid.ShowDialog();
 
             if (sid.DialogResult)
@@ -80,9 +63,10 @@ namespace SsuiSample
 
         private void btnAddNoClose_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Text", "Set the title of the new tab:", "New Tab");
+            StringInputDialog sid = new StringInputDialog("Set Text", "Set the title of the new tab:", "New Tab");
 
             sid.Owner = Window.GetWindow(this);
+            sid.SsuiTheme = TryGetSsuiAppTheme();
             sid.ShowDialog();
 
             if (sid.DialogResult)
@@ -104,9 +88,10 @@ namespace SsuiSample
                 return;
             }
 
-            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Text", "Set the title of this tab:", ti.Title);
+            StringInputDialog sid = new StringInputDialog("Set Text", "Set the title of this tab:", ti.Title);
 
             sid.Owner = Window.GetWindow(this);
+            sid.SsuiTheme = TryGetSsuiAppTheme();
             sid.ShowDialog();
 
             if (sid.DialogResult)
@@ -131,6 +116,7 @@ namespace SsuiSample
             tabControl.SelectedTabClosedAction = cbbSelectTabClose.SelectedEnumValueAsEnum<SelectedTabCloseAction>();
         }
 
+        // these are event handlers on the existing Tab 1 in the test XAML, so try out dragging and dropping stuff with that first tab
         private void TabItem_DragEnter(object sender, DragEventArgs e)
         {
             txtStatus.Text = "DragEnter on Tab 1";
@@ -169,7 +155,8 @@ namespace SsuiSample
             if (tabControl.SelectedTab != null)
             {
                 TabItem ti = tabControl.SelectedTab;
-                SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog ibe = new SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog(ColorScheme);
+                SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog ibe = new SolidShineUi.PropertyList.Dialogs.ImageBrushEditorDialog();
+                ibe.SsuiTheme = TryGetSsuiAppTheme();
                 ibe.LoadImage(new ImageBrush(ti.Icon));
                 ibe.ShowDialog();
                 if (ibe.DialogResult)
@@ -201,7 +188,7 @@ namespace SsuiSample
             if (tabControl.SelectedTab != null)
             {
                 TabItem ti = tabControl.SelectedTab;
-                Color precolor = Colors.Transparent;
+                Color precolor = Colors.Transparent; // try to get the existing color of this tab
                 if (ti.TabBackground is SolidColorBrush si)
                 {
                     precolor = si.Color;
@@ -213,8 +200,11 @@ namespace SsuiSample
                         precolor = lg.GradientStops[0].Color;
                     }
                 }
-                ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
+
+                ColorPickerDialog cpd = new ColorPickerDialog(precolor);
+                cpd.SsuiTheme = TryGetSsuiAppTheme();
                 cpd.ShowDialog();
+
                 if (cpd.DialogResult)
                 {
                     ti.TabBackground = new SolidColorBrush(cpd.SelectedColor);
@@ -227,7 +217,7 @@ namespace SsuiSample
             if (tabControl.SelectedTab != null)
             {
                 TabItem ti = tabControl.SelectedTab;
-                Color precolor = Colors.Transparent;
+                Color precolor = Colors.Transparent; // try to get the existing color of this tab
                 if (ti.TabBackground is SolidColorBrush si)
                 {
                     precolor = si.Color;
@@ -239,8 +229,11 @@ namespace SsuiSample
                         precolor = lg.GradientStops[0].Color;
                     }
                 }
-                ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, precolor);
+
+                ColorPickerDialog cpd = new ColorPickerDialog(precolor);
+                cpd.SsuiTheme = TryGetSsuiAppTheme();
                 cpd.ShowDialog();
+
                 if (cpd.DialogResult)
                 {
                     ti.TabBackground = new LinearGradientBrush(cpd.SelectedColor, Colors.Transparent, 90);
@@ -258,7 +251,8 @@ namespace SsuiSample
                 {
                     lgb = lg;
                 }
-                SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog lge = new SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog(ColorScheme, lgb);
+                SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog lge = new SolidShineUi.PropertyList.Dialogs.LinearGradientEditorDialog(lgb);
+                lge.SsuiTheme = TryGetSsuiAppTheme();
                 lge.ShowDialog();
                 if (lge.DialogResult)
                 {
@@ -294,8 +288,8 @@ namespace SsuiSample
 
             FontSelectDialog fsd = new FontSelectDialog
             {
-                ColorScheme = ColorScheme,
                 Owner = Window.GetWindow(this),
+                SsuiTheme = TryGetSsuiAppTheme(),
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
 
                 SelectedFontFamily = ti.FontFamily,
@@ -336,13 +330,15 @@ namespace SsuiSample
 
             if (popProps.IsOpen)
             {
+                // hide property list
                 btnProperties.Content = "Show Property List";
                 popProps.IsOpen = false;
             }
             else
             {
+                // show property list
                 btnProperties.Content = "Hide Property List";
-                pl.ReloadObject();
+                pl.ReloadObject(); // refresh the property values
                 popProps.IsOpen = true;
             }
         }

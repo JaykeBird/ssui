@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Windows.Shapes;
 
 namespace SolidShineUi.Utils
 {
     /// <summary>
     /// A control to visually select a value between 0.0 and 1.0 in both the X (width) and Y (height) axes.
     /// </summary>
-    public partial class RelativePositionSelect : UserControl
+    public partial class RelativePositionSelect : ThemedUserControl
     {
 
         /// <summary>
@@ -47,7 +45,7 @@ namespace SolidShineUi.Utils
             // might consider hiding snap lines while control is disabled
         }
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -62,8 +60,8 @@ namespace SolidShineUi.Utils
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
         public static readonly DependencyProperty ColorSchemeProperty
-            = DependencyProperty.Register("ColorScheme", typeof(ColorScheme), typeof(RelativePositionSelect),
-            new FrameworkPropertyMetadata(new ColorScheme(), new PropertyChangedCallback(OnColorSchemeChanged)));
+            = DependencyProperty.Register(nameof(ColorScheme), typeof(ColorScheme), typeof(RelativePositionSelect),
+            new FrameworkPropertyMetadata(new ColorScheme(), OnColorSchemeChanged));
 
         /// <summary>
         /// Perform an action when the ColorScheme property has changed. Primarily used internally.
@@ -72,13 +70,7 @@ namespace SolidShineUi.Utils
         /// <param name="e">Event arguments about the property change.</param>
         public static void OnColorSchemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if NETCOREAPP
-            ColorScheme cs = (e.NewValue as ColorScheme)!;
-#else
-            ColorScheme cs = e.NewValue as ColorScheme;
-#endif
-
-            if (d is RelativePositionSelect r)
+            if (e.NewValue is ColorScheme cs && d is RelativePositionSelect r)
             {
                 r.ColorSchemeChanged?.Invoke(d, e);
                 r.ApplyColorScheme(cs);
@@ -86,8 +78,10 @@ namespace SolidShineUi.Utils
         }
 
         /// <summary>
-        /// Get or set the color scheme used for this RelativePositionSelect. For easier color scheme management, bind this to the window or larger control you're using.
+        /// Get or set the color scheme used for this RelativePositionSelect. This can be used to set all of the brushes at once.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the color scheme used for this control.")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -132,6 +126,43 @@ namespace SolidShineUi.Utils
             BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
             SelectorDisabledBrush = cs.DarkDisabledColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (ssuiTheme is SsuiAppTheme sat && useAccentTheme)
+            {
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ControlBackgroundProperty, SsuiTheme.ControlBackgroundProperty, theme);
+                ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(SelectorBrushProperty, SsuiTheme.ControlPopBrushProperty, theme);
+                ApplyThemeBinding(SnapLineBrushProperty, SsuiTheme.ControlSatBrushProperty, theme);
+                ApplyThemeBinding(KeyboardFocusHighlightProperty, SsuiTheme.HighlightBrushProperty, theme);
+
+                if (useLightBorder)
+                {
+                    ApplyThemeBinding(BorderBrushProperty, SsuiTheme.LightBorderBrushProperty, theme);
+                }
+                else
+                {
+                    ApplyThemeBinding(BorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                }
+
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectorDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+            }
         }
         #endregion
 
@@ -218,39 +249,46 @@ namespace SolidShineUi.Utils
             set => SetValue(KeyboardFocusHighlightProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="ControlBackground"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ControlBackgroundProperty = DependencyProperty.Register(
             "ControlBackground", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
 
+        /// <summary>The backing dependency property for <see cref="SelectorBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectorBrushProperty = DependencyProperty.Register(
             "SelectorBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
 
+        /// <summary>The backing dependency property for <see cref="BackgroundDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BackgroundDisabledBrushProperty = DependencyProperty.Register(
             "BackgroundDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
             "BorderDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
 
+        /// <summary>The backing dependency property for <see cref="SelectorDisabledBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectorDisabledBrushProperty = DependencyProperty.Register(
             "SelectorDisabledBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
 
+        /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
             "BorderBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.Black)));
 
+        /// <summary>The backing dependency property for <see cref="SnapLineBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SnapLineBrushProperty = DependencyProperty.Register(
             "SnapLineBrush", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnSnapLineBrushChanged));
 
+        /// <summary>The backing dependency property for <see cref="KeyboardFocusHighlight"/>. See the related property for details.</summary>
         public static readonly DependencyProperty KeyboardFocusHighlightProperty = DependencyProperty.Register(
             "KeyboardFocusHighlight", typeof(Brush), typeof(RelativePositionSelect),
             new PropertyMetadata(new SolidColorBrush(Colors.LightGray), OnKeyboardFocusHighlightBrushChanged));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
         #endregion
 
         /// <summary>
@@ -326,6 +364,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set if the selector should snap to the snap lines within the control.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set if the selector should snap to the snap lines within the control.")]
         public bool SnapToSnapLines { get => (bool)GetValue(SnapToSnapLinesProperty); set => SetValue(SnapToSnapLinesProperty, value); }
 
         /// <summary>
@@ -340,6 +380,8 @@ namespace SolidShineUi.Utils
         /// The distance, in pixels, within which the selector should snap to the nearest snap line.
         /// The larger the distance, the further the selector can be away from a snap line before it snaps to the line.
         /// </summary>
+        [Category("Common")]
+        [Description("The distance, in pixels, within which the selector should snap to the nearest snap line.")]
         public double SnapDistance { get => (double)GetValue(SnapDistanceProperty); set => SetValue(SnapDistanceProperty, value); }
 
         /// <summary>
@@ -532,7 +574,7 @@ namespace SolidShineUi.Utils
         {
             //double sshalf = SelectorSize / 2;
             Border b = new Border();
-            b.BorderThickness = new Thickness(0.75);
+            b.BorderThickness = new Thickness(1);
             b.BorderBrush = SnapLineBrush;
             b.Width = 1;
             b.Tag = point;
@@ -578,7 +620,7 @@ namespace SolidShineUi.Utils
         {
             //double sshalf = SelectorSize / 2;
             Border b = new Border();
-            b.BorderThickness = new Thickness(0.75);
+            b.BorderThickness = new Thickness(1);
             b.BorderBrush = SnapLineBrush;
             b.Height = 1;
             b.Tag = point;
@@ -666,6 +708,28 @@ namespace SolidShineUi.Utils
             }
         }
 
+
+        /// <summary>
+        /// Get or set how opaque/transparent the snaplines should be over the background. Default is <c>0.5</c>.
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set how opaque/transparent the snaplines should be over the background. Default is 0.5.")]
+        public double SnaplineOpacity { get => (double)GetValue(SnaplineOpacityProperty); set => SetValue(SnaplineOpacityProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SnaplineOpacity"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SnaplineOpacityProperty
+            = DependencyProperty.Register(nameof(SnaplineOpacity), typeof(double), typeof(RelativePositionSelect),
+            new FrameworkPropertyMetadata(0.5, (d, e) => d.PerformAs<RelativePositionSelect>((o) => o.UpdateSnaplinesOpacity(e))));
+
+        private void UpdateSnaplinesOpacity(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is double d)
+            {
+                if (canVertical != null) canVertical.Opacity = d;
+                if (canHorizontal != null) canHorizontal.Opacity = d;
+            }
+        }
+
         #endregion
 
         #region Keyboard Controls
@@ -673,6 +737,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the amount the selector is moved each time an arrow key is pressed (while the control is focused).")]
         public double KeyMoveStep { get => (double)GetValue(KeyMoveStepProperty); set => SetValue(KeyMoveStepProperty, value); }
 
         /// <summary>
@@ -780,6 +846,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the size of the selector. The larger the selector, the easier it will be to see and also to click and drag, but also harder to visualize a particular value.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the size of the selector.")]
         public double SelectorSize
         {
             get { return ellSelect.Width; }
@@ -915,6 +983,8 @@ namespace SolidShineUi.Utils
         /// <remarks>
         /// When setting this property, the event SelectedPositionChanged will fire twice: once after the width (X) is changed, and once after the height (Y) is changed.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the selected point, on both the X and Y axes.")]
         public Point SelectedPoint
         {
             get { return new Point(oWidth, oHeight); }
@@ -929,6 +999,8 @@ namespace SolidShineUi.Utils
         /// Get or set the selected value on the horizontal (X) axis.
         /// This is how far from the left edge of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the horizontal (X) axis.")]
         public double SelectedWidth
         {
             get { return oWidth; }
@@ -957,6 +1029,8 @@ namespace SolidShineUi.Utils
         /// Get or set the selected value on the vertical (Y) axis.
         /// This is how far from the top of the control that the selector is, on a relative scale from <c>0.0</c> to <c>1.0</c>.
         /// </summary>
+        [Category("Common")]
+        [Description("Get or set the selected value on the vertical (Y) axis.")]
         public double SelectedHeight
         {
             get { return oHeight; }

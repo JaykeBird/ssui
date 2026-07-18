@@ -38,23 +38,15 @@ namespace SolidShineUi.PropertyList
         FrameworkElement GetFrameworkElement();
 
         /// <summary>
-        /// Set the ColorScheme, to set the visual appearance of the control.
+        /// Apply a SsuiTheme to this control, to set the visual appearance.
         /// </summary>
-        /// <remarks>
-        /// This is a setter-only property in the interface as a getter is never needed. Implementers can add a getter for this property if needed.
-        /// </remarks>
-        ColorScheme ColorScheme { set; }
+        /// <param name="theme">The SsuiTheme to apply</param>
+        void ApplySsuiTheme(SsuiTheme theme);
 
         /// <summary>
-        /// Apply a ColorScheme to this control, to set the visual appearance.
+        /// Set the parent host control for this IPropertyEditor. This allows the IPropertyEditor to connect to the host directly, to get info or set certain values.
         /// </summary>
-        /// <param name="cs">The ColorScheme to apply</param>
-        void ApplyColorScheme(ColorScheme cs);
-
-        /// <summary>
-        /// Set the parent PropertyList control for this IPropertyEditor. This allows the IPropertyEditor to connect to the PropertyList directly, to get info or set certain values.
-        /// </summary>
-        ExperimentalPropertyList ParentPropertyList { set; }
+        void SetHostControl(IPropertyEditorHost host);
 
         /// <summary>
         /// Raised when the value is changed, by changing the data in this editor control.

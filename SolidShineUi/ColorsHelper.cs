@@ -68,13 +68,14 @@ namespace SolidShineUi
 
             switch (hex.Length)
             {
+#if NETCOREAPP
                 case 6: // #890ABC
                     try
                     {
                         return Color.FromRgb(
-                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier));
+                            byte.Parse(hex.AsSpan(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
                     }
                     catch (FormatException ex)
                     {
@@ -85,16 +86,43 @@ namespace SolidShineUi
                     try
                     {
                         return Color.FromArgb(
-                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier),
-                            byte.Parse(hex.Substring(6, 2), NumberStyles.AllowHexSpecifier));
+                            byte.Parse(hex.AsSpan(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.AsSpan(6, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
+                    }
+                    catch (FormatException ex)
+                    {
+                        throw new FormatException("Hex string is not in a correct format.", ex);
+                    }
+#else
+                case 6: // #890ABC
+                    try
+                    {
+                        return Color.FromRgb(
+                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
                     }
                     catch (FormatException ex)
                     {
                         throw new FormatException("Hex string is not in a correct format.", ex);
                     }
 
+                case 8: // #FF890ABC
+                    try
+                    {
+                        return Color.FromArgb(
+                            byte.Parse(hex.Substring(0, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(2, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(4, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(hex.Substring(6, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
+                    }
+                    catch (FormatException ex)
+                    {
+                        throw new FormatException("Hex string is not in a correct format.", ex);
+                    }
+#endif
                 case 3: // #890 (equivalent to #889900)
                     try
                     {
@@ -103,9 +131,9 @@ namespace SolidShineUi
                         string b = $"{hex.Substring(2, 1)}{hex.Substring(2, 1)}";
 
                         return Color.FromRgb(
-                            byte.Parse(r, NumberStyles.AllowHexSpecifier),
-                            byte.Parse(g, NumberStyles.AllowHexSpecifier),
-                            byte.Parse(b, NumberStyles.AllowHexSpecifier));
+                            byte.Parse(r, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(g, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture),
+                            byte.Parse(b, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture));
                     }
                     catch (FormatException ex)
                     {
@@ -121,7 +149,22 @@ namespace SolidShineUi
             }
         }
 
-        // TODO: perform benchmark to see if ToHexString or ToHexStringLegacy is faster
+        /// <summary>
+        /// Create a color based upon an OLE color value.
+        /// </summary>
+        /// <param name="oleColor">The OLE color value to translate.</param>
+        /// <returns>A color that is the translation of the OLE color value.</returns>
+        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
+        public static Color CreateFromOle(int oleColor)
+        {
+            System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        // I expect that ToHexStringLegacy is probably a bit faster / less resource intensive,
+        // but for consistency in code/approach between ToHexString and ToHexStringWithAlpha, I went with the same approach for both functions
+        // if performance does become a concern, then either reimplement this legacy one instead (and/or rename it to ToHexStringFast or something lol)
+        // for now, others that may want this can just take this code to implement in their own libraries/projects
 
         //taken from http://www.cambiaresearch.com/articles/1/convert-dotnet-color-to-hex-string
         //written by Steve Lautenschlager
@@ -157,7 +200,8 @@ namespace SolidShineUi
         /// <param name="color">The color to convert to a hex string.</param>
         public static string ToHexString(Color color)
         {
-            return color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+            return color.R.ToString("X2", CultureInfo.InvariantCulture)
+                 + color.G.ToString("X2", CultureInfo.InvariantCulture) + color.B.ToString("X2", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -170,7 +214,8 @@ namespace SolidShineUi
         /// </remarks>
         public static string ToHexStringWithAlpha(Color color)
         {
-            return color.A.ToString("X2") + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+            return color.A.ToString("X2", CultureInfo.InvariantCulture) + color.R.ToString("X2", CultureInfo.InvariantCulture) 
+                 + color.G.ToString("X2", CultureInfo.InvariantCulture) + color.B.ToString("X2", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -217,15 +262,18 @@ namespace SolidShineUi
 #endif
         }
 
-        #endregion
+#endregion
 
         #region Additional Functions
 
         /// <summary>Get a color by blending one color onto another color by a specified amount.</summary>
         /// <param name="color">The color to blend onto the background color.</param>
         /// <param name="backColor">The color that is the background or base (that is being blended onto).</param>
-        /// <param name="amount">How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
-        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between the two colors, and 1 leaves only the new color (blended in 100%).</param>
+        /// <param name="amount">
+        /// How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
+        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between
+        /// the two colors, and 1 leaves only the new color (blended in 100%).
+        /// </param>
         /// <returns>The color that is the result of blending the two colors together.</returns>
         /// <remarks>
         /// The alpha value of the new color will be 255 (opaque). No gamma correction is applied.
@@ -233,13 +281,143 @@ namespace SolidShineUi
         public static Color Blend(Color color, Color backColor, double amount)
         {
             // https://stackoverflow.com/a/3722337/2987285
-            if (amount < 0) amount = 0;
-            else if (amount > 1) amount = 1;
+            amount = Math.Max(0.0, Math.Min(1.0, amount));
 
-            byte r = (byte)(color.R * amount + backColor.R * amount);
-            byte g = (byte)(color.G * amount + backColor.G * amount);
-            byte b = (byte)(color.B * amount + backColor.B * amount);
+            byte r = (byte)(color.R * amount + backColor.R * (1 - amount));
+            byte g = (byte)(color.G * amount + backColor.G * (1 - amount));
+            byte b = (byte)(color.B * amount + backColor.B * (1 - amount));
             return Color.FromRgb(r, g, b);
+        }
+
+        /// <summary>
+        /// Get a color by blending one color onto another color by a specified amount, with gamma correction.
+        /// </summary>
+        /// <summary>Get a color by blending one color onto another color by a specified amount.</summary>
+        /// <param name="color">The color to blend onto the background color.</param>
+        /// <param name="backColor">The color that is the background or base (that is being blended onto).</param>
+        /// <param name="amount">
+        /// How much of <paramref name="color"/> to blend onto <paramref name="backColor"/>.
+        /// Must be between 0 and 1: 0 leaves only the back color (new color blended in 0%), 0.5 is a perfect blend between 
+        /// the two colors, and 1 leaves only the new color (blended in 100%).
+        /// </param>
+        /// <param name="gamma">The gamma correction value to use while blending (for the sRGB color space, use 2.2).</param>
+        /// <returns>The color that is the result of blending the two colors together.</returns>
+        /// <remarks>
+        /// The alpha value of the new color will be 255 (opaque).
+        /// </remarks>
+        public static Color BlendWithGamma(Color color, Color backColor, double amount, double gamma = 2.2)
+        {
+            // https://en.wikipedia.org/wiki/Gamma_correction
+
+            amount = Math.Max(0.0, Math.Min(1.0, amount));
+
+            // Gammaify it
+            double r1 = Math.Pow(color.R / 255.0, gamma);
+            double g1 = Math.Pow(color.G / 255.0, gamma);
+            double b1 = Math.Pow(color.B / 255.0, gamma);
+
+            double r2 = Math.Pow(backColor.R / 255.0, gamma);
+            double g2 = Math.Pow(backColor.G / 255.0, gamma);
+            double b2 = Math.Pow(backColor.B / 255.0, gamma);
+
+            // Blend
+            double gLin = g1 * amount + g2 * (1 - amount);
+            double rLin = r1 * amount + r2 * (1 - amount);
+            double bLin = b1 * amount + b2 * (1 - amount);
+
+            // Un-gammaify it
+            byte r = (byte)Math.Round(Math.Pow(rLin, 1.0 / gamma) * 255);
+            byte g = (byte)Math.Round(Math.Pow(gLin, 1.0 / gamma) * 255);
+            byte b = (byte)Math.Round(Math.Pow(bLin, 1.0 / gamma) * 255);
+
+            return Color.FromRgb(r, g, b);
+        }
+
+        /// <summary>
+        /// Converts a Color to a grayscale Color (no hue).
+        /// </summary>
+        /// <remarks>
+        /// This uses the ITU-R Recommendation 709 method's luma coefficients to create a grayscale
+        /// color that should line up with human perception of the colors in the RGB color space.
+        /// </remarks>
+        /// <param name="col">The color to convert to grayscale.</param>
+        /// <returns>A new grayscale Color based upon the inputted Color.</returns>
+        public static Color ToGrayscale(this Color col)
+        {
+            // gamma compression
+            double gamma = 2.2;
+            double r2 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+            double g2 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+            double b2 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+            // adding with coefficients and then gammaifying it
+            byte val = (byte)Math.Round(Math.Pow((0.2126 * r2) + (0.7152 * g2) + (0.0722 * b2), gamma) * 255);
+            return Color.FromRgb(val, val, val);
+        }
+
+        /// <summary>
+        /// Converts a Color to a grayscale Color (no hue).
+        /// </summary>
+        /// <remarks>
+        /// Some methods (such as the ones based on ITU-R Rec luma coefficients) will take into account
+        /// the human perception of colors, while others are more mathematical calculations that may
+        /// not line up with how you'd expect the results to appear.
+        /// </remarks>
+        /// <param name="col">The color to convert to grayscale.</param>
+        /// <param name="method">The method to use for getting the grayscale color.</param>
+        /// <returns>A new grayscale Color based upon the inputted Color.</returns>
+        public static Color ToGrayscale(this Color col, ColorGrayscaleMethod method)
+        {
+            double gamma = 2.2;
+            byte val;
+            switch (method)
+            {
+                case ColorGrayscaleMethod.FlatAverage:
+                    val = (byte)((col.R + col.G + col.B) / 3);
+                    break;
+                case ColorGrayscaleMethod.Rec601:
+                    double r1 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+                    double g1 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+                    double b1 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+                    val = (byte)Math.Round(Math.Pow((0.299 * r1) + (0.587 * g1) + (0.114 * b1), gamma) * 255);
+                    break;
+                case ColorGrayscaleMethod.Rec709:
+                    double r2 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+                    double g2 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+                    double b2 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+                    val = (byte)Math.Round(Math.Pow((0.2126 * r2) + (0.7152 * g2) + (0.0722 * b2), gamma) * 255);
+                    break;
+                case ColorGrayscaleMethod.Rec2020:
+                    double r3 = Math.Pow(col.R / 255.0, 1.0 / gamma);
+                    double g3 = Math.Pow(col.G / 255.0, 1.0 / gamma);
+                    double b3 = Math.Pow(col.B / 255.0, 1.0 / gamma);
+                    val = (byte)Math.Round(Math.Pow((0.2627 * r3) + (0.678 * g3) + (0.0593 * b3), gamma) * 255);
+                    break;
+                case ColorGrayscaleMethod.Rec601_NoGamma:
+                    val = (byte)((0.299 * col.R) + (0.587 * col.G) + (0.114 * col.B));
+                    break;
+                case ColorGrayscaleMethod.Rec709_NoGamma:
+                    val = (byte)((0.2126 * col.R) + (0.7152 * col.G) + (0.0722 * col.B));
+                    break;
+                case ColorGrayscaleMethod.Rec2020_NoGamma:
+                    val = (byte)((0.2627 * col.R) + (0.678 * col.G) + (0.0593 * col.B));
+                    break;
+                case ColorGrayscaleMethod.Desaturate:
+                    ToHSV(col, out double h, out double _, out double v);
+                    return CreateFromHSV(h, 0, v);
+                case ColorGrayscaleMethod.Luminance:
+                    double r = Convert.ToDouble(col.R) / 255;
+                    double g = Convert.ToDouble(col.G) / 255;
+                    double b = Convert.ToDouble(col.B) / 255;
+
+                    var min = Math.Min(r, Math.Min(g, b));
+                    var max = Math.Max(r, Math.Max(g, b));
+                    double luminance = 0.5d * (max + min);
+                    return CreateFromHSL(0, 0, luminance);
+                default:
+                    val = (byte)((0.2126 * col.R) + (0.7152 * col.G) + (0.0722 * col.B));
+                    break;
+            }
+            return Color.FromRgb(val, val, val);
         }
 
         /// <summary>Convert a GDI+ ARGB integer that represent a color into a WPF/Avalonia Color struct.</summary>
@@ -266,7 +444,7 @@ namespace SolidShineUi
             return (uint)((color.A << 24) + (color.R << 16) + (color.G << 8) + color.B);
         }
 
-        #endregion
+#endregion
 
         #region HSV Math (used for color schemes)
 
@@ -488,9 +666,9 @@ namespace SolidShineUi
         /// </remarks>
         public static void ToHSL(Color color, out double hue, out double saturation, out double luminance)
         {
-            double r = Convert.ToDouble(color.R);
-            var g = Convert.ToDouble(color.G);
-            var b = Convert.ToDouble(color.B);
+            double r = Convert.ToDouble(color.R) / 255;
+            double g = Convert.ToDouble(color.G) / 255;
+            double b = Convert.ToDouble(color.B) / 255;
 
             var min = Math.Min(r, Math.Min(g, b));
             var max = Math.Max(r, Math.Max(g, b));
@@ -525,7 +703,7 @@ namespace SolidShineUi
                 hue += 360;
             }
 
-            luminance = ((1 / 2) * (max + min)) / 255;
+            luminance = 0.5d * (max + min); // / 255d; // these needs to be doubles
 
             if (CheckEqualViaEpsilon(luminance, 0) || CheckEqualViaEpsilon(luminance, 1))
             {
@@ -533,7 +711,7 @@ namespace SolidShineUi
             }
             else
             {
-                saturation = delta / (255 * (1 - Math.Abs((2 * luminance) - 1)));
+                saturation = delta / (1 - Math.Abs((2 * luminance) - 1));
             }
 
             bool CheckEqualViaEpsilon(double val1, double val2)
@@ -570,7 +748,7 @@ namespace SolidShineUi
             }
         }
 
-#endregion
+        #endregion
 
         #region Color Resources
 
@@ -646,10 +824,10 @@ namespace SolidShineUi
         public static Color HighContrastRed { get; } = CreateFromHex("900000"); // 600000
 
 
-        /// <summary>A darker gray color used in some styles. Has hex string 464646.</summary>
+        /// <summary>A darker gray color used in some styles. Has hex string 414141.</summary>
         public static Color DarkerGray { get; } = CreateFromHex("414141");
 
-        /// <summary>A darker gray color used in some styles. Has hex string 464646.</summary>
+        /// <summary>A white color used in certain controls or styles. Has the hex string 10FFFFFF.</summary>
         public static Color WhiteLightHighlight { get; } = Color.FromArgb(16, 255, 255, 255);
 
         /// <summary>
@@ -727,6 +905,27 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Get a collection of all the colors in the X11 Color table, as they appear in <c>System.Windows.Media.Colors</c>,
+        /// as well as the name of each color.
+        /// </summary>
+        /// <remarks>This uses reflection to go through each property in <see cref="Colors"/>, and returns a list containing all of 
+        /// their values and their names.</remarks>
+        public static IEnumerable<(Color col, string name)> GetAllX11ColorsAndNames()
+        {
+            PropertyInfo[] propInfo = typeof(Colors).GetProperties();
+            foreach (PropertyInfo p in propInfo)
+            {
+                if (p.PropertyType == typeof(Color))
+                {
+                    if (p.GetValue(new Color(), BindingFlags.GetProperty, null, null, null) is Color c)
+                    {
+                        yield return (c, p.Name);
+                    }
+                }
+            }
+        }
+
         //#if DEBUG
         //        public static List<Color> ListOfColors =
         //            new List<Color> { DarkBlue, Blue, Yellow, Orange, Red, SkyBlue, Pink, Green,
@@ -784,5 +983,53 @@ namespace SolidShineUi
 
         #endregion
 
+    }
+
+    /// <summary>
+    /// A list of methods to use for getting a grayscale version of a color.
+    /// </summary>
+    public enum ColorGrayscaleMethod
+    {
+        /// <summary>
+        /// A simple average of the R, G, and B values of the color added together.
+        /// This is the most mathematically simple calculation, but it doesn't account for human perception of 
+        /// how the colors should appear when turned to grayscale, like <c>Rec601</c> or <c>Rec709</c> do.
+        /// </summary>
+        FlatAverage = 0,
+        /// <summary>
+        /// Use the luma coefficients in ITU-R Recommendation 601, which is meant for standard definition (pre-HD) TVs.
+        /// </summary>
+        Rec601 = 1,
+        /// <summary>
+        /// Use the luma coefficients in ITU-R Recommendation 709, which is meant for high definition TVs.
+        /// </summary>
+        Rec709 = 2,
+        /// <summary>
+        /// Use the luma coefficients in ITU-R Recommendation 2020, which is meant for colors with 10-bit depth, and thus
+        /// may not produce the most accurate results within the sRGB color space.
+        /// </summary>
+        Rec2020 = 3,
+        /// <summary>
+        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 601 and no gamma compression.
+        /// </summary>
+        Rec601_NoGamma = 4,
+        /// <summary>
+        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 601 and no gamma compression.
+        /// </summary>
+        Rec709_NoGamma = 5,
+        /// <summary>
+        /// Calculate relative luminance, using the luma coefficients in ITU-R Recommendation 2020 and no gamma compression.
+        /// </summary>
+        Rec2020_NoGamma = 6,
+        /// <summary>
+        /// Use the HSV values of the color, and change the saturation to 0. While this results in a grayscale color,
+        /// the end results may look a bit unexpected.
+        /// </summary>
+        Desaturate = 7,
+        /// <summary>
+        /// Use only the luminance value from the HSL values of the color. While this results in a grayscale color,
+        /// the end results may look a bit unexpected.
+        /// </summary>
+        Luminance = 8,
     }
 }

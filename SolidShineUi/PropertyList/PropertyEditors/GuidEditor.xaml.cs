@@ -20,6 +20,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public GuidEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuEmptyGuid.Header = Strings.SetToEmpty;
+            mnuNewGuid.Header = Strings.GenerateNewGuid;
+            mnuSetGuid.Header = Strings.SetGuid;
+            mnuSetNull.Header = Strings.SetAsNull;
+            lblEdit.Text = Strings.Edit2;
         }
 
         /// <inheritdoc/>
@@ -32,35 +39,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
+
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set => ApplyColorScheme(value); }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            btnMenu.ColorScheme = cs;
-            _cs = cs;
+            btnMenu.SsuiTheme = theme;
 
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.White);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.White);
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Black);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Black);
-            }
-            else
-            {
-                imgNew.Source = LoadIcon("Reload", Utils.IconVariation.Color);
-                imgFontEdit.Source = LoadIcon("ThreeDots", Utils.IconVariation.Color);
-            }
+            imgNew.Source = LoadIcon("Reload", theme.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
-
-        private ColorScheme _cs = new ColorScheme();
 
         private Guid guid = Guid.Empty;
 
@@ -76,6 +70,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (mnuSetNull.IsChecked == true)
             {
@@ -87,8 +88,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else        
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             if (type == typeof(Guid?))
             {
@@ -113,46 +119,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-#else
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (mnuSetNull.IsChecked == true)
-            {
-                return null;
-            }
-            else
-            {
-                return guid;
-            }
-        }
-        
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            if (value == null)
-            {
-                guid = Guid.Empty;
-                SetAsNull();
-            }
-            else if (value is Guid g)
-            {
-                guid = g;
-                txtFontName.Text = guid.ToString("B");
-            }
-            else
-            {
-                // this object is not a Guid? what is it here???
-                guid = Guid.Empty;
-                txtFontName.Text = guid.ToString("B");
-            }
-        }
-#endif
-
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        private void btnNewGuid_Click(object sender, RoutedEventArgs e)
         {
             guid = Guid.NewGuid();
             txtFontName.Text = guid.ToString("B");
@@ -171,14 +138,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void mnuSetGuid_Click(object sender, RoutedEventArgs e)
         {
             StringInputDialog sid = new StringInputDialog();
-            sid.Title = "Enter Guid";
-            sid.Description = "Enter in a valid Guid for this property:";
+            sid.Title = Strings.EnterGuid;
+            sid.Description = Strings.EnterInAValidGuid;
 
-            sid.ColorScheme = _cs;
-            sid.Owner = Window.GetWindow(this);
+            sid.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
+            sid.Owner = _host?.GetWindow() ?? Window.GetWindow(this);
             sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
+            sid.ValidationFunction = (s) => { return Guid.TryParse(s, out Guid _); };
+            sid.ValidationFailureString = Strings.NotAValidGuid;
+
             sid.ShowDialog();
+
             if (sid.DialogResult)
             {
                 bool res = Guid.TryParse(sid.Value, out Guid g);
@@ -196,7 +167,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
-            txtFontName.Text = "(null)";
+            txtFontName.Text = Strings.Null;
         }
 
         void UnsetAsNull()

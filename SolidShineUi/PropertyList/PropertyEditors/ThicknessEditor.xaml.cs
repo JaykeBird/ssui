@@ -20,7 +20,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => nudLeft.IsEnabled;
+        public bool IsPropertyWritable
+        { 
+            get => btnMenu.IsEnabled;
             set
             {
                 nudLeft.IsEnabled = value;
@@ -32,40 +34,40 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
-
-        /// <summary>
-        /// Set the visual appearance of this control via a ColorScheme.
-        /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            nudLeft.ColorScheme = cs;
-            nudTop.ColorScheme = cs;
-            nudRight.ColorScheme = cs;
-            nudBottom.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-
-            imgLeft.Source = LoadIcon("LeftArrow", cs);
-            imgRight.Source = LoadIcon("RightArrow", cs);
-            imgTop.Source = LoadIcon("UpArrow", cs);
-            imgBottom.Source = LoadIcon("DownArrow", cs);
-            imgFontEdit.Source = LoadIcon("ThreeDots", cs);
-        }
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            nudLeft.SsuiTheme = theme;
+            nudTop.SsuiTheme = theme;
+            nudRight.SsuiTheme = theme;
+            nudBottom.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+
+            imgLeft.Source = LoadIcon("LeftArrow", theme.IconVariation);
+            imgRight.Source = LoadIcon("RightArrow", theme.IconVariation);
+            imgTop.Source = LoadIcon("UpArrow", theme.IconVariation);
+            imgBottom.Source = LoadIcon("DownArrow", theme.IconVariation);
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
         public ThicknessEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            nudLeft.ToolTip = Strings.Left;
+            nudTop.ToolTip = Strings.Top;
+            nudRight.ToolTip = Strings.Right;
+            nudBottom.ToolTip = Strings.Bottom;
+
+            mnuAddOne.Header = Strings.IncreaseAllByOne;
+            mnuSubtractOne.Header = Strings.DecreaseAllByOne;
+            mnuSetOne.Header = Strings.SetAllToOne;
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>

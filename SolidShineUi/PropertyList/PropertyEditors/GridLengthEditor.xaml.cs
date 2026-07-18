@@ -2,15 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Linq;
+
 using static SolidShineUi.Utils.IconLoader;
-using SolidShineUi.PropertyList.Dialogs;
-using SolidShineUi.Utils;
-using System.Text;
-using System.IO;
-using System.Diagnostics;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -23,6 +17,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public GridLengthEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>
@@ -34,26 +31,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
-
-        //ColorScheme _cs = new ColorScheme();
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
             //_cs = value;
-            nudValue.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = LoadIcon("ThreeDots", cs);
+            nudValue.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

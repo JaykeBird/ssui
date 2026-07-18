@@ -12,9 +12,9 @@ namespace SolidShineUi.PropertyList.Dialogs
     public partial class RectEditDialog : FlatWindow
     {
 
-        bool _internalAction = false;
+        // bool _internalAction = false;
 
-        #region Window Actions / constructors
+        #region Window Constructors / Loaded
 
         /// <summary>
         /// Create a CharInputDialog.
@@ -37,7 +37,14 @@ namespace SolidShineUi.PropertyList.Dialogs
 
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
+            if (Icon == null && Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion

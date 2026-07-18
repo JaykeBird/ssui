@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SolidShineUi;
+using SolidShineUi.Utils;
 using SolidShineUi.PropertyList.Dialogs;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -15,7 +14,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     public partial class TransformEditor : UserControl, IPropertyEditor
     {
 
-        // CloneCurrentValue is used a lot to make sure that the internal variable that I have, _
+        // CloneCurrentValue is used a lot to make sure that the internal variable that I have, _transform, is actually editable
 
         /// <summary>
         /// Create an TransformEditor.
@@ -23,6 +22,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public TransformEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            lblEdit.Text = Strings.Edit2;
+
+            mnuEdit.Header = Strings.Edit;
+            mnuReset.Header = Strings.Reset;
+            mnuSetToNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>
@@ -38,25 +44,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => _writable; set { _writable = value; btnMenu.IsEnabled = value; } }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { /* _parent = value; */ } }
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
-        ColorScheme _cs = new ColorScheme();
 
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
 
         /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -73,13 +74,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         bool _setNull = false;
 
 #if NETCOREAPP
-        //ExperimentalPropertyList? _parent = null;
-
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
-#else
-        //ExperimentalPropertyList _parent = null;
-        
+#else        
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
 #endif
@@ -166,8 +163,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool OpenTransformDialog()
         {
             TransformEditDialog ted = new TransformEditDialog();
-            ted.Owner = Window.GetWindow(this);
-            ted.ColorScheme = _cs;
+            ted.Owner = _host?.GetWindow();
+            ted.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             if (_specificType)
             {
                 ted.ImportSingleTransform(_transform);
@@ -247,61 +244,45 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 TransformGroup tg = (TransformGroup)_transform;
                 if (tg.Children.Count > 0)
                 {
-                    txtData.Text = $"{GROUP}: {tg.Children.Count} items";
+                    txtData.Text = $"{Strings.Group}: {tg.Children.Count} {Strings.Items}";
                 }
                 else
                 {
-                    txtData.Text = $"{GROUP}: no transforms";
+                    txtData.Text = $"{Strings.Group}: {Strings.NoTransforms}";
                 }
             }
             else if (tt == typeof(RotateTransform))
             {
-                txtData.Text = $"{ROTATE}: {((RotateTransform)_transform).Angle}";
+                txtData.Text = $"{Strings.Rotate}: {((RotateTransform)_transform).Angle}";
             }
             else if (tt == typeof(SkewTransform))
             {
-                txtData.Text = $"{SKEW}: X {((SkewTransform)_transform).AngleX}, Y {((SkewTransform)_transform).AngleY}";
+                txtData.Text = $"{Strings.Skew}: X {((SkewTransform)_transform).AngleX}, Y {((SkewTransform)_transform).AngleY}";
             }
             else if (tt == typeof(ScaleTransform))
             {
-                txtData.Text = $"{SCALE}: {((ScaleTransform)_transform).ScaleX} x {((ScaleTransform)_transform).ScaleY}";
+                txtData.Text = $"{Strings.Scale}: {((ScaleTransform)_transform).ScaleX} x {((ScaleTransform)_transform).ScaleY}";
             }
             else if (tt == typeof(TranslateTransform))
             {
-                txtData.Text = $"{TRANSLATE}: {((TranslateTransform)_transform).X}, {((TranslateTransform)_transform).Y}";
+                txtData.Text = $"{Strings.Translate}: {((TranslateTransform)_transform).X}, {((TranslateTransform)_transform).Y}";
             }
             else if (tt == typeof(MatrixTransform))
             {
                 if (((MatrixTransform)_transform).Value.IsIdentity)
                 {
-                    txtData.Text = $"{IDENTITY}";
+                    txtData.Text = $"{Strings.Identity}";
                 }
                 else
                 {
-                    txtData.Text = $"{MATRIX}";
+                    txtData.Text = $"{Strings.Matrix}";
                 }
             }
             else
             {
-                txtData.Text = _transform.Value.ToString();
+                txtData.Text = _transform.Value.ToString(null);
             }
         }
-
-        // eventually, once I figure out a localization solution, these will be moved to that spot
-        /// <summary>UI text for "group"</summary>
-        public static string GROUP = "group";
-        /// <summary>UI text for "rotate"</summary>
-        public static string ROTATE = "rotate";
-        /// <summary>UI text for "skew"</summary>
-        public static string SKEW = "skew";
-        /// <summary>UI text for "scale"</summary>
-        public static string SCALE = "scale";
-        /// <summary>UI text for "translate"</summary>
-        public static string TRANSLATE = "translate";
-        /// <summary>UI text for "matrix"</summary>
-        public static string MATRIX = "matrix";
-        /// <summary>UI text for "default (identity matrix)"</summary>
-        public static string IDENTITY = "default (identity matrix)";
 
         private void mnuReset_Click(object sender, RoutedEventArgs e)
         {

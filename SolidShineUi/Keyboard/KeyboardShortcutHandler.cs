@@ -15,7 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-using KeyBoard = System.Windows.Input.Keyboard;
+using Keyboard = System.Windows.Input.Keyboard;
 #endif
 
 
@@ -26,7 +26,11 @@ namespace SolidShineUi.KeyboardShortcuts
     /// A helper class to manage keyboard shortcut support for a given WPF window. Connect this to a window to easily add and manage keyboard shortcuts.
     /// </summary>
     /// <remarks>
-    /// This class listens to a Window's KeyDown and KeyUp events to detect when keyboard shortcuts are pressed and activate them. See online documentation for more info about keyboard shortcut support.
+    /// This class listens to a Window's KeyDown and KeyUp events to detect when keyboard shortcuts are pressed and activate them.
+    /// Use <c>KeyRegistry.RegisterKeyShortcut</c> to register shortcuts directly to this handler's registry, or use 
+    /// <c>LoadShortcutsFromFile</c> or <c>LoadShortcutsFromList</c> to register shortcuts from other existing sources.
+    /// <para/>
+    /// See online documentation for more info about keyboard shortcut support.
     /// </remarks>
     public class KeyboardShortcutHandler
     {
@@ -49,7 +53,7 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         /// <summary>
-        /// Get the window that this KeyboardShortcutHandler is connected to. When keys are pressed in this window, this will activate keyboard shortcuts.
+        /// Get the window that this KeyboardShortcutHandler is connected to. When keys are pressed in this window and <see cref="IsActive"/> is <c>true</c>, this will activate keyboard shortcuts.
         /// </summary>
         public Window Window { get; private set; }
 
@@ -58,6 +62,10 @@ namespace SolidShineUi.KeyboardShortcuts
         /// </summary>
         public KeyRegistry KeyRegistry { get; } = new KeyRegistry();
 
+        /// <summary>
+        /// A timer that runs after a key change (KeyUp or KeyDown) to make sure that the recorded modifier key states are still accurate.
+        /// I've had situations in the past where for some reason the changes in modifier key states weren't caught.
+        /// </summary>
         private DispatcherTimer keyCheck;
 
         bool CtrlPressed = false;
@@ -77,7 +85,7 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         /// <summary>
-        /// Load in and register keyboard shortcuts from a file. A KeyActionList is needed to map the shortcuts to their actions.
+        /// Load in and register keyboard shortcuts from an XML file. A KeyActionList is needed to map the shortcuts to their actions.
         /// </summary>
         /// <param name="file">The file to load from.</param>
         /// <param name="methodList">The list of actions available for keyboard shortcuts, to use for mapping.</param>
@@ -104,14 +112,34 @@ namespace SolidShineUi.KeyboardShortcuts
         }
 
         /// <summary>
-        /// Write the currently registered keyboard shortcuts to a file, which can be loaded in later.
+        /// Write the currently registered keyboard shortcuts to an XML file, which can be loaded in later.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="file">the name of the file to write to</param>
         public async Task WriteShortcutsToFileAsync(string file)
         {
             await KeyboardShortcutsIo.WriteToFileAsync(KeyRegistry, file);
         }
+
+        /// <summary>
+        /// Generate a <see cref="KeyActionList"/> from the currently registered shortcuts in the registry.
+        /// <para/>
+        /// Note that this only contains the actions that used by shortcuts that are currently registered. If there are other actions that aren't currently registered
+        /// to a shortcut, they will have to be added after this. Otherwise, consider creating and managing your own KeyActionList.
+        /// </summary>
+        public KeyActionList GenerateKeyActionList()
+        {
+            KeyActionList kal = new KeyActionList();
+            foreach (KeyboardShortcut item in KeyRegistry.RegisteredShortcuts)
+            {
+                kal.Add(item.Action);
+            }
+            return kal;
+        }
+
+        /// <summary>
+        /// Get or set if this keyboard shortcut handler is currently active. If <c>false</c>, then it will not detect keyboard shortcuts or invoke actions.
+        /// </summary>
+        public bool IsActive { get; set; } = true;
 
         ///// <summary>
         ///// Set if menu items should display the keyboard shortcut combinations directly in the user interface.
@@ -149,28 +177,21 @@ namespace SolidShineUi.KeyboardShortcuts
                 AltPressed = true;
                 keyCheck.Start();
 
-                //if (!gwi.MenuBarVisible && !CtrlPressed && !ShiftPressed)
-                //{
-
-                //    firstMenuShow = true;
-                //    txtMnu.Text = "true";
-                //    ShowMenuBarTemporarily();
-                //}
-
-                //menu.Focus();
-
                 return;
             }
 
             // secondly, check for keyboard shortcuts!
 
+            if (IsActive)
+            {
 #if NETCOREAPP || AVALONIA
-            (IKeyAction? m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
+                (IKeyAction? m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
 #else
-            (IKeyAction m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
+                (IKeyAction m, string s) = KeyRegistry.GetActionForKey(e.Key, ShiftPressed, AltPressed, CtrlPressed);
 #endif
 
-            m?.Execute();
+                m?.Execute();
+            }
 
             return;
         }
@@ -200,7 +221,7 @@ namespace SolidShineUi.KeyboardShortcuts
 #if !AVALONIA
             if (CtrlPressed)
             {
-                if (!KeyBoard.IsKeyDown(Key.LeftCtrl) && !KeyBoard.IsKeyDown(Key.RightCtrl))
+                if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
                 {
                     CtrlPressed = false;
                 }
@@ -208,7 +229,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
             if (ShiftPressed)
             {
-                if (!KeyBoard.IsKeyDown(Key.LeftShift) && !KeyBoard.IsKeyDown(Key.RightShift))
+                if (!Keyboard.IsKeyDown(Key.LeftShift) && !Keyboard.IsKeyDown(Key.RightShift))
                 {
                     ShiftPressed = false;
                 }
@@ -216,7 +237,7 @@ namespace SolidShineUi.KeyboardShortcuts
 
             if (AltPressed)
             {
-                if (!KeyBoard.IsKeyDown(Key.LeftAlt) && !KeyBoard.IsKeyDown(Key.RightAlt) && !KeyBoard.IsKeyDown(Key.System))
+                if (!Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt) && !Keyboard.IsKeyDown(Key.System))
                 {
                     AltPressed = false;
                 }

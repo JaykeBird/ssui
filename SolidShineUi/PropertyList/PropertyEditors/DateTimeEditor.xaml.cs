@@ -20,6 +20,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public DateTimeEditor()
         {
             InitializeComponent();
+
+            // load in string values
+            mnuCurrent.Header = Strings.SetToCurrentTime;
+            mnuNoon.Header = Strings.SetToNoon;
+            mnuMidnight.Header = Strings.SetToMidnight;
+            mnuSetNull.Header = Strings.SetAsNull;
         }
 
 #if NET6_0_OR_GREATER
@@ -34,25 +40,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
-        {
-            spinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            spinner.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>

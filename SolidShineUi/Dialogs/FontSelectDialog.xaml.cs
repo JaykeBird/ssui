@@ -1,17 +1,8 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
 
 namespace SolidShineUi
 {
@@ -27,6 +18,18 @@ namespace SolidShineUi
         {
             InitializeComponent();
             AutoCompleteBehavior.SetAutoCompleteItemsSource(txtFont, FontFamiliesByString());
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Icon == null && Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         //private FontFamily _fam = new FontFamily("Segoe UI");
@@ -647,7 +650,8 @@ namespace SolidShineUi
 
         private void btnText_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog(ColorScheme, "Set Preview Text", "Set the text to appear in the Preview box.", txtPreview.Text);
+            StringInputDialog sid = new StringInputDialog("Set Preview Text", "Set the text to appear in the Preview box.", txtPreview.Text);
+            sid.SsuiTheme = SsuiTheme;
             sid.ShowDialog();
             if (sid.DialogResult)
             {

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SolidShineUi.Utils;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Reflection;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -28,13 +29,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { } }
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
+
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs) { }
+        public void ApplySsuiTheme(SsuiTheme theme) { }
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
@@ -84,7 +83,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (type.GetCustomAttribute<FlagsAttribute>() != null)
             {
                 // this is an enum that supports flags
-                // in the future, I'll need to enable a way to select multiple items
+                // TODO: enable a way to select multiple items
             }
 
             if (value == null)

@@ -40,7 +40,8 @@ namespace SolidShineUi.KeyboardShortcuts
     }
 
     /// <summary>
-    /// A list of IKeyActions, used for loading a keyboard shortcuts settings file and associating the commands' IDs to their key actions. Also verifies that there are not multiple key actions with the same ID.
+    /// A list of <see cref="IKeyAction"/> items, used for loading a keyboard shortcuts settings file and associating the commands' IDs to their key actions.
+    /// Has some helper methods to find an IKeyAction by its ID. Also verifies that there are not multiple key actions with the same ID.
     /// </summary>
     public class KeyActionList : List<IKeyAction>
     {
@@ -49,7 +50,7 @@ namespace SolidShineUi.KeyboardShortcuts
         /// Add an IKeyAction to the list. If an IKeyAction with the same ID is already on this list, this new IKeyAction is not added.
         /// </summary>
         /// <param name="action">The IKeyAction to add.</param>
-        /// <returns>True if the item was added; false if the item was not added (an action is already on this list with the same ID).</returns>
+        /// <returns><c>true</c> if the item was added; <c>false</c> if the item was not added (an action is already on this list with the same ID).</returns>
         public new bool Add(IKeyAction action)
         {
             if (!ContainsId(action.ID))

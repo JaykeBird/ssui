@@ -24,7 +24,7 @@
             <ColumnDefinition Width="135"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <flat:Menu Grid.ColumnSpan="2" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" >
+        <flat:Menu Grid.ColumnSpan="2" >
             <MenuItem Header="_Application">
                 <MenuItem Header="_Change Colors"  >
                     <MenuItem Header="_Select Color..." x:Name="mnuColors" Click="mnuColors_Click" />
@@ -32,12 +32,18 @@
                     <MenuItem Header="_Light Theme" x:Name="mnuLightTheme" Click="mnuLightTheme_Click" />
                     <MenuItem Header="_Dark Theme" x:Name="mnuDarkTheme" Click="mnuDarkTheme_Click" />
                     <Separator />
-                    <MenuItem Header="_High Contrast - White on Black" x:Name="mnuHcTheme1" Click="mnuHcTheme1_Click" />
-                    <MenuItem Header="_High Contrast - Green on Black" x:Name="mnuHcTheme2" Click="mnuHcTheme2_Click" />
-                    <MenuItem Header="_High Contrast - Black on White" x:Name="mnuHcTheme3" Click="mnuHcTheme3_Click" />
+                    <MenuItem Header="High Contrast - _White on Black" x:Name="mnuHcTheme1" Click="mnuHcTheme1_Click" />
+                    <MenuItem Header="High Contrast - _Green on Black" x:Name="mnuHcTheme2" Click="mnuHcTheme2_Click" />
+                    <MenuItem Header="High Contrast - _Black on White" x:Name="mnuHcTheme3" Click="mnuHcTheme3_Click" />
+                    <Separator />
+                    <MenuItem Header="_System" x:Name="mnuSystem" Click="mnuSystem_Click" />
+                    <Separator />
+                    <MenuItem Header="_Aero" x:Name="mnuAero" Click="mnuAero_Click" />
+                    <MenuItem Header="_Colored Aero..." x:Name="mnuColoredAero" Click="mnuColoredAero_Click" />
                     <Separator />
                     <MenuItem Header="D_efault New" x:Name="mnuDefaultCs" Click="mnuDefaultCs_Click" />
                 </MenuItem>
+                <MenuItem Header="_Set Culture..." x:Name="mnuCulture" Click="mnuCulture_Click" />
                 <MenuItem Header="_Exit" x:Name="mnuExit" Click="mnuExit_Click" />
             </MenuItem>
             <MenuItem Header="_Test Menu">
@@ -105,27 +111,33 @@
             </MenuItem>
         </flat:Menu>
 
-        <flat:SelectPanel x:Name="stkTabs" Grid.Row="1" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" MultiSelect="False" BorderThickness="0,0,1,0" />
+        <flat:SelectPanel x:Name="stkTabs" Grid.Row="1" MultiSelect="False" BorderThickness="0,0,1,0" ThemeValueExclude="CornerRadius" />
         <TextBlock x:Name="lblStart" Grid.Column="1" Grid.Row="1" Margin="20,20,0,0">
             <Run Text="Select a test from the left to get started!" /><LineBreak />
             <LineBreak />
             <Run Text="You can also change the UI's color from the Application menu in the top-left." />
         </TextBlock>
         <Grid x:Name="grdTests" Grid.Column="1" Grid.Row="1">
-            <local:ButtonsTest x:Name="buttonsTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:CheckBoxTest x:Name="checkBoxTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:DialogsTest x:Name="dialogsTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:FileSelectTest x:Name="fileSelectTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:FlatWindowTest x:Name="flatWindowTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:PositionSelectTest x:Name="posSelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:PropertyListTest x:Name="propListTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:TabControlTest x:Name="tabControlTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:TwoBasicSelectPanels x:Name="twoBasicTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:TwoPositionSelectTest x:Name="twoSelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:SelectPanelTest x:Name="selectPanelTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:SelectPanelScrollTest x:Name="selscrollTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:SpinnersTest x:Name="spinnersTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
-            <local:WildcardMatchTest x:Name="wildcardTest" ColorScheme="{Binding ElementName=mainWindow, Path=ColorScheme}" Visibility="Collapsed" />
+            <local:BrushSerializerTest x:Name="serializerTest" Visibility="Collapsed" />
+            <local:ButtonsTest x:Name="buttonsTest" Visibility="Collapsed" />
+            <local:CheckBoxTest x:Name="checkBoxTest" Visibility="Collapsed" />
+            <local:ColorsTest x:Name="colorsTest" Visibility="Collapsed" />
+            <local:ContentControlWithMenuTest x:Name="contentTest" Visibility="Collapsed" />
+            <local:CsvLineTest x:Name="csvTest" Visibility="Collapsed" />
+            <local:DialogsTest x:Name="dialogsTest" Visibility="Collapsed" />
+            <local:FileSelectTest x:Name="fileSelectTest" Visibility="Collapsed" />
+            <local:FlatWindowTest x:Name="flatWindowTest" Visibility="Collapsed" />
+            <local:FlowDocumentTest x:Name="flowDocTest" Visibility="Collapsed" />
+            <local:ParticleEmitterTest x:Name="particleEmitterTest" Visibility="Collapsed" />
+            <local:PositionSelectTest x:Name="posSelTest" Visibility="Collapsed" />
+            <local:PropertyListTest x:Name="propListTest" Visibility="Collapsed" />
+            <local:TabControlTest x:Name="tabControlTest" Visibility="Collapsed" />
+            <local:TwoBasicSelectPanels x:Name="twoBasicTest" Visibility="Collapsed" />
+            <local:TwoPositionSelectTest x:Name="twoSelTest" Visibility="Collapsed" />
+            <local:SelectPanelTest x:Name="selectPanelTest" Visibility="Collapsed" />
+            <local:SelectPanelScrollTest x:Name="selscrollTest" Visibility="Collapsed" />
+            <local:SpinnersTest x:Name="spinnersTest" Visibility="Collapsed" />
+            <local:WildcardMatchTest x:Name="wildcardTest" Visibility="Collapsed" />
         </Grid>
     </Grid>
 </flat:FlatWindow>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace SolidShineUi.Utils
     /// Used with the <see cref="PropertyList.Dialogs.LinearGradientEditorDialog"/> and <see cref="PropertyList.Dialogs.RadialGradientEditorDialog"/>.
     /// </summary>
     [Localizability(LocalizationCategory.None), DefaultEvent(nameof(GradientChanged))]
-    public partial class GradientBar : UserControl
+    public partial class GradientBar : ThemedUserControl
     {
         /// <summary>
         /// Create a new GradientBar.
@@ -46,6 +47,8 @@ namespace SolidShineUi.Utils
         /// When setting a list of gradient stops, a deep-copy clone of all the stops are actually made, to avoid situations where 
         /// edits are applied when not wanted or if the inputted collection is frozen.
         /// </remarks>
+        [Category("Common")]
+        [Description("Get or set the list of gradient stops to display in this GradientBar.")]
         public GradientStopCollection GradientStops
         {
             get
@@ -128,7 +131,7 @@ namespace SolidShineUi.Utils
         public Brush StopFill { get => (Brush)GetValue(StopFillProperty); set => SetValue(StopFillProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopFill"/>. See the related property for details.</summary>
-        public static DependencyProperty StopFillProperty
+        public static readonly DependencyProperty StopFillProperty
             = DependencyProperty.Register(nameof(StopFill), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.White.ToBrush(), OnStopBrushesChanged));
 
@@ -139,7 +142,7 @@ namespace SolidShineUi.Utils
         public Brush StopSelectedFill { get => (Brush)GetValue(StopSelectedFillProperty); set => SetValue(StopSelectedFillProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopSelectedFill"/>. See the related property for details.</summary>
-        public static DependencyProperty StopSelectedFillProperty
+        public static readonly DependencyProperty StopSelectedFillProperty
             = DependencyProperty.Register(nameof(StopSelectedFill), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush(), OnStopBrushesChanged));
 
@@ -151,7 +154,7 @@ namespace SolidShineUi.Utils
         public Brush StopBorderBrush { get => (Brush)GetValue(StopBorderBrushProperty); set => SetValue(StopBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty StopBorderBrushProperty
+        public static readonly DependencyProperty StopBorderBrushProperty
             = DependencyProperty.Register(nameof(StopBorderBrush), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush(), OnStopBrushesChanged));
 
@@ -162,7 +165,7 @@ namespace SolidShineUi.Utils
         public Brush StopBorderHighlightBrush { get => (Brush)GetValue(StopBorderHighlightBrushProperty); set => SetValue(StopBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StopBorderHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty StopBorderHighlightBrushProperty
+        public static readonly DependencyProperty StopBorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(StopBorderHighlightBrush), typeof(Brush), typeof(GradientBar),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush(), OnStopBrushesChanged));
 
@@ -176,7 +179,7 @@ namespace SolidShineUi.Utils
 
         #endregion
 
-        #region ColorScheme
+        #region ColorScheme / SsuiTheme
 
         /// <summary>
         /// Raised when the ColorScheme property is changed.
@@ -212,6 +215,8 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the color scheme used for this control.")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
@@ -236,6 +241,19 @@ namespace SolidShineUi.Utils
             imgLeft.Source = IconLoader.LoadIcon("LeftArrow", cs);
             imgRight.Source = IconLoader.LoadIcon("RightArrow", cs);
             imgOffset.Source = IconLoader.LoadIcon("LeftRightArrow", cs);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            imgAdd.Source = IconLoader.LoadIcon("Add", ssuiTheme.IconVariation);
+            imgDelete.Source = IconLoader.LoadIcon("Delete", ssuiTheme.IconVariation);
+            imgSwap.Source = IconLoader.LoadIcon("Transfer", ssuiTheme.IconVariation);
+            imgLeft.Source = IconLoader.LoadIcon("LeftArrow", ssuiTheme.IconVariation);
+            imgRight.Source = IconLoader.LoadIcon("RightArrow", ssuiTheme.IconVariation);
+            imgOffset.Source = IconLoader.LoadIcon("LeftRightArrow", ssuiTheme.IconVariation);
         }
 
         #endregion
@@ -303,6 +321,12 @@ namespace SolidShineUi.Utils
             brdrCBack.Opacity = 0.4;
             rectColor.Fill = null;
             txtCount.Text = "(none selected)";
+
+            foreach (GradientStopItem gsi in grdStops.Children)
+            {
+                if (gsi == null) continue;
+                gsi.IsSelected = false;
+            }
         }
 
         /// <summary>
@@ -371,6 +395,8 @@ namespace SolidShineUi.Utils
         /// </summary>
         /// <exception cref="ArgumentNullException">thrown if attempting to set this property to <c>null</c>; use <see cref="Deselect"/> instead</exception>
         /// <exception cref="ArgumentException">thrown if attempting to set this property to a <see cref="GradientStop"/> that isn't in this editor</exception>
+        [Category("Common")]
+        [Description("Get or set the gradient stop that is currently selected.")]
 #if NETCOREAPP
         public GradientStop? SelectedGradientStop
 #else
@@ -383,21 +409,28 @@ namespace SolidShineUi.Utils
             }
             set
             {
+#if NET6_0_OR_GREATER
+                ArgumentNullException.ThrowIfNull(value, nameof(value));
+#else
                 if (value == null) throw new ArgumentNullException(nameof(value));
+#endif
                 SelectStop(value);
             }
         }
-#endregion
+        #endregion
 
         #region ShowControls
 
         /// <summary>
         /// Get or set if editing and navigation controls should be visible in the gradient bar. If not, then only the bar and stops are shown.
         /// </summary>
+
+        [Category("Appearance")]
+        [Description("Get or set if editing and navigation controls should be visible in the gradient bar.")]
         public bool ShowControls { get => (bool)GetValue(ShowControlsProperty); set => SetValue(ShowControlsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowControls"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowControlsProperty
+        public static readonly DependencyProperty ShowControlsProperty
             = DependencyProperty.Register("ShowControls", typeof(bool), typeof(GradientBar),
             new FrameworkPropertyMetadata(true));
 
@@ -770,7 +803,15 @@ namespace SolidShineUi.Utils
         private void btnColorChange_Click(object sender, RoutedEventArgs e)
         {
             if (_selected == null) return;
-            ColorPickerDialog cpd = new ColorPickerDialog(ColorScheme, _selected.Color);
+            ColorPickerDialog cpd = new ColorPickerDialog(_selected.Color);
+            if (SsuiTheme != null && SsuiTheme is SsuiAppTheme sat)
+            {
+                cpd.ApplySsuiTheme(sat);
+            }
+            else
+            {
+                cpd.SsuiTheme = new SsuiAppTheme(ColorScheme);
+            }
             cpd.ShowDialog();
 
             if (cpd.DialogResult)
@@ -782,6 +823,23 @@ namespace SolidShineUi.Utils
                 RenderStops();
                 GradientChanged?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        /// <summary>
+        /// Check if two <see cref="GradientStop"/> objects have the same values.
+        /// </summary>
+        /// <param name="gs1">the first stop to compare</param>
+        /// <param name="gs2">the second stop to compare</param>
+        /// <returns>
+        /// <c>true</c> if the two stops have the same <c>Color</c> and <c>Offset</c> value; otherwise <c>false</c>
+        /// </returns>
+        /// <remarks>
+        /// This is different from doing an equality check (<c>==</c>), which checks if they are the same object in memory.
+        /// This only checks the two stops' <see cref="GradientStop.Color"/> and <see cref="GradientStop.Offset"/> properties.
+        /// </remarks>
+        public static bool AreStopsEqual(GradientStop gs1, GradientStop gs2)
+        {
+            return gs1.Color == gs2.Color && gs1.Offset == gs2.Offset;
         }
     }
 }

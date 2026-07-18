@@ -19,9 +19,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public EnumerableEditor()
         {
             InitializeComponent();
-        }
 
-        // TODO: add section to load in the propertyeditor type needed for child items in the list
+            // load in string values
+            lblView.Text = Strings.View;
+            mnuEdit.Header = Strings.ViewItems;
+        }
 
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(IEnumerable<>) };
@@ -35,24 +37,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool IsPropertyWritable { get => _writable; set => _writable = value; }
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
-
-        ColorScheme _cs = new ColorScheme();
+        public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ApplyColorScheme(ColorScheme cs)
+        public void ApplySsuiTheme(SsuiTheme theme)
         {
-            _cs = cs;
-            btnMenu.ColorScheme = cs;
-            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", cs);
+            btnMenu.SsuiTheme = theme;
+            imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
         /// <inheritdoc/>
@@ -66,7 +57,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #if NETCOREAPP
         IEnumerable? listVal;
 
-        ExperimentalPropertyList? _parent = null;
+        IPropertyEditorHost? _host = null;
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
@@ -104,7 +95,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #else
         IEnumerable listVal;
         
-        ExperimentalPropertyList _parent = null;
+        IPropertyEditorHost _host = null;
         
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
@@ -150,10 +141,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (listVal != null)
             {
 #if NETCOREAPP
-                IPropertyEditor? ipe = _parent?.CreateEditorForType(_listType);
+                IPropertyEditor? ipe = _host?.CreateEditorForType(_listType);
                 Type? propEditorType = null;
 #else
-                IPropertyEditor ipe = _parent?.CreateEditorForType(_listType);
+                IPropertyEditor ipe = _host?.CreateEditorForType(_listType);
                 Type propEditorType = null;
 #endif
 
@@ -163,15 +154,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 }
 
                 ListEditorDialog led = new ListEditorDialog();
-                led.ColorScheme = _cs;
+                led.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
                 led.LoadEnumerable(listVal, _listType, propEditorType);
                 if (listVal is ICollection icol)
                 {
-                    led.Description = $"collection of {_listType.Name} ({icol.Count} items), stored in a {listVal.GetType().Name.Replace("`1", "")}:";
+                    led.Description = $"collection of {_listType.Name} ({icol.Count} {Strings.Items}), in a {listVal.GetType().Name.Replace("`1", "")}:";
                 }
                 else
                 {
-                    led.Description = $"collection of {_listType.Name}, stored in a {listVal.GetType().Name.Replace("`1", "")}:";
+                    led.Description = $"collection of {_listType.Name}, in a {listVal.GetType().Name.Replace("`1", "")}:";
                 }
 
                 led.Owner = Window.GetWindow(this);
@@ -179,7 +170,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else
             {
-                MessageBox.Show("No value is set for this property (it is set to null).");
+                MessageBox.Show(Strings.NoValueIsSet);
             }
         }
 
@@ -211,17 +202,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 if (value == null)
                 {
                     // null value
-                    contentsData = "(null)";
+                    contentsData = Strings.Null;
                 }
                 else
                 {
                     if (listVal is ICollection icol)
                     {
-                        contentsData = icol.Count + " items";
+                        contentsData = icol.Count + " " + Strings.Items;
                     }
                     else
                     {
-                        contentsData = "collection";
+                        contentsData = Strings.Collection;
                     }
                 }
 
@@ -231,7 +222,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 if (value == null)
                 {
-                    txtListData.Text = "(null)";
+                    txtListData.Text = Strings.Null;
                 }
                 else
                 {
