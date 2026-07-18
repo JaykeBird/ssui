@@ -2,21 +2,10 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-
-#if AVALONIA
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.Layout;
-using Avalonia.Interactivity;
-#else
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-#endif
 
 namespace SolidShineUi
 {
@@ -81,6 +70,7 @@ namespace SolidShineUi
             PreviewKeyUp += LinkTextBlock_PreviewKeyUp;
         }
 
+        #endregion
 
         bool isHighlighted = false;
 
@@ -213,11 +203,7 @@ namespace SolidShineUi
         {
             if (IsEnabled)
             {
-#if AVALONIA
-                if (UnderlineOnHighlight) TextDecorations = new TextDecorationCollection() { new TextDecoration() { Location = TextDecorationLocation.Underline } };
-#else
                 if (UnderlineOnHighlight) TextDecorations = System.Windows.TextDecorations.Underline;
-#endif
                 Foreground = HighlightBrush;
                 isHighlighted = true;
             }
@@ -231,22 +217,6 @@ namespace SolidShineUi
                 Foreground = TextBrush;
                 isHighlighted = false;
             }
-        }
-
-#if AVALONIA
-        void LinkTextBlock_MouseEnter(object? sender, PointerEventArgs e)
-        {
-            Highlight();
-        }
-
-        void LinkTextBlock_MouseLeave(object? sender, PointerEventArgs e)
-        {
-            Unlight();
-        }
-
-        void LinkTextBlock_GotKeyboardFocus(object? sender, GotFocusEventArgs e)
-        {
-            Highlight();
         }
 
         #endregion
@@ -272,7 +242,6 @@ namespace SolidShineUi
         {
             Unlight();
         }
-#endif
 
 #if NETCOREAPP
         void LinkTextBlock_PreviewTouchUp(object? sender, TouchEventArgs e)
@@ -283,7 +252,6 @@ namespace SolidShineUi
             RaiseClick();
         }
 
-#if !AVALONIA
         void LinkTextBlock_PreviewStylusUp(object sender, StylusEventArgs e)
         {
             RaiseClick();
@@ -295,7 +263,6 @@ namespace SolidShineUi
         }
 
         void LinkTextBlock_PreviewKeyUp(object sender, KeyEventArgs e)
-#endif
         {
             if (e.Key == Key.Enter || e.Key == Key.Space)
             {
@@ -340,28 +307,8 @@ namespace SolidShineUi
         {
             try
             {
-#if AVALONIA
-                if (Text == null)
-                {
-                    return;
-                }
-
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    Process.Start(new ProcessStartInfo(Text) { UseShellExecute = true });
-                }
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    Process.Start("xdg-open", Text);
-                }
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    Process.Start("open", Text);
-                }
-#else
                 // must use UseShellExecute so that it works on .NET Core
                 Process.Start(new ProcessStartInfo { FileName = Text, UseShellExecute = true });
-#endif
             }
             catch (ArgumentNullException)
             {

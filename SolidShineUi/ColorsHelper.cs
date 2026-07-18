@@ -2,13 +2,14 @@
 using System.Globalization;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Drawing;
+
 
 #if AVALONIA
 using Avalonia.Media;
 using Color = Avalonia.Media.Color;
 #else
 using System.Windows.Media;
-using System.Drawing;
 using Color = System.Windows.Media.Color;
 #endif
 
@@ -147,18 +148,6 @@ namespace SolidShineUi
                     //throw new ArgumentOutOfRangeException(nameof(hex), "The hex value must have a length of 3, 6, or 8, not including the '#' symbol.");
                     throw new FormatException("The hex value must have a length of 3, 6, or 8, not including the '#' symbol.");
             }
-        }
-
-        /// <summary>
-        /// Create a color based upon an OLE color value.
-        /// </summary>
-        /// <param name="oleColor">The OLE color value to translate.</param>
-        /// <returns>A color that is the translation of the OLE color value.</returns>
-        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
-        public static Color CreateFromOle(int oleColor)
-        {
-            System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
-            return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
         // I expect that ToHexStringLegacy is probably a bit faster / less resource intensive,

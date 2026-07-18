@@ -286,6 +286,10 @@ namespace SolidShineUi
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             nameof(HighlightBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
 
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+            nameof(ClickBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
+
         /// <summary>The backing dependency property for <see cref="CheckedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(
             nameof(CheckedBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));

@@ -403,7 +403,7 @@ namespace SolidShineUi
                         }
                         else
                         {
-                            isl.Select(item);
+                            isl.SelectItem(item);
                         }
 
                         RaiseSelectionChangedEvent((new[] { item }).ToList(), new List<IClickSelectableControl>());
@@ -910,7 +910,7 @@ namespace SolidShineUi
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
                         isl.Insert(moveIndex, suc);
-                        if (resel) isc.Select(suc);
+                        if (resel) isc.SelectItem(suc);
                     }
                     else
                     {
@@ -969,7 +969,7 @@ namespace SolidShineUi
                         bool resel = isc.IsSelected(suc);
                         isl.Remove(suc);
                         isl.Insert(moveIndex, suc);
-                        if (resel) isc.Select(suc);
+                        if (resel) isc.SelectItem(suc);
                     }
                     else
                     {

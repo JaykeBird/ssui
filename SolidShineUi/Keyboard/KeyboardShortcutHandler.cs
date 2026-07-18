@@ -8,7 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 
-using KeyBoard = Avalonia.Input.KeyboardDevice;
+using Keyboard = Avalonia.Input.KeyboardDevice;
 #else
 using System.Windows;
 using System.Windows.Controls;

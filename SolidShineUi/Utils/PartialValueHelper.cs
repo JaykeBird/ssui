@@ -1,9 +1,11 @@
-﻿using SolidShineUi.Converters;
-using System;
-using System.Windows;
+﻿using System;
 #if AVALONIA
+using Avalonia;
 using Avalonia.Data.Converters;
 using Avalonia.Controls.Converters;
+#else
+using System.Windows;
+using SolidShineUi.Converters;
 #endif
 
 namespace SolidShineUi.Utils
