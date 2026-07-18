@@ -252,10 +252,14 @@ namespace SolidShineUi.KeyboardShortcuts
         public ICommand Command { get => c; }
 #endif
 
+#pragma warning disable CA1822 // Mark members as static
+        // this is part of the ICommandSource interface in Avalonia, but is harmless to have in the WPF version
+
         /// <summary>
         /// Gets a value indicating whether this control and all its parents are enabled.
         /// </summary>
         public bool IsEffectivelyEnabled => true;
+#pragma warning restore CA1822 // Mark members as static
 
         /// <summary>
         /// Activate this key action.
