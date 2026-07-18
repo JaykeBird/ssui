@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Media.TextFormatting;
+using Avalonia.Media;
 using Avalonia.Metadata;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {
@@ -27,11 +26,13 @@ namespace SolidShineUi
             SetValue(ItemsProperty, new SelectableCollection<TabItem>());
 
             Loaded += TabControl_Loaded;
+            SizeChanged += control_SizeChanged;
 
             Items.CollectionChanged += Items_CollectionChanged;
             Items.SelectionChanged += Items_SelectionChanged;
         }
 
+        bool _internalAction = false;
 
         /// <summary>
         /// Get or set if the first tab should be selected right away when the control is loaded. This property has no effect after the control is loaded.
@@ -40,11 +41,85 @@ namespace SolidShineUi
 
         private void TabControl_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            if (SelectFirstTabOnLoad)
+            if (SelectFirstTabOnLoad && Items.Count > 0)
             {
-
+                Items.Select(Items[0]);
             }
         }
+
+        #region Template IO
+
+        /// <inheritdoc/>
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+
+            // get items
+            LoadTemplateItems(e);
+        }
+
+        ItemsControl? ic = null;
+        ScrollViewer? sv = null;
+
+        MenuButton? btnTabList = null;
+        FlatButton? btnScrollLeft = null;
+        FlatButton? btnScrollRight = null;
+
+        bool itemsLoaded = false;
+
+        void LoadTemplateItems(TemplateAppliedEventArgs e)
+        {
+            if (!itemsLoaded)
+            {
+                ic = e.NameScope.Find<ItemsControl>("PART_TabBar");
+                sv = e.NameScope.Find<ScrollViewer>("PART_TabScroll");
+                btnTabList = e.NameScope.Find<MenuButton>("PART_TabMenu");
+                btnScrollLeft = e.NameScope.Find<FlatButton>("btnScrollLeft");
+                btnScrollRight = e.NameScope.Find<FlatButton>("btnScrollRight");
+
+                if (ic != null && sv != null)
+                {
+                    sv.ScrollChanged += sv_ScrollChanged;
+                    ic.SizeChanged += control_SizeChanged;
+                    itemsLoaded = true;
+                }
+
+                if (btnTabList != null)
+                {
+                    btnTabList.HighlightBrush = ButtonHighlightBackground;
+                    btnTabList.BorderHighlightBrush = ButtonBorderHighlightBrush;
+                    btnTabList.ClickBrush = ButtonClickBrush;
+
+                    // TODO: add Click action
+                }
+
+                if (btnScrollLeft != null)
+                {
+                    btnScrollLeft.HighlightBrush = ButtonHighlightBackground;
+                    btnScrollLeft.BorderHighlightBrush = ButtonBorderHighlightBrush;
+                    btnScrollLeft.ClickBrush = ButtonClickBrush;
+
+                    btnScrollLeft.Click += (s, e) =>
+                    {
+                        DoScroll(TabScrollCommandAction.Left);
+                    };
+                }
+
+                if (btnScrollRight != null)
+                {
+                    btnScrollRight.HighlightBrush = ButtonHighlightBackground;
+                    btnScrollRight.BorderHighlightBrush = ButtonBorderHighlightBrush;
+                    btnScrollRight.ClickBrush = ButtonClickBrush;
+
+                    btnScrollRight.Click += (s, e) =>
+                    {
+                        DoScroll(TabScrollCommandAction.Left);
+                    };
+                }
+            }
+        }
+
+        #endregion
 
         #region SelectableCollection handling
 
@@ -120,13 +195,93 @@ namespace SolidShineUi
                     break;
             }
 
-            // CheckScrolling();
+            CheckScrolling();
         }
 
         private void Items_SelectionChanged(object sender, CollectionSelectionChangedEventArgs e)
         {
-            // find a way to access the visual items to be added into the TabControl's template,
-            // so that I can mark the right TabDisplayItem as selected and the others as not selected
+            if (_internalAction) return;
+
+            if (e.AddedItems.Count > 0)
+            {
+                // selection has changed
+                TabItem newItem = ((SelectionChangedEventArgs<TabItem>)e).AddedItems[0];
+
+                UpdateSelectedState(newItem);
+                SetupCurrentTab(newItem);
+
+                TabChanged?.Invoke(this, new TabItemChangeEventArgs(newItem));
+            }
+            else
+            {
+                // nothing selected now
+                if (Items.SelectedItems.Count == 0)
+                {
+                    SetupCurrentTab(null);
+
+                    if (Items.Count > 0)
+                    {
+                        switch (SelectedTabClosedAction)
+                        {
+                            case SelectedTabCloseAction.SelectNothing:
+                                // nothing to do
+                                break;
+                            case SelectedTabCloseAction.SelectFirstTab:
+                                Items.Select(Items[0]);
+                                break;
+                            case SelectedTabCloseAction.SelectLastTab:
+                                Items.Select(Items[Items.Count - 1]);
+                                break;
+                            case SelectedTabCloseAction.SelectTabToLeft:
+                                if (closedTabIndex == -1)
+                                {
+                                    // most likely closed via Items.Remove command
+                                    Items.Select(Items[0]);
+                                }
+                                else if (closedTabIndex == 0)
+                                {
+                                    // left most tab closed
+                                    Items.Select(Items[0]);
+                                }
+                                else
+                                {
+                                    Items.Select(Items[closedTabIndex - 1]);
+                                }
+                                break;
+                            case SelectedTabCloseAction.SelectTabToRight:
+                                if (closedTabIndex == -1)
+                                {
+                                    // most likely closed via Items.Remove command
+                                    Items.Select(Items[Items.Count - 1]);
+                                }
+                                else
+                                {
+                                    Items.Select(Items[closedTabIndex]);
+                                }
+                                break;
+                            default:
+                                // treat as if SelectNothing
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Items_ItemRemoving(object sender, CancelableItemEventArgs<TabItem> e)
+        {
+            if (_internalAction) return;
+            if (e.Item != null)
+            {
+                if (PrepareCloseTab(e.Item))
+                {
+                    // good to go, event can continue with closing tab
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         #endregion
@@ -167,13 +322,34 @@ namespace SolidShineUi
 
         void SetupCurrentTab(TabItem? tab)
         {
-            //if (ch != null)
-            //{
-            //    ch.Child = tab?.Content;
-            //}
-
             SelectedTab = tab;
             SelectedTabContent = tab?.Content;
+        }
+
+        void UpdateSelectedState(TabItem selectedTab)
+        {
+            // fix to make sure the correct tab has the IsSelected state
+            if (ic != null)
+            {
+                for (int i = 0; i < ic.Items.Count; i++)
+                {
+                    if (ic.Items[i] != null)
+                    {
+                        Control? c = ic.ContainerFromItem(ic.Items[i]!);
+                        if (c is TabDisplayItem tb)
+                        {
+                            if (tb.TabItem != null && tb.TabItem == selectedTab)
+                            {
+                                tb.IsSelected = true;
+                            }
+                            else
+                            {
+                                tb.IsSelected = false;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
@@ -351,5 +527,188 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Brushes
+
+        /// <summary>
+        /// Get or set the background used for the content area of the TabControl.
+        /// </summary>
+        public IBrush ContentAreaBackground { get => GetValue(ContentAreaBackgroundProperty); set => SetValue(ContentAreaBackgroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ContentAreaBackground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> ContentAreaBackgroundProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(ContentAreaBackground), Colors.White.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for the background of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// </summary>
+        public IBrush TabHighlightBrush { get => GetValue(TabHighlightBrushProperty); set => SetValue(TabHighlightBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="TabHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> TabHighlightBrushProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(TabHighlightBrush), Colors.Gainsboro.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for the borders of a tab while it is highlighted (i.e. mouse over, keyboard focus).
+        /// </summary>
+        public IBrush TabBorderHighlightBrush { get => GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> TabBorderHighlightBrushProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(TabBorderHighlightBrush), Colors.DimGray.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for the borders of tabs. This is different from the <see cref="TemplatedControl.BorderBrush"/> 
+        /// used for the rest of the TabControl.
+        /// </summary>
+        public IBrush TabBorderBrush { get => GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> TabBorderBrushProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(TabBorderBrush), Colors.Black.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for the close glyph used in the tabs (where <see cref="TabItem.CanClose"/> is set to <c>true</c>).
+        /// </summary>
+        public IBrush TabCloseBrush { get => GetValue(TabCloseBrushProperty); set => SetValue(TabCloseBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="TabCloseBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> TabCloseBrushProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(TabCloseBrush), Colors.Black.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for the background of a tab. Individual tabs can overwrite their backgrounds by changing <see cref="TabItem.TabBackground"/>.
+        /// </summary>
+        public IBrush TabBackground { get => GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="TabBackground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> TabBackgroundProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(TabBackground), Colors.LightGray.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for the background of a selected tab.
+        /// </summary>
+        public IBrush SelectedTabBackground { get => GetValue(SelectedTabBackgroundProperty); set => SetValue(SelectedTabBackgroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="SelectedTabBackground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> SelectedTabBackgroundProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(SelectedTabBackground), Colors.White.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// </summary>
+        public IBrush ButtonHighlightBackground { get => GetValue(ButtonHighlightBackgroundProperty); set => SetValue(ButtonHighlightBackgroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ButtonHighlightBackground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> ButtonHighlightBackgroundProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(ButtonHighlightBackground), Colors.Silver.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for the borders of buttons in the TabControl, when they are highlighted (i.e. mouse over).
+        /// </summary>
+        public IBrush ButtonBorderHighlightBrush { get => GetValue(ButtonBorderHighlightBrushProperty); set => SetValue(ButtonBorderHighlightBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ButtonBorderHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> ButtonBorderHighlightBrushProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(ButtonBorderHighlightBrush), Colors.DimGray.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush used for buttons in the TabControl, when they are being clicked (i.e. mouse down, key down).
+        /// </summary>
+        public IBrush ButtonClickBrush { get => GetValue(ButtonClickBrushProperty); set => SetValue(ButtonClickBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush> ButtonClickBrushProperty
+            = AvaloniaProperty.Register<TabControl, IBrush>(nameof(ButtonClickBrush), Colors.LightGray.ToBrush());
+
+        #endregion
+
+        #region Scrolling
+
+        private bool _scrollButtonsVisible = false;
+
+        /// <summary>
+        /// Get if the scroll buttons are currently visible in the tab bar.
+        /// </summary>
+        public bool ScrollButtonsVisible { get => _scrollButtonsVisible; private set => SetAndRaise(ScrollButtonsVisibleProperty, ref _scrollButtonsVisible, value); }
+
+        /// <summary>The backing direct property for <see cref="ScrollButtonsVisible"/>. See the related property for details.</summary>
+        public static readonly DirectProperty<TabControl, bool> ScrollButtonsVisibleProperty
+            = AvaloniaProperty.RegisterDirect<TabControl, bool>(nameof(ScrollButtonsVisible), (s) => s.ScrollButtonsVisible, unsetValue: false);
+
+        void CheckScrolling()
+        {
+            if (sv == null || ic == null) return;
+
+            if (sv.Viewport.Width == 0)
+            {
+                return;
+            }
+
+            if (ic.Width > sv.Viewport.Width)
+            {
+                ScrollButtonsVisible = true;
+            }
+            else
+            {
+                ScrollButtonsVisible = false;
+            }
+        }
+
+        /// <summary>
+        /// Perform a scroll action on the TabControl's tab bar.
+        /// </summary>
+        /// <param name="a">The scroll action to take</param>
+        public void DoScroll(TabScrollCommandAction a)
+        {
+            if (sv == null) return;
+
+            // double offset = sv.Offset.X;
+
+            switch (a)
+            {
+                case TabScrollCommandAction.Left:
+                    sv.LineLeft(); //.ScrollToHorizontalOffset(Math.Max(offset - 20, 0));
+                    break;
+                case TabScrollCommandAction.Right:
+                    sv.LineRight(); //.ScrollToHorizontalOffset(Math.Min(offset + 20, sv.ScrollableWidth));
+                    break;
+                case TabScrollCommandAction.Home:
+                    sv.ScrollToHome(); //.ScrollToHorizontalOffset(0);
+                    break;
+                case TabScrollCommandAction.End:
+                    sv.ScrollToEnd(); //.ScrollToHorizontalOffset(sv.ScrollableWidth);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void control_SizeChanged(object? sender, SizeChangedEventArgs e)
+        {
+            // note that this both handles the TabControl changes and the internal ItemControl changes
+            if (e.WidthChanged)
+            {
+                CheckScrolling();
+            }
+        }
+
+        private void sv_ScrollChanged(object? sender, ScrollChangedEventArgs e)
+        {
+            if (e.ViewportDelta.X != 0)
+            {
+                CheckScrolling();
+            }
+        }
+
+        #endregion
     }
 }

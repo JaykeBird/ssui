@@ -1,17 +1,215 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:flat="clr-namespace:SolidShineUi" >
+                    xmlns:flat="clr-namespace:SolidShineUi"
+                    xmlns:ssut="clr-namespace:SolidShineUi.Utils" >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
         <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <Design.PreviewWith>
+		<Border Background="LightGray" Height="350" Width="220">
+            <StackPanel Orientation="Vertical" >
+			    <flat:TabControl Margin="10" BorderBrush="Red" BorderThickness="1" MinHeight="150" TabMinWidth="90" >
+                    <flat:TabItem Title="Title" />
+			    </flat:TabControl>
 
+                <flat:TabControl Margin="10" BorderBrush="Red" BorderThickness="1" MinHeight="150" TabMinWidth="90"
+                                 ShowTabListMenu="False"
+                                 ShowTabsOnBottom="True"
+                                 HorizontalTabBarHeight="32"
+                                 ButtonHighlightBackground="Magenta"
+                                 ContentAreaBackground="LightGreen" >
+                    <flat:TabItem Title="Title" />
+			    </flat:TabControl>
+            </StackPanel>
+		</Border>
+    </Design.PreviewWith>
 
     <ControlTheme x:Key="{x:Type flat:TabControl}" TargetType="flat:TabControl">
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+			<ControlTemplate TargetType="{x:Type flat:TabControl}" >
+				  <Grid Background="{TemplateBinding Background}"
+                        RowDefinitions="Auto,1*,Auto" ColumnDefinitions="Auto,1*,Auto" >
+                        <Grid Margin="0,0,0,0" x:Name="grdTabs" Grid.Column="1"
+                              Height="{TemplateBinding HorizontalTabBarHeight}"
+                              ColumnDefinitions="Auto,Auto,1*,Auto,Auto,Auto" >
+                            <Border BorderThickness="0" Background="Transparent" x:Name="PART_LeftHolder_Horizontal" Grid.Column="0" >
+                               <!-- <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding LeftTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrLeftElementParent" />-->
+                            </Border>
+                            <Border x:Name="brdrScrollLeft" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" BorderThickness="0,1,0,0"
+                                    BorderBrush="{TemplateBinding BorderBrush}" >
+                            </Border>
+                            <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="1" Padding="1" TransparentBack="True"
+                                             IsVisible="{TemplateBinding ScrollButtonsVisible}"
+                                             ClickBrush="{TemplateBinding ButtonClickBrush}"
+                                             HighlightBrush="{TemplateBinding ButtonHighlightBackground}"
+                                             BorderHighlightBrush="{TemplateBinding ButtonBorderHighlightBrush}">
+                                <Path Data="M8,0 L0,4 8,8 z" Fill="{TemplateBinding Foreground}" />
+                            </flat:FlatButton>
+                            <ScrollViewer x:Name="PART_TabScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="2" >
+                                <Grid Margin="0" ColumnDefinitions="Auto,1*">
+                                    <ItemsControl x:Name="PART_TabBar" ItemsSource="{TemplateBinding Items}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                 <ssut:TabDisplayItem TabItem="{Binding .}"
+                                                    MinWidth="{Binding TabMinWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    ShowTabOnBottom="{Binding ShowTabsOnBottom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    HighlightBrush="{Binding TabHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    BorderHighlightBrush="{Binding TabBorderHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    TabBorderBrush="{Binding TabBorderBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    SelectedTabBackground="{Binding SelectedTabBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    ButtonClickBrush="{Binding ButtonClickBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    ButtonHighlightBrush="{Binding ButtonHighlightBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    ButtonBorderHighlightBrush="{Binding ButtonBorderHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    CloseBrush="{Binding TabCloseBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    Background="{Binding TabBackground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
+                                                    ParentTabControl="{Binding ., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}" />
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Border x:Name="brdrTabsSide" Grid.Column="1" BorderBrush="{TemplateBinding BorderBrush}" 
+                                            VerticalAlignment="Bottom" BorderThickness="0,1,0,0" >
+                                    </Border>
+                                </Grid>
+                            </ScrollViewer>
+                            <Border x:Name="brdrScrollRight" Grid.Column="3" Grid.ColumnSpan="3" VerticalAlignment="Bottom"
+                                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,1,0,0" >
+                            </Border>
+                            <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
+                                             IsVisible="{TemplateBinding ScrollButtonsVisible}"
+                                             ClickBrush="{TemplateBinding ButtonClickBrush}"
+                                             HighlightBrush="{TemplateBinding ButtonHighlightBackground}"
+                                             BorderHighlightBrush="{TemplateBinding ButtonBorderHighlightBrush}" >
+                                <Path Data="M0,0 L8,4 0,8 z" Fill="{TemplateBinding Foreground}" />
+                            </flat:FlatButton>
+                            <Border BorderThickness="0" Background="Transparent" x:Name="PART_RightHolder_Horizontal" Grid.Column="4" >
+                                <!-- <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                    Tag="{Binding RightTabBarElement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="brdrRightElementParent" />-->
+                            </Border>
+                            <flat:MenuButton x:Name="PART_TabMenu" Grid.Column="5" Padding="0" MinWidth="20" Width="20" TransparentBack="True" ShowMenuArrow="False"
+                                             ClickBrush="{TemplateBinding ButtonClickBrush}"
+                                             HighlightBrush="{TemplateBinding ButtonHighlightBackground}"
+                                             BorderHighlightBrush="{TemplateBinding ButtonBorderHighlightBrush}"
+                                             IsVisible="{TemplateBinding ShowTabListMenu}">
+                                <flat:MenuButton.Menu>
+                                    <flat:ContextMenu ItemsSource="{TemplateBinding Items}" >
+
+                                    </flat:ContextMenu>
+                                </flat:MenuButton.Menu>
+                                <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      Height="5" Width="8" Margin="0" Stretch="Fill" />
+                            </flat:MenuButton>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,0" x:Name="grdVerticalTabs" Grid.Column="0" Grid.Row="1" IsVisible="False" >
+                            <!-- <ItemsControl x:Name="PART_VerticalTabBar" ItemsSource="{TemplateBinding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>-->
+                        </Grid>
+
+                        <Grid Grid.Row="1" Grid.Column="1" >
+                            <Border x:Name="PART_Content" BorderBrush="{TemplateBinding BorderBrush}"
+                                    Background="{TemplateBinding ContentAreaBackground}"
+                                    BorderThickness="1,0,1,1" >
+                                <ContentPresenter x:Name="PART_ContentHost" Content="{TemplateBinding SelectedTabContent}" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^[ShowTabsOnBottom=true] /template/ Border#PART_Content">
+            <Setter Property="BorderThickness" Value="1,1,1,0" />
+        </Style>
+
+        <Style Selector="^[ShowTabsOnBottom=true] /template/ Grid#grdTabs">
+            <Setter Property="Grid.Row" Value="2" />
+        </Style>
+
+        <Style Selector="^[ShowTabsOnBottom=true] /template/ Border#brdrScrollLeft">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+
+        <Style Selector="^[ShowTabsOnBottom=true] /template/ Border#brdrScrollRight">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+
+        <Style Selector="^[ShowTabsOnBottom=true] /template/ Border#brdrTabsSide">
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type ssut:TabDisplayItem}" TargetType="ssut:TabDisplayItem">
+        <Setter Property="Template">
+			<ControlTemplate TargetType="{x:Type ssut:TabDisplayItem}">
+				<Grid>
+					<Border BorderThickness="1,1,1,1" x:Name="border" 
+                            Focusable="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.CanSelect}"
+                            Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding TabBorderBrush}" >
+                        <Border BorderThickness="0" x:Name="brdrInnerColor"
+                                Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.TabBackground}" />
+                    </Border>
+                    <Border BorderThickness="1">
+                        <Grid ColumnDefinitions="1*,Auto,Auto">
+                            <Grid Grid.Column="0" Margin="{TemplateBinding TabItem.Padding}" ColumnDefinitions="Auto,1*" >
+                                <Image x:Name="imgIcon" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" Width="16" Source="{TemplateBinding TabItem.Icon}" UseLayoutRounding="True"
+                                   IsVisible="False" />
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,0,0" >
+                                    <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.Title}" />
+                                    <TextBlock x:Name="lblDirty" HorizontalAlignment="Left" VerticalAlignment="Center" Text="*" IsVisible="False" />
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Column="1" x:Name="grdExtraHolder">
+                                <!--  <Border local:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
+                                                Tag="{Binding ElementName=control, Path=TabItem.ExtraTabElement}" x:Name="brdrExtraElement" />-->
+                            </Grid>
+                            <flat:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" MinWidth="16" Margin="0,1" Padding="0" TransparentBack="True"
+                                             IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.CanClose}" >
+                                <Path x:Name="pathClose" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M1,0 L0,1 L4,5 L0,9 L1,10 L5,6 L9,10 L10,9 L6,5 L10,1 L9,0 L5,4 z"
+                                      Fill="{TemplateBinding CloseBrush}" />
+                            </flat:FlatButton>
+
+                            <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Grid.ColumnSpan="2" Opacity="0.8"
+                                       Stroke="{TemplateBinding Foreground}" IsVisible="False" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^[IsSelected=true] /template/ Border#border">
+            <Setter Property="Background" Value="Orange" />
+            <Setter Property="BorderThickness" Value="1,1,1,0" />
+        </Style>
+
+        <Style Selector="^[IsHighlighting=true] /template/ Border#border">
+            <Setter Property="Background" Value="LightGray" />
+        </Style>
+
     </ControlTheme>
 
 </ResourceDictionary>

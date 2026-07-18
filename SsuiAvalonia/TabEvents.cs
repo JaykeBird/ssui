@@ -60,21 +60,4 @@ namespace SolidShineUi
     /// <param name="e">The event arguments associated with this event.</param>
     public delegate void TabItemClosingEventHandler(object sender, TabItemClosingEventArgs e);
 
-
-    /// <summary>
-    /// References the action to take when the currently-selected tab is closed.
-    /// </summary>
-    public enum SelectedTabCloseAction
-    {
-        /// <summary>Do not select anything; all tabs are deselected and nothing is shown.</summary>
-        SelectNothing = 0,
-        /// <summary>Select the first (leftmost) tab on the TabControl.</summary>
-        SelectFirstTab = 1,
-        /// <summary>Select the last (rightmost) tab on the TabControl.</summary>
-        SelectLastTab = 2,
-        /// <summary>Select the tab to the left of the one being closed.</summary>
-        SelectTabToLeft = 3,
-        /// <summary>Select the tab to the right of the one being closed.</summary>
-        SelectTabToRight = 4,
-    }
 }

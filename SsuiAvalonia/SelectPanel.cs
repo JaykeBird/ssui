@@ -1,8 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Metadata;
@@ -12,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SolidShineUi
 {
@@ -32,8 +29,10 @@ namespace SolidShineUi
             SetValue(ItemsSourceProperty, Items);
         }
 
-        bool _internalAction = false; 
+        bool _internalAction = false;
+#pragma warning disable CS0414
         bool runApply = true;
+#pragma warning restore CS0414
         //private bool use_lbrdr = false;
 
         /// <inheritdoc/>
@@ -82,7 +81,7 @@ namespace SolidShineUi
                     //sv.AddHandler(ScrollViewer.PointerWheelChangedEvent, HandlePreviewMouseWheel, Avalonia.Interactivity.RoutingStrategies.Tunnel, true);
                     //sv.Unloaded += (s, _) => sv.RemoveHandler(ScrollViewer.PointerWheelChangedEvent, HandlePreviewMouseWheel);
                 }
-            }
+            } 
         }
 
         #endregion

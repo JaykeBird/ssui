@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Metadata;
 
 namespace SolidShineUi
 {
@@ -137,15 +138,16 @@ namespace SolidShineUi
         ///<summary>
         /// Get or set the brush displayed in the background of the tab. This will override the color of the TabControl itself, but transparency does allow the standard color to show through.
         ///</summary>
-        public Brush TabBackground { get => GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
+        public IBrush TabBackground { get => GetValue(TabBackgroundProperty); set => SetValue(TabBackgroundProperty, value); }
 
         /// <summary>The backing styled property for <see cref="TabBackground"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<Brush> TabBackgroundProperty
-            = AvaloniaProperty.Register<TabItem, Brush>(nameof(TabBackground), new SolidColorBrush(Colors.Transparent));
+        public static readonly StyledProperty<IBrush> TabBackgroundProperty
+            = AvaloniaProperty.Register<TabItem, IBrush>(nameof(TabBackground), new SolidColorBrush(Colors.Transparent));
 
         ///<summary>
         /// Get or set the content to display when this tab is selected.
         ///</summary>
+        [Content]
         public Control? Content { get => GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         /// <summary>The backing styled property for <see cref="Content"/>. See the related property for details.</summary>
