@@ -55,7 +55,8 @@
         <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="5,0" Text="Welcome to Avalonia!" />
         
         <flat:FlatButton x:Name="btnMain" Grid.Column="0" Grid.Row="2" Height="24" VerticalAlignment="Center"
-                         Margin="10,0" Click="FlatButton_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+                         Margin="10,0" Click="FlatButton_Click" RightClick="btnMain_RightClick"
+                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
             <TextBlock Text="HWHAT" />
         </flat:FlatButton>
         <flat:MenuButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" 

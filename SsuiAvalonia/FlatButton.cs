@@ -288,12 +288,16 @@ namespace SolidShineUi
             }
         }
 
+        // in the future, I'll have to look into listening to Avalonia's Tapped and RightTapped events, rather than directly parsing
+        // the pointer events myself. For now, though, I'm just focused on replicating the functionality in the WPF version
+
         #region Click / Selection Handling
 
         #region Base Variables
 
         private bool _isPressed = false;
         private bool _isRightPressed = false;
+        private bool _isPressedByKey = false;
 
         #endregion
 
@@ -534,6 +538,12 @@ namespace SolidShineUi
             = AvaloniaProperty.RegisterDirect<FlatButton, bool>(nameof(IsRightPressed), (fb) => fb.IsRightPressed, unsetValue: false);
 
         /// <summary>
+        /// The backing direct property for <see cref="IsPressedByKey"/>. See the related proeprty for details.
+        /// </summary>
+        public static readonly DirectProperty<FlatButton, bool> IsPressedByKeyProperty
+            = AvaloniaProperty.RegisterDirect<FlatButton, bool>(nameof(IsPressedByKey), (fb) => fb.IsPressedByKey, unsetValue: false);
+
+        /// <summary>
         /// Gets or sets a value indicating how this button should react to clicks.
         /// </summary>
         public ClickMode ClickMode
@@ -544,6 +554,7 @@ namespace SolidShineUi
 
         /// <summary>
         /// Gets or sets a value indicating whether this button is currently being pressed down via the primary input.
+        /// For being pressed by a key press, refer to <see cref="IsPressedByKey"/>.
         /// </summary>
         /// <remarks>
         /// Primary input includes the left mouse button, or a touch occurring with a pen on a tablet or a finger/stylus on a touchpad.
@@ -564,6 +575,16 @@ namespace SolidShineUi
         {
             get => _isRightPressed;
             private set => SetAndRaise(IsRightPressedProperty, ref _isRightPressed, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this button is currently being pressed down via the Enter or Space keys being held down.
+        /// For being pressed by other inputs (e.g., mouse, touch, pen), see <see cref="IsPressed"/>.
+        /// </summary>
+        public bool IsPressedByKey
+        {
+            get => _isPressedByKey;
+            private set => SetAndRaise(IsPressedProperty, ref _isPressedByKey, value);
         }
 
         #endregion
@@ -686,6 +707,42 @@ namespace SolidShineUi
             base.OnLostFocus(e);
 
             IsPressed = false;
+        }
+
+
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.Key == Key.Enter || e.Key == Key.Space)
+            {
+                _isPressedByKey = true;
+
+                if (ClickMode == ClickMode.Press)
+                {
+                    OnClick();
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            if (_isPressedByKey && (e.Key == Key.Enter || e.Key == Key.Space))
+            {
+                if (ClickMode != ClickMode.Press)
+                {
+                    OnClick();
+                }
+            }
+            else if (e.Key == Key.Apps)
+            {
+                OnRightClick();
+            }
         }
 
         #endregion

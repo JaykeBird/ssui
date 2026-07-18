@@ -38,6 +38,13 @@ namespace SsuiSampleAvalonia
             //AboutAvaloniaDialog aad = new AboutAvaloniaDialog();
             //aad.ShowDialog(this);
         }
+        private void btnMain_RightClick(object? sender, RoutedEventArgs e)
+        {
+            if (Debugger.IsAttached)
+            {
+                Debugger.Log(0, "UI", "RIGHT HELLO\n");
+            }
+        }
 
         private void MenuItem_Click_1(object? sender, RoutedEventArgs e)
         {
@@ -48,5 +55,6 @@ namespace SsuiSampleAvalonia
         {
             Close();
         }
+
     }
 }

@@ -13,8 +13,20 @@ namespace SolidShineUi
     /// This includes repeatedly firing an Execute event while the button is pressed down, and executing commands when pressing starts and stops.
     /// </summary>
     /// <remarks>
-    /// This is similar to the <see cref="Avalonia.Controls.RepeatButton"/>. One major difference is that this activates a separate Execute event
-    /// over and over while this button is being pressed, rather than activating the Click event. This provides some finer control over 
+    /// This is similar to the <see cref="Avalonia.Controls.RepeatButton"/>. One major difference is that this activates a separate <c>Execute</c> 
+    /// event over and over while this button is being pressed, rather than activating the <c>Click</c> event. This provides some finer control 
+    /// over what actions to take based upon the events being raised.
+    /// <para/>
+    /// <c>Click</c> will only be raised one time, after the button is pressed and subsequently released. <c>Execute</c> is raised repeatedly,
+    /// starting once the button is pressed and stopping once it is released. The delay before Execute begins being raised after the button is
+    /// pressed is controlled by <c>Delay</c>, and then the delay between each Execute raise afterwards is controlled by <c>Interval</c>.
+    /// Pressing and releasing the button before the <c>Delay</c> time span elapses will raise <c>Execute</c> only once, unless
+    /// <c>ExecuteOnFirstClick</c> is set to <c>false</c> (in which case, it is not raised at all).
+    /// <para/>
+    /// <c>PressBegins</c> is raised one time once the button is pressed, and <c>PressEnds</c> is raised one time once the button is
+    /// released.
+    /// <para/>
+    /// Commands are also supported for each event, with <c>ExecuteCommand</c>, <c>PressBeginsCommand</c>, and <c>PressEndsCommand</c>.
     /// </remarks>
     public class FlatRepeatButton : FlatButton
     {
@@ -272,6 +284,26 @@ namespace SolidShineUi
         {
             PressEnded();
             base.OnPointerReleased(e);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Space)
+            {
+                PressBegan();
+            }
+            base.OnKeyDown(e);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Space)
+            {
+                PressEnded();
+            }
+            base.OnKeyUp(e);
         }
 
         void PressBegan()
