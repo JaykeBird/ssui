@@ -25,13 +25,15 @@ namespace SolidShineUi
         /// </summary>
         public TabControl()
         {
-            SetValue(ItemsProperty, new SelectableCollection<TabItem>());
-
             Loaded += TabControl_Loaded;
             SizeChanged += control_SizeChanged;
 
+            SetValue(ItemsProperty, new SelectableCollection<TabItem>());
+
+            Items.CanSelectMultiple = false;
             Items.CollectionChanged += Items_CollectionChanged;
             Items.SelectionChanged += Items_SelectionChanged;
+            Items.ItemRemoving += Items_ItemRemoving;
         }
 
         bool _internalAction = false;
@@ -452,6 +454,8 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Properties
+
         /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
@@ -464,8 +468,6 @@ namespace SolidShineUi
                     break;
             }
         }
-
-        #region Properties
 
         /// <summary>
         /// Get or set if the tab bar should be shown at the bottom of the control, rather than the top.
