@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace SolidShineUi
     /// <summary>
     /// A tab that can be added onto a <see cref="TabControl"/>. Each tab has a title, icon, and close button by default.
     /// </summary>
+    [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
     public class TabItem : AvaloniaObject
     {
         /// <summary>
@@ -35,6 +37,16 @@ namespace SolidShineUi
             Title = title;
         }
 
+        private string GetDebuggerDisplay()
+        {
+            return "TabItem (\"" + Title + "\")";
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return Title;
+        }
 
         /// <summary>
         /// Create a TabItem, by copying the properties of an existing TabItem.
@@ -285,5 +297,6 @@ namespace SolidShineUi
         /// Used internally to request bringing this tab into view.
         /// </summary>
         internal protected event EventHandler? BringIntoViewRequested;
+
     }
 }

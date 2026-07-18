@@ -11,24 +11,50 @@
     <Design.PreviewWith>
 		<Border Background="LightGray" Height="350" Width="220">
             <StackPanel Orientation="Vertical" >
-			    <flat:TabControl Margin="10" BorderBrush="Red" BorderThickness="1" MinHeight="150" TabMinWidth="90" >
-                    <flat:TabItem Title="Title" />
+			    <flat:TabControl Margin="10" BorderThickness="1" MinHeight="150" TabMinWidth="90" >
+                    <flat:TabItem Title="Title">
+						<Grid>
+							<TextBlock Text="Tab Content" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Grid>
+                    </flat:TabItem>
+                    <flat:TabItem Title="Title 2" CanClose="False" FontWeight="Bold" >
+						<Grid>
+							<TextBlock Text="Tab Content 2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Grid>
+                    </flat:TabItem>
 			    </flat:TabControl>
 
                 <flat:TabControl Margin="10" BorderBrush="Red" BorderThickness="1" MinHeight="150" TabMinWidth="90"
                                  ShowTabListMenu="False"
                                  ShowTabsOnBottom="True"
+                                 TabBorderBrush="Orange"
+                                 TabBorderHighlightBrush="LightCoral"
                                  HorizontalTabBarHeight="32"
+                                 SelectedTabBackground="LightSkyBlue"
                                  ButtonHighlightBackground="Magenta"
-                                 ContentAreaBackground="LightGreen" >
-                    <flat:TabItem Title="Title" />
+                                 ContentAreaBackground="LightSkyBlue" >
+                    <flat:TabItem Title="Title">
+						<Grid>
+							<TextBlock Text="Tab Content" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Grid>
+                    </flat:TabItem>
+                    <flat:TabItem Title="Title 2" CanClose="False" FontStyle="Italic" >
+						<Grid>
+							<TextBlock Text="Tab Content 2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Grid>
+                    </flat:TabItem>
+                    <flat:TabItem Title="Title 3" >
+						<Grid>
+							<TextBlock Text="Tab Content 3" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Grid>
+                    </flat:TabItem>
 			    </flat:TabControl>
             </StackPanel>
 		</Border>
     </Design.PreviewWith>
 
     <ControlTheme x:Key="{x:Type flat:TabControl}" TargetType="flat:TabControl">
-        <Setter Property="Background" Value="White" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="Template">
 			<ControlTemplate TargetType="{x:Type flat:TabControl}" >
@@ -61,7 +87,7 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                 <ssut:TabDisplayItem TabItem="{Binding .}"
+                                                 <ssut:TabDisplayItem TabItem="{Binding .}" x:Name="PART_TabItem"
                                                     MinWidth="{Binding TabMinWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                     ShowTabOnBottom="{Binding ShowTabsOnBottom, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
                                                     HighlightBrush="{Binding TabHighlightBrush, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:TabControl}}}"
@@ -179,7 +205,12 @@
                                    IsVisible="False" />
                                 <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,0,0" >
                                     <TextBlock x:Name="lblTitle" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.Title}" />
+                                               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.Title}"
+                                               FontFamily="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.FontFamily}"
+                                               FontSize="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.FontSize}"
+                                               FontWeight="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.FontWeight}"
+                                               FontStyle="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.FontStyle}"
+                                               FontStretch="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.FontStretch}" />
                                     <TextBlock x:Name="lblDirty" HorizontalAlignment="Left" VerticalAlignment="Center" Text="*" IsVisible="False" />
                                 </StackPanel>
                             </Grid>
@@ -187,7 +218,7 @@
                                 <!--  <Border local:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
                                                 Tag="{Binding ElementName=control, Path=TabItem.ExtraTabElement}" x:Name="brdrExtraElement" />-->
                             </Grid>
-                            <flat:FlatButton x:Name="btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" MinWidth="16" Margin="0,1" Padding="0" TransparentBack="True"
+                            <flat:FlatButton x:Name="PART_btnClose" Grid.Column="2" VerticalAlignment="Stretch" MinHeight="16" MinWidth="16" Margin="0" Padding="0" TransparentBack="True"
                                              IsVisible="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.CanClose}" >
                                 <Path x:Name="pathClose" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M1,0 L0,1 L4,5 L0,9 L1,10 L5,6 L9,10 L10,9 L6,5 L10,1 L9,0 L5,4 z"
                                       Fill="{TemplateBinding CloseBrush}" />
@@ -202,12 +233,18 @@
         </Setter>
 
         <Style Selector="^[IsSelected=true] /template/ Border#border">
-            <Setter Property="Background" Value="Orange" />
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedTabBackground}" />
             <Setter Property="BorderThickness" Value="1,1,1,0" />
         </Style>
 
+        <Style Selector="^[IsSelected=true][ShowTabOnBottom=true] /template/ Border#border">
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedTabBackground}" />
+            <Setter Property="BorderThickness" Value="1,0,1,1" />
+        </Style>
+
         <Style Selector="^[IsHighlighting=true] /template/ Border#border">
-            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
         </Style>
 
     </ControlTheme>

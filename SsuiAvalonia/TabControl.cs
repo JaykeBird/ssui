@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Metadata;
@@ -326,7 +328,7 @@ namespace SolidShineUi
             SelectedTabContent = tab?.Content;
         }
 
-        void UpdateSelectedState(TabItem selectedTab)
+        void UpdateSelectedState(TabItem? selectedTab)
         {
             // fix to make sure the correct tab has the IsSelected state
             if (ic != null)
@@ -336,15 +338,19 @@ namespace SolidShineUi
                     if (ic.Items[i] != null)
                     {
                         Control? c = ic.ContainerFromItem(ic.Items[i]!);
-                        if (c is TabDisplayItem tb)
+                        if (c is ContentPresenter cp)
                         {
-                            if (tb.TabItem != null && tb.TabItem == selectedTab)
+                            cp.ApplyTemplate();
+                            if (cp.Child is TabDisplayItem tb)
                             {
-                                tb.IsSelected = true;
-                            }
-                            else
-                            {
-                                tb.IsSelected = false;
+                                if (tb.TabItem != null && tb.TabItem == selectedTab)
+                                {
+                                    tb.IsSelected = true;
+                                }
+                                else
+                                {
+                                    tb.IsSelected = false;
+                                }
                             }
                         }
                     }
@@ -428,7 +434,36 @@ namespace SolidShineUi
             }
         }
 
+        /// <summary>
+        /// Select and bring into view a particular tab on this TabControl.
+        /// </summary>
+        /// <param name="tab">The tab to close.</param>
+        /// <remarks>
+        /// If <paramref name="tab"/> is not in this TabControl, then nothing will happen.
+        /// </remarks>
+        public void SwitchToTab(TabItem tab)
+        {
+            if (Items.Contains(tab))
+            {
+                Items.Select(tab);
+                tab.BringIntoView();
+            }
+        }
+
         #endregion
+
+        /// <inheritdoc/>
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            switch (change.Property.Name)
+            {
+                case nameof(ColorScheme):
+                    OnColorSchemeChange(change);
+                    break;
+            }
+        }
 
         #region Properties
 
@@ -525,6 +560,68 @@ namespace SolidShineUi
         public static readonly StyledProperty<bool> AllowTabDragDropProperty
             = AvaloniaProperty.Register<TabControl, bool>(nameof(AllowTabDragDrop), true);
 
+        #endregion
+
+        #region Color Scheme
+
+        /// <summary>
+        /// Get or set the color scheme to apply to the control. The color scheme can quickly apply a whole visual style to your control.
+        /// </summary>
+        [Category("Appearance")]
+        public ColorScheme ColorScheme { get => GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
+            = AvaloniaProperty.Register<CheckBox, ColorScheme>(nameof(ColorScheme), new ColorScheme());
+
+        void OnColorSchemeChange(AvaloniaPropertyChangedEventArgs e)
+        {
+            ApplyColorScheme(e.GetNewValue<ColorScheme>());
+        }
+
+        /// <summary>
+        /// Apply a color scheme to this control. The color scheme can quickly apply a whole visual style to the control.
+        /// </summary>
+        /// <param name="cs">The color scheme to apply.</param>
+        public void ApplyColorScheme(ColorScheme cs)
+        {
+            if (cs != ColorScheme)
+            {
+                ColorScheme = cs;
+                return;
+            }
+
+            BorderBrush = cs.BorderColor.ToBrush();
+            Foreground = cs.ForegroundColor.ToBrush();
+            ContentAreaBackground = cs.BackgroundColor.ToBrush();
+
+            ButtonClickBrush = cs.ThirdHighlightColor.ToBrush();
+
+            if (cs.IsHighContrast)
+            {
+                TabBackground = cs.BackgroundColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
+                TabHighlightBrush = cs.HighlightColor.ToBrush();
+                TabBorderHighlightBrush = cs.BorderColor.ToBrush();
+                SelectedTabBackground = cs.BackgroundColor.ToBrush();
+                TabCloseBrush = cs.BorderColor.ToBrush();
+
+                ButtonHighlightBackground = cs.HighlightColor.ToBrush();
+                ButtonBorderHighlightBrush = cs.BorderColor.ToBrush();
+            }
+            else
+            {
+                TabBackground = cs.ThirdHighlightColor.ToBrush();
+                TabBorderBrush = cs.BorderColor.ToBrush();
+                TabHighlightBrush = cs.SecondHighlightColor.ToBrush();
+                TabBorderHighlightBrush = cs.HighlightColor.ToBrush();
+                SelectedTabBackground = cs.BackgroundColor.ToBrush();
+                TabCloseBrush = cs.ForegroundColor.ToBrush();
+
+                ButtonHighlightBackground = cs.SecondHighlightColor.ToBrush();
+                ButtonBorderHighlightBrush = cs.HighlightColor.ToBrush();
+            }
+        }
         #endregion
 
         #region Brushes
@@ -628,6 +725,130 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="ButtonClickBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush> ButtonClickBrushProperty
             = AvaloniaProperty.Register<TabControl, IBrush>(nameof(ButtonClickBrush), Colors.LightGray.ToBrush());
+
+        #endregion
+
+        #region Setup TabDisplayItem / Tdi Event Handlers
+
+        /// <summary>
+        /// Set up a new TabDisplayItem that was added to this TabControl.
+        /// This will set up the necessary event handlers and other properties to allow the TabDisplayItem to interact with the TabControl.
+        /// </summary>
+        /// <param name="tdi">The TabDisplayItem to set up.</param>
+        internal protected void SetupTabDisplay(TabDisplayItem tdi)
+        {
+            tdi.RequestClose += tdi_RequestClose;
+            tdi.Click += tdi_Click;
+            tdi.RightClick += tdi_RightClick;
+            tdi.TabItemDrop += tdi_TabItemDrop;
+            tdi.MinWidth = TabMinWidth;
+
+            CheckScrolling();
+        }
+
+#if NETCOREAPP
+        private void tdi_RightClick(object? sender, EventArgs e)
+#else
+        private void tdi_RightClick(object sender, EventArgs e)
+#endif
+        {
+            if (sender is TabDisplayItem tdi)
+            {
+                if (tdi.TabItem.TabContextMenu != null)
+                {
+                    ContextMenu cm = tdi.TabItem.TabContextMenu;
+                    //cm.ColorScheme = ColorScheme;
+                    cm.Placement = PlacementMode.Pointer;
+                    cm.Open();
+                }
+            }
+        }
+
+        private void tdi_TabItemDrop(object sender, TabItemDropEventArgs e)
+        {
+            if (e.DroppedTabItem == e.SourceTabItem) return;
+            if (!Items.Contains(e.DroppedTabItem)) return;
+
+            _internalAction = true;
+            TabItem? selItem = null;
+
+            if (Items.SelectedItems.Count != 0)
+            {
+                selItem = Items.SelectedItems.First();
+            }
+            Items.ClearSelection();
+
+            Items.Remove(e.DroppedTabItem);
+
+            int newIndex = e.PlaceBefore ? Items.IndexOf(e.SourceTabItem) : Items.IndexOf(e.SourceTabItem) + 1;
+
+            if (newIndex == -1)
+            {
+                Items.Add(e.DroppedTabItem);
+            }
+            else
+            {
+                Items.Insert(newIndex, e.DroppedTabItem);
+            }
+
+            if (selItem != null)
+            {
+                Items.Select(selItem);
+            }
+
+            // fix to make sure the correct tab has the IsSelected state
+            UpdateSelectedState(selItem);
+
+            _internalAction = false;
+        }
+
+#if NETCOREAPP
+        private void tdi_Click(object? sender, EventArgs e)
+#else
+        private void tdi_Click(object sender, EventArgs e)
+#endif
+        {
+            if (sender != null && sender is TabDisplayItem tdi)
+            {
+                if (tdi.TabItem != null && tdi.CanSelect)
+                {
+                    Items.Select(tdi.TabItem);
+                }
+            }
+        }
+
+#if NETCOREAPP
+        private void tdi_RequestClose(object? sender, EventArgs e)
+#else
+        private void tdi_RequestClose(object sender, EventArgs e)
+#endif
+        {
+            if (sender != null && sender is TabDisplayItem tdi)
+            {
+                if (tdi.TabItem != null)
+                {
+                    TabItemClosingEventArgs ee = new TabItemClosingEventArgs(tdi.TabItem);
+                    TabClosing?.Invoke(this, ee);
+
+                    if (ee.Cancel)
+                    {
+                        // don't remove or close anything, just exit
+                        closedTabIndex = -1;
+                        return;
+                    }
+
+                    if (tdi.IsSelected && (SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToLeft || SelectedTabClosedAction == SelectedTabCloseAction.SelectTabToRight))
+                    {
+                        closedTabIndex = Items.IndexOf(tdi.TabItem);
+                    }
+                    else
+                    {
+                        closedTabIndex = -1;
+                    }
+                    Items.Remove(tdi.TabItem);
+                }
+            }
+        }
 
         #endregion
 

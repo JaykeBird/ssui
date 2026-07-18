@@ -12,5 +12,6 @@
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/MenuButton.axaml" />
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Spinners.axaml" />
 		<MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/SelectPanel.axaml" />
+        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/TabControl.axaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -7,7 +7,7 @@
         xmlns:ssut="clr-namespace:SolidShineUi.Utils;assembly=SolidShineUi.Avalonia"
         x:Class="SsuiSampleAvalonia.MainWindow"
         Title="SsuiSampleAvalonia" FontSize="12" >
-    <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,20,20,40,20,24,64,1*" >
+    <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,20,20,40,20,150,1*" >
 
         <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
             <MenuItem Header="File">
@@ -74,5 +74,19 @@
         
         <flat:DoubleSpinner Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Height="24" VerticalAlignment="Stretch" Margin="10,0" x:Name="dbl" 
                             ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Step="0.2" Decimals="3" Value="12" />
+
+        <flat:TabControl Grid.Row="5" Margin="10" BorderThickness="1" MinHeight="100" TabMinWidth="90" 
+                         Grid.ColumnSpan="3" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+            <flat:TabItem Title="Title">
+				<Grid>
+					<TextBlock Text="Tab Content" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </flat:TabItem>
+            <flat:TabItem Title="Title 2" CanClose="False" FontWeight="Bold" >
+				<Grid>
+					<TextBlock Text="Tab Content 2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </flat:TabItem>
+		</flat:TabControl>
     </Grid>
 </Window>
