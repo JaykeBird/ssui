@@ -1,0 +1,851 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Avalonia;
+using Avalonia.Media;
+
+namespace SolidShineUi
+{
+    /// <summary>
+    /// A helper class to serialize and deserialize <see cref="Brush"/> objects to and from strings.
+    /// </summary>
+    /// <remarks>
+    /// Note that this only works for <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/>.
+    /// The strings created by this class are a lot shorter than serializing to XAML while containing the same data, making these easier to be
+    /// transferred and stored. These strings can also be theoretically consumed or created by other GUI systems as a cross-compatible system.
+    /// <para/>
+    /// This class also adds on some extension methods to <see cref="Brush"/> and <see cref="GradientStop"/> to facilitate easily serializing 
+    /// those objects there.
+    /// </remarks>
+    public static class BrushSerializer
+    {
+        /*
+        
+        some thoughts on brush serialization:
+
+        serializing WPF objects is a bit harder than normal due to the fact that WPF DependencyObjects tend to contain a number of properties and data that isn't meant
+        to be stored (and is instead to be generated in real-time as needed), and (relatedly, or perhaps as a result) some properties end up tripping up serialization
+        methods. The common workaround I've seen people refer to and use online seems to be XAML serialization, which luckily is a thing that is present included in
+        WPF via the XamlWriter and XamlReader classes (and other stuff in that area). If all someone cares about is just serialization without caring about how long
+        it is and how it looks, that works well enough.
+         
+        perhaps the convenience and ability to serialize/deserialize to XAML kind of defeats the purpose of making this, but I decided to do this anyway. This method
+        is more straight forward in that it generates strings, rather than needing to set up a StringBuilder or other object to contain the written XAML text before
+        converting that to a string. This also generates strings that one can also then reuse in other UI systems/libraries, such as Avalonia. And finally, of course,
+        the strings generated here have the same data as the XAML serializations while using a lot less characters (although this code's outputs could be made even
+        more compact, but I have no desire to do that.)
+
+        there is one key problem that creating these bespoke serializers have over the XAML serialization, in which is that I had to write special code for each
+        particular type of Brush I wanted to support. in comparison, XAML serialization can handle a lot more arbitrary and convoluted situations, as it's a pretty
+        generic serialization system.
+
+        in here, I opted to only support SolidColorBrush, LinearGradientBrush, and RadialGradientBrush. These have a set list of properties and don't have the potential
+        to create endless options and complications in a way that an ImageBrush or DrawingBrush can. trying to support the various options of a drawing or an image
+        source is beyond what I wanted to accomplish here and now, although I suppose that can be addressed in the future if needed/wanted. I could, of course, just
+        only support a subset of options and features (such as only supporting certain types of image sources), but I figure it's easier starting off by drawing the
+        line at the brush type level, rather than having to at this time think about and consider the syntax and how to draw the line for these other types.
+
+        Simultaneously conveniently and inconveniently, WPF's brush classes are sealed or built in a way that can't be properly inherited from (due to the usage of
+        internal virtual methods). so that means the existing list of brushes in WPF that we have right now is all we'll ever have (unless Microsoft, for some reason,
+        decides to create a whole new type of brush). I'm generally not a fan of how much code that Microsoft made internal
+        for WPF that someone like me won't be able to come along and modify or build upon, but I think with a core class like brushes, it was a good call here.
+
+        specifically talking about how I format the serialized strings here, I use semicolons to separate out the "values", which generally correspond to properties
+        in a Brush. Some properties, such as the extra ones in GradientBrush, have beeen combined together into one value to prevent those strings getting too long.
+        The required properties/values must be in the right order to deserialize correctly, but optional later ones (which have labels) can be in any order.
+        
+        */
+
+        /// <summary>the character to use to separate out values; data within a value should be separated via a subSeparator</summary>
+        const string separator = ";";
+        /// <summary>the separator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
+        static readonly char[] splitChar = new char[] { ';' };
+        /// <summary>the character to use to separate out data within a value</summary>
+        static readonly char subSeparator = ',';
+        /// <summary>the subSeparator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
+        private static readonly char[] subSplitChar = new char[] { subSeparator };
+
+        private static string SerializeSolidColorBrush(SolidColorBrush brush)
+        {
+            string color = brush.Color.GetHexStringWithAlpha();
+
+            string bprops = SerializeBrushProperties(brush);
+
+            if (string.IsNullOrEmpty(bprops))
+            {
+                return string.Join(separator, "s", color);
+            }
+            else
+            {
+                return string.Join(separator, "s", color, bprops);
+            }
+            // SolidColorBrush is type "s"
+        }
+
+        private static string SerializeLinearGradientBrush(LinearGradientBrush lgb)
+        {
+            string props = "";
+            
+            // Avalonia can have the start point and end point be two different values for being relative or absolute,
+            // and so we'll store them right next to each other
+            // possible results are "aa", "ab", "ba", or "bb"
+            // (theoretically, we don't need to store "bb" since the default is Relative, but that's more logic to specifically deal with that case)
+            props += (lgb.StartPoint.Unit == RelativeUnit.Absolute ? "a" : "b");
+            props += (lgb.EndPoint.Unit == RelativeUnit.Absolute ? "a" : "b");
+
+            switch (lgb.SpreadMethod)
+            {
+                case GradientSpreadMethod.Pad:
+                    props += "p";
+                    break;
+                case GradientSpreadMethod.Reflect:
+                    props += "f";
+                    break;
+                case GradientSpreadMethod.Repeat:
+                    props += "r";
+                    break;
+                default:
+                    props += "p";
+                    break;
+            }
+
+            string start = lgb.StartPoint.Point.ToString();
+            string end = lgb.EndPoint.Point.ToString();
+
+            string bprops = SerializeBrushProperties(lgb, props);
+
+            if (string.IsNullOrEmpty(bprops))
+            {
+                return string.Join(separator, "l", start, end, SerializeGradientStopCollection(lgb.GradientStops));
+            }
+            else
+            {
+                return string.Join(separator, "l", start, end, SerializeGradientStopCollection(lgb.GradientStops), bprops);
+            }
+            // LinearGradientBrush is type "l"
+        }
+
+        private static string SerializeRadialGradientBrush(RadialGradientBrush rgb)
+        {
+            string props = "";
+
+            // Avalonia uses RelativePoint and RelativeScalar for its values, which have a RelativeUnit property
+            // to determine if they are meant to be absolute or relative; so each property could be set separately
+            // this differs from WPF's MappingMode approach where everything is either Absolute or Relative, no mix and match
+            // however, when building this for WPF, I didn't account for RadiusX and RadiusY being RelativeScalar
+            // so this means the resulting string will be up to four characters long ("aaaa" or "bbbb", or some combo of the two)
+            // WPF's brush serializer right now outputs "aa", so I'll need to account for that in deserialization
+            // 
+            // in the future, I may consider just recreating Avalonia's RelativePoint and RelativeScalar parsing and ToString,
+            // rather than storing these values separately in the props block
+
+            props += (rgb.GradientOrigin.Unit == RelativeUnit.Absolute ? "a" : "b");
+            props += (rgb.Center.Unit == RelativeUnit.Absolute ? "a" : "b");
+            props += (rgb.RadiusX.Unit == RelativeUnit.Absolute ? "a" : "b");
+
+            //switch (rgb.ColorInterpolationMode)
+            //{
+            //    case ColorInterpolationMode.ScRgbLinearInterpolation:
+            //        props += "i";
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+            switch (rgb.SpreadMethod)
+            {
+                case GradientSpreadMethod.Pad:
+                    props += "p";
+                    break;
+                case GradientSpreadMethod.Reflect:
+                    props += "f";
+                    break;
+                case GradientSpreadMethod.Repeat:
+                    props += "r";
+                    break;
+                default:
+                    props += "p";
+                    break;
+            }
+
+            string start = rgb.GradientOrigin.Point.ToString();
+            string end = rgb.Center.Point.ToString();
+            string cx = rgb.RadiusX.Scalar.ToString();
+            string cy = rgb.RadiusY.Scalar.ToString();
+
+            string bprops = SerializeBrushProperties(rgb, props);
+
+            if (string.IsNullOrEmpty(bprops))
+            {
+                return string.Join(separator, "r", start, end, cx, cy, SerializeGradientStopCollection(rgb.GradientStops));
+            }
+            else
+            {
+                return string.Join(separator, "r", start, end, cx, cy, SerializeGradientStopCollection(rgb.GradientStops), bprops);
+            }
+            // RadialGradientBrush is of type "r"
+        }
+
+        private static string SerializeGradientStopCollection(GradientStops gsc)
+        {
+            // to aid with deserialization, we will want to make sure that the gradient stop collection has at least 2 items
+            if (gsc.Count == 0)
+            {
+                // what the heck man - let's just create some transparent gradient stops
+                gsc.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 0.0));
+                gsc.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1.0));
+            }
+            if (gsc.Count == 1)
+            {
+                // we'll create another gradient stop that's nearby with the same color, so it should look the same visually
+                double newOffset = gsc[0].Offset == 1 ? 0.99 : gsc[0].Offset + 0.01;
+                gsc.Add(new GradientStop(gsc[0].Color, newOffset));
+            }
+
+            // {stop1Color}@{stop1Offset},{stop2Color}@{stop2Offset}
+            IEnumerable<string> stops = gsc.Select(g => SerializeGradientStop(g));
+            return string.Join(new string(subSeparator, 1), stops);
+        }
+
+        /// <summary>
+        /// Create a string representing a GradientStop, with the format being "<c>color</c>@<c>offset</c>" (e.g., "<c>FF00FF88@0.5</c>").
+        /// </summary>
+        /// <param name="g">the stop to serialize</param>
+        public static string SerializeGradientStop(GradientStop g)
+        {
+            return g.Color.GetHexStringWithAlpha() + "@" + g.Offset.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Create a string representing a RelativePoint, in a format similar to other BrushSerializer strings (rather than Avalonia's standard format).
+        /// The format is "<c>x</c>,<c>y</c>[,a]", with the ",a" at the end only being present if <paramref name="p"/>'s Unit is <c>Absolute</c>.
+        /// </summary>
+        /// <param name="p">the RelativePoint to serialize</param>
+        public static string SerializeRelativePoint(RelativePoint p)
+        {
+            return p.Point.X.ToString(CultureInfo.InvariantCulture) // X point 
+                + subSeparator + p.Point.Y.ToString(CultureInfo.InvariantCulture) // Y point
+                + (p.Unit == RelativeUnit.Absolute ? subSeparator + "a" : "");
+        }
+
+        /// <summary>
+        /// Creates a string to represent various common brush properties, such as <see cref="Brush.Opacity"/> and <see cref="Brush.Transform"/>.
+        /// </summary>
+        /// <param name="brush">the brush to read property data from</param>
+        /// <param name="gradientBrushProperties">a string representing the common gradient brush properties, to add on if present</param>
+        /// <remarks>
+        /// Each property has a unique value ('<c>o</c>' for Opacity, '<c>t</c>' for Transform, and '<c>r</c>' for RelativeTransform), and then
+        /// separated with the separator ('<c>;</c>'), although <paramref name="gradientBrushProperties"/> are combined together under the 'p' value.
+        /// Transforms are serialized using <see cref="TransformSerializer"/>.
+        /// </remarks>
+        private static string SerializeBrushProperties(Brush brush, string gradientBrushProperties = "")
+        {
+            List<string> values = new List<string>();
+
+            if (brush.Opacity != 1.0)
+            {
+                values.Add("o" + subSeparator + brush.Opacity.ToString(CultureInfo.InvariantCulture));
+            }
+
+            if (brush.Transform != null && !brush.Transform.Value.IsIdentity)
+            {
+                values.Add("t" + subSeparator + TransformSerializer.SerializeTransform(brush.Transform));
+            }
+
+            if (brush.TransformOrigin != RelativePoint.Center)
+            {
+                // outputs a relativepoint as "[x],[y]" for Relative or "[x],[y],a" for Absolute
+                values.Add("i" + subSeparator + SerializeRelativePoint(brush.TransformOrigin));
+            }
+
+            //if (brush.RelativeTransform != null && !brush.RelativeTransform.Value.IsIdentity)
+            //{
+            //    values.Add("r" + subSeparator + TransformSerializer.SerializeTransform(brush.RelativeTransform));
+            //}
+
+            if (!string.IsNullOrEmpty(gradientBrushProperties))
+            {
+                values.Add("p" + subSeparator + gradientBrushProperties);
+            }
+
+            if (values.Count == 0) return string.Empty;
+
+            return string.Join(separator, values);
+        }
+
+        /// <summary>
+        /// Create a string that represents this SolidColorBrush.
+        /// <para/>
+        /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
+        /// </summary>
+        public static string Serialize(this SolidColorBrush scb)
+        {
+            return SerializeSolidColorBrush(scb);
+        }
+
+        /// <summary>
+        /// Create a string that represents this LinearGradientBrush.
+        /// <para/>
+        /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
+        /// </summary>
+        public static string Serialize(this LinearGradientBrush lgb)
+        {
+            return SerializeLinearGradientBrush(lgb);
+        }
+
+        /// <summary>
+        /// Create a string that represents this RadialGradientBrush.
+        /// <para/>
+        /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
+        /// </summary>
+        public static string Serialize(this RadialGradientBrush rgb)
+        {
+            return SerializeRadialGradientBrush(rgb);
+        }
+
+        /// <summary>
+        /// Create a string that represents this brush if possible. If not, an empty string is returned.
+        /// <para/>
+        /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
+        /// </summary>
+        /// <remarks>
+        /// Only <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/> are supported.
+        /// All other brush types will return an empty string.
+        /// </remarks>
+        public static string Serialize(this Brush b)
+        {
+            if (b is SolidColorBrush scb)
+            {
+                return SerializeSolidColorBrush(scb);
+            }
+            else if (b is LinearGradientBrush lgb)
+            {
+                return SerializeLinearGradientBrush(lgb);
+            }
+            else if (b is RadialGradientBrush rgb)
+            {
+                return SerializeRadialGradientBrush(rgb);
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Create a string that represents this gradient stop.
+        /// <para/>
+        /// Use <see cref="DeserializeGradientStop(string)"/> to convert the string back into a gradient stop.
+        /// </summary>
+        /// <remarks>
+        /// The format is "<c>color</c>@<c>offset</c>" with the color represented by a hex code (e.g., "<c>FF00FF88@0.5</c>").
+        /// </remarks>
+        public static string Serialize(this GradientStop gs)
+        {
+            return SerializeGradientStop(gs);
+        }
+
+        /// <summary>
+        /// Deserialize a brush string back into a <see cref="Brush"/>.
+        /// <para/>
+        /// Brushes can be serialized/converted to a string using <see cref="Serialize(Brush)"/>.
+        /// </summary>
+        /// <param name="s">the string representing the brush to deserialize</param>
+        /// <remarks>
+        /// Only <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/> are supported.
+        /// The deserialized brush will be of the same type as the serialized type created using <see cref="Serialize(Brush)"/>.
+        /// The returned brush will be frozen; use <see cref="DeserializeBrush(string, bool)"/> if you want an unfrozen brush.
+        /// </remarks>
+        /// <exception cref="FormatException">Thrown if an invalid/unparseable string is inputted</exception>
+        public static IBrush DeserializeBrush(string s)
+        {
+            return DeserializeBrush(s, true);
+        }
+
+        /// <summary>
+        /// Deserialize a brush string back into a <see cref="Brush"/>.
+        /// <para/>
+        /// Brushes can be serialized/converted to a string using <see cref="Serialize(Brush)"/>.
+        /// </summary>
+        /// <param name="s">the string representing the brush to deserialize</param>
+        /// <param name="immutable">whether or not the returned brush should be immutable</param>
+        /// <remarks>
+        /// Only <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/> are supported.
+        /// The deserialized brush will be of the same type as the serialized type created using <see cref="Serialize(Brush)"/>.
+        /// If <paramref name="immutable"/> is set to true, the returned brush will be an immutable brush.
+        /// </remarks>
+        /// <exception cref="FormatException">Thrown if an invalid/unparseable string is inputted</exception>
+        public static IBrush DeserializeBrush(string s, bool immutable)
+        {
+            // if (s.Contains(':')) s = s.Replace(':', ',');
+
+            if (!s.Contains(separator))
+            {
+                throw new FormatException("Invalid brush string");
+            }
+            else
+            {
+                string[] vals = s.Split(splitChar, StringSplitOptions.RemoveEmptyEntries);
+
+                switch (vals[0].ToLowerInvariant()) // the initial character tells us what type of brush this is
+                {
+                    case "s":
+                        // solid color brush
+                        try
+                        {
+                            string color = vals[1];
+
+                            SolidColorBrush scb = new SolidColorBrush(ColorsHelper.CreateFromHex(color));
+
+                            if (vals.Length > 2)
+                            {
+                                // there are other properties defined too
+                                DeserializeBrushProperties(vals, 2, out double opacity, out Transform transform, out RelativePoint origin, out string _);
+                                scb.Opacity = opacity;
+                                scb.Transform = transform;
+                                scb.TransformOrigin = origin;
+                                // scb.RelativeTransform = relativeTransform;
+                            }
+
+                            if (immutable)
+                            {
+                                return scb.ToImmutable();
+                            }
+                            else
+                            {
+                                return scb;
+                            }
+                        }
+                        catch (FormatException ex)
+                        {
+                            throw new FormatException("Invalid brush string", ex);
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            throw new FormatException("Invalid brush string", ex);
+                        }
+                    case "l":
+                        // linear gradient brush
+                        if (vals.Length < 4)
+                        {
+                            throw new FormatException("Invalid brush string");
+                        }
+
+                        try
+                        {
+                            string start = vals[1];
+                            string end = vals[2];
+                            string stops = vals[3];
+                            
+                            // we'll optionally support if a property-defining character was added at the beginning of each value; we'll just remove the characters
+                            // this does not change the fact that these values still need to be in the correct order
+                            if (start.StartsWith("b,", StringComparison.OrdinalIgnoreCase)) start = start.Substring(2);
+                            if (end.StartsWith("c,", StringComparison.OrdinalIgnoreCase)) end = end.Substring(2);
+                            if (stops.StartsWith("s,", StringComparison.OrdinalIgnoreCase)) stops = stops.Substring(2);
+
+                            LinearGradientBrush lgb = new LinearGradientBrush()
+                            {
+                                StartPoint = new RelativePoint(Point.Parse(start), RelativeUnit.Relative),
+                                EndPoint = new RelativePoint(Point.Parse(end), RelativeUnit.Relative),
+                                GradientStops = DeserializeGradientStopCollection(stops),
+                            };
+
+                            if (vals.Length > 4)
+                            {
+                                // there are other properties defined too
+                                DeserializeBrushProperties(vals, 4, out double opacity, out Transform transform, out RelativePoint origin, out string props);
+                                lgb.Opacity = opacity;
+                                lgb.Transform = transform;
+                                lgb.TransformOrigin = origin;
+
+                                DeserializeLinearGradientBrushProperties(props, out var startPoint, out var endPoint, out var spread);
+                                if (startPoint == RelativeUnit.Absolute) lgb.StartPoint = new RelativePoint(lgb.StartPoint.Point, RelativeUnit.Absolute);
+                                if (endPoint == RelativeUnit.Absolute) lgb.EndPoint = new RelativePoint(lgb.EndPoint.Point, RelativeUnit.Absolute);
+                                lgb.SpreadMethod = spread;
+                            }
+
+                            if (immutable)
+                            {
+                                return lgb.ToImmutable();
+                            }
+                            else
+                            {
+                                return lgb;
+                            }
+                        }
+                        catch (FormatException ex)
+                        {
+                            throw new FormatException("Invalid brush string", ex);
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            throw new FormatException("Invalid brush string", ex);
+                        }
+                    case "r":
+                        // radial gradient brush
+                        if (vals.Length < 6)
+                        {
+                            throw new FormatException("Invalid brush string");
+                        }
+
+                        try
+                        {
+                            string start = vals[1];
+                            string end = vals[2];
+                            string cx = vals[3];
+                            string cy = vals[4];
+                            string stops = vals[5];
+
+                            // we'll optionally support if a property-defining character was added at the beginning of each value; we'll just remove the characters
+                            // this does not change the fact that these values still need to be in the correct order
+                            if (start.StartsWith("b,", StringComparison.OrdinalIgnoreCase)) start = start.Substring(2);
+                            if (end.StartsWith("c,", StringComparison.OrdinalIgnoreCase)) end = end.Substring(2);
+                            if (cx.StartsWith("x,", StringComparison.OrdinalIgnoreCase)) cx = cx.Substring(2);
+                            if (cy.StartsWith("y,", StringComparison.OrdinalIgnoreCase)) cy = cy.Substring(2);
+                            if (stops.StartsWith("s,", StringComparison.OrdinalIgnoreCase)) stops = stops.Substring(2);
+
+                            RadialGradientBrush rgb = new RadialGradientBrush()
+                            {
+                                GradientStops = DeserializeGradientStopCollection(stops)
+                            };
+                            //DeserializeGradientStopCollection(stops));
+
+                            Point gradientOrigin = Point.Parse(start);
+                            Point center = Point.Parse(end);
+                            double radiusX = Convert.ToDouble(cx, CultureInfo.InvariantCulture);
+                            double radiusY = Convert.ToDouble(cy, CultureInfo.InvariantCulture);
+
+                            if (vals.Length > 6)
+                            {
+                                // there are other properties defined too
+                                DeserializeBrushProperties(vals, 6, out double opacity, out Transform transform, out RelativePoint origin, out string props);
+                                rgb.Opacity = opacity;
+                                rgb.Transform = transform;
+                                rgb.TransformOrigin = origin;
+
+                                DeserializeGradientBrushProperties(props, out RelativeUnit[] map, out var spread);
+                                rgb.SpreadMethod = spread;
+
+                                // the map value should at least have 4 entries; if not, something weird happened
+                                if (map.Length < 4) { throw new FormatException("Invalid relative unit mapping for RadialGradientBrush"); }
+
+                                rgb.GradientOrigin = new RelativePoint(gradientOrigin, map[0]);
+                                rgb.Center = new RelativePoint(center, map[1]);
+                                rgb.RadiusX = new RelativeScalar(radiusX, map[2]);
+                                rgb.RadiusY = new RelativeScalar(radiusY, map[3]);
+                            }
+                            else
+                            {
+                                rgb.GradientOrigin = new RelativePoint(gradientOrigin, RelativeUnit.Relative);
+                                rgb.Center = new RelativePoint(center, RelativeUnit.Relative);
+                                rgb.RadiusX = new RelativeScalar(radiusX, RelativeUnit.Relative);
+                                rgb.RadiusY = new RelativeScalar(radiusY, RelativeUnit.Relative);
+                            }
+
+                            if (immutable)
+                            {
+                                return rgb.ToImmutable();
+                            }
+                            else
+                            {
+                                return rgb;
+                            }
+                        }
+                        catch (FormatException ex)
+                        {
+                            throw new FormatException("Invalid brush string", ex);
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            throw new FormatException("Invalid brush string", ex);
+                        }
+                    default:
+                        throw new FormatException("Invalid brush string");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deserialize a collection of common brush properties from a string array into individual variables to apply to a brush.
+        /// </summary>
+        /// <param name="values">the string array of values to deserialize (each value as its own item)</param>
+        /// <param name="startIndex">the index in the array to start reading from; earlier indices would've been handled by the calling method</param>
+        /// <param name="opacity">the opacity value read from the array ('<c>o</c>' value); default is <c>1.0</c> if not present</param>
+        /// <param name="transform">the transform value read from the array ('<c>t</c>' value); default is an identity matrix transform if not present</param>
+        /// <param name="transformOrigin">the origin point of the transform; default is <see cref="RelativePoint.Center"/> if not present</param>
+        /// <param name="extraProperties">if a '<c>p</c>' value is present, the text that was contained with that value; otherwise, an empty string</param>
+        private static void DeserializeBrushProperties(string[] values, int startIndex, out double opacity, 
+            out Transform transform, out RelativePoint transformOrigin, out string extraProperties)
+        {
+            // unlike the properties unique to each brush, these can be defined in any order
+            // (or in fact, even multiple can be put in, but in that case, only the last one defined will be the one returned)
+
+            opacity = 1.0;
+            transform = TransformHelper.IdentityTransform;
+            transformOrigin = RelativePoint.Center;
+            extraProperties = "";
+
+            for (int i = startIndex; i < values.Length; i++)
+            {
+                string val = values[i];
+                if (!val.Contains(subSeparator))
+                {
+                    // probably not meant to be here
+                    continue;
+                }
+
+                string[] subvals = val.Split(subSplitChar);
+
+                switch (subvals[0].ToLowerInvariant())
+                {
+                    case "o":
+                        // opacity
+                        opacity = Convert.ToDouble(subvals[1], CultureInfo.InvariantCulture);
+                        break;
+                    case "t":
+                        // transform
+                        transform = TransformSerializer.DeserializeTransform(val.Substring(2));
+                        break;
+                    case "i":
+                        transformOrigin = DeserializeRelativePoint(val.Substring(2));
+                        break;
+                    //case "r":
+                    //    // relative transform
+                    //    relativeTransform = TransformSerializer.DeserializeTransform(val.Substring(2));
+                    //    break;
+                    case "p":
+                        extraProperties = val.Substring(2);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Create a <see cref="GradientStop"/> by deserializing a string representing that gradient stop.
+        /// <para/>
+        /// GradientStops can be serialized using <see cref="SerializeGradientStop(GradientStop)"/>.
+        /// </summary>
+        /// <param name="str">the string to deserialize</param>
+        /// <exception cref="FormatException">thrown if the inputted text is invalid and can't be parsed</exception>
+        public static GradientStop DeserializeGradientStop(string str)
+        {
+            try
+            {
+                int atIndex = str.IndexOf('@');
+                if (atIndex < 0) throw new FormatException("Gradient stop string invalid");
+                string color = str.Substring(0, atIndex);
+                string offset = str.Substring(atIndex + 1);
+
+                return new GradientStop(ColorsHelper.CreateFromHex(color), Convert.ToDouble(offset, CultureInfo.InvariantCulture));
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                throw new FormatException("Gradient stop string invalid", ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new FormatException("Gradient stop string invalid", ex);
+            }
+        }
+
+        private static GradientStops DeserializeGradientStopCollection(string stops)
+        {
+            if (!stops.Contains(subSeparator))
+            {
+                throw new FormatException("Gradient stops list incomplete");
+            }
+
+            string[] stopCol = stops.Split(subSplitChar, StringSplitOptions.RemoveEmptyEntries);
+
+            GradientStops gsc = new GradientStops();
+
+            foreach (string item in stopCol)
+            {
+                gsc.Add(DeserializeGradientStop(item));
+            }
+
+            return gsc;
+        }
+
+        /// <summary>
+        /// Create a RelativePoint, using either the format used here in BrushSerializer, or in Avalonia's standard format.
+        /// </summary>
+        /// <param name="relativePoint">the string representing the RelativePoint</param>
+        /// <exception cref="FormatException">Thrown if a value doesn't match the expected format</exception>
+        public static RelativePoint DeserializeRelativePoint(string relativePoint)
+        {
+            string[] vals = relativePoint.Split(subSplitChar);
+            if (vals.Length == 2)
+            {
+                return RelativePoint.Parse(relativePoint);
+                //return new RelativePoint(new Point(Convert.ToDouble(vals[0]), Convert.ToDouble(vals[1])), RelativeUnit.Relative);
+            }
+            else if (vals.Length > 2)
+            {
+                return new RelativePoint(new Point(Convert.ToDouble(vals[0]), Convert.ToDouble(vals[1])),
+                    (vals[2].Equals("a", StringComparison.InvariantCultureIgnoreCase) ? RelativeUnit.Absolute : RelativeUnit.Relative));
+            }
+            else
+            {
+                throw new FormatException("Not enough data for parsing a RelativePoint");
+            }
+        }
+
+        private static void DeserializeLinearGradientBrushProperties(string values, out RelativeUnit startPoint, out RelativeUnit endPoint,
+                out GradientSpreadMethod spread)
+        {
+            if (string.IsNullOrEmpty(values)) // quick exit for an empty string
+            {
+                startPoint = RelativeUnit.Relative;
+                endPoint = RelativeUnit.Relative;
+                spread = GradientSpreadMethod.Pad;
+                return;
+            }
+
+            // MappingMode
+            //
+            // for Avalonia, the StartPoint and EndPoint can have separate RelativeUnit values, so let's cover them all here
+            if (values.Contains("aa"))
+            {
+                startPoint = RelativeUnit.Absolute;
+                endPoint = RelativeUnit.Absolute;
+            }
+            else if (values.Contains("ab"))
+            {
+                startPoint = RelativeUnit.Absolute;
+                endPoint = RelativeUnit.Relative;
+            }
+            else if (values.Contains("ba"))
+            {
+                startPoint = RelativeUnit.Relative;
+                endPoint = RelativeUnit.Absolute;
+            }
+            else
+            {
+                startPoint = RelativeUnit.Relative;
+                endPoint = RelativeUnit.Relative;
+            }
+
+            // ColorInterpolationMode
+            //if (values.Contains('i'))
+            //{
+            //    colorMode = ColorInterpolationMode.ScRgbLinearInterpolation;
+            //}
+            //else
+            //{
+            //    colorMode = ColorInterpolationMode.SRgbLinearInterpolation;
+            //}
+
+            // SpreadMethod
+            if (values.Contains('p'))
+            {
+                spread = GradientSpreadMethod.Pad;
+            }
+            else if (values.Contains('f'))
+            {
+                spread = GradientSpreadMethod.Reflect;
+            }
+            else if (values.Contains('r'))
+            {
+                spread = GradientSpreadMethod.Repeat;
+            }
+            else
+            {
+                spread = GradientSpreadMethod.Pad;
+            }
+        }
+
+        private static void DeserializeGradientBrushProperties(string values, out RelativeUnit[] mappingMode, 
+            out GradientSpreadMethod spread)
+        {
+            if (string.IsNullOrEmpty(values)) // quick exit for an empty string
+            {
+                mappingMode = [RelativeUnit.Relative, RelativeUnit.Relative, RelativeUnit.Relative, RelativeUnit.Relative];
+                spread = GradientSpreadMethod.Pad;
+                return;
+            }
+
+            // MappingMode
+            //
+            // for Avalonia, some brushes have more relative properties than others, so I'll need to iterate over the whole string
+            List<RelativeUnit> rus = new List<RelativeUnit>();
+
+            foreach (char val in values.ToLowerInvariant())
+            {
+                if (val == 'a') rus.Add(RelativeUnit.Absolute);
+                if (val == 'b') rus.Add(RelativeUnit.Relative);
+            }
+
+            // parsing the list
+            if (rus.Count == 3)
+            {
+                mappingMode = [rus[0], rus[1], rus[2], rus[2]];
+            }
+            else if (rus.Count == 2)
+            {
+                // at least one absolute
+                if (rus[0] == RelativeUnit.Absolute || rus[1] == RelativeUnit.Absolute)
+                {
+                    // "aa" (can come from the WPF version present in 2.0 - 2.0.2)
+                    if (rus[0] == RelativeUnit.Absolute && rus[1] == RelativeUnit.Absolute)
+                    {
+                        mappingMode = [RelativeUnit.Absolute, RelativeUnit.Absolute, RelativeUnit.Absolute, RelativeUnit.Absolute];
+                    }
+                    else // "ab" or "ba"
+                    {
+                        // let's just fill the rest in with absolute
+                        mappingMode = [rus[0], rus[1], RelativeUnit.Absolute, RelativeUnit.Absolute];
+                    }
+                }
+                else
+                {
+                    // "bb"
+                    mappingMode = [RelativeUnit.Relative, RelativeUnit.Relative, RelativeUnit.Relative, RelativeUnit.Relative];
+                }
+            }
+            else if (rus.Count == 1) // only "a" or "b", so let's extend that to 4 items
+            {
+                mappingMode = [rus[0], rus[0], rus[0], rus[0]];
+            }
+            else if (rus.Count == 0) // no "a" or "b" present, so we'll use "b" as the default
+            {
+                mappingMode = [RelativeUnit.Relative, RelativeUnit.Relative, RelativeUnit.Relative, RelativeUnit.Relative];
+            }
+            else // this list should have 4 or more entries
+            {
+                mappingMode = rus.ToArray();
+            }
+
+            // ColorInterpolationMode
+            //if (values.Contains('i'))
+            //{
+            //    colorMode = ColorInterpolationMode.ScRgbLinearInterpolation;
+            //}
+            //else
+            //{
+            //    colorMode = ColorInterpolationMode.SRgbLinearInterpolation;
+            //}
+
+            // SpreadMethod
+            if (values.Contains('p'))
+            {
+                spread = GradientSpreadMethod.Pad;
+            }
+            else if (values.Contains('f'))
+            {
+                spread = GradientSpreadMethod.Reflect;
+            }
+            else if (values.Contains('r'))
+            {
+                spread = GradientSpreadMethod.Repeat;
+            }
+            else
+            {
+                spread = GradientSpreadMethod.Pad;
+            }
+        }
+
+    }
+}
