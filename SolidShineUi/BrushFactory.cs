@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
 #if AVALONIA
 using Avalonia;
 using Avalonia.Media;
@@ -197,6 +200,192 @@ namespace SolidShineUi
 
             return cbb;
         }
+
+
+#if AVALONIA
+
+        /// <summary>
+        /// Create a deep clone of a SolidColorBrush, except the transitions.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new SolidColorBrush, with the same properties</returns>
+        public static SolidColorBrush Clone(this ISolidColorBrush brush)
+        {
+            return new SolidColorBrush(Color.FromUInt32(brush.Color.ToUInt32()))
+            {
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+        }
+
+        /// <summary>
+        /// Create a deep clone of a LinearGradientBrush, except the transitions.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new LinearGradientBrush, with the same properties</returns>
+        public static LinearGradientBrush Clone(this ILinearGradientBrush brush)
+        {
+            var newBrush = new LinearGradientBrush
+            {
+                GradientStops = CloneStops(brush.GradientStops),
+                StartPoint = brush.StartPoint,
+                EndPoint = brush.EndPoint,
+                SpreadMethod = brush.SpreadMethod,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a RadialGradientBrush, except the transitions.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new RadialGradientBrush, with the same properties</returns>
+        public static RadialGradientBrush Clone(this IRadialGradientBrush brush)
+        {
+            var newBrush = new RadialGradientBrush
+            {
+                GradientStops = CloneStops(brush.GradientStops),
+                Center = brush.Center,
+                GradientOrigin = brush.GradientOrigin,
+                RadiusX = brush.RadiusX,
+                RadiusY = brush.RadiusY,
+                SpreadMethod = brush.SpreadMethod,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a ConicGradientBrush, except the transitions.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new ConicGradientBrush, with the same properties</returns>
+        public static ConicGradientBrush Clone(this IConicGradientBrush brush)
+        {
+            var newBrush = new ConicGradientBrush
+            {
+                GradientStops = CloneStops(brush.GradientStops),
+                Center = brush.Center,
+                Angle = brush.Angle,
+                SpreadMethod = brush.SpreadMethod,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of an ImageBrush, except the transitions.
+        /// The Source property is also only a shallow copy.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new ImageBrush, with the same properties</returns>
+        public static ImageBrush Clone(this IImageBrush brush)
+        {
+            var newBrush = new ImageBrush(brush.Source)
+            {
+                DestinationRect = brush.DestinationRect,
+                TileMode = brush.TileMode,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+                AlignmentX = brush.AlignmentX,
+                AlignmentY = brush.AlignmentY,
+                SourceRect = brush.SourceRect,
+                Stretch = brush.Stretch,
+            };
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a VisualBrush, except the transitions.
+        /// The Visual property is also only a shallow copy.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new VisualBrush, with the same properties</returns>
+        public static VisualBrush Clone(this VisualBrush brush)
+        {
+            var newBrush = new VisualBrush()
+            {
+                Visual = brush.Visual,
+                DestinationRect = brush.DestinationRect,
+                TileMode = brush.TileMode,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+                AlignmentX = brush.AlignmentX,
+                AlignmentY = brush.AlignmentY,
+                SourceRect = brush.SourceRect,
+                Stretch = brush.Stretch,
+            };
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a brush, except the transitions.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new brush, with the same properties</returns>
+        /// <remarks>
+        /// For <see cref="IImageBrush"/> and <see cref="VisualBrush"/>, the Source or Visual property
+        /// will only be shallow copied, rather than a deep copy.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">thrown when the brush type is not supported for cloning</exception>
+        public static IBrush Clone(this IBrush brush)
+        {
+            if (brush is ISolidColorBrush scb)
+            {
+                return scb.Clone();
+            }
+            else if (brush is ILinearGradientBrush lgb)
+            {
+                return lgb.Clone();
+            }
+            else if (brush is IRadialGradientBrush rgb)
+            {
+                return rgb.Clone();
+            }
+            else if (brush is IConicGradientBrush cgb)
+            {
+                return cgb.Clone();
+            }
+            else if (brush is IImageBrush ib)
+            {
+                return ib.Clone();
+            }
+            else if (brush is VisualBrush vb)
+            {
+                return vb.Clone();
+            }
+            else
+            {
+                throw new NotSupportedException("The brush type " + brush.GetType().FullName + " is not supported for cloning.");
+            }
+        }
+
+        /// <summary>
+        /// Create a deep clone of a list of gradient stops.
+        /// </summary>
+        /// <param name="stops">the list of stops to clone</param>
+        /// <returns>a new list of gradient stops, with the same properties</returns>
+        static GradientStops CloneStops(IReadOnlyList<IGradientStop> stops)
+        {
+            var newStops = new GradientStops();
+            foreach (var stop in stops)
+            {
+                newStops.Add(new GradientStop(stop.Color, stop.Offset));
+            }
+            return newStops;
+        }
+#endif
+
     }
 
     ///// <summary>
