@@ -67,7 +67,7 @@ namespace SolidShineUi
         /// <summary>the subSeparator, put into a char array for easy usage with <see cref="string.Split(char[], StringSplitOptions)"/></summary>
         private static readonly char[] subSplitChar = new char[] { subSeparator };
 
-        private static string SerializeSolidColorBrush(SolidColorBrush brush)
+        private static string SerializeSolidColorBrush(ISolidColorBrush brush)
         {
             string color = brush.Color.GetHexStringWithAlpha();
 
@@ -84,7 +84,7 @@ namespace SolidShineUi
             // SolidColorBrush is type "s"
         }
 
-        private static string SerializeLinearGradientBrush(LinearGradientBrush lgb)
+        private static string SerializeLinearGradientBrush(ILinearGradientBrush lgb)
         {
             string props = "";
             
@@ -127,7 +127,7 @@ namespace SolidShineUi
             // LinearGradientBrush is type "l"
         }
 
-        private static string SerializeRadialGradientBrush(RadialGradientBrush rgb)
+        private static string SerializeRadialGradientBrush(IRadialGradientBrush rgb)
         {
             string props = "";
 
@@ -188,24 +188,30 @@ namespace SolidShineUi
             // RadialGradientBrush is of type "r"
         }
 
-        private static string SerializeGradientStopCollection(GradientStops gsc)
+        private static string SerializeGradientStopCollection(IReadOnlyList<IGradientStop> gsc)
         {
+            GradientStops newGsc = new GradientStops();
+            bool useNewGsc = false;
+
             // to aid with deserialization, we will want to make sure that the gradient stop collection has at least 2 items
             if (gsc.Count == 0)
             {
                 // what the heck man - let's just create some transparent gradient stops
-                gsc.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 0.0));
-                gsc.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1.0));
+                useNewGsc = true;
+                newGsc.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 0.0));
+                newGsc.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 1.0));
             }
             if (gsc.Count == 1)
             {
                 // we'll create another gradient stop that's nearby with the same color, so it should look the same visually
+                useNewGsc = true;
+                newGsc.Add(new GradientStop(gsc[0].Color, gsc[0].Offset));
                 double newOffset = gsc[0].Offset == 1 ? 0.99 : gsc[0].Offset + 0.01;
-                gsc.Add(new GradientStop(gsc[0].Color, newOffset));
+                newGsc.Add(new GradientStop(gsc[0].Color, newOffset));
             }
 
             // {stop1Color}@{stop1Offset},{stop2Color}@{stop2Offset}
-            IEnumerable<string> stops = gsc.Select(g => SerializeGradientStop(g));
+            IEnumerable<string> stops = useNewGsc ? newGsc.Select(g => SerializeGradientStop(g)) : gsc.Select(g => SerializeGradientStop(g));
             return string.Join(new string(subSeparator, 1), stops);
         }
 
@@ -213,7 +219,7 @@ namespace SolidShineUi
         /// Create a string representing a GradientStop, with the format being "<c>color</c>@<c>offset</c>" (e.g., "<c>FF00FF88@0.5</c>").
         /// </summary>
         /// <param name="g">the stop to serialize</param>
-        public static string SerializeGradientStop(GradientStop g)
+        public static string SerializeGradientStop(IGradientStop g)
         {
             return g.Color.GetHexStringWithAlpha() + "@" + g.Offset.ToString(CultureInfo.InvariantCulture);
         }
@@ -240,7 +246,7 @@ namespace SolidShineUi
         /// separated with the separator ('<c>;</c>'), although <paramref name="gradientBrushProperties"/> are combined together under the 'p' value.
         /// Transforms are serialized using <see cref="TransformSerializer"/>.
         /// </remarks>
-        private static string SerializeBrushProperties(Brush brush, string gradientBrushProperties = "")
+        private static string SerializeBrushProperties(IBrush brush, string gradientBrushProperties = "")
         {
             List<string> values = new List<string>();
 
@@ -280,7 +286,7 @@ namespace SolidShineUi
         /// <para/>
         /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
         /// </summary>
-        public static string Serialize(this SolidColorBrush scb)
+        public static string Serialize(this ISolidColorBrush scb)
         {
             return SerializeSolidColorBrush(scb);
         }
@@ -290,7 +296,7 @@ namespace SolidShineUi
         /// <para/>
         /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
         /// </summary>
-        public static string Serialize(this LinearGradientBrush lgb)
+        public static string Serialize(this ILinearGradientBrush lgb)
         {
             return SerializeLinearGradientBrush(lgb);
         }
@@ -300,7 +306,7 @@ namespace SolidShineUi
         /// <para/>
         /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
         /// </summary>
-        public static string Serialize(this RadialGradientBrush rgb)
+        public static string Serialize(this IRadialGradientBrush rgb)
         {
             return SerializeRadialGradientBrush(rgb);
         }
@@ -311,20 +317,20 @@ namespace SolidShineUi
         /// Use <see cref="DeserializeBrush(string)"/> to convert the string back into a brush.
         /// </summary>
         /// <remarks>
-        /// Only <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/> are supported.
-        /// All other brush types will return an empty string.
+        /// Only <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/> are supported
+        /// (and their immutable counterparts). All other brush types will return an empty string.
         /// </remarks>
-        public static string Serialize(this Brush b)
+        public static string Serialize(this IBrush b)
         {
-            if (b is SolidColorBrush scb)
+            if (b is ISolidColorBrush scb)
             {
                 return SerializeSolidColorBrush(scb);
             }
-            else if (b is LinearGradientBrush lgb)
+            else if (b is ILinearGradientBrush lgb)
             {
                 return SerializeLinearGradientBrush(lgb);
             }
-            else if (b is RadialGradientBrush rgb)
+            else if (b is IRadialGradientBrush rgb)
             {
                 return SerializeRadialGradientBrush(rgb);
             }
@@ -350,12 +356,12 @@ namespace SolidShineUi
         /// <summary>
         /// Deserialize a brush string back into a <see cref="Brush"/>.
         /// <para/>
-        /// Brushes can be serialized/converted to a string using <see cref="Serialize(Brush)"/>.
+        /// Brushes can be serialized/converted to a string using <see cref="Serialize(IBrush)"/>.
         /// </summary>
         /// <param name="s">the string representing the brush to deserialize</param>
         /// <remarks>
         /// Only <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/> are supported.
-        /// The deserialized brush will be of the same type as the serialized type created using <see cref="Serialize(Brush)"/>.
+        /// The deserialized brush will be of the same type as the serialized type created using <see cref="Serialize(IBrush)"/>.
         /// The returned brush will be frozen; use <see cref="DeserializeBrush(string, bool)"/> if you want an unfrozen brush.
         /// </remarks>
         /// <exception cref="FormatException">Thrown if an invalid/unparseable string is inputted</exception>
@@ -367,13 +373,13 @@ namespace SolidShineUi
         /// <summary>
         /// Deserialize a brush string back into a <see cref="Brush"/>.
         /// <para/>
-        /// Brushes can be serialized/converted to a string using <see cref="Serialize(Brush)"/>.
+        /// Brushes can be serialized/converted to a string using <see cref="Serialize(IBrush)"/>.
         /// </summary>
         /// <param name="s">the string representing the brush to deserialize</param>
         /// <param name="immutable">whether or not the returned brush should be immutable</param>
         /// <remarks>
         /// Only <see cref="SolidColorBrush"/>, <see cref="LinearGradientBrush"/>, and <see cref="RadialGradientBrush"/> are supported.
-        /// The deserialized brush will be of the same type as the serialized type created using <see cref="Serialize(Brush)"/>.
+        /// The deserialized brush will be of the same type as the serialized type created using <see cref="Serialize(IBrush)"/>.
         /// If <paramref name="immutable"/> is set to true, the returned brush will be an immutable brush.
         /// </remarks>
         /// <exception cref="FormatException">Thrown if an invalid/unparseable string is inputted</exception>
@@ -625,7 +631,7 @@ namespace SolidShineUi
         /// <summary>
         /// Create a <see cref="GradientStop"/> by deserializing a string representing that gradient stop.
         /// <para/>
-        /// GradientStops can be serialized using <see cref="SerializeGradientStop(GradientStop)"/>.
+        /// GradientStops can be serialized using <see cref="SerializeGradientStop(IGradientStop)"/>.
         /// </summary>
         /// <param name="str">the string to deserialize</param>
         /// <exception cref="FormatException">thrown if the inputted text is invalid and can't be parsed</exception>
