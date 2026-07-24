@@ -1,8 +1,13 @@
-﻿using SolidShineUi.Utils;
-using System;
+﻿using System;
 using System.Globalization;
+#if AVALONIA
+using Avalonia;
+using Avalonia.Media;
+#else
 using System.Windows;
 using System.Windows.Media;
+using SolidShineUi.Utils;
+#endif
 
 namespace SolidShineUi
 {
@@ -125,8 +130,13 @@ namespace SolidShineUi
 
         // IconVariation stored as enum name
 
+#if AVALONIA
+        /// <summary>The value for the <see cref="SsuiTheme.IconVariation"/> property.</summary>
+        public string IconVariation { get; set; } = nameof(SolidShineUi.IconVariation.Color);
+#else
         /// <summary>The value for the <see cref="SsuiTheme.IconVariation"/> property.</summary>
         public string IconVariation { get; set; } = nameof(Utils.IconVariation.Color);
+#endif
 
         // SsuiAppTheme-specific properties
 
@@ -207,7 +217,7 @@ namespace SolidShineUi
         /// <para/>If this was serialized from a <see cref="SsuiTheme"/>, this will be false.</summary>
         public bool AllowTitleBarBrushWithMenus { get; set; } = true;
 
-        #endregion
+#endregion
 
         #region Conversion Methods
 
@@ -376,7 +386,9 @@ namespace SolidShineUi
                 theme.IconVariation = iv;
             }
 
+#if !AVALONIA
             if (theme.CanFreeze && freeze) theme.Freeze();
+#endif
 
             return theme;
         }
@@ -466,7 +478,9 @@ namespace SolidShineUi
                 ssat.SubitemTheme = SubitemTheme.ToSsuiTheme();
             }
 
+#if !AVALONIA
             if (ssat.CanFreeze && freeze) ssat.Freeze();
+#endif
 
             return ssat;
         }
@@ -475,6 +489,31 @@ namespace SolidShineUi
 
         #region Helper / Parser methods
 
+#if AVALONIA
+        static IBrush ParseBrush(string s, bool freeze)
+        {
+            // try to use the BrushSerializer if I can, but if the string is null, empty, or can't be parsed, we'll return a Transparent solid color brush
+            // a Transparent brush is probably not what's really desired, but in this situation where data may have been corrupted, not sure what else to do
+
+            if (string.IsNullOrEmpty(s))
+            {
+                IBrush b = Colors.Transparent.ToBrush();
+                if (freeze) b = b.ToImmutable();
+                return b;
+            }
+
+            try
+            {
+                return BrushSerializer.DeserializeBrush(s, freeze);
+            }
+            catch (FormatException)
+            {
+                IBrush b = Colors.Transparent.ToBrush();
+                if (freeze) b = b.ToImmutable();
+                return b;
+            }
+        }
+#else
         static Brush ParseBrush(string s, bool freeze)
         {
             // try to use the BrushSerializer if I can, but if the string is null, empty, or can't be parsed, we'll return a Transparent solid color brush
@@ -498,6 +537,7 @@ namespace SolidShineUi
                 return b;
             }
         }
+#endif
 
         static string CornerRadiusToString(CornerRadius cr)
         {
@@ -515,6 +555,19 @@ namespace SolidShineUi
                                      cr.BottomLeft.ToString(CultureInfo.InvariantCulture));
         }
 
+#if AVALONIA
+        CornerRadius ParseCornerRadius(string s)
+        {
+            try
+            {
+                return Avalonia.CornerRadius.Parse(s);
+            }
+            catch (FormatException)
+            {
+                return new CornerRadius(0);
+            }
+        }
+#else
         static CornerRadius ParseCornerRadius(string s)
         {
             try
@@ -543,6 +596,7 @@ namespace SolidShineUi
                 }
             }
         }
+#endif
 
         #endregion
     }
