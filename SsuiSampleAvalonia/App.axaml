@@ -5,7 +5,7 @@
 			 RequestedThemeVariant="Default" >
     <Application.Styles>
         <FluentTheme />
-        <flat:SolidShineUi />
+        <flat:UseSolidShineUi />
     </Application.Styles>
     <!--<Application.Resources>
         <ResourceDictionary>

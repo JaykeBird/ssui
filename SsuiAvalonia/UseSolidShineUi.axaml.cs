@@ -19,7 +19,7 @@ namespace SolidShineUi
     /// <para/>
     /// This is not necessary to use if you're only interacting with the non-UI classes of Solid Shine UI, such as <see cref="ArithmeticParser"/> or <see cref="ColorsHelper"/>.
     /// </remarks>
-    public class SolidShineUi : Styles
+    public class UseSolidShineUi : Styles
     {
         // based upon https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Fluent/FluentTheme.xaml.cs
 
@@ -28,10 +28,10 @@ namespace SolidShineUi
         //public SolidShineUi() { }
 
         /// <summary>
-        /// Create a new SolidShineUI styles object.
+        /// Create a new UseSolidShineUi styles object.
         /// </summary>
         /// <param name="sp">The parent's service provider.</param>
-        public SolidShineUi(IServiceProvider? sp = null)
+        public UseSolidShineUi(IServiceProvider? sp = null)
         {
             AvaloniaXamlLoader.Load(sp, this);
         }
