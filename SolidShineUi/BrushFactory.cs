@@ -62,6 +62,58 @@ namespace SolidShineUi
 #endif
         }
 
+        /// <summary>
+        /// Create a linear gradient brush from a collection of gradient stops.
+        /// </summary>
+        /// <param name="stops">The collection of gradient stops to use for creating the brush</param>
+        public static LinearGradientBrush Create(IEnumerable<GradientStop> stops)
+        {
+#if AVALONIA
+            return new LinearGradientBrush { GradientStops = [.. stops] };
+#else
+            return new LinearGradientBrush(new GradientStopCollection(stops));
+#endif
+        }
+
+        /// <summary>
+        /// Create a linear gradient brush from a collection of gradient stops.
+        /// </summary>
+        /// <param name="stops">The collection of gradient stops to use for creating the brush</param>
+        /// <param name="angle">the angle of the gradient</param>
+        public static LinearGradientBrush Create(IEnumerable<GradientStop> stops, double angle)
+        {
+#if AVALONIA
+            return new LinearGradientBrush 
+            {
+                GradientStops = [.. stops],
+                StartPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(EndPointFromAngle(angle), RelativeUnit.Relative)
+            };
+#else
+            return new LinearGradientBrush(new GradientStopCollection(stops), angle);
+#endif
+        }
+
+        /// <summary>
+        /// Create a linear gradient brush from a collection of gradient stops.
+        /// </summary>
+        /// <param name="stops">The collection of gradient stops to use for creating the brush</param>
+        /// <param name="startPoint">the relative start point of the gradient</param>
+        /// <param name="endPoint">the relative end point of the gradient</param>
+        public static LinearGradientBrush Create(IEnumerable<GradientStop> stops, Point startPoint, Point endPoint)
+        {
+#if AVALONIA
+            return new LinearGradientBrush
+            {
+                GradientStops = [.. stops],
+                StartPoint = new RelativePoint(startPoint, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(endPoint, RelativeUnit.Relative)
+            };
+#else
+            return new LinearGradientBrush(new GradientStopCollection(stops), startPoint, endPoint);
+#endif
+        }
+
         private static Point EndPointFromAngle(double angle)
         {
             angle = angle * (1.0 / 180.0) * Math.PI;
@@ -201,6 +253,7 @@ namespace SolidShineUi
             return cbb;
         }
 
+        #region Avalonia Clone
 
 #if AVALONIA
 
@@ -385,6 +438,7 @@ namespace SolidShineUi
             return newStops;
         }
 #endif
+        #endregion
 
     }
 
