@@ -2,8 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+#if AVALONIA
+using Avalonia;
+using Avalonia.Media;
+using Avalonia.Platform;
+using IconVariation = SolidShineUi.IconVariation;
+#else
 using System.Windows;
 using System.Windows.Media;
+using IconVariation = SolidShineUi.Utils.IconVariation;
+#endif
 
 namespace SolidShineUi
 {
@@ -12,6 +20,10 @@ namespace SolidShineUi
     /// </summary>
     public static class SsuiThemes
     {
+
+        #region System Themes
+
+#if !AVALONIA
         /// <summary>
         /// A SsuiAppTheme that uses the system's colors for the controls.
         /// </summary>
@@ -96,6 +108,9 @@ namespace SolidShineUi
 
             return ssat;
         }
+#endif
+
+        #endregion
 
         /// <summary>
         /// A standard premade theme, with a lot of light gray/white colors. 
@@ -266,7 +281,7 @@ namespace SolidShineUi
                     CheckBrush = Colors.Black.ToBrush(),
                     CheckHighlightBrush = Colors.White.ToBrush(),
                     CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightBlue.ToBrush(),
-                    IconVariation = Utils.IconVariation.White,
+                    IconVariation = IconVariation.White,
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
@@ -327,7 +342,7 @@ namespace SolidShineUi
                     CheckBrush = Colors.Black.ToBrush(),
                     CheckHighlightBrush = Colors.White.ToBrush(),
                     CheckBackgroundHighlightBrush = ColorsHelper.HighContrastBlue.ToBrush(),
-                    IconVariation = Utils.IconVariation.White,
+                    IconVariation = IconVariation.White,
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
@@ -388,7 +403,7 @@ namespace SolidShineUi
                     CheckBrush = Colors.Black.ToBrush(),
                     CheckHighlightBrush = Colors.Black.ToBrush(),
                     CheckBackgroundHighlightBrush = ColorsHelper.HighContrastLightPurple.ToBrush(),
-                    IconVariation = Utils.IconVariation.Black,
+                    IconVariation = IconVariation.Black,
                     UseSubitemThemeWithMenus = false,
                     UseSubitemThemeWithPanels = false,
                     UseSubitemThemeWithRibbons = false,
@@ -421,7 +436,61 @@ namespace SolidShineUi
             }
         }
 
-#if NET9_0_OR_GREATER
+        #region Accent Color Theme
+
+#if AVALONIA
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> that corresponds to the current platform accent color.
+        /// </summary>
+        /// <remarks>
+        /// This will return null if this method cannot access the current application (<see cref="Application.Current"/>),
+        /// or if the application's <c>PlatformSettings</c> are null.
+        /// </remarks>
+        public static SsuiAppTheme? PlatformAccentColorTheme
+        {
+            get
+            {
+                Application? current = Application.Current;
+                if (current != null)
+                {
+                    IPlatformSettings? ips = current.PlatformSettings;
+                    if (ips != null)
+                    {
+                        PlatformColorValues pcv = ips.GetColorValues();
+                        return new SsuiAppTheme(pcv.AccentColor1);
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="SsuiAppTheme"/> that corresponds to the current platform accent color, and has rounded corners.
+        /// </summary>
+        /// <remarks>
+        /// This will return null if this method cannot access the current application (<see cref="Application.Current"/>),
+        /// or if the application's <c>PlatformSettings</c> are null.
+        /// </remarks>
+        public static SsuiAppTheme? PlatformAccentColorThemeRoundedCorners
+        {
+            get
+            {
+                Application? current = Application.Current;
+                if (current != null)
+                {
+                    IPlatformSettings? ips = current.PlatformSettings;
+                    if (ips != null)
+                    {
+                        PlatformColorValues pcv = ips.GetColorValues();
+                        return new SsuiAppTheme(pcv.AccentColor1) { CornerRadius = new CornerRadius(3) };
+                    }
+                }
+
+                return null;
+            }
+        }
+#elif NET9_0_OR_GREATER
         /// <summary>
         /// A <see cref="SsuiAppTheme"/> that corresponds to the current Windows accent color.
         /// </summary>
@@ -453,6 +522,10 @@ namespace SolidShineUi
         }
 #endif
 
+        #endregion
+
+        #region Aero Theme
+
         /// <summary>
         /// Create a SsuiAppTheme that is inspired by the Aero theme of Windows Vista and Windows 7.
         /// <para/>
@@ -476,8 +549,7 @@ namespace SolidShineUi
         /// <param name="accentColor">the accent color to use, if any, to color/tint the theme</param>
         public static SsuiAppTheme CreateAeroTheme(CornerRadius cornerRadius, Color? accentColor = null)
         {
-            LinearGradientBrush baseChromeBrush = new LinearGradientBrush(new GradientStopCollection
-            (
+            LinearGradientBrush baseChromeBrush = BrushFactory.Create(
                 new List<GradientStop>()
                 {
                     new GradientStop(ColorsHelper.CreateFromHex("F3F3F3"), 0.0d),
@@ -485,12 +557,10 @@ namespace SolidShineUi
                     new GradientStop(ColorsHelper.CreateFromHex("DDDDDD"), 0.5d),
                     new GradientStop(ColorsHelper.CreateFromHex("CDCDCD"), 1.0d),
                 }
-            ), 90.0d);
+            , 90.0d);
 
-            LinearGradientBrush chromeBrush = 
-            (accentColor.HasValue ?
-                new LinearGradientBrush(new GradientStopCollection
-                (
+            LinearGradientBrush chromeBrush = (accentColor.HasValue ?
+                BrushFactory.Create(
                     new List<GradientStop>()
                     {
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.6d), 0.0d),
@@ -498,38 +568,33 @@ namespace SolidShineUi
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.6d), 0.5d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.6d), 1.0d),
                     }
-                ), 90.0d) : baseChromeBrush
-            );
+                , 90.0d) : baseChromeBrush);
 
             Color selColor = ColorsHelper.CreateFromHex("99CCFF");
             Color selDarkColor = ColorsHelper.CreateFromHex("7aa3cc");
 
             LinearGradientBrush selectedBrush = (accentColor.HasValue ?
-                new LinearGradientBrush(new GradientStopCollection // with accent color
-                (
-                    new List<GradientStop>()
+                BrushFactory.Create( // with accent color
+                new List<GradientStop>()
                     {
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), accentColor.Value, 0.9d), 0.0d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), accentColor.Value, 0.9d), 0.5d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.9d), 0.5d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), accentColor.Value, 0.9d), 1.0d),
                     }
-                ), 90.0d) : 
-                new LinearGradientBrush(new GradientStopCollection // no accent color
-                (
-                    new List<GradientStop>()
+                , 90.0d) :
+                BrushFactory.Create(  // no accent color
+                 new List<GradientStop>()
                     {
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F3F3F3"), selColor, 0.8d), 0.0d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("EBEBEB"), selColor, 0.8d), 0.5d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), selColor, 0.8d), 0.5d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("CDCDCD"), selColor, 0.8d), 1.0d),
                     }
-                ), 90.0d)
-            );
+                 , 90.0d));
 
             LinearGradientBrush mainHighlightBrush = (accentColor.HasValue ? 
-                new LinearGradientBrush(new GradientStopCollection // with accent color
-                (
+                BrushFactory.Create( // accent color
                     new List<GradientStop>()
                     {
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("F4F4F4"), accentColor.Value, 0.8d), 0.0d),
@@ -537,9 +602,8 @@ namespace SolidShineUi
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("DDDDDD"), accentColor.Value, 0.8d), 0.5d),
                         new GradientStop(ColorsHelper.BlendWithGamma(ColorsHelper.CreateFromHex("E4E4E4"), accentColor.Value, 0.8d), 1.0d),
                     }
-                ), 90.0d):
-                new LinearGradientBrush(new GradientStopCollection // no accent color
-                (
+                , 90.0d):
+                BrushFactory.Create(  // no accent color
                     new List<GradientStop>()
                     {
                         new GradientStop(Color.FromRgb(234,246,253), 0.0d),
@@ -547,7 +611,7 @@ namespace SolidShineUi
                         new GradientStop(Color.FromRgb(190,230,253), 0.5d),
                         new GradientStop(Color.FromRgb(167,217,245), 1.0d),
                     }
-                ), 90.0d));
+                , 90.0d));
 
             // TODO: create gradient click brush
 
@@ -590,16 +654,16 @@ namespace SolidShineUi
                 ControlBackground = nearWhiteBlue.ToBrush(),
                 ButtonBackground = chromeBrush,
                 BorderBrush = BrushFactory.Create("8E8F8F"),
-                LightBorderBrush = SystemColors.ControlDarkBrush,
+                LightBorderBrush = Colors.DarkGray.ToBrush(),
                 ControlPopBrush = clickDark.ToBrush(),
-                ControlSatBrush = SystemColors.ControlLightBrush,
-                CheckBrush = SystemColors.ControlTextBrush,
+                ControlSatBrush = highlightLight.ToBrush(),
+                CheckBrush = Colors.Black.ToBrush(),
                 CheckHighlightBrush = BrushFactory.Create("001644"),
                 CheckBackgroundHighlightBrush = checkBkgdHighlight.ToBrush(),
                 ClickBrush = clickLight.ToBrush(),
                 SelectedBackgroundBrush = (accentColor.HasValue ? baseChromeBrush : selectedBrush),
                 SelectedBorderBrush = (accentColor.HasValue ? accentColor.Value.ToBrush() : BrushFactory.Create("3399FF")),
-                SelectedForeground = SystemColors.ControlTextBrush,
+                SelectedForeground = Colors.Black.ToBrush(),
                 HighlightBrush = mainHighlightBrush,
                 HighlightBorderBrush = highlightBorder.ToBrush(),
                 HighlightForeground = Colors.Black.ToBrush(),
@@ -627,7 +691,7 @@ namespace SolidShineUi
                 UseSubitemThemeWithPanels = true,
                 UseSubitemThemeWithRibbons = false,
                 CornerRadius = cornerRadius,
-                IconVariation = Utils.IconVariation.Color,
+                IconVariation = IconVariation.Color,
                 AllowTitleBarBrushWithMenus = false
             };
 
@@ -649,5 +713,6 @@ namespace SolidShineUi
             return ssat;
         }
 
+        #endregion
     }
 }
