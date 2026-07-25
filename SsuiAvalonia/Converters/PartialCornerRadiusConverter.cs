@@ -2,10 +2,11 @@
 using Avalonia.Controls.Converters;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using SolidShineUi.Utils;
 using System;
 using System.Globalization;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// A helper method for Avalonia controls, to only selectively apply a <see cref="CornerRadius"/> value to only some corners.

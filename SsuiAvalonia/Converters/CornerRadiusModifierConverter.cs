@@ -4,7 +4,7 @@ using Avalonia;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 
-namespace SolidShineUi.Utils
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// A converter to modify one <see cref="CornerRadius"/>, by adding on a constant value or another CornerRadius object.

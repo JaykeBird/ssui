@@ -4,7 +4,7 @@ using Avalonia.Media;
 using Avalonia.Data.Converters;
 using Avalonia.Data;
 
-namespace SolidShineUi
+namespace SolidShineUi.Converters
 {
     /// <summary>
     /// Converts a Color into a SolidColorBrush.

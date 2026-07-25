@@ -1,4 +1,6 @@
 ﻿using System;
+using SolidShineUi.Converters;
+
 #if AVALONIA
 using Avalonia;
 using Avalonia.Data.Converters;

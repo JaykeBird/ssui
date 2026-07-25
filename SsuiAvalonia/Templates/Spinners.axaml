@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:flat="clr-namespace:SolidShineUi"
 					xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:ssut="clr-namespace:SolidShineUi.Utils" >
+                    xmlns:ssut="clr-namespace:SolidShineUi.Utils"
+                    xmlns:conv="clr-namespace:SolidShineUi.Converters" >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
@@ -25,7 +26,7 @@
         </Border>
     </Design.PreviewWith>
 
-    <ssut:CornerRadiusModifierConverter x:Key="CrModConverter" />
+    <conv:CornerRadiusModifierConverter x:Key="CrModConverter" />
 
     <ControlTheme x:Key="{x:Type flat:IntegerSpinner}" TargetType="flat:IntegerSpinner">
         <Setter Property="Focusable" Value="True" />
