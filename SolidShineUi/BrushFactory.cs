@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 
 #if AVALONIA
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 #else
@@ -40,6 +41,8 @@ namespace SolidShineUi
         {
             return new SolidColorBrush(ColorsHelper.CreateFromHex(hex));
         }
+
+        #region Create Linear Gradient
 
         /// <summary>
         /// Create a brush based upon two colors, made into a linear gradient.
@@ -119,6 +122,10 @@ namespace SolidShineUi
             angle = angle * (1.0 / 180.0) * Math.PI;
             return new Point(Math.Cos(angle), Math.Sin(angle));
         }
+
+        #endregion
+
+        #region CreateFromImage
 
         /// <summary>
         /// Create a brush based upon an image.
@@ -204,6 +211,10 @@ namespace SolidShineUi
         }
 #endif
 
+        #endregion
+
+        #region Checkboard Brush
+
         /// <summary>
         /// Create a brush with a checkerboard pattern, where the size and colors of the squares are customizable.
         /// </summary>
@@ -253,27 +264,34 @@ namespace SolidShineUi
             return cbb;
         }
 
+        #endregion
+
         #region Avalonia Clone
 
 #if AVALONIA
 
         /// <summary>
-        /// Create a deep clone of a SolidColorBrush, except the transitions.
+        /// Create a deep clone of a SolidColorBrush.
         /// </summary>
         /// <param name="brush">the brush to clone</param>
         /// <returns>a new SolidColorBrush, with the same properties</returns>
         public static SolidColorBrush Clone(this ISolidColorBrush brush)
         {
-            return new SolidColorBrush(Color.FromUInt32(brush.Color.ToUInt32()))
+            var newBrush = new SolidColorBrush(Color.FromUInt32(brush.Color.ToUInt32()))
             {
                 Opacity = brush.Opacity,
                 Transform = brush.Transform,
                 TransformOrigin = brush.TransformOrigin,
             };
+            if (brush is SolidColorBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
+            return newBrush;
         }
 
         /// <summary>
-        /// Create a deep clone of a LinearGradientBrush, except the transitions.
+        /// Create a deep clone of a LinearGradientBrush.
         /// </summary>
         /// <param name="brush">the brush to clone</param>
         /// <returns>a new LinearGradientBrush, with the same properties</returns>
@@ -289,11 +307,15 @@ namespace SolidShineUi
                 Transform = brush.Transform,
                 TransformOrigin = brush.TransformOrigin,
             };
+            if (brush is LinearGradientBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
             return newBrush;
         }
 
         /// <summary>
-        /// Create a deep clone of a RadialGradientBrush, except the transitions.
+        /// Create a deep clone of a RadialGradientBrush.
         /// </summary>
         /// <param name="brush">the brush to clone</param>
         /// <returns>a new RadialGradientBrush, with the same properties</returns>
@@ -311,11 +333,15 @@ namespace SolidShineUi
                 Transform = brush.Transform,
                 TransformOrigin = brush.TransformOrigin,
             };
+            if (brush is RadialGradientBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
             return newBrush;
         }
 
         /// <summary>
-        /// Create a deep clone of a ConicGradientBrush, except the transitions.
+        /// Create a deep clone of a ConicGradientBrush.
         /// </summary>
         /// <param name="brush">the brush to clone</param>
         /// <returns>a new ConicGradientBrush, with the same properties</returns>
@@ -331,12 +357,16 @@ namespace SolidShineUi
                 Transform = brush.Transform,
                 TransformOrigin = brush.TransformOrigin,
             };
+            if (brush is ConicGradientBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
             return newBrush;
         }
 
         /// <summary>
-        /// Create a deep clone of an ImageBrush, except the transitions.
-        /// The Source property is also only a shallow copy.
+        /// Create a deep clone of an ImageBrush,
+        /// except the <c>Source</c> property, which is only a shallow copy.
         /// </summary>
         /// <param name="brush">the brush to clone</param>
         /// <returns>a new ImageBrush, with the same properties</returns>
@@ -354,12 +384,16 @@ namespace SolidShineUi
                 SourceRect = brush.SourceRect,
                 Stretch = brush.Stretch,
             };
+            if (brush is ImageBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
             return newBrush;
         }
 
         /// <summary>
-        /// Create a deep clone of a VisualBrush, except the transitions.
-        /// The Visual property is also only a shallow copy.
+        /// Create a deep clone of a VisualBrush.
+        /// except the <c>Visual</c> property, which is only a shallow copy.
         /// </summary>
         /// <param name="brush">the brush to clone</param>
         /// <returns>a new VisualBrush, with the same properties</returns>
@@ -378,11 +412,15 @@ namespace SolidShineUi
                 SourceRect = brush.SourceRect,
                 Stretch = brush.Stretch,
             };
+            if (brush is VisualBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
             return newBrush;
         }
 
         /// <summary>
-        /// Create a deep clone of a brush, except the transitions.
+        /// Create a deep clone of a brush.
         /// </summary>
         /// <param name="brush">the brush to clone</param>
         /// <returns>a new brush, with the same properties</returns>
@@ -437,6 +475,7 @@ namespace SolidShineUi
             }
             return newStops;
         }
+
 #endif
         #endregion
 
