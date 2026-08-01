@@ -1,38 +1,35 @@
 ﻿using System;
-using System.Windows.Input;
-using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Avalonia;
-using Avalonia.Input;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
-using Avalonia.Media;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.VisualTree;
 
 namespace SolidShineUi
 {
     /// <summary>
-    /// A button with a custom, flat style and addiitonal functionality. Use <c>SelectOnClick</c> to have the button act like a toggle button.
+    /// The basic control that can be added into a <see cref="SelectPanel"/>. Extend this class to create your own UI elements to use with the SelectPanel.
     /// </summary>
-    [DefaultEvent(nameof(Click))]
-    public class FlatButton : ContentControl, IClickSelectableControl, ICommandSource
+    public class SelectableUserControl : UserControl, IClickSelectableControl
     {
 
         /// <summary>
-        /// Create a FlatButton.
+        /// Create a SelectableUserControl.
         /// </summary>
-        public FlatButton()
+        public SelectableUserControl()
         {
-            // applied these in the control template
-            //Padding = new Thickness(5, 0, 5, 0);
-            //Background = Colors.White.ToBrush();
-            //BorderBrush = Colors.Black.ToBrush();
-            //BorderThickness = new Thickness(1);
-            //CornerRadius = new CornerRadius(0);
+
         }
 
-        #region Appearance
+        #region Properties
+
+        #region Color Scheme
 
         /// <summary>
         /// Get or set the color scheme to apply to this button. The color scheme can quickly apply a whole visual style to your control.
@@ -41,34 +38,13 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
         public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
-            = AvaloniaProperty.Register<FlatButton, ColorScheme>(nameof(ColorScheme), new ColorScheme());
-
-        /// <summary>
-        /// Get or set whether the button should have a transparent background when the button is not focused.
-        /// </summary>
-        public bool TransparentBack { get => GetValue(TransparentBackProperty); set => SetValue(TransparentBackProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="TransparentBack"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> TransparentBackProperty
-            = AvaloniaProperty.Register<FlatButton, bool>(nameof(TransparentBack), false);
-
-        /// <summary>
-        /// Get or set if the button should use the accent brushes of the color scheme, rather than the standard brushes.
-        /// </summary>
-        public bool UseAccentColors { get => GetValue(UseAccentColorsProperty); set => SetValue(UseAccentColorsProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="UseAccentColors"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> UseAccentColorsProperty
-            = AvaloniaProperty.Register<FlatButton, bool>(nameof(UseAccentColors), false);
+            = AvaloniaProperty.Register<SelectableUserControl, ColorScheme>(nameof(ColorScheme), new ColorScheme());
 
         /// <summary>
         /// Raised when the <see cref="ColorScheme"/> property has changed.
         /// </summary>
         public event EventHandler<AvaloniaPropertyChangedEventArgs>? ColorSchemeChanged;
 
-        #region Apply Color Scheme
-
-        //bool _internalAction = true;
 
         /// <summary>
         /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
@@ -76,27 +52,9 @@ namespace SolidShineUi
         /// <param name="cs">The color scheme to apply</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
-            ApplyColorScheme(cs, UseAccentColors);
-        }
-
-        /// <summary>
-        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
-        /// </summary>
-        /// <param name="cs">The color scheme to apply</param>
-        /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
-        /// This can also be achieved with the <c>UseAccentColors</c> property.
-        /// </param>
-        public void ApplyColorScheme(ColorScheme cs, bool useAccentColors = true)
-        {
             if (ColorScheme != cs)
             {
                 ColorScheme = cs;
-                return;
-            }
-
-            if (UseAccentColors != useAccentColors)
-            {
-                UseAccentColors = useAccentColors;
                 return;
             }
 
@@ -116,50 +74,22 @@ namespace SolidShineUi
             }
             else
             {
-                if (UseAccentColors)
-                {
-                    Background = cs.AccentSecondaryColor.ToBrush();
-                    BorderBrush = cs.AccentBorderColor.ToBrush();
-                    HighlightBrush = cs.AccentSecondHighlightColor.ToBrush();
-                    DisabledBrush = cs.LightDisabledColor.ToBrush();
-                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                    SelectedBrush = cs.AccentThirdHighlightColor.ToBrush();
-                    BorderHighlightBrush = cs.AccentHighlightColor.ToBrush();
-                    BorderSelectedBrush = cs.AccentSelectionColor.ToBrush();
-                    Foreground = cs.ForegroundColor.ToBrush();
-                    ClickBrush = cs.AccentThirdHighlightColor.ToBrush();
-                }
-                else
-                {
-                    Background = cs.SecondaryColor.ToBrush();
-                    BorderBrush = cs.BorderColor.ToBrush();
-                    HighlightBrush = cs.SecondHighlightColor.ToBrush();
-                    DisabledBrush = cs.LightDisabledColor.ToBrush();
-                    BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                    SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-                    BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                    BorderSelectedBrush = cs.SelectionColor.ToBrush();
-                    Foreground = cs.ForegroundColor.ToBrush();
-                    ClickBrush = cs.ThirdHighlightColor.ToBrush();
-                }
+                Background = cs.SecondaryColor.ToBrush();
+                BorderBrush = cs.BorderColor.ToBrush();
+                HighlightBrush = cs.SecondHighlightColor.ToBrush();
+                DisabledBrush = cs.LightDisabledColor.ToBrush();
+                BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                SelectedBrush = cs.ThirdHighlightColor.ToBrush();
+                BorderHighlightBrush = cs.HighlightColor.ToBrush();
+                BorderSelectedBrush = cs.SelectionColor.ToBrush();
+                Foreground = cs.ForegroundColor.ToBrush();
+                ClickBrush = cs.ThirdHighlightColor.ToBrush();
             }
         }
-        
-        
 
         #endregion
 
         #region Brushes
-
-        ///// <summary>
-        ///// Get or set the bursh used for the background of the control.
-        ///// </summary>
-        //[Category("Brushes")]
-        //public new IBrush? Background { get => GetValue(BackgroundProperty); set => SetValue(BackgroundProperty, value); }
-
-        ///// <summary>The backing styled property for <see cref="Background"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<IBrush?> BackgroundProperty
-        //    = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(Background), Colors.White.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse/pointer is clicking it.
@@ -169,7 +99,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> ClickBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(ClickBrush), Colors.Gainsboro.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(ClickBrush), Colors.Gainsboro.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the background of the button while it is selected
@@ -180,7 +110,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> SelectedBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(SelectedBrush), Colors.WhiteSmoke.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(SelectedBrush), Colors.WhiteSmoke.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse/pointer is over it, or it has keyboard focus.
@@ -190,7 +120,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(HighlightBrush), Colors.LightGray.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(HighlightBrush), Colors.LightGray.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the background of the control when it is disabled.
@@ -200,7 +130,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> DisabledBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(DisabledBrush), Colors.LightGray.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(DisabledBrush), Colors.LightGray.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the border around the control, when it is disabled.
@@ -209,14 +139,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderDisabledBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderDisabledBrush), Colors.DarkGray.ToBrush());
-
-
-        //public new IBrush? BorderBrush { get => GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
-
-        ///// <summary>The backing styled property for <see cref="BorderBrush"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<IBrush?> BorderBrushProperty
-        //    = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderBrush), Colors.Black.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BorderDisabledBrush), Colors.DarkGray.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the border while the control has the mouse/pointer over it (or it has keyboard focus).
@@ -226,7 +149,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderHighlightBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderHighlightBrush), Colors.Black.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BorderHighlightBrush), Colors.Black.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the border while the control is selected
@@ -237,34 +160,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderSelectedBrushProperty
-            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderSelectedBrush), Colors.DimGray.ToBrush());
-
-        #endregion
-
-        #region Border
-
-        //public Thickness BorderThickness { get => GetValue(BorderThicknessProperty); set => SetValue(BorderThicknessProperty, value); }
-
-        ///// <summary>The backing styled property for <see cref="BorderThickness"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<Thickness> BorderThicknessProperty
-        //    = AvaloniaProperty.Register<FlatButton, Thickness>(nameof(BorderThickness), new Thickness(1));
-
-        /// <summary>
-        /// Get or set the thickness of the board around the button, while the button is in a selected state (<c>IsSelected</c> is true).
-        /// </summary>
-        public Thickness BorderSelectionThickness { get => GetValue(BorderSelectionThicknessProperty); set => SetValue(BorderSelectionThicknessProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<Thickness> BorderSelectionThicknessProperty
-            = AvaloniaProperty.Register<FlatButton, Thickness>(nameof(BorderSelectionThickness), new Thickness(2));
-
-        //public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
-
-        ///// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
-        //    = AvaloniaProperty.Register<FlatButton, CornerRadius>(nameof(CornerRadius), new CornerRadius(0));
-
-        #endregion
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BorderSelectedBrush), Colors.DimGray.ToBrush());
 
         #endregion
 
@@ -275,9 +171,9 @@ namespace SolidShineUi
 
             switch (change.Property.Name)
             {
-                case nameof(UseAccentColors):
-                    ApplyColorScheme(ColorScheme, UseAccentColors);
-                    break;
+                //case nameof(UseAccentColors):
+                //    ApplyColorScheme(ColorScheme, UseAccentColors);
+                //    break;
                 case nameof(ColorScheme):
                     ApplyColorScheme(ColorScheme);
                     ColorSchemeChanged?.Invoke(this, change);
@@ -288,8 +184,7 @@ namespace SolidShineUi
             }
         }
 
-        // in the future, I'll have to look into listening to Avalonia's Tapped and RightTapped events, rather than directly parsing
-        // the pointer events myself. For now, though, I'm just focused on replicating the functionality in the WPF version
+        #endregion
 
         #region Click / Selection Handling
 
@@ -313,7 +208,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="SelectOnClick"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> SelectOnClickProperty
-            = AvaloniaProperty.Register<FlatButton, bool>(nameof(SelectOnClick), false);
+            = AvaloniaProperty.Register<SelectableUserControl, bool>(nameof(SelectOnClick), false);
 
         /// <summary>
         /// Get or set if this control can be selected.
@@ -327,7 +222,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="CanSelect"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> CanSelectProperty
-            = AvaloniaProperty.Register<FlatButton, bool>(nameof(CanSelect), true);
+            = AvaloniaProperty.Register<SelectableUserControl, bool>(nameof(CanSelect), true);
 
         private void OnCanSelectChanged(AvaloniaPropertyChangedEventArgs e)
         {
@@ -351,8 +246,8 @@ namespace SolidShineUi
         /// <summary>
         /// The backing direct property for <see cref="IsSelected"/>. See the related property for details.
         /// </summary>
-        public static readonly DirectProperty<FlatButton, bool> IsSelectedProperty
-            = AvaloniaProperty.RegisterDirect<FlatButton, bool>(nameof(IsSelected), (fb) => fb.IsSelected, (fb, v) => fb.IsSelected = v);
+        public static readonly DirectProperty<SelectableUserControl, bool> IsSelectedProperty
+            = AvaloniaProperty.RegisterDirect<SelectableUserControl, bool>(nameof(IsSelected), (fb) => fb.IsSelected, (fb, v) => fb.IsSelected = v);
 
         /// <summary>
         /// Get or set if this control is currently selected.
@@ -407,13 +302,13 @@ namespace SolidShineUi
         /// Defines the <see cref="IsSelectedChanged"/> event.
         /// </summary>
         public static readonly RoutedEvent<ItemSelectionChangedEventArgs> IsSelectedChangedEvent =
-            RoutedEvent.Register<FlatButton, ItemSelectionChangedEventArgs>(nameof(IsSelectedChanged), RoutingStrategies.Bubble);
+            RoutedEvent.Register<SelectableUserControl, ItemSelectionChangedEventArgs>(nameof(IsSelectedChanged), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Defines the <see cref="CanSelectChanged"/> event.
         /// </summary>
         public static readonly RoutedEvent<RoutedEventArgs> CanSelectChangedEvent =
-            RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(CanSelectChanged), RoutingStrategies.Bubble);
+            RoutedEvent.Register<SelectableUserControl, RoutedEventArgs>(nameof(CanSelectChanged), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Raised when the user clicks the button with the right mouse.
@@ -441,13 +336,13 @@ namespace SolidShineUi
         /// Defines the <see cref="Click"/> event.
         /// </summary>
         public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-            RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(Click), RoutingStrategies.Bubble);
+            RoutedEvent.Register<SelectableUserControl, RoutedEventArgs>(nameof(Click), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Defines the <see cref="RightClick"/> event.
         /// </summary>
         public static readonly RoutedEvent<RoutedEventArgs> RightClickEvent =
-            RoutedEvent.Register<FlatButton, RoutedEventArgs>(nameof(RightClick), RoutingStrategies.Bubble);
+            RoutedEvent.Register<SelectableUserControl, RoutedEventArgs>(nameof(RightClick), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Raised when the user clicks the button.
@@ -477,13 +372,13 @@ namespace SolidShineUi
         /// The backing styled property for <see cref="Command"/>. See the related property for details.
         /// </summary>
         public static readonly StyledProperty<ICommand?> CommandProperty
-            = AvaloniaProperty.Register<FlatButton, ICommand?>(nameof(Command), null);
+            = AvaloniaProperty.Register<SelectableUserControl, ICommand?>(nameof(Command), null);
 
         /// <summary>
         /// The backing styled property for <see cref="CommandParameter"/>. See the related property for details.
         /// </summary>
         public static readonly StyledProperty<object?> CommandParameterProperty
-            = AvaloniaProperty.Register<FlatButton, object?>(nameof(CommandParameter), null);
+            = AvaloniaProperty.Register<SelectableUserControl, object?>(nameof(CommandParameter), null);
 
         /// <summary>
         /// Gets or sets an <see cref="ICommand"/> to be invoked when the button is clicked.
@@ -523,25 +418,25 @@ namespace SolidShineUi
         /// The backing styled property for <see cref="ClickMode"/>. See the related property for details.
         /// </summary>
         public static readonly StyledProperty<ClickMode> ClickModeProperty
-            = AvaloniaProperty.Register<FlatButton, ClickMode>(nameof(ClickMode), ClickMode.Release);
+            = AvaloniaProperty.Register<SelectableUserControl, ClickMode>(nameof(ClickMode), ClickMode.Release);
 
         /// <summary>
         /// The backing direct property for <see cref="IsPressed"/>. See the related property for details.
         /// </summary>
-        public static readonly DirectProperty<FlatButton, bool> IsPressedProperty
-            = AvaloniaProperty.RegisterDirect<FlatButton, bool>(nameof(IsPressed), (fb) => fb.IsPressed, unsetValue: false);
+        public static readonly DirectProperty<SelectableUserControl, bool> IsPressedProperty
+            = AvaloniaProperty.RegisterDirect<SelectableUserControl, bool>(nameof(IsPressed), (fb) => fb.IsPressed, unsetValue: false);
 
         /// <summary>
         /// The backing direct property for <see cref="IsRightPressed"/>. See the related property for details.
         /// </summary>
-        public static readonly DirectProperty<FlatButton, bool> IsRightPressedProperty
-            = AvaloniaProperty.RegisterDirect<FlatButton, bool>(nameof(IsRightPressed), (fb) => fb.IsRightPressed, unsetValue: false);
+        public static readonly DirectProperty<SelectableUserControl, bool> IsRightPressedProperty
+            = AvaloniaProperty.RegisterDirect<SelectableUserControl, bool>(nameof(IsRightPressed), (fb) => fb.IsRightPressed, unsetValue: false);
 
         /// <summary>
         /// The backing direct property for <see cref="IsPressedByKey"/>. See the related proeprty for details.
         /// </summary>
-        public static readonly DirectProperty<FlatButton, bool> IsPressedByKeyProperty
-            = AvaloniaProperty.RegisterDirect<FlatButton, bool>(nameof(IsPressedByKey), (fb) => fb.IsPressedByKey, unsetValue: false);
+        public static readonly DirectProperty<SelectableUserControl, bool> IsPressedByKeyProperty
+            = AvaloniaProperty.RegisterDirect<SelectableUserControl, bool>(nameof(IsPressedByKey), (fb) => fb.IsPressedByKey, unsetValue: false);
 
         /// <summary>
         /// Gets or sets a value indicating how this button should react to clicks.
@@ -620,6 +515,56 @@ namespace SolidShineUi
         {
             RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
             RaiseEvent(rre);
+        }
+
+        #endregion
+
+        #region Highlighting
+
+        private bool _highlighting = false;
+
+        /// <summary>
+        /// Get if this control is currently in a "highlight" state.
+        /// <para/>
+        /// Use <see cref="Highlight"/> and <see cref="Unhighlight"/> to change states.
+        /// </summary>
+        public bool Highlighting { get => _highlighting; private set => SetAndRaise(HighlightingProperty, ref _highlighting, value); }
+
+        /// <summary>The backing direct property for <see cref="Highlighting"/>. See the related property for details.</summary>
+        public static readonly DirectProperty<SelectableUserControl, bool> HighlightingProperty
+            = AvaloniaProperty.RegisterDirect<SelectableUserControl, bool>(nameof(Highlighting), (s) => s.Highlighting, unsetValue: false);
+
+
+        /// <summary>
+        /// Change the control to a highlighted state, while it has focus or has the mouse or stylus over it.
+        /// </summary>
+        protected virtual void Highlight()
+        {
+            Highlighting = true;
+            if (CanSelect && SelectOnClick)
+            {
+                Background = HighlightBrush;
+                //Foreground = HighlightForeground;
+            }
+        }
+
+        /// <summary>
+        /// Change the control to an unhighlighted state, when it no longer has focus or has the mouse or stylus over it.
+        /// </summary>
+        protected virtual void Unhighlight()
+        {
+            Highlighting = false;
+
+            if (IsSelected)
+            {
+                Background = SelectedBrush;
+                //Foreground = SelectedForeground;
+            }
+            else
+            {
+                //Background = BaseBackground;
+                //Foreground = BaseForeground;
+            }
         }
 
         #endregion
@@ -745,9 +690,22 @@ namespace SolidShineUi
             }
         }
 
-        #endregion
+        /// <inheritdoc/>
+        protected override void OnPointerEntered(PointerEventArgs e)
+        {
+            base.OnPointerEntered(e);
+            Highlight();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPointerExited(PointerEventArgs e)
+        {
+            base.OnPointerExited(e);
+            Unhighlight();
+        }
 
         #endregion
 
+        #endregion
     }
 }
