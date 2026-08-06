@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -16,7 +17,7 @@ namespace SolidShineUi
     /// <summary>
     /// The basic control that can be added into a <see cref="SelectPanel"/>. Extend this class to create your own UI elements to use with the SelectPanel.
     /// </summary>
-    public class SelectableUserControl : UserControl, IClickSelectableControl
+    public class SelectableUserControl : UserControl, ICommandSource, IClickSelectableControl
     {
 
         /// <summary>
@@ -99,7 +100,8 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> ClickBrushProperty
-            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(ClickBrush), Colors.Gainsboro.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(ClickBrush), Colors.LightGray.ToBrush());
+
 
         /// <summary>
         /// Get or set the brush used for the background of the button while it is selected
@@ -112,6 +114,7 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> SelectedBrushProperty
             = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(SelectedBrush), Colors.WhiteSmoke.ToBrush());
 
+
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse/pointer is over it, or it has keyboard focus.
         /// </summary>
@@ -120,7 +123,8 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightBrushProperty
-            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(HighlightBrush), Colors.LightGray.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(HighlightBrush), Colors.Gainsboro.ToBrush());
+
 
         /// <summary>
         /// Get or set the brush used for the background of the control when it is disabled.
@@ -132,14 +136,17 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> DisabledBrushProperty
             = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(DisabledBrush), Colors.LightGray.ToBrush());
 
+
         /// <summary>
         /// Get or set the brush used for the border around the control, when it is disabled.
         /// </summary>
+        [Category("Brushes")]
         public IBrush? BorderDisabledBrush { get => GetValue(BorderDisabledBrushProperty); set => SetValue(BorderDisabledBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderDisabledBrushProperty
-            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BorderDisabledBrush), Colors.DarkGray.ToBrush());
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BorderDisabledBrush), Colors.Gray.ToBrush());
+
 
         /// <summary>
         /// Get or set the brush used for the border while the control has the mouse/pointer over it (or it has keyboard focus).
@@ -150,6 +157,7 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderHighlightBrushProperty
             = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BorderHighlightBrush), Colors.Black.ToBrush());
+
 
         /// <summary>
         /// Get or set the brush used for the border while the control is selected
@@ -162,7 +170,89 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> BorderSelectedBrushProperty
             = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BorderSelectedBrush), Colors.DimGray.ToBrush());
 
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this control when in its default state (e.g., when not selected or highlighted).
+        /// </summary>
+        /// <remarks>
+        /// Setting <c>Background</c> will only affect its background for the current state and time; once the state changes,
+        /// the background will be overwritten with either this brush or one of the relevant other brushes.
+        /// Instead, this brush should be set to control what the background should be when falling back to a default, base state.
+        /// </remarks>
+        [Category("Brushes")]
+        public IBrush? BaseBackground { get => GetValue(BaseBackgroundProperty); set => SetValue(BaseBackgroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BaseBackground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BaseBackgroundProperty
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BaseBackground), Colors.White.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush to use for the foreground of this control when in its default state (e.g., when not selected or highlighted).
+        /// </summary>
+        /// <remarks>
+        /// Setting <c>Foreground</c> will only affect its foreground for the current state and time; once the state changes,
+        /// the foreground will be overwritten with either this brush or one of the relevant other brushes.
+        /// Instead, this brush should be set to control what the foreground should be when falling back to a default, base state.
+        /// </remarks>
+        [Category("Brushes")]
+        public IBrush? BaseForeground { get => GetValue(BaseForegroundProperty); set => SetValue(BaseForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BaseForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BaseForegroundProperty
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BaseForeground), Colors.Black.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this contol while it is highlighted (i.e. has a mouse over it, or has keyboard focus).
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? HighlightForeground { get => GetValue(HighlightForegroundProperty); set => SetValue(HighlightForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightForegroundProperty
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(HighlightForeground), Colors.Black.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this control while it is being clicked.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? DisabledForeground { get => GetValue(DisabledForegroundProperty); set => SetValue(DisabledForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="DisabledForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> DisabledForegroundProperty
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(DisabledForeground), Colors.DimGray.ToBrush());
+
+
+        /// <summary>
+        /// Get or set the brush to use for the background of this control while it is selected.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? SelectedForeground { get => GetValue(SelectedForegroundProperty); set => SetValue(SelectedForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> SelectedForegroundProperty
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(SelectedForeground), Colors.Black.ToBrush());
+
+
+
         #endregion
+
+        #region Property Changes
+
+        /// <inheritdoc/>
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            // set up bindings to BaseBackground and BaseForeground
+            // I can do this in Avalonia and not WPF because Avalonia lets me set the binding priority level
+            Bind(BackgroundProperty, new Binding(nameof(BaseBackground)) 
+                { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
+            Bind(ForegroundProperty, new Binding(nameof(BaseForeground))
+                { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
+        }
 
         /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -171,9 +261,6 @@ namespace SolidShineUi
 
             switch (change.Property.Name)
             {
-                //case nameof(UseAccentColors):
-                //    ApplyColorScheme(ColorScheme, UseAccentColors);
-                //    break;
                 case nameof(ColorScheme):
                     ApplyColorScheme(ColorScheme);
                     ColorSchemeChanged?.Invoke(this, change);
@@ -181,8 +268,41 @@ namespace SolidShineUi
                 case nameof(CanSelect):
                     OnCanSelectChanged(change);
                     break;
+                case nameof(IsEnabled):
+                    OnIsEnabledChanged(change);
+                    break;
             }
         }
+
+        void OnIsEnabledChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.GetNewValue<bool>() == false)
+            {
+                SetValue(BackgroundProperty, DisabledBrush);
+                SetValue(ForegroundProperty, DisabledForeground);
+            }
+            else
+            {
+                if (Highlighting)
+                {
+                    SetValue(BackgroundProperty, HighlightBrush);
+                    SetValue(ForegroundProperty, HighlightForeground);
+                    // SetValue(BorderBrushProperty, BorderHighlightBrush);
+                }
+                else if (IsSelected)
+                {
+                    SetValue(BackgroundProperty, SelectedBrush);
+                    SetValue(ForegroundProperty, SelectedForeground);
+                }
+                else
+                {
+                    ClearValue(BackgroundProperty);
+                    ClearValue(ForegroundProperty);
+                }
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -197,12 +317,14 @@ namespace SolidShineUi
         #endregion
 
         #region Selection Properties
+
         /// <summary>
         /// Get or set if this control should change its <see cref="IsSelected"/> value when you click on the control.
         /// </summary>
         /// <remarks>
-        /// This allows more fine-tuned control over when and how this control can be selected. If this is <c>false</c>, then the user can only use the checkbox to directly 
-        /// select or deselect this control. You can use <see cref="CanSelect"/> to globally disable selecting this control via any method.
+        /// This allows more fine-tuned control over when and how this control can be selected. If this is <c>false</c>, 
+        /// then the user can only use other methods to select this control, such as a checkbox, rather than just clicking 
+        /// on it. You can use <see cref="CanSelect"/> to globally disable selecting this control entirely.
         /// </remarks>
         public bool SelectOnClick { get => GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
 
@@ -214,9 +336,10 @@ namespace SolidShineUi
         /// Get or set if this control can be selected.
         /// </summary>
         /// <remarks>
-        /// If this is set to <c>false</c>, then this control cannot be selected via any method - even programmatically. Setting this to <c>false</c> will also deselect this control, 
-        /// if currently selected. For more fine-tuned control, you can use <see cref="SelectOnClick"/> to limit how the user can select this control, 
-        /// while still being able to change the selection status via <see cref="IsSelected"/>.
+        /// If this is set to <c>false</c>, then this control cannot be selected via any method - even by setting <see cref="IsSelected"/>
+        /// directly. Setting this to <c>false</c> will also deselect this control, if currently selected. For more fine-tuned control, 
+        /// you can use <see cref="SelectOnClick"/> to limit how the user can select this control, while still being able to change the 
+        /// selection status via <see cref="IsSelected"/>.
         /// </remarks>
         public bool CanSelect { get => GetValue(CanSelectProperty); set => SetValue(CanSelectProperty, value); }
 
@@ -504,6 +627,11 @@ namespace SolidShineUi
                 SetIsSelectedWithSource(!IsSelected, SelectionChangeTrigger.ControlClick, this);
             }
 
+            if (Command != null && Command.CanExecute(CommandParameter))
+            {
+                Command.Execute(CommandParameter);
+            }
+
             RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
             RaiseEvent(rre);
         }
@@ -543,8 +671,9 @@ namespace SolidShineUi
             Highlighting = true;
             if (CanSelect && SelectOnClick)
             {
-                Background = HighlightBrush;
-                //Foreground = HighlightForeground;
+                // in the future, I may want to look into using the IDisposible object returned by these methods
+                SetValue(BackgroundProperty, HighlightBrush);
+                SetValue(ForegroundProperty, HighlightForeground);
             }
         }
 
@@ -557,13 +686,13 @@ namespace SolidShineUi
 
             if (IsSelected)
             {
-                Background = SelectedBrush;
-                //Foreground = SelectedForeground;
+                SetValue(BackgroundProperty, SelectedBrush);
+                SetValue(ForegroundProperty, SelectedForeground);
             }
             else
             {
-                //Background = BaseBackground;
-                //Foreground = BaseForeground;
+                ClearValue(BackgroundProperty);
+                ClearValue(ForegroundProperty);
             }
         }
 
@@ -576,7 +705,7 @@ namespace SolidShineUi
         {
             base.OnPointerPressed(e);
 
-            var pointerProperties = e.GetCurrentPoint(this).Properties;
+            var pointerProperties = e.Properties; // e.GetCurrentPoint(this).Properties;
 
             if (pointerProperties.IsRightButtonPressed)
             {
@@ -587,6 +716,13 @@ namespace SolidShineUi
             {
                 RegisterPress();
                 e.Handled = true;
+            }
+
+            // set brush
+            if (CanSelect)
+            {
+                SetValue(BackgroundProperty, ClickBrush);
+                SetValue(ForegroundProperty, HighlightForeground);
             }
         }
 
@@ -635,6 +771,23 @@ namespace SolidShineUi
                     //e.Handled = true;
                     OnRightClick();
                 }
+            }
+
+            // reset brushes
+            if (Highlighting)
+            {
+                SetValue(BackgroundProperty, HighlightBrush);
+                SetValue(ForegroundProperty, HighlightForeground);
+            }
+            else if (IsSelected)
+            {
+                SetValue(BackgroundProperty, SelectedBrush);
+                SetValue(ForegroundProperty, SelectedForeground);
+            }
+            else
+            {
+                ClearValue(BackgroundProperty);
+                ClearValue(ForegroundProperty);
             }
         }
 
