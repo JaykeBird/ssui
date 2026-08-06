@@ -269,11 +269,11 @@ namespace SolidShineUi
 
             // set up bindings to BaseBackground and BaseForeground
             // I can do this in Avalonia and not WPF because Avalonia lets me set the binding priority level
-            Bind(BackgroundProperty, new Binding(nameof(BaseBackground)) 
+            Bind(BackgroundProperty, new ReflectionBinding(nameof(BaseBackground)) 
                 { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
-            Bind(ForegroundProperty, new Binding(nameof(BaseForeground))
+            Bind(ForegroundProperty, new ReflectionBinding(nameof(BaseForeground))
                 { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
-            Bind(BorderBrushProperty, new Binding(nameof(BaseBorderBrush))
+            Bind(BorderBrushProperty, new ReflectionBinding(nameof(BaseBorderBrush))
                 { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
         }
 

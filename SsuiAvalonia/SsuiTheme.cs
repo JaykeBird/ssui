@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Data;
@@ -600,18 +601,39 @@ namespace SolidShineUi
         /// </summary>
         /// <param name="ssuiThemeProperty">the SsuiTheme or SsuiAppTheme property to bind to</param>
         /// <param name="source">the SsuiTheme object holding the value to bind</param>
+        /// <param name="priority">the binding priority to use; if unsure, keep this as "Style"</param>
         /// <returns>A <see cref="ReflectionBinding"/> object that can be used to bind other controls' properties to this property.</returns>
         /// <exception cref="ArgumentException">thrown if <paramref name="ssuiThemeProperty"/> is not a SsuiTheme property, or a property from a class that inherits from SsuiTheme</exception>
-        public static ReflectionBinding CreateBinding(AvaloniaProperty ssuiThemeProperty, SsuiTheme source)
+        public static ReflectionBinding CreateBinding(AvaloniaProperty ssuiThemeProperty, SsuiTheme source,
+            BindingPriority priority = BindingPriority.Style)
         {
             if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
             {
                 throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
             }
-            return new ReflectionBinding(ssuiThemeProperty.Name) { Source = source, Priority = BindingPriority.Style };
+            return new ReflectionBinding(ssuiThemeProperty.Name) { Source = source, Priority = priority };
 
             // in the future, I could create a small cache of Binding objects that the SsuiTheme itself stores and returns, rather than creating a new binding each time
             // what I don't know, though, is whether each binding expression requires a unique Binding object, or if I can reuse Binding objects
+        }
+
+        /// <summary>
+        /// Create a <see cref="CompiledBinding"/> for a property in the SsuiTheme.
+        /// </summary>
+        /// <param name="ssuiThemeProperty">the SsuiTheme or SsuiAppTheme property to bind to</param>
+        /// <param name="source">the SsuiTheme object holding the value to bind</param>
+        /// <param name="priority">the binding priority to use; if unsure, keep this as "Style"</param>
+        /// <returns>A <see cref="CompiledBinding"/> object that can be used to bind other controls' properties to this property.</returns>
+        /// <exception cref="ArgumentException">thrown if <paramref name="ssuiThemeProperty"/> is not a SsuiTheme property, or a property from a class that inherits from SsuiTheme</exception>
+        public static CompiledBinding CreateCompiledBinding<T>(AvaloniaProperty<T> ssuiThemeProperty, SsuiTheme source,
+            BindingPriority priority = BindingPriority.Style)
+        {
+            if (ssuiThemeProperty.OwnerType != typeof(SsuiTheme) && !ssuiThemeProperty.OwnerType.IsSubclassOf(typeof(SsuiTheme)))
+            {
+                throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
+            }
+
+            return CompiledBinding.Create<SsuiTheme, T>(expression: theme => theme.GetValue<T>(ssuiThemeProperty), source: source, priority: priority);
         }
 
         /// <summary>
