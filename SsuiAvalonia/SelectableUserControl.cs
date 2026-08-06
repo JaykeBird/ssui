@@ -63,28 +63,35 @@ namespace SolidShineUi
 
             if (cs.IsHighContrast)
             {
-                Background = cs.BackgroundColor.ToBrush();
+                BaseBackground = cs.BackgroundColor.ToBrush();
+                BaseBorderBrush = cs.BorderColor.ToBrush();
+                DisabledBrush = cs.BackgroundColor.ToBrush();
                 HighlightBrush = cs.HighlightColor.ToBrush();
                 SelectedBrush = cs.HighlightColor.ToBrush();
+                ClickBrush = cs.ThirdHighlightColor.ToBrush();
                 BorderHighlightBrush = cs.BorderColor.ToBrush();
                 BorderSelectedBrush = cs.BorderColor.ToBrush();
                 BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
-                DisabledBrush = cs.BackgroundColor.ToBrush();
-                Foreground = cs.ForegroundColor.ToBrush();
-                ClickBrush = cs.ThirdHighlightColor.ToBrush();
+                BaseForeground = cs.ForegroundColor.ToBrush();
+                DisabledForeground = cs.DarkDisabledColor.ToBrush();
+                HighlightForeground = cs.ForegroundColor.ToBrush();
+                SelectedForeground = cs.ForegroundColor.ToBrush();
             }
             else
             {
-                Background = cs.SecondaryColor.ToBrush();
-                BorderBrush = cs.BorderColor.ToBrush();
-                HighlightBrush = cs.SecondHighlightColor.ToBrush();
+                BaseBackground = cs.SecondaryColor.ToBrush();
+                BaseBorderBrush = cs.BorderColor.ToBrush();
                 DisabledBrush = cs.LightDisabledColor.ToBrush();
-                BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                HighlightBrush = cs.SecondHighlightColor.ToBrush();
                 SelectedBrush = cs.ThirdHighlightColor.ToBrush();
-                BorderHighlightBrush = cs.HighlightColor.ToBrush();
-                BorderSelectedBrush = cs.SelectionColor.ToBrush();
-                Foreground = cs.ForegroundColor.ToBrush();
                 ClickBrush = cs.ThirdHighlightColor.ToBrush();
+                BorderHighlightBrush = cs.HighlightColor.ToBrush();
+                BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
+                BorderSelectedBrush = cs.SelectionColor.ToBrush();
+                BaseForeground = cs.ForegroundColor.ToBrush();
+                DisabledForeground = cs.DarkDisabledColor.ToBrush();
+                HighlightForeground = cs.ForegroundColor.ToBrush();
+                SelectedForeground = cs.ForegroundColor.ToBrush();
             }
         }
 
@@ -204,6 +211,22 @@ namespace SolidShineUi
 
 
         /// <summary>
+        /// Get or set the brush to use for the border of this control when in its default state (e.g., when not selected or highlighted).
+        /// </summary>
+        /// <remarks>
+        /// Setting <c>BorderBrush</c> will only affect the border brush for the current state and time; once the state changes,
+        /// the border brush will be overwritten with either this brush or one of the relevant other brushes.
+        /// Instead, this brush should be set to control what the border brush should be when falling back to a default, base state.
+        /// </remarks>
+        [Category("Brushes")]
+        public IBrush? BaseBorderBrush { get => GetValue(BaseBorderBrushProperty); set => SetValue(BaseBorderBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BaseBorderBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BaseBorderBrushProperty
+            = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(BaseBorderBrush), Colors.Black.ToBrush());
+
+
+        /// <summary>
         /// Get or set the brush to use for the background of this contol while it is highlighted (i.e. has a mouse over it, or has keyboard focus).
         /// </summary>
         [Category("Brushes")]
@@ -235,8 +258,6 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> SelectedForegroundProperty
             = AvaloniaProperty.Register<SelectableUserControl, IBrush?>(nameof(SelectedForeground), Colors.Black.ToBrush());
 
-
-
         #endregion
 
         #region Property Changes
@@ -251,6 +272,8 @@ namespace SolidShineUi
             Bind(BackgroundProperty, new Binding(nameof(BaseBackground)) 
                 { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
             Bind(ForegroundProperty, new Binding(nameof(BaseForeground))
+                { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
+            Bind(BorderBrushProperty, new Binding(nameof(BaseBorderBrush))
                 { RelativeSource = new RelativeSource(RelativeSourceMode.Self), Priority = BindingPriority.Style });
         }
 
@@ -280,6 +303,7 @@ namespace SolidShineUi
             {
                 SetValue(BackgroundProperty, DisabledBrush);
                 SetValue(ForegroundProperty, DisabledForeground);
+                SetValue(BorderBrushProperty, BorderDisabledBrush);
             }
             else
             {
@@ -287,17 +311,19 @@ namespace SolidShineUi
                 {
                     SetValue(BackgroundProperty, HighlightBrush);
                     SetValue(ForegroundProperty, HighlightForeground);
-                    // SetValue(BorderBrushProperty, BorderHighlightBrush);
+                    SetValue(BorderBrushProperty, BorderHighlightBrush);
                 }
                 else if (IsSelected)
                 {
                     SetValue(BackgroundProperty, SelectedBrush);
                     SetValue(ForegroundProperty, SelectedForeground);
+                    SetValue(BorderBrushProperty, BorderSelectedBrush);
                 }
                 else
                 {
                     ClearValue(BackgroundProperty);
                     ClearValue(ForegroundProperty);
+                    ClearValue(BorderBrushProperty);
                 }
             }
         }
@@ -674,6 +700,7 @@ namespace SolidShineUi
                 // in the future, I may want to look into using the IDisposible object returned by these methods
                 SetValue(BackgroundProperty, HighlightBrush);
                 SetValue(ForegroundProperty, HighlightForeground);
+                SetValue(BorderBrushProperty, BorderHighlightBrush);
             }
         }
 
@@ -688,11 +715,13 @@ namespace SolidShineUi
             {
                 SetValue(BackgroundProperty, SelectedBrush);
                 SetValue(ForegroundProperty, SelectedForeground);
+                SetValue(BorderBrushProperty, BorderSelectedBrush);
             }
             else
             {
                 ClearValue(BackgroundProperty);
                 ClearValue(ForegroundProperty);
+                ClearValue(BorderBrushProperty);
             }
         }
 
@@ -723,6 +752,7 @@ namespace SolidShineUi
             {
                 SetValue(BackgroundProperty, ClickBrush);
                 SetValue(ForegroundProperty, HighlightForeground);
+                SetValue(BorderBrushProperty, BorderHighlightBrush);
             }
         }
 
@@ -778,16 +808,19 @@ namespace SolidShineUi
             {
                 SetValue(BackgroundProperty, HighlightBrush);
                 SetValue(ForegroundProperty, HighlightForeground);
+                SetValue(BorderBrushProperty, BorderHighlightBrush);
             }
             else if (IsSelected)
             {
                 SetValue(BackgroundProperty, SelectedBrush);
                 SetValue(ForegroundProperty, SelectedForeground);
+                SetValue(BorderBrushProperty, BorderSelectedBrush);
             }
             else
             {
                 ClearValue(BackgroundProperty);
                 ClearValue(ForegroundProperty);
+                ClearValue(BorderBrushProperty);
             }
         }
 
