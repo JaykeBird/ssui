@@ -302,12 +302,14 @@ namespace SolidShineUi
         #endregion
 
         #region Selection Properties
+
         /// <summary>
         /// Get or set if this control should change its <see cref="IsSelected"/> value when you click on the control.
         /// </summary>
         /// <remarks>
-        /// This allows more fine-tuned control over when and how this control can be selected. If this is <c>false</c>, then the user can only use the checkbox to directly 
-        /// select or deselect this control. You can use <see cref="CanSelect"/> to globally disable selecting this control via any method.
+        /// This allows more fine-tuned control over when and how this control can be selected. If this is <c>false</c>, 
+        /// then the user can only use other methods to select this control, such as a checkbox, rather than just clicking 
+        /// on it. You can use <see cref="CanSelect"/> to globally disable selecting this control entirely.
         /// </remarks>
         public bool SelectOnClick { get => GetValue(SelectOnClickProperty); set => SetValue(SelectOnClickProperty, value); }
 
@@ -319,9 +321,10 @@ namespace SolidShineUi
         /// Get or set if this control can be selected.
         /// </summary>
         /// <remarks>
-        /// If this is set to <c>false</c>, then this control cannot be selected via any method - even programmatically. Setting this to <c>false</c> will also deselect this control, 
-        /// if currently selected. For more fine-tuned control, you can use <see cref="SelectOnClick"/> to limit how the user can select this control, 
-        /// while still being able to change the selection status via <see cref="IsSelected"/>.
+        /// If this is set to <c>false</c>, then this control cannot be selected via any method - even by setting <see cref="IsSelected"/>
+        /// directly. Setting this to <c>false</c> will also deselect this control, if currently selected. For more fine-tuned control, 
+        /// you can use <see cref="SelectOnClick"/> to limit how the user can select this control, while still being able to change the 
+        /// selection status via <see cref="IsSelected"/>.
         /// </remarks>
         public bool CanSelect { get => GetValue(CanSelectProperty); set => SetValue(CanSelectProperty, value); }
 
@@ -607,6 +610,11 @@ namespace SolidShineUi
             if (SelectOnClick)
             {
                 SetIsSelectedWithSource(!IsSelected, SelectionChangeTrigger.ControlClick, this);
+            }
+
+            if (Command != null && Command.CanExecute(CommandParameter))
+            {
+                Command.Execute(CommandParameter);
             }
 
             RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
