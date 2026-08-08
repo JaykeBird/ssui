@@ -253,10 +253,10 @@ namespace SolidShineUi.Utils
         /// Raised when the Close button is clicked, and this tab wants to be closed.
         /// </summary>
         public event EventHandler? RequestClose;
-        /// <summary>
-        /// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
-        /// </summary>
-        public event TabItemDropEventHandler? TabItemDrop;
+        ///// <summary>
+        ///// Raised when a TabItem is dropped onto this TabDisplayItem. Used as part of the TabControl's drag-and-drop system.
+        ///// </summary>
+        //public event TabItemDropEventHandler? TabItemDrop;
 
         // just straight up copied all of the click and selection handling from FlatButton, not sure if I actually need all of this
 

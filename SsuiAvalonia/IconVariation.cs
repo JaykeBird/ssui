@@ -2,8 +2,8 @@
 {
 
     /// <summary>
-    /// The different icon variations available for Solid Shine UI icons. Used internally with <see cref="MessageDialog"/> and <see cref="IconLoader"/>,
-    /// but could also help as an indicator for which icon to use based upon various color schemes or other visual info.
+    /// The different icon variations available for Solid Shine UI icons. Used internally with certain classes, but also used in 
+    /// <see cref="SsuiTheme"/> to indicate the preferred icon variation type to use with that theme.
     /// </summary>
     public enum IconVariation
     {

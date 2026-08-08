@@ -142,7 +142,7 @@ namespace SolidShineUi.Converters
         /// <summary>
         /// Convert an integer into a <see cref="FontWeight"/>.
         /// </summary>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is int i)
             {
@@ -164,7 +164,7 @@ namespace SolidShineUi.Converters
         /// <summary>
         /// Convert a <see cref="FontWeight"/> to its OpenType weight value (as in <c>int</c>).
         /// </summary>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is FontWeight fw)
             {
