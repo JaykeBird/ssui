@@ -633,7 +633,7 @@ namespace SolidShineUi
                 throw new ArgumentException("This property is not an SsuiTheme property", nameof(ssuiThemeProperty));
             }
 
-            return CompiledBinding.Create<SsuiTheme, T>(expression: theme => theme.GetValue<T>(ssuiThemeProperty), source: source, priority: priority);
+            return CompiledBinding.Create<SsuiTheme, T>(expression: theme => (T)theme[ssuiThemeProperty]!, source: source, priority: priority);
         }
 
         /// <summary>
