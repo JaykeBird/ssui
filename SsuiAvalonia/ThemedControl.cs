@@ -43,6 +43,17 @@ namespace SolidShineUi
             }
         }
 
+        /// <inheritdoc/>
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            foreach (var item in _themeBindings)
+            {
+                item.Value.Dispose();
+            }
+            _themeBindings.Clear();
+        }
+
         #region SsuiTheme Property
 
         /// <summary>
@@ -366,6 +377,17 @@ namespace SolidShineUi
                     OnUseAccentThemeChange(change);
                     break;
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            foreach (var item in _themeBindings)
+            {
+                item.Value.Dispose();
+            }
+            _themeBindings.Clear();
         }
 
         #region SsuiTheme Property
@@ -693,6 +715,17 @@ namespace SolidShineUi
             }
         }
 
+        /// <inheritdoc/>
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            foreach (var item in _themeBindings)
+            {
+                item.Value.Dispose();
+            }
+            _themeBindings.Clear();
+        }
+
         #region SsuiTheme Property
 
         /// <summary>
@@ -1016,6 +1049,17 @@ namespace SolidShineUi
                     OnUseAccentThemeChange(change);
                     break;
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            foreach (var item in _themeBindings)
+            {
+                item.Value.Dispose();
+            }
+            _themeBindings.Clear();
         }
 
         #region SsuiTheme Property

@@ -742,7 +742,7 @@ namespace SolidShineUi
             tdi.RequestClose += tdi_RequestClose;
             tdi.Click += tdi_Click;
             tdi.RightClick += tdi_RightClick;
-            tdi.TabItemDrop += tdi_TabItemDrop;
+            // tdi.TabItemDrop += tdi_TabItemDrop;
             tdi.MinWidth = TabMinWidth;
 
             CheckScrolling();
