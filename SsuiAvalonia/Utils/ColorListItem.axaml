@@ -1,0 +1,15 @@
+<flat:SelectableUserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:flat="using:SolidShineUi"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="32"
+             x:Class="SolidShineUi.Utils.ColorListItem">
+      <Grid ColumnDefinitions="32,*"> 
+        <Border x:Name="brdrColor" BorderBrush="Black" 
+                BorderThickness="1" Margin="4"/>
+        <TextBlock x:Name="lblColor" Grid.Column="1" 
+                   HorizontalAlignment="Left" VerticalAlignment="Center" 
+                   Margin="4,0,0,0" Text="00, 00, 00"/>
+    </Grid>
+</flat:SelectableUserControl>
