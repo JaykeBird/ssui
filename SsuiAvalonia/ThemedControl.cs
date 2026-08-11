@@ -214,14 +214,15 @@ namespace SolidShineUi
         /// whether the accent theme should be used in place of the standard one; for this to apply, <paramref name="ssuiTheme"/>
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
-        /// <remarks>
-        /// The base method will by default set the <see cref="TemplatedControl.BorderBrush"/> value to match the theme; if a different
-        /// border brush is needed, then update it again in your override method.
-        /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
 
         }
+
+        ///// <remarks>
+        ///// The base method will by default set the <see cref="TemplatedControl.BorderBrush"/> value to match the theme; if a different
+        ///// border brush is needed, then update it again in your override method.
+        ///// </remarks>
 
         /// <summary>
         /// The backing routed event for <see cref="SsuiThemeApplied"/>. See the related event for details.
@@ -556,7 +557,16 @@ namespace SolidShineUi
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
-
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
+            }
+            else
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
+            }
         }
 
         /// <summary>
@@ -892,7 +902,16 @@ namespace SolidShineUi
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
-
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
+            }
+            else
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
+            }
         }
 
         /// <summary>
@@ -1228,7 +1247,16 @@ namespace SolidShineUi
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
-
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
+            }
+            else
+            {
+                ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
+            }
         }
 
         /// <summary>
