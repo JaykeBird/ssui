@@ -756,10 +756,11 @@ namespace SolidShineUi
         {
             if (sender is TabDisplayItem tdi)
             {
-                if (tdi.TabItem.TabContextMenu != null)
+                if (tdi.TabItem.TabContextMenu is ContextMenu cm)
                 {
-                    ContextMenu cm = tdi.TabItem.TabContextMenu;
-                    //cm.ColorScheme = ColorScheme;
+                    // we need to connect the context menu to the TabDisplayItem, or else Avalonia can't seem to load it
+                    tdi.ContextMenu = cm;
+
                     cm.Placement = PlacementMode.Pointer;
                     cm.Open();
                 }

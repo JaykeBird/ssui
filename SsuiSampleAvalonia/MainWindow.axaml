@@ -81,6 +81,15 @@
 				<Grid>
 					<TextBlock Text="Tab Content" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Grid>
+                <flat:TabItem.TabContextMenu>
+					<flat:ContentContextMenu HorizontalContentAlignment="Center" SeparatorBrush="Brown" >
+						<MenuItem Header="Item 1" />
+                        <MenuItem Header="Item 2" />
+                        <flat:ContentContextMenu.Content>
+							<TextBlock Text="wow" Margin="20" />
+                        </flat:ContentContextMenu.Content>
+                    </flat:ContentContextMenu>
+                </flat:TabItem.TabContextMenu>
             </flat:TabItem>
             <flat:TabItem Title="Title 2" CanClose="False" FontWeight="Bold" >
 				<Grid>
