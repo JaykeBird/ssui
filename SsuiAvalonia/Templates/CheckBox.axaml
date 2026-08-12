@@ -11,10 +11,19 @@
     <Design.PreviewWith>
         <Border Margin="10" >
             <StackPanel>
-            <flat:CheckBox TriStateClick="True" >
-                this is the checkbox?!?!
-            </flat:CheckBox>
-            <flat:CheckBox IsEnabled="False" Content="Can't click me!" IsChecked="True" />
+                <flat:CheckBox TriStateClick="True" CheckBorderSelectionThickness="2" >
+                    this is the checkbox?!?!
+                </flat:CheckBox>
+                <flat:CheckBox IsEnabled="False" Content="Can't click me!" IsChecked="True" />
+                <flat:CheckBox BoxPlacement="Bottom" Content="I have a red box below!" 
+                               IsChecked="True" Padding="0,4" CheckBackground="MistyRose"
+                               CheckForeground="Firebrick" HighlightBrush="#40C0C0C0"
+                               BorderSelectedBrush="Firebrick" CheckBorderBrush="LightCoral" />
+                <flat:CheckBox BoxPlacement="Hidden" Content="I have a hidden box!" 
+                               IsChecked="True" Padding="0,10" />
+                <flat:CheckBox SsuiTheme="{x:Static flat:SsuiThemes.AeroTheme}">
+                    Aero themed box
+                </flat:CheckBox>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -22,29 +31,35 @@
     <ControlTheme x:Key="{x:Type flat:CheckBox}" TargetType="flat:CheckBox">
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinHeight" Value="24" />
-        <Setter Property="Padding" Value="3,0,0,0" />
+        <Setter Property="Padding" Value="3,1,5,1" />
         <Setter Property="Background" Value="#01000000" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:CheckBox}">
-                <Grid Background="{TemplateBinding Background}" ColumnDefinitions="Auto,1*" >
-                    <Border x:Name="brdrChk" HorizontalAlignment="Left" Height="20" Margin="0,0"
-                            VerticalAlignment="Center" Width="20" 
-                            Background="{TemplateBinding CheckBackground}"
-                            BorderBrush="{TemplateBinding CheckBorderBrush}"
-                            BorderThickness="{TemplateBinding CheckBorderThickness}"
-                            CornerRadius="{TemplateBinding CheckBorderCornerRadius}" >
-                        <Grid Background="Transparent" x:Name="gridBkgd" >
-                            <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
-                                  Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                  Fill="{TemplateBinding CheckForeground}" IsVisible="False" />
-                            <Rectangle x:Name="markInd" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       Fill="{TemplateBinding CheckForeground}" IsVisible="False" />
-                        </Grid>
-                    </Border>
-                    <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="1"
-                                      Content="{TemplateBinding Content}"
-                                      Opacity="1.0" Margin="{TemplateBinding Padding}" />
-                </Grid>
+                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}" >
+                    <DockPanel Background="{TemplateBinding Background}">
+                        <Border x:Name="brdrChk" Height="20" Width="20" Margin="0,0"
+                                VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                Background="{TemplateBinding CheckBackground}"
+                                BorderBrush="{TemplateBinding CheckBorderBrush}"
+                                BorderThickness="{TemplateBinding CheckBorderThickness}"
+                                CornerRadius="{TemplateBinding CheckBorderCornerRadius}"
+                                DockPanel.Dock="Left" >
+                            <Grid Background="Transparent" x:Name="gridBkgd" >
+                                <Path x:Name="markCheck" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " 
+                                      Margin="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                      Fill="{TemplateBinding CheckForeground}" IsVisible="False" />
+                                <Rectangle x:Name="markInd" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Fill="{TemplateBinding CheckForeground}" IsVisible="False" />
+                            </Grid>
+                        </Border>
+                        <ContentPresenter x:Name="cc" VerticalAlignment="Center" Grid.Column="1"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          RecognizesAccessKey="True"
+                                          Opacity="1.0" Margin="{TemplateBinding Padding}" />
+                    </DockPanel>
+                </Border>
             </ControlTemplate>
         </Setter>
 
@@ -55,6 +70,8 @@
         <Style Selector="^:checked /template/ Border#brdrChk">
             <Setter Property="BorderThickness" 
                     Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CheckBorderSelectionThickness}" />
+            <Setter Property="BorderBrush"
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectedBrush}" />
         </Style>
 
         <Style Selector="^:indeterminate /template/ Rectangle#markInd">
@@ -73,17 +90,17 @@
 
         <Style Selector="^:pointerover /template/ Grid#gridBkgd">
             <Setter Property="Background"
-                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BackgroundHighlightBrush}" />
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
         </Style>
 
         <Style Selector="^:pointerover /template/ Path#markCheck">
             <Setter Property="Fill"
-                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CheckHighlightBrush}" />
         </Style>
 
         <Style Selector="^:pointerover /template/ Rectangle#markInd">
             <Setter Property="Fill"
-                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
+                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CheckHighlightBrush}" />
         </Style>
 
         <Style Selector="^:disabled /template/ Border#brdrChk">
@@ -108,6 +125,22 @@
 
         <Style Selector="^[DimContentWhenDisabled=true]:disabled /template/ ContentPresenter#cc">
             <Setter Property="Opacity" Value="0.6" />
+        </Style>
+
+        <Style Selector="^[BoxPlacement=Right] /template/ Border#brdrChk">
+            <Setter Property="DockPanel.Dock" Value="Right" />
+        </Style>
+
+        <Style Selector="^[BoxPlacement=Top] /template/ Border#brdrChk">
+            <Setter Property="DockPanel.Dock" Value="Top" />
+        </Style>
+
+        <Style Selector="^[BoxPlacement=Bottom] /template/ Border#brdrChk">
+            <Setter Property="DockPanel.Dock" Value="Bottom" />
+        </Style>
+
+        <Style Selector="^[BoxPlacement=Hidden] /template/ Border#brdrChk">
+            <Setter Property="IsVisible" Value="False" />
         </Style>
         
     </ControlTheme>

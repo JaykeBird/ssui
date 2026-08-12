@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -7,6 +8,7 @@ using Avalonia.Media;
 using Avalonia.VisualTree;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +19,17 @@ namespace SolidShineUi
     // The IsChecked value is just a bool, so this can be useful for situations where you need to present an option that's stored as a bool.
 
     /// <summary>
-    /// A control that can display content alongside a large, touch-friendly checkbox, which users are able to check or uncheck. Provides more customization than the standard WPF CheckBox.
+    /// A control that can display content alongside a large, touch-friendly checkbox, which users are able to check or uncheck. Provides more
+    /// customization than the standard Avalonia CheckBox.
     /// </summary>
     /// <remarks>
-    /// Unlike the standard WPF CheckBox, a nullable bool (<c>bool?</c>) is not used for <see cref="IsChecked"/>; instead, <c>IsChecked</c> will return true if there is any mark,
-    /// including either a full checkmark or an indeterminate mark (a square), and false only if there is no mark at all.
-    /// Instead, use <see cref="IsIndeterminate"/> to check if the mark is an indeterminate mark, or use <see cref="CheckState"/> to get the current state as an enum.
+    /// Unlike the standard Avalonia CheckBox, a nullable bool (<c>bool?</c>) is not used for <see cref="IsChecked"/>; instead, <c>IsChecked</c> will 
+    /// return true if there is any mark, including either a full checkmark or an indeterminate mark (a square), and false only if there is no mark at all.
+    /// Instead, use <see cref="IsIndeterminate"/> to check if the mark is an indeterminate mark, or use <see cref="CheckState"/> to get the current state
+    /// as an enum.
     /// </remarks>
-    public class CheckBox : ContentControl
+    [PseudoClasses(":checked", ":indeterminate")]
+    public class CheckBox : ThemedContentControl
     {
 
         /// <summary>
@@ -334,6 +339,39 @@ namespace SolidShineUi
             Foreground = cs.ForegroundColor.ToBrush();
         }
 
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme && ssuiAppTheme.AccentTheme != null)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(CheckForegroundProperty, SsuiTheme.CheckBrushProperty, theme);
+                ApplyThemeBinding(CheckHighlightBrushProperty, SsuiTheme.CheckHighlightBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.CheckBackgroundHighlightBrushProperty, theme);
+
+                ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(CheckDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
+                ApplyThemeBinding(CheckBorderCornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
+            }
+        }
+
         #endregion
 
         #region Brushes
@@ -357,22 +395,23 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(CheckForeground), Colors.Black.ToBrush());
 
         /// <summary>
-        /// Get or set the brush to use while the checkbox is highlighted (i.e. mouse over, keyboard focus).
+        /// Get or set the brush used for the background of the checkbox's box, while the mouse is over the control or it has keyboard focus.
         /// </summary>
         public IBrush? HighlightBrush { get => GetValue(HighlightBrushProperty); set => SetValue(HighlightBrushProperty, value); }
 
         /// <summary>The backing styled property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> HighlightBrushProperty
-            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(HighlightBrush), ColorsHelper.DarkerGray.ToBrush());
+            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(HighlightBrush), ColorsHelper.WhiteLightHighlight.ToBrush());
 
         /// <summary>
-        /// Get or set the brush to use for the background while the checkbox is highlighted (i.e. mouse over, keyboard focus).
+        /// Get or set the brush used for the check mark in the checkbox's box, while the mouse is over the control or it has keyboard focus. 
         /// </summary>
-        public IBrush? BackgroundHighlightBrush { get => GetValue(BackgroundHighlightBrushProperty); set => SetValue(BackgroundHighlightBrushProperty, value); }
+        public IBrush? CheckHighlightBrush { get => GetValue(CheckHighlightBrushProperty); set => SetValue(CheckHighlightBrushProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="BackgroundHighlightBrush"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<IBrush?> BackgroundHighlightBrushProperty
-            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BackgroundHighlightBrush), Color.FromArgb(16, 255, 255, 255).ToBrush());
+        /// <summary>The backing styled property for <see cref="CheckHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> CheckHighlightBrushProperty
+            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(CheckHighlightBrush), ColorsHelper.DarkerGray.ToBrush());
+
 
         /// <summary>
         /// Get or set the brush to use for the background of the checkbox's box when it is disabled.
@@ -409,6 +448,16 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderHighlightBrushProperty
             = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BorderHighlightBrush), ColorsHelper.DarkerGray.ToBrush());
+
+        /// <summary>
+        /// Get or set the brush used for the border of the checkbox's box, while <see cref="IsChecked"/> is set to true.
+        /// </summary>
+        public IBrush? BorderSelectedBrush { get => GetValue(BorderSelectedBrushProperty); set => SetValue(BorderSelectedBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> BorderSelectedBrushProperty
+            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BorderSelectedBrush), Colors.Black.ToBrush());
+
 
         /// <summary>
         /// Get or set the brush to use for the border of the checkbox's box.
@@ -458,6 +507,20 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="DimContentWhenDisabled"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> DimContentWhenDisabledProperty
             = AvaloniaProperty.Register<CheckBox, bool>(nameof(DimContentWhenDisabled), true);
+
+
+        /// <summary>
+        /// Get or set the location to place the checkbox box within this control, in relation to the <c>Content</c>.
+        /// By default, it is to the left (right in RTL systems).
+        /// </summary>
+        /// <remarks>
+        /// Setting this property to <see cref="PlacementDirection.Hidden"/> will hide the checkbox box.
+        /// </remarks>
+        public PlacementDirection BoxPlacement { get => GetValue(BoxPlacementProperty); set => SetValue(BoxPlacementProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="BoxPlacement"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<PlacementDirection> BoxPlacementProperty
+            = AvaloniaProperty.Register<CheckBox, PlacementDirection>(nameof(BoxPlacement), PlacementDirection.Left);
 
 
         #endregion
