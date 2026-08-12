@@ -374,7 +374,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="DisabledBackground"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush> DisabledBackgroundProperty
-            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(DisabledBackground), Color.Parse("F5F5F5").ToBrush());
+            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(DisabledBackground), ColorsHelper.CreateFromHex("F5F5F5").ToBrush());
 
         /// <summary>
         /// Get or set the brush to use for the borders around the edges of disabled SSUI-themed controls.
@@ -383,7 +383,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="DisabledBorderBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush> DisabledBorderBrushProperty
-            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(DisabledBorderBrush), Color.Parse("AAAAAF").ToBrush());
+            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(DisabledBorderBrush), ColorsHelper.CreateFromHex("AAAAAF").ToBrush());
 
         /// <summary>
         /// Get or set the brush to use for the foreground elements of disabled SSUI-themed controls.
@@ -392,7 +392,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="DisabledForeground"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush> DisabledForegroundProperty
-            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(DisabledForeground), Color.Parse("AAAAAF").ToBrush());
+            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(DisabledForeground), ColorsHelper.CreateFromHex("AAAAAF").ToBrush());
 
         /// <summary>
         /// Get or set the brush to use for when a SSUI-themed control is highlighted (e.g. mouse over, keyboard focus).
@@ -420,7 +420,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush> HighlightForegroundProperty
-            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(HighlightForeground), Color.Parse("414141").ToBrush());
+            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(HighlightForeground), ColorsHelper.CreateFromHex("414141").ToBrush());
 
         /// <summary>
         /// Get or set the brush to use for when a SSUI-themed control is being clicked/pressed.
@@ -528,7 +528,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="CheckHighlightBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush> CheckHighlightBrushProperty
-            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(CheckHighlightBrush), Color.Parse("414141").ToBrush());
+            = AvaloniaProperty.Register<SsuiTheme, IBrush>(nameof(CheckHighlightBrush), ColorsHelper.CreateFromHex("414141").ToBrush());
 
         /// <summary>
         /// Get or set the brush to use in the background behind checkmark symbols in certain SSUI-themed controls while highlighted (e.g., mouse over).
@@ -982,7 +982,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="WindowInactiveForeground"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush> WindowInactiveForegroundProperty
-            = AvaloniaProperty.Register<SsuiAppTheme, IBrush>(nameof(WindowInactiveForeground), Color.Parse("505050").ToBrush());
+            = AvaloniaProperty.Register<SsuiAppTheme, IBrush>(nameof(WindowInactiveForeground), ColorsHelper.CreateFromHex("505050").ToBrush());
 
         /// <summary>
         /// Get or set the brush to use for the background of the window caption controls in the top corner of a SSUI-themed window.
