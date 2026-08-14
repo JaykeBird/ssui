@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Data;
 using Avalonia.Controls.Primitives;
+using System.Data;
 
 namespace SolidShineUi
 {
@@ -552,19 +553,21 @@ namespace SolidShineUi
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
         /// <remarks>
-        /// The base method will by default set the <see cref="TemplatedControl.BorderBrush"/> value to match the theme; if a different
-        /// border brush is needed, then update it again in your override method.
+        /// The base method will by default set the <c>BorderBrush</c> and <c>CornerRadius</c> properties to match the theme; 
+        /// if a different border brush or corner radius is needed, then update it again when you override this method.
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
-            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat && sat.AccentTheme != null)
             {
                 ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, sat.AccentTheme);
                 // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
             }
             else
             {
                 ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty);
                 // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
             }
         }
@@ -897,19 +900,21 @@ namespace SolidShineUi
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
         /// <remarks>
-        /// The base method will by default set the <see cref="TemplatedControl.BorderBrush"/> value to match the theme; if a different
-        /// border brush is needed, then update it again in your override method.
+        /// The base method will by default set the <c>BorderBrush</c> and <c>CornerRadius</c> properties to match the theme; 
+        /// if a different border brush or corner radius is needed, then update it again when you override this method.
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
-            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat && sat.AccentTheme != null)
             {
                 ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, sat.AccentTheme);
                 // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
             }
             else
             {
                 ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty);
                 // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
             }
         }
@@ -1242,19 +1247,21 @@ namespace SolidShineUi
         /// should be of type <see cref="SsuiAppTheme"/>
         /// </param>
         /// <remarks>
-        /// The base method will by default set the <see cref="TemplatedControl.BorderBrush"/> value to match the theme; if a different
-        /// border brush is needed, then update it again in your override method.
+        /// The base method will by default set the <c>BorderBrush</c> and <c>CornerRadius</c> properties to match the theme; 
+        /// if a different border brush or corner radius is needed, then update it again when you override this method.
         /// </remarks>
         protected virtual void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
         {
-            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat)
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat && sat.AccentTheme != null)
             {
                 ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, sat.AccentTheme);
                 // Foreground = sat.AccentTheme.Foreground; // we'll see if I need this line
             }
             else
             {
                 ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty);
                 // Foreground = ssuiTheme.Foreground; // we'll see if I need this line
             }
         }
