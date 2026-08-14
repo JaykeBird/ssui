@@ -71,7 +71,8 @@
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
                                     <ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0"
-                                                  Content="{TemplateBinding Content}" />
+                                          Content="{TemplateBinding Content}" RecognizesAccessKey="True" 
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
                                     <Path Grid.Column="1" x:Name="PART_InlinePath" Data="M0,0 L8,0 4,4 z" 
                                           HorizontalAlignment="Left" VerticalAlignment="Center" Height="5" Width="8"
                                           Margin="3,0,3,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"

@@ -68,7 +68,9 @@
                     <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                             <ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0" Content="{TemplateBinding Content}"
-											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"  />
+											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" />
                             <!--<Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3" Visibility="Collapsed"
 									   Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
 							</Rectangle>-->
@@ -82,6 +84,10 @@
             <Setter Property="Background" Value="#01000000" />
             <Setter Property="BorderBrush" Value="#01000000" />
         </Style>
+        
+<!--        <Style Selector="^[IsSelected=true] /template/">
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedForeground}" />
+        </Style>-->
 
         <Style Selector="^[IsSelected=true] /template/ Border#btn_Border" >
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
@@ -89,7 +95,7 @@
             <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness}" />
         </Style>
 
-        <!--<Style Selector="^[IsSelected=true][TransparentBack=true] /template/ Border#btn_Border" >
+        <!--<Style Selector="^[IsSelected=true,TransparentBack=true] /template/ Border#btn_Border" >
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
         </Style>-->
 
@@ -111,10 +117,18 @@
             <Setter Property="BorderBrush" Value="#01000000" />
         </Style>
 
+<!--        <Style Selector="^:pointerover /template/">
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
+        </Style>-->
+
         <Style Selector="^:pointerover /template/ Border#btn_Border">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
         </Style>
+
+<!--        <Style Selector="^[IsPressed=true] /template/">
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
+        </Style>-->
 
         <Style Selector="^[IsPressed=true] /template/ Border#btn_Border">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClickBrush}" />
@@ -139,7 +153,7 @@
             <ControlTemplate TargetType="{x:Type flat:SplitButton}" >
                 <Grid ColumnDefinitions="Auto,1*,Auto" RowDefinitions="Auto,1*,Auto" >
                     <flat:FlatButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1"
-                            
+                            SsuiTheme="{x:Null}"
                             TransparentBack="{TemplateBinding TransparentBack}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}"
@@ -149,15 +163,20 @@
                             DisabledBrush="{TemplateBinding DisabledBrush}"
                             HighlightBrush="{TemplateBinding HighlightBrush}"
                             SelectedBrush="{TemplateBinding SelectedBrush}"
+                            HighlightForeground="{TemplateBinding HighlightForeground}"
+                            SelectedForeground="{TemplateBinding SelectedForeground}"
                             Background="{TemplateBinding Background}"
                             Foreground="{TemplateBinding Foreground}"
                             IsSelected="{TemplateBinding IsSelected}"
                             BorderThickness="{TemplateBinding BorderThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}"
                             BorderSelectionThickness="{TemplateBinding BorderSelectionThickness, Converter={StaticResource pth}, ConverterParameter={StaticResource byteLeftTh}}"
                             CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource pcr}, ConverterParameter={StaticResource byteLeftCR}}">
-                        <ContentPresenter x:Name="btn_Cc" Content="{TemplateBinding Content}" />
+                        <ContentPresenter x:Name="btn_Cc" Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          RecognizesAccessKey="True" />
                     </flat:FlatButton>
                     <flat:FlatButton x:Name="PART_Menu" Grid.Row="1" Grid.Column="2"
+                             SsuiTheme="{x:Null}"
                              TransparentBack="{TemplateBinding TransparentBack}"
                              BorderBrush="{TemplateBinding BorderBrush}"
                              BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}"
@@ -167,6 +186,8 @@
                              DisabledBrush="{TemplateBinding DisabledBrush}"
                              HighlightBrush="{TemplateBinding HighlightBrush}"
                              SelectedBrush="{TemplateBinding SelectedBrush}"
+                             HighlightForeground="{TemplateBinding HighlightForeground}"
+                             SelectedForeground="{TemplateBinding SelectedForeground}"
                              Background="{TemplateBinding Background}"
                              Foreground="{TemplateBinding Foreground}"
                              IsSelected="{TemplateBinding IsSelected}"
