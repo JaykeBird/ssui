@@ -9,19 +9,19 @@
         <StackPanel Orientation="Horizontal" Margin="1">
             <StackPanel Margin="7" >
                 <flat:FlatButton SelectOnClick="True" >
-                    <TextBlock >Button1</TextBlock>
+                    <TextBlock >Toggle</TextBlock>
                 </flat:FlatButton>
                 <flat:FlatButton IsEnabled="False" >
-                    <TextBlock >Button2</TextBlock>
+                    <TextBlock >Disabled</TextBlock>
                 </flat:FlatButton>
                 <flat:FlatButton SelectOnClick="True" TransparentBack="True" >
-                    <TextBlock >Button3</TextBlock>
+                    <TextBlock >TB Toggle</TextBlock>
                 </flat:FlatButton>
                 <flat:FlatButton IsEnabled="False" TransparentBack="True" >
-                    <TextBlock >Button4</TextBlock>
+                    <TextBlock >TB Disabled</TextBlock>
                 </flat:FlatButton>
                 <flat:FlatRepeatButton>
-                    <TextBlock >Button5</TextBlock>
+                    <TextBlock >Repeat</TextBlock>
                 </flat:FlatRepeatButton>
 
             </StackPanel>
@@ -139,6 +139,7 @@
             <ControlTemplate TargetType="{x:Type flat:SplitButton}" >
                 <Grid ColumnDefinitions="Auto,1*,Auto" RowDefinitions="Auto,1*,Auto" >
                     <flat:FlatButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1"
+                            
                             TransparentBack="{TemplateBinding TransparentBack}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}"

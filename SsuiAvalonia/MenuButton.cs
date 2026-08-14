@@ -21,6 +21,12 @@ namespace SolidShineUi
         public MenuButton()
         {
             Click += MenuButton_Click;
+            SsuiThemeApplied += MenuButton_SsuiThemeApplied;
+        }
+
+        private void MenuButton_SsuiThemeApplied(object? sender, RoutedEventArgs e)
+        {
+            // Menu?.Bind(ThemedControl.SsuiThemeProperty, new ReflectionBinding(nameof(SsuiTheme)) { Source = this });
         }
 
         private void MenuButton_Click(object? sender, RoutedEventArgs e)
@@ -48,14 +54,14 @@ namespace SolidShineUi
         /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
+            base.OnPropertyChanged(change);
+
             switch (change.Property.Name)
             {
                 case nameof(ColorScheme):
                     OnColorSchemeChanged(change.GetNewValue<ColorScheme>());
                     break;
             }
-
-            base.OnPropertyChanged(change);
         }
 
         #endregion

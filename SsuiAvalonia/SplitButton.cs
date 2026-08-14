@@ -1,12 +1,13 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
-using Avalonia.Media;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Data;
+using Avalonia.Interactivity;
+using Avalonia.Media;
 
 namespace SolidShineUi
 {
@@ -14,7 +15,7 @@ namespace SolidShineUi
     /// A control that displays two buttons: a main button on the left which activates like a normal button, 
     /// and a secondary button on the right that displays a menu of additional options.
     /// </summary>
-    public class SplitButton : ContentControl, IClickSelectableControl
+    public class SplitButton : ThemedContentControl, IClickSelectableControl
     {
         /// <summary>
         /// Create a SplitButton.
@@ -62,8 +63,11 @@ namespace SolidShineUi
         {
             switch (change.Property.Name)
             {
-                case nameof(UseAccentColors):
-                    ApplyColorScheme(ColorScheme, UseAccentColors);
+                case nameof(UseAccentTheme):
+                    if (SsuiTheme == null)
+                    {
+                        ApplyColorScheme(ColorScheme, UseAccentTheme);
+                    }
                     break;
                 case nameof(ColorScheme):
                     ApplyColorScheme(ColorScheme);
@@ -91,7 +95,7 @@ namespace SolidShineUi
         /// <param name="cs">The color scheme to apply</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
-            ApplyColorScheme(cs, UseAccentColors);
+            ApplyColorScheme(cs, UseAccentTheme);
         }
 
         /// <summary>
@@ -109,9 +113,9 @@ namespace SolidShineUi
                 return;
             }
 
-            if (UseAccentColors != useAccentColors)
+            if (UseAccentTheme != useAccentColors)
             {
-                UseAccentColors = useAccentColors;
+                if (SsuiTheme == null) UseAccentTheme = useAccentColors;
                 return;
             }
 
@@ -132,7 +136,7 @@ namespace SolidShineUi
             }
             else
             {
-                if (UseAccentColors)
+                if (UseAccentTheme || useAccentColors)
                 {
                     Background = cs.AccentSecondaryColor.ToBrush();
                     BorderBrush = cs.AccentBorderColor.ToBrush();
@@ -175,13 +179,43 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="TransparentBack"/>. See the related property for details.</summary>
         public static readonly StyledProperty<bool> TransparentBackProperty = FlatButton.TransparentBackProperty.AddOwner<SplitButton>();
 
-        /// <summary>
-        /// Get or set if the button should use the accent brushes of the color scheme, rather than the standard brushes.
-        /// </summary>
-        public bool UseAccentColors { get => GetValue(UseAccentColorsProperty); set => SetValue(UseAccentColorsProperty, value); }
+        #region ApplySsuiTheme
 
-        /// <summary>The backing styled property for <see cref="UseAccentColors"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> UseAccentColorsProperty = FlatButton.UseAccentColorsProperty.AddOwner<SplitButton>();
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            // Menu?.Bind(ThemedControl.SsuiThemeProperty, new ReflectionBinding(nameof(SsuiTheme)) { Source = this });
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat && sat.AccentTheme != null)
+            {
+                // ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty, sat.AccentTheme);
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                // ApplyThemeBinding(BorderBrushProperty, useLightBorder ? SsuiTheme.LightBorderBrushProperty : SsuiTheme.BorderBrushProperty);
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+            }
+        }
+
+        #endregion
 
         #region Brushes
 
@@ -248,6 +282,26 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderSelectedBrushProperty = FlatButton.BorderSelectedBrushProperty.AddOwner<SplitButton>();
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? HighlightForeground { get => GetValue(HighlightForegroundProperty); set => SetValue(HighlightForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightForegroundProperty
+            = FlatButton.HighlightForegroundProperty.AddOwner<SplitButton>();
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        public IBrush? SelectedForeground { get => GetValue(SelectedForegroundProperty); set => SetValue(SelectedForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> SelectedForegroundProperty
+            = FlatButton.SelectedForegroundProperty.AddOwner<SplitButton>();
+
 
         #endregion
 

@@ -16,7 +16,7 @@ namespace SolidShineUi
     /// A button with a custom, flat style and addiitonal functionality. Use <c>SelectOnClick</c> to have the button act like a toggle button.
     /// </summary>
     [DefaultEvent(nameof(Click))]
-    public class FlatButton : ContentControl, IClickSelectableControl, ICommandSource
+    public class FlatButton : ThemedContentControl, IClickSelectableControl, ICommandSource
     {
 
         /// <summary>
@@ -33,6 +33,8 @@ namespace SolidShineUi
         }
 
         #region Appearance
+
+        #region ColorScheme / TransparentBack
 
         /// <summary>
         /// Get or set the color scheme to apply to this button. The color scheme can quickly apply a whole visual style to your control.
@@ -53,18 +55,11 @@ namespace SolidShineUi
             = AvaloniaProperty.Register<FlatButton, bool>(nameof(TransparentBack), false);
 
         /// <summary>
-        /// Get or set if the button should use the accent brushes of the color scheme, rather than the standard brushes.
-        /// </summary>
-        public bool UseAccentColors { get => GetValue(UseAccentColorsProperty); set => SetValue(UseAccentColorsProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="UseAccentColors"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> UseAccentColorsProperty
-            = AvaloniaProperty.Register<FlatButton, bool>(nameof(UseAccentColors), false);
-
-        /// <summary>
         /// Raised when the <see cref="ColorScheme"/> property has changed.
         /// </summary>
         public event EventHandler<AvaloniaPropertyChangedEventArgs>? ColorSchemeChanged;
+
+        #endregion
 
         #region Apply Color Scheme
 
@@ -76,15 +71,16 @@ namespace SolidShineUi
         /// <param name="cs">The color scheme to apply</param>
         public void ApplyColorScheme(ColorScheme cs)
         {
-            ApplyColorScheme(cs, UseAccentColors);
+            ApplyColorScheme(cs, UseAccentTheme);
         }
 
         /// <summary>
-        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly apply a whole visual style to the control.
+        /// Apply a color scheme to this control, and set some other optional appearance settings. The color scheme can quickly 
+        /// apply a whole visual style to the control.
         /// </summary>
         /// <param name="cs">The color scheme to apply</param>
         /// <param name="useAccentColors">Set if accent colors should be used for this button, rather than the main color scheme colors.
-        /// This can also be achieved with the <c>UseAccentColors</c> property.
+        /// This can also be achieved with the <c>UseAccentTheme</c> property.
         /// </param>
         public void ApplyColorScheme(ColorScheme cs, bool useAccentColors = true)
         {
@@ -94,9 +90,9 @@ namespace SolidShineUi
                 return;
             }
 
-            if (UseAccentColors != useAccentColors)
+            if (UseAccentTheme != useAccentColors)
             {
-                UseAccentColors = useAccentColors;
+                if (SsuiTheme == null) UseAccentTheme = useAccentColors;
                 return;
             }
 
@@ -116,7 +112,7 @@ namespace SolidShineUi
             }
             else
             {
-                if (UseAccentColors)
+                if (UseAccentTheme || useAccentColors)
                 {
                     Background = cs.AccentSecondaryColor.ToBrush();
                     BorderBrush = cs.AccentBorderColor.ToBrush();
@@ -144,22 +140,44 @@ namespace SolidShineUi
                 }
             }
         }
-        
-        
+
+
+
+        #endregion
+
+        #region SsuiTheme
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme sat && sat.AccentTheme != null)
+            {
+                ApplyTheme(sat.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+            }
+        }
 
         #endregion
 
         #region Brushes
-
-        ///// <summary>
-        ///// Get or set the bursh used for the background of the control.
-        ///// </summary>
-        //[Category("Brushes")]
-        //public new IBrush? Background { get => GetValue(BackgroundProperty); set => SetValue(BackgroundProperty, value); }
-
-        ///// <summary>The backing styled property for <see cref="Background"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<IBrush?> BackgroundProperty
-        //    = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(Background), Colors.White.ToBrush());
 
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse/pointer is clicking it.
@@ -211,13 +229,6 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> BorderDisabledBrushProperty
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderDisabledBrush), Colors.DarkGray.ToBrush());
 
-
-        //public new IBrush? BorderBrush { get => GetValue(BorderBrushProperty); set => SetValue(BorderBrushProperty, value); }
-
-        ///// <summary>The backing styled property for <see cref="BorderBrush"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<IBrush?> BorderBrushProperty
-        //    = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderBrush), Colors.Black.ToBrush());
-
         /// <summary>
         /// Get or set the brush used for the border while the control has the mouse/pointer over it (or it has keyboard focus).
         /// </summary>
@@ -238,6 +249,26 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderSelectedBrushProperty
             = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(BorderSelectedBrush), Colors.DimGray.ToBrush());
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control has the mouse over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? HighlightForeground { get => GetValue(HighlightForegroundProperty); set => SetValue(HighlightForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightForegroundProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(HighlightForeground), Colors.Black.ToBrush());
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        public IBrush? SelectedForeground { get => GetValue(SelectedForegroundProperty); set => SetValue(SelectedForegroundProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> SelectedForegroundProperty
+            = AvaloniaProperty.Register<FlatButton, IBrush?>(nameof(SelectedForeground), Colors.Black.ToBrush());
+
 
         #endregion
 
@@ -275,8 +306,11 @@ namespace SolidShineUi
 
             switch (change.Property.Name)
             {
-                case nameof(UseAccentColors):
-                    ApplyColorScheme(ColorScheme, UseAccentColors);
+                case nameof(UseAccentTheme):
+                    if (SsuiTheme == null)
+                    {
+                        ApplyColorScheme(ColorScheme, UseAccentTheme);
+                    }
                     break;
                 case nameof(ColorScheme):
                     ApplyColorScheme(ColorScheme);
