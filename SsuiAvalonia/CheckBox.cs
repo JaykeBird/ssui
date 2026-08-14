@@ -282,7 +282,7 @@ namespace SolidShineUi
 
         #endregion
 
-        #region Color Scheme
+        #region Color Scheme / SsuiTheme
 
         /// <summary>
         /// Get or set the color scheme used for this checkbox. For easier color scheme management, bind this to the window or larger control you're using.
@@ -316,26 +316,22 @@ namespace SolidShineUi
 
             if (cs.IsHighContrast)
             {
-                //Background = cs.BackgroundColor.ToBrush();
                 BackgroundDisabledBrush = cs.BackgroundColor.ToBrush();
                 CheckForeground = cs.ForegroundColor.ToBrush();
             }
             else
             {
-                //Background = Colors.White.ToBrush();
                 BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
                 CheckForeground = Colors.Black.ToBrush();
             }
 
             //Background = cs.SecondaryColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();
-            //HighlightBrush = cs.SecondHighlightColor.ToBrush();
-            BackgroundDisabledBrush = cs.LightDisabledColor.ToBrush();
+            BorderSelectedBrush = cs.BorderColor.ToBrush();
+            HighlightBrush = cs.SecondHighlightColor.ToBrush();
             BorderDisabledBrush = cs.DarkDisabledColor.ToBrush();
             CheckDisabledBrush = cs.DarkDisabledColor.ToBrush();
-            //SelectedBrush = cs.ThirdHighlightColor.ToBrush();
             BorderHighlightBrush = cs.HighlightColor.ToBrush();
-            //BorderSelectedBrush = cs.SelectionColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
         }
 
@@ -366,9 +362,6 @@ namespace SolidShineUi
                 ApplyThemeBinding(BackgroundDisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
                 ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
                 ApplyThemeBinding(CheckDisabledBrushProperty, SsuiTheme.DisabledForegroundProperty, theme);
-
-                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
-                ApplyThemeBinding(CheckBorderCornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
@@ -458,46 +451,18 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush?> BorderSelectedBrushProperty
             = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(BorderSelectedBrush), Colors.Black.ToBrush());
 
-
-        /// <summary>
-        /// Get or set the brush to use for the border of the checkbox's box.
-        /// </summary>
-        public IBrush? CheckBorderBrush { get => GetValue(CheckBorderBrushProperty); set => SetValue(CheckBorderBrushProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="CheckBorderBrush"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<IBrush?> CheckBorderBrushProperty
-            = AvaloniaProperty.Register<CheckBox, IBrush?>(nameof(CheckBorderBrush), Colors.Black.ToBrush());
-
         #endregion
 
         #region Border / Content
 
         /// <summary>
-        /// Get or set the thickness of the border of the check box.
-        /// </summary>
-        public Thickness CheckBorderThickness { get => GetValue(CheckBorderThicknessProperty); set => SetValue(CheckBorderThicknessProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="CheckBorderThickness"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<Thickness> CheckBorderThicknessProperty
-            = AvaloniaProperty.Register<CheckBox, Thickness>(nameof(CheckBorderThickness), new Thickness(1));
-
-        /// <summary>
         /// Get or set the thickness of the border of the check box, while the check box's IsChecked property is true.
         /// </summary>
-        public Thickness CheckBorderSelectionThickness { get => GetValue(CheckBorderSelectionThicknessProperty); set => SetValue(CheckBorderSelectionThicknessProperty, value); }
+        public Thickness BorderSelectionThickness { get => GetValue(BorderSelectionThicknessProperty); set => SetValue(BorderSelectionThicknessProperty, value); }
 
-        /// <summary>The backing styled property for <see cref="CheckBorderSelectionThickness"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<Thickness> CheckBorderSelectionThicknessProperty
-            = AvaloniaProperty.Register<CheckBox, Thickness>(nameof(CheckBorderSelectionThickness), new Thickness(1));
-
-        /// <summary>
-        /// Get or set the corner radius of the check box.
-        /// </summary>
-        public CornerRadius CheckBorderCornerRadius { get => GetValue(CheckBorderCornerRadiusProperty); set => SetValue(CheckBorderCornerRadiusProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="CheckBorderCornerRadius"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<CornerRadius> CheckBorderCornerRadiusProperty
-            = AvaloniaProperty.Register<CheckBox, CornerRadius>(nameof(CheckBorderCornerRadius), new CornerRadius(0));
+        /// <summary>The backing styled property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<Thickness> BorderSelectionThicknessProperty
+            = AvaloniaProperty.Register<CheckBox, Thickness>(nameof(BorderSelectionThickness), new Thickness(1));
 
         /// <summary>
         /// Get or set if the content of this checkbox should be dimmed (opacity lowered) when the checkbox is disabled.
