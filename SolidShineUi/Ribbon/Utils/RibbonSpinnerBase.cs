@@ -50,6 +50,37 @@ namespace SolidShineUi.Ribbon.Utils
             Foreground = cs.ForegroundColor.ToBrush();
         }
 
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme && ssuiAppTheme.AccentTheme != null)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                // Border brush already applied in base
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+
+                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+
+                // we do not set Background here, as that'll set the background of the text box, and I'll just leave that as the default
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
+            }
+        }
+
         #region Events
 
 #if NETCOREAPP

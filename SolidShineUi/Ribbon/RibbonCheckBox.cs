@@ -47,6 +47,7 @@ namespace SolidShineUi.Ribbon
             KeyDown += UserControl_KeyDown;
             KeyUp += UserControl_KeyUp;
         }
+
         #region CheckBoxClick
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -182,7 +183,6 @@ namespace SolidShineUi.Ribbon
         public event DependencyPropertyChangedEventHandler ColorSchemeChanged;
 #endif
 
-
         /// <summary>
         /// A dependency property object backing the related ColorScheme property. See <see cref="ColorScheme"/> for more details.
         /// </summary>
@@ -213,6 +213,7 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// Get or set the color scheme used for this control. The color scheme can quickly apply a whole visual style to your control.
         /// </summary>
+        [Category("Appearance")]
         public ColorScheme ColorScheme
         {
             get => (ColorScheme)GetValue(ColorSchemeProperty);
