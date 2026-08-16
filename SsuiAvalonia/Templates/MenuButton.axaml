@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:flat="clr-namespace:SolidShineUi" >
+					xmlns:flat="clr-namespace:SolidShineUi"
+                    xmlns:utils="clr-namespace:SolidShineUi.Utils" >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
@@ -9,7 +10,7 @@
 
     <!-- Add Resources Here -->
     <Design.PreviewWith>
-        <StackPanel Margin="7,7,7,60" Width="110" >
+        <StackPanel Margin="7,7,7,50" Width="150" >
             <flat:MenuButton Content="Button1" >
                 <flat:MenuButton.Menu>
                     <flat:ContextMenu>
@@ -57,51 +58,40 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:MenuButton}">
-                <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                <utils:ForeBorder x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 						BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"
 						BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" >
-                    <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
-                                    <ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0"
-                                          Content="{TemplateBinding Content}" RecognizesAccessKey="True" 
-                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
-                                    <Path Grid.Column="1" x:Name="PART_InlinePath" Data="M0,0 L8,0 4,4 z" 
-                                          HorizontalAlignment="Left" VerticalAlignment="Center" Height="5" Width="8"
-                                          Margin="3,0,3,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"
-                                          Opacity="1.0" IsVisible="False" />
-                                </StackPanel>
-                                <Path Grid.Column="1" x:Name="PART_RightPath" Data="M0,0 L8,0 4,4 z"
-                                          HorizontalAlignment="Left" VerticalAlignment="Center" Height="5" Width="8"
-                                          Margin="3,0,3,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"
-                                          Opacity="1.0" IsVisible="False" />
-                            </Grid>
-                            <!--<Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" 
-                                        StrokeDashArray="1 3" Visibility="Collapsed"
-									   Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" >
-							</Rectangle>-->
-                        </Grid>
-                    </Border>
-                </Border>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ColumnDefinitions="1*,Auto" >
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" >
+                            <ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0"
+                                    Content="{TemplateBinding Content}" RecognizesAccessKey="True" 
+                                    ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            <Path Grid.Column="1" x:Name="PART_InlinePath" Data="M0,0 L8,0 4,4 z" 
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="5" Width="8"
+                                    Margin="3,0,3,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"
+                                    Opacity="1.0" IsVisible="False" />
+                        </StackPanel>
+                        <Path Grid.Column="1" x:Name="PART_RightPath" Data="M0,0 L8,0 4,4 z"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Height="5" Width="8"
+                                    Margin="3,0,3,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"
+                                    Opacity="1.0" IsVisible="False" />
+                    </Grid>
+                </utils:ForeBorder>
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^[TransparentBack=true] /template/ Border#btn_Border" >
+        <Style Selector="^[TransparentBack=true] /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="#01000000" />
             <Setter Property="BorderBrush" Value="#01000000" />
         </Style>
 
-        <Style Selector="^[IsSelected=true] /template/ Border#btn_Border" >
+        <Style Selector="^[IsSelected=true] /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectedBrush}" />
             <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness}" />
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedForeground}" />
         </Style>
 
         <Style Selector="^[ShowMenuArrow=true][KeepMenuArrowOnRight=false] /template/ Path#PART_InlinePath">
@@ -132,24 +122,26 @@
             <Setter Property="Opacity" Value="0.6" />
         </Style>
 
-        <Style Selector="^:disabled /template/ Border#btn_Border" >
+        <Style Selector="^:disabled /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisabledBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
         </Style>
 
-        <Style Selector="^[TransparentBack=true]:disabled /template/ Border#btn_Border" >
+        <Style Selector="^[TransparentBack=true]:disabled /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="#01000000" />
             <Setter Property="BorderBrush" Value="#01000000" />
         </Style>
 
-        <Style Selector="^:pointerover /template/ Border#btn_Border">
+        <Style Selector="^:pointerover /template/ utils|ForeBorder#btn_Border">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
         </Style>
 
-        <Style Selector="^[IsPressed=true] /template/ Border#btn_Border">
+        <Style Selector="^[IsPressed=true] /template/ utils|ForeBorder#btn_Border">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClickBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
         </Style>
     </ControlTheme>
 

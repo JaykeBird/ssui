@@ -315,7 +315,9 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
         public static readonly StyledProperty<Thickness> BorderSelectionThicknessProperty = FlatButton.BorderSelectionThicknessProperty.AddOwner<SplitButton>();
 
-        #region Separator Border
+        #endregion
+
+        #region Separator
 
         /// <summary>
         /// Get or set if a separator bar should be shown between the main and menu buttons. Without the separator bar, the buttons look more connected, 
@@ -344,7 +346,7 @@ namespace SolidShineUi
 
         /// <summary>The backing styled property for <see cref="SeparatorEdgeMargin"/>. See the related property for details.</summary>
         public static readonly StyledProperty<double> SeparatorEdgeMarginProperty
-            = AvaloniaProperty.Register<SplitButton, double>(nameof(SeparatorEdgeMargin), 4.0);
+            = AvaloniaProperty.Register<SplitButton, double>(nameof(SeparatorEdgeMargin), 3.0);
 
         /// <summary>
         /// Get or set how wide the separator bar should be. A value of 0 will make it invisible.
@@ -354,8 +356,6 @@ namespace SolidShineUi
         /// <summary>The backing styled property for <see cref="SeparatorThickness"/>. See the related property for details.</summary>
         public static readonly StyledProperty<double> SeparatorThicknessProperty
             = AvaloniaProperty.Register<SplitButton, double>(nameof(SeparatorThickness), 1.0);
-
-        #endregion
 
         #endregion
 

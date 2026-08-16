@@ -20,7 +20,7 @@
                 <flat:FlatButton IsEnabled="False" TransparentBack="True" >
                     <TextBlock >TB Disabled</TextBlock>
                 </flat:FlatButton>
-                <flat:FlatRepeatButton>
+                <flat:FlatRepeatButton >
                     <TextBlock >Repeat</TextBlock>
                 </flat:FlatRepeatButton>
 
@@ -62,37 +62,33 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:FlatButton}">
-                <Border x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                <utils:ForeBorder x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                        Foreground="{TemplateBinding Foreground}"
 						BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"
 						BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" >
-                    <Border BorderThickness="0" x:Name="btn_DefaultIndicator">
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                            <ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0" Content="{TemplateBinding Content}"
-											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" />
-                            <!--<Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3" Visibility="Collapsed"
-									   Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
-							</Rectangle>-->
-                        </Grid>
-                    </Border>
-                </Border>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <ContentPresenter x:Name="btn_Cc" Margin="{TemplateBinding Padding}" Opacity="1.0" Content="{TemplateBinding Content}"
+											HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" />
+                        <!--<Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3" Visibility="Collapsed"
+									Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:FlatButton}}}" >
+						</Rectangle>-->
+                    </Grid>
+                </utils:ForeBorder>
             </ControlTemplate>
         </Setter>
 
-        <Style Selector="^[TransparentBack=true] /template/ Border#btn_Border" >
+        <Style Selector="^[TransparentBack=true] /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="#01000000" />
             <Setter Property="BorderBrush" Value="#01000000" />
         </Style>
-        
-<!--        <Style Selector="^[IsSelected=true] /template/">
-            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedForeground}" />
-        </Style>-->
 
-        <Style Selector="^[IsSelected=true] /template/ Border#btn_Border" >
+        <Style Selector="^[IsSelected=true] /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectedBrush}" />
             <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderSelectionThickness}" />
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedForeground}" />
         </Style>
 
         <!--<Style Selector="^[IsSelected=true,TransparentBack=true] /template/ Border#btn_Border" >
@@ -107,32 +103,26 @@
             <Setter Property="Opacity" Value="0.6" />
         </Style>
 
-        <Style Selector="^:disabled /template/ Border#btn_Border" >
+        <Style Selector="^:disabled /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisabledBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderDisabledBrush}" />
         </Style>
 
-        <Style Selector="^[TransparentBack=true]:disabled /template/ Border#btn_Border" >
+        <Style Selector="^[TransparentBack=true]:disabled /template/ utils|ForeBorder#btn_Border" >
             <Setter Property="Background" Value="#01000000" />
             <Setter Property="BorderBrush" Value="#01000000" />
         </Style>
 
-<!--        <Style Selector="^:pointerover /template/">
-            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
-        </Style>-->
-
-        <Style Selector="^:pointerover /template/ Border#btn_Border">
+        <Style Selector="^:pointerover /template/ utils|ForeBorder#btn_Border">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
         </Style>
 
-<!--        <Style Selector="^[IsPressed=true] /template/">
-            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
-        </Style>-->
-
-        <Style Selector="^[IsPressed=true] /template/ Border#btn_Border">
+        <Style Selector="^[IsPressed=true] /template/ utils|ForeBorder#btn_Border">
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ClickBrush}" />
             <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHighlightBrush}" />
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HighlightForeground}" />
         </Style>
     </ControlTheme>
 
@@ -144,10 +134,6 @@
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="SeparatorThickness" Value="1" />
-        <Setter Property="SeparatorBrush" Value="Black" />
-        <Setter Property="SeparatorEdgeMargin" Value="3" />
-        <Setter Property="ShowSeparator" Value="True" />
         <Setter Property="TransparentBack" Value="False" />
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type flat:SplitButton}" >
