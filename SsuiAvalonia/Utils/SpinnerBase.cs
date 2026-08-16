@@ -8,7 +8,6 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia;
 using Avalonia.Input;
-using Avalonia.Controls.Primitives;
 
 namespace SolidShineUi.Utils
 {
@@ -18,7 +17,7 @@ namespace SolidShineUi.Utils
     /// <remarks>
     /// Spinner controls for storing/editing numeric data values should inherit from <see cref="NumericSpinnerBase{T}"/>.
     /// </remarks>
-    public class SpinnerBase : TemplatedControl
+    public class SpinnerBase : ThemedTemplatedControl
     {
 
         /// <summary>
@@ -215,15 +214,11 @@ namespace SolidShineUi.Utils
 
         /// <summary>The backing styled property for <see cref="ButtonBackground"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> ButtonBackgroundProperty
-            = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(ButtonBackground), new SolidColorBrush(ColorsHelper.White));
+            = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(ButtonBackground), new SolidColorBrush(Colors.White));
 
         /// <summary>The backing styled property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> DisabledBrushProperty
             = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(DisabledBrush), new SolidColorBrush(Colors.Gray));
-
-        ///// <summary>The backing styled property for <see cref="BorderBrush"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<IBrush?> BorderBrushProperty
-        //    = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(BorderBrush), new SolidColorBrush(Colors.Black));
 
         /// <summary>The backing styled property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> BorderDisabledBrushProperty
@@ -236,7 +231,6 @@ namespace SolidShineUi.Utils
         /// <summary>The backing styled property for <see cref="ClickBrush"/>. See the related property for details.</summary>
         public static readonly StyledProperty<IBrush?> ClickBrushProperty
             = AvaloniaProperty.Register<SpinnerBase, IBrush?>(nameof(ClickBrush), new SolidColorBrush(Colors.Gainsboro));
-
 
 
         /// <summary>
@@ -270,22 +264,6 @@ namespace SolidShineUi.Utils
                 SetValue(DisabledBrushProperty, value);
             }
         }
-
-        ///// <summary>
-        ///// Get or set the brush of the border around the control.
-        ///// </summary>
-        //[Category("Brushes")]
-        //public new IBrush? BorderBrush
-        //{
-        //    get
-        //    {
-        //        return GetValue(BorderBrushProperty);
-        //    }
-        //    set
-        //    {
-        //        SetValue(BorderBrushProperty, value);
-        //    }
-        //}
 
         /// <summary>
         /// Get or set the brush used when a button is highlighted (i.e. has a mouse over it or keyboard focus).
@@ -374,6 +352,39 @@ namespace SolidShineUi.Utils
             ClickBrush = cs.ThirdHighlightColor.ToBrush();
             HighlightBrush = cs.HighlightColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
+        }
+
+        #endregion
+
+        #region SsuiTheme
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme && ssuiAppTheme.AccentTheme != null)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+
+                ApplyThemeBinding(ButtonBackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+
+                // we do not set Background here, as that'll set the background of the text box, and I'll just leave that as the default
+            }
         }
 
         #endregion
