@@ -2482,6 +2482,29 @@
     </Style>
 
     <Style TargetType="{x:Type ribbon:RibbonGroup}" >
+        <Style.Resources>
+            <Style TargetType="Separator">
+                <Setter Property="Width" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Separator">
+                            <Border BorderThickness="1" flat:BindableHighContrast.HighContrast="{DynamicResource ResourceKey={x:Static Member=SystemParameters.HighContrastKey}}" Margin="2">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <!--<Style.Triggers>
+                                            <Trigger Property="flat:BindableHighContrast.HighContrast" Value="True">
+                                                <Setter Property="BorderBrush" Value="{Binding Path=MenuBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
+                                            </Trigger>
+                                        </Style.Triggers>-->
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
         <Setter Property="Focusable" Value="False" />
         <Setter Property="AllowDrop" Value="False" />
         <Setter Property="MaxHeight" Value="96" />
