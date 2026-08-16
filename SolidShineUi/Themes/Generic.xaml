@@ -3508,10 +3508,10 @@
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Height" Value="24" />
         <Setter Property="Width" Value="Auto" />
-        <Setter Property="Focusable" Value="True" />
         <Setter Property="Background" Value="#01000000" />
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="3,0,0,0" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
@@ -3519,7 +3519,6 @@
                     <Grid Background="{TemplateBinding Background}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="3" x:Name="colLeftSpace"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
                         <Border x:Name="brdrChk" HorizontalAlignment="Left" Height="20" Margin="0,0" VerticalAlignment="Center" Width="20">
@@ -3598,7 +3597,7 @@
                                 </Grid.Style>
                             </Grid>
                         </Border>
-                        <TextBlock x:Name="cc" VerticalAlignment="Center" Grid.Column="2">
+                        <TextBlock x:Name="cc" VerticalAlignment="Center" Grid.Column="1">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}" >
                                     <Setter Property="Opacity" Value="1.0" />
@@ -5551,6 +5550,67 @@
                         </Trigger>-->
                         <Trigger Property="IsKeyboardFocused" Value="True" >
                             <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ribbon:RibbonTextBlock}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Background" Value="#01000000" />
+        <Setter Property="Padding" Value="3,0,0,0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ribbon:RibbonTextBlock" >
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" x:Name="icon" Source="{TemplateBinding SmallIcon}" Width="16" Height="16" VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock x:Name="cc" VerticalAlignment="Center" Grid.Column="1">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}" >
+                                    <Setter Property="Opacity" Value="1.0" />
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Setter Property="Margin" Value="{Binding Path=Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                                    <Setter Property="Text" Value="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonCheckBox}}}" />
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=StandardSize}" Value="IconOnly" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsCompacted}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="cc" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=CompactSize}" Value="IconOnly" />
+                                <Condition Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsCompacted}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="cc" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Focusable" Value="False" />
+                            <Setter Property="Opacity" Value="0.6" />
+                        </Trigger>
+                        <Trigger Property="ShowIcon" Value="False">
+                            <Setter Property="Visibility" TargetName="icon" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
