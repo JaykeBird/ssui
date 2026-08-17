@@ -2303,9 +2303,10 @@
                             <flat:FlatButton x:Name="btnScrollLeft" Grid.Column="1" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
                                              IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}">
-                                <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, 
-                                        AncestorType={x:Type ribbon:Ribbon}}, Converter={StaticResource ColorConverter}}" />
+                                             HighlightBrush="{TemplateBinding ScrollButtonHighlightBrush}" ClickBrush="{TemplateBinding ScrollButtonHighlightBrush}"
+                                             Background="{TemplateBinding ScrollButtonBackground}" Foreground="{TemplateBinding Foreground}"
+                                             BorderHighlightBrush="{TemplateBinding ScrollButtonBorderBrush}" BorderBrush="{TemplateBinding ScrollButtonBorderBrush}" >
+                                <Path Data="M8,0 L0,4 8,8 z" Fill="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
                             </flat:FlatButton>
                             <ScrollViewer x:Name="PART_TabScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" Grid.Column="2" >
                                 <Grid Margin="0">
@@ -2367,9 +2368,10 @@
                             <flat:FlatButton x:Name="btnScrollRight" Grid.Column="3" Padding="1" TransparentBack="True"
                                              Command="{x:Static flat:TabControl.TabBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
                                              IsEnabled="{Binding TabScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}" >
-                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource TemplatedParent}, 
-                                    Converter={StaticResource ColorConverter}}" />
+                                             HighlightBrush="{TemplateBinding ScrollButtonHighlightBrush}" ClickBrush="{TemplateBinding ScrollButtonHighlightBrush}"
+                                             Background="{TemplateBinding ScrollButtonBackground}" Foreground="{TemplateBinding Foreground}"
+                                             BorderHighlightBrush="{TemplateBinding ScrollButtonBorderBrush}" BorderBrush="{TemplateBinding ScrollButtonBorderBrush}" >
+                                <Path Data="M0,0 L8,4 0,8 z" Fill="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
                             </flat:FlatButton>
                             <Border BorderThickness="0" Background="Transparent" x:Name="PART_RightHolder_Horizontal" Grid.Column="4" >
                                 <Border flat:BindableChild.BindableChild="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource BindableChildConverter}}"
@@ -2420,8 +2422,8 @@
                                         <!--<ColumnDefinition x:Name="colRightElement" Width="Auto" />-->
                                     </Grid.ColumnDefinitions>
 
-                                    <ScrollViewer Grid.Column="1" x:Name="PART_MainScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
-                                        <DockPanel Grid.Column="0" Grid.ColumnSpan="3">
+                                    <ScrollViewer Grid.Column="0" Grid.ColumnSpan="3" x:Name="PART_MainScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                                        <DockPanel>
                                             <Border DockPanel.Dock="Left">
                                                 <Border.Style>
                                                     <Style TargetType="Border">
@@ -2457,21 +2459,23 @@
                                         </DockPanel>
                                     </ScrollViewer>
 
-                                    <flat:FlatButton x:Name="btnMainScrollLeft" Grid.Column="0" Padding="1"
-                                             Command="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
-                                             IsEnabled="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}">
-                                        <Path Data="M6,0 L0,3 6,6 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource FindAncestor, 
-                                        AncestorType={x:Type ribbon:Ribbon}}, Converter={StaticResource ColorConverter}}" />
-                                    </flat:FlatButton>
+                                    <ssut:TemplateButton x:Name="btnMainScrollLeft" Grid.Column="0" Padding="1"
+                                             ExecuteCommand="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" ExecuteCommandParameter="{x:Static ssut:TabScrollCommandAction.Left}"
+                                             HighlightBrush="{TemplateBinding ScrollButtonHighlightBrush}" ClickBrush="{TemplateBinding ScrollButtonHighlightBrush}"
+                                             Background="{TemplateBinding ScrollButtonBackground}" Foreground="{TemplateBinding Foreground}"
+                                             BorderHighlightBrush="{TemplateBinding ScrollButtonBorderBrush}" BorderBrush="{TemplateBinding ScrollButtonBorderBrush}"
+                                             IsEnabled="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Path Data="M6,0 L0,3 6,6 z" Fill="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </ssut:TemplateButton>
 
-                                    <flat:FlatButton x:Name="btnMainScrollRight" Grid.Column="2" Padding="1"
-                                             Command="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" CommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
-                                             IsEnabled="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                             ColorScheme="{Binding ColorScheme, RelativeSource={RelativeSource TemplatedParent}}" >
-                                        <Path Data="M0,0 L6,3 0,6 z" Fill="{Binding ColorScheme.ForegroundColor, RelativeSource={RelativeSource TemplatedParent}, 
-                                    Converter={StaticResource ColorConverter}}" />
-                                    </flat:FlatButton>
+                                    <ssut:TemplateButton x:Name="btnMainScrollRight" Grid.Column="2" Padding="1"
+                                             ExecuteCommand="{x:Static ribbon:RibbonCommands.MainBarScrollCommand}" ExecuteCommandParameter="{x:Static ssut:TabScrollCommandAction.Right}"
+                                             HighlightBrush="{TemplateBinding ScrollButtonHighlightBrush}" ClickBrush="{TemplateBinding ScrollButtonHighlightBrush}"
+                                             Background="{TemplateBinding ScrollButtonBackground}" Foreground="{TemplateBinding Foreground}"
+                                             BorderHighlightBrush="{TemplateBinding ScrollButtonBorderBrush}" BorderBrush="{TemplateBinding ScrollButtonBorderBrush}"
+                                             IsEnabled="{Binding MainScrollButtonsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Path Data="M0,0 L6,3 0,6 z" Fill="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </ssut:TemplateButton>
                                 </Grid>
                             </Border>
                         </Grid>

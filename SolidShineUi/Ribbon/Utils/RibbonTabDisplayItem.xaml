@@ -23,7 +23,7 @@
         <flat:BindableChildConverter x:Key="BindableChildConverter" />
     </UserControl.Resources>
     <Grid>
-        <Border BorderBrush="Black" x:Name="border" Focusable="True" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
+        <Border x:Name="border" Focusable="True" IsKeyboardFocusedChanged="border_IsKeyboardFocusedChanged">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -86,9 +86,9 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragLeft" BorderBrush="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}"
+            <Border Grid.Column="0" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragLeft" BorderBrush="{Binding ElementName=control, Path=TabBorderBrush}"
                     AllowDrop="True" Drop="brdrDragLeft_Drop" DragEnter="brdrDragLeft_DragEnter" DragLeave="brdrDragLeft_DragLeave" />
-            <Border Grid.Column="1" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragRght" BorderBrush="{Binding ElementName=control, Path=ColorScheme.BorderColor, Converter={StaticResource ctb}}"
+            <Border Grid.Column="1" Background="#01FFFFFF" BorderThickness="0" x:Name="brdrDragRght" BorderBrush="{Binding ElementName=control, Path=TabBorderBrush}"
                     AllowDrop="True" Drop="brdrDragRght_Drop" DragEnter="brdrDragRght_DragEnter" DragLeave="brdrDragRght_DragLeave" />
         </Grid>
 

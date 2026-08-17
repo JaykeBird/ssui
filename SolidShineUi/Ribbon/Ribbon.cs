@@ -354,7 +354,7 @@ namespace SolidShineUi.Ribbon
         public int SelectedIndex { get => (int)GetValue(SelectedIndexProperty); set => SetValue(SelectedIndexProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SelectedIndex"/>. See the related property for details.</summary>
-        public static DependencyProperty SelectedIndexProperty
+        public static readonly DependencyProperty SelectedIndexProperty
             = DependencyProperty.Register("SelectedIndex", typeof(int), typeof(Ribbon),
             new FrameworkPropertyMetadata(-1, (d, e) => d.PerformAs<Ribbon>((r) => r.OnSelectedIndexChange())));
 
@@ -457,7 +457,7 @@ namespace SolidShineUi.Ribbon
         public double MainBarHeight { get => (double)GetValue(MainBarHeightProperty); set => SetValue(MainBarHeightProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="MainBarHeight"/>. See the related property for details.</summary>
-        public static DependencyProperty MainBarHeightProperty
+        public static readonly DependencyProperty MainBarHeightProperty
             = DependencyProperty.Register("MainBarHeight", typeof(double), typeof(Ribbon),
             new FrameworkPropertyMetadata(96.0));
 
@@ -820,7 +820,7 @@ namespace SolidShineUi.Ribbon
         public bool ShowOnlyTabs { get => (bool)GetValue(ShowOnlyTabsProperty); set => SetValue(ShowOnlyTabsProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="ShowOnlyTabs"/>. See the related property for details.</summary>
-        public static DependencyProperty ShowOnlyTabsProperty
+        public static readonly DependencyProperty ShowOnlyTabsProperty
             = DependencyProperty.Register("ShowOnlyTabs", typeof(bool), typeof(Ribbon),
             new FrameworkPropertyMetadata(false));
 
@@ -895,6 +895,18 @@ namespace SolidShineUi.Ribbon
             get { return (bool)GetValue(TabScrollButtonsVisibleProperty); }
             private set { SetValue(TabScrollButtonsVisiblePropertyKey, value); }
         }
+
+        /// <summary>
+        /// Get or set the corner radius used for the corners of the scroll buttons on the Ribbon.
+        /// </summary>
+        public CornerRadius ScrollButtonCornerRadius { get => (CornerRadius)GetValue(ScrollButtonCornerRadiusProperty); set => SetValue(ScrollButtonCornerRadiusProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ScrollButtonCornerRadius"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ScrollButtonCornerRadiusProperty
+            = DependencyProperty.Register(nameof(ScrollButtonCornerRadius), typeof(CornerRadius), typeof(Ribbon),
+            new FrameworkPropertyMetadata(new CornerRadius(0)));
+
+
         #endregion
 
         void CheckScrolling()
@@ -1103,7 +1115,7 @@ namespace SolidShineUi.Ribbon
         public Brush TabBorderHighlightBrush { get => (Brush)GetValue(TabBorderHighlightBrushProperty); set => SetValue(TabBorderHighlightBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderHighlightBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBorderHighlightBrushProperty
+        public static readonly DependencyProperty TabBorderHighlightBrushProperty
             = DependencyProperty.Register(nameof(TabBorderHighlightBrush), typeof(Brush), typeof(Ribbon),
             new FrameworkPropertyMetadata(Colors.DimGray.ToBrush()));
 
@@ -1113,9 +1125,41 @@ namespace SolidShineUi.Ribbon
         public Brush TabBorderBrush { get => (Brush)GetValue(TabBorderBrushProperty); set => SetValue(TabBorderBrushProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="TabBorderBrush"/>. See the related property for details.</summary>
-        public static DependencyProperty TabBorderBrushProperty
+        public static readonly DependencyProperty TabBorderBrushProperty
             = DependencyProperty.Register(nameof(TabBorderBrush), typeof(Brush), typeof(Ribbon),
             new FrameworkPropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>
+        /// Get or set the brush used for the background of the scroll buttons of the Ribbon.
+        /// </summary>
+        public Brush ScrollButtonBackground { get => (Brush)GetValue(ScrollButtonBackgroundProperty); set => SetValue(ScrollButtonBackgroundProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ScrollButtonBackground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ScrollButtonBackgroundProperty
+            = DependencyProperty.Register(nameof(ScrollButtonBackground), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.LightGray.ToBrush()));
+
+
+        /// <summary>
+        /// Get or set the brush used for the border around the scroll buttons of the Ribbon.
+        /// </summary>
+        public Brush ScrollButtonBorderBrush { get => (Brush)GetValue(ScrollButtonBorderBrushProperty); set => SetValue(ScrollButtonBorderBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ScrollButtonBorderBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ScrollButtonBorderBrushProperty
+            = DependencyProperty.Register(nameof(ScrollButtonBorderBrush), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
+
+
+        /// <summary>
+        /// Get or set the brush used for the background of the scroll buttons of the Ribbon, while a button is highlighted or being clicked.
+        /// </summary>
+        public Brush ScrollButtonHighlightBrush { get => (Brush)GetValue(ScrollButtonHighlightBrushProperty); set => SetValue(ScrollButtonHighlightBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ScrollButtonHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ScrollButtonHighlightBrushProperty
+            = DependencyProperty.Register(nameof(ScrollButtonHighlightBrush), typeof(Brush), typeof(Ribbon),
+            new FrameworkPropertyMetadata(Colors.Gainsboro.ToBrush()));
 
         #endregion
 
@@ -1187,6 +1231,9 @@ namespace SolidShineUi.Ribbon
             SelectedTabBackground = cs.LightBackgroundColor.ToBrush();
             TabHighlightBrush = cs.SecondHighlightColor.ToBrush();
             TabBorderHighlightBrush = cs.HighlightColor.ToBrush();
+
+            // TODO: add in the brush colorings for the ScrollButton brushes
+
             // TabBarBackground = cs.BackgroundColor.ToBrush();
 
             // TODO: replace applying the ColorScheme directly below with applying these yet-to-be-made properties
@@ -1248,6 +1295,12 @@ namespace SolidShineUi.Ribbon
                 ApplyThemeBinding(TabHighlightBrushProperty, SsuiTheme.TabHighlightBrushProperty, theme);
                 ApplyThemeBinding(TabBorderHighlightBrushProperty, SsuiTheme.TabHighlightBorderBrushProperty, theme);
                 ApplyThemeBinding(SelectedTabBackgroundProperty, SsuiTheme.TabSelectedBrushProperty, theme);
+
+                ApplyThemeBinding(ScrollButtonBackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
+                ApplyThemeBinding(ScrollButtonBorderBrushProperty, SsuiTheme.BorderBrushProperty, theme);
+                ApplyThemeBinding(ScrollButtonHighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+
+                ApplyThemeBinding(ScrollButtonCornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
 
                 //ApplyThemeBinding(TabBackgroundProperty, SsuiTheme.TabBackgroundProperty, theme);
                 //ApplyThemeBinding(TabCloseBrushProperty, SsuiTheme.ForegroundProperty, theme);
