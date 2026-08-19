@@ -20,6 +20,7 @@ namespace SolidShineUi.Ribbon
     [ContentProperty(nameof(Items))]
     public class Ribbon : ThemedControl
     {
+
         #region Constructors / Loaded
 
         static Ribbon()
@@ -40,6 +41,9 @@ namespace SolidShineUi.Ribbon
             Loaded += Ribbon_Loaded;
             SizeChanged += Ribbon_SizeChanged;
             Items.CollectionChanged += Items_CollectionChanged;
+
+            KeyDown += Ribbon_KeyDown;
+            KeyUp += Ribbon_KeyUp;
         }
 
         private void Ribbon_Loaded(object sender, RoutedEventArgs e)
@@ -66,6 +70,7 @@ namespace SolidShineUi.Ribbon
         #endregion
 
         #region Template IO
+
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -93,12 +98,14 @@ namespace SolidShineUi.Ribbon
         ItemsControl? mainContainer = null;
         ScrollViewer? mainScrollContainer = null;
         Border? mainBar = null;
+        Canvas? keyTipsCanvas = null;
 #else
         ItemsControl tabContainer = null;
         ScrollViewer tabScrollContainer = null;
         ItemsControl mainContainer = null;
         ScrollViewer mainScrollContainer = null;
         Border mainBar = null;
+        Canvas keyTipsCanvas = null;
 #endif
 
         void LoadTemplateItems()
@@ -110,6 +117,7 @@ namespace SolidShineUi.Ribbon
                 mainContainer = (ItemsControl)GetTemplateChild("PART_MainContent");
                 mainScrollContainer = (ScrollViewer)GetTemplateChild("PART_MainScroll");
                 mainBar = (Border)GetTemplateChild("PART_MainBar");
+                keyTipsCanvas = (Canvas)GetTemplateChild("PART_KeyTipsCanvas");
 
                 if (tabContainer != null && tabScrollContainer != null && mainContainer != null &&
                     mainScrollContainer != null && mainBar != null)
@@ -130,9 +138,12 @@ namespace SolidShineUi.Ribbon
                 }
             }
         }
+
         #endregion
 
         #region Tabs
+
+        #region Items / ItemsChanged
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
             = DependencyProperty.RegisterReadOnly(nameof(Items), typeof(ObservableCollection<RibbonTab>), typeof(Ribbon),
@@ -195,6 +206,10 @@ namespace SolidShineUi.Ribbon
             CheckScrolling();
         }
 
+        #endregion
+
+        #region View
+
 #if NETCOREAPP
         private void tab_InternalBringIntoViewRequested(object? sender, EventArgs e)
 #else
@@ -239,6 +254,8 @@ namespace SolidShineUi.Ribbon
                 }
             }
         }
+
+        #endregion
 
         #region Selection
 
@@ -1315,6 +1332,125 @@ namespace SolidShineUi.Ribbon
                 }
             }
         }
+
+        #endregion
+
+        #region KeyTips
+
+        #region IsShowingKeyTips
+
+        /// <summary>
+        /// Get if this Ribbon is currently displaying its KeyTips.
+        /// <para/>
+        /// KeyTips are used to allow a user to select and activate a Ribbon item via the keyboard.
+        /// This is done by placing one or more letters in a popup above each control in the Ribbon, and allowing the user to select the control
+        /// to activate by pressing the corresponding letters on the keyboard.
+        /// To display the KeyTips for this control, use <c>DisplayKeyTips</c>.
+        /// </summary>
+        public bool IsShowingKeyTips { get => (bool)GetValue(IsShowingKeyTipsProperty); private set => SetValue(IsShowingKeyTipsPropertyKey, value); }
+
+        private static readonly DependencyPropertyKey IsShowingKeyTipsPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(IsShowingKeyTips), typeof(bool), typeof(Ribbon),
+            new FrameworkPropertyMetadata(false));
+
+        /// <summary>The backing dependency property for <see cref="IsShowingKeyTips"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty IsShowingKeyTipsProperty = IsShowingKeyTipsPropertyKey.DependencyProperty;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Display the KeyTips for this Ribbon control.
+        /// <para/>
+        /// KeyTips are used to allow a user to select and activate a Ribbon item via the keyboard.
+        /// This is done by placing one or more letters in a popup above each control in the Ribbon, and allowing the user to select the control
+        /// to activate by pressing the corresponding letters on the keyboard.
+        /// </summary>
+        public void DisplayKeyTips()
+        {
+            if (keyTipsCanvas == null) return;
+
+            IsShowingKeyTips = true;
+            
+            keyTipsCanvas.Visibility = Visibility.Visible;
+        }
+
+        private void DisplayAllTabKeyTips()
+        {
+            foreach (RibbonTab tab in Items)
+            {
+                // get the RibbonTabDisplayItem for this tab
+                // render the KeyTip below the tab name
+                // wait for the user to input the key tip needed
+            }
+        }
+
+        private void DisplayTabKeyTips(RibbonTab tab)
+        {
+            if (keyTipsCanvas == null) return;
+
+            keyTipsCanvas.Children.Clear();
+
+            foreach (RibbonGroup group in tab.Items)
+            {
+                foreach (var item in group.Items)
+                {
+                    if (item is Control c)
+                    {
+                        Point loc = c.TranslatePoint(new Point(0, 0), this);
+                        RenderKeyTip(item, loc, new Size(c.Width, c.Height));
+                    }
+                }
+            }
+        }
+
+        private void RenderKeyTip(IRibbonItem control, Point controlPoint, Size controlSize)
+        {
+            if (controlPoint.X > this.Width)
+            {
+                // this control is beyond the width of the Ribbon, let's not render a keytip
+                // not the best solution, but it avoids keytips appearing outside of the Ribbon's space
+                // instead, I think the left and right keys should scroll the Ribbon, and KeyTips will 
+                // be re-rendered
+                return;
+            }
+
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void HideKeyTips()
+        {
+            if (IsShowingKeyTips)
+            {
+                if (keyTipsCanvas != null)
+                {
+                    keyTipsCanvas.Children.Clear();
+                    keyTipsCanvas.Visibility = Visibility.Collapsed;
+                }
+
+                IsShowingKeyTips = false;
+            }
+        }
+
+        #endregion
+
+        #region Key Events
+
+        private void Ribbon_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void Ribbon_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        #endregion
 
         #endregion
 

@@ -45,8 +45,8 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// The backing dependency property for <see cref="Title"/>. See the related property for details.
         /// </summary>
-        public static DependencyProperty TitleProperty
-            = DependencyProperty.Register("Title", typeof(string), typeof(RibbonTab),
+        public static readonly DependencyProperty TitleProperty
+            = DependencyProperty.Register(nameof(Title), typeof(string), typeof(RibbonTab),
             new FrameworkPropertyMetadata("Tab"));
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// The backing dependency property for <see cref="FitContentsToWidth"/>. See the related property for details.
         /// </summary>
-        public static DependencyProperty FitContentsToWidthProperty
-            = DependencyProperty.Register("FitContentsToWidth", typeof(bool), typeof(RibbonTab),
+        public static readonly DependencyProperty FitContentsToWidthProperty
+            = DependencyProperty.Register(nameof(FitContentsToWidth), typeof(bool), typeof(RibbonTab),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// The backing dependency property for <see cref="Visibility"/>. See the related property for details.
         /// </summary>
-        public static DependencyProperty VisibilityProperty
-            = DependencyProperty.Register("Visibility", typeof(Visibility), typeof(RibbonTab),
+        public static readonly DependencyProperty VisibilityProperty
+            = DependencyProperty.Register(nameof(Visibility), typeof(Visibility), typeof(RibbonTab),
             new FrameworkPropertyMetadata(Visibility.Visible,
                 new PropertyChangedCallback((o, e) => o.PerformAs<RibbonTab>((t) => t.VisibilityChanged?.Invoke(t, e)))));
 
@@ -90,15 +90,25 @@ namespace SolidShineUi.Ribbon
         public event DependencyPropertyChangedEventHandler VisibilityChanged;
 #endif
 
+        /// <summary>
+        /// Get or set the access key(s) used to select this tab while the Ribbon is displaying its KeyTips.
+        /// </summary>
+        public string AccessKey { get => (string)GetValue(AccessKeyProperty); set => SetValue(AccessKeyProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="AccessKey"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty AccessKeyProperty
+            = DependencyProperty.Register(nameof(AccessKey), typeof(string), typeof(RibbonTab),
+            new FrameworkPropertyMetadata("T"));
+
+
         #region Items
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         private static readonly DependencyPropertyKey ItemsPropertyKey
-            = DependencyProperty.RegisterReadOnly("Items", typeof(ObservableCollection<RibbonGroup>), typeof(RibbonTab),
+            = DependencyProperty.RegisterReadOnly(nameof(Items), typeof(ObservableCollection<RibbonGroup>), typeof(RibbonTab),
             new FrameworkPropertyMetadata(new ObservableCollection<RibbonGroup>()));
 
+        /// <summary>The backing dependency property for <see cref="Items"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// Get or set the list of groups in this RibbonTab. This Items property can be used to add and remove items.
@@ -134,8 +144,9 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register("Padding", typeof(Thickness), typeof(RibbonTab),
-            new PropertyMetadata(new Thickness(12, 0, 12, 0), new PropertyChangedCallback((o, e) => o.PerformAs<RibbonTab>((t) => t.PaddingChanged?.Invoke(t, e)))));
+        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(nameof(Padding), typeof(Thickness), typeof(RibbonTab),
+            new PropertyMetadata(new Thickness(12, 0, 12, 0),
+                new PropertyChangedCallback((o, e) => o.PerformAs<RibbonTab>((t) => t.PaddingChanged?.Invoke(t, e)))));
 
         ///<summary>
         /// Get or set the padding (or space) applied around the tab's title and icon. (This does not set the padding for the content.)
@@ -159,6 +170,7 @@ namespace SolidShineUi.Ribbon
         #endregion
 
         #region Contextual Tab
+
         /// <summary>
         /// Get or set if this is a contextual tab. A contextual tab should only be displayed in the situations or contexts where the commands within it are useful,
         /// and otherwise should be hidden (such as displaying controls for editing a picture only while a picture is selected)
@@ -171,8 +183,8 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// The backing dependency property for <see cref="IsContextual"/>. See the related property for details.
         /// </summary>
-        public static DependencyProperty IsContextualProperty
-            = DependencyProperty.Register("IsContextual", typeof(bool), typeof(RibbonTab),
+        public static readonly DependencyProperty IsContextualProperty
+            = DependencyProperty.Register(nameof(IsContextual), typeof(bool), typeof(RibbonTab),
             new FrameworkPropertyMetadata(false));
 
         /// <summary>
@@ -183,8 +195,8 @@ namespace SolidShineUi.Ribbon
         /// <summary>
         /// The backing dependency property for <see cref="ContextualColor"/>. See the related property for details.
         /// </summary>
-        public static DependencyProperty ContextualColorProperty
-            = DependencyProperty.Register("ContextualColor", typeof(Color), typeof(RibbonTab),
+        public static readonly DependencyProperty ContextualColorProperty
+            = DependencyProperty.Register(nameof(ContextualColor), typeof(Color), typeof(RibbonTab),
             new FrameworkPropertyMetadata(Colors.Blue));
         #endregion
 
