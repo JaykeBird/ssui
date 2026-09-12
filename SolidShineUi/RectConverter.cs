@@ -11,6 +11,9 @@ namespace SolidShineUi
     /// <summary>
     /// A MultiValueConverter that takes 4 values and creates a Rect. This class can be used to get around the fact that a Rect cannot be used for XAML binding.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
     public class RectConverter : IMultiValueConverter
     {
         #region IMultiValueConverter Members

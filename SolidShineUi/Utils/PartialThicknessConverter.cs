@@ -10,18 +10,24 @@ using System.Windows;
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// A helper method for WPF controls, to only selectively apply a <see cref="CornerRadius"/> value to only some corners.
+    /// A helper method for WPF controls, to only selectively apply a <see cref="Thickness"/> value to only some sides.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(Thickness), typeof(Thickness))]
+    [ValueConversion(typeof(IConvertible), typeof(Thickness))]
+    [ValueConversion(typeof(double), typeof(Thickness))]
     public class PartialThicknessConverter : IValueConverter
     {
 
         /// <summary>
-        /// Convert a double into a string, with rounding possible by setting the <paramref name="parameter"/> value.
+        /// Modify a <see cref="Thickness"/> to only apply to a few sides, as based upon the values in <paramref name="parameter"/>.
         /// </summary>
-        /// <param name="value">The <see cref="Thickness"/> object to read from (or <see cref="double"/> for a uniform value)</param>
+        /// <param name="value">The <see cref="Thickness"/> object to read from (or a <see cref="double"/> or a <see cref="IConvertible"/> number for a uniform value)</param>
         /// <param name="targetType">Not used, returned type will always be a <see cref="Thickness"/></param>
-        /// <param name="parameter">The corners to apply to the result; one or more of <c>L,T,B,R</c></param>
-        /// <param name="culture">Not used</param>
+        /// <param name="parameter">The sides to apply to the result; one or more of <c>L,T,B,R</c></param>
+        /// <param name="culture">Used for converting an <see cref="IConvertible"/> object to a double</param>
         /// <returns>A <see cref="Thickness"/> that only has a portion of its values set </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -32,6 +38,17 @@ namespace SolidShineUi.Utils
             if (value is double d)
             {
                 baseVal = new Thickness(d);
+            }
+            else if (value is IConvertible ic)
+            {
+                try
+                {
+                    baseVal = new Thickness(ic.ToDouble(culture));
+                }
+                catch (InvalidCastException)
+                {
+                    return new Thickness();
+                }
             }
             else if (value is Thickness th)
             {

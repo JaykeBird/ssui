@@ -5,13 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace SolidShineUi.Utils
 {
     /// <summary>
-    /// A converter to modify one <see cref="CornerRadius"/>, by adding on a constant value or another CornerRadius object.
+    /// A converter to modify a <see cref="CornerRadius"/>, by adding on a constant value or another CornerRadius object.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(double), typeof(CornerRadius))]
+    [ValueConversion(typeof(CornerRadius), typeof(CornerRadius))]
     public class CornerRadiusModifierConverter : IValueConverter
     {
         /// <summary>

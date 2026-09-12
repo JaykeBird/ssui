@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace SolidShineUi.Utils
@@ -15,7 +17,10 @@ namespace SolidShineUi.Utils
     /// <remarks>
     /// Pass in an <see cref="IValueConverter"/> as a parameter to chain on that converter and have it convert the outputted value;
     /// any other item passed in as a parameter will be prepended to the written value to console.
+    /// <para/>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
     /// </remarks>
+    [ValueConversion(typeof(object), typeof(object))]
     public class DebugOutputValueConverter : IValueConverter
     {
 

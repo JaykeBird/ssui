@@ -4,14 +4,20 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Data;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace SolidShineUi
 {
     /// <summary>
     /// Converts a <see cref="FontWeight"/> OpenType weight value into a human-friendly string (based upon the names in <see cref="FontWeights"/>).
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(FontWeight), typeof(string))]
+    [ValueConversion(typeof(int), typeof(string))]
     public class FontWeightStringConverter : IValueConverter
     {
         /// <summary>
@@ -243,6 +249,10 @@ namespace SolidShineUi
     /// <summary>
     /// Converts an integer to a <see cref="FontWeight"/>.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(int), typeof(FontWeight))]
     public class FontWeightValueConverter : IValueConverter
     {
         /// <summary>

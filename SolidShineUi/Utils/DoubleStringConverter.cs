@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace SolidShineUi.Utils
@@ -8,6 +9,10 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// Converts a double into a string for display in XAML, with rounding possible by setting the parameter to the decimal places to round to.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(double), typeof(string))]
     public class DoubleStringConverter : IValueConverter
     {
 

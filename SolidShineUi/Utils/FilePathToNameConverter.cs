@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Windows.Data;
 using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace SolidShineUi.Utils
 {
@@ -12,6 +13,10 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// Convert a fully-qualified path to a file into just displaying the filename, for use in XAML.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(string), typeof(string))]
     public class FilePathToNameConverter : IValueConverter
     {
         /// <summary>

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Data;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Markup;
-using System.Windows.Media.Imaging;
-using System.Diagnostics;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace SolidShineUi.Utils
 {
@@ -18,6 +19,12 @@ namespace SolidShineUi.Utils
     /// Select an icon from a ICO file/resource, that matches a given width or height.
     /// If the exact size wanted isn't available, this will instead return the nearest available size that's smaller than the given width or height.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(string), typeof(BitmapFrame))]
+    [ValueConversion(typeof(BitmapImage), typeof(BitmapFrame))]
+    [ValueConversion(typeof(BitmapFrame), typeof(BitmapFrame))]
     public class IconSizeConverter : IValueConverter
     {
         /// <summary>

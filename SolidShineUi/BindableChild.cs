@@ -52,6 +52,7 @@ namespace SolidShineUi
     /// <summary>
     /// A converter used to set the child of a control to a bound element.
     /// </summary>
+    [ValueConversion(typeof(UIElement), typeof(Border))]
     public class BindableChildConverter : IValueConverter
     {
         /// <summary>

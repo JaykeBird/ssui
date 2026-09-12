@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -9,6 +10,10 @@ namespace SolidShineUi
     /// <summary>
     /// Converts a Color into a SolidColorBrush.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(Color), typeof(SolidColorBrush))]
     public class ColorToBrushConverter : IValueConverter
     {
         /// <summary>

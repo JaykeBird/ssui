@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -13,6 +14,10 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// Converts a fully-qualified file path into a 16x16 icon for display in XAML.
     /// </summary>
+    /// <remarks>
+    /// For SolidShineUi 2.0 and later versions, all value converters are found in the <c>SolidShineUi.Converters</c> namespace.
+    /// </remarks>
+    [ValueConversion(typeof(string), typeof(BitmapSource))]
     public class FilePathToIconConverter : IValueConverter
     {
 
