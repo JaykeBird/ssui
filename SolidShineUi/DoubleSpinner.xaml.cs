@@ -80,13 +80,20 @@ namespace SolidShineUi
 
         private void DoubleSpinner_Loaded(object sender, EventArgs e)
         {
+            ResetTimers();
+
             txtValue.TextChanged += txtValue_TextChanged;
-        }        
-        
+        }
+
         #region Disposing / Unloading
 
         /// <summary>
-        /// Reset the spinner's internal timers; this should only be needed if this control is being unloaded and then later loaded.
+        /// Get if the timers have been disposed. If they are still needed, call <see cref="ResetTimers"/>.
+        /// </summary>
+        protected bool TimersDisposed { get; private set; } = false;
+
+        /// <summary>
+        /// Reset the spinner's internal timers.
         /// </summary>
         protected void ResetTimers()
         {
@@ -95,12 +102,22 @@ namespace SolidShineUi
 
             advanceTimer = new Timer(50);
             keyDownTimer = new Timer(300);
+
+            keyDownTimer.AutoReset = false;
+            advanceTimer.AutoReset = true;
+
+            keyDownTimer.Elapsed += KeyDownTimer_Elapsed;
+            advanceTimer.Elapsed += AdvanceTimer_Elapsed;
+
+            TimersDisposed = false;
         }
 
         private void DoubleSpinner_Unloaded(object sender, RoutedEventArgs e)
         {
             advanceTimer.Dispose();
             keyDownTimer.Dispose();
+
+            TimersDisposed = true;
         }
 
         #endregion
@@ -124,7 +141,7 @@ namespace SolidShineUi
                 return;
             }
 
-            if (advanceTimer == null || btnDown == null || btnUp == null)
+            if (advanceTimer == null || btnDown == null || btnUp == null || TimersDisposed)
             {
 
             }
@@ -785,42 +802,54 @@ namespace SolidShineUi
 
         void UpdateUI()
         {
-            if (Value == MinValue)
+            if (!IsEnabled)
             {
-                btnDown.IsEnabled = false;
-                btnDown.Background = DisabledBrush;
-                advanceTimer.Stop();
-            }
-            else
-            {
-                if (advanceTimer.Enabled && !advanceStepUp)
-                {
-                    btnDown.Background = ClickBrush;
-                }
-                else
-                {
-                    btnDown.Background = ButtonBackground;
-                }
-                btnDown.IsEnabled = true;
-            }
-
-            if (Value == MaxValue)
-            {
-                btnUp.IsEnabled = false;
+                brdr.BorderBrush = BorderDisabledBrush;
+                visBorder.BorderBrush = BorderDisabledBrush;
                 btnUp.Background = DisabledBrush;
-                advanceTimer.Stop();
+                btnDown.Background = DisabledBrush;
+
+                if (!TimersDisposed) advanceTimer.Stop();
             }
             else
             {
-                if (advanceTimer.Enabled && advanceStepUp)
+                if (Value == MinValue)
                 {
-                    btnUp.Background = ClickBrush;
+                    btnDown.IsEnabled = false;
+                    btnDown.Background = DisabledBrush;
+                    if (!TimersDisposed) advanceTimer.Stop();
                 }
                 else
                 {
-                    btnUp.Background = ButtonBackground;
+                    if (!TimersDisposed && advanceTimer.Enabled && !advanceStepUp)
+                    {
+                        btnDown.Background = ClickBrush;
+                    }
+                    else
+                    {
+                        btnDown.Background = ButtonBackground;
+                    }
+                    btnDown.IsEnabled = true;
                 }
-                btnUp.IsEnabled = true;
+
+                if (Value == MaxValue)
+                {
+                    btnUp.IsEnabled = false;
+                    btnUp.Background = DisabledBrush;
+                    if (!TimersDisposed) advanceTimer.Stop();
+                }
+                else
+                {
+                    if (!TimersDisposed && advanceTimer.Enabled && advanceStepUp)
+                    {
+                        btnUp.Background = ClickBrush;
+                    }
+                    else
+                    {
+                        btnUp.Background = ButtonBackground;
+                    }
+                    btnUp.IsEnabled = true;
+                }
             }
 
             string digitDisplay = "G";
@@ -883,17 +912,18 @@ namespace SolidShineUi
             else if (e.Key == Key.Down)
             {
                 advanceStepUp = false;
-                keyDownTimer.Start();
+                if (!TimersDisposed) keyDownTimer.Start();
             }
             else if (e.Key == Key.Up)
             {
                 advanceStepUp = true;
-                keyDownTimer.Start();
+                if (!TimersDisposed) keyDownTimer.Start();
             }
         }
 
         private void txtValue_KeyUp(object sender, KeyEventArgs e)
         {
+            if (TimersDisposed) return;
             if (e.Key == Key.Down)
             {
                 if (advanceTimer.Enabled)
@@ -939,12 +969,13 @@ namespace SolidShineUi
         {
             btnUp.Background = ClickBrush;
             advanceStepUp = true;
-            keyDownTimer.Start();
+            if (!TimersDisposed) keyDownTimer.Start();
         }
 
         private void btnUp_MouseUp(object sender, MouseButtonEventArgs e)
         {
             btnUp.Background = HighlightBrush;
+            if (TimersDisposed) return;
 
             if (advanceTimer.Enabled)
             {
@@ -963,12 +994,13 @@ namespace SolidShineUi
         {
             btnDown.Background = ClickBrush;
             advanceStepUp = false;
-            keyDownTimer.Start();
+            if (!TimersDisposed) keyDownTimer.Start();
         }
 
         private void btnDown_MouseUp(object sender, MouseButtonEventArgs e)
         {
             btnDown.Background = HighlightBrush;
+            if (TimersDisposed) return;
 
             if (advanceTimer.Enabled)
             {
@@ -986,14 +1018,14 @@ namespace SolidShineUi
 #if NETCOREAPP
         private void KeyDownTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            advanceTimer.Start();
+            if (!TimersDisposed) advanceTimer.Start();
         }
 
         private void AdvanceTimer_Elapsed(object? sender, ElapsedEventArgs e)
 #else
         private void KeyDownTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            advanceTimer.Start();
+            if (!TimersDisposed) advanceTimer.Start();
         }
 
         private void AdvanceTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -1023,7 +1055,7 @@ namespace SolidShineUi
             }
             catch (TaskCanceledException)
             {
-                advanceTimer.Stop();
+                if (!TimersDisposed) advanceTimer.Stop();
             }
         }
 
