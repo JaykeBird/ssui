@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -32,35 +33,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
+
         /// <summary>
         /// Set the visual appearance of this control via a ColorScheme.
         /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
         {
-            intSpinner.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            intSpinner.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", value);
         }
 
         /// <inheritdoc/>
@@ -69,11 +53,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return this;
         }
 
+        bool _writable = true;
+
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => intSpinner.IsEnabled;
-            set => intSpinner.IsEnabled = value;
+            get => _writable;
+            set
+            {
+                _writable = value;
+                intSpinner.IsEnabled = value;
+                btnEnableEdit.IsEnabled = value;
+                mnuSetNull.IsEnabled = value && _nullable;
+            }
         }
 
         Type _propType = typeof(long);
@@ -197,6 +189,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 mnuDisplayHex.IsEnabled = false;
                 intSpinner.Visibility = Visibility.Collapsed;
             }
+            else if (value is uint ui)
+            {
+                intSpinner.Value = (long)ui; // Visual Studio suggests I can remove this cast, but experience suggests otherwise
+            }
             else
             {
                 intSpinner.Value = (long)(value ?? 0);
@@ -221,16 +217,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else if (_propType == typeof(long?))
             {
                 SetMinMax(long.MinValue, long.MaxValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(uint?))
             {
                 SetMinMax(uint.MinValue, uint.MaxValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(ulong?))
             {
                 SetMinMax(0, long.MaxValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
 
@@ -249,8 +248,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        bool _nullable = false;
+
         void SetAsNull()
         {
+            _nullable = true;
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             intSpinner.IsEnabled = false;

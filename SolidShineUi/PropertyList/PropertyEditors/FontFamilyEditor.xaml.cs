@@ -34,7 +34,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set 
+        public ColorScheme ColorScheme
+        { 
+            set 
             { 
                 btnEdit.ColorScheme = value;
                 _cs = value;
@@ -57,12 +59,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return this;
         }
 
+        const string strNull = "(null)";
+        const string strNoSel = "(no font selected)";
+
 #if NETCOREAPP
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (font == null)
             {
@@ -74,44 +86,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
-        {
-            if (value == null)
-            {
-                font = null;
-                txtFontName.Text = "(null)";
-            }
-            else if (value is FontFamily f)
-            {
-                font = f;
-                txtFontName.Text = f.Source;
-            }
-            else
-            {
-                // this object is not a FontFamily? what is it here???
-                font = null;
-                txtFontName.Text = "(no font selected)";
-            }
-        }
-
 #else
         /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            return font;
-        }
-        
-        /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             if (value == null)
             {
                 font = null;
-                txtFontName.Text = "(null)";
+                txtFontName.Text = strNull;
             }
             else if (value is FontFamily f)
             {
@@ -122,10 +108,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 // this object is not a FontFamily? what is it here???
                 font = null;
-                txtFontName.Text = "(no font selected)";
+                txtFontName.Text = strNoSel;
             }
         }
-#endif
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {

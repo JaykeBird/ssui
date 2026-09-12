@@ -13,7 +13,8 @@
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
         <flat:LongSpinner x:Name="intSpinner" ValueChanged="intSpinner_ValueChanged" AcceptExpressions="True" Grid.ColumnSpan="2" />
-        <TextBlock x:Name="txtUlongLong" Grid.Column="0" Margin="5" VerticalAlignment="Center" Text="0" TextTrimming="CharacterEllipsis" Visibility="Collapsed" />
+        <TextBox x:Name="txtUlongLong" Grid.Column="0" VerticalContentAlignment="Center" Text="0" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                 Background="Transparent" BorderBrush="Transparent" Visibility="Collapsed" />
         <flat:FlatButton x:Name="btnEnableEdit" Click="btnEnableEdit_Click" Grid.Column="1" Visibility="Collapsed" >
             <TextBlock>Decrease and Edit</TextBlock>
         </flat:FlatButton>

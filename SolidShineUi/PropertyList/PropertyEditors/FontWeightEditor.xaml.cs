@@ -187,6 +187,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (mnuNull.IsChecked)
             {
@@ -202,8 +210,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             if (type == typeof(FontWeight?))
             {
@@ -226,46 +240,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             _raiseEvents = true;
         }
-#else
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (mnuNull.IsChecked)
-            {
-                return null;
-            }
-            else if (cbbWeight.Visibility == Visibility.Visible)
-            {
-                return GetWeightFromSelection();
-            }
-            else
-            {
-                return FontWeight.FromOpenTypeWeight(nudWeight.Value);
-            }
-        }
-        
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            _raiseEvents = false;
-            if (value == null)
-            {
-                cbbWeight.SelectedIndex = 3;
-            }
-            else if (value is FontWeight fw)
-            {
-                SetSelectionFromWeight(fw);
-            }
-            else
-            {
-                cbbWeight.SelectedIndex = 3;
-            }
-            _raiseEvents = true;
-        }
-#endif
 
         void SetToIntegerMode()
         {

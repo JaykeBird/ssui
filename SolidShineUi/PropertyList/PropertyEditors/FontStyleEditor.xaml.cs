@@ -53,9 +53,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void cbbStyles_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbbStyles.SelectedIndex == 3 && !canNull)
+            if (cbbStyles.SelectedIndex == 3 && !_nullable)
             {
-                canNull = true;
+                _nullable = true;
             }
 
             if (_raiseEvents)
@@ -75,61 +75,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
-        {
-            switch (cbbStyles.SelectedIndex)
-            {
-                case 0:
-                    return FontStyles.Normal;
-                case 1:
-                    return FontStyles.Italic;
-                case 2:
-                    return FontStyles.Oblique;
-                case 3:
-                    if (canNull) { return null; }
-                    else { return FontStyles.Normal; }
-                default:
-                    return FontStyles.Normal;
-            }
-        }
-
-        /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
-        {
-            _raiseEvents = false;
-            if (value == null)
-            {
-                EnableNull();
-                cbbStyles.SelectedIndex = 3;
-            }
-            else if (value is FontStyle fs)
-            {
-                if (type == typeof(FontStyle?)) EnableNull();
-
-                if (fs == FontStyles.Italic)
-                {
-                    cbbStyles.SelectedIndex = 1;
-                }
-                else if (fs == FontStyles.Oblique)
-                {
-                    cbbStyles.SelectedIndex = 2;
-                }
-                else
-                {
-                    cbbStyles.SelectedIndex = 0;
-                }
-            }
-            else
-            {
-                cbbStyles.SelectedIndex = 0;
-            }
-            _raiseEvents = true;
-        }
 #else
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
-        
+
         /// <inheritdoc/>
         public object GetValue()
+#endif
         {
             switch (cbbStyles.SelectedIndex)
             {
@@ -140,15 +92,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 case 2:
                     return FontStyles.Oblique;
                 case 3:
-                    if (canNull) { return null; }
+                    if (_nullable) { return null; }
                     else { return FontStyles.Normal; }
                 default:
                     return FontStyles.Normal;
             }
         }
-        
+
+#if NETCOREAPP
+        /// <inheritdoc/>
+        public void LoadValue(object? value, Type type)
+#else
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             _raiseEvents = false;
             if (value == null)
@@ -179,14 +136,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             _raiseEvents = true;
         }
-#endif
 
-        bool canNull = false;
+        bool _nullable = false;
 
         void EnableNull()
         {
             cbbNull.Visibility = Visibility.Visible;
-            canNull = true;
+            _nullable = true;
         }
     }
 }

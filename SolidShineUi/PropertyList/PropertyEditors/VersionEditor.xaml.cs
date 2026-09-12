@@ -78,7 +78,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 #if NETCOREAPP
         /// <inheritdoc/>
+        public event EventHandler? ValueChanged;
+
+        /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             if (type == typeof(Version))
             {
@@ -112,8 +122,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (nudBottom.Value < 0)
             {
@@ -141,54 +156,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
             }
         }
-
-        /// <inheritdoc/>
-        public event EventHandler? ValueChanged;
-#else
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            if (type == typeof(Version))
-            {
-                if (value != null)
-                {
-                    if (value is Version t)
-                    {
-                        _internalAction = true;
-                        nudLeft.Value = t.Major;
-                        nudTop.Value = t.Minor;
-                        nudRight.Value = t.Build;
-                        nudBottom.Value = t.Revision;
-                        _internalAction = false;
-                    }
-                    else
-                    {
-                        // uhhh?
-                        SetAllToValue(0);
-                    }
-                }
-                else
-                {
-                    // null? treat it as Thickness of value 0
-                    SetAllToValue(0);
-                }
-            }
-            else
-            {
-                // uhhh?
-                SetAllToValue(0);
-            }
-        }
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
-        }
-        
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-#endif
 
         bool _internalAction = false;
 
@@ -222,8 +189,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             //bool done = false;
             StringInputDialog sid = new StringInputDialog(_cs, "Parse Version from String",
                 "Enter a Version string (numbers and periods only):");
+
             sid.ValidationFunction = (s) => { return Version.TryParse(s, out _); };
             sid.ValidationFailureString = "Not a valid Version value";
+
             sid.Width = 350;
             sid.Owner = Window.GetWindow(this);
 

@@ -21,12 +21,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => nudHeight.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 nudHeight.IsEnabled = value;
                 nudWidth.IsEnabled = value;
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
             }
         }
 
@@ -34,33 +34,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                nudHeight.ColorScheme = value;
-                nudWidth.ColorScheme = value;
-                btnMenu.ColorScheme = value;
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
 
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgWidth.Source = LoadIcon("LeftRightArrow", ICON_WHITE);
-                    imgHeight.Source = LoadIcon("UpDownArrow", ICON_WHITE);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgWidth.Source = LoadIcon("LeftRightArrow", ICON_BLACK);
-                    imgHeight.Source = LoadIcon("UpDownArrow", ICON_BLACK);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
-                }
-                else
-                {
-                    imgWidth.Source = LoadIcon("LeftRightArrow", ICON_COLOR);
-                    imgHeight.Source = LoadIcon("UpDownArrow", ICON_COLOR);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
-                }
-            }
+        /// <summary>
+        /// Set the visual appearance of this control via the ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            nudHeight.ColorScheme = value;
+            nudWidth.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+
+            imgWidth.Source = LoadIcon("LeftRightArrow", value);
+            imgHeight.Source = LoadIcon("UpDownArrow", value);
+            imgFontEdit.Source = LoadIcon("ThreeDots", value);
         }
 
         /// <summary>

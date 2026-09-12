@@ -29,14 +29,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                btnMenu.ColorScheme = value;
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
 
-                imgMenu.Source = LoadIcon("ThreeDots", value);
-            }
+        /// <summary>
+        /// Set the visual appearance of this control via the ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            btnMenu.ColorScheme = value;
+
+            imgMenu.Source = LoadIcon("ThreeDots", value);
         }
 
         /// <inheritdoc/>
@@ -45,14 +48,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return this;
         }
 
+        bool _writable = true;
+
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => btnMenu.IsEnabled;
+            get => _writable;
             set 
-            { 
-                btnMenu.IsEnabled = value;
+            {
+                _writable = value;
+                mnuSelectFile.IsEnabled = value;
                 txtText.IsEnabled = value;// && !setAsNull;
+                                          // _nullable not needed
             }
         }
 
@@ -84,12 +91,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             //ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        const string strNull = "(null)";
+
 #if NETCOREAPP
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (_itemType == typeof(Uri))
             {
@@ -105,8 +121,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else return null;
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             _itemType = type;
             if (type == typeof(Uri))
@@ -115,7 +136,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 {
                     _uri = new Uri("file://C:/");
                     _internalAction = true;
-                    txtText.Text = "(null)";
+                    txtText.Text = strNull;
                     _internalAction = false;
                 }
                 else
@@ -132,7 +153,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     {
                         _uri = new Uri("file://C:/");
                         _internalAction = true;
-                        txtText.Text = "(null)";
+                        txtText.Text = strNull;
                         _internalAction = false;
                     }
                 }
@@ -142,76 +163,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private void txtText_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_internalAction) return;
+#if NETCOREAPP
             bool res = Uri.TryCreate(txtText.Text, UriKind.RelativeOrAbsolute, out Uri? u);
-            if (res)
-            {
-                ValueChanged?.Invoke(this, e);
-                _uriNeedsReset = false;
-            }
-            else
-            {
-                _uriNeedsReset = true;
-            }
-        }
 #else
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (_itemType == typeof(Uri))
-            {
-                if (setAsNull)
-                {
-                    return null;
-                }
-                else
-                {
-                    return _uri;
-                }
-            }
-            else return null;
-        }
-        
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            _itemType = type;
-            if (type == typeof(Uri))
-            {
-                if (value == null)
-                {
-                    _uri = new Uri("file://C:/");
-                    txtText.Text = "(null)";
-                }
-                else
-                {
-                    Uri u = (Uri)value;
-                    if (u != null)
-                    {
-                        _uri = u;
-                        _internalAction = true;
-                        txtText.Text = u.ToString();
-                        _internalAction = false;
-                    }
-                    else
-                    {
-                        _uri = new Uri("file://C:/");
-                        _internalAction = true;
-                        txtText.Text = "(null)";
-                        _internalAction = false;
-                    }
-                }
-            }
-        }
-
-        private void txtText_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_internalAction) return;
             bool res = Uri.TryCreate(txtText.Text, UriKind.RelativeOrAbsolute, out Uri u);
+#endif
             if (res)
             {
+#if NETCOREAPP
+                _uri = u!;
+#else
+                _uri = u;
+#endif
                 ValueChanged?.Invoke(this, e);
                 _uriNeedsReset = false;
             }
@@ -220,7 +183,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 _uriNeedsReset = true;
             }
         }
-#endif
 
         bool _uriNeedsReset = false;
         bool _internalAction = false;

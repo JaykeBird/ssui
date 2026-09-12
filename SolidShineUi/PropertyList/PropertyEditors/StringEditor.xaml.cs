@@ -26,20 +26,29 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public ExperimentalPropertyList ParentPropertyList { set { _parent = value; } }
+        public ExperimentalPropertyList ParentPropertyList { set { _parentPropertyList = value; } }
 
+
+#if NETCOREAPP
+        ExperimentalPropertyList? _parentPropertyList = null;
+#else
+        ExperimentalPropertyList _parentPropertyList = null;
+#endif
         ColorScheme _cs = new ColorScheme();
-        ExperimentalPropertyList _parent = new ExperimentalPropertyList();
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public ColorScheme ColorScheme { get => _cs; set { ApplyColorScheme(value); } }
+
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
         {
-            set
-            {
-                _cs = value;
-                btnMenu.ColorScheme = value;
-                imgMenu.Source = LoadIcon("ThreeDots", value);
-            }
+            _cs = value;
+
+            btnMenu.ColorScheme = value;
+            imgMenu.Source = LoadIcon("ThreeDots", _cs);
         }
 
         /// <inheritdoc/>
@@ -54,7 +63,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             get => btnMenu.IsEnabled;
             set 
             { 
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
                 txtText.IsEnabled = value && !setAsNull;
             }
         }
@@ -181,10 +190,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (txtText.Text != null)
             {
 #if NETCOREAPP
-                IPropertyEditor? ipe = _parent?.CreateEditorForType(typeof(char));
+                IPropertyEditor? ipe = _parentPropertyList?.CreateEditorForType(typeof(char));
                 Type? propEditorType = null;
 #else
-                IPropertyEditor ipe = _parent?.CreateEditorForType(typeof(char));
+                IPropertyEditor ipe = _parentPropertyList?.CreateEditorForType(typeof(char));
                 Type propEditorType = null;
 #endif
 

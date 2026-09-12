@@ -35,7 +35,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 cbbCursors.IsEnabled = value;
                 fs.IsEnabled = value;
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
             }
         }
 

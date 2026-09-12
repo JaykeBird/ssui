@@ -40,7 +40,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #else
         ExperimentalPropertyList _parentPropertyList = null;
 #endif
-        Color _col = Colors.White;
+
+        /// <inheritdoc/>
+        public ColorScheme ColorScheme { get => _cs; set { ApplyColorScheme(value); } }
 
         /// <summary>
         /// Set the visual appearance of this control via the ColorScheme.
@@ -54,15 +56,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             btnColor.ColorScheme = value;
             imgMenu.Source = LoadIcon("ThreeDots", value);
         }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
-        }
+        Color _col = Colors.White;
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement()
@@ -76,7 +70,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             get => btnMenu.IsEnabled;
             set 
             { 
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
                 nudValue.IsEnabled = value && !nullSet;
             }
         }

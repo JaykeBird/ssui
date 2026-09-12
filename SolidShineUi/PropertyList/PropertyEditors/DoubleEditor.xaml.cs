@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -35,6 +36,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
+
         /// <summary>
         /// Set the visual appearance of this control via a ColorScheme.
         /// </summary>
@@ -43,27 +47,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             dblSpinner.ColorScheme = value;
             btnMenu.ColorScheme = value;
-            if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-            }
-            else if (value.BackgroundColor == Colors.White)
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-            }
-            else
-            {
-                imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-            }
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", value);
         }
 
         /// <inheritdoc/>
@@ -72,11 +56,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return this;
         }
 
+        bool _writable = true;
+
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => dblSpinner.IsEnabled;
-            set { dblSpinner.IsEnabled = value; mnuSetNan.IsEnabled = value; }
+            get => _writable;
+            set 
+            {
+                _writable = value;
+                dblSpinner.IsEnabled = value; 
+                mnuSetNan.IsEnabled = value; 
+                mnuSetNull.IsEnabled = value && _nullable; 
+            }
         }
 
         Type _propType = typeof(double);
@@ -161,6 +153,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             if (type == typeof(double?) || type == typeof(float?))
 #endif
             {
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
                 if (value == null)
                 {
@@ -202,7 +195,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
 
             _propType = type;
+            _internalAction = true;
             dblSpinner.Value = (double)(value ?? 0);
+            _internalAction = false;
         }
 #else
         public event EventHandler ValueChanged;
@@ -273,6 +268,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (type == typeof(double?) || type == typeof(float?))
             {
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
                 if (value == null)
                 {
@@ -302,7 +298,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
 
             _propType = type;
+            _internalAction = true;
             dblSpinner.Value = (double)(value ?? 0);
+            _internalAction = false;
         }
 #endif
 
@@ -314,8 +312,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        bool _nullable = false;
+
         void SetAsNull()
         {
+            _nullable = true;
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             mnuSetNan.IsChecked = false;

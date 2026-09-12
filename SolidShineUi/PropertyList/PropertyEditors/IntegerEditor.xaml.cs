@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -33,25 +34,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
+
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
         {
-            set
-            {
-                intSpinner.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsWhite.png", UriKind.Relative));
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsBlack.png", UriKind.Relative));
-                }
-                else
-                {
-                    imgMenu.Source = new BitmapImage(new Uri("/SolidShineUi;component/Images/ThreeDotsColor.png", UriKind.Relative));
-                }
-            }
+            intSpinner.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+            imgMenu.Source = IconLoader.LoadIcon("ThreeDots", value);
         }
 
         /// <inheritdoc/>
@@ -60,125 +53,35 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             return this;
         }
 
+        bool _writable = true;
+
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => intSpinner.IsEnabled;
-            set => intSpinner.IsEnabled = value;
+            get => _writable;
+            set
+            {
+                _writable = value;
+                intSpinner.IsEnabled = value;
+                mnuSetNull.IsEnabled = value && _nullable;
+            }
         }
 
         Type _propType = typeof(int);
 
 #if NETCOREAPP
-        
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
         
         /// <inheritdoc/>
         public object? GetValue()
-        {
-            if (_propType == typeof(int))
-            {
-                return intSpinner.Value;
-            }
-            else if (_propType == typeof(short))
-            {
-                return (short)intSpinner.Value;
-            }
-            else if (_propType == typeof(ushort))
-            {
-                return (ushort)intSpinner.Value;
-            }
-            else if (_propType == typeof(byte))
-            {
-                return (byte)intSpinner.Value;
-            }
-            else if (_propType == typeof(sbyte))
-            {
-                return (sbyte)intSpinner.Value;
-            }
-            else if (_propType == typeof(int?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(short?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (short)intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(ushort?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (ushort)intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(byte?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (byte)intSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(sbyte?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (sbyte)intSpinner.Value;
-                }
-            }
-            else
-            {
-                return intSpinner.Value;
-            }
-        }
-        
-        /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
-        {
-            _propType = type;
-
-            if (value == null)
-            {
-                SetAsNull();
-            }
-
-            LoadUi();
-
-            intSpinner.Value = (int)(value ?? 0);
-        }
 #else
-
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
 
         /// <inheritdoc/>
         public object GetValue()
+#endif
         {
             if (_propType == typeof(int))
             {
@@ -261,8 +164,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
+        /// <inheritdoc/>
+        public void LoadValue(object? value, Type type)
+#else
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
             _propType = type;
 
@@ -273,9 +181,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             LoadUi();
 
+            _internalAction = true;
             intSpinner.Value = (int)(value ?? 0);
+            _internalAction = false;
         }
-#endif
 
         void LoadUi()
         {
@@ -302,26 +211,31 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else if (_propType == typeof(int?) || _propType == typeof(Nullable<int>))
             {
                 SetMaxMin(int.MaxValue, int.MinValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(short?) || _propType == typeof(Nullable<short>))
             {
                 SetMaxMin(short.MaxValue, short.MinValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(ushort?) || _propType == typeof(Nullable<ushort>))
             {
                 SetMaxMin(ushort.MaxValue, ushort.MinValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(byte?) || _propType == typeof(Nullable<byte>))
             {
                 SetMaxMin(byte.MaxValue, byte.MinValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
             else if (_propType == typeof(sbyte?) || _propType == typeof(Nullable<sbyte>))
             {
                 SetMaxMin(sbyte.MaxValue, sbyte.MinValue);
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
 
@@ -332,15 +246,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        bool _internalAction = false;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private void intSpinner_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (_internalAction) return;
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        bool _nullable = false;
+
         void SetAsNull()
         {
+            _nullable = true;
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             intSpinner.IsEnabled = false;

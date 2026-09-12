@@ -20,65 +20,42 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => nudUpLeft.IsEnabled;
+        public bool IsPropertyWritable
+        { 
+            get => btnMenu.IsEnabled;
             set
             {
                 nudUpLeft.IsEnabled = value;
                 nudUpRight.IsEnabled = value;
                 nudDownLeft.IsEnabled = value;
                 nudDownRight.IsEnabled = value;
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
             }
         }
 
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
+        /// <inheritdoc/>
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
+
         /// <summary>
         /// Set the visual appearance of this control via a ColorScheme.
         /// </summary>
-        /// <param name="cs">the color scheme to apply</param>
-        public void ApplyColorScheme(ColorScheme cs)
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
         {
-            nudUpLeft.ColorScheme = cs;
-            nudUpRight.ColorScheme = cs;
-            nudDownLeft.ColorScheme = cs;
-            nudDownRight.ColorScheme = cs;
-            btnMenu.ColorScheme = cs;
+            nudUpLeft.ColorScheme = value;
+            nudUpRight.ColorScheme = value;
+            nudDownLeft.ColorScheme = value;
+            nudDownRight.ColorScheme = value;
+            btnMenu.ColorScheme = value;
 
-            if (cs.BackgroundColor == Colors.Black || cs.ForegroundColor == Colors.White)
-            {
-                imgLeft.Source = LoadIcon("UpLeftArrow", ICON_WHITE);
-                imgTop.Source = LoadIcon("UpRightArrow", ICON_WHITE);
-                imgRight.Source = LoadIcon("DownRightArrow", ICON_WHITE);
-                imgBottom.Source = LoadIcon("DownLeftArrow", ICON_WHITE);
-                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
-            }
-            else if (cs.BackgroundColor == Colors.White)
-            {
-                imgLeft.Source = LoadIcon("UpLeftArrow", ICON_BLACK);
-                imgTop.Source = LoadIcon("UpRightArrow", ICON_BLACK);
-                imgRight.Source = LoadIcon("DownRightArrow", ICON_BLACK);
-                imgBottom.Source = LoadIcon("DownLeftArrow", ICON_BLACK);
-                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
-            }
-            else
-            {
-                imgLeft.Source = LoadIcon("UpLeftArrow", ICON_COLOR);
-                imgTop.Source = LoadIcon("UpRightArrow", ICON_COLOR);
-                imgRight.Source = LoadIcon("DownRightArrow", ICON_COLOR);
-                imgBottom.Source = LoadIcon("DownLeftArrow", ICON_COLOR);
-                imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
-            }
-        }
-
-        /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                ApplyColorScheme(value);
-            }
+            imgLeft.Source = LoadIcon("UpLeftArrow", value);
+            imgTop.Source = LoadIcon("UpRightArrow", value);
+            imgRight.Source = LoadIcon("DownRightArrow", value);
+            imgBottom.Source = LoadIcon("DownLeftArrow", value);
+            imgFontEdit.Source = LoadIcon("ThreeDots", value);
         }
 
         /// <inheritdoc/>

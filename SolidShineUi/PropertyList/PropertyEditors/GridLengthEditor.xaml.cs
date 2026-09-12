@@ -39,15 +39,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         //ColorScheme _cs = new ColorScheme();
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
+
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
         {
-            set
-            {
-                //_cs = value;
-                nudValue.ColorScheme = value;
-                btnMenu.ColorScheme = value;
-                imgMenu.Source = LoadIcon("ThreeDots", value);
-            }
+            //_cs = value;
+            nudValue.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+            imgMenu.Source = LoadIcon("ThreeDots", value);
         }
 
         /// <inheritdoc/>
@@ -62,7 +65,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             get => btnMenu.IsEnabled;
             set 
             { 
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
                 cbbType.IsEnabled = value && !nullSet;
                 nudValue.IsEnabled = value && !nullSet;
             }

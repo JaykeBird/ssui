@@ -27,7 +27,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 nudTop.IsEnabled = value;
                 nudBottom.IsEnabled = value;
                 nudRight.IsEnabled = value;
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
             }
         }
 

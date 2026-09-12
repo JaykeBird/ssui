@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using SolidShineUi.Utils;
 using static SolidShineUi.Utils.IconLoader;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
@@ -29,33 +30,25 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
+        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; } // _nullable not needed
 
         /// <inheritdoc/>
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme { set 
-            { 
-                btnMenu.ColorScheme = value;
-                _cs = value;
+        public ColorScheme ColorScheme { get => _cs; set { ApplyColorScheme(value); } }
 
-                if (value.BackgroundColor == Colors.Black || value.ForegroundColor == Colors.White)
-                {
-                    imgNew.Source = LoadIcon("Reload", ICON_WHITE);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_WHITE);
-                }
-                else if (value.BackgroundColor == Colors.White)
-                {
-                    imgNew.Source = LoadIcon("Reload", ICON_BLACK);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_BLACK);
-                }
-                else
-                {
-                    imgNew.Source = LoadIcon("Reload", ICON_COLOR);
-                    imgFontEdit.Source = LoadIcon("ThreeDots", ICON_COLOR);
-                }
-            }
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            btnMenu.ColorScheme = value;
+            _cs = value;
+
+            imgNew.Source = LoadIcon("Reload", _cs);
+            imgFontEdit.Source = LoadIcon("ThreeDots", _cs);
         }
 
         private ColorScheme _cs = new ColorScheme();
@@ -74,6 +67,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (mnuSetNull.IsChecked == true)
             {
@@ -85,8 +85,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else        
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             if (type == typeof(Guid?))
             {
@@ -111,45 +116,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-#else
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-        
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (mnuSetNull.IsChecked == true)
-            {
-                return null;
-            }
-            else
-            {
-                return guid;
-            }
-        }
-        
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            if (value == null)
-            {
-                guid = Guid.Empty;
-                SetAsNull();
-            }
-            else if (value is Guid g)
-            {
-                guid = g;
-                txtFontName.Text = guid.ToString("B");
-            }
-            else
-            {
-                // this object is not a Guid? what is it here???
-                guid = Guid.Empty;
-                txtFontName.Text = guid.ToString("B");
-            }
-        }
-#endif
-
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             guid = Guid.NewGuid();
@@ -170,10 +136,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             StringInputDialog sid = new StringInputDialog();
             sid.Title = "Enter Guid";
-            sid.Description = "Enter in a valid Guid for this property:";
+            sid.Description = "Enter in a valid Guid:";
 
             sid.ColorScheme = _cs;
             sid.Owner = Window.GetWindow(this);
+            sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+            sid.ValidationFunction = (s) => { return Guid.TryParse(s, out Guid _); };
+            sid.ValidationFailureString = "Not a valid Guid";
 
             sid.ShowDialog();
             if (sid.DialogResult)
