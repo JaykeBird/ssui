@@ -305,6 +305,15 @@ namespace SolidShineUi.Utils
             brdrCBack.Opacity = 0.4;
             rectColor.Fill = null;
             txtCount.Text = "(none selected)";
+
+            foreach (var ele in grdStops.Children)
+            {
+                if (ele == null) continue;
+                if (ele is GradientStopItem gsi)
+                {
+                    gsi.IsSelected = false;
+                }
+            }
         }
 
         /// <summary>
@@ -796,6 +805,21 @@ namespace SolidShineUi.Utils
                 RenderStops();
                 GradientChanged?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        /// <summary>
+        /// Check if two <see cref="GradientStop"/> objects have the same values. This is different from doing an equality check (<c>==</c>), 
+        /// as that checks if they are the same object in memory; if there are two different gradient stops with the same values, the equality
+        /// check wouldn't see them as equal but this function will.
+        /// </summary>
+        /// <param name="gs1">the first stop to compare</param>
+        /// <param name="gs2">the second stop to compare</param>
+        /// <remarks>
+        /// This only checks the two stops' <see cref="GradientStop.Color"/> and <see cref="GradientStop.Offset"/> properties.
+        /// </remarks>
+        public static bool AreStopsEqual(GradientStop gs1, GradientStop gs2)
+        {
+            return gs1.Color == gs2.Color && gs1.Offset == gs2.Offset;
         }
     }
 }

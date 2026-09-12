@@ -30,6 +30,7 @@ namespace SolidShineUi.Utils
         {
             Offset = offset;
             Color = color;
+            _stop = new GradientStop(Color, Offset);
             InitializeComponent();
         }
 
@@ -41,8 +42,11 @@ namespace SolidShineUi.Utils
         {
             Offset = stop.Offset;
             Color = stop.Color;
+            _stop = stop;
             InitializeComponent();
         }
+
+        private GradientStop _stop = new GradientStop(Colors.Black, 0.0);
 
         /// <summary>
         /// Get or set the gradient stop for this GradientStopItem.
@@ -51,13 +55,14 @@ namespace SolidShineUi.Utils
         {
             get
             {
-                GradientStop gs = new GradientStop();
-                gs.Color = Color;
-                gs.Offset = Offset;
-                return gs;
+                if (_stop.Color != Color) _stop.Color = Color;
+                if (_stop.Offset != Offset) _stop.Offset = Offset;
+
+                return _stop;
             }
             set
             {
+                _stop = value;
                 Offset = value.Offset;
                 Color = value.Color;
             }
