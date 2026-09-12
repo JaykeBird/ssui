@@ -8,13 +8,13 @@ using static SolidShineUi.Utils.IconLoader;
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// A property editor for editing <see cref="Point"/> objects.
+    /// A property editor for editing <see cref="Point"/> and <see cref="Vector"/> objects.
     /// </summary>
     public partial class PointEditor : UserControl, IPropertyEditor
     {
 
         /// <inheritdoc/>
-        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Point?) };
+        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Point?), typeof(Vector), typeof(Vector?) };
 
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
@@ -22,12 +22,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => nudHeight.IsEnabled;
+            get => btnMenu.IsEnabled;
             set
             {
                 nudHeight.IsEnabled = value;
                 nudWidth.IsEnabled = value;
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
             }
         }
 
@@ -35,16 +35,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public ExperimentalPropertyList ParentPropertyList { set { } }
 
         /// <inheritdoc/>
-        public ColorScheme ColorScheme
-        {
-            set
-            {
-                nudHeight.ColorScheme = value;
-                nudWidth.ColorScheme = value;
-                btnMenu.ColorScheme = value;
+        public ColorScheme ColorScheme { set { ApplyColorScheme(value); } }
 
-                imgFontEdit.Source = LoadIcon("ThreeDots", value);
-            }
+        /// <summary>
+        /// Set the visual appearance of this control via a ColorScheme.
+        /// </summary>
+        /// <param name="value">the color scheme to apply</param>
+        public void ApplyColorScheme(ColorScheme value)
+        {
+            nudHeight.ColorScheme = value;
+            nudWidth.ColorScheme = value;
+            btnMenu.ColorScheme = value;
+
+            imgFontEdit.Source = LoadIcon("ThreeDots", value);
         }
 
         /// <summary>
@@ -57,6 +60,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement() { return this; }
+
+        bool isVector = false;
 
 #if NETCOREAPP
         /// <inheritdoc/>
@@ -95,6 +100,37 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                     SetAllToValue(0);
                 }
             }
+            else if (type == typeof(Vector) || type == typeof(Vector?))
+            {
+                isVector = true;
+
+                if (type == typeof(Vector?))
+                {
+                    mnuSetNull.IsEnabled = true;
+                }
+
+                if (value != null)
+                {
+                    if (value is Vector t)
+                    {
+                        _internalAction = true;
+                        nudWidth.Value = t.X;
+                        nudHeight.Value = t.Y;
+                        _internalAction = false;
+                    }
+                    else
+                    {
+                        // uhhh?
+                        SetAllToValue(0);
+                    }
+                }
+                else
+                {
+                    // null
+                    SetAsNull();
+                    SetAllToValue(0);
+                }
+            }
             else
             {
                 // uhhh?
@@ -105,38 +141,31 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
 #if NETCOREAPP
         /// <inheritdoc/>
-        public object? GetValue()
-        {
-            if (mnuSetNull.IsChecked == true)
-            {
-                return null;
-            }
-            else
-            {
-                return new Point(nudWidth.Value, nudHeight.Value);
-            }
-        }
+        public event EventHandler? ValueChanged;
 
         /// <inheritdoc/>
-        public event EventHandler? ValueChanged;
+        public object? GetValue()
 #else
-        
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
         /// <inheritdoc/>
         public object GetValue()
+#endif
         {
             if (mnuSetNull.IsChecked == true)
             {
                 return null;
+            }
+            else if (isVector)
+            {
+                return new Vector(nudWidth.Value, nudHeight.Value);
             }
             else
             {
                 return new Point(nudWidth.Value, nudHeight.Value);
             }
         }
-        
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-#endif
 
         bool _internalAction = false;
 
