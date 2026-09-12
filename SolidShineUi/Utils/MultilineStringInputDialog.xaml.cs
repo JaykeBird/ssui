@@ -57,9 +57,25 @@ namespace SolidShineUi.Utils
             txtValue.Text = value;
         }
 
+        private void window_SourceInitialized(object sender, EventArgs e)
+        {
+            // I want the MultilineStringInputDialog to be resizeable, so it meant I couldn't use ResizeMode.NoResize.
+            // To prevent people from accidentally hiding the dialog and getting confused, we'll disable minimizing
+            DisableMinimizeAction();
+        }
+
         private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
         {
             txtValue.Focus();
+
+            if (Icon == null && Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion
@@ -67,11 +83,12 @@ namespace SolidShineUi.Utils
         /// <summary>
         /// Get or set the text value of the input dialog's text box.
         /// </summary>
-        public string Value
-        {
-            get => txtValue.Text;
-            set => txtValue.Text = value;
-        }
+        public string Value { get => (string)GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. See <see cref="Value"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty ValueProperty = StringInputDialog.ValueProperty.AddOwner(typeof(MultilineStringInputDialog));
 
         /// <summary>
         /// Get the result of the dialog when it is closed. "False" refers to the user cancelling the operation, while "True" refers to the user confirming, by clicking "OK" or pressing the Enter key.
@@ -79,23 +96,37 @@ namespace SolidShineUi.Utils
         public new bool DialogResult { get; private set; } = false;
 
         /// <summary>
-        /// Get or set whether the Enter key can be used to confirm the dialog. If enabled, pressing down the Enter key will be treated as if the user pressed "OK".
+        /// Get or set whether the Enter key can be used to confirm the dialog. If enabled, pressing down Ctrl+Enter will be treated as if the user pressed "OK".
         /// </summary>
-        public bool EnterKeyConfirms { get; set; } = true;
+        /// <remarks>
+        /// With the MultilineStringInputDialog, pressing Enter will move down to a new line. To confirm, users must press both the Control and Enter keys at the same time.
+        /// </remarks>
+        public bool EnterKeyConfirms { get => (bool)GetValue(EnterKeyConfirmsProperty); set => SetValue(EnterKeyConfirmsProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. Please see <see cref="EnterKeyConfirms"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty EnterKeyConfirmsProperty = StringInputDialog.EnterKeyConfirmsProperty.AddOwner(typeof(MultilineStringInputDialog));
 
         /// <summary>
         /// Get or set whether the Escape key can be used to cancel the dialog. If enabled, pressing down the Escape key will be treated as if the user pressed "Cancel".
         /// </summary>
-        public bool EscapeKeyCancels { get; set; } = true;
+        public bool EscapeKeyCancels { get => (bool)GetValue(EscapeKeyCancelsProperty); set => SetValue(EscapeKeyCancelsProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. Please see <see cref="EscapeKeyCancels"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty EscapeKeyCancelsProperty = StringInputDialog.EscapeKeyCancelsProperty.AddOwner(typeof(MultilineStringInputDialog));
 
         /// <summary>
         /// Get or set whether all of the text in the text box should be selected when the text box receives focus.
         /// </summary>
-        public bool SelectTextOnFocus
-        {
-            get => txtValue.SelectOnFocus;
-            set => txtValue.SelectOnFocus = value;
-        }
+        public bool SelectTextOnFocus { get => (bool)GetValue(SelectTextOnFocusProperty); set => SetValue(SelectTextOnFocusProperty, value); }
+
+        /// <summary>
+        /// A dependency proeprty backing the related property. Please see <see cref="SelectTextOnFocus"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty SelectTextOnFocusProperty = StringInputDialog.SelectTextOnFocusProperty.AddOwner(typeof(MultilineStringInputDialog));
 
         /// <summary>
         /// Get or set the description text to display above the text box. This text should describe what the user should enter into the text box.
@@ -105,17 +136,12 @@ namespace SolidShineUi.Utils
         /// Ideally, the overall design of the program should make it apparent what the user should enter into the text box without reading the description.
         /// However, the description is helpful to remind the user what is being asked of them here, and also to potentially clarify the types of values that are valid or invalid.
         /// </remarks>
-        public string Description
-        {
-            get
-            {
-                return txtDesc.Text;
-            }
-            set
-            {
-                txtDesc.Text = value;
-            }
-        }
+        public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. See <see cref="Description"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty DescriptionProperty = StringInputDialog.DescriptionProperty.AddOwner(typeof(MultilineStringInputDialog));
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
@@ -138,11 +164,6 @@ namespace SolidShineUi.Utils
             {
                 btnCancel_Click(this, e);
             }
-        }
-
-        private void window_SourceInitialized(object sender, EventArgs e)
-        {
-            DisableMinimizeAction();
         }
     }
 }

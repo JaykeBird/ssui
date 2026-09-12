@@ -60,6 +60,15 @@ namespace SolidShineUi
         {
             txtValue.Focus();
             CheckValidation();
+
+            if (Icon == null && Owner != null && Owner.Icon != null)
+            {
+                Icon = Owner.Icon.Clone();
+            }
+            else
+            {
+                ShowIcon = false;
+            }
         }
 
         #endregion
@@ -67,11 +76,14 @@ namespace SolidShineUi
         /// <summary>
         /// Get or set the text value of the input dialog's text box.
         /// </summary>
-        public string Value
-        {
-            get => txtValue.Text;
-            set => txtValue.Text = value;
-        }
+        public string Value { get => (string)GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
+
+        /// <summary>
+        /// A dependency property backing the related property. See <see cref="Value"/> for details.
+        /// </summary>
+        public static readonly DependencyProperty ValueProperty
+            = DependencyProperty.Register(nameof(Value), typeof(string), typeof(StringInputDialog),
+            new FrameworkPropertyMetadata(""));
 
         /// <summary>
         /// Get or set the description text to display above the text box. This text should describe what the user should enter into the text box.
@@ -83,7 +95,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="Description"/>. See the related property for details.</summary>
         public static readonly DependencyProperty DescriptionProperty
-            = DependencyProperty.Register("Description", typeof(string), typeof(StringInputDialog),
+            = DependencyProperty.Register(nameof(Description), typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("Enter a value:"));
 
         /// <summary>
@@ -98,7 +110,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="EnterKeyConfirms"/>. See the related property for details.</summary>
         public static readonly DependencyProperty EnterKeyConfirmsProperty
-            = DependencyProperty.Register("EnterKeyConfirms", typeof(bool), typeof(StringInputDialog),
+            = DependencyProperty.Register(nameof(EnterKeyConfirms), typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -108,7 +120,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="EscapeKeyCancels"/>. See the related property for details.</summary>
         public static readonly DependencyProperty EscapeKeyCancelsProperty
-            = DependencyProperty.Register("EscapeKeyCancels", typeof(bool), typeof(StringInputDialog),
+            = DependencyProperty.Register(nameof(EscapeKeyCancels), typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
         /// <summary>
@@ -118,7 +130,7 @@ namespace SolidShineUi
 
         /// <summary>The backing dependency property for <see cref="SelectTextOnFocus"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectTextOnFocusProperty
-            = DependencyProperty.Register("SelectTextOnFocus", typeof(bool), typeof(StringInputDialog),
+            = DependencyProperty.Register(nameof(SelectTextOnFocus ), typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
 
