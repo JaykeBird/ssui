@@ -163,7 +163,8 @@ namespace SolidShineUi.Utils
             {
                 char c = line[index];
                 char? c1 = (index + 1 < line.Length - 1) ? (char?)line[index + 1] : null;
-                index++;
+                index++; // prime index for the next value; this way, if we exit here, index is already ready to go for next time
+
                 switch (state)
                 {
                     case 0: // START
@@ -249,5 +250,163 @@ namespace SolidShineUi.Utils
                 }
             }
         }
+
+#if NETCOREAPP
+
+        /// <summary>
+        /// Parse a line of text in CSV format to convert to an array of strings, using a comma (<c>,</c>) as the delimiter character.
+        /// </summary>
+        /// <param name="line">the line of values to parse/convert</param>
+        /// <param name="fields">the output result of the parsing. If the parsing fails, this is an empty array.</param>
+        /// <returns>
+        /// Returns <c>true</c> if parsing was successful, <c>false</c> otherwise.
+        /// If this returns <c>false</c>, then <paramref name="fields"/> will be an empty array.
+        /// </returns>
+        public static bool CsvLineToArray(ReadOnlySpan<char> line, out string[] fields)
+        {
+            return CsvLineToArray(line, ',', out fields);
+        }
+
+        /// <summary>
+        /// Parse a line of text in CSV format to convert to an array of strings, with the ability to set the delimiter character.
+        /// </summary>
+        /// <param name="line">the line of values to parse/convert</param>
+        /// <param name="delimiter">the delimiter character used to separate values</param>
+        /// <param name="fields">the output result of the parsing. If the parsing fails, this is an empty array.</param>
+        /// <returns>
+        /// Returns <c>true</c> if parsing was successful, <c>false</c> otherwise.
+        /// If this returns <c>false</c>, then <paramref name="fields"/> will be an empty array.
+        /// </returns>
+        public static bool CsvLineToArray(ReadOnlySpan<char> line, char delimiter, out string[] fields)
+        {
+            fields = Array.Empty<string>();
+
+            if (line.Length == 0) return false;
+
+            int index = 0;
+            var res = new List<string>();
+            while (index != line.Length)
+            {
+                if (ReadField(line, delimiter, ref index, out ReadOnlySpan<char> field))
+                {
+                    res.Add(field.ToString());
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            if (line[line.Length - 1] == delimiter)
+            {
+                res.Add(string.Empty);
+            }
+
+            fields = res.ToArray();
+            return true;
+        }
+
+        private static bool ReadField(ReadOnlySpan<char> line, char delimiter, ref int index, out ReadOnlySpan<char> field)
+        {
+            field = "";
+
+            if (index >= line.Length) return false;
+
+            int initialIndex = index;
+
+            int state = 0;
+            while (true)
+            {
+                char c = line[index];
+                char? c1 = (index + 1 < line.Length - 1) ? line[index + 1] : null;
+                index++; // prime index for the next value; this way, if we exit here, index is already ready to go for next time
+
+                switch (state)
+                {
+                    case 0: // START
+                        if (c == '"') //value start with a quotation mark, so text of value is in quotes
+                        {
+                            state = 4;
+                        }
+                        else if (c == delimiter) // empty value (no text)
+                        {
+                            field = new ReadOnlySpan<char>();
+                            return true;
+                        }
+                        else
+                        {
+                            state = 1;
+                            //sb.Append(c);
+                        }
+                        break;
+                    case 1: // value not in quotes
+                        if (c == '"') // error, cannot contain " in the middle of the field
+                        {
+                            return false;
+                        }
+                        else if (c == delimiter)
+                        {
+                            field = line.Slice(initialIndex, index - initialIndex - 1);
+                            return true;
+                        }
+                        else
+                        {
+                            //sb.Append(c);
+                        }
+                        break;
+                    case 3: //Escaping quotation mark
+                        if (c == '"') //previous quotation mark was escape char for this quotation mark
+                        {
+                            state = 4;
+                            //sb.Append(c);
+                        }
+                        else //error, cannot be any other char
+                        {
+                            return false;
+                        }
+                        break;
+                    case 4: // Value text in between quotation marks
+                        if (c == '"') //closing quoted text or escape char for following qoatation mark - based on which char is following
+                        {
+                            if (c1 != null && c1.Value == '"') //current quotation mark is escape char for following quotation mark
+                            {
+                                state = 3;
+                            }
+                            else
+                            {
+                                state = 5;
+                            }
+                        }
+                        else
+                        {
+                            //sb.Append(c);
+                        }
+                        break;
+                    case 5: //Just after closing quotation mark of quoted text
+                        if (c == delimiter) //closing quoted text
+                        {
+                            field = line.Slice(initialIndex, index - initialIndex - 1);
+                            return true;
+                        }
+                        else //error, cannot contain any other char
+                        {
+                            return false;
+                        }
+                }
+
+                if (index == line.Length) // we've reached the end of the line
+                {
+                    if (state == 1 || state == 5)
+                    {
+                        field = line.Slice(initialIndex);
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+#endif
     }
 }
