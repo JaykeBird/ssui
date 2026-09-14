@@ -7,6 +7,10 @@ namespace SolidShineUi.Utils
     /// <summary>
     /// A helper class for parsing an array of strings into a CSV formatted line of text, or parsing a CSV line back into an array of strings.
     /// </summary>
+    /// <remarks>
+    /// This is not a full CSV file reader on its own, but can be used as part of a basic one. Note that CSV values or strings that include
+    /// the literal new line character (<c>'\n'</c>) will not work with this helper class; this assumes all values are on a single line.
+    /// </remarks>
     public static class CsvLineHelper
     {
         // adapted from https://stackoverflow.com/a/23369687/2987285
@@ -15,9 +19,12 @@ namespace SolidShineUi.Utils
 
         /// <summary>
         /// Converts an array of strings into a single string with each value separated by a comma or other delimiter (and using quotes where needed to escape the delimiter).
+        /// <para/>
+        /// I did not mean to make this overload; I'll be removing it in a future version. Use the other overload <see cref="ArrayToCsvLine(string[], char)"/> that takes a string[] instead.
         /// </summary>
         /// <param name="values">the array of strings to convert</param>
         /// <param name="delimiter">the delimiter character to use to separate values; default is a comma (<c>,</c>)</param>
+        [Obsolete("Did not mean to make this overload; I'll be removing it in a future version. Use the overload that takes a string[] instead.", DiagnosticId = "SSUI003")]
         public static string ArrayToCsvLine(ReadOnlySpan<string> values, char delimiter = ',')
         {
             if (values.Length == 0) return "";
@@ -287,7 +294,7 @@ namespace SolidShineUi.Utils
             var res = new List<string>();
             while (index != line.Length)
             {
-                if (ReadField(line, delimiter, ref index, out ReadOnlySpan<char> field))
+                if (ReadField(line, delimiter, ref index, out string field))
                 {
                     res.Add(field.ToString());
                 }
@@ -306,7 +313,7 @@ namespace SolidShineUi.Utils
             return true;
         }
 
-        private static bool ReadField(ReadOnlySpan<char> line, char delimiter, ref int index, out ReadOnlySpan<char> field)
+        private static bool ReadField(ReadOnlySpan<char> line, char delimiter, ref int index, out string field)
         {
             field = "";
 
@@ -314,11 +321,12 @@ namespace SolidShineUi.Utils
 
             int initialIndex = index;
 
+            var sb = new StringBuilder();
             int state = 0;
             while (true)
             {
                 char c = line[index];
-                char? c1 = (index + 1 < line.Length - 1) ? line[index + 1] : null;
+                char? c1 = (index + 1 < line.Length - 1) ? (char?)line[index + 1] : null;
                 index++; // prime index for the next value; this way, if we exit here, index is already ready to go for next time
 
                 switch (state)
@@ -330,13 +338,13 @@ namespace SolidShineUi.Utils
                         }
                         else if (c == delimiter) // empty value (no text)
                         {
-                            field = new ReadOnlySpan<char>();
+                            field = sb.ToString();
                             return true;
                         }
                         else
                         {
                             state = 1;
-                            //sb.Append(c);
+                            sb.Append(c);
                         }
                         break;
                     case 1: // value not in quotes
@@ -346,19 +354,19 @@ namespace SolidShineUi.Utils
                         }
                         else if (c == delimiter)
                         {
-                            field = line.Slice(initialIndex, index - initialIndex - 1);
+                            field = sb.ToString();
                             return true;
                         }
                         else
                         {
-                            //sb.Append(c);
+                            sb.Append(c);
                         }
                         break;
                     case 3: //Escaping quotation mark
                         if (c == '"') //previous quotation mark was escape char for this quotation mark
                         {
                             state = 4;
-                            //sb.Append(c);
+                            sb.Append(c);
                         }
                         else //error, cannot be any other char
                         {
@@ -379,13 +387,13 @@ namespace SolidShineUi.Utils
                         }
                         else
                         {
-                            //sb.Append(c);
+                            sb.Append(c);
                         }
                         break;
                     case 5: //Just after closing quotation mark of quoted text
                         if (c == delimiter) //closing quoted text
                         {
-                            field = line.Slice(initialIndex, index - initialIndex - 1);
+                            field = sb.ToString();
                             return true;
                         }
                         else //error, cannot contain any other char
@@ -398,7 +406,7 @@ namespace SolidShineUi.Utils
                 {
                     if (state == 1 || state == 5)
                     {
-                        field = line.Slice(initialIndex);
+                        field = sb.ToString();
                         return true;
                     }
 
