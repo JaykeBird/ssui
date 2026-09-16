@@ -9,7 +9,7 @@ namespace SolidShineUi.Utils
     /// </summary>
     /// <remarks>
     /// This is not a full CSV file reader on its own, but can be used as part of a basic one. Note that CSV values or strings that include
-    /// the literal new line character (<c>'\n'</c>) will not work with this helper class; this assumes all values are on a single line.
+    /// the literal new line character (<c>'\n'</c>) will not work with this helper class; this assumes all values for a row are on a single line.
     /// </remarks>
     public static class CsvLineHelper
     {
@@ -115,6 +115,13 @@ namespace SolidShineUi.Utils
             return CsvLineToArray(line, ',', out fields);
         }
 
+        // ReadField states
+        const int State_InitialState = 0;
+        const int State_ValueInQuotes = 4;
+        const int State_ValueRaw = 1;
+        const int State_EscapingDoubleQuotes = 3;
+        const int State_AfterClosingQuotes = 5;
+
         /// <summary>
         /// Parse a line of text in CSV format to convert to an array of strings, with the ability to set the delimiter character.
         /// </summary>
@@ -165,7 +172,7 @@ namespace SolidShineUi.Utils
             if (index >= line.Length) return false;
 
             var sb = new StringBuilder();
-            int state = 0;
+            int state = State_InitialState;
             while (true)
             {
                 char c = line[index];
@@ -174,10 +181,10 @@ namespace SolidShineUi.Utils
 
                 switch (state)
                 {
-                    case 0: // START
+                    case State_InitialState: // START
                         if (c == '"') //value start with a quotation mark, so text of value is in quotes
                         {
-                            state = 4;
+                            state = State_ValueInQuotes;
                         }
                         else if (c == delimiter) // empty value (no text)
                         {
@@ -186,11 +193,11 @@ namespace SolidShineUi.Utils
                         }
                         else
                         {
-                            state = 1;
+                            state = State_ValueRaw; // value not in quotes
                             sb.Append(c);
                         }
                         break;
-                    case 1: // value not in quotes
+                    case State_ValueRaw: // value not in quotes
                         if (c == '"') // error, cannot contain " in the middle of the field
                         {
                             return false;
@@ -205,10 +212,10 @@ namespace SolidShineUi.Utils
                             sb.Append(c);
                         }
                         break;
-                    case 3: //Escaping quotation mark
+                    case State_EscapingDoubleQuotes: //Escaping quotation mark
                         if (c == '"') //previous quotation mark was escape char for this quotation mark
                         {
-                            state = 4;
+                            state = State_ValueInQuotes;
                             sb.Append(c);
                         }
                         else //error, cannot be any other char
@@ -216,16 +223,16 @@ namespace SolidShineUi.Utils
                             return false;
                         }
                         break;
-                    case 4: // Value text in between quotation marks
+                    case State_ValueInQuotes: // Value text in between quotation marks
                         if (c == '"') //closing quoted text or escape char for following qoatation mark - based on which char is following
                         {
                             if (c1 != null && c1.Value == '"') //current quotation mark is escape char for following quotation mark
                             {
-                                state = 3;
+                                state = State_EscapingDoubleQuotes;
                             }
                             else
                             {
-                                state = 5;
+                                state = State_AfterClosingQuotes;
                             }
                         }
                         else
@@ -233,7 +240,7 @@ namespace SolidShineUi.Utils
                             sb.Append(c);
                         }
                         break;
-                    case 5: //Just after closing quotation mark of quoted text
+                    case State_AfterClosingQuotes: //Just after closing quotation mark of quoted text
                         if (c == delimiter) //closing quoted text
                         {
                             field = sb.ToString();
@@ -247,12 +254,14 @@ namespace SolidShineUi.Utils
 
                 if (index == line.Length) // we've reached the end of the line
                 {
-                    if (state == 1 || state == 5)
+                    if (state == State_ValueRaw || state == State_AfterClosingQuotes)
                     {
                         field = sb.ToString();
                         return true;
                     }
 
+                    // we're in the middle of a value with quotes... not valid state for end of the line
+                    // (most likely, this may be part of a CSV file where the value has a new line character in it, and the rest of its value is on the next line, but we don't support that)
                     return false;
                 }
             }
@@ -322,7 +331,7 @@ namespace SolidShineUi.Utils
             int initialIndex = index;
 
             var sb = new StringBuilder();
-            int state = 0;
+            int state = State_InitialState;
             while (true)
             {
                 char c = line[index];
@@ -331,10 +340,10 @@ namespace SolidShineUi.Utils
 
                 switch (state)
                 {
-                    case 0: // START
+                    case State_InitialState: // START
                         if (c == '"') //value start with a quotation mark, so text of value is in quotes
                         {
-                            state = 4;
+                            state = State_ValueInQuotes;
                         }
                         else if (c == delimiter) // empty value (no text)
                         {
@@ -343,11 +352,11 @@ namespace SolidShineUi.Utils
                         }
                         else
                         {
-                            state = 1;
+                            state = State_ValueRaw;
                             sb.Append(c);
                         }
                         break;
-                    case 1: // value not in quotes
+                    case State_ValueRaw: // value not in quotes
                         if (c == '"') // error, cannot contain " in the middle of the field
                         {
                             return false;
@@ -362,10 +371,10 @@ namespace SolidShineUi.Utils
                             sb.Append(c);
                         }
                         break;
-                    case 3: //Escaping quotation mark
+                    case State_EscapingDoubleQuotes: //Escaping quotation mark
                         if (c == '"') //previous quotation mark was escape char for this quotation mark
                         {
-                            state = 4;
+                            state = State_ValueInQuotes;
                             sb.Append(c);
                         }
                         else //error, cannot be any other char
@@ -373,16 +382,16 @@ namespace SolidShineUi.Utils
                             return false;
                         }
                         break;
-                    case 4: // Value text in between quotation marks
+                    case State_ValueInQuotes: // Value text in between quotation marks
                         if (c == '"') //closing quoted text or escape char for following qoatation mark - based on which char is following
                         {
                             if (c1 != null && c1.Value == '"') //current quotation mark is escape char for following quotation mark
                             {
-                                state = 3;
+                                state = State_EscapingDoubleQuotes;
                             }
                             else
                             {
-                                state = 5;
+                                state = State_AfterClosingQuotes;
                             }
                         }
                         else
@@ -390,7 +399,7 @@ namespace SolidShineUi.Utils
                             sb.Append(c);
                         }
                         break;
-                    case 5: //Just after closing quotation mark of quoted text
+                    case State_AfterClosingQuotes: //Just after closing quotation mark of quoted text
                         if (c == delimiter) //closing quoted text
                         {
                             field = sb.ToString();
@@ -404,7 +413,7 @@ namespace SolidShineUi.Utils
 
                 if (index == line.Length) // we've reached the end of the line
                 {
-                    if (state == 1 || state == 5)
+                    if (state == State_ValueRaw || state == State_AfterClosingQuotes)
                     {
                         field = sb.ToString();
                         return true;
