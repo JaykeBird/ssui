@@ -22,6 +22,13 @@ namespace SolidShineUi
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentContextMenu), new FrameworkPropertyMetadata(typeof(ContentContextMenu)));
         }
 
+        /// <summary>
+        /// Create a ContentContextMenu.
+        /// </summary>
+        public ContentContextMenu()
+        {
+            ColorSchemeChanged += ContentContextMenu_ColorSchemeChanged;
+        }
 
         #region Content Properties
 
@@ -124,6 +131,12 @@ namespace SolidShineUi
         #endregion
 
         #region ColorScheme / SsuiTheme
+
+        private void ContentContextMenu_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            SeparatorBrush = ColorScheme.BorderColor.ToBrush();
+            Background = ColorScheme.LightBackgroundColor.ToBrush();
+        }
 
         /// <inheritdoc/>
         protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
