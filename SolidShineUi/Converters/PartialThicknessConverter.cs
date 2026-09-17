@@ -7,7 +7,7 @@ using SolidShineUi.Utils;
 namespace SolidShineUi.Converters
 {
     /// <summary>
-    /// A helper method for WPF controls, to only selectively apply a <see cref="CornerRadius"/> value to only some corners.
+    /// A helper method for WPF controls, to only selectively apply a <see cref="Thickness"/> value to only some sides.
     /// </summary>
     [ValueConversion(typeof(Thickness), typeof(Thickness))]
     [ValueConversion(typeof(IConvertible), typeof(Thickness))]
@@ -16,15 +16,15 @@ namespace SolidShineUi.Converters
     {
 
         /// <summary>
-        /// Convert a double into a string, with rounding possible by setting the <paramref name="parameter"/> value.
+        /// Modify a <see cref="Thickness"/> to only apply to a few sides, as based upon the values in <paramref name="parameter"/>.
         /// </summary>
         /// <param name="value">
-        /// The <see cref="Thickness"/> object to read from (or <see cref="double"/> or a double-parseable <see cref="IConvertible"/> for a uniform value)
+        /// The <see cref="Thickness"/> object to read from (or a <see cref="double"/> or a double-parseable <see cref="IConvertible"/> for a uniform value)
         /// </param>
         /// <param name="targetType">Not used, returned type will always be a <see cref="Thickness"/></param>
-        /// <param name="parameter">The corners to apply to the result; one or more of chars <c>L,T,B,R</c> or a <see cref="byte"/> (see <see cref="PartialValueHelper"/>)</param>
-        /// <param name="culture">Not used</param>
-        /// <returns>A <see cref="Thickness"/> that only has a portion of its values set </returns>
+        /// <param name="parameter">The sides to apply to the result; one or more of chars <c>L,T,B,R</c> or a <see cref="byte"/> (see <see cref="PartialValueHelper"/>)</param>
+        /// <param name="culture">Used for converting an <see cref="IConvertible"/> object to a double</param>
+        /// <returns>A <see cref="Thickness"/> that only has a portion of its values set to the original Thickness's values, and the remaining ones set to 0</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             (bool left, bool top, bool right, bool bottom) vals = (false, false, false, false);
