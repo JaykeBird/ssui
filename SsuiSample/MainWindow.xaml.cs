@@ -25,7 +25,7 @@ namespace SsuiSample
         public MainWindow()
         {
             InitializeComponent();
-            //SourceInitialized += MainWindow_SourceInitialized;
+            SourceInitialized += MainWindow_SourceInitialized;
             ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
             SsuiTheme = new SsuiAppTheme(ColorsHelper.CreateFromHex("7AE"), ColorsHelper.CreateFromHex("EA7"));
 
@@ -80,9 +80,9 @@ namespace SsuiSample
 
         private void MainWindow_SourceInitialized(object sender, EventArgs e)
         {
-            //#if NET8_0
-            //            SsuiWindows11Interop.FlatWindowInterop.RenderWindowsCaptionButtons(this);
-            //#endif
+#if NET8_0
+                        SsuiWindows11Interop.FlatWindowInterop.SetWindows11TitleBar(this);
+#endif
         }
 
         private bool TestIfPointIsMaximizeButton(Point p)
