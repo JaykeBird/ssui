@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
     /// <summary>
-    /// A property editor for <see cref="DateTime"/> values, as well as <c>TimeOnly</c> values for .NET 6 and higher.
+    /// A property editor for <see cref="DateTime"/> values, as well as <c>DateOnly</c> values for .NET 6 and higher.
     /// </summary>
     public partial class DateTimeEditor : UserControl, IPropertyEditor
     {
@@ -40,6 +36,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
+
+        /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
@@ -51,35 +50,40 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
-
-        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
             get => picker.IsEnabled;
             set
             {
                 spinner.IsEnabled = value;
-                btnMenu.IsEnabled = value;
                 picker.IsEnabled = value;
+
+                mnuCurrent.IsEnabled = value;
+                mnuNoon.IsEnabled = value;
+                mnuMidnight.IsEnabled = value;
+                mnuSetNull.IsEnabled = _nullable && value;
             }
         }
 
         Type _propType = typeof(DateTime);
         bool _internalAction = false;
-        bool _nullAllowed = false;
+        bool _nullable = false;
 
 #if NETCOREAPP
-
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
+
 #if NET6_0_OR_GREATER
             if (_propType == typeof(DateOnly) || _propType == typeof(DateOnly?))
             {
@@ -103,9 +107,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
         }
 
-
+#if NETCOREAPP
         /// <inheritdoc/>
         public void LoadValue(object? value, Type type)
+#else
+        /// <inheritdoc/>
+        public void LoadValue(object value, Type type)
+#endif
         {
             _propType = type;
 
@@ -165,58 +173,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 SetAsNull();
             }
         }
-#else
-
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (picker.SelectedDate == null) return null;
-            else
-            {
-                return picker.SelectedDate.Value.Date.Add(spinner.Value);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            _propType = type;
-
-            if (value == null)
-            {
-                SetAsNull();
-            }
-
-            LoadUi();
-
-            if (value is DateTime dt)
-            {
-                spinner.Value = dt.TimeOfDay;
-                picker.SelectedDate = dt.Date;
-            }
-            else if (value is DateTime?)
-            {
-                DateTime? dtn = (DateTime?)value ?? null;
-                if (dtn.HasValue)
-                {
-                    spinner.Value = dtn.Value.TimeOfDay;
-                    picker.SelectedDate = dtn.Value.Date;
-                    AllowNulls();
-                }
-                else
-                {
-                    SetAsNull();
-                }
-            }
-            else
-            {
-                SetAsNull();
-            }
-        }
-#endif
 
         void LoadUi()
         {
@@ -235,7 +191,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         void AllowNulls()
         {
             mnuSetNull.IsEnabled = true;
-            _nullAllowed = true;
+            _nullable = true;
         }
 
         void SetAsNull()
@@ -245,7 +201,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             mnuSetNull.IsChecked = true;
             picker.SelectedDate = null;
             spinner.IsEnabled = false;
-            _nullAllowed = true;
+            _nullable = true;
             _internalAction = false;
         }
 
@@ -308,7 +264,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             if (picker.SelectedDate == null)
             {
-                if (_nullAllowed)
+                if (_nullable)
                 {
                     SetAsNull();
                 }

@@ -375,6 +375,18 @@ namespace SolidShineUi.PropertyList
         /// <summary>A string with the value <c>"Enter a Version string (numbers and periods only):"</c>.</summary>
         public static string EnterAVersionString { get; set; } = "Enter a Version string (numbers and periods only):";
 
+        /// <summary>A string with the value <c>"Not a valid decimal value"</c>.</summary>
+        public static string NotADecimal { get; set; } = "Not a valid decimal value";
+
+        /// <summary>A string with the value <c>"Set Decimal"</c>.</summary>
+        public static string SetDecimal { get; set; } = "Set Decimal";
+
+        /// <summary>A string with the value <c>"Enter in the exact decimal value to use:"</c>.</summary>
+        public static string EnterADecimalValue { get; set; } = "Enter in the exact decimal value to use:";
+
+        /// <summary>A string with the value <c>"Not a valid Version value"</c>.</summary>
+        public static string NotAValidVersion { get; set; } = "Not a valid Version value";
+
         /// <summary>
         /// Retrieves the names of all of the properties in this class.
         /// </summary>

@@ -1,11 +1,12 @@
-﻿using SolidShineUi.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.PropertyList.PropertyEditors
 {
@@ -37,6 +38,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
+
+        /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
         /// <inheritdoc/>
@@ -48,20 +52,22 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
-
-        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => mnuSetNan.IsEnabled;
-            set { dblSpinner.IsEnabled = value; mnuSetNan.IsEnabled = value; }
+            get => _writable;
+            set
+            {
+                _writable = value;
+                dblSpinner.IsEnabled = value;
+                mnuSetNan.IsEnabled = value;
+                mnuSetNull.IsEnabled = value && _nullable;
+            }
         }
 
         Type _propType = typeof(double);
         bool _internalAction = false;
+        bool _writable = true;
+        bool _nullable = false;
 
         /// <inheritdoc/>
 #if NETCOREAPP
@@ -69,6 +75,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         /// <inheritdoc/>
         public object? GetValue()
+#else
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
         {
             if (_propType == typeof(double))
             {
@@ -134,14 +146,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
+#if NETCOREAPP
         public void LoadValue(object? value, Type type)
         {
-#if NET5_0_OR_GREATER
             if (type == typeof(double?) || type == typeof(float?) || type == typeof(Half?))
 #else
+        public void LoadValue(object value, Type type)
+        {
             if (type == typeof(double?) || type == typeof(float?))
 #endif
             {
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
                 if (value == null)
                 {
@@ -187,109 +202,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             dblSpinner.Value = (double)(value ?? 0);
             _internalAction = false;
         }
-#else
-        public event EventHandler ValueChanged;
-
-        /// <inheritdoc/>
-        public object GetValue()
-        {
-            if (_propType == typeof(double))
-            {
-                if (mnuSetNan.IsChecked)
-                {
-                    return double.NaN;
-                }
-                else
-                {
-                    return dblSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(float))
-            {
-                if (mnuSetNan.IsChecked)
-                {
-                    return float.NaN;
-                }
-                else
-                {
-                    return (float)dblSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(double?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else if (mnuSetNan.IsChecked)
-                {
-                    return double.NaN;
-                }
-                else
-                {
-                    return dblSpinner.Value;
-                }
-            }
-            else if (_propType == typeof(float?))
-            {
-                if (mnuSetNull.IsChecked)
-                {
-                    return null;
-                }
-                else if (mnuSetNan.IsChecked)
-                {
-                    return float.NaN;
-                }
-                else
-                {
-                    return (float)dblSpinner.Value;
-                }
-            }
-            else
-            {
-                return dblSpinner.Value;
-            }
-        }
-
-        /// <inheritdoc/>
-        public void LoadValue(object value, Type type)
-        {
-            if (type == typeof(double?) || type == typeof(float?))
-            {
-                mnuSetNull.IsEnabled = true;
-                if (value == null)
-                {
-                    SetAsNull();
-                }
-                else if (value is double d && double.IsNaN(d))
-                {
-                    SetAsNaN();
-                }
-                else if (value is float f && float.IsNaN(f))
-                {
-                    SetAsNaN();
-                }
-                else
-                {
-                    //UnsetAsNaN();
-                    UnsetAsNull();
-                }
-            }
-            else if (value is double d && double.IsNaN(d))
-            {
-                SetAsNaN();
-            }
-            else if (value is float f && float.IsNaN(f))
-            {
-                SetAsNaN();
-            }
-
-            _propType = type;
-            _internalAction = true;
-            dblSpinner.Value = (double)(value ?? 0);
-            _internalAction = false;
-        }
-#endif
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
@@ -301,6 +213,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         void SetAsNull()
         {
+            _nullable = true;
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             mnuSetNan.IsChecked = false;

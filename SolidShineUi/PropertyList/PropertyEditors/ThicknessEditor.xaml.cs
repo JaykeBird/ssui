@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,25 +12,33 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class ThicknessEditor : UserControl, IPropertyEditor
     {
+
+        /// <summary>Create a new ThicknessEditor.</summary>
+        public ThicknessEditor()
+        {
+            InitializeComponent();
+
+            // load in string values
+            nudLeft.ToolTip = Strings.Left;
+            nudTop.ToolTip = Strings.Top;
+            nudRight.ToolTip = Strings.Right;
+            nudBottom.ToolTip = Strings.Bottom;
+
+            mnuAddOne.Header = Strings.IncreaseAllByOne;
+            mnuSubtractOne.Header = Strings.DecreaseAllByOne;
+            mnuSetOne.Header = Strings.SetAllToOne;
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetNull.Header = Strings.SetAsNull;
+        }
+
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(Thickness), typeof(Thickness?) };
 
         /// <inheritdoc/>
-        public bool EditorAllowsModifying => true;
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable
-        { 
-            get => btnMenu.IsEnabled;
-            set
-            {
-                nudLeft.IsEnabled = value;
-                nudTop.IsEnabled = value;
-                nudBottom.IsEnabled = value;
-                nudRight.IsEnabled = value;
-                btnMenu.IsEnabled = value;
-            }
-        }
+        public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
@@ -53,26 +60,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public ThicknessEditor()
+        public bool IsPropertyWritable
         {
-            InitializeComponent();
-
-            // load in string values
-            nudLeft.ToolTip = Strings.Left;
-            nudTop.ToolTip = Strings.Top;
-            nudRight.ToolTip = Strings.Right;
-            nudBottom.ToolTip = Strings.Bottom;
-
-            mnuAddOne.Header = Strings.IncreaseAllByOne;
-            mnuSubtractOne.Header = Strings.DecreaseAllByOne;
-            mnuSetOne.Header = Strings.SetAllToOne;
-            mnuSetZero.Header = Strings.SetAllToZero;
-            mnuSetNull.Header = Strings.SetAsNull;
+            get => btnMenu.IsEnabled;
+            set
+            {
+                nudLeft.IsEnabled = value;
+                nudTop.IsEnabled = value;
+                nudBottom.IsEnabled = value;
+                nudRight.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
+            }
         }
 
-        /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement() { return this; }
-        
+        bool _internalAction = false;
+
         /// <inheritdoc/>
 #if NETCOREAPP
         public void LoadValue(object? value, Type type)
@@ -118,24 +120,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        /// <inheritdoc/>
 #if NETCOREAPP
-        public object? GetValue()
-        {
-            if (mnuSetNull.IsChecked == true)
-            {
-                return null;
-            }
-            else
-            {
-                return new Thickness(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
-            }
-        }
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
+
+        /// <inheritdoc/>
+        public object? GetValue()
 #else
+        
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
         public object GetValue()
+#endif
         {
             if (mnuSetNull.IsChecked == true)
             {
@@ -146,12 +145,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return new Thickness(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
             }
         }
-        
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-#endif
 
-        bool _internalAction = false;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        private void nudLeft_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!_internalAction)
+            {
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         private void mnuSetZero_Click(object sender, RoutedEventArgs e)
         {
@@ -163,16 +166,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             SetAllToValue(1);
             ValueChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        private void nudLeft_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!_internalAction)
-            {
-                ValueChanged?.Invoke(this, EventArgs.Empty);
-            }
         }
 
         void SetAllToValue(double d)

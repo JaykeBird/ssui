@@ -31,6 +31,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
+
+        /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
         
         /// <inheritdoc/>
@@ -42,18 +45,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
-
-        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => btnMenu.IsEnabled;
-            set { intSpinner.IsEnabled = value; btnMenu.IsEnabled = value; }
+            get => _writable;
+            set
+            {
+                _writable = value;
+                intSpinner.IsEnabled = value;
+                mnuSetNull.IsEnabled = value && _nullable;
+            }
         }
 
+        bool _writable = true;
+        bool _nullable = false;
         Type _propType = typeof(int);
 
 #if NETCOREAPP
@@ -198,27 +202,27 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else if (_propType == typeof(int?) || _propType == typeof(Nullable<int>))
             {
                 SetMaxMin(int.MaxValue, int.MinValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
             else if (_propType == typeof(short?) || _propType == typeof(Nullable<short>))
             {
                 SetMaxMin(short.MaxValue, short.MinValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
             else if (_propType == typeof(ushort?) || _propType == typeof(Nullable<ushort>))
             {
                 SetMaxMin(ushort.MaxValue, ushort.MinValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
             else if (_propType == typeof(byte?) || _propType == typeof(Nullable<byte>))
             {
                 SetMaxMin(byte.MaxValue, byte.MinValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
             else if (_propType == typeof(sbyte?) || _propType == typeof(Nullable<sbyte>))
             {
                 SetMaxMin(sbyte.MaxValue, sbyte.MinValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
 
             void SetMaxMin(int max, int min)
@@ -240,8 +244,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
+        void AllowNulls()
+        {
+            _nullable = true;
+            mnuSetNull.IsEnabled = true;
+        }
+
         void SetAsNull()
         {
+            _nullable = true;
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             intSpinner.IsEnabled = false;

@@ -36,16 +36,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
-
-#if NETCOREAPP
-        private IPropertyEditorHost? _host = null;
-#else
-        private IPropertyEditorHost _host = null;
-#endif
 
         /// <inheritdoc/>
         public void ApplySsuiTheme(SsuiTheme theme)
@@ -56,13 +50,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
-        private Guid guid = Guid.Empty;
-
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
+        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; } // _nullable not needed
+
+#if NETCOREAPP
+        private IPropertyEditorHost? _host = null;
+#else
+        private IPropertyEditorHost _host = null;
+#endif
+
+        private Guid guid = Guid.Empty;
 
 #if NETCOREAPP
         /// <inheritdoc/>

@@ -31,7 +31,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
-        bool _writable = true;
+        /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public bool IsPropertyWritable { get => _writable; set => _writable = value; }
@@ -46,11 +47,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             imgMenu.Source = Utils.IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
-        /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
+        bool _writable = true;
 
         Type _listType = typeof(object);
 
@@ -67,32 +64,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return listVal;
         }
-
-        /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
-        {
-            if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
-            {
-                Type listType = type.GenericTypeArguments[0];
-                _listType = listType;
-
-                listVal = (IEnumerable?)value;
-            }
-            else if (typeof(IEnumerable).IsAssignableFrom(type))
-            {
-                _listType = typeof(object);
-
-                // this is an IEnumerable, just not a generic type (IEnumerable<T>)
-                listVal = (IEnumerable?)value;
-            }
-            else
-            {
-                // type is not a IEnumerable
-            }
-
-            RenderListDataText(listVal, type);
-        }
 #else
+
         IEnumerable listVal;
         
         IPropertyEditorHost _host = null;
@@ -105,10 +78,33 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             return listVal;
         }
-        
+#endif
+
+#if NETCOREAPP
+        /// <inheritdoc/>
+        public void LoadValue(object? value, Type type)
+#else
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
+#endif
         {
+
+#if NETCOREAPP
+            if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                Type listType = type.GenericTypeArguments[0];
+                _listType = listType;
+
+                listVal = (IEnumerable?)value;
+            }
+            else if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                _listType = typeof(object);
+
+                // this is an IEnumerable, just not a generic type (IEnumerable<T>)
+                listVal = (IEnumerable?)value;
+            }
+#else
             if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
             {
                 Type listType = type.GenericTypeArguments[0];
@@ -123,6 +119,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 // this is an IEnumerable, just not a generic type (IEnumerable<T>)
                 listVal = (IEnumerable)value;
             }
+#endif
             else
             {
                 // type is not a IEnumerable
@@ -130,8 +127,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             RenderListDataText(listVal, type);
         }
-
-#endif
 
         /// <summary>
         /// Open the ListEditorDialog, with its contents being the list or collection of this property.

@@ -24,11 +24,6 @@ namespace SolidShineUi.PropertyList
         bool EditorAllowsModifying { get; }
 
         /// <summary>
-        /// Get or set if the property being loaded can actually be edited (writeable). Read-only (get-only) properties will return <c>false</c>.
-        /// </summary>
-        bool IsPropertyWritable { get; set; }
-
-        /// <summary>
         /// Get the FrameworkElement for this IPropertyEditor control.
         /// </summary>
         /// <remarks>
@@ -47,6 +42,11 @@ namespace SolidShineUi.PropertyList
         /// Set the parent host control for this IPropertyEditor. This allows the IPropertyEditor to connect to the host directly, to get info or set certain values.
         /// </summary>
         void SetHostControl(IPropertyEditorHost host);
+
+        /// <summary>
+        /// Get or set if the property being loaded can actually be edited (writeable). Read-only (get-only) properties will return <c>false</c>.
+        /// </summary>
+        bool IsPropertyWritable { get; set; }
 
         /// <summary>
         /// Raised when the value is changed, by changing the data in this editor control.
