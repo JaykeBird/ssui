@@ -64,7 +64,7 @@
                         <MenuItem Header="Subsubitem _3" />
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="S_ubmenu 2">
+                <MenuItem Header="S_ubmenu 2" IsChecked="True" >
                     <MenuItem>
                         <MenuItem.Header>
                             <StackPanel>
