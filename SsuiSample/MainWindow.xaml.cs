@@ -296,6 +296,13 @@ namespace SsuiSample
             a.ShowDialog();
         }
 
+        private void mnuSpecial1_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog md = new MessageDialog();
+            md.SsuiTheme = this.SsuiTheme;
+            md.ShowDialog("Submenu 2 is " + (mnuSubmenu2.IsChecked ? "checked" : "not checked"), this, "Submenu 2", image: MessageDialogImage.Info);
+        }
+
 #pragma warning restore IDE0017 // Simplify object initialization
         #endregion
 

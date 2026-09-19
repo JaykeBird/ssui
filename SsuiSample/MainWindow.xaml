@@ -69,8 +69,8 @@
                         <MenuItem Header="Subsubitem _3" />
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="S_ubmenu 2">
-                    <MenuItem>
+                <MenuItem Header="S_ubmenu 2" IsChecked="True" x:Name="mnuSubmenu2" >
+                    <MenuItem x:Name="mnuSpecial1" Click="mnuSpecial1_Click" >
                         <MenuItem.Header>
                             <StackPanel>
                                 <TextBlock Text="Item 1" FontWeight="Bold" />

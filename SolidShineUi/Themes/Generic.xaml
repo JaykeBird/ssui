@@ -429,14 +429,12 @@
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Check" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}" />
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                         <Condition Property="Icon" Value="{x:Null}" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
@@ -665,14 +663,12 @@
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Check" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContextMenu}}}" />
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                         <Condition Property="Icon" Value="{x:Null}" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
@@ -936,14 +932,12 @@
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Check" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentContextMenu}}}" />
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                         <Condition Property="Icon" Value="{x:Null}" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
@@ -3296,14 +3290,12 @@
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Check" Property="Background" Value="{Binding CheckedBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:ContentControlWithMenu}}}" />
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
                                         <Condition Property="IsChecked" Value="true" />
-                                        <Condition Property="Role" Value="SubmenuItem" />
                                         <Condition Property="Icon" Value="{x:Null}" />
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
