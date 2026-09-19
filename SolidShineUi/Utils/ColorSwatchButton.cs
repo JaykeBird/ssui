@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
@@ -31,7 +28,6 @@ namespace SolidShineUi.Utils
             Color = c;
             UpdateBrushes();
             ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
-            SsuiThemeApplied += ColorSwatchButton_SsuiThemeApplied;
 
             UseLayoutRounding = true;
 
@@ -41,12 +37,6 @@ namespace SolidShineUi.Utils
         private void ColorSwatchButton_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateColor();
-        }
-
-        private void ColorSwatchButton_SsuiThemeApplied(object sender, RoutedEventArgs e)
-        {
-            // override SsuiTheme's background brushes with our checkerboard pattern ones
-            UpdateBrushes();
         }
 
         private void ColorSwatchButton_ColorSchemeChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -63,7 +53,15 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="Color"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ColorProperty
             = DependencyProperty.Register("Color", typeof(Color), typeof(ColorSwatchButton),
-            new FrameworkPropertyMetadata(Colors.White, new PropertyChangedCallback((d, e) => d.PerformAs<ColorSwatchButton>((b) => b.UpdateColor()))));
+            new FrameworkPropertyMetadata(Colors.White, OnColorChange));
+
+        private static void OnColorChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ColorSwatchButton b)
+            {
+                b.UpdateColor();
+            }
+        }
 
         /// <summary>
         /// Get or set if a hexadecimal value (i.e. #FF0033) is shown on the tooltip for this button, even if the color exists in <see cref="Colors"/>.
@@ -76,7 +74,7 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="AlwaysHexTooltips"/>. See the related property for details.</summary>
         public static readonly DependencyProperty AlwaysHexTooltipsProperty
             = DependencyProperty.Register("AlwaysHexTooltips", typeof(bool), typeof(ColorSwatchButton),
-            new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<ColorSwatchButton>((b) => b.UpdateColor()))));
+            new FrameworkPropertyMetadata(true, OnColorChange));
 
         /// <summary>
         /// Get or set if this button's ToolTip should be changed when <see cref="Color"/> is changed.
@@ -86,7 +84,7 @@ namespace SolidShineUi.Utils
         /// <summary>The backing dependency property for <see cref="SetToolTip"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SetToolTipProperty
             = DependencyProperty.Register("SetToolTip", typeof(bool), typeof(ColorSwatchButton),
-            new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => d.PerformAs<ColorSwatchButton>((b) => b.UpdateColor()))));
+            new FrameworkPropertyMetadata(true, OnColorChange));
 
         #region Button Brushes
 
