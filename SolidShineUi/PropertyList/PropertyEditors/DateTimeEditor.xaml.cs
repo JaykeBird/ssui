@@ -29,7 +29,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public List<Type> ValidTypes => new List<Type> { typeof(DateTime), typeof(DateOnly), typeof(DateTime?), typeof(DateOnly?) };
 #else
         /// <inheritdoc/>
-        public List<Type> ValidTypes => (new[] { typeof(DateTime), typeof(DateTime?) }).ToList();
+        public List<Type> ValidTypes => new List<Type> { typeof(DateTime), typeof(DateTime?) };
 #endif
 
         /// <inheritdoc/>
