@@ -203,6 +203,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
                 ListEditorDialog led = new ListEditorDialog();
                 led.ColorScheme = _cs;
+                if (_parent != null) led.Owner = Window.GetWindow(_parent);
                 led.LoadEnumerable(listVal, _listType, propEditorType);
                 led.Description = $"collection of {_listType.Name} ({listVal.Count} items), stored in a {listVal.GetType().Name.Replace("`1", "")}:";
 
@@ -214,8 +215,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             MessageDialog md = new MessageDialog();
             md.ColorScheme = _cs;
-            md.ShowDialog("Are you sure you want to replace the current list with a new empty list?", null, _parent?.GetWindow(), "Confirm Empty List", 
-                image: MessageDialogImage.Warning, buttonDisplay: MessageDialogButtonDisplay.Two, okButtonText: "Yes", cancelButtonText: "No");
+            if (_parent != null) md.Owner = Window.GetWindow(_parent);
+            md.ShowDialog("Are you sure you want to replace the current list with a new empty list?", null, null, "Confirm Empty List", 
+                image: MessageDialogImage.Warning, buttonDisplay: MessageDialogButtonDisplay.Two, customOkButtonText: "Yes", customCancelButtonText: "No");
 
             if (md.DialogResult != MessageDialogResult.OK) return;
 
