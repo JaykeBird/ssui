@@ -81,7 +81,7 @@ namespace SsuiSample
         private void MainWindow_SourceInitialized(object sender, EventArgs e)
         {
 #if NET8_0
-                        SsuiWindows11Interop.FlatWindowInterop.SetWindows11TitleBar(this);
+             SolidShineUi.FlatWindowInterop.UseWindows11CaptionButtons(this);
 #endif
         }
 
