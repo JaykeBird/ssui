@@ -1017,6 +1017,14 @@ namespace SolidShineUi
             set => SetValue(SelectOnClickProperty, value);
         }
 
+        /// <summary>
+        /// Get if this control is currently in a "highlight" state.
+        /// </summary>
+        protected bool Highlighting
+        {
+            get => IsMouseOver || IsStylusOver || (HighlightOnKeyboardFocus && IsKeyboardFocused);
+        }
+
         #endregion
 
         #region Base Click Functions
