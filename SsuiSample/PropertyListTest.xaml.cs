@@ -105,6 +105,8 @@ namespace SsuiSample
             public long LongestTime { get; set; } = 1_771_871_836L; // epoch time of February 23, 2026 at 6:37 PM, apparently lol
 
             public uint PositiveNumber { get; set; } = 21u;
+
+            public Uri CoolWebsite { get; set; } = new Uri("https://paint.net/");
         }
     }
 }

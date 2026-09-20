@@ -22,7 +22,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             // load in string values
             mnuOpenUrl.Header = Strings.OpenUrl;
-            mnuSelectFile.Header = Strings.SelectAFile;
+            mnuSelectFile.Header = Strings.SelectAFile2;
             // mnuSetNull.Header = Strings.SetAsNull;
         }
 

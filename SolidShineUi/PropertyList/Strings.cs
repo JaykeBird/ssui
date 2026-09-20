@@ -351,6 +351,9 @@ namespace SolidShineUi.PropertyList
         /// <summary>A string with the value <c>"Select a File"</c>.</summary>
         public static string SelectAFile { get; set; } = "Select a File";
 
+        /// <summary>A string with the value <c>"Select a File..."</c>.</summary>
+        public static string SelectAFile2 { get; set; } = "Select a File...";
+
         /// <summary>A string with the value <c>"Open URL"</c>.</summary>
         public static string OpenUrl { get; set; } = "Open URL";
 
