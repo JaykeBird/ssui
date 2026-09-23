@@ -472,7 +472,10 @@ namespace SolidShineUi
             enabled = false;
 
             if (IsShutdown) return;
-            rthr.Join(1000);
+            if (rthr.ThreadState != ThreadState.Unstarted)
+            {
+                rthr.Join(1000);
+            }
             IsShutdown = true;
         }
 
