@@ -513,7 +513,12 @@ namespace SolidShineUi.PropertyList
                 LoadObject(_baseObject);
 
                 // if a custom name for ObjectDisplayName was used previously, let's re-apply it here
-                if (ObjectDisplayName != existingName)
+                //
+                // my concern is about if in the situation that the object has a Name property, then
+                // we want to make sure that we keep ObjectDisplayName updated if that Name changed.
+                // so now this only narrowly kicks in if the object had no name but ObjectDisplayName
+                // was set to something else... in the future, I'll need to better track this, I think
+                if (ObjectDisplayName == NO_NAME && existingName != NO_NAME)
                 {
                     ObjectDisplayName = existingName;
                 }
