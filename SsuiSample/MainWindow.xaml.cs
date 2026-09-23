@@ -189,6 +189,20 @@ namespace SsuiSample
             }
         }
 
+        private void mnuFlowDirection_Click(object sender, RoutedEventArgs e)
+        {
+            if (FlowDirection == FlowDirection.LeftToRight)
+            {
+                FlowDirection = FlowDirection.RightToLeft;
+                mnuFlowDirection.IsChecked = true;
+            }
+            else
+            {
+                FlowDirection = FlowDirection.LeftToRight;
+                mnuFlowDirection.IsChecked = false;
+            }
+        }
+
         private void mnuColors_Click(object sender, RoutedEventArgs e)
         {
             Color baseColor = Colors.Gray;

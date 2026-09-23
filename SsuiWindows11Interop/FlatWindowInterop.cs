@@ -112,8 +112,9 @@ public static class FlatWindowInterop
 
         //var nonClientInputSrc = InputNonClientPointerSource.GetForWindowId(wid); // this doesn't seem to work
 
-        // TODO: exclude RightInset and LeftInset from titleBarRect
-        Rect titleBarRect = new Rect(0, 0, w.Width, w.CaptionHeight);
+        Rect titleBarRect = new Rect(appWindow.TitleBar.LeftInset, 0, 
+            w.Width - appWindow.TitleBar.LeftInset - appWindow.TitleBar.RightInset, // subtract the left and right inset from the total
+            w.CaptionHeight);
         List<Rect> nonClientRects = new List<Rect>();
 
         // handle TopLeftElement and TopRightElement            

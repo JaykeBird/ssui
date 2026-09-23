@@ -43,7 +43,10 @@
                     <Separator />
                     <MenuItem Header="D_efault New" x:Name="mnuDefaultCs" Click="mnuDefaultCs_Click" />
                 </MenuItem>
+                <Separator/>
                 <MenuItem Header="_Set Culture..." x:Name="mnuCulture" Click="mnuCulture_Click" />
+                <MenuItem Header="_Use RTL Flow Direction" x:Name="mnuFlowDirection" Click="mnuFlowDirection_Click" />
+                <Separator/>
                 <MenuItem Header="_Exit" x:Name="mnuExit" Click="mnuExit_Click" />
             </MenuItem>
             <MenuItem Header="_Test Menu">
