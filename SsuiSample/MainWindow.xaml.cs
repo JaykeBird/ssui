@@ -21,17 +21,22 @@ namespace SsuiSample
     /// </summary>
     public partial class MainWindow : FlatWindow
     {
+        #region Window Actions
 
         public MainWindow()
         {
             InitializeComponent();
-            SourceInitialized += MainWindow_SourceInitialized;
             ColorScheme = new ColorScheme(ColorsHelper.CreateFromHex("7AE"));
             SsuiTheme = new SsuiAppTheme(ColorsHelper.CreateFromHex("7AE"), ColorsHelper.CreateFromHex("EA7"));
 
             defaultCulture = CultureInfo.CurrentCulture;
 
             SetupSidebar();
+
+            SourceInitialized += MainWindow_SourceInitialized;
+            Loaded += MainWindow_Loaded;
+            Closing += MainWindow_Closing;
+
             KeyDown += (s, e) =>
             {
                 if (e.Key == Key.F8)
@@ -47,43 +52,33 @@ namespace SsuiSample
                     }
                 }
             };
+        }
 
-            //SsuiTheme.BeginAnimation(SolidShineUi.SsuiTheme.ButtonBackgroundProperty, new ObjectAnimationUsingKeyFrames()
-            //{
-            //    Duration = new Duration(TimeSpan.FromSeconds(8)),
-            //    RepeatBehavior = RepeatBehavior.Forever,
-            //    FillBehavior = FillBehavior.HoldEnd,
-            //    KeyFrames = new ObjectKeyFrameCollection()
-            //    {
-            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Firebrick)),
-            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Blue)),
-            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Orange)),
-            //        new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Yellow), KeyTime.FromPercent(0.95))
-            //    }
-            //});
+        #region Window Events
 
-            //Loaded += (s, e) =>
-            //{
-            //    SolidColorBrush scb = new SolidColorBrush(Colors.Red);
-            //    SsuiTheme.ButtonBackground = scb;
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // BeginButtonAnimation();
+            // BeginSmoothButtonAnimation(Colors.Red, Colors.Orange);
+        }
 
-            //    scb.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation()
-            //    {                    
-            //        From = Colors.Red,
-            //        To = Colors.Orange,
-            //        Duration = new Duration(TimeSpan.FromSeconds(10)),
-            //        AutoReverse = true,
-            //        RepeatBehavior = RepeatBehavior.Forever
-            //    });
-            //};
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            foreach (IDisposable item in disposablePanes)
+            {
+                item.Dispose();
+            }
         }
 
         private void MainWindow_SourceInitialized(object sender, EventArgs e)
         {
 #if NET8_0
-             SolidShineUi.FlatWindowInterop.UseWindows11CaptionButtons(this);
+            FlatWindowInterop.UseWindows11CaptionButtons(this);
+            MaximizedWindowFrame = new Thickness(0);
 #endif
         }
+
+        #endregion
 
         private bool TestIfPointIsMaximizeButton(Point p)
         {
@@ -105,8 +100,49 @@ namespace SsuiSample
             return p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound;
         }
 
+        #endregion
 
         CultureInfo defaultCulture;
+
+        #region Sidebar / Test Panes
+
+        List<IDisposable> disposablePanes = new List<IDisposable>();
+
+        void SetupSidebar()
+        {
+            foreach (UserControl item in grdTests.Children)
+            {
+                SelectableItem si = new SelectableItem(item.GetType().Name.Replace("Test", ""))
+                {
+                    Tag = item.Name,
+                    Padding = new Thickness(3),
+                    Height = 28
+                };
+                si.Click += si_Click;
+                stkTabs.Items.Add(si);
+
+                if (item is IDisposable id)
+                {
+                    disposablePanes.Add(id);
+                }
+            }
+        }
+
+        private void si_Click(object sender, RoutedEventArgs e)
+        {
+            string name = (sender as SelectableItem).Tag as string;
+
+            foreach (UserControl item in grdTests.Children)
+            {
+                item.Visibility = item.Name == name ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            lblStart.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        #region Application Menu
 
         private void mnuCulture_Click(object sender, RoutedEventArgs e)
         {
@@ -238,38 +274,13 @@ namespace SsuiSample
             }
         }
 
-        void SetupSidebar()
-        {
-            foreach (UserControl item in grdTests.Children)
-            {
-                SelectableItem si = new SelectableItem(item.GetType().Name.Replace("Test", ""))
-                {
-                    Tag = item.Name,
-                    Padding = new Thickness(3),
-                    Height = 28
-                };
-                si.Click += si_Click;
-                stkTabs.Items.Add(si);
-            }
-        }
-
-        private void si_Click(object sender, RoutedEventArgs e)
-        {
-            string name = (sender as SelectableItem).Tag as string;
-
-            foreach (UserControl item in grdTests.Children)
-            {
-                item.Visibility = item.Name == name ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            lblStart.Visibility = Visibility.Collapsed;
-        }
 
         private void mnuExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        #endregion
 
         #region Help menu
 #pragma warning disable IDE0017 // Simplify object initialization
@@ -306,20 +317,41 @@ namespace SsuiSample
 #pragma warning restore IDE0017 // Simplify object initialization
         #endregion
 
-        //private void mnuRectEdit_Click(object sender, RoutedEventArgs e)
-        //{
-        //    SolidShineUi.PropertyList.Dialogs.RectEditDialog red = new SolidShineUi.PropertyList.Dialogs.RectEditDialog(ColorScheme);
+        #region Animation Fun
 
-        //    red.SetRect(new Rect(50, 50, 20, 140));
-        //    red.Owner = this;
-        //    red.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        //    red.ShowDialog();
+        void BeginButtonAnimation()
+        {
+            SsuiTheme.BeginAnimation(SolidShineUi.SsuiTheme.ButtonBackgroundProperty, new ObjectAnimationUsingKeyFrames()
+            {
+                Duration = new Duration(TimeSpan.FromSeconds(8)),
+                RepeatBehavior = RepeatBehavior.Forever,
+                FillBehavior = FillBehavior.HoldEnd,
+                KeyFrames = new ObjectKeyFrameCollection()
+                {
+                    new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Firebrick)),
+                    new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Blue)),
+                    new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Orange)),
+                    new DiscreteObjectKeyFrame(new SolidColorBrush(Colors.Yellow), KeyTime.FromPercent(0.95))
+                }
+            });
+        }
 
-        //    if (red.DialogResult)
-        //    {
-        //        MessageDialog md = new MessageDialog(ColorScheme);
-        //        md.ShowDialog(red.GetRect().ToString(), owner: this, title: "Rect Edit Result");
-        //    }
-        //}
+        void BeginSmoothButtonAnimation(Color startColor, Color endColor)
+        {
+            SolidColorBrush scb = new SolidColorBrush(startColor);
+            SsuiTheme.ButtonBackground = scb;
+
+            scb.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation()
+            {
+                From = startColor,
+                To = endColor,
+                Duration = new Duration(TimeSpan.FromSeconds(10)),
+                AutoReverse = true,
+                RepeatBehavior = RepeatBehavior.Forever
+            });
+        }
+
+        #endregion
+
     }
 }
