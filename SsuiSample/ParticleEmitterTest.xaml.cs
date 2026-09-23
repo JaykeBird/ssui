@@ -36,7 +36,6 @@ namespace SsuiSample
         private void control_Loaded(object sender, RoutedEventArgs e)
         {
             pl.LoadObject(emitter);
-            pl.ShowInheritedProperties = false;
         }
 
         bool hasStarted = false;
@@ -75,7 +74,6 @@ namespace SsuiSample
             {
                 brdrSettings.Visibility = Visibility.Visible;
                 pl.ReloadObject();
-                pl.ShowInheritedProperties = false;
                 btnSettings.IsSelected = true;
             }
         }

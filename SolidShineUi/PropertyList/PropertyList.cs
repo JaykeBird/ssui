@@ -508,21 +508,26 @@ namespace SolidShineUi.PropertyList
                 _isReloading = true;
                 _internalAction = true;
 
+                string existingName = ObjectDisplayName;
+
                 LoadObject(_baseObject);
+
+                // if a custom name for ObjectDisplayName was used previously, let's re-apply it here
+                if (ObjectDisplayName != existingName)
+                {
+                    ObjectDisplayName = existingName;
+                }
 
                 if (resetViewSettings)
                 {
                     ShowReadOnlyProperties = true;
                     ShowInheritedProperties = true;
                     FilterText = "";
-                    _internalAction = false;
+                }
+                _internalAction = false;
 
-                    FilterProperties();
-                }
-                else
-                {
-                    _internalAction = false;
-                }
+                // reapply view settings (or if it was reset, apply the now-resetted settings)
+                FilterProperties();
 
                 _isReloading = false;
             }
