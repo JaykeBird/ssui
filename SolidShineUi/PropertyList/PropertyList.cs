@@ -436,13 +436,20 @@ namespace SolidShineUi.PropertyList
         {
             _baseObject = o;
             Type type = o.GetType();
-            var nameProp = type.GetProperty("Name");
-
-            if (nameProp != null)
+            try
             {
-                ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
+                var nameProp = type.GetProperty("Name");
+
+                if (nameProp != null && nameProp.GetIndexParameters().Length == 0)
+                {
+                    ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
+                }
+                else
+                {
+                    ObjectDisplayName = NO_NAME;
+                }
             }
-            else
+            catch (AmbiguousMatchException)
             {
                 ObjectDisplayName = NO_NAME;
             }
