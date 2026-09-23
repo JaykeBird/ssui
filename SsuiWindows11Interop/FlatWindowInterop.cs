@@ -8,6 +8,9 @@ using Microsoft.UI.Windowing;
 
 namespace SolidShineUi;
 
+/// <summary>
+/// A helper class for facilitating access to Windows 11 features for usage with FlatWindow.
+/// </summary>
 public static class FlatWindowInterop
 {
     // if you have an unpackaged WPF app that references the Windows App SDK, make sure to disable MRT Core

@@ -73,7 +73,7 @@ namespace SsuiSample
         private void MainWindow_SourceInitialized(object sender, EventArgs e)
         {
 #if NET8_0
-            FlatWindowInterop.UseWindows11CaptionButtons(this);
+            this.UseWindows11CaptionButtons();
             MaximizedWindowFrame = new Thickness(0);
 #endif
         }
