@@ -64,7 +64,7 @@
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding WindowState, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Value="Maximized">
                                         <!--<Setter Property="BorderThickness" Value="{Binding Source={x:Static shell:SystemParameters2.Current}, Path=WindowResizeBorderThickness}"/>-->
-                                        <Setter Property="BorderThickness" Value="7"/>
+                                        <Setter Property="BorderThickness" Value="{Binding MaximizedWindowFrame, RelativeSource={RelativeSource TemplatedParent}}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

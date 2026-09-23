@@ -549,6 +549,28 @@ namespace SolidShineUi
 
         #endregion
 
+        #region Other Appearance Options
+
+        /// <summary>
+        /// Get or set the size of the extra frame around the window while it is maximized.
+        /// Unless you have a reason to change this property, you should leave it as the default.
+        /// </summary>
+        /// <remarks>
+        /// By default with Windows, the far edges of the window is hidden off the screen when the window is maximized.
+        /// To counteract against this, a dark gray frame is put around the window that prevents the actual window's contents
+        /// from being cut off beyond the edges of the screen. However, in certain advanced scenarios, this behavior is not
+        /// needed or a different thickness amount is needed, so this can be customized via this property.
+        /// </remarks>
+        public Thickness MaximizedWindowFrame { get => (Thickness)GetValue(MaximizedWindowFrameProperty); set => SetValue(MaximizedWindowFrameProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MaximizedWindowFrame"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty MaximizedWindowFrameProperty
+            = DependencyProperty.Register(nameof(MaximizedWindowFrame), typeof(Thickness), typeof(FlatWindow),
+            new FrameworkPropertyMetadata(new Thickness(7)));
+
+
+        #endregion
+
         #region Command Handling
 
         private void OnCloseWindow(object sender, ExecutedRoutedEventArgs e)
