@@ -43,6 +43,10 @@ public static class FlatWindowInterop
         WindowInteropHelper wih = new WindowInteropHelper(w);
         IntPtr hwnd = wih.EnsureHandle();
 
+        //HwndSource hwndSource = (HwndSource)PresentationSource.FromVisual(w);
+        //hwndSource.AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+        //        FixResizeHitZones(w, 6, msg, wParam, lParam, ref handled));
+
         // Retrieve the WindowId that corresponds to hWnd.
         Microsoft.UI.WindowId wid = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
         AppWindow appWindow = AppWindow.GetFromWindowId(wid);
@@ -156,4 +160,46 @@ public static class FlatWindowInterop
         }
     }
 
+    // I'm currently dealing with an issue where when this is turned on, the resize hit zones end up being outside the window itself
+    // rather than lining up closer to the window's borders
+    // the solution below seems to be using the Windows message pump to listen to the hit test message and tell Windows explicitly
+    // what the different hit zones are... but this also ends up requiring me to also define where other aspects of the window
+    // are too, like the title bar and other stuff. this feels a bit of a lot to try implementing right now, even if the existing
+    // issue is very annoying. I'll have to revisit this later on, when I have more time to investigate this
+
+    //private static IntPtr FixResizeHitZones(Window window, int resizeBorder, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    //{
+    //    const int WM_NCHITTEST = 0x0084;
+
+    //    if (msg == WM_NCHITTEST)
+    //    {
+    //        int x = (short)(lParam.ToInt32() & 0xFFFF);
+    //        int y = (short)(lParam.ToInt32() >> 16);
+
+    //        Point p = window.PointFromScreen(new Point(x, y));
+
+    //        bool left = p.X <= resizeBorder;
+    //        bool right = p.X >= window.ActualWidth - resizeBorder;
+    //        bool top = p.Y <= resizeBorder;
+    //        bool bottom = p.Y >= window.ActualHeight - resizeBorder;
+
+    //        handled = true;
+
+    //        if (left && top) return (IntPtr)13;        // HTTOPLEFT
+    //        if (right && top) return (IntPtr)14;       // HTTOPRIGHT
+    //        if (left && bottom) return (IntPtr)16;     // HTBOTTOMLEFT
+    //        if (right && bottom) return (IntPtr)17;    // HTBOTTOMRIGHT
+    //        if (left) return (IntPtr)10;               // HTLEFT
+    //        if (right) return (IntPtr)11;              // HTRIGHT
+    //        if (top) return (IntPtr)12;                // HTTOP
+    //        if (bottom) return (IntPtr)15;             // HTBOTTOM
+
+    //        // need to implement other items, like HTCAPTION
+    //        // I should see what WPF's WindowChrome does; it might already do something with this
+
+    //        return IntPtr.Zero;
+    //    }
+
+    //    return IntPtr.Zero;
+    //}
 }
