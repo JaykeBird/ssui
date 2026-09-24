@@ -62,17 +62,17 @@ public static class FlatWindowInterop
             appWindow.TitleBar.ButtonBackgroundColor = Windows.UI.Color.FromArgb(scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B);
         }
 
-        if (w.HighlightBrush is SolidColorBrush scb2) // 1.9.5: HighlightBrush, 2.0.0: CaptionButtonsHighlightBrush
+        if (w.CaptionButtonsHighlightBrush is SolidColorBrush scb2) // 1.9.5: HighlightBrush, 2.0.0: CaptionButtonsHighlightBrush
         {
             appWindow.TitleBar.ButtonHoverBackgroundColor = Windows.UI.Color.FromArgb(scb2.Color.A, scb2.Color.R, scb2.Color.G, scb2.Color.B);
         }
 
-        if (w.SelectionBrush is SolidColorBrush scb3) // 1.9.5: SelectionBrush, 2.0.0: CaptionButtonsClickBrush
+        if (w.CaptionButtonsClickBrush is SolidColorBrush scb3) // 1.9.5: SelectionBrush, 2.0.0: CaptionButtonsClickBrush
         {
             appWindow.TitleBar.ButtonPressedBackgroundColor = Windows.UI.Color.FromArgb(scb3.Color.A, scb3.Color.R, scb3.Color.G, scb3.Color.B);
         }
 
-        if (w.CaptionButtonsBrush is SolidColorBrush scb4) // 1.9.5: CaptionButtonsBrush, 2.0.0: CaptionButtonsForeground
+        if (w.CaptionButtonsForeground is SolidColorBrush scb4) // 1.9.5: CaptionButtonsBrush, 2.0.0: CaptionButtonsForeground
         {
             appWindow.TitleBar.ButtonForegroundColor = Windows.UI.Color.FromArgb(scb4.Color.A, scb4.Color.R, scb4.Color.G, scb4.Color.B);
             appWindow.TitleBar.ButtonHoverForegroundColor = Windows.UI.Color.FromArgb(scb4.Color.A, scb4.Color.R, scb4.Color.G, scb4.Color.B);
@@ -93,7 +93,7 @@ public static class FlatWindowInterop
         UpdateTitleBarElements(dpi, w, hwnd);
 
         // and now let's hide SSUI's own caption buttons
-        w.CaptionDisplayType = ChromeButtons.CaptionType.None; // for 1.9.x, CaptionType is underneath the ChromeButtons class
+        w.CaptionDisplayType = CaptionType.None; // for 1.9.x, CaptionType is underneath the ChromeButtons class
     }
 
     static void UpdateTitleBarElements(DpiScale dpi, FlatWindow w, IntPtr? windowHandle = null)
