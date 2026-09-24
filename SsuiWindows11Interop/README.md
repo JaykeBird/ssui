@@ -32,6 +32,9 @@ In your app's csproj file:
     <EnableCoreMrtTooling>false</EnableCoreMrtTooling>
     <!-- use the above line to disable MRT Core for resource bundling -->
 
+    <RuntimeIdentifiers>win-x64;win-x86;win-arm64</RuntimeIdentifiers>
+    <!-- Windows App SDK requires this to identify the supported platforms; edit as needed -->
+
     <!-- remainder of your project's properties and such here -->
   </PropertyGroup>
 
@@ -40,7 +43,7 @@ In your app's csproj file:
   <ItemGroup>
     <PackageReference Include="SolidShineUi" Version="2.0.0" />
     <!-- or whatever version of SolidShineUi you're using -->
-    <PackageReference Include="SolidShineUi.Wpf.Windows11Interop Version="2.0.0" />
+    <PackageReference Include="SolidShineUi.Wpf.Windows11Interop" Version="2.0.0" />
     <!-- see the table below to make sure you're using the right version here -->
 
     <!-- recommended, but optional -->
@@ -73,7 +76,7 @@ This change is only opt-in for each individual window, not applied project wide.
 
 ### Known Issues
 
-**Maximized window**
+#### Maximized window
 
 By default, FlatWindow will add an extra gray frame around its edges when the window is maximized.
 This is to counteract some Windows design decision that cuts off the edges of a window when it is
@@ -88,14 +91,14 @@ allow the gray frame to be hidden, called `MaximizedWindowFrame`. If you use ver
 For earlier versions of SolidShineUi, you will need to create a custom style for FlatWindow or 
 find a different way to go about hiding the frame or restoring the cutting-off behavior.
 
-**Resize handles / hit zones**
+#### Resize handles / hit zones
 
 I'm not sure why, but the hit/hover areas for the mouse to be in for resizing the window end up
 being outside the actual window itself. I don't know what the cause of this issue is, so I'm not
 quite sure yet how to solve it.
 
-For now, you could add on extra resize grippers at the corners of the window to help make it
-easier for users to recognize areas where they can resize the window.
+For now, you could add on extra resize grippers at the corners of the window to provide other areas
+where your users can resize the window.
 
 ## Which version to use
 
@@ -103,12 +106,15 @@ Different versions of this package (SolidShineUi.Wpf.Windows11Interop) are inten
 with different versions of SolidShineUi. See the below table to see which one you should use,
 based on which version of SolidShineUi you are using.
 
-| SSUI Version   | Use This Version    |
-|----------------|---------------------|
-| 1.9.5 - 1.9.10 | 1.9.5.x             |
-| 1.9.11 - 1.9.x | 1.9.11.x            |
-| 2.0.0 - 2.0.2  | 2.0.0.x             |
-| 2.0.3 +        | 2.0.3.x             |
+| SSUI Version    | Use This Version   |
+|-----------------|--------------------|
+| 1.9.5 - 1.9.10  | 1.9.5.x            |
+| 1.9.11 - 1.9.12 | 1.9.11.x           |
+| 2.0.0 - 2.0.2   | 2.0.0.x            |
+| 2.0.3 +         | 2.0.3.x            |
+
+(If there are newer versions of this package than what's listed above, use the one that corresponds
+to the version of SolidShineUi you're using (e.g., use version 3.0 if you're using SSUI 3.0).)
 
 Versions of Solid Shine UI prior to 1.9.5 aren't supported by this, because they are missing
 the ability to set the FlatWindow's `CaptionDisplayType` to `None`.
