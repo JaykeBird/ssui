@@ -19,12 +19,12 @@ namespace SolidShineUi.Converters
         /// Modify a <see cref="CornerRadius"/> to only apply to a few corners, as based upon the values in <paramref name="parameter"/>.
         /// </summary>
         /// <param name="value">
-        /// The <see cref="CornerRadius"/> object to read from (or <see cref="double"/> or a double-parseable <see cref="IConvertible"/> for a uniform value)
+        /// The <see cref="CornerRadius"/> object to read from (or a <see cref="double"/> or a double-parseable <see cref="IConvertible"/> for a uniform value)
         /// </param>
         /// <param name="targetType">Not used, returned type will always be a <see cref="CornerRadius"/></param>
         /// <param name="parameter">The corners to carry over to the final output; one or more of strings <c>"TL,TR,BL,BR"</c>, or a <see cref="byte"/> (see <see cref="PartialValueHelper"/>)</param>
-        /// <param name="culture">Not used</param>
-        /// <returns>A <see cref="CornerRadius"/> that only has a portion of its values set </returns>
+        /// <param name="culture">Used for converting an <see cref="IConvertible"/> object to a double</param>
+        /// <returns>A <see cref="CornerRadius"/> that only has a portion of its values set to the original CornerRadius's values, and the remaining ones set to 0</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             (bool topLeft, bool topRight, bool bottomLeft, bool bottomRight) vals = (false, false, false, false);

@@ -29,17 +29,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
+
+        /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
 
 
         /// <inheritdoc/>
         public void ApplySsuiTheme(SsuiTheme theme) { }
-
-        /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
 
         /// <inheritdoc/>
         public bool IsPropertyWritable

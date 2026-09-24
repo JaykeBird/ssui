@@ -1,22 +1,68 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+    <TargetFrameworks>net8.0-windows10.0.19041.0;net9.0-windows10.0.19041.0;net10.0-windows10.0.19041.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <RuntimeIdentifiers>win10-x64;win10-x86;win10-arm64</RuntimeIdentifiers>
+    <UseWPF>true</UseWPF>
+	  <RuntimeIdentifiers>win-x64;win-x86;win-arm64</RuntimeIdentifiers>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <RootNamespace>SolidShineUi</RootNamespace>
+    <WarningLevel>8</WarningLevel>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>SolidShineUi.Wpf.Windows11Interop</PackageId>
+    <Title>SolidShineUi WPF Windows11Interop</Title>
+    <AssemblyVersion>2.0.3</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Authors>JaykeBird</Authors>
+    <Copyright>(c) 2026 Jayke R. Huempfner (JaykeBird)</Copyright>
+    <PackageProjectUrl>https://github.com/JaykeBird/ssui</PackageProjectUrl>
+    <PackageIcon>Icon48.png</PackageIcon>
+    <RepositoryUrl>https://github.com/JaykeBird/ssui</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <Version>$(AssemblyVersion)</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+    <Description>Opt-in improved support for Windows 11 / Windows App SDK features with SolidShineUi</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
+    <None Include="..\Icons\Icon48.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SolidShineUi\SolidShineUi.csproj" />
+    <!--<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260804001" />-->
+    <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="1.8.260803002" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="1.8.260708001" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.260804001" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SolidShineUi" Version="[2.0.3,3.0.0)" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="SolidShineUi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

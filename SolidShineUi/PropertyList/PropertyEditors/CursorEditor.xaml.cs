@@ -45,7 +45,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             {
                 cbbCursors.IsEnabled = value;
                 fs.IsEnabled = value;
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
             }
         }
 
@@ -54,7 +54,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             fs.SsuiTheme = theme;
             btnMenu.SsuiTheme = theme;
-            imgItalic.Source = IconLoader.LoadIcon("Select", theme.IconVariation);
+            imgCursor.Source = IconLoader.LoadIcon("Select", theme.IconVariation);
             imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 

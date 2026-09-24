@@ -11,10 +11,25 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class VersionEditor : UserControl, IPropertyEditor
     {
-        // if using this to backport to your code using Solid Shine UI 1.9.x, replace usages of "SsuiTheme" below with "ColorScheme"
-        // and change the constructor below to just only have "InitializeComponent();" in it, removing the other lines
-        // you will also need to refer back to the source code for 1.9.10's VersionEditor to fix the other erroring lines/sections
-        // (such as the lines in mnuParse_Click, the missing ParentPropertyList property, and IPropertyEditorHost not existing)
+        // if using this to backport to your code using Solid Shine UI 1.9.x, instead refer to this file from 1.9.11:
+        // https://github.com/JaykeBird/ssui/blob/f69496e7c4fe4f6e8aa55439dcbbd7b80516f501/SolidShineUi/PropertyList/PropertyEditors/VersionEditor.xaml.cs
+
+        /// <summary>
+        /// Create a VersionEditor.
+        /// </summary>
+        public VersionEditor()
+        {
+            InitializeComponent();
+
+            // load in string values
+            mnuCopy.Header = Strings.CopyFullValue;
+            mnuParse.Header = Strings.EnterPasteValue;
+
+            nudLeft.ToolTip = Strings.Major;
+            nudTop.ToolTip = Strings.Minor;
+            nudRight.ToolTip = Strings.Build;
+            nudBottom.ToolTip = Strings.Revision;
+        }
 
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(Version) };
@@ -23,18 +38,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable
-        {
-            get => btnMenu.IsEnabled;
-            set
-            {
-                nudLeft.IsEnabled = value;
-                nudTop.IsEnabled = value;
-                nudBottom.IsEnabled = value;
-                nudRight.IsEnabled = value;
-                btnMenu.IsEnabled = value;
-            }
-        }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
@@ -57,36 +61,68 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
-        /// <summary>
-        /// Create a VersionEditor.
-        /// </summary>
-        public VersionEditor()
+        /// <inheritdoc/>
+        public bool IsPropertyWritable
         {
-            InitializeComponent();
+            get => mnuParse.IsEnabled;
+            set
+            {
+                nudLeft.IsEnabled = value;
+                nudTop.IsEnabled = value;
+                nudBottom.IsEnabled = value;
+                nudRight.IsEnabled = value;
 
-            // load in string values
-            mnuCopy.Header = Strings.CopyFullValue;
-            mnuParse.Header = Strings.EnterPasteValue;
-
-            nudLeft.ToolTip = Strings.Major;
-            nudTop.ToolTip = Strings.Minor;
-            nudRight.ToolTip = Strings.Build;
-            nudBottom.ToolTip = Strings.Revision;
+                mnuParse.IsEnabled = value; // _nullable not needed
+            }
         }
 
-        /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement() { return this; }
+        bool _internalAction = false;
 
 #if NETCOREAPP
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
 
         /// <inheritdoc/>
-        public void LoadValue(object? value, Type type)
+        public object? GetValue()
 #else
         /// <inheritdoc/>
         public event EventHandler ValueChanged;
 
+        /// <inheritdoc/>
+        public object GetValue()
+#endif
+        {
+            if (nudBottom.Value < 0)
+            {
+                // there is no revision number
+                if (nudRight.Value < 0)
+                {
+                    // no revision or build number
+                    return new Version(nudLeft.Value, nudTop.Value);
+                }
+                else
+                {
+                    return new Version(nudLeft.Value, nudTop.Value, nudRight.Value);
+                }
+            }
+            else
+            {
+                if (nudRight.Value < 0)
+                {
+                    // can't have a -1 build number but not a -1 revision number
+                    // the better idea may be to make revision -1 rather than make build 0, but it might just be a horse a piece either way
+                    _internalAction = true;
+                    nudRight.Value = 0;
+                    _internalAction = false;
+                }
+                return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
+            }
+        }
+
+#if NETCOREAPP
+        /// <inheritdoc/>
+        public void LoadValue(object? value, Type type)
+#else
         /// <inheritdoc/>
         public void LoadValue(object value, Type type)
 #endif
@@ -123,43 +159,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-#if NETCOREAPP
-        /// <inheritdoc/>
-        public object? GetValue()
-#else
-        /// <inheritdoc/>
-        public object GetValue()
-#endif
-        {
-            if (nudBottom.Value < 0)
-            {
-                // there is no revision number
-                if (nudRight.Value < 0)
-                {
-                    // no revision or build number
-                    return new Version(nudLeft.Value, nudTop.Value);
-                }
-                else
-                {
-                    return new Version(nudLeft.Value, nudTop.Value, nudRight.Value);
-                }
-            }
-            else
-            {
-                if (nudRight.Value < 0)
-                {
-                    // can't have a -1 build number but not a -1 revision number
-                    // the better idea may be to make revision -1 rather than make build 0, but it might just be a horse a piece either way
-                    _internalAction = true;
-                    nudRight.Value = 0;
-                    _internalAction = false;
-                }
-                return new Version(nudLeft.Value, nudTop.Value, nudRight.Value, nudBottom.Value);
-            }
-        }
-
-        bool _internalAction = false;
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private void nudLeft_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -191,11 +190,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 Strings.EnterAVersionString);
 
             sid.ValidationFunction = (s) => { return Version.TryParse(s, out _); };
-            sid.ValidationFailureString = "Not a valid Version value";
+            sid.ValidationFailureString = Strings.NotAValidVersion;
 
             sid.Width = 350;
             sid.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             sid.Owner = _host?.GetWindow();
+            sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             sid.ShowDialog();
 

@@ -13,6 +13,23 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class CornerRadiusEditor : UserControl, IPropertyEditor
     {
+
+        /// <inheritdoc/>
+        public CornerRadiusEditor()
+        {
+            InitializeComponent();
+
+            // set string values
+            nudUpLeft.ToolTip = Strings.TopLeft;
+            nudUpRight.ToolTip = Strings.TopRight;
+            nudDownLeft.ToolTip = Strings.BottomLeft;
+            nudDownRight.ToolTip = Strings.BottomRight;
+
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuSetZero.Header = Strings.SetAllToZero;
+            mnuSetOne.Header = Strings.SetAllToFive;
+        }
+
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(CornerRadius), typeof(CornerRadius?) };
 
@@ -20,16 +37,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => btnMenu.IsEnabled;
-            set
-            {
-                nudUpLeft.IsEnabled = value;
-                nudUpRight.IsEnabled = value;
-                nudDownLeft.IsEnabled = value;
-                nudDownRight.IsEnabled = value;
-                btnMenu.IsEnabled = value;
-            }
-        }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
@@ -54,24 +62,23 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public CornerRadiusEditor()
+        public bool IsPropertyWritable
         {
-            InitializeComponent();
-
-            // set string values
-            nudUpLeft.ToolTip = Strings.TopLeft;
-            nudUpRight.ToolTip = Strings.TopRight;
-            nudDownLeft.ToolTip = Strings.BottomLeft;
-            nudDownRight.ToolTip = Strings.BottomRight;
-
-            mnuSetNull.Header = Strings.SetAsNull;
-            mnuSetZero.Header = Strings.SetAllToZero;
-            mnuSetOne.Header = Strings.SetAllToFive;
+            get => btnMenu.IsEnabled;
+            set
+            {
+                nudUpLeft.IsEnabled = value;
+                nudUpRight.IsEnabled = value;
+                nudDownLeft.IsEnabled = value;
+                nudDownRight.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
+            }
         }
 
-        /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement() { return this; }
-        
+        bool _internalAction = false;
+
+        private const double ARROW_MIN_WIDTH = 280;
+
         /// <inheritdoc/>
 #if NETCOREAPP
         public void LoadValue(object? value, Type type)
@@ -117,24 +124,20 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        /// <inheritdoc/>
 #if NETCOREAPP
-        public object? GetValue()
-        {
-            if (mnuSetNull.IsChecked == true)
-            {
-                return null;
-            }
-            else
-            {
-                return new CornerRadius(nudUpLeft.Value, nudUpRight.Value, nudDownRight.Value, nudDownLeft.Value);
-            }
-        }
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
+
+        /// <inheritdoc/>
+        public object? GetValue()
 #else
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
+        /// <inheritdoc/>
         public object GetValue()
+#endif
         {
             if (mnuSetNull.IsChecked == true)
             {
@@ -145,12 +148,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return new CornerRadius(nudUpLeft.Value, nudUpRight.Value, nudDownRight.Value, nudDownLeft.Value);
             }
         }
-        
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-#endif
-
-        bool _internalAction = false;
 
         private void mnuSetZero_Click(object sender, RoutedEventArgs e)
         {
@@ -216,8 +213,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
-
-        private const double ARROW_MIN_WIDTH = 280;
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {

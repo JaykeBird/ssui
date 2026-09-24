@@ -25,10 +25,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public List<Type> ValidTypes => (new[] { typeof(GridLength), typeof(GridLength?) }).ToList();
 
-        bool _internalAction = false;
-
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
+
+        /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
@@ -43,58 +44,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
-
-        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
             get => btnMenu.IsEnabled;
             set 
             { 
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
                 cbbType.IsEnabled = value && !nullSet;
                 nudValue.IsEnabled = value && !nullSet;
             }
         }
 
+
+        bool _internalAction = false;
+
         bool nullSet = false;
-
-        void SetAsNull()
-        {
-            nullSet = true;
-            cbbType.IsEnabled = false;
-            nudValue.IsEnabled = false;
-            mnuSetNull.IsEnabled = true;
-            mnuSetNull.IsChecked = true;
-        }
-
-        void UnsetAsNull()
-        {
-            // do not set as null
-            nullSet = false;
-            mnuSetNull.IsChecked = false;
-            cbbType.IsEnabled = true;
-            nudValue.IsEnabled = true;
-        }
-
-        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
-        {
-            _internalAction = true;
-            if (mnuSetNull.IsChecked)
-            {
-                UnsetAsNull();
-            }
-            else
-            {
-                // do set as null
-                SetAsNull();
-            }
-            _internalAction = false;
-            ValueChanged?.Invoke(this, EventArgs.Empty);
-        }
 
 #if NETCOREAPP
         /// <inheritdoc/>
@@ -175,5 +139,39 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 #pragma warning restore IDE0051 // Remove unused private members
 #pragma warning restore IDE0060 // Remove unused parameter
+
+        void SetAsNull()
+        {
+            nullSet = true;
+            cbbType.IsEnabled = false;
+            nudValue.IsEnabled = false;
+            mnuSetNull.IsEnabled = true;
+            mnuSetNull.IsChecked = true;
+        }
+
+        void UnsetAsNull()
+        {
+            // do not set as null
+            nullSet = false;
+            mnuSetNull.IsChecked = false;
+            cbbType.IsEnabled = true;
+            nudValue.IsEnabled = true;
+        }
+
+        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
+        {
+            _internalAction = true;
+            if (mnuSetNull.IsChecked)
+            {
+                UnsetAsNull();
+            }
+            else
+            {
+                // do set as null
+                SetAsNull();
+            }
+            _internalAction = false;
+            ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

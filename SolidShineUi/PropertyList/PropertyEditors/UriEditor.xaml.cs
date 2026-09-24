@@ -22,12 +22,18 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             // load in string values
             mnuOpenUrl.Header = Strings.OpenUrl;
-            mnuSelectFile.Header = Strings.SelectAFile;
+            mnuSelectFile.Header = Strings.SelectAFile2;
             // mnuSetNull.Header = Strings.SetAsNull;
         }
 
         /// <inheritdoc/>
+        public List<Type> ValidTypes => (new[] { typeof(Uri) }).ToList();
+
+        /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
+
+        /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
@@ -41,21 +47,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
-
-        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => btnMenu.IsEnabled;
+            get => _writable;
             set 
-            { 
-                btnMenu.IsEnabled = value;
+            {
+                _writable = value;
+                mnuSelectFile.IsEnabled = value;
                 txtText.IsEnabled = value;// && !setAsNull;
+                                          // _nullable not needed
             }
         }
+
+        bool _writable = true;
 
         bool setAsNull = false;
 
@@ -63,27 +67,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private Type _itemType = typeof(Uri);
 
-        /// <inheritdoc/>
-        public List<Type> ValidTypes => (new[] { typeof(Uri) }).ToList();
-
-        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
-        {
-            //if (mnuSetNull.IsChecked)
-            //{
-            //    // do not set as null
-            //    setAsNull = false;
-            //    txtText.IsEnabled = true;
-            //    mnuSetNull.IsChecked = false;
-            //}
-            //else
-            //{
-            //    // do set as null
-            //    setAsNull = true;
-            //    txtText.IsEnabled = false;
-            //    mnuSetNull.IsChecked = true;
-            //}
-            //ValueChanged?.Invoke(this, EventArgs.Empty);
-        }
+        bool _uriNeedsReset = false;
+        bool _internalAction = false;
 
 #if NETCOREAPP
         /// <inheritdoc/>
@@ -162,6 +147,12 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 #endif
             if (res)
             {
+#if NETCOREAPP
+                _uri = u!;
+#else
+                _uri = u;
+#endif
+
                 ValueChanged?.Invoke(this, e);
                 _uriNeedsReset = false;
             }
@@ -171,8 +162,24 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
         }
 
-        bool _uriNeedsReset = false;
-        bool _internalAction = false;
+        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
+        {
+            //if (mnuSetNull.IsChecked)
+            //{
+            //    // do not set as null
+            //    setAsNull = false;
+            //    txtText.IsEnabled = true;
+            //    mnuSetNull.IsChecked = false;
+            //}
+            //else
+            //{
+            //    // do set as null
+            //    setAsNull = true;
+            //    txtText.IsEnabled = false;
+            //    mnuSetNull.IsChecked = true;
+            //}
+            //ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         private void mnuSelectFile_Click(object sender, RoutedEventArgs e)
         {
