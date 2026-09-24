@@ -94,6 +94,7 @@ public static class FlatWindowInterop
 
         // and now let's hide SSUI's own caption buttons
         w.CaptionDisplayType = CaptionType.None; // for 1.9.x, CaptionType is underneath the ChromeButtons class
+        w.MaximizedWindowFrame = new Thickness(0);
     }
 
     static void UpdateTitleBarElements(DpiScale dpi, FlatWindow w, IntPtr? windowHandle = null)
