@@ -57,22 +57,22 @@ public static class FlatWindowInterop
         appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
 
         // try to get the caption buttons to be the same color as the rest of the window
-        if (w.TitleBarBackground is SolidColorBrush scb)
+        if (w.Background is SolidColorBrush scb) // 1.9.5: w.Background, 2.0.0: TitleBarBackground
         {
             appWindow.TitleBar.ButtonBackgroundColor = Windows.UI.Color.FromArgb(scb.Color.A, scb.Color.R, scb.Color.G, scb.Color.B);
         }
 
-        if (w.CaptionButtonsHighlightBrush is SolidColorBrush scb2)
+        if (w.HighlightBrush is SolidColorBrush scb2) // 1.9.5: HighlightBrush, 2.0.0: CaptionButtonsHighlightBrush
         {
             appWindow.TitleBar.ButtonHoverBackgroundColor = Windows.UI.Color.FromArgb(scb2.Color.A, scb2.Color.R, scb2.Color.G, scb2.Color.B);
         }
 
-        if (w.CaptionButtonsClickBrush is SolidColorBrush scb3)
+        if (w.SelectionBrush is SolidColorBrush scb3) // 1.9.5: SelectionBrush, 2.0.0: CaptionButtonsClickBrush
         {
             appWindow.TitleBar.ButtonPressedBackgroundColor = Windows.UI.Color.FromArgb(scb3.Color.A, scb3.Color.R, scb3.Color.G, scb3.Color.B);
         }
 
-        if (w.CaptionButtonsForeground is SolidColorBrush scb4)
+        if (w.CaptionButtonsBrush is SolidColorBrush scb4) // 1.9.5: CaptionButtonsBrush, 2.0.0: CaptionButtonsForeground
         {
             appWindow.TitleBar.ButtonForegroundColor = Windows.UI.Color.FromArgb(scb4.Color.A, scb4.Color.R, scb4.Color.G, scb4.Color.B);
             appWindow.TitleBar.ButtonHoverForegroundColor = Windows.UI.Color.FromArgb(scb4.Color.A, scb4.Color.R, scb4.Color.G, scb4.Color.B);
@@ -93,7 +93,7 @@ public static class FlatWindowInterop
         UpdateTitleBarElements(dpi, w, hwnd);
 
         // and now let's hide SSUI's own caption buttons
-        w.CaptionDisplayType = CaptionType.None;
+        w.CaptionDisplayType = ChromeButtons.CaptionType.None; // for 1.9.x, CaptionType is underneath the ChromeButtons class
     }
 
     static void UpdateTitleBarElements(DpiScale dpi, FlatWindow w, IntPtr? windowHandle = null)
@@ -154,6 +154,7 @@ public static class FlatWindowInterop
             double iconTop = (titleBarHeight / 2d) - (iconSize / 2d);
             Thickness border = w.BorderThickness;
 
+            // this is the window icon
             // this doesn't seem to get the area quite perfect, but it's close enough
             nonClientRects.Add(new Rect(6 + border.Left, iconTop + border.Top, iconSize / dpi.DpiScaleX, iconSize / dpi.DpiScaleX));
         }
@@ -189,14 +190,14 @@ public static class FlatWindowInterop
 
     //        handled = true;
 
-    //        if (left && top) return (IntPtr)13;        // HTTOPLEFT
-    //        if (right && top) return (IntPtr)14;       // HTTOPRIGHT
-    //        if (left && bottom) return (IntPtr)16;     // HTBOTTOMLEFT
-    //        if (right && bottom) return (IntPtr)17;    // HTBOTTOMRIGHT
-    //        if (left) return (IntPtr)10;               // HTLEFT
-    //        if (right) return (IntPtr)11;              // HTRIGHT
-    //        if (top) return (IntPtr)12;                // HTTOP
-    //        if (bottom) return (IntPtr)15;             // HTBOTTOM
+    //        if (left && top) return (IntPtr)HitTest.HTTOPLEFT;
+    //        if (right && top) return (IntPtr)HitTest.HTTOPRIGHT;
+    //        if (left && bottom) return (IntPtr)HitTest.HTBOTTOMLEFT;
+    //        if (right && bottom) return (IntPtr)HitTest.HTBOTTOMRIGHT;
+    //        if (left) return (IntPtr)HitTest.HTLEFT;
+    //        if (right) return (IntPtr)HitTest.HTRIGHT;
+    //        if (top) return (IntPtr)HitTest.HTTOP;
+    //        if (bottom) return (IntPtr)HitTest.HTBOTTOM;
 
     //        // need to implement other items, like HTCAPTION
     //        // I should see what WPF's WindowChrome does; it might already do something with this
@@ -205,5 +206,29 @@ public static class FlatWindowInterop
     //    }
 
     //    return IntPtr.Zero;
+    //}
+
+    //public enum HitTest
+    //{
+    //    HTNOWHERE = 0,
+    //    HTCLIENT = 1,
+    //    HTCAPTION = 2,
+    //    HTGROWBOX = 4,
+    //    HTSIZE = HTGROWBOX,
+    //    HTMINBUTTON = 8,
+    //    HTMAXBUTTON = 9,
+    //    HTLEFT = 10,
+    //    HTRIGHT = 11,
+    //    HTTOP = 12,
+    //    HTTOPLEFT = 13,
+    //    HTTOPRIGHT = 14,
+    //    HTBOTTOM = 15,
+    //    HTBOTTOMLEFT = 16,
+    //    HTBOTTOMRIGHT = 17,
+    //    HTREDUCE = HTMINBUTTON,
+    //    HTZOOM = HTMAXBUTTON,
+    //    HTSIZEFIRST = HTLEFT,
+    //    HTSIZELAST = HTBOTTOMRIGHT,
+    //    HTTRANSPARENT = -1
     //}
 }

@@ -94,6 +94,9 @@ I'm not sure why, but the hit/hover areas for the mouse to be in for resizing th
 being outside the actual window itself. I don't know what the cause of this issue is, so I'm not
 quite sure yet how to solve it.
 
+For now, you could add on extra resize grippers at the corners of the window to help make it
+easier for users to recognize areas where they can resize the window.
+
 ## Which version to use
 
 Different versions of this package (SolidShineUi.Wpf.Windows11Interop) are intended to be used

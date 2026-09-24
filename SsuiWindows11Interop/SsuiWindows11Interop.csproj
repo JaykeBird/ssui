@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SolidShineUi" Version="2.0.0" />
+    <PackageReference Include="SolidShineUi" Version="[1.9.5,2.0.0)" />
   </ItemGroup>
 
   <ItemGroup>
