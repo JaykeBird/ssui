@@ -37,25 +37,28 @@ namespace SolidShineUi
         }
 
         #region Native Interop
-        /// <summary>
-        /// Raises the Window.SourceInitialized event.
-        /// </summary>
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            //HwndSource hwnd = (HwndSource)PresentationSource.FromVisual(this);
-            //hwnd.AddHook(WndProc);
-            base.OnSourceInitialized(e);
-        }
+        ///// <summary>
+        ///// Raises the Window.SourceInitialized event.
+        ///// </summary>
+        //protected override void OnSourceInitialized(EventArgs e)
+        //{
+        //    base.OnSourceInitialized(e);
+        //    HwndSource hwnd = (HwndSource)PresentationSource.FromVisual(this);
+        //    hwnd.AddHook(WndProc);
+        //}
 
         //private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         //{
         //    Window window = (Window)HwndSource.FromHwnd(hwnd).RootVisual;
 
+        //    Console.WriteLine("MSG " + hwnd);
+
         //    // https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-snap-layout-menu#how-do-i-fix-it
         //    if (msg == 0x0084) // NCHITTEST (asking what this point is in relation to the window)
         //    {
 
-        //        Debug.Print("ASKING NCHITTEST");
+        //        Console.WriteLine("ASKING NCHITTEST");
+        //        //Debug.Print("ASKING NCHITTEST");
         //        // lParam stores the coordinates the message is asking about, so let's get the coordinates out
         //        // https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-nchittest
         //        // https://stackoverflow.com/questions/49288552/how-do-i-read-the-win32-wm-move-lparam-x-y-coordinates-in-c
@@ -66,7 +69,7 @@ namespace SolidShineUi
         //        {
         //            if (fw.TestIfPointIsMaximizeButton(p))
         //            {
-        //                handled = true;
+        //                //handled = true;
         //                return new IntPtr(9);
         //            }
         //        }
@@ -93,7 +96,8 @@ namespace SolidShineUi
 
         //    if (p.X > maxButtonLeftBound && p.X < maxButtonRightBound && p.Y > maxButtonTopBound && p.Y < maxButtonBottomBound)
         //    {
-        //        Debug.Print("MAX BUTTON");
+        //        Console.WriteLine("MAX BUTTON");
+        //        //Debug.Print("MAX BUTTON");
         //        return true; // MAXIMIZE BUTTON
         //    }
         //    else
