@@ -14,7 +14,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>SolidShineUi.Wpf.Windows11Interop</PackageId>
     <Title>SolidShineUi WPF Windows11Interop</Title>
-    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.3</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Authors>JaykeBird</Authors>
     <Copyright>(c) 2026 Jayke R. Huempfner (JaykeBird)</Copyright>
