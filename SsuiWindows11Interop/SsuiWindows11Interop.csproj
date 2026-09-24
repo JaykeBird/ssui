@@ -25,6 +25,15 @@
     <Version>$(AssemblyVersion)</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+    <Description>Opt-in improved support for Windows 11 / Windows App SDK features with SolidShineUi</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
