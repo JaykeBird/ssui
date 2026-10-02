@@ -1245,9 +1245,8 @@ namespace SolidShineUi
         {
             if (sender is ITabDisplayItem tdi)
             {
-                if (tdi.TabItem.TabContextMenu != null)
+                if (tdi.TabItem.TabContextMenu is ContextMenu cm)
                 {
-                    ContextMenu cm = tdi.TabItem.TabContextMenu;
                     cm.ColorScheme = ColorScheme;
                     cm.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
                     cm.IsOpen = true;

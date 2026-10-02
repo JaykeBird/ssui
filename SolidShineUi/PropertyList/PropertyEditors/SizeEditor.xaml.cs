@@ -12,6 +12,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class SizeEditor : UserControl, IPropertyEditor
     {
+
+        /// <summary>
+        /// Create a SizeEditor.
+        /// </summary>
+        public SizeEditor()
+        {
+            InitializeComponent();
+
+            // load in string values
+            mnuSetNull.Header = Strings.SetAsNull;
+            mnuSetZero.Header = Strings.SetAllToZero;
+        }
+
         /// <inheritdoc/>
         public List<Type> ValidTypes => new List<Type> { typeof(Size), typeof(Size?) };
 
@@ -19,16 +32,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable
-        {
-            get => nudHeight.IsEnabled;
-            set
-            {
-                nudHeight.IsEnabled = value;
-                nudWidth.IsEnabled = value;
-                btnMenu.IsEnabled = value;
-            }
-        }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
@@ -45,20 +49,19 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             imgMenu.Source = LoadIcon("ThreeDots", theme.IconVariation);
         }
 
-        /// <summary>
-        /// Create a SizeEditor.
-        /// </summary>
-        public SizeEditor()
+        /// <inheritdoc/>
+        public bool IsPropertyWritable
         {
-            InitializeComponent();
-
-            // load in string values
-            mnuSetNull.Header = Strings.SetAsNull;
-            mnuSetZero.Header = Strings.SetAllToZero;
+            get => btnMenu.IsEnabled;
+            set
+            {
+                nudHeight.IsEnabled = value;
+                nudWidth.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
+            }
         }
 
-        /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement() { return this; }
+        bool _internalAction = false;
 
         /// <inheritdoc/>
 #if NETCOREAPP
@@ -104,24 +107,21 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
 #if NETCOREAPP
-        /// <inheritdoc/>
-        public object? GetValue()
-        {
-            if (mnuSetNull.IsChecked == true)
-            {
-                return null;
-            }
-            else
-            {
-                return new Size(nudWidth.Value, nudHeight.Value);
-            }
-        }
 
         /// <inheritdoc/>
         public event EventHandler? ValueChanged;
+
+        /// <inheritdoc/>
+        public object? GetValue()
 #else
+        
+        /// <inheritdoc/>
+        public event EventHandler ValueChanged;
+
         /// <inheritdoc/>
         public object GetValue()
+
+#endif
         {
             if (mnuSetNull.IsChecked == true)
             {
@@ -132,12 +132,16 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return new Size(nudWidth.Value, nudHeight.Value);
             }
         }
-        
-        /// <inheritdoc/>
-        public event EventHandler ValueChanged;
-#endif
 
-        bool _internalAction = false;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        private void nudLeft_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!_internalAction)
+            {
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         private void mnuSetZero_Click(object sender, RoutedEventArgs e)
         {
@@ -149,16 +153,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             SetAllToValue(1);
             ValueChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        private void nudLeft_ValueChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (!_internalAction)
-            {
-                ValueChanged?.Invoke(this, EventArgs.Empty);
-            }
         }
 
         void SetAllToValue(double d)

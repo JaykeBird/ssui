@@ -34,7 +34,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => cbbStyles.IsEnabled; set => cbbStyles.IsEnabled = value; }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
@@ -46,25 +46,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
+        public bool IsPropertyWritable { get => cbbStyles.IsEnabled; set => cbbStyles.IsEnabled = value; }
 
         bool _raiseEvents = false;
 
-        private void cbbStyles_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cbbStyles.SelectedIndex == 3 && !canNull)
-            {
-                canNull = true;
-            }
-
-            if (_raiseEvents)
-            {
-                ValueChanged?.Invoke(this, e);
-            }
-        }
+        bool _nullable = false;
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -94,7 +80,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 case 2:
                     return FontStyles.Oblique;
                 case 3:
-                    if (canNull) { return null; }
+                    if (_nullable) { return null; }
                     else { return FontStyles.Normal; }
                 default:
                     return FontStyles.Normal;
@@ -139,12 +125,23 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             _raiseEvents = true;
         }
 
-        bool canNull = false;
-
         void EnableNull()
         {
             cbbNull.Visibility = Visibility.Visible;
-            canNull = true;
+            _nullable = true;
+        }
+
+        private void cbbStyles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbbStyles.SelectedIndex == 3 && !_nullable)
+            {
+                _nullable = true;
+            }
+
+            if (_raiseEvents)
+            {
+                ValueChanged?.Invoke(this, e);
+            }
         }
     }
 }

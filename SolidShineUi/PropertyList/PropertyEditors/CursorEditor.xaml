@@ -13,7 +13,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="28" />
         </Grid.ColumnDefinitions>
-        <Image x:Name="imgItalic" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/SolidShineUi;component/Images/SelectColor.png" />
+        <Image x:Name="imgCursor" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" Source="/SolidShineUi;component/Images/SelectColor.png" />
         <flat:EnumComboBox x:Name="cbbCursors" Grid.Column="1" SelectionChanged="cbbCursors_SelectionChanged" SelectedIndex="2" Enum="{x:Type CursorType}" />
         <Grid Grid.Column="1" x:Name="stkFile" Visibility="Collapsed" >
             <Grid.ColumnDefinitions>

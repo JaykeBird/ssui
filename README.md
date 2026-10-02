@@ -56,6 +56,11 @@ View more details about this library at [my website, jaykebird.com](https://jayk
 - **TabControl** - a flat-styled tab control, where each tab has a title, icon, and close button
 - **TimeSpinner** - a spinner that allows users to enter in a time value (supports any TimeSpan value, or TimeOnly in .NET 6+)
 
+### WPF XAML Converters
+
+SolidShineUi also includes a lot of WPF XAML converters. See [the Value Converters wiki page](https://github.com/JaykeBird/ssui/wiki/Value-Converters) 
+for the full list and how to use them.
+
 ### Other Classes
 
 - **ArithmeticParser** - parse math expressions (`"(5+4)/2"`) quickly and easily. [Available separately](https://github.com/JaykeBird/ArithmeticParser) as well
@@ -66,6 +71,7 @@ View more details about this library at [my website, jaykebird.com](https://jayk
 - **ColorPaletteFileReader** - load a list of colors from various color palette file formats
 - **ColorScheme** - a palette/scheme of colors to use throughout your UI. Used in Solid Shine UI 1.x, new projects should use `SsuiAppTheme`
 - **ColorsHelper** - contains various methods for interacting with colors and color spaces
+- **CsvLineHelper** - write or read an array of strings into a comma-separated list, including handling strings _with_ commas in them (like a line of a CSV file)
 - **ImageColorPicker** - select colors from an image, used in the ColorPickerDialog
 - **IKeyAction** - represents an action that can occur when a keyboard shortcut is pressed (such as CommandKeyAction and RoutedEventKeyAction)
 - **KeyboardShortcut** - represents a single keyboard shortcut (and the action to take when it is pressed)
@@ -81,10 +87,6 @@ View more details about this library at [my website, jaykebird.com](https://jayk
 - **TabItem** - a tab to use with the TabControl
 - **TransformSerializer** - convert a WPF Transform object to a short string that can be stored or transferred (and then later deserialized)
 - **WildcardMatch** - match file names/paths (or any text) using wildcard characters like `*` and `?`. [Available separately](https://bitbucket.org/hasullivan/fast-wildcard-matching/) as well
-
-### WPF XAML Converters
-
-SolidShineUi also includes a lot of WPF XAML converters. See [the Value Converters wiki page](https://github.com/JaykeBird/ssui/wiki/Value-Converters) for the full list and how to use them.
 
 ## Use it now
 
@@ -133,7 +135,7 @@ You can create a SsuiAppTheme based upon any base color you want to use (such as
 `SsuiThemes.CreateLightTheme()` or `SsuiThemes.CreateDarkTheme()` for more standard light or dark themes, or even `SsuiThemes.SystemTheme` for a more standard Windows-looking theme.
 High-contrast color schemes are also built-in in the `SsuiThemes` class. You can also start from scratch and custom set each value if you'd like, too (including using gradients!).
 
-From there, you can use a `ThemedWindow` (drop-in replacement of the standard WPF window), which contains a `SsuiTheme` property that all the 
+From there, you can use a `ThemedWindow` (a standard WPF window which contains a `SsuiTheme` property) and set its `SsuiTheme` so that all the 
 child Solid Shine UI controls can bind to. Change the Window to be a ThemedWindow on the XAML side:
 
 ```XAML
@@ -179,49 +181,10 @@ Solid Shine UI also includes another window class called `FlatWindow`, which has
 and a custom appearance (and with it, a few extra features and options about what to put into the title bar). It is a drop-in replacement if you want to
 use `FlatWindow` instead of `ThemedWindow`.
 
-If you're building your own controls, they can also use `SsuiTheme` by having them inherit from `ThemedControl`, `ThemedContentControl`, or `ThemedUserControl`.
-Make sure to then override the `OnApplySsuiTheme` method to set your control's appearance based upon the SsuiTheme's values. Use this to get started:
-
-```csharp
-    /// <inheritdoc/>
-    protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
-    {
-        base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
-
-        if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
-        {
-            ApplyTheme(ssuiAppTheme.AccentTheme);
-        }
-        else
-        {
-            ApplyTheme(ssuiTheme);
-        }
-
-        void ApplyTheme(SsuiTheme theme)
-        {
-            // update your appearance and properties in here
-                
-            // use ApplyThemeBinding() to bind the properties so that changing the value in the SsuiTheme automatically updates this control:
-            ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
-            ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, theme);
-
-            // note that "theme" can be null; ApplyThemeBinding handles that and also handles the ThemeValueExclude property
-        }
-    }
-```
-
-If you want to customize the appearance of specific controls while still using SsuiTheme, you can either look into using an accent theme (see below) or 
-set that control's `ThemeValueExclude` property to make sure that your brushes don't get overwritten by the SsuiTheme:
-
-```xaml
-    <flat:FlatButton Content="My Button" x:Name="btn1" Background="Orchid" BorderBrush="Purple" ThemeValueExclude="Background,BorderBrush" />
-```
-
-For storing your SsuiAppTheme in a settings file or cache, get a serializable version of it using the `ToSerializableObject` method.
-
 From here, you should be on your way!
 
-View the wiki page on [SsuiTheme and themed controls](https://github.com/JaykeBird/ssui/wiki/UsingSsuiTheme) for more info on using SsuiAppTheme.
+View the wiki page on [SsuiTheme and themed controls](https://github.com/JaykeBird/ssui/wiki/UsingSsuiTheme) for more info on using SsuiAppTheme,
+including about how to incorporate it into your custom controls, and a few more features and options to tweak your usage of it.
 
 ### Accent theme
 
@@ -260,7 +223,7 @@ file for a step-by-step process and other notes and remarks.
 
 ## Coming Soon
 
-Version 2.0 is here! See the [release page](https://github.com/JaykeBird/ssui/releases/tag/2.0) for more info on all the new stuff in there. Up next will be version 2.1, coming in 2026 or 2027.
+Version 2.0 is here! See the [release page](https://github.com/JaykeBird/ssui/releases/tag/2.0) for more info on all the new stuff in there. Up next will be version 2.1, coming in 2027.
 Don't be surprised if don't see much activity on the main branch for some periods of time, as I'll be using sub-branches to develop various features, including an upcoming **Ribbon** control!
 
 View the [roadmap](https://github.com/JaykeBird/ssui/wiki/Roadmap) for more details on my plans.
@@ -273,7 +236,8 @@ To build this library you will need:
 - latest .NET Core SDK
 - (for the Avalonia version, I'd also recommend installing the latest Avalonia UI extension for your IDE)
 
-I recommend using Visual Studio 2026 (or the latest version) for this library. When opened up, you should be able to just build and run the library (to build the .NET Framework
+I recommend using Visual Studio 2026 (or the latest version) for this library, or Visual Studio Code (especially if you're working with Avalonia in a
+commercial fashion). When opened up, you should be able to just build and run the library (to build the .NET Framework
 versions, you may need to have the individual components for .NET Framework targeting packs installed).
 
 Included is the SsuiSample program, which is useful for demonstrating the library and its functions. I also use this to test the library and its controls. 

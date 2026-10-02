@@ -436,13 +436,20 @@ namespace SolidShineUi.PropertyList
         {
             _baseObject = o;
             Type type = o.GetType();
-            var nameProp = type.GetProperty("Name");
-
-            if (nameProp != null)
+            try
             {
-                ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
+                var nameProp = type.GetProperty("Name");
+
+                if (nameProp != null && nameProp.GetIndexParameters().Length == 0)
+                {
+                    ObjectDisplayName = (nameProp.GetValue(o) ?? NO_NAME).ToString() ?? NO_NAME;
+                }
+                else
+                {
+                    ObjectDisplayName = NO_NAME;
+                }
             }
-            else
+            catch (AmbiguousMatchException)
             {
                 ObjectDisplayName = NO_NAME;
             }
@@ -508,21 +515,31 @@ namespace SolidShineUi.PropertyList
                 _isReloading = true;
                 _internalAction = true;
 
+                string existingName = ObjectDisplayName;
+
                 LoadObject(_baseObject);
+
+                // if a custom name for ObjectDisplayName was used previously, let's re-apply it here
+                //
+                // my concern is about if in the situation that the object has a Name property, then
+                // we want to make sure that we keep ObjectDisplayName updated if that Name changed.
+                // so now this only narrowly kicks in if the object had no name but ObjectDisplayName
+                // was set to something else... in the future, I'll need to better track this, I think
+                if (ObjectDisplayName == NO_NAME && existingName != NO_NAME)
+                {
+                    ObjectDisplayName = existingName;
+                }
 
                 if (resetViewSettings)
                 {
                     ShowReadOnlyProperties = true;
                     ShowInheritedProperties = true;
                     FilterText = "";
-                    _internalAction = false;
+                }
+                _internalAction = false;
 
-                    FilterProperties();
-                }
-                else
-                {
-                    _internalAction = false;
-                }
+                // reapply view settings (or if it was reset, apply the now-resetted settings)
+                FilterProperties();
 
                 _isReloading = false;
             }

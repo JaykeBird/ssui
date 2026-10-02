@@ -38,14 +38,11 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
-        bool _writable = true;
-
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => _writable; set { _writable = value; btnMenu.IsEnabled = value; } }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
-
 
 #if NETCOREAPP
         private IPropertyEditorHost? _host = null;
@@ -61,16 +58,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
+        public bool IsPropertyWritable { get => _writable; set { _writable = value; btnMenu.IsEnabled = value; } }
 
         Type _dataType = typeof(TransformGroup);
         bool _specificType = false;
 
         Transform _transform = new MatrixTransform(Matrix.Identity);
 
+        bool _writable = true;
         bool _setNull = false;
 
 #if NETCOREAPP
@@ -164,6 +159,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             TransformEditDialog ted = new TransformEditDialog();
             ted.Owner = _host?.GetWindow();
+            ted.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             ted.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             if (_specificType)
             {

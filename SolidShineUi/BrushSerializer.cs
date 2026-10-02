@@ -142,7 +142,7 @@ namespace SolidShineUi
             switch (rgb.MappingMode)
             {
                 case BrushMappingMode.Absolute:
-                    props += "aa"; // two A's, as Avalonia has the ability to set the relativeness of the start and end points independently of one another
+                    props += "aaaa"; // four A's, as Avalonia has the ability to set the relativeness of all the properties separate from one another
                     break;
                 default:
                     break;

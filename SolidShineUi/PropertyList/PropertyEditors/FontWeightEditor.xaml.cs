@@ -45,16 +45,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable
-        {
-            get => btnMenu.IsEnabled;
-            set
-            {
-                nudWeight.IsEnabled = value;
-                cbbWeight.IsEnabled = value;
-                btnMenu.IsEnabled = value;
-            }
-        }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
@@ -69,9 +60,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
+        public bool IsPropertyWritable
         {
-            return this;
+            get => btnMenu.IsEnabled;
+            set
+            {
+                nudWeight.IsEnabled = value;
+                cbbWeight.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
+            }
         }
 
         bool _raiseEvents = false;

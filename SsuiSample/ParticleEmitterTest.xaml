@@ -35,7 +35,7 @@
                 BorderThickness="1" BorderBrush="{Binding ElementName=window, Path=SsuiTheme.BorderBrush, FallbackValue=Black}"
                 Background="{Binding ElementName=window, Path=SsuiTheme.PanelBackground, FallbackValue=White}" Visibility="Collapsed"
                 CornerRadius="{Binding ElementName=window, Path=SsuiTheme.CornerRadius, FallbackValue=0}" x:Name="brdrSettings" >
-            <pl:PropertyList ShowNameDisplay="False" ShowTypeDisplay="False" ShowViewMenu="False" x:Name="pl" ShowInheritedProperties="False" />
+            <pl:PropertyList ShowNameDisplay="False" ShowTypeDisplay="False" ShowViewMenu="True" x:Name="pl" ShowInheritedProperties="False" />
         </Border>
     </Grid>
 </flat:ThemedUserControl>

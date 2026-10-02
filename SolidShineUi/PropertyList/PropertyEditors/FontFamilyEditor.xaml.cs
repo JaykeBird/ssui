@@ -31,7 +31,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => btnEdit.IsEnabled; set => btnEdit.IsEnabled = value; }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
@@ -44,6 +44,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             imgFontEdit.Source = LoadIcon("Font", theme.IconVariation);
         }
 
+        /// <inheritdoc/>
+        public bool IsPropertyWritable { get => btnEdit.IsEnabled; set => btnEdit.IsEnabled = value; } // _nullable not needed
+
 #if NETCOREAPP
         private FontFamily? font = new FontFamily("Segoe UI");
         IPropertyEditorHost? _host = null;
@@ -51,12 +54,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         private FontFamily font = new FontFamily("Segoe UI");
         IPropertyEditorHost _host = null;
 #endif
-
-        /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
 
 #if NETCOREAPP
         /// <inheritdoc/>

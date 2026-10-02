@@ -51,6 +51,7 @@ namespace SolidShineUi.Utils
 
         private void NewSpinnerBase_Loaded(object sender, RoutedEventArgs e)
         {
+            ResetTimers();
             // doesn't work in constructor, apparently
             InternalValidateValue();
         }
@@ -59,6 +60,7 @@ namespace SolidShineUi.Utils
         {
             keyDownTimer?.Dispose();
             advanceTimer?.Dispose();
+            TimersDisposed = true;
         }
 
         /// <summary>
@@ -177,11 +179,36 @@ namespace SolidShineUi.Utils
             }
             catch (TaskCanceledException)
             {
-                advanceTimer.Stop();
+                if (!TimersDisposed) advanceTimer.Stop();
             }
         }
 
         #endregion
+
+        /// <summary>
+        /// Get if the timers have been disposed. If they are still needed, call <see cref="ResetTimers"/> to initialize new ones.
+        /// </summary>
+        protected bool TimersDisposed { get; private set; } = false;
+
+        /// <summary>
+        /// Reset the spinner's internal timers.
+        /// </summary>
+        protected void ResetTimers()
+        {
+            advanceTimer.Dispose();
+            keyDownTimer.Dispose();
+
+            advanceTimer = new Timer(50);
+            keyDownTimer = new Timer(300);
+
+            keyDownTimer.AutoReset = false;
+            advanceTimer.AutoReset = true;
+
+            keyDownTimer.Elapsed += (s, e) => advanceTimer.Start();
+            advanceTimer.Elapsed += AdvanceTimer_Elapsed;
+
+            TimersDisposed = false;
+        }
 
 #pragma warning restore CA1051 // Do not declare visible instance fields
 
@@ -597,7 +624,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected virtual void OnIntervalChanged(DependencyPropertyChangedEventArgs e)
         {
-            advanceTimer.Interval = Interval;
+            if (!TimersDisposed) advanceTimer.Interval = Interval;
             RoutedPropertyChangedEventArgs<int> re = new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, (int)e.NewValue, IntervalChangedEvent);
             re.Source = this;
             RaiseEvent(re);
@@ -790,7 +817,7 @@ namespace SolidShineUi.Utils
         {
             if (!IsEnabled || IsAtMaxValue || IsAtMinValue)
             {
-                advanceTimer.Stop();
+                if (!TimersDisposed) advanceTimer.Stop();
             }
         }
 
@@ -868,6 +895,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected void TextBoxKeyUp(KeyEventArgs e)
         {
+            if (TimersDisposed) return;
             if (e.Key == Key.Down)
             {
                 if (advanceTimer.Enabled)
@@ -902,7 +930,7 @@ namespace SolidShineUi.Utils
         protected void BeginButtonPress(bool stepUp)
         {
             advanceStepUp = stepUp;
-            keyDownTimer.Start();
+            if (!TimersDisposed) keyDownTimer.Start();
         }
 
         /// <summary>
@@ -921,6 +949,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected void DownButtonPress()
         {
+            if (TimersDisposed) return;
             if (advanceTimer.Enabled)
             {
                 advanceTimer.Stop();
@@ -938,6 +967,7 @@ namespace SolidShineUi.Utils
         /// </summary>
         protected void UpButtonPress()
         {
+            if (TimersDisposed) return;
             if (advanceTimer.Enabled)
             {
                 advanceTimer.Stop();
@@ -1038,7 +1068,7 @@ namespace SolidShineUi.Utils
         {
             //int value = Value;
 
-            if (!advanceTimer.Enabled)
+            if (!TimersDisposed && !advanceTimer.Enabled)
             {
                 ValidateValue();
 

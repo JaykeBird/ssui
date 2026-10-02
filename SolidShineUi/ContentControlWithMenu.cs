@@ -83,7 +83,7 @@ namespace SolidShineUi
                 return;
             }
 
-            Background = cs.MainColor.ToBrush();
+            Background = cs.LightBackgroundColor.ToBrush();
             MenuBackground = cs.LightBackgroundColor.ToBrush();
             DisabledBrush = cs.DarkDisabledColor.ToBrush();
             BorderBrush = cs.BorderColor.ToBrush();

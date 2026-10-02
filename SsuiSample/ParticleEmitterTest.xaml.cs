@@ -14,7 +14,7 @@ namespace SsuiSample
     /// <summary>
     /// Interaction logic for ParticleEmitterTest.xaml
     /// </summary>
-    public partial class ParticleEmitterTest : ThemedUserControl
+    public partial class ParticleEmitterTest : ThemedUserControl, IDisposable
     {
         public ParticleEmitterTest()
         {
@@ -24,7 +24,6 @@ namespace SsuiSample
 
             SsuiThemeChanged += control_SsuiThemeChanged;
             Loaded += control_Loaded;
-            Unloaded += control_Closing;
         }
 
         private void control_SsuiThemeChanged(object sender, RoutedEventArgs e)
@@ -37,12 +36,6 @@ namespace SsuiSample
         private void control_Loaded(object sender, RoutedEventArgs e)
         {
             pl.LoadObject(emitter);
-            pl.ShowInheritedProperties = false;
-        }
-
-        private void control_Closing(object sender, RoutedEventArgs e)
-        {
-            emitter.Shutdown();
         }
 
         bool hasStarted = false;
@@ -81,7 +74,6 @@ namespace SsuiSample
             {
                 brdrSettings.Visibility = Visibility.Visible;
                 pl.ReloadObject();
-                pl.ShowInheritedProperties = false;
                 btnSettings.IsSelected = true;
             }
         }
@@ -148,6 +140,13 @@ namespace SsuiSample
         private void btnBackground_Click(object sender, RoutedEventArgs e)
         {
             ChangeBackground();
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            emitter.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

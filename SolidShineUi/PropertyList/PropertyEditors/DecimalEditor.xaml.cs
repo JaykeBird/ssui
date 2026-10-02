@@ -34,6 +34,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
+        public FrameworkElement GetFrameworkElement() { return this; }
+
+        /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
 
 #if NETCOREAPP
@@ -51,21 +54,24 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
-
-        /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => dblSpinner.IsEnabled;
-            set => dblSpinner.IsEnabled = value;
+            get => _writable;
+            set
+            {
+                _writable = value;
+                dblSpinner.IsEnabled = value;
+                mnuSetValue.IsEnabled = value;
+                mnuSetNull.IsEnabled = value && _nullable;
+            }
         }
 
         Type _propType = typeof(decimal);
         bool _internalAction = false;
         decimal _internalValue = 0M;
+
+        bool _writable = true;
+        bool _nullable = false;
 
         /// <inheritdoc/>
 #if NETCOREAPP
@@ -114,6 +120,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             if (type == typeof(decimal?))
             {
+                _nullable = true;
                 mnuSetNull.IsEnabled = true;
             }
 
@@ -152,6 +159,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         void SetAsNull()
         {
+            _nullable = true;
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             dblSpinner.IsEnabled = false;
@@ -178,12 +186,13 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
         private void mnuSetValue_Click(object sender, RoutedEventArgs e)
         {
-            StringInputDialog sid = new StringInputDialog("Set Decimal", "Enter in the exact decimal value to use:", _internalValue.ToString(provider: null));
+            StringInputDialog sid = new StringInputDialog(Strings.SetDecimal, Strings.EnterADecimalValue, _internalValue.ToString(provider: null));
             sid.SsuiTheme = _host?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             sid.Owner = _host?.GetWindow();
+            sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             sid.ValidationFunction = (s) => { return decimal.TryParse(s, out _); };
-            sid.ValidationFailureString = "Not a valid decimal value";
+            sid.ValidationFailureString = Strings.NotADecimal;
 
             sid.ShowDialog();
             if (sid.DialogResult)

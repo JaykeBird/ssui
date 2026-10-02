@@ -24,7 +24,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
 
             // set up strings
             mnuSetNull.Header = Strings.SetAsNull;
-            mnuMultiline.Header = Strings.EnterInUnicodeValue;
+            mnuEnterValue.Header = Strings.EnterInUnicodeValue;
         }
 
         private Type _itemType = typeof(char);
@@ -74,74 +74,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             get => btnMenu.IsEnabled;
             set 
             { 
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
                 txtText.IsEnabled = value && !nullSet;
             }
-        }
-
-        bool nullSet = false;
-
-        void SetAsNull()
-        {
-            nullSet = true;
-            txtText.IsEnabled = false;
-            mnuSetNull.IsChecked = true;
-            txtText.Text = Strings.Null;
-            txtValue.Text = "";
-        }
-
-        void UnsetAsNull()
-        {
-            // do not set as null
-            nullSet = false;
-            mnuSetNull.IsChecked = false;
-
-            if (_itemType == typeof(char?) || _itemType == typeof(char))
-            {
-                if (char.IsSurrogate((char)(_value ?? 'a')))
-                {
-                    txtText.IsEnabled = false;
-                    txtText.Text = Strings.Surrogate;
-                }
-                else
-                {
-                    txtText.IsEnabled = true;
-                    txtText.Text = ((char)(_value ?? 'a')).ToString();
-                }
-
-                txtValue.Text = ((int)(char)(_value ?? 'a')).ToString("X4", NumberFormatInfo.CurrentInfo);
-            }
-#if NETCOREAPP
-            else if (_itemType == typeof(Rune?) || _itemType == typeof(Rune))
-            {
-
-                txtText.IsEnabled = true;
-                txtText.Text = ((Rune)(_value ?? 'a')).ToString();
-                txtValue.Text = ((Rune)(_value ?? 'a')).Value.ToString("X4", NumberFormatInfo.CurrentInfo);
-            }
-#endif
-            else
-            {
-                // uhhh
-                txtText.IsEnabled = false;
-
-            }
-        }
-
-        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
-        {
-            _internalAction = true;
-            if (mnuSetNull.IsChecked)
-            {
-                UnsetAsNull();
-            }
-            else
-            {
-                // do set as null
-                SetAsNull();
-            }
-            _internalAction = false;
-            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
 #if NETCOREAPP
@@ -313,7 +248,72 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, e);
         }
 
-        private void mnuMultiline_Click(object sender, RoutedEventArgs e)
+        bool nullSet = false;
+
+        void SetAsNull()
+        {
+            nullSet = true;
+            txtText.IsEnabled = false;
+            mnuSetNull.IsChecked = true;
+            txtText.Text = Strings.Null;
+            txtValue.Text = "";
+        }
+
+        void UnsetAsNull()
+        {
+            // do not set as null
+            nullSet = false;
+            mnuSetNull.IsChecked = false;
+
+            if (_itemType == typeof(char?) || _itemType == typeof(char))
+            {
+                if (char.IsSurrogate((char)(_value ?? 'a')))
+                {
+                    txtText.IsEnabled = false;
+                    txtText.Text = Strings.Surrogate;
+                }
+                else
+                {
+                    txtText.IsEnabled = true;
+                    txtText.Text = ((char)(_value ?? 'a')).ToString();
+                }
+
+                txtValue.Text = ((int)(char)(_value ?? 'a')).ToString("X4", NumberFormatInfo.CurrentInfo);
+            }
+#if NETCOREAPP
+            else if (_itemType == typeof(Rune?) || _itemType == typeof(Rune))
+            {
+
+                txtText.IsEnabled = true;
+                txtText.Text = ((Rune)(_value ?? 'a')).ToString();
+                txtValue.Text = ((Rune)(_value ?? 'a')).Value.ToString("X4", NumberFormatInfo.CurrentInfo);
+            }
+#endif
+            else
+            {
+                // uhhh
+                txtText.IsEnabled = false;
+
+            }
+        }
+
+        private void mnuSetNull_Click(object sender, RoutedEventArgs e)
+        {
+            _internalAction = true;
+            if (mnuSetNull.IsChecked)
+            {
+                UnsetAsNull();
+            }
+            else
+            {
+                // do set as null
+                SetAsNull();
+            }
+            _internalAction = false;
+            ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void mnuEnterValue_Click(object sender, RoutedEventArgs e)
         {
 #if NETCOREAPP
             if (_itemType == typeof(Rune) || _itemType == typeof(Rune?))

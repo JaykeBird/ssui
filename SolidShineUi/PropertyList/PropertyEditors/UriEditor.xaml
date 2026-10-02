@@ -12,7 +12,7 @@
             <ColumnDefinition />
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
-        <flat:ClickSelectTextBox x:Name="txtText" TextChanged="txtText_TextChanged" LostFocus="txtText_LostFocus" />
+        <flat:ClickSelectTextBox x:Name="txtText" TextChanged="txtText_TextChanged" LostFocus="txtText_LostFocus" VerticalContentAlignment="Center" />
         <flat:MenuButton x:Name="btnMenu" TransparentBack="True" Grid.Column="1" ShowMenuArrow="False" >
             <Image Width="16" Height="16" x:Name="imgMenu" Source="/SolidShineUi;component/Images/ThreeDotsColor.png" />
             <flat:MenuButton.Menu>

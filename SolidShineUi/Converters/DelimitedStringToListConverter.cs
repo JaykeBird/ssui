@@ -66,12 +66,6 @@ namespace SolidShineUi.Converters
             {
                 return ArrayToCsvLine(array, delimiter);
             }
-#if NETCOREAPP
-            else if (value is ReadOnlyMemory<string> span)
-            {
-                return ArrayToCsvLine(span.Span, delimiter);
-            }
-#endif
             else
             {
                 return DependencyProperty.UnsetValue;

@@ -14,37 +14,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     public partial class PointEditor : UserControl, IPropertyEditor
     {
 
-        /// <inheritdoc/>
-        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Point?), typeof(Vector), typeof(Vector?) };
-
-        /// <inheritdoc/>
-        public bool EditorAllowsModifying => true;
-
-        /// <inheritdoc/>
-        public bool IsPropertyWritable
-        {
-            get => btnMenu.IsEnabled;
-            set
-            {
-                nudHeight.IsEnabled = value;
-                nudWidth.IsEnabled = value;
-                btnMenu.IsEnabled = value;
-            }
-        }
-
-        /// <inheritdoc/>
-        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
-
-        /// <inheritdoc/>
-        public void ApplySsuiTheme(SsuiTheme theme)
-        {
-            nudHeight.SsuiTheme = theme;
-            nudWidth.SsuiTheme = theme;
-            btnMenu.SsuiTheme = theme;
-
-            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
-        }
-
         /// <summary>
         /// Create a PointEditor.
         /// </summary>
@@ -58,9 +27,42 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
+        public List<Type> ValidTypes => new List<Type> { typeof(Point), typeof(Point?), typeof(Vector), typeof(Vector?) };
+
+        /// <inheritdoc/>
+        public bool EditorAllowsModifying => true;
+
+        /// <inheritdoc/>
+        public void SetHostControl(IPropertyEditorHost host) { /* _host = host; */ }
+
+        /// <inheritdoc/>
         public FrameworkElement GetFrameworkElement() { return this; }
 
+        /// <inheritdoc/>
+        public void ApplySsuiTheme(SsuiTheme theme)
+        {
+            nudHeight.SsuiTheme = theme;
+            nudWidth.SsuiTheme = theme;
+            btnMenu.SsuiTheme = theme;
+
+            imgFontEdit.Source = LoadIcon("ThreeDots", theme.IconVariation);
+        }
+
+        /// <inheritdoc/>
+        public bool IsPropertyWritable
+        {
+            get => btnMenu.IsEnabled;
+            set
+            {
+                nudHeight.IsEnabled = value;
+                nudWidth.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
+            }
+        }
+
         bool isVector = false;
+
+        bool _internalAction = false;
 
 #if NETCOREAPP
         /// <inheritdoc/>
@@ -168,9 +170,6 @@ namespace SolidShineUi.PropertyList.PropertyEditors
                 return new Point(nudWidth.Value, nudHeight.Value);
             }
         }
-
-
-        bool _internalAction = false;
 
         private void mnuSetZero_Click(object sender, RoutedEventArgs e)
         {

@@ -15,7 +15,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
     /// </summary>
     public partial class StringEditor : UserControl, IPropertyEditor
     {
-        /// <summary>Create a StringEditor.</summary>
+        /// <summary>Create a new StringEditor.</summary>
         public StringEditor()
         {
             InitializeComponent();
@@ -56,7 +56,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             get => btnMenu.IsEnabled;
             set 
             { 
-                btnMenu.IsEnabled = value;
+                btnMenu.IsEnabled = value; // _nullable not needed
                 txtText.IsEnabled = value && !setAsNull;
             }
         }
@@ -163,6 +163,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         {
             MultilineStringInputDialog sid = new MultilineStringInputDialog("String Multi-Line Editor", "Enter a value:", txtText.Text);
             sid.Owner = _parent?.GetWindow();
+            sid.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             sid.SsuiTheme = _parent?.GetThemeForDialogs() ?? SsuiThemes.SystemTheme;
             sid.ShowDialog();
 

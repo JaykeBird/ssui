@@ -17,8 +17,8 @@
         <ScrollViewer Margin="10,60,10,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
             <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="20,0,0,0" Text="Integer Spinner" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="183,0,0,0" Text="Integer Spinner Steps by 5" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Left" Margin="373,0,0,0" Text="Long Spinner Steps by 100" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="153,0,0,0" Text="Integer Spinner Steps by 5" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Left" Margin="336,0,0,0" Text="Long Spinner Steps by 100" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="19,60,0,0" Text="Integer Spinner - Display as Hex" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="248,60,0,0" Text="Integer Spinner - Color Hex" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="434,59,0,0" Text="Disabled Spinner" VerticalAlignment="Top"/>
@@ -29,8 +29,8 @@
                 <TextBlock HorizontalAlignment="Left" Margin="413,177,0,0" Text="String Spinner" VerticalAlignment="Top"/>
                 <TextBlock HorizontalAlignment="Left" Margin="21,238,0,0" Text="Double Spinner with WPF Slider" VerticalAlignment="Top"/>
                 <flat:IntegerSpinner x:Name="nud1" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="80" />
-                <flat:IntegerSpinner x:Name="nud5" HorizontalAlignment="Left" Margin="183,20,0,0" VerticalAlignment="Top" Width="80" Step="5" />
-                <flat:LongSpinner x:Name="nud7" HorizontalAlignment="Left" Margin="373,20,0,0" VerticalAlignment="Top" Width="80" Step="100" MinimumDigitCount="4" />
+                <flat:IntegerSpinner x:Name="nud5" HorizontalAlignment="Left" Margin="153,20,0,0" VerticalAlignment="Top" Width="80" Step="5" />
+                <flat:LongSpinner x:Name="nud7" HorizontalAlignment="Left" Margin="336,20,0,0" VerticalAlignment="Top" Width="80" Step="100" MinimumDigitCount="4" />
                 <flat:IntegerSpinner x:Name="nud8" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top" Width="80" DisplayAsHex="True" />
                 <flat:IntegerSpinner x:Name="nud9" HorizontalAlignment="Left" Margin="248,80,0,0" VerticalAlignment="Top" Width="80"
                                      DisplayAsHex="True" MinimumDigitCount="6" MinValue="0" MaxValue="16777215" ValueChanged="nud9_ValueChanged" Loaded="nud9_Loaded" />
@@ -55,7 +55,14 @@
                     <sys:String>Size</sys:String>
                     <sys:String>Word</sys:String>
                 </flat:StringSpinner>
-
+                <flat:FlatButton Content="Spinner Popup" Name="btnPopup" HorizontalAlignment="Left" Margin="487,20,0,0" VerticalAlignment="Top"
+                                 SelectOnClick="True" />
+                <Popup PlacementTarget="{Binding ElementName=btnPopup}" Width="80" Height="40" 
+                       IsOpen="{Binding ElementName=btnPopup, Path=IsSelected}" >
+                    <Border >
+                        <flat:DoubleSpinner x:Name="nudPopup" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Value="30" />
+                    </Border>
+                </Popup>
             </Grid>
         </ScrollViewer>
     </Grid>

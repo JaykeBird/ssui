@@ -56,8 +56,14 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool IsPropertyWritable
         {
-            get => btnMenu.IsEnabled;
-            set { intSpinner.IsEnabled = value; btnMenu.IsEnabled = value; }
+            get => _writable;
+            set
+            {
+                _writable = value;
+                intSpinner.IsEnabled = value;
+                btnEnableEdit.IsEnabled = value;
+                mnuSetNull.IsEnabled = value && _nullable;
+            }
         }
 
         Type _propType = typeof(long);
@@ -66,6 +72,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         ulong ulongbig = 0L;
 
         bool _internalAction = false;
+        bool _writable = true;
+        bool _nullable = false;
 
 #if NETCOREAPP
         
@@ -183,7 +191,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             }
             else if (value is uint ui)
             {
-                intSpinner.Value = (long)ui;
+                intSpinner.Value = (long)ui; // Visual Studio suggests I can remove this cast, but experience suggests otherwise
             }
             else
             {
@@ -209,17 +217,17 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             else if (_propType == typeof(long?))
             {
                 SetMinMax(long.MinValue, long.MaxValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
             else if (_propType == typeof(uint?))
             {
                 SetMinMax(uint.MinValue, uint.MaxValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
             else if (_propType == typeof(ulong?))
             {
                 SetMinMax(0, long.MaxValue);
-                mnuSetNull.IsEnabled = true;
+                AllowNulls();
             }
 
             void SetMinMax(long min, long max)
@@ -237,8 +245,15 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        void AllowNulls()
+        {
+            _nullable = true;
+            mnuSetNull.IsEnabled = true;
+        }
+
         void SetAsNull()
         {
+            _nullable = true;
             mnuSetNull.IsEnabled = true;
             mnuSetNull.IsChecked = true;
             intSpinner.IsEnabled = false;

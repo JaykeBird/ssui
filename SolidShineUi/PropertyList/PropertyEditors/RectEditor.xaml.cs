@@ -36,7 +36,7 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         public bool EditorAllowsModifying => true;
 
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _host = host; }
@@ -49,13 +49,10 @@ namespace SolidShineUi.PropertyList.PropertyEditors
             imgMenu.Source = IconLoader.LoadIcon("ThreeDots", theme.IconVariation);
         }
 
-        private Rect rect = Rect.Empty;
-
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
+        public bool IsPropertyWritable { get => btnMenu.IsEnabled; set => btnMenu.IsEnabled = value; } // _nullable not needed
+
+        private Rect rect = Rect.Empty;
 
 #if NETCOREAPP
         IPropertyEditorHost? _host = null;

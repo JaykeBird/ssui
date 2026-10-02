@@ -10,7 +10,7 @@ using System.Windows.Data;
 namespace SolidShineUi.Converters
 {
     /// <summary>
-    /// A converter to modify one <see cref="CornerRadius"/>, by adding on a constant value or another CornerRadius object.
+    /// A converter to modify a <see cref="CornerRadius"/>, by adding on a constant value or another CornerRadius object.
     /// </summary>
     [ValueConversion(typeof(CornerRadius), typeof(CornerRadius))]
     [ValueConversion(typeof(double), typeof(CornerRadius))]

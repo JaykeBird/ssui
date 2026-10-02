@@ -28,6 +28,7 @@ namespace SolidShineUi
 #endif
 
         Thread rthr;
+        CancellationTokenSource cts;
 
         /// <summary>
         /// Create a ParticleEmitter.
@@ -42,13 +43,19 @@ namespace SolidShineUi
             //"</ControlTemplate>";
             //Template = (ControlTemplate)XamlReader.Parse(template);
 
+            cts = new CancellationTokenSource();
+
             rthr = new Thread(() =>
             {
-                while (active)
+                while (!cts.IsCancellationRequested)
                 {
                     threadRun(this);
                 }
-            });
+            })
+            {
+                Name = "ParticleEmitter",
+                IsBackground = false,
+            };
 
             IsEnabledChanged += ParticleEmitter_IsEnabledChanged;
 
@@ -353,8 +360,7 @@ namespace SolidShineUi
         int updateMax = 0;
 
         // status variables
-        bool active = true;
-        bool enabled = false;
+        volatile bool enabled = false;
 
         // the amount to sleep
         int sleepAmt = 16;
@@ -428,7 +434,6 @@ namespace SolidShineUi
             updateCounter = updateMax;
 
             // let's get rolling
-            active = true;
             enabled = true;
             HasInitialized = true;
 
@@ -463,11 +468,14 @@ namespace SolidShineUi
         /// </summary>
         public void Shutdown()
         {
-            active = false;
+            cts.Cancel();
             enabled = false;
 
             if (IsShutdown) return;
-            rthr.Join(1000);
+            if (rthr.ThreadState != ThreadState.Unstarted)
+            {
+                rthr.Join(1000);
+            }
             IsShutdown = true;
         }
 

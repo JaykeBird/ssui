@@ -34,10 +34,8 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         /// <inheritdoc/>
         public bool EditorAllowsModifying => true;
 
-        bool _writable = true;
-
         /// <inheritdoc/>
-        public bool IsPropertyWritable { get => _writable; set { _writable = value; mnuEmptyList.IsEnabled = value; } }
+        public FrameworkElement GetFrameworkElement() { return this; }
 
         /// <inheritdoc/>
         public void SetHostControl(IPropertyEditorHost host) { _parent = host; }
@@ -50,10 +48,9 @@ namespace SolidShineUi.PropertyList.PropertyEditors
         }
 
         /// <inheritdoc/>
-        public FrameworkElement GetFrameworkElement()
-        {
-            return this;
-        }
+        public bool IsPropertyWritable { get => _writable; set { _writable = value; mnuEmptyList.IsEnabled = value; } }
+
+        bool _writable = true;
 
         Type _listType = typeof(object);
 
