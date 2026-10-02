@@ -18,7 +18,7 @@ namespace SolidShineUi.Ribbon
     /// A checkbox control to display in a <see cref="RibbonGroup"/>.
     /// </summary>
     [ContentProperty(nameof(Title))]
-    public class RibbonCheckBox : ThemedControl, ISsuiButton, IRibbonItem
+    public class RibbonCheckBox : ThemedControl, IClickSelectableControl, IRibbonItem
     {
         static RibbonCheckBox()
         {
@@ -790,8 +790,8 @@ namespace SolidShineUi.Ribbon
         public RibbonElementSize StandardSize { get => (RibbonElementSize)GetValue(StandardSizeProperty); set => SetValue(StandardSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="StandardSize"/>. See the related property for details.</summary>
-        public static DependencyProperty StandardSizeProperty
-            = DependencyProperty.Register("StandardSize", typeof(RibbonElementSize), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty StandardSizeProperty
+            = DependencyProperty.Register(nameof(StandardSize), typeof(RibbonElementSize), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(RibbonElementSize.Large));
 
 
@@ -807,61 +807,61 @@ namespace SolidShineUi.Ribbon
         public RibbonElementSize CompactSize { get => (RibbonElementSize)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CompactSize"/>. See the related property for details.</summary>
-        public static DependencyProperty CompactSizeProperty
-            = DependencyProperty.Register("CompactSize", typeof(RibbonElementSize), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty CompactSizeProperty
+            = DependencyProperty.Register(nameof(CompactSize), typeof(RibbonElementSize), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(RibbonElementSize.Small));
         
         /// <inheritdoc/>
         public string AccessKey { get => (string)GetValue(AccessKeyProperty); set => SetValue(AccessKeyProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="AccessKey"/>. See the related property for details.</summary>
-        public static DependencyProperty AccessKeyProperty
-            = DependencyProperty.Register("AccessKey", typeof(string), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty AccessKeyProperty
+            = DependencyProperty.Register(nameof(AccessKey), typeof(string), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata("C"));
 
         /// <inheritdoc/>
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Title"/>. See the related property for details.</summary>
-        public static DependencyProperty TitleProperty
-            = DependencyProperty.Register("Title", typeof(string), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty TitleProperty
+            = DependencyProperty.Register(nameof(Title), typeof(string), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata("Check"));
 
         /// <inheritdoc/>
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="LargeIcon"/>. See the related property for details.</summary>
-        public static DependencyProperty LargeIconProperty
-            = DependencyProperty.Register("LargeIcon", typeof(ImageSource), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty LargeIconProperty
+            = DependencyProperty.Register(nameof(LargeIcon), typeof(ImageSource), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(null));
 
         /// <inheritdoc/>
         public ImageSource SmallIcon { get => (ImageSource)GetValue(SmallIconProperty); set => SetValue(SmallIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SmallIcon"/>. See the related property for details.</summary>
-        public static DependencyProperty SmallIconProperty
-            = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty SmallIconProperty
+            = DependencyProperty.Register(nameof(SmallIcon), typeof(ImageSource), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(null));
 
         /// <inheritdoc/>
         public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="IsCompacted"/>. See the related property for details.</summary>
-        public static DependencyProperty IsCompactedProperty
-            = DependencyProperty.Register("IsCompacted", typeof(bool), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty IsCompactedProperty
+            = DependencyProperty.Register(nameof(IsCompacted), typeof(bool), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(false));
 
         /// <inheritdoc/>
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CompactOrder"/>. See the related property for details.</summary>
-        public static DependencyProperty CompactOrderProperty
-            = DependencyProperty.Register("CompactOrder", typeof(int), typeof(RibbonCheckBox),
+        public static readonly DependencyProperty CompactOrderProperty
+            = DependencyProperty.Register(nameof(CompactOrder), typeof(int), typeof(RibbonCheckBox),
             new FrameworkPropertyMetadata(0));
 
         #endregion
 
-        #region ISsuiButton implementations
+        #region IClickSelectableControl implementations
 
         /// <summary>
         /// Raised when <see cref="CheckState"/> is changed. Using <see cref="CheckChanged"/> rather than this event is recommended instead.
@@ -872,47 +872,6 @@ namespace SolidShineUi.Ribbon
         public event ItemSelectionChangedEventHandler IsSelectedChanged;
 #endif
 
-        Brush ISsuiButton.DisabledBrush { get => BackgroundDisabledBrush; set => BackgroundDisabledBrush = value; }
-        Brush ISsuiButton.HighlightForeground { get => CheckHighlightBrush; set => CheckHighlightBrush = value; }
-        Brush ISsuiButton.SelectedForeground { get => CheckForeground; set => CheckForeground = value; }
-        bool ISsuiButton.TransparentBack { get; set; } = true;
-        bool ISsuiButton.HighlightOnKeyboardFocus { get; set; } = true;
-
-#if NETCOREAPP
-        object? ISsuiButton.Content
-#else
-        object ISsuiButton.Content
-#endif
-        {
-            get { return Title; }
-            set
-            {
-                if (value == null)
-                {
-                    Title = "";
-                }
-                if (value is string s)
-                {
-                    Title = s;
-                }
-                else if (value is IFormattable f)
-                {
-                    Title = f.ToString((this as ISsuiButton).ContentStringFormat, CultureInfo.CurrentCulture);
-                }
-                else
-                {
-                    Title = value?.ToString() ?? "";
-                }
-            }
-        }
-
-        string ISsuiButton.ContentStringFormat { get; set; } = "g";
-
-#if NETCOREAPP
-        DataTemplate? ISsuiButton.ContentTemplate { get; set; } = null; // matching WPF default behavior
-#else
-        DataTemplate ISsuiButton.ContentTemplate { get; set; } = null;
-#endif
         bool IClickSelectableControl.IsSelected { get => IsChecked; set => IsChecked = value; }
         bool IClickSelectableControl.SelectOnClick { get; set; } = true;
         Brush IClickSelectableControl.ClickBrush { get => CheckHighlightBrush; set => CheckHighlightBrush = value; }
