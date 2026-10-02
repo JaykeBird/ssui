@@ -3920,6 +3920,213 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type ribbon:FileMenuItem}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="4,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ribbon:FileMenuItem}">
+                    <ssut:ForeBorder x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
+                        <ssut:ForeBorder.Style>
+                            <Style TargetType="ssut:ForeBorder">
+                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            </Style>
+                        </ssut:ForeBorder.Style>
+
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <Grid x:Name="btn_Cc" Margin="{TemplateBinding Padding}" >
+                                <Grid x:Name="Part_Small" Margin="2,1,4,1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="2" x:Name="colPadding" />
+                                        <ColumnDefinition Width="Auto" x:Name="colTitle" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="{TemplateBinding SmallIcon}" Width="16" Height="16" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2" Text="{TemplateBinding Title}" VerticalAlignment="Center" />
+                                </Grid>
+                                <Grid x:Name="Part_Large" Margin="1" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="2" />
+                                        <RowDefinition Height="34" />
+                                    </Grid.RowDefinitions>
+
+                                    <Image Grid.Row="0" Source="{TemplateBinding LargeIcon}" Width="32" Height="32" HorizontalAlignment="Center" />
+                                    <ributils:RibbonTwoLineText x:Name="TwoLineText" Text="{TemplateBinding Title}" HasTwoLines="True"    
+                                                  TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Center"
+                                                  LineHeight="14px" LineStackingStrategy="BlockLineHeight" Margin="1,1,0,0" Grid.Row="2" />
+                                    <!--<TextBlock Grid.Row="2" Text="{TemplateBinding Title}" HorizontalAlignment="Center" MaxHeight="34" />-->
+                                </Grid>
+                            </Grid>
+                            <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
+                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" >
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+                        </Grid>
+                    </ssut:ForeBorder>
+                    <ControlTemplate.Triggers>
+                        <!-- button element size states -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Large" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="Small" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
+                                <Setter Property="Width" TargetName="colPadding" Value="2" />
+                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="False" />
+                                <Condition Property="StandardSize" Value="IconOnly" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
+                                <Setter Property="Width" TargetName="colPadding" Value="2" />
+                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Content" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Large" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
+                                <Setter Property="Width" TargetName="colPadding" Value="0" />
+                                <Setter Property="Width" TargetName="colTitle" Value="0" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="Small" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
+                                <Setter Property="Width" TargetName="colPadding" Value="2" />
+                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCompacted" Value="True" />
+                                <Condition Property="CompactSize" Value="IconOnly" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
+                                <Setter Property="Width" TargetName="colPadding" Value="2" />
+                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
+                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <!-- other triggers from FlatButton -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Focusable" Value="False" />
+                            <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" TargetName="btn_Border" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="IsMouseOver" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=SelectedForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsKeyboardFocused" Value="True" />
+                                <Condition Property="HighlightOnKeyboardFocus" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </MultiTrigger>
+                        <Trigger Property="IsStylusOver" Value="True" >
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <!--<Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>-->
+                        <Trigger Property="IsMouseDown" Value="True">
+                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True" >
+                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type ribbon:Gallery}">
         <Setter Property="MinHeight" Value="28" />
         <Setter Property="Height" Value="72" />
