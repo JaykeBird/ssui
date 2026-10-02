@@ -132,6 +132,25 @@ namespace SolidShineUi.Ribbon
         {
             base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
 
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+            }
         }
 
         #endregion
@@ -148,8 +167,8 @@ namespace SolidShineUi.Ribbon
         public GalleryItemLayout LayoutType { get => (GalleryItemLayout)GetValue(LayoutTypeProperty); set => SetValue(LayoutTypeProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="LayoutType"/>. Used internally.</summary>
-        public static DependencyProperty LayoutTypeProperty
-            = DependencyProperty.Register("LayoutType", typeof(GalleryItemLayout), typeof(GalleryItem),
+        public static readonly DependencyProperty LayoutTypeProperty
+            = DependencyProperty.Register(nameof(LayoutType), typeof(GalleryItemLayout), typeof(GalleryItem),
             new FrameworkPropertyMetadata(GalleryItemLayout.LargeIconAndText));
 
         /// <summary>
@@ -158,8 +177,8 @@ namespace SolidShineUi.Ribbon
         public ImageSource LargeIcon { get => (ImageSource)GetValue(LargeIconProperty); set => SetValue(LargeIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="LargeIcon"/>. See the related property for details.</summary>
-        public static DependencyProperty LargeIconProperty
-            = DependencyProperty.Register("LargeIcon", typeof(ImageSource), typeof(GalleryItem),
+        public static readonly DependencyProperty LargeIconProperty
+            = DependencyProperty.Register(nameof(LargeIcon), typeof(ImageSource), typeof(GalleryItem),
             new FrameworkPropertyMetadata(defaultValue: null));
 
         /// <summary>
@@ -168,8 +187,8 @@ namespace SolidShineUi.Ribbon
         public ImageSource SmallIcon { get => (ImageSource)GetValue(SmallIconProperty); set => SetValue(SmallIconProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="SmallIcon"/>. See the related property for details.</summary>
-        public static DependencyProperty SmallIconProperty
-            = DependencyProperty.Register("SmallIcon", typeof(ImageSource), typeof(GalleryItem),
+        public static readonly DependencyProperty SmallIconProperty
+            = DependencyProperty.Register(nameof(SmallIcon), typeof(ImageSource), typeof(GalleryItem),
             new FrameworkPropertyMetadata(defaultValue: null));
 
         /// <summary>
@@ -178,8 +197,8 @@ namespace SolidShineUi.Ribbon
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="Title"/>. See the related property for details.</summary>
-        public static DependencyProperty TitleProperty
-            = DependencyProperty.Register("Title", typeof(string), typeof(GalleryItem),
+        public static readonly DependencyProperty TitleProperty
+            = DependencyProperty.Register(nameof(Title), typeof(string), typeof(GalleryItem),
             new FrameworkPropertyMetadata("Item"));
 
 
@@ -336,21 +355,6 @@ namespace SolidShineUi.Ribbon
         {
             add { AddHandler(ClickEvent, value); }
             remove { RemoveHandler(ClickEvent, value); }
-        }
-
-        /// <summary>
-        /// The backing value for the <see cref="MenuClick"/> event. See the related event for more details.
-        /// </summary>
-        public static readonly RoutedEvent MenuClickEvent = EventManager.RegisterRoutedEvent(
-            "MenuClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GalleryItem));
-
-        /// <summary>
-        /// Raised when the user clicks on the menu button (not the main button), via a mouse click or via the keyboard.
-        /// </summary>
-        public event RoutedEventHandler MenuClick
-        {
-            add { AddHandler(MenuClickEvent, value); }
-            remove { RemoveHandler(MenuClickEvent, value); }
         }
 
         /// <summary>
