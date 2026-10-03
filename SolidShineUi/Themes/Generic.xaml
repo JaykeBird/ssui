@@ -3922,204 +3922,109 @@
 
     <Style TargetType="{x:Type ribbon:FileMenuItem}">
         <Setter Property="Focusable" Value="True" />
-        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Height" Value="40" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="TransparentBack" Value="True" />
         <Setter Property="Padding" Value="4,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:FileMenuItem}">
-                    <ssut:ForeBorder x:Name="btn_Border" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SnapsToDevicePixels="True" >
-                        <ssut:ForeBorder.Style>
-                            <Style TargetType="ssut:ForeBorder">
-                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            </Style>
-                        </ssut:ForeBorder.Style>
-
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                            <Grid x:Name="btn_Cc" Margin="{TemplateBinding Padding}" >
-                                <Grid x:Name="Part_Small" Margin="2,1,4,1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="16" />
-                                        <ColumnDefinition Width="2" x:Name="colPadding" />
-                                        <ColumnDefinition Width="Auto" x:Name="colTitle" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.Column="0" Source="{TemplateBinding SmallIcon}" Width="16" Height="16" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="2" Text="{TemplateBinding Title}" VerticalAlignment="Center" />
-                                </Grid>
-                                <Grid x:Name="Part_Large" Margin="1" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="32" />
-                                        <RowDefinition Height="2" />
-                                        <RowDefinition Height="34" />
-                                    </Grid.RowDefinitions>
-
-                                    <Image Grid.Row="0" Source="{TemplateBinding LargeIcon}" Width="32" Height="32" HorizontalAlignment="Center" />
-                                    <ributils:RibbonTwoLineText x:Name="TwoLineText" Text="{TemplateBinding Title}" HasTwoLines="True"    
-                                                  TextAlignment="Center" VerticalAlignment="Top" HorizontalAlignment="Center"
-                                                  LineHeight="14px" LineStackingStrategy="BlockLineHeight" Margin="1,1,0,0" Grid.Row="2" />
-                                    <!--<TextBlock Grid.Row="2" Text="{TemplateBinding Title}" HorizontalAlignment="Center" MaxHeight="34" />-->
-                                </Grid>
-                            </Grid>
-                            <Rectangle x:Name="brdr_Focus" Margin="1" StrokeThickness="1" Opacity="0.8" StrokeDashArray="1 3"
-                                           Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" >
-                                <Rectangle.Style>
-                                    <Style TargetType="Rectangle">
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Right">
+                            <ssut:TemplateButton x:Name="PART_Menu" Padding="0" TransparentBack="{TemplateBinding TransparentBack}"
+                                             BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
+                                             BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
+                                             ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                             SelectedBrush="{TemplateBinding SelectedBrush}" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
+                                             HighlightForeground="{TemplateBinding HighlightForeground}" SelectedForeground="{TemplateBinding SelectedForeground}"
+                                             IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}" >
+                                <ssut:TemplateButton.Style>
+                                    <Style TargetType="ssut:TemplateButton">
                                         <Setter Property="Visibility" Value="Collapsed" />
+                                        <Setter Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                            Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteRightTh}}" />
+                                        <Setter Property="BorderSelectionThickness" Value="{Binding BorderSelectionThickness, 
+                                            RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                            Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteRightTh}}" />
+                                        <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                            Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteRightCR}}" />
+                                        <Setter Property="MinHeight" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MinHeight}" />
+                                        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonSize}" />
                                     </Style>
-                                </Rectangle.Style>
-                            </Rectangle>
+                                </ssut:TemplateButton.Style>
+                                <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                          Height="5" Width="8" Margin="0" Stretch="Fill" />
+                            </ssut:TemplateButton>
+                            <Border x:Name="PART_Sep" IsHitTestVisible="False" 
+                                BorderThickness="{TemplateBinding SeparatorThickness, Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteAll}}">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="{Binding SeparatorBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        <Setter Property="Visibility" Value="{Binding ShowSeparator, RelativeSource={RelativeSource Mode=TemplatedParent},
+                                        Converter={StaticResource VisConverter}}" />
+                                        <Setter Property="Margin" Value="{Binding SeparatorEdgeMargin, RelativeSource={RelativeSource Mode=TemplatedParent},
+                                        Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteTbTh}}" />
+                                        <Setter Property="Width" Value="{Binding SeparatorThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        <Setter Property="Height" Value="NaN" />
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
+                                        <Setter Property="VerticalAlignment" Value="Stretch" />
+                                    </Style>
+                                </Border.Style>
+                            </Border>
                         </Grid>
-                    </ssut:ForeBorder>
+                        <ssut:TemplateButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1" TransparentBack="{TemplateBinding TransparentBack}"
+                                         BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                         BorderDisabledBrush="{Binding BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                         BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
+                                         ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
+                                         SelectedBrush="{Binding SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                         Background="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                         Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                         HighlightForeground="{TemplateBinding HighlightForeground}" SelectedForeground="{TemplateBinding SelectedForeground}"
+                                         IsSelected="{TemplateBinding IsSelected}" HighlightOnKeyboardFocus="{TemplateBinding HighlightOnKeyboardFocus}"
+                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" >
+                            <ssut:TemplateButton.Style>
+                                <Style TargetType="ssut:TemplateButton">
+                                    <Setter Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                        Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLeftTh}}" />
+                                    <Setter Property="BorderSelectionThickness" Value="{Binding BorderSelectionThickness, 
+                                        RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                        Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLeftTh}}" />
+                                    <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                        Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteLeftCR}}" />
+                                    <Setter Property="MinHeight" Value="0" />
+                                </Style>
+                            </ssut:TemplateButton.Style>
+                            <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36" x:Name="colIcon" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition x:Name="colMenuArrow">
+                                        
+                                    </ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{TemplateBinding LargeIcon}" Grid.Column="0" x:Name="imgIcon"
+                                       VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <TextBlock Text="{TemplateBinding Title}" Grid.Column="1" x:Name="txtTitle"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0" />
+                                <Path Grid.Column="2" x:Name="pathArrow" />
+                            </Grid>
+                        </ssut:TemplateButton>
+                    </DockPanel>
                     <ControlTemplate.Triggers>
                         <!-- button element size states -->
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="False" />
-                                <Condition Property="StandardSize" Value="Content" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
-                                <Setter Property="Width" TargetName="colPadding" Value="0" />
-                                <Setter Property="Width" TargetName="colTitle" Value="0" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="False" />
-                                <Condition Property="StandardSize" Value="Large" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
-                                <Setter Property="Width" TargetName="colPadding" Value="0" />
-                                <Setter Property="Width" TargetName="colTitle" Value="0" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="False" />
-                                <Condition Property="StandardSize" Value="Small" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
-                                <Setter Property="Width" TargetName="colPadding" Value="2" />
-                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="False" />
-                                <Condition Property="StandardSize" Value="IconOnly" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
-                                <Setter Property="Width" TargetName="colPadding" Value="2" />
-                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="True" />
-                                <Condition Property="CompactSize" Value="Content" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
-                                <Setter Property="Width" TargetName="colPadding" Value="0" />
-                                <Setter Property="Width" TargetName="colTitle" Value="0" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="True" />
-                                <Condition Property="CompactSize" Value="Large" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Collapsed" />
-                                <Setter Property="Width" TargetName="colPadding" Value="0" />
-                                <Setter Property="Width" TargetName="colTitle" Value="0" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Visible" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="True" />
-                                <Condition Property="CompactSize" Value="Small" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
-                                <Setter Property="Width" TargetName="colPadding" Value="2" />
-                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsCompacted" Value="True" />
-                                <Condition Property="CompactSize" Value="IconOnly" />
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.Setters>
-                                <Setter Property="Visibility" TargetName="Part_Small" Value="Visible" />
-                                <Setter Property="Width" TargetName="colPadding" Value="2" />
-                                <Setter Property="Width" TargetName="colTitle" Value="Auto" />
-                                <Setter Property="Visibility" TargetName="Part_Large" Value="Collapsed" />
-                            </MultiTrigger.Setters>
-                        </MultiTrigger>
-                        <!-- other triggers from FlatButton -->
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Focusable" Value="False" />
-                            <Setter Property="Opacity" TargetName="btn_Cc" Value="0.6" />
+                        <Trigger Property="IsLargeSize" Value="False">
+                            <!-- make em smaller -->
+                            <Setter Property="Width" TargetName="colIcon" Value="20" />
+                            <Setter Property="Source" TargetName="imgIcon" Value="{TemplateBinding SmallIcon}" />
+                            <Setter Property="Height" Value="24" />
                         </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderThickness" TargetName="btn_Border" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:RibbonButton}}}" />
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsSelected" Value="True" />
-                                <Condition Property="IsMouseOver" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=SelectedForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </MultiTrigger>
-                        <Trigger Property="IsMouseOver" Value="True" >
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsKeyboardFocused" Value="True" />
-                                <Condition Property="HighlightOnKeyboardFocus" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </MultiTrigger>
-                        <Trigger Property="IsStylusOver" Value="True" >
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </Trigger>
-                        <!--<Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </Trigger>-->
-                        <Trigger Property="IsMouseDown" Value="True">
-                            <Setter Property="Background" TargetName="btn_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="BorderBrush" TargetName="btn_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Setter Property="Foreground" TargetName="btn_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True" >
-                            <Setter Property="Visibility" TargetName="brdr_Focus" Value="Visible" />
+                        <Trigger Property="IsSplit" Value="True">
+                            <!-- split size -->
+                            <Setter Property="Visibility" TargetName="PART_Menu" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="PART_Sep" Value="Visible" />
+                            <Setter Property="Width" TargetName="colMenuArrow" Value="0" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -4252,17 +4157,24 @@
     </Style>
 
     <Style TargetType="{x:Type ribbon:GalleryItem}">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="DimGray" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:GalleryItem}">
-                    <Border x:Name="PART_Border">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:GalleryItem}}}" />
-                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:GalleryItem}}}" />
-                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ribbon:GalleryItem}}}" />
+                    <ssut:ForeBorder x:Name="PART_Border">
+                        <ssut:ForeBorder.Style>
+                            <Style TargetType="{x:Type ssut:ForeBorder}">
+                                <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderBrush" Value="{Binding Path=BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderThickness" Value="{Binding Path=BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             </Style>
-                        </Border.Style>
+                        </ssut:ForeBorder.Style>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="FirstCol" />
@@ -4278,7 +4190,7 @@
                             <ContentPresenter x:Name="PART_Content" />
                             <TextBlock x:Name="PART_Header" Text="{TemplateBinding Title}" VerticalAlignment="Center" Margin="2,0" />
                         </Grid>
-                    </Border>
+                    </ssut:ForeBorder>
                     <ControlTemplate.Triggers>
                         <Trigger Property="LayoutType" Value="LargeIconOnly">
                             <Setter TargetName="PART_SmallIcon" Property="Visibility" Value="Collapsed" />
@@ -4379,6 +4291,9 @@
                             <Setter TargetName="PART_Header" Property="HorizontalAlignment" Value="Center" />
                         </Trigger>
                         <!-- selection / mouse interaction visuals -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" TargetName="PART_Border" Value="{Binding Path=BorderSelectionThickness, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsSelected" Value="True" />
@@ -4386,14 +4301,17 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="PART_Border" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="PART_Border" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="PART_Border" Value="{Binding Path=SelectedForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </MultiTrigger>
                         <Trigger Property="IsMouseOver" Value="True" >
                             <Setter Property="Background" TargetName="PART_Border" Value="{Binding Path=HighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="PART_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="PART_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsMouseDown" Value="True">
                             <Setter Property="Background" TargetName="PART_Border" Value="{Binding Path=ClickBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="BorderBrush" TargetName="PART_Border" Value="{Binding Path=BorderHighlightBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                            <Setter Property="Foreground" TargetName="PART_Border" Value="{Binding Path=HighlightForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -5297,7 +5215,6 @@
     </Style>
 
     <Style TargetType="{x:Type flat:ContentControlWithMenu}">
-
         <Style.Resources>
             <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
                 <Setter Property="Height" Value="1"/>

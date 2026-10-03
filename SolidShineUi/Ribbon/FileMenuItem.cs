@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using SolidShineUi.Toolbars;
 using SolidShineUi.Utils;
 
 namespace SolidShineUi.Ribbon
@@ -12,7 +13,7 @@ namespace SolidShineUi.Ribbon
     /// <summary>
     /// An item that can be added to a <see cref="RibbonFileMenu"/>.
     /// </summary>
-    public class FileMenuItem : ThemedControl, IClickSelectableControl, IRibbonItem
+    public class FileMenuItem : ThemedControl, IClickSelectableControl, IToolbarItem
     {
         static FileMenuItem()
         {
@@ -60,8 +61,9 @@ namespace SolidShineUi.Ribbon
 
             if (d is FileMenuItem c)
             {
-                c.ColorSchemeChanged?.Invoke(d, e);
                 c.ApplyColorScheme(cs);
+                c.Menu?.ApplyColorScheme(cs);
+                c.ColorSchemeChanged?.Invoke(d, e);
             }
         }
 
@@ -142,21 +144,77 @@ namespace SolidShineUi.Ribbon
 
             void ApplyTheme(SsuiTheme theme)
             {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
-                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
-                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
-                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
-                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
-                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
         #endregion
 
-        #region Buttons
+        #region Template IO
+        /// <inheritdoc/>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
 
-        // TODO: add in buttons to template and then here
+            LoadTemplateItems();
+
+            if (itemsLoaded)
+            {
+                // the itemsLoaded value will only be true if both controls are not null
+#if NETCOREAPP
+                btnMain!.Click += btnMain_Click;
+                btnMenu!.Click += btnMenu_Click;
+
+                btnMain.RightClick += btnMain_RightClick;
+                btnMenu.RightClick += btnMenu_RightClick;
+#else
+                btnMain.Click += btnMain_Click;
+                btnMenu.Click += btnMenu_Click;
+
+                btnMain.RightClick += btnMain_RightClick;
+                btnMenu.RightClick += btnMenu_RightClick;
+#endif
+            }
+        }
+
+        bool itemsLoaded = false;
+
+#if NETCOREAPP
+        ISsuiButton? btnMain = null;
+        ISsuiButton? btnMenu = null;
+#else
+        ISsuiButton btnMain = null;
+        ISsuiButton btnMenu = null;
+#endif
+
+        void LoadTemplateItems()
+        {
+            if (!itemsLoaded)
+            {
+                btnMain = (ISsuiButton)GetTemplateChild("PART_Main");
+                btnMenu = (ISsuiButton)GetTemplateChild("PART_Menu");
+
+                if (btnMain != null && btnMenu != null)
+                {
+                    itemsLoaded = true;
+                }
+            }
+        }
+        #endregion
+
+        #region Apply Values to Buttons
 
         private static void ApplyPropertyUpdate(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -166,12 +224,83 @@ namespace SolidShineUi.Ribbon
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", 
-            Justification = "yet to implement")]
         private void ApplyValueToButtons(DependencyProperty property, object value)
         {
-            //btnMain?.SetValue(property, value);
-            //btnMenu?.SetValue(property, value);
+            btnMain?.SetValue(property, value);
+            btnMenu?.SetValue(property, value);
+        }
+
+        void ApplyCornerRadiusToButtons(CornerRadius cr)
+        {
+            if (btnMenu == null || btnMain == null) return;
+
+            if (IsSplit)
+            {
+                // both buttons visible\
+                // menu button on right (top right, bottom right)
+                // main button on left
+                btnMenu.CornerRadius = new CornerRadius(0, cr.TopRight, cr.BottomRight, 0);
+                btnMain.CornerRadius = new CornerRadius(cr.TopLeft, 0, 0, cr.BottomLeft);
+            }
+            else
+            {
+                // no menu button
+                // apply all to main button
+                btnMenu.CornerRadius = new CornerRadius(0);
+                btnMain.CornerRadius = new CornerRadius(cr.TopLeft, cr.TopRight, cr.BottomRight, cr.BottomLeft);
+            }
+        }
+
+        void ApplyBorderThicknessToButtons(Thickness th)
+        {
+            if (btnMenu == null || btnMain == null) return;
+
+            byte menuVal = 0;
+            byte mainVal = 0;
+
+            if (IsSplit)
+            {
+                // menu button on right (right, top, bottom)
+                // main button on left
+                menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+            }
+            else
+            {
+                // no menu button
+                // apply all to main button
+                menuVal = PartialValueHelper.EncodeThicknessPartialValue(false, false, false, false);
+                mainVal = PartialValueHelper.EncodeThicknessPartialValue(true, true, true, true);
+            }
+
+            btnMenu.BorderThickness = PartialValueHelper.GetThicknessPartialValue(th, menuVal);
+            btnMain.BorderThickness = PartialValueHelper.GetThicknessPartialValue(th, mainVal);
+        }
+
+        void ApplyBorderSelectionThicknessToButtons(Thickness th)
+        {
+            if (btnMenu == null || btnMain == null) return;
+
+            byte menuVal = 0;
+            byte mainVal = 0;
+
+            if (IsSplit)
+            {
+                // menu button on right (right, top, bottom)
+                // main button on left
+                menuVal = PartialValueHelper.EncodeThicknessPartialValue(left: false, top: true, right: true, bottom: true);
+                mainVal = PartialValueHelper.EncodeThicknessPartialValue(left: true, top: true, right: false, bottom: true);
+            }
+            else
+            {
+                // no menu button
+                // apply all to main button
+                menuVal = PartialValueHelper.EncodeThicknessPartialValue(false, false, false, false);
+                mainVal = PartialValueHelper.EncodeThicknessPartialValue(true, true, true, true);
+            }
+
+            btnMenu.BorderSelectionThickness = PartialValueHelper.GetThicknessPartialValue(th, menuVal);
+            btnMain.BorderSelectionThickness = PartialValueHelper.GetThicknessPartialValue(th, mainVal);
         }
 
         #endregion
@@ -190,14 +319,94 @@ namespace SolidShineUi.Ribbon
             new FrameworkPropertyMetadata(false));
 
         /// <summary>
+        /// Get or set if this FileMenuItem show have a larger height and show the <see cref="LargeIcon"/> (if <c>true</c>),
+        /// or have a smaller height and show the <see cref="SmallIcon"/> (if <c>false</c>).
+        /// <para/>
+        /// The default value is <c>true</c>.
+        /// </summary>
+        public bool IsLargeSize { get => (bool)GetValue(IsLargeSizeProperty); set => SetValue(IsLargeSizeProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="IsLargeSize"/>. See the related property for details.</summary>
+        public static DependencyProperty IsLargeSizeProperty
+            = DependencyProperty.Register(nameof(IsLargeSize), typeof(bool), typeof(FileMenuItem),
+            new FrameworkPropertyMetadata(true));
+
+        /// <summary>
         /// Get or set the corner radius for the border around the item.
         /// </summary>
         public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
         public static DependencyProperty CornerRadiusProperty
-            = DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(FileMenuItem),
-            new FrameworkPropertyMetadata(new CornerRadius(0)));
+            = FlatButton.CornerRadiusProperty.AddOwner(typeof(FileMenuItem),
+            new FrameworkPropertyMetadata(new CornerRadius(0),
+                (d, e) => d.PerformAs<FileMenuItem, CornerRadius>(e.NewValue, (o, nv) => o.ApplyCornerRadiusToButtons(nv))));
+
+        /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderSelectionThicknessProperty = FlatButton.BorderSelectionThicknessProperty.AddOwner(typeof(FileMenuItem),
+            new FrameworkPropertyMetadata(new Thickness(1),
+                (d, e) => d.PerformAs<FileMenuItem, Thickness>(e.NewValue, (o, nv) => o.ApplyBorderSelectionThicknessToButtons(nv))));
+
+        /// <summary>
+        /// Get or set the thickness of the border around the button, while the button is in a selected (<c>IsSelected</c>) state.
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the thickness of the border around the button, while the button is in a selected (IsSelected) state.")]
+        public Thickness BorderSelectionThickness
+        {
+            get => (Thickness)GetValue(BorderSelectionThicknessProperty);
+            set => SetValue(BorderSelectionThicknessProperty, value);
+        }
+
+        #region Separator Border
+
+        /// <summary>
+        /// Get or set if a separator bar should be shown between the main and menu buttons. Without the separator bar, the buttons look more connected, 
+        /// but they can be hard to discern as two separate clickable buttons without mousing over them.
+        /// <para/>
+        /// This has no effect if <see cref="IsSplit"/> is set to <c>false</c>.
+        /// </summary>
+        public bool ShowSeparator { get => (bool)GetValue(ShowSeparatorProperty); set => SetValue(ShowSeparatorProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="ShowSeparator"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ShowSeparatorProperty
+            = SplitButton.ShowSeparatorProperty.AddOwner(typeof(FileMenuItem), new FrameworkPropertyMetadata(true));
+
+        /// <summary>
+        /// Get or set the brush to use for the separator bar between the main and menu buttons.
+        /// <para/>
+        /// This has no effect if <see cref="IsSplit"/> is set to <c>false</c>.
+        /// </summary>
+        public Brush SeparatorBrush { get => (Brush)GetValue(SeparatorBrushProperty); set => SetValue(SeparatorBrushProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SeparatorBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SeparatorBrushProperty
+            = SplitButton.SeparatorBrushProperty.AddOwner(typeof(FileMenuItem), new FrameworkPropertyMetadata(Colors.Gray.ToBrush()));
+
+        /// <summary>
+        /// Get or set how distant the separator bar should be from the edges of the button. The higher the number, the bigger the space between
+        /// the edges of the button and the ends of the separator bar. A value of 0 will bring the separator bar right up to the edges.
+        /// <para/>
+        /// This has no effect if <see cref="IsSplit"/> is set to <c>false</c>.
+        /// </summary>
+        public double SeparatorEdgeMargin { get => (double)GetValue(SeparatorEdgeMarginProperty); set => SetValue(SeparatorEdgeMarginProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SeparatorEdgeMargin"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SeparatorEdgeMarginProperty
+            = SplitButton.SeparatorEdgeMarginProperty.AddOwner(typeof(FileMenuItem), new FrameworkPropertyMetadata(4.0));
+
+        /// <summary>
+        /// Get or set how wide the separator bar should be. A value of 0 will make it invisible.
+        /// <para/>
+        /// This has no effect if <see cref="IsSplit"/> is set to <c>false</c>.
+        /// </summary>
+        public double SeparatorThickness { get => (double)GetValue(SeparatorThicknessProperty); set => SetValue(SeparatorThicknessProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="SeparatorThickness"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SeparatorThicknessProperty
+            = SplitButton.SeparatorThicknessProperty.AddOwner(typeof(FileMenuItem), new FrameworkPropertyMetadata(1.0));
+
+        #endregion
 
         #endregion
 
@@ -405,18 +614,6 @@ namespace SolidShineUi.Ribbon
 
         #region Brushes
 
-        // TODO: add owner from brush properties of FlatButton
-
-        /// <summary>
-        /// Get or set the brush used for the background of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse is clicking it.
         /// </summary>
@@ -428,8 +625,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the background of this button while it is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the background of this button while it is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
@@ -446,6 +642,26 @@ namespace SolidShineUi.Ribbon
         {
             get => (Brush)GetValue(HighlightBrushProperty);
             set => SetValue(HighlightBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground of the control while the mouse is over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightForeground
+        {
+            get => (Brush)GetValue(HighlightForegroundProperty);
+            set => SetValue(HighlightForegroundProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
         }
 
         /// <summary>
@@ -469,17 +685,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around the edges of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush BorderHighlightBrush
@@ -489,8 +695,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush BorderSelectedBrush
@@ -499,43 +704,62 @@ namespace SolidShineUi.Ribbon
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.White.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ClickBrushProperty = FlatButton.ClickBrushProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.Gainsboro.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedBrushProperty = FlatButton.SelectedBrushProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightBrushProperty = FlatButton.HighlightBrushProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.LightGray.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundProperty = FlatButton.HighlightForegroundProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.Gray.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty = FlatButton.SelectedForegroundProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.DarkGray.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty DisabledBrushProperty = FlatButton.DisabledBrushProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderDisabledBrushProperty = FlatButton.BorderDisabledBrushProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.Black.ToBrush()));
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderHighlightBrushProperty = FlatButton.BorderHighlightBrushProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
 
-        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(FileMenuItem),
-            new PropertyMetadata(Colors.DimGray.ToBrush()));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderSelectedBrushProperty = FlatButton.BorderSelectedBrushProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(ApplyPropertyUpdate));
+
+        #endregion
+
+        #region TransparentBack
+
+        /// <summary>
+        /// The backing dependency property object for <see cref="TransparentBack"/>. See the related property for more details.
+        /// </summary>
+        public static readonly DependencyProperty TransparentBackProperty = FlatButton.TransparentBackProperty.AddOwner(typeof(FileMenuItem),
+            new PropertyMetadata(true, ApplyPropertyUpdate));
+
+        /// <summary>
+        /// Get or set whether the button should have a transparent background when the button is not focused.
+        /// </summary>
+        [Category("Common")]
+        [Description("Get or set whether the button should have a transparent background when the button is not focused.")]
+        public bool TransparentBack
+        {
+            get => (bool)GetValue(TransparentBackProperty);
+            set => SetValue(TransparentBackProperty, value);
+        }
 
         #endregion
 
@@ -737,6 +961,33 @@ namespace SolidShineUi.Ribbon
 
         #endregion
 
+        #region Button Handling
+
+        private void btnMenu_RightClick(object sender, RoutedEventArgs e)
+        {
+            PerformRightClick();
+        }
+
+        private void btnMain_RightClick(object sender, RoutedEventArgs e)
+        {
+            PerformRightClick();
+        }
+
+        private void btnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            OpenMenu();
+
+            RoutedEventArgs rre = new RoutedEventArgs(MenuClickEvent);
+            RaiseEvent(rre);
+        }
+
+        private void btnMain_Click(object sender, RoutedEventArgs e)
+        {
+            OnClick();
+        }
+
+        #endregion
+
         // If the button is prepared by PerformPress, perform the Click actions, including raising the Click event.
         void PerformRightClick()
         {
@@ -784,46 +1035,7 @@ namespace SolidShineUi.Ribbon
 
         #endregion
 
-        #region IRibbonItem implementations
-
-        /// <summary>
-        /// Get or set the size to use for this control. 
-        /// For <see cref="FileMenuItem"/>, the only valid values are <c>Small</c> and <c>IconOnly</c>; all other values will be treated as <c>Small</c>.
-        /// </summary>
-        /// <remarks>
-        /// When the parent group is compacted, it'll request all controls within the group to use its <see cref="CompactSize"/> instead of its <see cref="StandardSize"/>.
-        /// </remarks>
-        public RibbonElementSize StandardSize { get => (RibbonElementSize)GetValue(StandardSizeProperty); set => SetValue(StandardSizeProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="StandardSize"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty StandardSizeProperty
-            = DependencyProperty.Register(nameof(StandardSize), typeof(RibbonElementSize), typeof(FileMenuItem),
-            new FrameworkPropertyMetadata(RibbonElementSize.Large));
-
-
-        /// <summary>
-        /// Get or set the size to use for this control, when the parent group is being compacted.
-        /// For <see cref="FileMenuItem"/>, the only valid values are <c>Small</c> and <c>IconOnly</c>; all other values will be treated as <c>Small</c>.
-        /// </summary>
-        /// <remarks>
-        /// When the parent group is compacted, it'll request all controls within the group to use its <see cref="CompactSize"/> instead of its <see cref="StandardSize"/>.
-        /// For important and commonly used controls in a group, the <c>CompactSize</c> may still be same type as the <c>StandardSize</c>, but for less important or 
-        /// more infrequently used controls, it's recommended to go down a size value for <c>CompactSize</c>.
-        /// </remarks>
-        public RibbonElementSize CompactSize { get => (RibbonElementSize)GetValue(CompactSizeProperty); set => SetValue(CompactSizeProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="CompactSize"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty CompactSizeProperty
-            = DependencyProperty.Register(nameof(CompactSize), typeof(RibbonElementSize), typeof(FileMenuItem),
-            new FrameworkPropertyMetadata(RibbonElementSize.Small));
-
-        /// <inheritdoc/>
-        public string AccessKey { get => (string)GetValue(AccessKeyProperty); set => SetValue(AccessKeyProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="AccessKey"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty AccessKeyProperty
-            = DependencyProperty.Register(nameof(AccessKey), typeof(string), typeof(FileMenuItem),
-            new FrameworkPropertyMetadata("C"));
+        #region Icon / Title / IToolbarItem implementation
 
         /// <summary>
         /// Get or set the large icon to use, when using a layout that allows large icons.
@@ -854,14 +1066,6 @@ namespace SolidShineUi.Ribbon
         public static readonly DependencyProperty TitleProperty
             = DependencyProperty.Register(nameof(Title), typeof(string), typeof(FileMenuItem),
             new FrameworkPropertyMetadata("Item"));
-
-        /// <inheritdoc/>
-        public bool IsCompacted { get => (bool)GetValue(IsCompactedProperty); set => SetValue(IsCompactedProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="IsCompacted"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty IsCompactedProperty
-            = DependencyProperty.Register(nameof(IsCompacted), typeof(bool), typeof(FileMenuItem),
-            new FrameworkPropertyMetadata(false));
 
         /// <inheritdoc/>
         public int CompactOrder { get => (int)GetValue(CompactOrderProperty); set => SetValue(CompactOrderProperty, value); }

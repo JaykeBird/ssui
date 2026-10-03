@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi.Ribbon
 {
@@ -26,7 +28,24 @@ namespace SolidShineUi.Ribbon
         /// </summary>
         public GalleryItem()
         {
-            BorderThickness = new Thickness(0);
+            MouseEnter += UserControl_MouseEnter;
+            MouseLeave += UserControl_MouseLeave;
+            TouchEnter += UserControl_TouchEnter;
+            TouchLeave += UserControl_TouchLeave;
+            StylusEnter += UserControl_StylusEnter;
+            StylusLeave += UserControl_StylusLeave;
+
+            GotKeyboardFocus += UserControl_GotKeyboardFocus;
+            LostKeyboardFocus += UserControl_LostKeyboardFocus;
+
+            MouseDown += UserControl_MouseDown;
+            MouseUp += UserControl_MouseUp;
+            TouchDown += UserControl_TouchDown;
+            TouchUp += UserControl_TouchUp;
+            StylusDown += UserControl_StylusDown;
+            StylusUp += UserControl_StylusUp;
+
+            KeyDown += UserControl_KeyDown;
         }
 
         #region Color Scheme
@@ -143,13 +162,19 @@ namespace SolidShineUi.Ribbon
 
             void ApplyTheme(SsuiTheme theme)
             {
+                ApplyThemeBinding(BackgroundProperty, SsuiTheme.ButtonBackgroundProperty, theme);
                 ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
-                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
-                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
-                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
-                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
-                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
                 ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, theme);
+                ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(BorderHighlightBrushProperty, SsuiTheme.HighlightBorderBrushProperty, theme);
+                ApplyThemeBinding(BorderSelectedBrushProperty, SsuiTheme.SelectedBorderBrushProperty, theme);
+                ApplyThemeBinding(ForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, theme);
             }
         }
 
@@ -201,20 +226,34 @@ namespace SolidShineUi.Ribbon
             = DependencyProperty.Register(nameof(Title), typeof(string), typeof(GalleryItem),
             new FrameworkPropertyMetadata("Item"));
 
+        /// <summary>
+        /// Get or set the corner radius for the border around the item.
+        /// </summary>
+        public CornerRadius CornerRadius { get => (CornerRadius)GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CornerRadius"/>. See the related property for details.</summary>
+        public static DependencyProperty CornerRadiusProperty
+            = FlatButton.CornerRadiusProperty.AddOwner(typeof(GalleryItem),
+            new FrameworkPropertyMetadata(new CornerRadius(0)));
+
+        /// <summary>The backing dependency property for <see cref="BorderSelectionThickness"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderSelectionThicknessProperty = FlatButton.BorderSelectionThicknessProperty.AddOwner(typeof(GalleryItem),
+            new PropertyMetadata(new Thickness(1)));
+
+        /// <summary>
+        /// Get or set the thickness of the border around the item, while the item is in a selected (<c>IsSelected</c>) state.
+        /// </summary>
+        [Category("Appearance")]
+        [Description("Get or set the thickness of the border around the item, while the item is in a selected (IsSelected) state.")]
+        public Thickness BorderSelectionThickness
+        {
+            get => (Thickness)GetValue(BorderSelectionThicknessProperty);
+            set => SetValue(BorderSelectionThicknessProperty, value);
+        }
 
         #endregion
 
         #region Brushes
-
-        /// <summary>
-        /// Get or set the brush used for the background of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
 
         /// <summary>
         /// Get or set the brush used for the background of the control while the mouse is clicking it.
@@ -227,8 +266,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the background of this button while it is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the background of this button while it is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush SelectedBrush
@@ -245,6 +283,26 @@ namespace SolidShineUi.Ribbon
         {
             get => (Brush)GetValue(HighlightBrushProperty);
             set => SetValue(HighlightBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground of the control while the mouse is over it, or it has keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public Brush HighlightForeground
+        {
+            get => (Brush)GetValue(HighlightForegroundProperty);
+            set => SetValue(HighlightForegroundProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush used for the foreground while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush SelectedForeground
+        {
+            get => (Brush)GetValue(SelectedForegroundProperty);
+            set => SetValue(SelectedForegroundProperty, value);
         }
 
         /// <summary>
@@ -268,17 +326,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the border around the edges of the control.
-        /// </summary>
-        [Category("Brushes")]
-        public new Brush BorderBrush
-        {
-            get => (Brush)GetValue(BorderBrushProperty);
-            set => SetValue(BorderBrushProperty, value);
-        }
-
-        /// <summary>
-        /// Get or set the brush used for the border while the control has the mouse over it (or it has keyboard focus).
+        /// Get or set the brush used for the border while the control has the mouse over it, or it has keyboard focus.
         /// </summary>
         [Category("Brushes")]
         public Brush BorderHighlightBrush
@@ -288,8 +336,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Get or set the brush used for the border while the control is selected
-        /// (i.e. the <c>IsSelected</c> property is true).
+        /// Get or set the brush used for the border while the control is selected (i.e., <c>IsSelected</c> is <c>true</c>).
         /// </summary>
         [Category("Brushes")]
         public Brush BorderSelectedBrush
@@ -298,43 +345,45 @@ namespace SolidShineUi.Ribbon
             set => SetValue(BorderSelectedBrushProperty, value);
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(GalleryItem),
-            new PropertyMetadata(Colors.White.ToBrush()));
+        // public new static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
+        //     "Background", typeof(Brush), typeof(GalleryItem),
+        //     new PropertyMetadata(Colors.White.ToBrush()));
 
-        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
-            "ClickBrush", typeof(Brush), typeof(GalleryItem),
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ClickBrushProperty = FlatButton.ClickBrushProperty.AddOwner(typeof(GalleryItem),
             new PropertyMetadata(Colors.Gainsboro.ToBrush()));
 
-        public static readonly DependencyProperty SelectedBrushProperty = DependencyProperty.Register(
-            "SelectedBrush", typeof(Brush), typeof(GalleryItem),
+        /// <summary>The backing dependency property for <see cref="SelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedBrushProperty = FlatButton.SelectedBrushProperty.AddOwner(typeof(GalleryItem),
             new PropertyMetadata(Colors.WhiteSmoke.ToBrush()));
 
-        public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
-            "HighlightBrush", typeof(Brush), typeof(GalleryItem),
+        /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightBrushProperty = FlatButton.HighlightBrushProperty.AddOwner(typeof(GalleryItem),
             new PropertyMetadata(Colors.LightGray.ToBrush()));
 
-        public static readonly DependencyProperty DisabledBrushProperty = DependencyProperty.Register(
-            "DisabledBrush", typeof(Brush), typeof(GalleryItem),
+        /// <summary>The backing dependency property for <see cref="HighlightForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty HighlightForegroundProperty = FlatButton.HighlightForegroundProperty.AddOwner(typeof(GalleryItem),
+            new PropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="SelectedForeground"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty SelectedForegroundProperty = FlatButton.SelectedForegroundProperty.AddOwner(typeof(GalleryItem),
+            new PropertyMetadata(Colors.Black.ToBrush()));
+
+        /// <summary>The backing dependency property for <see cref="DisabledBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty DisabledBrushProperty = FlatButton.DisabledBrushProperty.AddOwner(typeof(GalleryItem),
             new PropertyMetadata(Colors.Gray.ToBrush()));
 
-        public static readonly DependencyProperty BorderDisabledBrushProperty = DependencyProperty.Register(
-            "BorderDisabledBrush", typeof(Brush), typeof(GalleryItem),
+        /// <summary>The backing dependency property for <see cref="BorderDisabledBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderDisabledBrushProperty = FlatButton.BorderDisabledBrushProperty.AddOwner(typeof(GalleryItem),
             new PropertyMetadata(Colors.DarkGray.ToBrush()));
 
-        public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-            "BorderBrush", typeof(Brush), typeof(GalleryItem),
+        /// <summary>The backing dependency property for <see cref="BorderHighlightBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderHighlightBrushProperty = FlatButton.BorderHighlightBrushProperty.AddOwner(typeof(GalleryItem),
             new PropertyMetadata(Colors.Black.ToBrush()));
 
-        public static readonly DependencyProperty BorderHighlightBrushProperty = DependencyProperty.Register(
-            "BorderHighlightBrush", typeof(Brush), typeof(GalleryItem),
-            new PropertyMetadata(Colors.Black.ToBrush()));
-
-        public static readonly DependencyProperty BorderSelectedBrushProperty = DependencyProperty.Register(
-            "BorderSelectedBrush", typeof(Brush), typeof(GalleryItem),
+        /// <summary>The backing dependency property for <see cref="BorderSelectedBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty BorderSelectedBrushProperty = FlatButton.BorderSelectedBrushProperty.AddOwner(typeof(GalleryItem),
             new PropertyMetadata(Colors.DimGray.ToBrush()));
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -521,7 +570,42 @@ namespace SolidShineUi.Ribbon
 
         #endregion
 
-        // If the button is prepared by PerformPress, perform the Click actions, including raising the Click event.
+        #region Base Functions
+
+        /// <summary>
+        /// Get if this control is currently in a "highlight" state.
+        /// <para/>
+        /// Use <see cref="Highlight"/> and <see cref="Unhighlight"/> to change states.
+        /// </summary>
+        protected bool Highlighting { get; private set; } = false;
+
+        bool performingClick = false;
+        bool rightClick = false;
+
+        /// <summary>
+        /// Change the control to a highlighted state, while it has focus or has the mouse or stylus over it.
+        /// </summary>
+        protected virtual void Highlight()
+        {
+            Highlighting = true;
+        }
+
+        /// <summary>
+        /// Change the control to an unhighlighted state, when it no longer has focus or has the mouse or stylus over it.
+        /// </summary>
+        protected virtual void Unhighlight()
+        {
+            Highlighting = false;
+        }
+
+        void InitiateClick()
+        {
+            performingClick = true;
+
+            Background = ClickBrush;
+            Foreground = HighlightForeground;
+        }
+
         void PerformRightClick()
         {
             RoutedEventArgs rre = new RoutedEventArgs(RightClickEvent);
@@ -529,7 +613,7 @@ namespace SolidShineUi.Ribbon
         }
 
         /// <summary>
-        /// Perform a click on the main button programmatically. The button responds the same way as if it was clicked by the user.
+        /// Perform a click on this control programmatically. This responds the same way as if it was clicked by the user.
         /// </summary>
         public void DoClick()
         {
@@ -543,12 +627,151 @@ namespace SolidShineUi.Ribbon
         {
             if (SelectOnClick)
             {
-                SetIsSelectedWithSource(!IsSelected, SelectionChangeTrigger.ControlClick, this);
+                SetIsSelectedWithSource(true, SelectionChangeTrigger.ControlClick, this);
             }
 
             RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);
             RaiseEvent(rre);
         }
+
+        void PerformClick()
+        {
+            if (performingClick)
+            {
+                if (rightClick)
+                {
+                    PerformRightClick();
+                    rightClick = false;
+                }
+                else
+                {
+                    OnClick();
+                }
+
+                performingClick = false;
+            }
+        }
+
+        #endregion
+
+        #region Base Event Handlers
+
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            InitiateClick();
+        }
+
+        private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                rightClick = true;
+            }
+
+            PerformClick();
+        }
+
+#if NETCOREAPP
+        private void UserControl_TouchDown(object? sender, TouchEventArgs e)
+        {
+            InitiateClick();
+        }
+
+        private void UserControl_TouchUp(object? sender, TouchEventArgs e)
+        {
+            PerformClick();
+        }
+#else
+        private void UserControl_TouchDown(object sender, TouchEventArgs e)
+        {
+            InitiateClick();
+        }
+
+        private void UserControl_TouchUp(object sender, TouchEventArgs e)
+        {
+            PerformClick();
+        }
+#endif
+
+        private void UserControl_StylusDown(object sender, StylusDownEventArgs e)
+        {
+            InitiateClick();
+        }
+
+        private void UserControl_StylusUp(object sender, StylusEventArgs e)
+        {
+            PerformClick();
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Highlight();
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Unhighlight();
+        }
+
+#if NETCOREAPP
+        private void UserControl_TouchEnter(object? sender, TouchEventArgs e)
+        {
+            Highlight();
+        }
+
+        private void UserControl_TouchLeave(object? sender, TouchEventArgs e)
+        {
+            Unhighlight();
+        }
+
+#else
+        private void UserControl_TouchEnter(object sender, TouchEventArgs e)
+        {
+            Highlight();
+        }
+
+        private void UserControl_TouchLeave(object sender, TouchEventArgs e)
+        {
+            Unhighlight();
+        }
+#endif
+
+        private void UserControl_StylusEnter(object sender, StylusEventArgs e)
+        {
+            Highlight();
+        }
+
+        private void UserControl_StylusLeave(object sender, StylusEventArgs e)
+        {
+            Unhighlight();
+        }
+
+        private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Highlight();
+        }
+
+        private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Unhighlight();
+        }
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Space)
+            {
+                performingClick = true;
+                PerformClick();
+            }
+            else if (e.Key == Key.Apps)
+            {
+                performingClick = true;
+                rightClick = true;
+                PerformClick();
+            }
+        }
+
+        #endregion
 
         #endregion
     }
