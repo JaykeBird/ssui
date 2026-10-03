@@ -36,6 +36,8 @@ namespace SolidShineUi.Ribbon
             Padding = new Thickness(1);
             SetValue(ItemsPropertyKey, new ObservableCollection<GalleryItem>());
             SetValue(DisplayedItemsPropertyKey, new List<GalleryItem>());
+            SetValue(ExpandedItemsPropertyKey, new List<GalleryItem>());
+            SetValue(MenuItemsProperty, new List<UIElement>());
             Items.CollectionChanged += Items_CollectionChanged;
 
             SetDisplayedItems(0);
@@ -184,6 +186,14 @@ namespace SolidShineUi.Ribbon
 
         #region Template IO
 
+        bool itemsLoaded = false;
+
+#if NETCOREAPP
+        Popup? popMenu = null;
+#else
+        Popup popMenu = null;
+#endif
+
         /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
@@ -201,29 +211,15 @@ namespace SolidShineUi.Ribbon
                     b.SetBinding(BorderBrushProperty, new Binding(nameof(BorderBrush)) { Source = this });
                     b.SetBinding(BorderThicknessProperty, new Binding(nameof(BorderThickness)) { Source = this });
                 }
+                else if (popMenu.Child is ContentControlWithMenu ccm)
+                {
+                    ccm.SetBinding(SsuiThemeProperty, new Binding(nameof(SsuiTheme)));
+                }
 
+                popMenu.Opened += PopMenu_Opened;
                 popMenu.Closed += PopMenu_Closed;
             }
         }
-
-#if NETCOREAPP
-        private void PopMenu_Closed(object? sender, EventArgs e)
-#else
-        private void PopMenu_Closed(object sender, EventArgs e)
-#endif
-        {
-            ExpandedMenuItems.Clear();
-            ExpandedMenuItems = new List<GalleryItem>();
-            SetDisplayedItems(currentInitialValue);
-        }
-
-        bool itemsLoaded = false;
-
-#if NETCOREAPP
-        Popup? popMenu = null;
-#else
-        Popup popMenu = null;
-#endif
 
         void LoadTemplateItems()
         {
@@ -236,6 +232,27 @@ namespace SolidShineUi.Ribbon
                     itemsLoaded = true;
                 }
             }
+        }
+
+#if NETCOREAPP
+        private void PopMenu_Opened(object? sender, EventArgs e)
+#else
+        private void PopMenu_Opened(object sender, EventArgs e)
+#endif
+        {
+            DisplayedItems.Clear();
+            ExpandedItems = new List<GalleryItem>(Items);
+        }
+
+#if NETCOREAPP
+        private void PopMenu_Closed(object? sender, EventArgs e)
+#else
+        private void PopMenu_Closed(object sender, EventArgs e)
+#endif
+        {
+            ExpandedItems.Clear();
+            ExpandedItems = new List<GalleryItem>();
+            SetDisplayedItems(currentInitialValue);
         }
 
 #endregion
@@ -373,7 +390,7 @@ namespace SolidShineUi.Ribbon
             {
                 DisplayedItems.Clear();
                 DisplayedItems = new List<GalleryItem>();
-                ExpandedMenuItems = new List<GalleryItem>(Items);
+                ExpandedItems = new List<GalleryItem>(Items);
             }
         }
 
@@ -426,20 +443,38 @@ namespace SolidShineUi.Ribbon
 
         #endregion
 
-        #region ExpandedMenuItems
+        #region ExpandedItems
 
         /// <summary>
         /// Get or set the list of items that are displayed in the expanded menu. This should be a copy of <see cref="Items"/>. This is used internally.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public List<GalleryItem> ExpandedMenuItems { get => (List<GalleryItem>)GetValue(ExpandedMenuItemsProperty); set => SetValue(ExpandedMenuItemsProperty, value); }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public List<GalleryItem> ExpandedItems { get => (List<GalleryItem>)GetValue(ExpandedItemsProperty); private set => SetValue(ExpandedItemsPropertyKey, value); }
 
-        /// <summary>The backing dependency property for <see cref="ExpandedMenuItems"/>. See the related property for details.</summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static DependencyProperty ExpandedMenuItemsProperty
-            = DependencyProperty.Register(nameof(ExpandedMenuItems), typeof(List<GalleryItem>), typeof(Gallery),
+        private static readonly DependencyPropertyKey ExpandedItemsPropertyKey
+            = DependencyProperty.RegisterReadOnly(nameof(ExpandedItems), typeof(List<GalleryItem>), typeof(Gallery),
             new FrameworkPropertyMetadata(new List<GalleryItem>()));
 
+        /// <summary>The backing dependency property for <see cref="ExpandedItems"/>. See the related property for details.</summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public static readonly DependencyProperty ExpandedItemsProperty = ExpandedItemsPropertyKey.DependencyProperty;
+
+
+        #endregion
+
+        #region
+
+        /// <summary>
+        /// Get or set a list of items that are displayed below the gallery items when the expanded menu is opened. 
+        /// </summary>
+        public List<UIElement> MenuItems { get => (List<UIElement>)GetValue(MenuItemsProperty); set => SetValue(MenuItemsProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="MenuItems"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty MenuItemsProperty
+            = DependencyProperty.Register(nameof(MenuItems), typeof(List<UIElement>), typeof(Gallery),
+            new FrameworkPropertyMetadata(null));
 
         #endregion
 

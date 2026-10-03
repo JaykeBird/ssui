@@ -109,6 +109,10 @@
                 </ribbon:RibbonGroup>
                 <ribbon:RibbonGroup Title="Gallery">
                     <ribbon:Gallery ItemLayout="SmallIconAndContent" MaxItemsDisplayed="6" >
+                        <ribbon:Gallery.MenuItems>
+                            <MenuItem Header="Item 1" />
+                            <MenuItem Header="Item 2" />
+                        </ribbon:Gallery.MenuItems>
                         <ribbon:GalleryItem SmallIcon="Resources/Images/CopyColor.png" LargeIcon="Resources/Images/32/CopyColor.png" Title="Copy" />
                         <ribbon:GalleryItem SmallIcon="Resources/Images/SaveColor.png" LargeIcon="Resources/Images/32/SaveColor.png" Title="Wow" />
                         <ribbon:GalleryItem SmallIcon="Resources/Images/SmileyColor.png" Title="Yay" />
