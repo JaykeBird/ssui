@@ -361,18 +361,6 @@ namespace SolidShineUi.Ribbon
         #region Separator Border
 
         /// <summary>
-        /// Get or set if a separator bar should be shown between the main and menu buttons. Without the separator bar, the buttons look more connected, 
-        /// but they can be hard to discern as two separate clickable buttons without mousing over them.
-        /// <para/>
-        /// This has no effect if <see cref="IsSplit"/> is set to <c>false</c>.
-        /// </summary>
-        public bool ShowSeparator { get => (bool)GetValue(ShowSeparatorProperty); set => SetValue(ShowSeparatorProperty, value); }
-
-        /// <summary>The backing dependency property for <see cref="ShowSeparator"/>. See the related property for details.</summary>
-        public static readonly DependencyProperty ShowSeparatorProperty
-            = SplitButton.ShowSeparatorProperty.AddOwner(typeof(FileMenuItem), new FrameworkPropertyMetadata(true));
-
-        /// <summary>
         /// Get or set the brush to use for the separator bar between the main and menu buttons.
         /// <para/>
         /// This has no effect if <see cref="IsSplit"/> is set to <c>false</c>.
@@ -551,7 +539,7 @@ namespace SolidShineUi.Ribbon
         /// <summary>The backing dependency property for <see cref="MenuPlacement"/>. See the related property for details.</summary>
         public static readonly DependencyProperty MenuPlacementProperty
             = MenuButton.MenuPlacementProperty.AddOwner(typeof(FileMenuItem),
-            new FrameworkPropertyMetadata(PlacementMode.Bottom));
+            new FrameworkPropertyMetadata(PlacementMode.Right));
 
 
         /// <summary>
@@ -1011,6 +999,11 @@ namespace SolidShineUi.Ribbon
             if (SelectOnClick)
             {
                 SetIsSelectedWithSource(!IsSelected, SelectionChangeTrigger.ControlClick, this);
+            }
+
+            if (HasMenu && !IsSplit)
+            {
+                OpenMenu();
             }
 
             RoutedEventArgs rre = new RoutedEventArgs(ClickEvent);

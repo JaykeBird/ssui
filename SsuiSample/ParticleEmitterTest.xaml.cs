@@ -28,7 +28,7 @@ namespace SsuiSample
 
         private void control_SsuiThemeChanged(object sender, RoutedEventArgs e)
         {
-            Brush b = SsuiTheme.BaseBackground.CloneCurrentValue();
+            Brush b = SsuiTheme?.BaseBackground.CloneCurrentValue() ?? Colors.White.ToBrush();
             b.Opacity = 0.5;
             toolbar.Background = b;
         }

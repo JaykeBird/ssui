@@ -33,7 +33,7 @@ namespace SolidShineUi.Ribbon
             //PreviewMouseUp += control_PreviewMouseUp;
             //MouseLeave += control_MouseLeave;
 
-            SetValue(ItemsPropertyKey, new ObservableCollection<IRibbonItem>());
+            SetValue(ItemsPropertyKey, new ObservableCollection<FileMenuItem>());
             Items.CollectionChanged += Items_CollectionChanged;
 
             IsEnabledChanged += control_IsEnabledChanged;
@@ -110,15 +110,15 @@ namespace SolidShineUi.Ribbon
         /// Get or set the list of items in this File menu. This Items property can be used to add and remove items.
         /// </summary>
         [Category("Common")]
-        public ObservableCollection<IRibbonItem> Items
+        public ObservableCollection<FileMenuItem> Items
         {
-            get { return (ObservableCollection<IRibbonItem>)GetValue(ItemsProperty); }
+            get { return (ObservableCollection<FileMenuItem>)GetValue(ItemsProperty); }
             private set { SetValue(ItemsPropertyKey, value); }
         }
 
         private static readonly DependencyPropertyKey ItemsPropertyKey
-            = DependencyProperty.RegisterReadOnly(nameof(Items), typeof(ObservableCollection<IRibbonItem>), typeof(RibbonFileMenu),
-            new FrameworkPropertyMetadata(new ObservableCollection<IRibbonItem>()));
+            = DependencyProperty.RegisterReadOnly(nameof(Items), typeof(ObservableCollection<FileMenuItem>), typeof(RibbonFileMenu),
+            new FrameworkPropertyMetadata(new ObservableCollection<FileMenuItem>()));
 
         /// <summary>The backing dependency property for <see cref="Items"/>. See the related property for details.</summary>
         public static readonly DependencyProperty ItemsProperty = ItemsPropertyKey.DependencyProperty;

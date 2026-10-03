@@ -28,8 +28,26 @@
         <ribbon:Ribbon VerticalAlignment="Center" Grid.Row="1" x:Name="ribbon" >
             <ribbon:Ribbon.FileMenu>
                 <ribbon:RibbonFileMenu>
-                    <ribbon:RibbonButton StandardSize="Small" SmallIcon="Resources/Images/SaveColor.png" Title="Save" />
-                    <ribbon:RibbonButton StandardSize="Small" SmallIcon="Resources/Images/ExitColor.png" Title="Exit" />
+                    <ribbon:FileMenuItem LargeIcon="/Resources/Images/32/SaveColor.png" SmallIcon="Resources/Images/SaveColor.png" Title="Save" />
+                    <ribbon:FileMenuItem LargeIcon="/Resources/Images/32/SaveColor.png" SmallIcon="/Resources/Images/SaveColor.png" Title="Save As" IsSplit="True" >
+                        <ribbon:FileMenuItem.Menu>
+                            <flat:ContextMenu>
+                                <MenuItem Header="Item 1" />
+                                <MenuItem Header="Item 2" />
+                                <MenuItem Header="Item 3" />
+                            </flat:ContextMenu>
+                        </ribbon:FileMenuItem.Menu>
+                    </ribbon:FileMenuItem>
+                    <ribbon:FileMenuItem LargeIcon="/Resources/Images/32/CopyColor.png" SmallIcon="/Resources/Images/CopyColor.png" Title="Prepare" Margin="0,4,0,0" >
+                        <ribbon:FileMenuItem.Menu>
+                            <flat:ContextMenu>
+                                <MenuItem Header="Item 1" />
+                                <MenuItem Header="Item 2" />
+                                <MenuItem Header="Item 3" />
+                            </flat:ContextMenu>
+                        </ribbon:FileMenuItem.Menu>
+                    </ribbon:FileMenuItem>
+                    <ribbon:FileMenuItem IsLargeSize="False" SmallIcon="Resources/Images/ExitColor.png" Title="Exit" Margin="0,4,0,0" />
                 </ribbon:RibbonFileMenu>
             </ribbon:Ribbon.FileMenu>
             <!--<ribbon:Ribbon.TopRightElement>

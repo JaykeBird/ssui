@@ -1241,10 +1241,12 @@
                                 <Setter Property="CornerRadius" Value="{Binding Path=CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                 <!--<Style.Triggers>
-                                    --><!--<DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
+                                    -->
+                                <!--<DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type flat:MenuButton}}}" Value="False" >
                                         <Setter Property="Background" Value="{Binding Path=DisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
                                         <Setter Property="BorderBrush" Value="{Binding Path=BorderDisabledBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type flat:MenuButton}}}" />
-                                    </DataTrigger>--><!--
+                                    </DataTrigger>-->
+                                <!--
                                     <DataTrigger Binding="{Binding IsSelected, Mode=OneWay,RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True" >
                                         <Setter Property="Background" Value="{Binding Path=SelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                         <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -2550,9 +2552,12 @@
                         <Grid Grid.Row="0" Grid.Column="0" Margin="6,1,6,0" HorizontalAlignment="Center" VerticalAlignment="Center" 
                               x:Name="PART_Collapsed" >
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="20" /> <!-- Image row -->
-                                <RowDefinition Height="Auto" MinHeight="20" /> <!-- Title row -->
-                                <RowDefinition Height="8" /> <!-- Arrow row -->
+                                <RowDefinition Height="20" />
+                                <!-- Image row -->
+                                <RowDefinition Height="Auto" MinHeight="20" />
+                                <!-- Title row -->
+                                <RowDefinition Height="8" />
+                                <!-- Arrow row -->
                             </Grid.RowDefinitions>
                             <Image Grid.Row="0" Margin="2,3,2,1" Source="{TemplateBinding GroupIcon}" Width="16" Height="16" 
                                    HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="PART_GroupImage"/>
@@ -2565,7 +2570,6 @@
                                 </Style>
                             </Grid.Style>
                         </Grid>
-
 
                         <Border Grid.Column="2" Grid.RowSpan="2" BorderBrush="{TemplateBinding GroupSeparatorBrush}" BorderThickness="1" Width="{TemplateBinding GroupSeparatorWidth}"
                                 Visibility="{TemplateBinding ShowGroupSeparator, Converter={StaticResource VisConverter}}" Margin="0,3" />
@@ -3921,18 +3925,19 @@
     </Style>
 
     <Style TargetType="{x:Type ribbon:FileMenuItem}">
-        <Setter Property="Focusable" Value="True" />
         <Setter Property="Height" Value="40" />
         <Setter Property="Width" Value="Auto" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="TransparentBack" Value="True" />
         <Setter Property="Padding" Value="4,0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ribbon:FileMenuItem}">
                     <DockPanel>
                         <Grid DockPanel.Dock="Right">
-                            <ssut:TemplateButton x:Name="PART_Menu" Padding="0" TransparentBack="{TemplateBinding TransparentBack}"
+                            <ssut:TemplateButton x:Name="PART_Menu" Padding="0" TransparentBack="{TemplateBinding TransparentBack}" Width="16"
                                              BorderBrush="{TemplateBinding BorderBrush}" BorderDisabledBrush="{TemplateBinding BorderDisabledBrush}" 
                                              BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
                                              ClickBrush="{TemplateBinding ClickBrush}" DisabledBrush="{TemplateBinding DisabledBrush}" HighlightBrush="{TemplateBinding HighlightBrush}"
@@ -3953,15 +3958,15 @@
                                         <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=MenuButtonSize}" />
                                     </Style>
                                 </ssut:TemplateButton.Style>
-                                <Path Data="M0,0 L8,0 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                          Height="5" Width="8" Margin="0" Stretch="Fill" />
+                                <Path Data="M0,0 L0,8 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"
+                                          Margin="0" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </ssut:TemplateButton>
                             <Border x:Name="PART_Sep" IsHitTestVisible="False" 
                                 BorderThickness="{TemplateBinding SeparatorThickness, Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteAll}}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="{Binding SeparatorBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                        <Setter Property="Visibility" Value="{Binding ShowSeparator, RelativeSource={RelativeSource Mode=TemplatedParent},
+                                        <Setter Property="Visibility" Value="{Binding IsSplit, RelativeSource={RelativeSource Mode=TemplatedParent},
                                         Converter={StaticResource VisConverter}}" />
                                         <Setter Property="Margin" Value="{Binding SeparatorEdgeMargin, RelativeSource={RelativeSource Mode=TemplatedParent},
                                         Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteTbTh}}" />
@@ -3973,7 +3978,7 @@
                                 </Border.Style>
                             </Border>
                         </Grid>
-                        <ssut:TemplateButton x:Name="PART_Main" Grid.Row="1" Grid.Column="1" TransparentBack="{TemplateBinding TransparentBack}"
+                        <ssut:TemplateButton x:Name="PART_Main" TransparentBack="{TemplateBinding TransparentBack}" Padding="0"
                                          BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
                                          BorderDisabledBrush="{Binding BorderDisabledBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
                                          BorderHighlightBrush="{TemplateBinding BorderHighlightBrush}" BorderSelectedBrush="{TemplateBinding BorderSelectedBrush}"
@@ -3987,28 +3992,33 @@
                             <ssut:TemplateButton.Style>
                                 <Style TargetType="ssut:TemplateButton">
                                     <Setter Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource Mode=TemplatedParent}, 
-                                        Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLeftTh}}" />
+                                        Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteAll}}" />
                                     <Setter Property="BorderSelectionThickness" Value="{Binding BorderSelectionThickness, 
                                         RelativeSource={RelativeSource Mode=TemplatedParent}, 
-                                        Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLeftTh}}" />
+                                        Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteAll}}" />
                                     <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource Mode=TemplatedParent}, 
-                                        Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteLeftCR}}" />
+                                        Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteAll}}" />
                                     <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </ssut:TemplateButton.Style>
-                            <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" >
+                            <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="{TemplateBinding Padding}" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="36" x:Name="colIcon" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="1*" />
                                     <ColumnDefinition x:Name="colMenuArrow">
-                                        
+                                        <ColumnDefinition.Style>
+                                            <Style TargetType="ColumnDefinition">
+                                                <Setter Property="Width" Value="0" />
+                                            </Style>
+                                        </ColumnDefinition.Style>
                                     </ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{TemplateBinding LargeIcon}" Grid.Column="0" x:Name="imgIcon"
+                                <Image Source="{TemplateBinding LargeIcon}" Grid.Column="0" x:Name="imgIcon" Height="32"
                                        VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 <TextBlock Text="{TemplateBinding Title}" Grid.Column="1" x:Name="txtTitle"
-                                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0" />
-                                <Path Grid.Column="2" x:Name="pathArrow" />
+                                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,3,0" />
+                                <Path Data="M0,0 L0,8 4,4 z" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}"
+                                      Margin="0" Stretch="None" Grid.Column="2" x:Name="pathArrow" VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </Grid>
                         </ssut:TemplateButton>
                     </DockPanel>
@@ -4017,7 +4027,9 @@
                         <Trigger Property="IsLargeSize" Value="False">
                             <!-- make em smaller -->
                             <Setter Property="Width" TargetName="colIcon" Value="20" />
-                            <Setter Property="Source" TargetName="imgIcon" Value="{TemplateBinding SmallIcon}" />
+                            <Setter Property="Height" TargetName="imgIcon" Value="16" />
+                            <Setter Property="Source" TargetName="imgIcon" 
+                                    Value="{Binding Path=SmallIcon, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                             <Setter Property="Height" Value="24" />
                         </Trigger>
                         <Trigger Property="IsSplit" Value="True">
@@ -4025,7 +4037,23 @@
                             <Setter Property="Visibility" TargetName="PART_Menu" Value="Visible" />
                             <Setter Property="Visibility" TargetName="PART_Sep" Value="Visible" />
                             <Setter Property="Width" TargetName="colMenuArrow" Value="0" />
+                            <Setter TargetName="PART_Main" Property="BorderThickness" Value="{Binding BorderThickness, 
+                                    RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                    Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLeftTh}}" />
+                            <Setter TargetName="PART_Main" Property="BorderSelectionThickness" Value="{Binding BorderSelectionThickness, 
+                                    RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                    Converter={StaticResource PartialThConverter}, ConverterParameter={StaticResource byteLeftTh}}" />
+                            <Setter TargetName="PART_Main" Property="CornerRadius" Value="{Binding CornerRadius, 
+                                    RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                    Converter={StaticResource PartialCrConverter}, ConverterParameter={StaticResource byteLeftCR}}" />
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasMenu" Value="True" />
+                                <Condition Property="IsSplit" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="colMenuArrow" Property="Width" Value="16" />
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
