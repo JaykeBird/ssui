@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia;
-using Avalonia.VisualTree;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SolidShineUi
 {
@@ -16,10 +17,14 @@ namespace SolidShineUi
     /// </summary>
     public class ClickSelectTextBox : TextBox
     {
+
+        /// <inheritdoc/>
+        protected override Type StyleKeyOverride { get { return typeof(TextBox); } }
+
         /// <summary>
         /// Creates a new ClickSelectTextBox and defines the default event handlers.
         /// </summary>
-        public ClickSelectTextBox()
+        public ClickSelectTextBox() : base()
         {
             AddHandler(PointerPressedEvent, MouseButtonDown, RoutingStrategies.Tunnel);
             AddHandler(GotFocusEvent, SelectAllText, RoutingStrategies.Tunnel);

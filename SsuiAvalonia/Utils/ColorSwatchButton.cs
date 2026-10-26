@@ -16,6 +16,9 @@ namespace SolidShineUi.Utils
     public class ColorSwatchButton : FlatButton
     {
 
+        /// <inheritdoc/>
+        protected override Type StyleKeyOverride { get { return typeof(FlatButton); } }
+
         /// <summary>
         /// Create a ColorSwatchButton.
         /// </summary>

@@ -63,14 +63,6 @@ namespace SolidShineUi.Converters
             {
                 return ArrayToCsvLine(array, delimiter);
             }
-            else if (value is ReadOnlyMemory<string> span)
-            {
-                return ArrayToCsvLine(span.Span, delimiter);
-            }
-            else if (value is IEnumerable<string> strings)
-            {
-                return ArrayToCsvLine([.. strings], delimiter);
-            }
             else
             {
                 return new BindingNotification(new FormatException("value is not a collection/enumerable of strings"), BindingErrorType.Error);
