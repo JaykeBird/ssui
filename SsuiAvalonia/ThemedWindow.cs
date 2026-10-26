@@ -24,7 +24,14 @@ namespace SolidShineUi
         /// </summary>
         public ThemedWindow() { }
 
-
+        /// <summary>
+        /// Create a ThemedWindow with an owner.
+        /// </summary>
+        /// <param name="owner">The owner window for this window.</param>
+        public ThemedWindow(WindowBase owner) : base()
+        {
+            Owner = owner;
+        }
 
         /// <summary>
         /// Called when an <see cref="AvaloniaProperty"/> changes on this control.
