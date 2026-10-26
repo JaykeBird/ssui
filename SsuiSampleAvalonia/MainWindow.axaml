@@ -9,7 +9,7 @@
         Title="SsuiSampleAvalonia" FontSize="12" >
     <Grid ColumnDefinitions="120,50,1*" RowDefinitions="Auto,20,20,40,20,150,1*" >
 
-        <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+        <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" >
             <MenuItem Header="File">
                 <MenuItem Header="New" x:Name="mnuNew" Click="MenuItem_Click_1" />
                 <MenuItem Header="Open" />
@@ -56,13 +56,13 @@
         
         <flat:FlatButton x:Name="btnMain" Grid.Column="0" Grid.Row="2" Height="24" VerticalAlignment="Center"
                          Margin="10,0" Click="FlatButton_Click" RightClick="btnMain_RightClick"
-                         ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+                         >
             <TextBlock Text="HWHAT" />
         </flat:FlatButton>
-        <flat:MenuButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" 
+        <flat:MenuButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
                          IsEnabled="False" Height="24" VerticalAlignment="Center" Margin="10,0" Content="Disabibled" />
         <flat:SplitButton x:Name="btnSplit" Grid.Column="0" Grid.Row="3" Height="24" VerticalAlignment="Center"
-                 Margin="10,0" Click="FlatButton_Click" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+                 Margin="10,0" Click="FlatButton_Click" >
             <TextBlock Text="Who" />
             <flat:SplitButton.Menu>
                 <flat:ContextMenu>
@@ -71,12 +71,14 @@
                 </flat:ContextMenu>
             </flat:SplitButton.Menu>
         </flat:SplitButton>
+
+        <flat:ClickSelectTextBox Grid.Column="1" Grid.Row="3" Text="wef" />
         
         <flat:DoubleSpinner Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Height="24" VerticalAlignment="Stretch" Margin="10,0" x:Name="dbl" 
-                            ColorScheme="{Binding ElementName=window, Path=ColorScheme}" Step="0.2" Decimals="3" Value="12" />
+                            Step="0.2" Decimals="3" Value="12" />
 
         <flat:TabControl Grid.Row="5" Margin="10" BorderThickness="1" MinHeight="100" TabMinWidth="90" 
-                         Grid.ColumnSpan="3" ColorScheme="{Binding ElementName=window, Path=ColorScheme}" >
+                         Grid.ColumnSpan="3" >
             <flat:TabItem Title="Title">
 				<Grid>
 					<TextBlock Text="Tab Content" VerticalAlignment="Center" HorizontalAlignment="Center" />
