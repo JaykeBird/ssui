@@ -67,7 +67,7 @@ namespace SolidShineUi.Utils
 
         /// <summary>The backing styled property for <see cref="Color"/>. See the related property for details.</summary>
         public static readonly StyledProperty<Color> ColorProperty
-            = AvaloniaProperty.Register<ColorSwatchButton, Color>(nameof(Color), Colors.White);
+            = AvaloniaProperty.Register<ColorSwatchButton, Color>(nameof(Color), Colors.Gray);
 
         /// <summary>
         /// Get or set if a hexadecimal value (i.e. #FF0033) is shown on the tooltip for this button, even if the color exists in <see cref="Colors"/>.
