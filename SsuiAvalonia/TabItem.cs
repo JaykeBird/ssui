@@ -224,6 +224,21 @@ namespace SolidShineUi
         public static readonly StyledProperty<Control?> ExtraTabElementProperty
             = AvaloniaProperty.Register<TabItem, Control?>(nameof(ExtraTabElement), null);
 
+        #region Name
+
+        private string? _name = "";
+
+        /// <summary>
+        /// Gets or sets the name of the styled element.
+        /// </summary>
+        public string? Name { get => _name; set => SetAndRaise(NameProperty, ref _name, value); }
+
+        /// <summary>The backing direct property for <see cref="Name"/>. See the related property for details.</summary>
+        public static readonly DirectProperty<TabItem, string?> NameProperty
+            = StyledElement.NameProperty.AddOwner<TabItem>((s) => s.Name, (s, v) => s.Name = v);
+
+        #endregion
+
         #region Font Properties
 
         /// <summary>
