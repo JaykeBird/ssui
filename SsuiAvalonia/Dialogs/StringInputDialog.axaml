@@ -1,24 +1,29 @@
 <flat:ThemedUserControl xmlns="https://github.com/avaloniaui"
-						xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-						xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-						xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-						mc:Ignorable="d" Height="165" Width="300"
-						xmlns:flat="using:SolidShineUi"
-						x:Class="SolidShineUi.StringInputDialog" x:Name="window"
-						Loaded="FlatWindow_Loaded" >
-	<!-- TODO: put in border and set up background -->
-	<Grid x:Name="grid">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="35"/>
-			<RowDefinition Height="Auto" MinHeight="30" />
-			<RowDefinition/>
-			<RowDefinition Height="40"/>
-		</Grid.RowDefinitions>
-		<TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,15,0,0" Text="{Binding ElementName=window, Path=Description, FallbackValue='Enter a value:'}" VerticalAlignment="Top"/>
-		<TextBox x:Name="txtValue" Margin="20,3,20,3" KeyDown="txtValue_KeyDown" TextChanged="txtValue_TextChanged" Grid.Row="1"
-				  Text="{Binding ElementName=window, Path=Value}" />
-		<flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="3" />
-		<flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="3" />
-		<TextBlock x:Name="txtValidation" HorizontalAlignment="Left" Margin="20,5,0,0" Text="" VerticalAlignment="Top" Grid.Row="2"/>
-	</Grid>
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        mc:Ignorable="d" Height="165" Width="300"
+                        xmlns:flat="using:SolidShineUi"
+                        x:Class="SolidShineUi.StringInputDialog" x:Name="window"
+                        Loaded="FlatWindow_Loaded" >
+    <!-- TODO: put in border and set up background -->
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="Auto" MinHeight="30" />
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,15,0,0" VerticalAlignment="Top"
+                   Text="{Binding ElementName=window, Path=Description, TargetNullValue='Enter a value:', FallbackValue='Enter a value:'}" />
+        <TextBox x:Name="txtValue" Margin="20,3,20,3" KeyDown="txtValue_KeyDown" TextChanged="txtValue_TextChanged" Grid.Row="1"
+                  Text="{Binding ElementName=window, Path=Value}" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+        <Grid Grid.Row="3" x:Name="grdDialogButtons" IsVisible="{Binding ElementName=window, Path=ShowDialogButtons}" >
+            <flat:FlatButton x:Name="btnOK" Content="{Binding ElementName=window, Path=OkButtonText, TargetNullValue='OK', FallbackValue='OK'}" 
+                             HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" />
+            <flat:FlatButton x:Name="btnCancel" Content="{Binding ElementName=window, Path=CancelButtonText, TargetNullValue='Cancel', FallbackValue='Cancel'}"  
+                             HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" />
+        </Grid>
+        <TextBlock x:Name="txtValidation" HorizontalAlignment="Left" Margin="20,5,0,0" Text="" VerticalAlignment="Top" Grid.Row="2"/>
+    </Grid>
 </flat:ThemedUserControl>

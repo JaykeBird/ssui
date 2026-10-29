@@ -41,7 +41,7 @@ public partial class StringInputDialog : ThemedUserControl
     private void FlatWindow_Loaded(object sender, RoutedEventArgs e)
     {
         txtValue.Focus();
-        //CheckValidation();
+        CheckValidation();
 
         //if (Icon == null && Owner != null && Owner.Icon != null)
         //{
@@ -77,7 +77,7 @@ public partial class StringInputDialog : ThemedUserControl
 
     /// <summary>The backing styled property for <see cref="Description"/>. See the related property for details.</summary>
     public static readonly StyledProperty<string> DescriptionProperty
-        = AvaloniaProperty.Register<StringInputDialog, string>(nameof(Description), "");
+        = AvaloniaProperty.Register<StringInputDialog, string>(nameof(Description), "Enter a value:");
 
 
     /// <summary>
@@ -244,7 +244,7 @@ public partial class StringInputDialog : ThemedUserControl
     /// <param name="owner">The owner of the window, if there is one.</param>
     public ThemedWindow DisplayAsWindow(WindowBase? owner = null)
     {
-        ThemedWindow tw = (owner != null ? new ThemedWindow(owner) : new ThemedWindow());
+        ThemedWindow tw = owner != null ? new ThemedWindow(owner) : new ThemedWindow();
         tw.Content = this;
         tw.Title = this.Title;
 
@@ -264,29 +264,92 @@ public partial class StringInputDialog : ThemedUserControl
 
     #endregion
 
-    private void btnOK_Click(object sender, RoutedEventArgs e)
+    #region Dialog Actions
+
+    /// <summary>
+    /// Accept the current input in <see cref="Value"/>, and attempt to close the dialog.
+    /// </summary>
+    /// <remarks>
+    /// This sets <see cref="DialogResult"/> to <c>true</c>.
+    /// </remarks>
+    public void Accept()
     {
         if (!_validationPass) return;
         DialogResult = true;
         Close();
     }
 
+    /// <summary>
+    /// Cancel the input, and attempt to close the dialog.
+    /// </summary>
+    /// <remarks>
+    /// This sets <see cref="DialogResult"/> to <c>false</c>.
+    /// </remarks>
+    public void Cancel()
+    {
+        DialogResult = false;
+        Close();
+    }
+
+    #endregion
+
+    #region Dialog Buttons
+
+    /// <summary>
+    /// Get or set if the dialog buttons ("OK" and "Cancel") should be shown.
+    /// <para/>
+    /// If this is set to <c>false</c>, you should have your own UI for allowing the user to accept or reject their input via mouse
+    /// or touch, and also listen to the <see cref="Closing"/> event to determine when you should hide the dialog.
+    /// </summary>
+    public bool ShowDialogButtons { get => GetValue(ShowDialogButtonsProperty); set => SetValue(ShowDialogButtonsProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="ShowDialogButtons"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<bool> ShowDialogButtonsProperty
+        = AvaloniaProperty.Register<StringInputDialog, bool>(nameof(ShowDialogButtons), true);
+
+    /// <summary>
+    /// Get or set the text to display for the "OK" button, which is used for accepting the input.
+    /// </summary>
+    public string OkButtonText { get => GetValue(OkButtonTextProperty); set => SetValue(OkButtonTextProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="OkButtonText"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<string> OkButtonTextProperty
+        = AvaloniaProperty.Register<StringInputDialog, string>(nameof(OkButtonText), "OK");
+
+    /// <summary>
+    /// Get or set the text to display for the "Cancel" button, which is used for rejecting the input.
+    /// </summary>
+    public string CancelButtonText { get => GetValue(CancelButtonTextProperty); set => SetValue(CancelButtonTextProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="CancelButtonText"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<string> CancelButtonTextProperty
+        = AvaloniaProperty.Register<StringInputDialog, string>(nameof(CancelButtonText), "Cancel");
+
+
+
+    private void btnOK_Click(object sender, RoutedEventArgs e)
+    {
+        Accept();
+    }
+
     private void btnCancel_Click(object sender, RoutedEventArgs e)
     {
-        Close();
+        Cancel();
     }
 
     private void txtValue_KeyDown(object sender, Avalonia.Input.KeyEventArgs e)
     {
         if (e.Key == Avalonia.Input.Key.Enter && EnterKeyConfirms)
         {
-            btnOK_Click(this, e);
+            Accept();
         }
         else if (e.Key == Avalonia.Input.Key.Escape && EscapeKeyCancels)
         {
-            btnCancel_Click(this, e);
+            Cancel();
         }
     }
+
+    #endregion
 
     private void txtValue_TextChanged(object sender, Avalonia.Controls.TextChangedEventArgs e)
     {
