@@ -79,16 +79,6 @@ public partial class StringInputDialog : ThemedUserControl
     public static readonly StyledProperty<string> DescriptionProperty
         = AvaloniaProperty.Register<StringInputDialog, string>(nameof(Description), "Enter a value:");
 
-
-    /// <summary>
-    /// Get or set the title to use for this dialog, if used as a window.
-    /// </summary>
-    public string Title { get => GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
-
-    /// <summary>The backing styled property for <see cref="Title"/>. See the related property for details.</summary>
-    public static readonly StyledProperty<string> TitleProperty
-        = AvaloniaProperty.Register<StringInputDialog, string>(nameof(Title), "");
-
     #endregion
 
     #region Behaviors
@@ -204,6 +194,19 @@ public partial class StringInputDialog : ThemedUserControl
             _validationPass = true;
         }
     }
+
+    #endregion
+
+    #region Title
+
+    /// <summary>
+    /// Get or set the title to use for this dialog, if used as a window.
+    /// </summary>
+    public string Title { get => GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="Title"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<string> TitleProperty
+        = AvaloniaProperty.Register<StringInputDialog, string>(nameof(Title), "");
 
     #endregion
 

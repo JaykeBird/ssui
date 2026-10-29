@@ -68,5 +68,19 @@ namespace SsuiSampleAvalonia
             Close();
         }
 
+        private async void mnuSelectColor_Click(object? sender, RoutedEventArgs e)
+        {
+            ColorPickerDialog cpd = new ColorPickerDialog(ColorsHelper.Black)
+            {
+                Title = "Select a color",
+                SsuiTheme = this.SsuiTheme,
+            };
+            await cpd.DisplayAsWindow().ShowDialog(this);
+
+            if (cpd.DialogResult)
+            {
+                mnuSelectColor.Foreground = cpd.SelectedColor.ToBrush();
+            }
+        }
     }
 }

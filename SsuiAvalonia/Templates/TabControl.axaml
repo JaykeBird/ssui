@@ -200,7 +200,7 @@
                     </Border>
                     <Border BorderThickness="1">
                         <Grid ColumnDefinitions="1*,Auto,Auto">
-                            <Grid Grid.Column="0" Margin="{TemplateBinding TabItem.Padding}" ColumnDefinitions="Auto,1*" >
+                            <Grid Grid.Column="0" Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.Padding}" ColumnDefinitions="Auto,1*" >
                                 <Image x:Name="imgIcon" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" Width="16" Source="{TemplateBinding TabItem.Icon}" UseLayoutRounding="True"
                                    IsVisible="False" />
                                 <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,0,0" >
