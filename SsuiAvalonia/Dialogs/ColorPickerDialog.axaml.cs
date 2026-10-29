@@ -20,6 +20,7 @@ namespace SolidShineUi;
 /// </summary>
 public partial class ColorPickerDialog : ThemedUserControl
 {
+    // TODO: add FontSize property, begin testing for and accommodating different font sizes (up to a reasonable point, like 20)
 
     /// <summary>
     /// Create a ColorPickerDialog.

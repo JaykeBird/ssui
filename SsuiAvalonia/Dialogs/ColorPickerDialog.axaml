@@ -11,7 +11,7 @@
             <Setter Property="MinHeight" Value="23" />
             <Setter Property="SetToolTip" Value="False" />
             <!--<Setter Property="AlwaysHexTooltips" Value="False" />-->
-            <Setter Property="Margin" Value="1" />
+            <Setter Property="Margin" Value="1,1,1,1" />
         </Style>
     </UserControl.Styles>
         <Grid x:Name="grid">
@@ -24,8 +24,8 @@
             <flat:TabItem x:Name="tabSwatches" Title="Swatches" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
                     <Border BorderBrush="Black" BorderThickness="0" Margin="8,3" >
-                        <StackPanel Orientation="Horizontal" >
-                            <StackPanel Orientation="Vertical" Width="30">
+                        <StackPanel Orientation="Horizontal" Spacing="1" >
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1" >
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="LightSteelBlue" ToolTip.Tip="LightSteelBlue" />
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="BlueViolet" ToolTip.Tip="BlueViolet" />
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="MediumPurple" ToolTip.Tip="MediumPurple"/>
@@ -35,7 +35,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="MidnightBlue" ToolTip.Tip="MidnightBlue"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkSlateBlue" ToolTip.Tip="DarkSlateBlue"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Lavender" ToolTip.Tip="Lavender"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Thistle" ToolTip.Tip="Thistle"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Plum" ToolTip.Tip="Plum"/>
@@ -50,7 +50,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Purple" ToolTip.Tip="Purple"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Indigo" ToolTip.Tip="Indigo"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30" >
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1" >
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Snow" ToolTip.Tip="Snow"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="MistyRose" ToolTip.Tip="MistyRose"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkSalmon" ToolTip.Tip="DarkSalmon"/>
@@ -64,7 +64,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkRed" ToolTip.Tip="DarkRed"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Maroon" ToolTip.Tip="Maroon"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30" >
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1" >
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="SeaShell" ToolTip.Tip="SeaShell"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Linen" ToolTip.Tip="Linen"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="LavenderBlush" ToolTip.Tip="LavenderBlush"/>
@@ -75,7 +75,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DeepPink" ToolTip.Tip="DeepPink"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="MediumVioletRed" ToolTip.Tip="MediumVioletRed"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="FloralWhite" ToolTip.Tip="FloralWhite"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="PapayaWhip" ToolTip.Tip="PapayaWhip"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Moccasin" ToolTip.Tip="Moccasin"/>
@@ -89,7 +89,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Tomato" ToolTip.Tip="Tomato"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="OrangeRed" ToolTip.Tip="OrangeRed"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Cornsilk" ToolTip.Tip="Cornsilk"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="OldLace" ToolTip.Tip="OldLace"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="AntiqueWhite" ToolTip.Tip="AntiqueWhite"/>
@@ -104,7 +104,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Sienna" ToolTip.Tip="Sienna"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="SaddleBrown" ToolTip.Tip="SaddleBrown"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Ivory" ToolTip.Tip="Ivory"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="LightYellow" ToolTip.Tip="LightYellow"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Beige" ToolTip.Tip="Beige"/>
@@ -119,7 +119,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkGoldenrod" ToolTip.Tip="DarkGoldenrod"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Olive" ToolTip.Tip="Olive"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Honeydew" ToolTip.Tip="Honeydew"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="GreenYellow" ToolTip.Tip="GreenYellow"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Chartreuse" ToolTip.Tip="Chartreuse"/>
@@ -133,7 +133,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkOliveGreen" ToolTip.Tip="DarkOliveGreen"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkGreen" ToolTip.Tip="DarkGreen"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="MintCream" ToolTip.Tip="MintCream"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="PaleGreen" ToolTip.Tip="PaleGreen"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Aquamarine" ToolTip.Tip="Aquamarine"/>
@@ -147,7 +147,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="SeaGreen" ToolTip.Tip="SeaGreen"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkSlateGray" ToolTip.Tip="DarkSlateGray"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Azure" ToolTip.Tip="Azure"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="LightCyan" ToolTip.Tip="LightCyan"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="PaleTurquoise" ToolTip.Tip="PaleTurquoise"/>
@@ -161,7 +161,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkCyan" ToolTip.Tip="DarkCyan"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Teal" ToolTip.Tip="Teal"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="AliceBlue" ToolTip.Tip="AliceBlue"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="SkyBlue" ToolTip.Tip="SkyBlue"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="LightSkyBlue" ToolTip.Tip="LightSkyBlue"/>
@@ -174,7 +174,7 @@
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="DarkBlue" ToolTip.Tip="DarkBlue"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="Navy" ToolTip.Tip="Navy"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Width="30">
+                            <StackPanel Orientation="Vertical" Width="30" Spacing="1">
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="White" ToolTip.Tip="White"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="GhostWhite" ToolTip.Tip="GhostWhite"/>
                                 <ssut:ColorSwatchButton Classes="csb" Click="ColorButton_Click" Color="WhiteSmoke" ToolTip.Tip="WhiteSmoke"/>
@@ -267,14 +267,15 @@
             </flat:TabItem>-->
             <flat:TabItem x:Name="tabPalette" Title="Palette File" ShowIcon="False" CanClose="False" Padding="10,0" >
                 <Grid>
-                    <flat:FlatButton x:Name="btnLoadPal" Content="Open Palette..." HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="109" Height="24" Click="btnLoadPal_Click" />
+                    <flat:FlatButton x:Name="btnLoadPal" Content="Open Palette..." HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Width="109" Height="24" 
+                                     Click="btnLoadPal_Click" FontSize="12" />
                     <ComboBox x:Name="cbbListDisplay" Margin="0,20,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="70" SelectedIndex="0" FontSize="12" Padding="6,1"
                               MinHeight="24" Height="24" SelectionChanged="cbbListDisplay_SelectionChanged" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
                         <ComboBoxItem Content="Hex" />
                         <ComboBoxItem Content="RGB" />
                         <ComboBoxItem Content="HSV" />
                     </ComboBox>
-                    <TextBlock x:Name="lblDisplay" HorizontalAlignment="Right" Margin="0,23,94,0" Text="Display as:" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="lblDisplay" HorizontalAlignment="Right" Margin="0,25,85,0" Text="Display as:" VerticalAlignment="Top" FontSize="12" />
                     <flat:SelectPanel x:Name="colorList" Margin="10,55,10,20" SelectionChanged="colorList_SelectionChanged" />
                 </Grid>
             </flat:TabItem>
@@ -324,9 +325,9 @@
             </Border>
         </Grid>
 
-        <Grid x:Name="grdDialogButtons" Grid.Row="2">
-            <flat:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Height="24" />
-            <flat:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="24" />
+        <Grid x:Name="grdDialogButtons" Grid.Row="2" >
+            <flat:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Height="24" FontSize="12" />
+            <flat:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="24" FontSize="12" />
         </Grid>
     </Grid>
 </flat:ThemedUserControl>
