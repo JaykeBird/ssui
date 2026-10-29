@@ -970,6 +970,23 @@ namespace SolidShineUi
             return Color.FromArgb(c.A, (byte)r, (byte)g, (byte)b);
         }
 
+#if AVALONIA
+
+        /// <summary>
+        /// Create a new Color based upon the source color, but with the specified values changed. If a value is kept as <c>null</c>, then it will not be changed.
+        /// </summary>
+        /// <param name="c">the source color</param>
+        /// <param name="a">the new alpha value; use <c>null</c> to not change the value</param>
+        /// <param name="r">the new red value; use <c>null</c> to not change the value</param>
+        /// <param name="g">the new green value; use <c>null</c> to not change the value</param>
+        /// <param name="b">the new blue value; use <c>null</c> to not change the value</param>
+        public static Color With(this Color c, byte? a = null, byte? r = null, byte? g = null, byte? b = null)
+        {
+            return Color.FromArgb(a ?? c.A, r ?? c.R, g ?? c.G, b ?? c.B);
+        }
+
+#endif
+
         #endregion
 
     }
