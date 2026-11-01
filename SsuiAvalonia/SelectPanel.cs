@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Metadata;
@@ -16,7 +17,7 @@ namespace SolidShineUi
     /// <summary>
     /// A ListBox-like control that can be used to select and interact with multiple items, with extra functionality and a visual style that matches the rest of the Solid Shine UI controls.
     /// </summary>
-    public class SelectPanel : TemplatedControl, IAddChild
+    public class SelectPanel : ThemedTemplatedControl, IAddChild
     {
         // [TemplatePart(true, "PART_Sv", typeof(ScrollViewer))]
 
@@ -40,17 +41,30 @@ namespace SolidShineUi
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property.Name == nameof(ItemsSource))
+            switch (change.Property.Name)
             {
-                OnItemsSourceChanged(change.GetOldValue<IEnumerable<IClickSelectableControl>>(), change.GetNewValue<IEnumerable<IClickSelectableControl>>());
-            }
-            else if (change.Property.Name == nameof(ColorSchemeProperty))
-            {
-                OnColorSchemeChanged(change);
-            }
-            else if (change.Property.Name == nameof(UseLighterBorderProperty))
-            {
-                ApplyColorScheme(ColorScheme, UseLighterBorder);
+                case nameof(ItemsSource):
+                    OnItemsSourceChanged(
+                        change.GetOldValue<IEnumerable<IClickSelectableControl>>(), 
+                        change.GetNewValue<IEnumerable<IClickSelectableControl>>());
+                    break;
+                case nameof(ColorScheme):
+                    OnColorSchemeChanged(change);
+                    break;
+                case nameof(UseLightBorder):
+                    if (SsuiTheme == null)
+                    {
+                        ApplyColorScheme(ColorScheme, UseLightBorder);
+                    }
+                    break;
+                case nameof(ItemsTheme):
+                    OnItemsThemeChange(change);
+                    break;
+                case nameof(HighlightBrush):
+                case nameof(ClickBrush):
+                case nameof(SelectedBrush):
+                    ChildBrushChanged(this, change);
+                    break;
             }
         }
 
@@ -532,7 +546,7 @@ namespace SolidShineUi
             if (cs != ColorScheme)
             {
                 ColorScheme = cs;
-                UseLighterBorder = (UseLighterBorder || useLighterBorder);
+                UseLightBorder = (UseLightBorder || useLighterBorder);
                 runApply = true;
                 return;
             }
@@ -558,7 +572,7 @@ namespace SolidShineUi
                 ClickBrush = cs.SecondHighlightColor.ToBrush();
                 SelectedBrush = cs.SecondaryColor.ToBrush();
 
-                if (useLighterBorder || UseLighterBorder)
+                if (useLighterBorder || UseLightBorder)
                 {
                     BorderBrush = cs.HighlightColor.ToBrush();
                 }
@@ -584,6 +598,111 @@ namespace SolidShineUi
         /// Raised when the ColorScheme property is changed.
         /// </summary>
         public event EventHandler<AvaloniaPropertyChangedEventArgs>? ColorSchemeChanged;
+
+        #endregion
+
+        #region SsuiTheme / child SsuiTheme
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            SsuiTheme? subitemTheme = ssuiTheme;
+            SsuiTheme? mainTheme = ssuiTheme;
+
+            if (ssuiTheme is SsuiAppTheme sat)
+            {
+                if (useAccentTheme)
+                {
+                    mainTheme = sat.AccentTheme;
+                }
+
+                if (sat.UseSubitemThemeWithPanels && sat.SubitemTheme != null)
+                {
+                    // subitems should use the subitem theme
+                    Bind(ItemsThemeProperty, CompiledBinding.Create<SsuiAppTheme, SsuiTheme?>(s => s.SubitemTheme,
+                            source: this.SsuiTheme, priority: BindingPriority.Style));
+                    subitemTheme = sat.SubitemTheme;
+                }
+                else if (useAccentTheme && sat.AccentTheme != null)
+                {
+                    Bind(ItemsThemeProperty, CompiledBinding.Create<SsuiAppTheme, SsuiTheme?>(s => s.AccentTheme,
+                            source: this.SsuiTheme, priority: BindingPriority.Style));
+                    subitemTheme = sat.AccentTheme;
+                }
+                else
+                {
+                    Bind(ItemsThemeProperty, CompiledBinding.Create<SelectPanel, SsuiTheme?>(s => s.SsuiTheme,
+                            source: this, priority: BindingPriority.Style));
+                }
+            }
+            else
+            {
+                Bind(ItemsThemeProperty, CompiledBinding.Create<SelectPanel, SsuiTheme?>(s => s.SsuiTheme,
+                        source: this, priority: BindingPriority.Style));
+            }
+
+            // apply brushes using mainTheme
+            ApplyThemeBinding(BackgroundProperty, SsuiTheme.PanelBackgroundProperty, mainTheme);
+            ApplyThemeBinding(DisabledBrushProperty, SsuiTheme.DisabledBackgroundProperty, mainTheme);
+            ApplyThemeBinding(BorderDisabledBrushProperty, SsuiTheme.DisabledBorderBrushProperty, mainTheme);
+            ApplyThemeBinding(CornerRadiusProperty, SsuiTheme.CornerRadiusProperty, mainTheme);
+
+            // these brushes are applied directly from ItemsTheme
+            // however, we'll directly set these properties so that people can see what they are
+
+            _internalThemeAction = true;
+
+            if (subitemTheme != null)
+            {
+                HighlightBrush = subitemTheme.HighlightBrush;
+                ClickBrush = subitemTheme.ClickBrush;
+                SelectedBrush = subitemTheme.SelectedBackgroundBrush;
+            }
+
+            _internalThemeAction = false;
+
+            // UpdateChildrenAppearance();
+        }
+
+        bool _internalThemeAction = false;
+
+        /// <summary>
+        /// Get or set the theme and brushes this panel will use for its child items.
+        /// <para/>
+        /// This is set automatically when the <c>SsuiTheme</c> or <c>ColorScheme</c> property is updated.
+        /// </summary>
+        public SsuiTheme ItemsTheme { get => GetValue(ItemsThemeProperty); set => SetValue(ItemsThemeProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="ItemsTheme"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<SsuiTheme> ItemsThemeProperty
+            = AvaloniaProperty.Register<SelectPanel, SsuiTheme>(nameof(ItemsTheme), new SsuiTheme());
+
+
+        //public static readonly DependencyProperty ItemsThemeProperty = ItemsThemePropertyKey.DependencyProperty;
+
+        private void OnItemsThemeChange(AvaloniaPropertyChangedEventArgs e)
+        {
+            foreach (IClickSelectableControl item in ItemsSource)
+            {
+                if (item is Control dobj)
+                {
+                    // most (if not all) IClickSelectableControl objects will be at least FrameworkElements, if not Controls
+                    // so we can pretty reliably set this property here. we will need to inform in the documentation that
+                    // implementers of this property will need to AddOwner this property so that it'll actually work
+
+                    // we want to do binding in case the ItemsTheme is itself bound to a single or central SsuiTheme somewhere
+                    // that way, the end user or developer can just change that SsuiTheme and it'll propogate down to here
+                    dobj.Bind(SsuiThemeProperty, new Avalonia.Data.Binding(nameof(ItemsTheme)) { Source = this });
+                }
+                else
+                {
+                    // on the rare off-chance it's not a framework element, then we'll just do plain-old property assignment
+                    item.SsuiTheme = ItemsTheme;
+                }
+            }
+        }
 
         #endregion
 
@@ -660,27 +779,31 @@ namespace SolidShineUi
         public static readonly StyledProperty<IBrush> BorderDisabledBrushProperty
             = AvaloniaProperty.Register<SelectPanel, IBrush>(nameof(BorderDisabledBrush), Colors.DarkGray.ToBrush());
 
+
+        private static void ChildBrushChanged(SelectPanel sp, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is IBrush b)
+            {
+                if (sp._internalThemeAction) return;
+
+                switch (e.Property.Name)
+                {
+                    case nameof(HighlightBrush):
+                        sp.ItemsTheme.HighlightBrush = b;
+                        break;
+                    case nameof(ClickBrush):
+                        sp.ItemsTheme.ClickBrush = b;
+                        break;
+                    case nameof(SelectedBrush):
+                        sp.ItemsTheme.SelectedBackgroundBrush = b;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         #endregion
-
-        ///// <summary>
-        ///// Get or set the corner radius (or radii) to use for the control's border. Setting the corners to 0 means there is no rounding; square corners are used.
-        ///// Any corners with a higher number will be rounded.
-        ///// </summary>
-        //public CornerRadius CornerRadius { get => GetValue(CornerRadiusProperty); set => SetValue(CornerRadiusProperty, value); }
-
-        ///// <summary>The backing styled property for <see cref="CornerRadius"/>. See the related property for details.</summary>
-        //public static readonly StyledProperty<CornerRadius> CornerRadiusProperty
-        //    = AvaloniaProperty.Register<SelectPanel, CornerRadius>(nameof(CornerRadius), new CornerRadius(0));
-
-        /// <summary>
-        /// Use a lighter border color when applying color schemes. Note that this does not apply in high-contrast mode,
-        /// nor does it apply if you are not using color schemes to set this control's appearance.
-        /// </summary>
-        public bool UseLighterBorder { get => GetValue(UseLighterBorderProperty); set => SetValue(UseLighterBorderProperty, value); }
-
-        /// <summary>The backing styled property for <see cref="UseLighterBorder"/>. See the related property for details.</summary>
-        public static readonly StyledProperty<bool> UseLighterBorderProperty
-            = AvaloniaProperty.Register<SelectPanel, bool>(nameof(UseLighterBorder), false);
 
         #endregion
 

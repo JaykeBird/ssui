@@ -17,7 +17,7 @@ namespace SolidShineUi
     /// <summary>
     /// The basic control that can be added into a <see cref="SelectPanel"/>. Extend this class to create your own UI elements to use with the SelectPanel.
     /// </summary>
-    public class SelectableUserControl : UserControl, ICommandSource, IClickSelectableControl
+    public class SelectableUserControl : ThemedUserControl, ICommandSource, IClickSelectableControl
     {
 
         /// <summary>
@@ -92,6 +92,41 @@ namespace SolidShineUi
                 DisabledForeground = cs.DarkDisabledColor.ToBrush();
                 HighlightForeground = cs.ForegroundColor.ToBrush();
                 SelectedForeground = cs.ForegroundColor.ToBrush();
+            }
+        }
+
+        #endregion
+
+        #region SsuiTheme
+
+        static Color transparent = Color.FromArgb(1, 0, 0, 0);
+
+        /// <inheritdoc/>
+        protected override void OnApplySsuiTheme(SsuiTheme ssuiTheme, bool useLightBorder = false, bool useAccentTheme = false)
+        {
+            base.OnApplySsuiTheme(ssuiTheme, useLightBorder, useAccentTheme);
+
+            if (useAccentTheme && ssuiTheme is SsuiAppTheme ssuiAppTheme && ssuiAppTheme.AccentTheme != null)
+            {
+                ApplyTheme(ssuiAppTheme.AccentTheme);
+            }
+            else
+            {
+                ApplyTheme(ssuiTheme);
+            }
+
+            BaseBackground = transparent.ToBrush();
+
+            void ApplyTheme(SsuiTheme theme)
+            {
+                ApplyThemeBinding(HighlightBrushProperty, SsuiTheme.HighlightBrushProperty, theme);
+                ApplyThemeBinding(SelectedBrushProperty, SsuiTheme.SelectedBackgroundBrushProperty, theme);
+                ApplyThemeBinding(ClickBrushProperty, SsuiTheme.ClickBrushProperty, theme);
+
+                ApplyThemeBinding(BaseForegroundProperty, SsuiTheme.ForegroundProperty, theme);
+                ApplyThemeBinding(HighlightForegroundProperty, SsuiTheme.HighlightForegroundProperty, theme);
+                ApplyThemeBinding(SelectedForegroundProperty, SsuiTheme.SelectedForegroundProperty, theme);
+                ApplyThemeBinding(DisabledForegroundProperty, SsuiTheme.DisabledForegroundProperty, theme);
             }
         }
 

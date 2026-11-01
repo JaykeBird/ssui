@@ -85,6 +85,13 @@ namespace SolidShineUi
         /// Get or set the foreground brush used for this control (used for text, for example).
         /// </summary>
         IBrush? Foreground { get; set; }
+
+        /// <summary>
+        /// Get or set the SsuiTheme to apply for this control. Each control will apply the theme's colors appropriately via its own
+        /// <c>OnApplySsuiTheme</c> method.
+        /// </summary>
+        SsuiTheme? SsuiTheme { get; set; }
+
         #endregion
     }
 
