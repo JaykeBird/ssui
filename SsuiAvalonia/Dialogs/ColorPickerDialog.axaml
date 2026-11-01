@@ -325,7 +325,7 @@
             </Border>
         </Grid>
 
-        <Grid x:Name="grdDialogButtons" Grid.Row="2" >
+        <Grid x:Name="grdDialogButtons" Grid.Row="2" IsVisible="{Binding ElementName=window, Path=ShowDialogButtons}" >
             <flat:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Height="24" FontSize="12" />
             <flat:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Height="24" FontSize="12" />
         </Grid>

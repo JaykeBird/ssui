@@ -254,6 +254,10 @@ public partial class StringInputDialog : ThemedUserControl
         tw.Width = this.Width;
         tw.Height = this.Height;
 
+        tw.CanResize = false;
+
+        ShowDialogButtons = true;
+
         CloseWindow += (s, e) => tw.Close();
 
         if (this.SsuiTheme is SsuiAppTheme)

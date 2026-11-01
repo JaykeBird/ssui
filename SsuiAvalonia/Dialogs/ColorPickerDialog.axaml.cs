@@ -256,6 +256,8 @@ public partial class ColorPickerDialog : ThemedUserControl
         tw.Width = this.Width;
         tw.Height = this.Height;
 
+        tw.CanResize = false;
+
         CloseWindow += (s, e) => tw.Close();
 
         if (this.SsuiTheme is SsuiAppTheme)
