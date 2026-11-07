@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Data;
 using Avalonia.Media;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi
 {

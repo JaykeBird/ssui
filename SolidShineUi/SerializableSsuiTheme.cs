@@ -3,6 +3,7 @@ using System.Globalization;
 #if AVALONIA
 using Avalonia;
 using Avalonia.Media;
+using SolidShineUi.Utils;
 #else
 using System.Windows;
 using System.Windows.Media;
@@ -130,13 +131,8 @@ namespace SolidShineUi
 
         // IconVariation stored as enum name
 
-#if AVALONIA
-        /// <summary>The value for the <see cref="SsuiTheme.IconVariation"/> property.</summary>
-        public string IconVariation { get; set; } = nameof(SolidShineUi.IconVariation.Color);
-#else
         /// <summary>The value for the <see cref="SsuiTheme.IconVariation"/> property.</summary>
         public string IconVariation { get; set; } = nameof(Utils.IconVariation.Color);
-#endif
 
         // SsuiAppTheme-specific properties
 

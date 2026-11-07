@@ -1,4 +1,4 @@
-﻿namespace SolidShineUi
+﻿namespace SolidShineUi.Utils
 {
 
     /// <summary>

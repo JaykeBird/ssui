@@ -6,12 +6,11 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
-using IconVariation = SolidShineUi.IconVariation;
 #else
 using System.Windows;
 using System.Windows.Media;
-using IconVariation = SolidShineUi.Utils.IconVariation;
 #endif
+using IconVariation = SolidShineUi.Utils.IconVariation;
 
 namespace SolidShineUi
 {
