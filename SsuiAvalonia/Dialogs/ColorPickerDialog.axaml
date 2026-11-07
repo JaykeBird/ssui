@@ -6,14 +6,14 @@
              xmlns:ssut="using:SolidShineUi.Utils"
              mc:Ignorable="d" Height="535" Width="410"
              x:Class="SolidShineUi.ColorPickerDialog" x:Name="window" >
-    <UserControl.Styles>
+    <flat:ThemedUserControl.Styles>
         <Style Selector="ssut|ColorSwatchButton.csb" >
             <Setter Property="MinHeight" Value="23" />
             <Setter Property="SetToolTip" Value="False" />
             <!--<Setter Property="AlwaysHexTooltips" Value="False" />-->
             <Setter Property="Margin" Value="1,1,1,1" />
         </Style>
-    </UserControl.Styles>
+    </flat:ThemedUserControl.Styles>
         <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition/>

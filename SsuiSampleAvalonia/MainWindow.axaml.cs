@@ -82,5 +82,18 @@ namespace SsuiSampleAvalonia
                 mnuSelectColor.Foreground = cpd.SelectedColor.ToBrush();
             }
         }
+
+        private async void btnDialog_Click(object? sender, RoutedEventArgs e)
+        {
+            MessageDialog md = new MessageDialog();
+            md.SsuiTheme = this.SsuiTheme;
+
+            var result = await md.ShowDialogWindowAsync(txtMessage.Text ?? "", this, "Custom Dialog", MessageDialogButtonDisplay.Two);
+
+            if (result == MessageDialogResult.OK)
+            {
+                txtMessage.Text = (txtMessage.Text ?? "") + " (yes)";
+            }
+        }
     }
 }

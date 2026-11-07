@@ -1,0 +1,36 @@
+<flat:ThemedUserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:flat="using:SolidShineUi"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="120" MinWidth="400" MinHeight="120" Width="400" Height="120"
+             x:Class="SolidShineUi.MessageDialog" x:Name="window" >
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="txtMessage" Margin="70,20,20,20" TextWrapping="Wrap" MaxWidth="600" Text="{Binding ElementName=window, Path=Message, FallbackValue='Message.'}" />
+        <StackPanel x:Name="stkExtraButtons" Margin="70,0,20,0" Grid.Row="1">
+            <flat:FlatButton x:Name="extraButton1" IsVisible="False" Content="Extra Button 1" HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton1_Click" />
+            <flat:FlatButton x:Name="extraButton2" IsVisible="False" Content="Extra Button 2" HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton2_Click" />
+            <flat:FlatButton x:Name="extraButton3" IsVisible="False" Content="Extra Button 3" HorizontalContentAlignment="Left" Padding="10,0" Height="28" Margin="0,0,0,5" Click="extraButton3_Click" />
+        </StackPanel>
+
+        <flat:CheckBox x:Name="chkBox" Margin="70,0,20,0" Grid.Row="2" IsVisible="False"
+                       Content="{Binding ElementName=window, Path=CheckBoxText}" IsChecked="{Binding ElementName=window, Path=CheckBoxValue, Mode=TwoWay}" />
+
+        <Grid Grid.Row="3" x:Name="grdButtonContainer" ><!-- Background="Gainsboro" -->
+            <StackPanel Margin="0,0,20,10" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
+                <flat:FlatButton Margin="5,0,0,0" Height="24" MinWidth="85" Padding="15,0" x:Name="btnOK" Content="OK" Click="btnOK_Click" />
+                <flat:FlatButton Margin="5,0,0,0" Height="24" MinWidth="85" Padding="15,0" x:Name="btnDiscard" Content="Discard" Click="btnDiscard_Click" />
+                <flat:FlatButton Margin="5,0,0,0" Height="24" MinWidth="85" Padding="15,0" x:Name="btnCancel" Content="Cancel" Click="btnCancel_Click" />
+            </StackPanel>
+        </Grid>
+        <!--<Image x:Name="imgIcon" HorizontalAlignment="Left" Margin="18,12,0,12" Height="32" Width="32" VerticalAlignment="Center" Source="DialogImages/InfoColor.png"/>-->
+
+    </Grid>
+</flat:ThemedUserControl>
