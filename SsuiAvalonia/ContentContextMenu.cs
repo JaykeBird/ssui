@@ -25,6 +25,8 @@ namespace SolidShineUi
         /// </summary>
         public ContentContextMenu() { }
 
+        // this does not need a StyleKeyOverride because it has its own control theme
+
         /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {

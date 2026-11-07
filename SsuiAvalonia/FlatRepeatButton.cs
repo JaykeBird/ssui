@@ -39,6 +39,8 @@ namespace SolidShineUi
             Click += FlatRepeatButton_Click;
         }
 
+        // a StyleKeyOverride isn't needed as there is a ControlTheme made for FlatRepeatButton that just takes on the FlatButton theme
+
         private void FlatRepeatButton_Click(object? sender, RoutedEventArgs e)
         {
             if (ExecuteOnFirstClick && !timerRan)

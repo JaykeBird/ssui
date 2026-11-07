@@ -4,9 +4,8 @@ using Avalonia.Media;
 using Avalonia.Layout;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Interactivity;
 
 namespace SolidShineUi.Utils
 {
@@ -15,10 +14,6 @@ namespace SolidShineUi.Utils
     /// </summary>
     public class ColorSwatchButton : FlatButton
     {
-
-        /// <inheritdoc/>
-        protected override Type StyleKeyOverride { get { return typeof(FlatButton); } }
-
         /// <summary>
         /// Create a ColorSwatchButton.
         /// </summary>
@@ -27,7 +22,10 @@ namespace SolidShineUi.Utils
             Color = Colors.White;
             UpdateBrushes();
             ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
+            SsuiThemeApplied += ColorSwatchButton_SsuiThemeApplied;
+            Loaded += (s, e) => UpdateColor();
         }
+
 
         /// <summary>
         /// Create a ColorSwatchButton, with the color preset.
@@ -38,9 +36,19 @@ namespace SolidShineUi.Utils
             Color = c;
             UpdateBrushes();
             ColorSchemeChanged += ColorSwatchButton_ColorSchemeChanged;
+            SsuiThemeApplied += ColorSwatchButton_SsuiThemeApplied;
+            Loaded += (s, e) => UpdateColor();
         }
 
+        /// <inheritdoc/>
+        protected override Type StyleKeyOverride { get { return typeof(FlatButton); } }
+
         private void ColorSwatchButton_ColorSchemeChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            UpdateBrushes();
+        }
+
+        private void ColorSwatchButton_SsuiThemeApplied(object? sender, RoutedEventArgs e)
         {
             UpdateBrushes();
         }

@@ -18,9 +18,6 @@ namespace SolidShineUi
     public class ClickSelectTextBox : TextBox
     {
 
-        /// <inheritdoc/>
-        protected override Type StyleKeyOverride { get { return typeof(TextBox); } }
-
         /// <summary>
         /// Creates a new ClickSelectTextBox and defines the default event handlers.
         /// </summary>
@@ -30,6 +27,9 @@ namespace SolidShineUi
             AddHandler(GotFocusEvent, SelectAllText, RoutingStrategies.Tunnel);
             AddHandler(DoubleTappedEvent, SelectAllText, RoutingStrategies.Tunnel);
         }
+
+        /// <inheritdoc/>
+        protected override Type StyleKeyOverride { get { return typeof(TextBox); } }
 
         /// <summary>
         /// Get or set whether all text will be selected when the text box receives focus.
