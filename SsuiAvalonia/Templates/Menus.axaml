@@ -94,8 +94,7 @@
                                   HorizontalAlignment="Center"
                                   Data="M 19.091797 14.970703 L 10 5.888672 L 0.908203 14.970703 L 0.029297 14.091797 L 10 4.111328 L 19.970703 14.091797 Z"
                                   Fill="{TemplateBinding Foreground}"
-                                  Width="20"
-                                  Height="20" />
+                                  Width="20" Height="20" />
                         </Viewbox>
                     </flat:FlatRepeatButton>
                     <flat:FlatRepeatButton x:Name="rptBottom" DockPanel.Dock="Bottom"
@@ -122,8 +121,7 @@
                                   HorizontalAlignment="Center"
                                   Data="M 18.935547 4.560547 L 19.814453 5.439453 L 10 15.253906 L 0.185547 5.439453 L 1.064453 4.560547 L 10 13.496094 Z"
                                   Fill="{TemplateBinding Foreground}"
-                                  Width="20"
-                                  Height="20" />
+                                  Width="20" Height="20" />
                         </Viewbox>
                     </flat:FlatRepeatButton>
                     <ScrollContentPresenter Name="PART_ContentPresenter">
@@ -203,8 +201,7 @@
                                        Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}"/>
                             <Path Name="PART_ChevronPath"
                                   Stretch="None"
-                                  Width="6"
-                                  Height="8"
+                                  Width="6" Height="8"
                                   Data="M0,0 L0,8 L4,4 z"
                                   Fill="{DynamicResource MenuFlyoutSubItemChevron}"
                                   Margin="4,0,6,0"
@@ -509,7 +506,7 @@
         </Setter>
     </ControlTheme>
 
-        <ControlTheme x:Key="{x:Type flat:ContentContextMenu}" TargetType="flat:ContentContextMenu">
+    <ControlTheme x:Key="{x:Type flat:ContentContextMenu}" TargetType="flat:ContentContextMenu">
         <!--<Setter Property="Background" Value="{TemplateBinding MenuBackground}" />
         <Setter Property="BorderBrush" Value="{TemplateBinding PopupBorderBrush}" />-->
         <Setter Property="BorderThickness" Value="{DynamicResource MenuFlyoutPresenterBorderThemeThickness}" />

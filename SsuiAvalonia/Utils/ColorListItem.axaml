@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:flat="using:SolidShineUi"
+             xmlns:flat="using:SolidShineUi" MinHeight="32"
              mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="32"
              x:Class="SolidShineUi.Utils.ColorListItem">
       <Grid ColumnDefinitions="32,*"> 
