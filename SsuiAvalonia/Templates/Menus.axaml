@@ -14,7 +14,8 @@
         <Border Margin="2,3,90,100" >
             <Grid RowDefinitions="Auto,1*" >
                 <!-- use clashing, bright colors so I can tell it's making a difference lol -->
-                <flat:Menu HighlightBrush="Purple" HighlightSubitemBrush="Orange" ClickBrush="Aqua" PopupBorderBrush="Green" >
+                <flat:Menu HighlightBrush="Purple" HighlightSubitemBrush="Orange" ClickBrush="Aqua" PopupBorderBrush="Green" 
+                           HighlightSubitemBorderBrush="Blue" >
                     <flat:Menu.Items>
                         <MenuItem Header="Files" >
                             <MenuItem Header="What" InputGesture="Ctrl+G" />
@@ -71,13 +72,15 @@
             <ControlTemplate>
                 <DockPanel>
                     <flat:FlatRepeatButton x:Name="rptTop" DockPanel.Dock="Top"
-                                  BorderThickness="0" Height="24"
+                                  BorderThickness="1"
+                                  BorderBrush="{TemplateBinding HighlightSubitemBorderBrush}" 
                                   Background="Transparent"
                                   HighlightBrush="{TemplateBinding HighlightSubitemBrush}"
                                   ClickBrush="{TemplateBinding ClickBrush}"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Center"
                                   Interval="120"
+                                  Height="24"
                                   ExecuteCommand="{Binding LineUp, RelativeSource={RelativeSource TemplatedParent}}">
                         <flat:FlatRepeatButton.IsVisible>
                             <MultiBinding Converter="{x:Static converters:MenuScrollingVisibilityConverter.Instance}"
@@ -98,7 +101,8 @@
                         </Viewbox>
                     </flat:FlatRepeatButton>
                     <flat:FlatRepeatButton x:Name="rptBottom" DockPanel.Dock="Bottom"
-                                  BorderThickness="0"
+                                  BorderThickness="1"
+                                  BorderBrush="{TemplateBinding HighlightSubitemBorderBrush}"
                                   Background="Transparent"
                                   HighlightBrush="{TemplateBinding HighlightSubitemBrush}"
                                   ClickBrush="{TemplateBinding ClickBrush}"
@@ -150,6 +154,7 @@
     <ControlTheme x:Key="SsuiSubItem" TargetType="MenuItem">
         <Setter Property="Background" Value="#01000000" />
         <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}" />
+        <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBorderBrush}" />
         <!--  Narrow padding should be used for mouse input, when non-narrow one should be used for touch input in future.  -->
         <Setter Property="Padding" Value="{StaticResource MenuItemPaddingStandard}" />
         <Setter Property="ItemContainerTheme" Value="{DynamicResource SsuiSubItem}" />
@@ -218,6 +223,11 @@
                            HighlightBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightBrush}"
                            CheckedBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=CheckedBrush}"
                            ClickBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=ClickBrush}"
+                           HighlightForegroundBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightForegroundBrush}"
+                           HighlightSubitemForegroundBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemForegroundBrush}"
+                           HighlightBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightBorderBrush}"
+                           HighlightSubitemBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=HighlightSubitemBorderBrush}"
+                           MenuBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=MenuBorderBrush}"
                            MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=MenuCornerRadius}"
                            Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type mnuh:FlatMenuScrollViewer}}, Path=Foreground}"
                            MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
@@ -242,6 +252,11 @@
                                 ClickBrush="{Binding #PART_Popup.ClickBrush}"
                                 MenuCornerRadius="{Binding #PART_Popup.MenuCornerRadius}"
                                 Foreground="{Binding #PART_Popup.Foreground}"
+                                HighlightForegroundBrush="{Binding #PART_Popup.HighlightForegroundBrush}"
+                                HighlightSubitemForegroundBrush="{Binding #PART_Popup.HighlightSubitemForegroundBrush}"
+                                HighlightBorderBrush="{Binding #PART_Popup.HighlightBorderBrush}"
+                                HighlightSubitemBorderBrush="{Binding #PART_Popup.HighlightSubitemBorderBrush}"
+                                MenuBorderBrush="{Binding #PART_Popup.MenuBorderBrush}"
                                 Margin="2" > <!-- maybe in the future, let this margin be editable? -->
                                 <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"
                                                 Margin="{DynamicResource MenuFlyoutScrollerMargin}" Grid.IsSharedSizeScope="True" />
@@ -349,7 +364,7 @@
                                           RecognizesAccessKey="True"
                                           Margin="{TemplateBinding Padding}"/>
                         <mnuh:FlatMenuPopup Name="PART_Popup"
-                               WindowManagerAddShadowHint="False"
+                               WindowManagerAddShadowHint="True"
                                MenuBackground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuBackground}"
                                PopupBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=PopupBorderBrush}"
                                DisabledBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=DisabledBrush}"
@@ -357,6 +372,11 @@
                                HighlightBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBrush}"
                                CheckedBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=CheckedBrush}"
                                ClickBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=ClickBrush}"
+                               HighlightForegroundBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightForegroundBrush}"
+                               HighlightSubitemForegroundBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightSubitemForegroundBrush}"
+                               HighlightBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightBorderBrush}"
+                               HighlightSubitemBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=HighlightSubitemBorderBrush}"
+                               MenuBorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuBorderBrush}"
                                MenuCornerRadius="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=MenuCornerRadius}"
                                Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}, Path=Foreground}"
                                MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
@@ -377,6 +397,11 @@
                                     HighlightBrush="{Binding #PART_Popup.HighlightBrush}"
                                     CheckedBrush="{Binding #PART_Popup.CheckedBrush}"
                                     ClickBrush="{Binding #PART_Popup.ClickBrush}"
+                                    HighlightForegroundBrush="{Binding #PART_Popup.HighlightForegroundBrush}"
+                                    HighlightSubitemForegroundBrush="{Binding #PART_Popup.HighlightSubitemForegroundBrush}"
+                                    HighlightBorderBrush="{Binding #PART_Popup.HighlightBorderBrush}"
+                                    HighlightSubitemBorderBrush="{Binding #PART_Popup.HighlightSubitemBorderBrush}"
+                                    MenuBorderBrush="{Binding #PART_Popup.MenuBorderBrush}"
                                     MenuCornerRadius="{Binding #PART_Popup.MenuCornerRadius}"
                                     Foreground="{Binding #PART_Popup.Foreground}" 
                                     Margin="2" > <!-- maybe in the future, let this margin be editable? -->
@@ -470,7 +495,7 @@
         <!--<Setter Property="MinHeight" Value="{DynamicResource MenuFlyoutThemeMinHeight}" />-->
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutPresenterThemePadding}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="WindowManagerAddShadowHint" Value="False" />
+        <Setter Property="WindowManagerAddShadowHint" Value="True" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="ItemContainerTheme">
             <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" x:DataType="MenuItem" />
@@ -492,6 +517,11 @@
                         HighlightBrush="{TemplateBinding HighlightBrush}"
                         CheckedBrush="{TemplateBinding CheckedBrush}"
                         ClickBrush="{TemplateBinding ClickBrush}"
+                        HighlightForegroundBrush="{TemplateBinding HighlightForegroundBrush}"
+                        HighlightSubitemForegroundBrush="{TemplateBinding HighlightSubitemForegroundBrush}"
+                        HighlightBorderBrush="{TemplateBinding HighlightBorderBrush}"
+                        HighlightSubitemBorderBrush="{TemplateBinding HighlightSubitemBorderBrush}"
+                        MenuBorderBrush="{TemplateBinding MenuBorderBrush}"
                         MenuCornerRadius="{TemplateBinding MenuCornerRadius}"
                         Foreground="{TemplateBinding Foreground}"
                         VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"
@@ -515,7 +545,7 @@
         <!--<Setter Property="MinHeight" Value="{DynamicResource MenuFlyoutThemeMinHeight}" />-->
         <Setter Property="Padding" Value="{DynamicResource MenuFlyoutPresenterThemePadding}" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="WindowManagerAddShadowHint" Value="False" />
+        <Setter Property="WindowManagerAddShadowHint" Value="True" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="ItemContainerTheme">
             <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource SsuiSubItem}" x:DataType="MenuItem" />
@@ -541,6 +571,11 @@
                                 HighlightBrush="{TemplateBinding HighlightBrush}"
                                 CheckedBrush="{TemplateBinding CheckedBrush}"
                                 ClickBrush="{TemplateBinding ClickBrush}"
+                                HighlightForegroundBrush="{TemplateBinding HighlightForegroundBrush}"
+                                HighlightSubitemForegroundBrush="{TemplateBinding HighlightSubitemForegroundBrush}"
+                                HighlightBorderBrush="{TemplateBinding HighlightBorderBrush}"
+                                HighlightSubitemBorderBrush="{TemplateBinding HighlightSubitemBorderBrush}"
+                                MenuBorderBrush="{TemplateBinding MenuBorderBrush}"
                                 MenuCornerRadius="{TemplateBinding MenuCornerRadius}"
                                 Foreground="{TemplateBinding Foreground}"
                                 VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"

@@ -86,6 +86,60 @@ namespace SolidShineUi.Utils.MenuUtils
         ///// <summary>The backing styled property for <see cref="Foreground"/>. See the related property for details.</summary>
         //public static readonly StyledProperty<IBrush?> ForegroundProperty = TemplatedControl.ForegroundProperty.AddOwner<FlatMenuScrollViewer>();
 
+        /// <summary>
+        /// Get or set the brush used for the foreground elements of the top-level menu items in the menu bar, 
+        /// when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? HighlightForegroundBrush { get => GetValue(HighlightForegroundBrushProperty); set => SetValue(HighlightForegroundBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightForegroundBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightForegroundBrushProperty
+            = Menu.HighlightForegroundBrushProperty.AddOwner<FlatMenuScrollViewer>();
+
+        /// <summary>
+        /// Get or set the brush used for the foreground elements of menu items that aren't top-level on the menu bar, 
+        /// when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? HighlightSubitemForegroundBrush { get => GetValue(HighlightSubitemForegroundBrushProperty); set => SetValue(HighlightSubitemForegroundBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightSubitemForegroundBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightSubitemForegroundBrushProperty
+            = Menu.HighlightSubitemForegroundBrushProperty.AddOwner<FlatMenuScrollViewer>();
+
+        /// <summary>
+        /// Get or set the brush used for the border around the top-level menu items in the menu bar, 
+        /// when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? HighlightBorderBrush { get => GetValue(HighlightBorderBrushProperty); set => SetValue(HighlightBorderBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightBorderBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightBorderBrushProperty
+            = Menu.HighlightBorderBrushProperty.AddOwner<FlatMenuScrollViewer>();
+
+        /// <summary>
+        /// Get or set the brush used for the border around the menu items that aren't top-level on the menu bar, 
+        /// when the mouse is over them or they have keyboard focus.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? HighlightSubitemBorderBrush { get => GetValue(HighlightSubitemBorderBrushProperty); set => SetValue(HighlightSubitemBorderBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="HighlightSubitemBorderBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> HighlightSubitemBorderBrushProperty
+            = Menu.HighlightSubitemBorderBrushProperty.AddOwner<FlatMenuScrollViewer>();
+
+        /// <summary>
+        /// Get or set the brush used for the border of the menu's drop-down area.
+        /// </summary>
+        [Category("Brushes")]
+        public IBrush? MenuBorderBrush { get => GetValue(MenuBorderBrushProperty); set => SetValue(MenuBorderBrushProperty, value); }
+
+        /// <summary>The backing styled property for <see cref="MenuBorderBrush"/>. See the related property for details.</summary>
+        public static readonly StyledProperty<IBrush?> MenuBorderBrushProperty
+            = Menu.MenuBorderBrushProperty.AddOwner<FlatMenuScrollViewer>();
+
         #endregion
 
         /// <summary>
