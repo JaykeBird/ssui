@@ -133,6 +133,26 @@ namespace SolidShineUi
             = DependencyProperty.Register(nameof(SelectTextOnFocus ), typeof(bool), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(true));
 
+        /// <summary>
+        /// Get or set the text to display on the "OK" button, which is used for accepting the input.
+        /// </summary>
+        public string OkButtonText { get => (string)GetValue(OkButtonTextProperty); set => SetValue(OkButtonTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="OkButtonText"/>. See the related property for details.</summary>
+        public static DependencyProperty OkButtonTextProperty
+            = DependencyProperty.Register(nameof(OkButtonText), typeof(string), typeof(StringInputDialog),
+            new FrameworkPropertyMetadata("OK"));
+
+        /// <summary>
+        /// Get or set the text to display on the "Cancel" button, which is used for discarding the input.
+        /// </summary>
+        public string CancelButtonText { get => (string)GetValue(CancelButtonTextProperty); set => SetValue(CancelButtonTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CancelButtonText"/>. See the related property for details.</summary>
+        public static DependencyProperty CancelButtonTextProperty
+            = DependencyProperty.Register(nameof(CancelButtonText), typeof(string), typeof(StringInputDialog),
+            new FrameworkPropertyMetadata("Cancel"));
+
 
         #region Data Validation
 
