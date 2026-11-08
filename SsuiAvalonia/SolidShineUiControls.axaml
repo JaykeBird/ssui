@@ -7,12 +7,12 @@
 
     <!-- Add Styles Here -->
     <ResourceDictionary.MergedDictionaries>
-        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Buttons.axaml" />
-        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/MenuButton.axaml" />
-        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Spinners.axaml" />
-		<MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/SelectPanel.axaml" />
-        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/TabControl.axaml" />
         <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/CheckBox.axaml" />
+        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/MenuButton.axaml" />
+        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Menus.axaml" />
+		<MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/SelectPanel.axaml" />
+        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/Spinners.axaml" />
+        <MergeResourceInclude Source="avares://SolidShineUi.Avalonia/Templates/TabControl.axaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

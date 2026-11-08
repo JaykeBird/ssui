@@ -70,6 +70,7 @@
                     <MenuItem Header="Item 2" />
                     <Separator />
                     <MenuItem Header="Select a color..." x:Name="mnuSelectColor" Click="mnuSelectColor_Click" />
+                    <MenuItem Header="Select a font..." x:Name="mnuSelectFont" Click="mnuSelectFont_Click" />
                 </flat:ContextMenu>
             </flat:SplitButton.Menu>
         </flat:SplitButton>

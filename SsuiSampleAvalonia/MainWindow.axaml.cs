@@ -95,5 +95,27 @@ namespace SsuiSampleAvalonia
                 txtMessage.Text = (txtMessage.Text ?? "") + " (yes)";
             }
         }
+
+        private async void mnuSelectFont_Click(object? sender, RoutedEventArgs e)
+        {
+            FontSelectDialog fsd = new FontSelectDialog()
+            {
+                Title = "Select a color",
+                SsuiTheme = this.SsuiTheme,
+                SelectedFontFamily = mnuSelectFont.FontFamily,
+                SelectedFontSize = mnuSelectFont.FontSize,
+                SelectedFontStyle = mnuSelectFont.FontStyle,
+                SelectedFontWeight = mnuSelectFont.FontWeight,
+            };
+            await fsd.DisplayAsWindow().ShowDialog(this);
+
+            if (fsd.DialogResult)
+            {
+                mnuSelectFont.FontFamily = fsd.SelectedFontFamily;
+                mnuSelectFont.FontSize = fsd.SelectedFontSize;
+                mnuSelectFont.FontStyle = fsd.SelectedFontStyle;
+                mnuSelectFont.FontWeight = fsd.SelectedFontWeight;
+            }
+        }
     }
 }
