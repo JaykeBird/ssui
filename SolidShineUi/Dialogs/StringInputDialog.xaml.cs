@@ -162,7 +162,7 @@ namespace SolidShineUi
         public string OkButtonText { get => (string)GetValue(OkButtonTextProperty); set => SetValue(OkButtonTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="OkButtonText"/>. See the related property for details.</summary>
-        public static DependencyProperty OkButtonTextProperty
+        public static readonly DependencyProperty OkButtonTextProperty
             = DependencyProperty.Register(nameof(OkButtonText), typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("OK"));
 
@@ -172,7 +172,7 @@ namespace SolidShineUi
         public string CancelButtonText { get => (string)GetValue(CancelButtonTextProperty); set => SetValue(CancelButtonTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CancelButtonText"/>. See the related property for details.</summary>
-        public static DependencyProperty CancelButtonTextProperty
+        public static readonly DependencyProperty CancelButtonTextProperty
             = DependencyProperty.Register(nameof(CancelButtonText), typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("Cancel"));
 
@@ -205,7 +205,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property backing the related property. See <see cref="ValidationSuccessString"/> for details.
         /// </summary>
-        public static DependencyProperty ValidationSuccessStringProperty
+        public static readonly DependencyProperty ValidationSuccessStringProperty
             = DependencyProperty.Register("ValidationSuccessString", typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata(""));
 
@@ -217,7 +217,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property backing the related property. See <see cref="ValidationFailureString"/> for details.
         /// </summary>
-        public static DependencyProperty ValidationFailureStringProperty
+        public static readonly DependencyProperty ValidationFailureStringProperty
             = DependencyProperty.Register("ValidationFailureString", typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("Input is not valid"));
 
