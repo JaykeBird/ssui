@@ -139,7 +139,7 @@ namespace SolidShineUi
         public string OkButtonText { get => (string)GetValue(OkButtonTextProperty); set => SetValue(OkButtonTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="OkButtonText"/>. See the related property for details.</summary>
-        public static DependencyProperty OkButtonTextProperty
+        public static readonly DependencyProperty OkButtonTextProperty
             = DependencyProperty.Register(nameof(OkButtonText), typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("OK"));
 
@@ -149,7 +149,7 @@ namespace SolidShineUi
         public string CancelButtonText { get => (string)GetValue(CancelButtonTextProperty); set => SetValue(CancelButtonTextProperty, value); }
 
         /// <summary>The backing dependency property for <see cref="CancelButtonText"/>. See the related property for details.</summary>
-        public static DependencyProperty CancelButtonTextProperty
+        public static readonly DependencyProperty CancelButtonTextProperty
             = DependencyProperty.Register(nameof(CancelButtonText), typeof(string), typeof(StringInputDialog),
             new FrameworkPropertyMetadata("Cancel"));
 
