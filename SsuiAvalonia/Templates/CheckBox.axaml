@@ -11,14 +11,14 @@
     <Design.PreviewWith>
         <Border Margin="10" >
             <StackPanel>
-                <flat:CheckBox TriStateClick="True" CheckBorderSelectionThickness="2" >
+                <flat:CheckBox TriStateClick="True" BorderThickness="2" >
                     this is the checkbox?!?!
                 </flat:CheckBox>
                 <flat:CheckBox IsEnabled="False" Content="Can't click me!" IsChecked="True" />
                 <flat:CheckBox BoxPlacement="Bottom" Content="I have a red box below!" 
                                IsChecked="True" Padding="0,4" CheckBackground="MistyRose"
                                CheckForeground="Firebrick" HighlightBrush="#40C0C0C0"
-                               BorderSelectedBrush="Firebrick" CheckBorderBrush="LightCoral" />
+                               BorderSelectedBrush="Firebrick" BorderBrush="LightCoral" />
                 <flat:CheckBox BoxPlacement="Hidden" Content="I have a hidden box!" 
                                IsChecked="True" Padding="0,10" />
                 <flat:CheckBox SsuiTheme="{x:Static flat:SsuiThemes.AeroTheme}">
