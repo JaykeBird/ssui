@@ -235,6 +235,21 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Select the item at the specified index, replacing the current selection.
+        /// </summary>
+        /// <param name="index">The index of the item to select.</param>
+        /// <remarks>If <c>CanSelectMultiple</c> is true, use <see cref="AddToSelection(T)"/> to add more items to the selected list,
+        /// or <see cref="SelectRange(IEnumerable{T})"/> to select multiple items at once.
+        /// This function will always replace whatever is currently selected.</remarks>
+        public void SelectItemAt(int index)
+        {
+            if (index >= 0 && index < Count)
+            {
+                SelectItem(this[index]);
+            }
+        }
+
+        /// <summary>
         /// Add an item to the existing list of selected items. If <c>CanSelectMultiple</c> is false, this item is only selected if nothing else is selected. Otherwise, nothing happens.
         /// </summary>
         /// <param name="item">The item to add.</param>
@@ -269,6 +284,26 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Add an item at the specified index to the existing list of selected items. If <c>CanSelectMultiple</c> is false, this item is only selected if nothing else is selected. Otherwise, nothing happens.
+        /// </summary>
+        /// <param name="index">The index of the item to add.</param>
+        /// <remarks>This function is a complement to <see cref="AddToOrReplaceSelection(T)"/>. 
+        /// <c>AddToSelection</c> should be used if preserving the existing selection is more important while <c>CanSelectMultiple</c> is false.
+        /// <c>AddToOrReplaceSelection</c> should be used if selecting the item in the parameter is more important while <c>CanSelectMultiple</c> is false.
+        /// While <c>CanSelectMultiple</c> is true, the two functions are identical.</remarks>
+        public bool AddToSelectionAt(int index)
+        {
+            if (index >= 0 && index < Count)
+            {
+                return AddToSelection(this[index]);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Add an item to the existing list of selected items. If <c>CanSelectMultiple</c> is false, this item is selected, replacing the previous selection.
         /// </summary>
         /// <param name="item">The item to add.</param>
@@ -293,6 +328,22 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Add an item at the specified index to the existing list of selected items. If <c>CanSelectMultiple</c> is false, this item is selected, replacing the previous selection.
+        /// </summary>
+        /// <param name="index">The index of the item to add.</param>
+        /// <remarks>This function is a complement to <see cref="AddToSelection(T)"/>. 
+        /// <c>AddToSelection</c> should be used if preserving the existing selection is more important while <c>CanSelectMultiple</c> is false.
+        /// <c>AddToOrReplaceSelection</c> should be used if selecting the item in the parameter is more important while <c>CanSelectMultiple</c> is false.
+        /// While <c>CanSelectMultiple</c> is true, the two functions are identical.</remarks>
+        public void AddToOrReplaceSelectionAt(int index)
+        {
+            if (index >= 0 && index < Count)
+            {
+                AddToOrReplaceSelection(this[index]);
+            }
+        }
+
+        /// <summary>
         /// Remove an item from the list of selected items.
         /// </summary>
         /// <param name="item">The item to remove.</param>
@@ -301,6 +352,18 @@ namespace SolidShineUi
             if (selectedItems.Remove(item))
             {
                 SelectionChanged?.Invoke(this, new SelectionChangedEventArgs<T>(new List<T> { item }, new List<T>()));
+            }
+        }
+
+        /// <summary>
+        /// Remove an item at the specified index from the list of selected items.
+        /// </summary>
+        /// <param name="index">The index of the item to remove.</param>
+        public void DeselectAt(int index)
+        {
+            if (index >= 0 && index < Count)
+            {
+                Deselect(this[index]);
             }
         }
 
@@ -322,6 +385,24 @@ namespace SolidShineUi
         public bool IsSelected(T item)
         {
             return selectedItems.Contains(item);
+        }
+
+        /// <summary>
+        /// Check if an item at the specified index is currently selected. 
+        /// Only returns true if the index is valid and the corresponding item is selected; otherwise, this will return false.
+        /// </summary>
+        /// <param name="index">The index of the item to check.</param>
+        /// <returns>True if the index is valid and the item at that index is selected; otherwise, false.</returns>
+        public bool IsSelectedAt(int index)
+        {
+            if (index >= 0 && index < Count)
+            {
+                return IsSelected(this[index]);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool multiSelect = false;
