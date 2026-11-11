@@ -8,9 +8,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v7.0.1
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v6.1.0
       with:
         dotnet-version: 11.0.*
     - name: Build SolidShineUi project
