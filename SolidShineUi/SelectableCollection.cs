@@ -234,8 +234,23 @@ namespace SolidShineUi
         /// <param name="item">The item to select.</param>
         /// <remarks>If <c>CanSelectMultiple</c> is true, use <see cref="AddToSelection(T)"/> to add more items to the selected list,
         /// or <see cref="SelectRange(IEnumerable{T})"/> to select multiple items at once.
-        /// This function will always replace whatever is currently selected.<para/>This will be renamed to <c>SelectItem</c> in Solid Shine UI 2.0.</remarks>
+        /// This function will always replace whatever is currently selected.<para/>
+        /// This function is renamed and replaced with <see cref="SelectItem(T)"/> in SolidShineUi 2.0.
+        /// </remarks>
         public void Select(T item)
+        {
+            // [Obsolete("Use SelectItem(T) instead. This function is renamed and replaced with SelectItem(T) in SolidShineUi 2.0.")]
+            SelectItem(item);
+        }
+
+        /// <summary>
+        /// Select an item, replacing the current selection.
+        /// </summary>
+        /// <param name="item">The item to select.</param>
+        /// <remarks>If <c>CanSelectMultiple</c> is true, use <see cref="AddToSelection(T)"/> to add more items to the selected list,
+        /// or <see cref="SelectRange(IEnumerable{T})"/> to select multiple items at once.
+        /// This function will always replace whatever is currently selected.</remarks>
+        public void SelectItem(T item)
         {
             if (Contains(item))
             {
@@ -282,7 +297,7 @@ namespace SolidShineUi
             {
                 if (selectedItems.Count == 0)
                 {
-                    Select(item);
+                    SelectItem(item);
                 }
             }
         }
@@ -299,7 +314,8 @@ namespace SolidShineUi
         {
             if (index >= 0 && index < Count)
             {
-                return AddToSelection(this[index]);
+                AddToSelection(this[index]);
+                return true;
             }
             else
             {
@@ -327,7 +343,7 @@ namespace SolidShineUi
             }
             else
             {
-                Select(item);
+                SelectItem(item);
             }
         }
 
@@ -501,7 +517,7 @@ namespace SolidShineUi
         {
             if (item is T t)
             {
-                Select(t);
+                SelectItem(t);
             }
         }
 
