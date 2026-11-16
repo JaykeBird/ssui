@@ -6,6 +6,8 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
+using SolidShineUi.Utils;
 
 namespace SolidShineUi;
 
@@ -108,7 +110,12 @@ public partial class MessageDialog : ThemedUserControl
             chkBox.IsVisible = true;
         }
 
-        //Image = Image;
+        IconVariation ic = IconVariation.Color;
+        if (SsuiTheme != null)
+        {
+            ic = SsuiTheme.IconVariation;
+        }
+        imgIcon.Source = MessageDialogImageConverter.GetImage(Image, ic);
     }
 
     #endregion
@@ -206,6 +213,31 @@ public partial class MessageDialog : ThemedUserControl
     /// <summary>The backing styled property for <see cref="CheckBoxValue"/>. See the related property for details.</summary>
     public static readonly StyledProperty<bool> CheckBoxValueProperty
         = AvaloniaProperty.Register<MessageDialog, bool>(nameof(CheckBoxValue), false);
+
+    private MessageDialogImage _image = MessageDialogImage.Info;
+
+    /// <summary>Get or set the image to display with the message.</summary>
+    public MessageDialogImage Image
+    {
+        get => _image;
+        set
+        {
+            if (imgIcon != null)
+            {
+                IconVariation ic = IconVariation.Color;
+                if (SsuiTheme != null)
+                {
+                    ic = SsuiTheme.IconVariation;
+                }
+                imgIcon.Source = MessageDialogImageConverter.GetImage(Image, ic);
+            }
+            SetAndRaise(ImageProperty, ref _image, value);
+        }
+    }
+
+    /// <summary>The backing direct property for <see cref="Image"/>. See the related property for details.</summary>
+    public static readonly DirectProperty<MessageDialog, MessageDialogImage> ImageProperty
+        = AvaloniaProperty.RegisterDirect<MessageDialog, MessageDialogImage>(nameof(Image), (s) => s.Image, (s, v) => s.Image = v, unsetValue: MessageDialogImage.Info);
 
     #endregion
 
@@ -306,13 +338,14 @@ public partial class MessageDialog : ThemedUserControl
     /// <param name="message">The message to display.</param>
     /// <param name="owner">The owner window of this dialog.</param>
     /// <param name="title">The window title for this dialog. Use <c>null</c> if already set via property.</param>
+    /// <param name="image">The image to display in the dialog.</param>
     /// <remarks>
     /// Unless the <c>OkButtonText</c>, <c>CancelButtonText</c>, and/or <c>DiscardButtonText</c> properties were changed, this will by default
     /// by just an OK-only message dialog.
     /// </remarks>
-    public async Task<MessageDialogResult> ShowDialogWindowAsync(string message, Window owner, string title = "Dialog")
+    public async Task<MessageDialogResult> ShowDialogWindowAsync(string message, Window owner, string title = "Dialog", MessageDialogImage image = MessageDialogImage.Info)
     {
-        return await ShowDialogWindowAsync(message, owner, title);
+        return await ShowDialogWindowAsync(message, owner, title, image, buttonDisplay: MessageDialogButtonDisplay.Auto);
     }
 
     /// <summary>
@@ -321,6 +354,7 @@ public partial class MessageDialog : ThemedUserControl
     /// <param name="message">The message to display.</param>
     /// <param name="owner">The owner window of this dialog.</param>
     /// <param name="title">The window title for this dialog. Use <c>null</c> if already set via property.</param>
+    /// <param name="image">The image to display in the dialog.</param>
     /// <param name="buttonDisplay">Determine how many buttons should be displayed at the bottom of the dialog, either [OK], [OK] and [Cancel], 
     /// or [OK] [Discard] and [Cancel].</param>
     /// <param name="defaultResult">The button to trigger by default if the user presses the "Enter" or "Space" keys</param>
@@ -332,7 +366,7 @@ public partial class MessageDialog : ThemedUserControl
     /// <param name="choiceButton3Text">The text to use in the third choice button. If this is set to a null or empty string, this button will not be displayed.</param>
     /// <param name="checkBoxText">The text to use in the check box. If this is set to a null or empty string, the check box will not be displayed.</param>
     public async Task<MessageDialogResult> ShowDialogWindowAsync(string message, Window owner, string title = "Dialog",
-    MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto,
+        MessageDialogImage image = MessageDialogImage.Info, MessageDialogButtonDisplay buttonDisplay = MessageDialogButtonDisplay.Auto,
         MessageDialogResult defaultResult = MessageDialogResult.Cancel,
         string? okButtonText = null, string? cancelButtonText = null, string? discardButtonText = null,
         string? choiceButton1Text = null, string? choiceButton2Text = null, string? choiceButton3Text = null, string? checkBoxText = null)
@@ -467,7 +501,7 @@ public partial class MessageDialog : ThemedUserControl
                 break;
         }
 
-        // Image = image;
+        Image = image;
 
         if (!string.IsNullOrEmpty(choiceButton1Text))
         {

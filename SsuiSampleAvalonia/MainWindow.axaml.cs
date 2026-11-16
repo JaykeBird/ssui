@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Dialogs;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform;
 using SolidShineUi;
 using System.Diagnostics;
 
@@ -29,6 +30,11 @@ namespace SsuiSampleAvalonia
 
             MenuItem mi = mnuNew;
             string clickName = MenuItem.ClickEvent.Name;
+
+            //foreach (var item in AssetLoader.GetAssets(new System.Uri("avares://SolidShineUi.Avalonia/"), null))
+            //{
+            //    Debugger.Log(0, "UI", item.ToString() + "\n");
+            //}
         }
 
         private async void FlatButton_Click(object? sender, RoutedEventArgs e)
@@ -88,7 +94,7 @@ namespace SsuiSampleAvalonia
             MessageDialog md = new MessageDialog();
             md.SsuiTheme = this.SsuiTheme;
 
-            var result = await md.ShowDialogWindowAsync(txtMessage.Text ?? "", this, "Custom Dialog", MessageDialogButtonDisplay.Two);
+            var result = await md.ShowDialogWindowAsync(txtMessage.Text ?? "", this, "Custom Dialog", MessageDialogImage.Stop, MessageDialogButtonDisplay.Two);
 
             if (result == MessageDialogResult.OK)
             {
