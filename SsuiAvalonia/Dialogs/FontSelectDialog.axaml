@@ -10,6 +10,7 @@
 	<flat:ThemedUserControl.Resources>
 		<conv:FontWeightValueConverter x:Key="fvc" />
 		<conv:FontWeightStringConverter x:Key="fwc" />
+		<conv:FontFamilyConverter x:Key="ffc" />
 	</flat:ThemedUserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -40,7 +41,7 @@
 								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
 
-							<TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding}" FontFamily="{Binding}" />
+							<TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding}" FontFamily="{Binding, Converter={StaticResource ffc}}" />
 							<!--<TextBlock Grid.Column="1" Margin="3" VerticalAlignment="Center" Text="AaBbCc123!@#$" FontFamily="{Binding}" />-->
 
 						</Grid>
@@ -62,7 +63,7 @@
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<Grid Height="18">
-							<TextBlock VerticalAlignment="Center" Margin="3,0" FontFamily="{Binding ElementName=lstFont, Path=SelectedItem}"
+							<TextBlock VerticalAlignment="Center" Margin="3,0" FontFamily="{Binding ElementName=lstFont, Path=SelectedItem, Converter={StaticResource ffc}}"
 									   FontWeight="{Binding , Converter={StaticResource fvc}}"
 									   ToolTip.Tip="{Binding , Converter={StaticResource fwc}}" Text="{Binding , Converter={StaticResource fwc}}" />
 						</Grid>
@@ -149,7 +150,7 @@
 			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" >
 				<TextBlock x:Name="txtPreview" Text="{Binding ElementName=window, Path=PreviewText}"
 						   VerticalAlignment="Center" HorizontalAlignment="Center"
-						   FontFamily="{Binding ElementName=lstFont, Path=SelectedItem}" FontSize="{Binding ElementName=txtSize, Path=Value}"
+						   FontFamily="{Binding ElementName=lstFont, Path=SelectedItem, Converter={StaticResource ffc}}" FontSize="{Binding ElementName=txtSize, Path=Value}"
 						   FontWeight="{Binding ElementName=txtWeight, Path=Value, Converter={StaticResource fvc}}" />
 			</ScrollViewer>
 		</Border>
