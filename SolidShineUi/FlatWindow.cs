@@ -706,27 +706,27 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="SelectionBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(
             "SelectionBrush", typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+            new PropertyMetadata(new SolidColorBrush(Colors.Gray), UpdateCaptionButtonBrush));
 
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             "HighlightBrush", typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+            new PropertyMetadata(new SolidColorBrush(Colors.LightGray), UpdateCaptionButtonBrush));
 
         /// <summary>The backing dependency property for <see cref="Background"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BackgroundProperty = DependencyProperty.Register(
             "Background", typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White)));
+            new PropertyMetadata(new SolidColorBrush(ColorsHelper.White), UpdateCaptionButtonBrush));
 
         /// <summary>The backing dependency property for <see cref="CaptionButtonsBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CaptionButtonsBrushProperty = DependencyProperty.Register(
             "CaptionButtonsBrush", typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
+            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black), UpdateCaptionButtonBrush));
 
         /// <summary>The backing dependency property for <see cref="CaptionTextBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CaptionTextBrushProperty = DependencyProperty.Register(
             "CaptionTextBrush", typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black)));
+            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black), UpdateCaptionButtonBrush));
 
         /// <summary>The backing dependency property for <see cref="BorderBrush"/>. See the related property for details.</summary>
         public static readonly new DependencyProperty BorderBrushProperty = DependencyProperty.Register(
@@ -747,6 +747,27 @@ namespace SolidShineUi
         public static readonly DependencyProperty ContentBackgroundProperty = DependencyProperty.Register(
             "ContentBackground", typeof(Brush), typeof(FlatWindow),
             new PropertyMetadata(new SolidColorBrush(Colors.DimGray)));
+
+
+        static void UpdateCaptionButtonBrush(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is FlatWindow w)
+            {
+                w.CaptionButtonBrushChanged?.Invoke(w, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Raised when one of the window's caption button brushes were changed.
+        /// </summary>
+        /// <remarks>
+        /// This covers the brushes Background, CaptionButtonsHighlightBrush, CaptionButtonsClickBrush, CaptionButtonsForeground, InactiveBackground
+        /// </remarks>
+#if NETCOREAPP
+        public event EventHandler? CaptionButtonBrushChanged;
+#else
+        public event EventHandler CaptionButtonBrushChanged;
+#endif
 
         #endregion
 
