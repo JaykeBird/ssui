@@ -143,6 +143,24 @@ namespace SolidShineUi.Utils
         /// </summary>
         public static readonly DependencyProperty DescriptionProperty = StringInputDialog.DescriptionProperty.AddOwner(typeof(MultilineStringInputDialog));
 
+        /// <summary>
+        /// Get or set the text to display on the "OK" button, which is used for accepting the input.
+        /// </summary>
+        public string OkButtonText { get => (string)GetValue(OkButtonTextProperty); set => SetValue(OkButtonTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="OkButtonText"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty OkButtonTextProperty
+            = StringInputDialog.OkButtonTextProperty.AddOwner(typeof(MultilineStringInputDialog));
+
+        /// <summary>
+        /// Get or set the text to display on the "Cancel" button, which is used for discarding the input.
+        /// </summary>
+        public string CancelButtonText { get => (string)GetValue(CancelButtonTextProperty); set => SetValue(CancelButtonTextProperty, value); }
+
+        /// <summary>The backing dependency property for <see cref="CancelButtonText"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty CancelButtonTextProperty
+            = StringInputDialog.CancelButtonTextProperty.AddOwner(typeof(MultilineStringInputDialog));
+
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
