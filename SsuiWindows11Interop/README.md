@@ -12,6 +12,8 @@ when hovering over the Maximize button.)
    (e.g., `<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>`)
 2. Add an event handler for FlatWindow's SourceInitialized event.
 3. In that event handler, add in the line `this.UseWindows11CaptionButtons();`
+4. Wherever you update the FlatWindow's theme/color scheme/brushes, also call `this.UpdateWindows11CaptionButtonBrushes();` to update the
+   Windows 11 caption buttons to match the FlatWindow's colors.
 
 I will also recommend you disable MRT Core in your WPF app if you're not using it. Also keep in
 mind how utilizing the Windows App SDK will affect how you package and distribute your app.
@@ -61,6 +63,10 @@ In your window's code-behind:
     public MyWindow()
     {
         // other window setup/initialization code
+        //
+        // if you have any theme/brush setup code, it should go before the below line
+        // e.g., 
+        // SsuiTheme = new SsuiAppTheme(Colors.CornflowerBlue);
 
         SourceInitialized += MyWindow_SourceInitialized;
     }
@@ -69,6 +75,9 @@ In your window's code-behind:
     {
         this.UseWindows11CaptionButtons();
     }
+
+    // wherever you have your code that updates the FlatWindow's theme/brushes after loading, also call:
+    // this.UpdateWindows11CaptionButtonBrushes();
 ```
 
 Repeat the code-behind part for each window that you want to make this change for.
