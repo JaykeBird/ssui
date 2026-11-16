@@ -12,6 +12,8 @@ when hovering over the Maximize button.)
    (e.g., `<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>`)
 2. Add an event handler for FlatWindow's SourceInitialized event.
 3. In that event handler, add in the line `this.UseWindows11CaptionButtons();`
+4. If using versions 1.9.5.1, 2.0.0.1, or 2.0.3.1 of this library, wherever you update the FlatWindow's theme/color scheme/brushes, also call `this.UpdateWindows11CaptionButtonBrushes();`
+   to update the caption buttons' colors. (If you're using 1.9.11 or 2.0.4, this is automatically handled for you.)
 
 I will also recommend you disable MRT Core in your WPF app if you're not using it. Also keep in
 mind how utilizing the Windows App SDK will affect how you package and distribute your app.
@@ -61,6 +63,10 @@ In your window's code-behind:
     public MyWindow()
     {
         // other window setup/initialization code
+        //
+        // if you have any theme/brush setup code, it should go before the below line
+        // e.g., 
+        // SsuiTheme = new SsuiAppTheme(Colors.CornflowerBlue);
 
         SourceInitialized += MyWindow_SourceInitialized;
     }
@@ -69,6 +75,10 @@ In your window's code-behind:
     {
         this.UseWindows11CaptionButtons();
     }
+
+    // if using versions 1.9.5.1, 2.0.0.1, or 2.0.3.1 of this library:
+    // wherever you have your code that updates the FlatWindow's theme/brushes after loading, also call:
+    // this.UpdateWindows11CaptionButtonBrushes();
 ```
 
 Repeat the code-behind part for each window that you want to make this change for.
@@ -111,7 +121,8 @@ based on which version of SolidShineUi you are using.
 | 1.9.5 - 1.9.10  | 1.9.5.x            |
 | 1.9.11 - 1.9.12 | 1.9.11.x           |
 | 2.0.0 - 2.0.2   | 2.0.0.x            |
-| 2.0.3 +         | 2.0.3.x            |
+| 2.0.3           | 2.0.3.x            |
+| 2.0.4 +         | 2.0.4.x            |
 
 (If there are newer versions of this package than what's listed above, use the one that corresponds
 to the version of SolidShineUi you're using (e.g., use version 3.0 if you're using SSUI 3.0).)

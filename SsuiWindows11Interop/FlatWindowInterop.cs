@@ -16,8 +16,6 @@ public static class FlatWindowInterop
     // if you have an unpackaged WPF app that references the Windows App SDK, make sure to disable MRT Core
     // https://github.com/microsoft/WindowsAppSDK/issues/3410
 
-    // TODO: add option to FlatWindow to hide maximized window buffer when this is set up
-
     /// <summary>
     /// Use Windows 11's customizable title bar functionality to use Windows 11's
     /// own caption buttons for the corner of the window, rather than Solid Shine UI's caption buttons.
@@ -56,6 +54,54 @@ public static class FlatWindowInterop
 
         appWindow.TitleBar.ExtendsContentIntoTitleBar = true;
 
+        UpdateWindows11CaptionButtonBrushes(w, appWindow);
+
+        // get DPI handling
+        DpiScale dpi = VisualTreeHelper.GetDpi(w);
+        w.DpiChanged += (s, e) => { UpdateTitleBarElements(e.NewDpi, w); };
+        w.SizeChanged += (s, e) => { UpdateTitleBarElements(VisualTreeHelper.GetDpi(w), w); };
+
+        UpdateTitleBarElements(dpi, w, hwnd);
+
+        // and now let's hide SSUI's own caption buttons
+        w.CaptionDisplayType = CaptionType.None; // for 1.9.x, CaptionType is underneath the ChromeButtons class
+        w.MaximizedWindowFrame = new Thickness(0);
+    }
+
+    /// <summary>
+    /// Update the Windows 11 caption button brushes to match the FlatWindow's caption button brush property values.
+    /// </summary>
+    /// <param name="w">the FlatWindow to update</param>
+    /// <remarks>
+    /// This should be called after any of these brushes are changed:
+    /// Background, CaptionButtonsHighlightBrush, CaptionButtonsClickBrush, CaptionButtonsForeground, InactiveBackground
+    /// </remarks>
+    public static void UpdateWindows11CaptionButtonBrushes(this FlatWindow w)
+    {
+        if (!AppWindowTitleBar.IsCustomizationSupported()) return;
+
+        WindowInteropHelper wih = new WindowInteropHelper(w);
+        IntPtr hwnd = wih.EnsureHandle();
+
+        Microsoft.UI.WindowId wid = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+        AppWindow appWindow = AppWindow.GetFromWindowId(wid);
+
+        UpdateWindows11CaptionButtonBrushes(w, appWindow);
+    }
+
+    /// <summary>
+    /// Update the Windows 11 caption button brushes to match the FlatWindow's caption button brush property values.
+    /// </summary>
+    /// <param name="w">the FlatWindow to update</param>
+    /// <param name="appWindow">the AppWindow that corresponds to the FlatWindow</param>
+    /// <remarks>
+    /// This should be called after any of these brushes are changed:
+    /// Background, CaptionButtonsHighlightBrush, CaptionButtonsClickBrush, CaptionButtonsForeground, InactiveBackground
+    /// </remarks>
+    public static void UpdateWindows11CaptionButtonBrushes(this FlatWindow w, AppWindow appWindow)
+    {
+        if (!AppWindowTitleBar.IsCustomizationSupported()) return;
+
         // try to get the caption buttons to be the same color as the rest of the window
         if (w.Background is SolidColorBrush scb) // 1.9.5: w.Background, 2.0.0: TitleBarBackground
         {
@@ -84,17 +130,6 @@ public static class FlatWindowInterop
         {
             appWindow.TitleBar.ButtonInactiveBackgroundColor = Windows.UI.Color.FromArgb(scb5.Color.A, scb5.Color.R, scb5.Color.G, scb5.Color.B);
         }
-
-        // get DPI handling
-        DpiScale dpi = VisualTreeHelper.GetDpi(w);
-        w.DpiChanged += (s, e) => { UpdateTitleBarElements(e.NewDpi, w); };
-        w.SizeChanged += (s, e) => { UpdateTitleBarElements(VisualTreeHelper.GetDpi(w), w); };
-
-        UpdateTitleBarElements(dpi, w, hwnd);
-
-        // and now let's hide SSUI's own caption buttons
-        w.CaptionDisplayType = CaptionType.None; // for 1.9.x, CaptionType is underneath the ChromeButtons class
-        w.MaximizedWindowFrame = new Thickness(0);
     }
 
     static void UpdateTitleBarElements(DpiScale dpi, FlatWindow w, IntPtr? windowHandle = null)

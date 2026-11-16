@@ -670,7 +670,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty ShowTransparencyControlsProperty
+        public static readonly DependencyProperty ShowTransparencyControlsProperty
             = DependencyProperty.Register("ShowTransparencyControls", typeof(bool), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata(true));
 
@@ -682,7 +682,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty SwatchesResetTransparencyProperty
+        public static readonly DependencyProperty SwatchesResetTransparencyProperty
             = DependencyProperty.Register("SwatchesResetTransparency", typeof(bool), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata(true));
 
@@ -695,7 +695,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty TransparencyLabelProperty
+        public static readonly DependencyProperty TransparencyLabelProperty
             = DependencyProperty.Register("TransparencyLabel", typeof(string), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata("Transparency:"));
 
@@ -739,7 +739,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty SelectedColorLabelProperty
+        public static readonly DependencyProperty SelectedColorLabelProperty
             = DependencyProperty.Register("SelectedColorLabel", typeof(string), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata("Selected Color:"));
 
@@ -751,7 +751,7 @@ namespace SolidShineUi
         /// <summary>
         /// A dependency property object backing the related property. See the property itself for more details.
         /// </summary>
-        public static DependencyProperty CurrentColorLabelProperty
+        public static readonly DependencyProperty CurrentColorLabelProperty
             = DependencyProperty.Register("CurrentColorLabel", typeof(string), typeof(ColorPickerDialog),
             new FrameworkPropertyMetadata("Current Color:"));
 

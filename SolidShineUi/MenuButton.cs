@@ -72,6 +72,7 @@ namespace SolidShineUi
         /// Get or set the menu that appears when the button is clicked.
         /// </summary>
         [Category("Common")]
+        [Description("Get or set the menu that appears when the button is clicked.")]
         public ContextMenu? Menu
         {
             get { return (ContextMenu)GetValue(MenuProperty); }
@@ -135,7 +136,7 @@ namespace SolidShineUi
         /// long as you want this behavior.
         /// </remarks>
         [Category("Common")]
-        [Description("Get or set if the menu should close automatically upon selecting an item.")]
+        [Description("Get or set if the menu should not close automatically upon selecting an item.")]
         public bool StaysOpen
         {
             get
