@@ -412,6 +412,7 @@ namespace SolidShineUi
         /// Get or set the brush used when one of the caption buttons (minimize, restore, close) is being clicked.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used when one of the caption buttons (minimize, restore, close) is being clicked.")]
         public Brush CaptionButtonsClickBrush
         {
             get => (Brush)GetValue(CaptionButtonsClickBrushProperty);
@@ -422,6 +423,7 @@ namespace SolidShineUi
         /// Get or set the brush used when one of the caption buttons (minimize, restore, close) has focus or has the mouse over it.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used when one of the caption buttons (minimize, restore, close) has focus or has the mouse over it.")]
         public Brush CaptionButtonsHighlightBrush
         {
             get => (Brush)GetValue(CaptionButtonsHighlightBrushProperty);
@@ -436,6 +438,7 @@ namespace SolidShineUi
         /// set the background for the entire window.
         /// </remarks>
         [Category("Brushes")]
+        [Description("The background brush to use for the caption area (title bar).")]
         public Brush TitleBarBackground
         {
             get => (Brush)GetValue(TitleBarBackgroundProperty);
@@ -446,6 +449,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the icons of the caption buttons (minimize, restore, close).
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the icons of the caption buttons (minimize, restore, close).")]
         public Brush CaptionButtonsForeground
         {
             get => (Brush)GetValue(CaptionButtonsForegroundProperty);
@@ -456,6 +460,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the text in the caption area (title bar). This has no effect if <c>ShowTitle</c> is false.")]
         public Brush TitleBarForeground
         {
             get => (Brush)GetValue(TitleBarForegroundProperty);
@@ -466,6 +471,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the text in the caption area (title bar) and caption buttons when the window isn't focused/active.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the text in the caption area (title bar) and caption buttons when the window isn't focused/active.")]
         public Brush InactiveForeground
         {
             get => (Brush)GetValue(InactiveForegroundProperty);
@@ -476,6 +482,7 @@ namespace SolidShineUi
         /// Get or set the brush used for the caption area (title bar) when the window isn't focused/active.
         /// </summary>
         [Category("Brushes")]
+        [Description("The brush used for the caption area (title bar) when the window isn't focused/active.")]
         public Brush InactiveBackground
         {
             get => (Brush)GetValue(InactiveBackgroundProperty);
@@ -490,6 +497,7 @@ namespace SolidShineUi
         /// set the background for the entire window.
         /// </remarks>
         [Category("Brushes")]
+        [Description("The brush used for the background of the content area of the window (where most content and controls are displayed).")]
         public Brush ContentBackground
         {
             get => (Brush)GetValue(ContentBackgroundProperty);
@@ -501,14 +509,14 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty CaptionButtonsClickBrushProperty = DependencyProperty.Register(
             nameof(CaptionButtonsClickBrush), typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gray), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged(w, EventArgs.Empty))));
+            new PropertyMetadata(new SolidColorBrush(Colors.Gray), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged?.Invoke(w, EventArgs.Empty))));
 
         /// <summary>
         /// The backing dependency property object for <see cref="CaptionButtonsHighlightBrush"/>. See the related property for details.
         /// </summary>
         public static readonly DependencyProperty CaptionButtonsHighlightBrushProperty = DependencyProperty.Register(
             nameof(CaptionButtonsHighlightBrush), typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(Colors.LightGray), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged(w, EventArgs.Empty))));
+            new PropertyMetadata(new SolidColorBrush(Colors.LightGray), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged?.Invoke(w, EventArgs.Empty))));
 
         /// <summary>
         /// The backing dependency property object for <see cref="TitleBarBackground"/>. See the related property for details.
@@ -522,7 +530,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty CaptionButtonsForegroundProperty = DependencyProperty.Register(
             nameof(CaptionButtonsForeground), typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged(w, EventArgs.Empty))));
+            new PropertyMetadata(new SolidColorBrush(ColorsHelper.Black), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged?.Invoke(w, EventArgs.Empty))));
 
         /// <summary>
         /// The backing dependency property object for <see cref="TitleBarForeground"/>. See the related property for details.
@@ -543,7 +551,7 @@ namespace SolidShineUi
         /// </summary>
         public static readonly DependencyProperty InactiveBackgroundProperty = DependencyProperty.Register(
             nameof(InactiveBackground), typeof(Brush), typeof(FlatWindow),
-            new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged(w, EventArgs.Empty))));
+            new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro), (d, e) => d.PerformAs<FlatWindow>(w => w.CaptionButtonBrushChanged?.Invoke(w, EventArgs.Empty))));
 
         /// <summary>
         /// The backing dependency property object for <see cref="ContentBackground"/>. See the related property for details.
