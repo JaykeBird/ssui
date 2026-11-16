@@ -14,8 +14,10 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="txtDesc" HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top"
                    Text="{Binding ElementName=window, Path=Description, FallbackValue='Enter a value:'}" />
-        <flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Left" Margin="125,0,0,0" Width="75" Height="24" VerticalAlignment="Center" Click="btnOK_Click" Grid.Row="2" />
-        <flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="205,0,0,0" Width="75" Height="24" VerticalAlignment="Center" Click="btnCancel_Click" Grid.Row="2" />
+        <flat:FlatButton x:Name="btnOK" HorizontalAlignment="Right" Margin="0,0,100,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnOK_Click" Grid.Row="3"
+                         Content="{Binding ElementName=window, Path=OkButtonText, FallbackValue='OK'}"/>
+        <flat:FlatButton x:Name="btnCancel" HorizontalAlignment="Right" Margin="0,0,20,10" Width="75" Height="24" VerticalAlignment="Bottom" Click="btnCancel_Click" Grid.Row="3"
+                         Content="{Binding ElementName=window, Path=CancelButtonText, FallbackValue='Cancel'}"/>
         <flat:ClickSelectTextBox x:Name="txtValue" Margin="20,3,20,8" KeyDown="txtName_KeyDown" AcceptsReturn="True" AcceptsTab="True"
                                  SelectOnFocus="{Binding SelectTextOnFocus, ElementName=window, FallbackValue=true}" Text="{Binding Value, ElementName=window}" Grid.Row="1" />
     </Grid>
