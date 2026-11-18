@@ -22,6 +22,11 @@ namespace SolidShineUi.PropertyList.Dialogs
         {
             InitializeComponent();
             SetupWindow();
+            SourceInitialized += (s, e) =>
+            {
+                DisableMinimizeAction();
+                CaptionDisplayType = ChromeButtons.CaptionType.MaximizeClose;
+            };
         }
 
         bool singleEditMode = false;
