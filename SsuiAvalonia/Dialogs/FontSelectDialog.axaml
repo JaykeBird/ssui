@@ -30,20 +30,21 @@
 			<TextBlock HorizontalAlignment="Left" Margin="25,15,0,0" Text="Font:" VerticalAlignment="Top"/>
 			<TextBox x:Name="txtFont" Height="24" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190"
 					 flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase" Padding="6,2"
-					 TextChanged="txtFont_TextChanged" MinHeight="24" />
+					 TextChanged="txtFont_TextChanged" MinHeight="24" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
 			<ListBox x:Name="lstFont" Margin="25,60,10,10" SelectionChanged="lstFont_SelectionChanged"
-					 BorderBrush="Black" BorderThickness="1" >
+					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
+				<ListBox.Styles>
+					<Style Selector="ListBoxItem">
+						<Setter Property="Margin" Value="0" />
+						<Setter Property="Padding" Value="6" />
+						<Setter Property="CornerRadius" Value="{Binding ElementName=window, Path=CornerRadius}" />
+					</Style>
+				</ListBox.Styles>
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<Grid Height="18" ToolTip.Tip="{Binding}">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
-
+						<Grid Height="16" ToolTip.Tip="{Binding}" ColumnDefinitions="*,*" VerticalAlignment="Center" >
 							<TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding}" FontFamily="{Binding, Converter={StaticResource ffc}}" />
 							<!--<TextBlock Grid.Column="1" Margin="3" VerticalAlignment="Center" Text="AaBbCc123!@#$" FontFamily="{Binding}" />-->
-
 						</Grid>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
@@ -57,12 +58,19 @@
 
 			<TextBlock HorizontalAlignment="Left" Margin="13,15,0,0" Text="Font weight:" VerticalAlignment="Top" x:Name="lblWeight" Grid.Column="1" />
 			<flat:IntegerSpinner x:Name="txtWeight" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" MinValue="1" Step="50" MaxValue="999" Value="400"
-								 ValueChanged="txtWeight_ValueChanged" Grid.Column="1" />
+								 ValueChanged="txtWeight_ValueChanged" Grid.Column="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
 			<ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" SelectionChanged="lstWeight_SelectionChanged"
-					 BorderBrush="Black" BorderThickness="1" >
+					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
+				<ListBox.Styles>
+					<Style Selector="ListBoxItem">
+						<Setter Property="Margin" Value="0" />
+						<Setter Property="Padding" Value="6" />
+						<Setter Property="CornerRadius" Value="{Binding ElementName=window, Path=CornerRadius}" />
+					</Style>
+				</ListBox.Styles>
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<Grid Height="18">
+						<Grid Height="16">
 							<TextBlock VerticalAlignment="Center" Margin="3,0" FontFamily="{Binding ElementName=lstFont, Path=SelectedItem, Converter={StaticResource ffc}}"
 									   FontWeight="{Binding , Converter={StaticResource fvc}}"
 									   ToolTip.Tip="{Binding , Converter={StaticResource fwc}}" Text="{Binding , Converter={StaticResource fwc}}" />
@@ -88,9 +96,16 @@
 
 			<TextBlock HorizontalAlignment="Left" Margin="7,15,0,0" Text="Size:" VerticalAlignment="Top" x:Name="lblSize" Grid.Column="2" />
 			<flat:DoubleSpinner x:Name="txtSize" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10"
-								ValueChanged="txtSize_ValueChanged" Grid.Column="2" />
+								ValueChanged="txtSize_ValueChanged" Grid.Column="2" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
 			<ListBox x:Name="lstSize" Margin="10,60,10,10" Width="90" SelectionChanged="lstSize_SelectionChanged" Grid.Column="2"
-					 BorderBrush="Black" BorderThickness="1" >
+					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
+				<ListBox.Styles>
+					<Style Selector="ListBoxItem">
+						<Setter Property="Margin" Value="0" />
+						<Setter Property="Padding" Value="6" />
+						<Setter Property="CornerRadius" Value="{Binding ElementName=window, Path=CornerRadius}" />
+					</Style>
+				</ListBox.Styles>
 				<sys:Int32>6</sys:Int32>
 				<sys:Int32>7</sys:Int32>
 				<sys:Int32>8</sys:Int32>
@@ -125,19 +140,19 @@
 
 		<TextBlock HorizontalAlignment="Left" Margin="25,2,0,0" Text="Styles/Decorations:" VerticalAlignment="Top" x:Name="lblStyles" Grid.Row="1" />
 
-		<WrapPanel Orientation="Vertical" ItemHeight="24" ItemWidth="110" ItemSpacing="5" Grid.Row="1" Margin="25,27,25,5" > 
-		<flat:CheckBox x:Name="chkOverline" Content="Overline" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked"
-					   Grid.Row="1" Padding="5,0" />
-		<flat:CheckBox x:Name="chkStrike" Content="Strikethrough" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked"
-					   Grid.Row="1" Padding="5,0" />
-		<flat:CheckBox x:Name="chkUnderline" Content="Underline" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked"
-					   Grid.Row="1" Padding="5,0" />
-		<flat:CheckBox x:Name="chkBaseline" Content="Baseline" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked"
-					   Grid.Row="1" Padding="5,0" />
-		<flat:CheckBox x:Name="chkItalic" Content="Italic" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked"
-					   Grid.Row="1" Padding="5,0" />
-		<flat:CheckBox x:Name="chkOblique" Content="Oblique" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked"
-					   Grid.Row="1" Padding="5,0" />
+		<WrapPanel Orientation="Vertical" ItemHeight="24" ItemWidth="110" ItemSpacing="5" Grid.Row="1" Margin="25,27,25,5" >
+			<flat:CheckBox x:Name="chkOverline" Content="Overline" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked"
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+			<flat:CheckBox x:Name="chkStrike" Content="Strikethrough" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked"
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+			<flat:CheckBox x:Name="chkUnderline" Content="Underline" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked"
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+			<flat:CheckBox x:Name="chkBaseline" Content="Baseline" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked"
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+			<flat:CheckBox x:Name="chkItalic" Content="Italic" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked"
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+			<flat:CheckBox x:Name="chkOblique" Content="Oblique" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked"
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
 		</WrapPanel>
 
 		<!--<TextBlock HorizontalAlignment="Left" Margin="240,250,0,0" Text="Font color:" VerticalAlignment="Top"/>-->
@@ -146,7 +161,8 @@
 
 		<Border Height="90" Margin="25,5,25,5" VerticalAlignment="Top" BorderThickness="1"  Grid.Row="3"
 				BorderBrush="{Binding ElementName=window, Path=BorderBrush, TargetNullValue=Black, FallbackValue=Black}"
-				Background="{Binding ElementName=window, Path=SsuiTheme.PanelBackground, TargetNullValue=White, FallbackValue=White}" >
+				Background="{Binding ElementName=window, Path=SsuiTheme.PanelBackground, TargetNullValue=White, FallbackValue=White}"
+				CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
 			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" >
 				<TextBlock x:Name="txtPreview" Text="{Binding ElementName=window, Path=PreviewText}"
 						   VerticalAlignment="Center" HorizontalAlignment="Center"
