@@ -36,14 +36,15 @@
 				<ListBox.Styles>
 					<Style Selector="ListBoxItem">
 						<Setter Property="Margin" Value="0" />
-						<Setter Property="Padding" Value="6" />
+						<Setter Property="Padding" Value="6,2" />
 						<Setter Property="CornerRadius" Value="{Binding ElementName=window, Path=CornerRadius}" />
 					</Style>
 				</ListBox.Styles>
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<Grid Height="16" ToolTip.Tip="{Binding}" ColumnDefinitions="*,*" VerticalAlignment="Center" >
-							<TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding}" FontFamily="{Binding, Converter={StaticResource ffc}}" />
+						<Grid Height="24" ToolTip.Tip="{Binding}" ColumnDefinitions="*,0" VerticalAlignment="Center" Background="#01FFFFFF" >
+							<TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="3,0" Text="{Binding}" 
+									   FontFamily="{Binding, Converter={StaticResource ffc}}" />
 							<!--<TextBlock Grid.Column="1" Margin="3" VerticalAlignment="Center" Text="AaBbCc123!@#$" FontFamily="{Binding}" />-->
 						</Grid>
 					</DataTemplate>
