@@ -194,7 +194,7 @@ public partial class FontSelectDialog : ThemedUserControl
 
         _updateFromUi = false;
         chkItalic.IsChecked = false;
-        chkOverline.IsChecked = false;
+        chkOblique.IsChecked = false;
         switch (style)
         {
             case FontStyle.Normal:
@@ -203,7 +203,7 @@ public partial class FontSelectDialog : ThemedUserControl
                 chkItalic.IsChecked = true;
                 break;
             case FontStyle.Oblique:
-                chkOverline.IsChecked = true;
+                chkOblique.IsChecked = true;
                 break;
             default:
                 break;
@@ -524,28 +524,28 @@ public partial class FontSelectDialog : ThemedUserControl
     private void chkOverline_Checked(object sender, RoutedEventArgs e)
     {
         txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.AddRange(TextDecorations.Overline);
+        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Overline });
         UpdateSelectedTextDecorationsFromUi();
     }
 
     private void chkStrike_Checked(object sender, RoutedEventArgs e)
     {
         txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.AddRange(TextDecorations.Strikethrough);
+        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Strikethrough });
         UpdateSelectedTextDecorationsFromUi();
     }
 
     private void chkUnderline_Checked(object sender, RoutedEventArgs e)
     {
         txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.AddRange(TextDecorations.Underline);
+        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Underline });
         UpdateSelectedTextDecorationsFromUi();
     }
 
     private void chkBaseline_Checked(object sender, RoutedEventArgs e)
     {
         txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.AddRange(TextDecorations.Baseline);
+        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Baseline });
         UpdateSelectedTextDecorationsFromUi();
     }
 
