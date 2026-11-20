@@ -60,7 +60,6 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
    </ItemGroup>
   <ItemGroup>
-    <None Include="DialogImages\desktop.ini" />
     <AvaloniaResource Include="DialogImages\*.png" />
   </ItemGroup>
 </Project>

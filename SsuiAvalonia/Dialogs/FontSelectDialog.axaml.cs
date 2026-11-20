@@ -300,6 +300,69 @@ public partial class FontSelectDialog : ThemedUserControl
 
     #endregion
 
+    #region Show UI Elements
+
+    /// <summary>
+    /// Get or set if the styles options are visible.
+    /// </summary>
+    public bool ShowStyles { get => GetValue(ShowStylesProperty); set => SetValue(ShowStylesProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="ShowStyles"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<bool> ShowStylesProperty
+        = AvaloniaProperty.Register<FontSelectDialog, bool>(nameof(ShowStyles), true);
+
+
+    /// <summary>
+    /// Get or set if the text decoration options are visible.
+    /// </summary>
+    public bool ShowDecorations { get => GetValue(ShowDecorationsProperty); set => SetValue(ShowDecorationsProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="ShowDecorations"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<bool> ShowDecorationsProperty
+        = AvaloniaProperty.Register<FontSelectDialog, bool>(nameof(ShowDecorations), true);
+
+
+    /// <summary>
+    /// Get or set if the font weight options are visible.
+    /// </summary>
+    public bool ShowWeights { get => GetValue(ShowWeightsProperty); set => SetValue(ShowWeightsProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="ShowWeights"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<bool> ShowWeightsProperty
+        = AvaloniaProperty.Register<FontSelectDialog, bool>(nameof(ShowWeights), true);
+
+
+    /// <summary>
+    /// Get or set if the font size options are visible.
+    /// </summary>
+    public bool ShowSizes { get => GetValue(ShowSizesProperty); set => SetValue(ShowSizesProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="ShowSizes"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<bool> ShowSizesProperty
+        = AvaloniaProperty.Register<FontSelectDialog, bool>(nameof(ShowSizes), true);
+
+
+    /// <summary>
+    /// Get or set if the preview text box is visible.
+    /// </summary>
+    public bool ShowPreviewText { get => GetValue(ShowPreviewTextProperty); set => SetValue(ShowPreviewTextProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="ShowPreviewText"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<bool> ShowPreviewTextProperty
+        = AvaloniaProperty.Register<FontSelectDialog, bool>(nameof(ShowPreviewText), true);
+
+
+    /// <summary>
+    /// Get or set if the dialog buttons are visible.
+    /// </summary>
+    public bool ShowDialogButtons { get => GetValue(ShowDialogButtonsProperty); set => SetValue(ShowDialogButtonsProperty, value); }
+
+    /// <summary>The backing styled property for <see cref="ShowDialogButtons"/>. See the related property for details.</summary>
+    public static readonly StyledProperty<bool> ShowDialogButtonsProperty
+        = AvaloniaProperty.Register<FontSelectDialog, bool>(nameof(ShowDialogButtons), true);
+
+    #endregion
+
     #region Window
 
     /// <summary>

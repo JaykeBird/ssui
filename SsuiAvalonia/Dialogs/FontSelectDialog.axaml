@@ -16,9 +16,9 @@
 		<Grid.RowDefinitions>
 			<RowDefinition />
 			<RowDefinition Height="90"/>
-			<RowDefinition Height="23"/>
+			<RowDefinition Height="24"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="64"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<Grid>
 			<Grid.ColumnDefinitions>
@@ -28,10 +28,10 @@
 			</Grid.ColumnDefinitions>
 
 			<TextBlock HorizontalAlignment="Left" Margin="25,15,0,0" Text="Font:" VerticalAlignment="Top"/>
-			<TextBox x:Name="txtFont" Height="24" Margin="25,35,10,0" VerticalAlignment="Top" MinWidth="190"
+			<TextBox x:Name="txtFont" Height="24" Margin="25,35,15,0" VerticalAlignment="Top" MinWidth="190"
 					 flat:AutoCompleteBehavior.AutoCompleteStringComparison="OrdinalIgnoreCase" Padding="6,2"
 					 TextChanged="txtFont_TextChanged" MinHeight="24" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
-			<ListBox x:Name="lstFont" Margin="25,60,10,10" SelectionChanged="lstFont_SelectionChanged"
+			<ListBox x:Name="lstFont" Margin="25,60,15,10" SelectionChanged="lstFont_SelectionChanged"
 					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
 				<ListBox.Styles>
 					<Style Selector="ListBoxItem">
@@ -57,11 +57,14 @@
 			</ListBox>
 			<!--DataContext="{x:Static Fonts.SystemFontFamilies}" ItemsSource='{Binding}' />-->
 
-			<TextBlock HorizontalAlignment="Left" Margin="13,15,0,0" Text="Font weight:" VerticalAlignment="Top" x:Name="lblWeight" Grid.Column="1" />
-			<flat:IntegerSpinner x:Name="txtWeight" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" MinValue="1" Step="50" MaxValue="999" Value="400"
-								 ValueChanged="txtWeight_ValueChanged" Grid.Column="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
-			<ListBox x:Name="lstWeight" Margin="10,60,10,10" Grid.Column="1" Width="120" SelectionChanged="lstWeight_SelectionChanged"
-					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
+			<TextBlock HorizontalAlignment="Left" Margin="13,15,0,0" Text="Font weight:" VerticalAlignment="Top" x:Name="lblWeight" Grid.Column="1"
+					 IsVisible="{Binding ElementName=window, Path=ShowWeights}" />
+			<flat:IntegerSpinner x:Name="txtWeight" Height="24" Margin="5,35,15,0" VerticalAlignment="Top" MinValue="1" Step="50" MaxValue="999" Value="400"
+								 ValueChanged="txtWeight_ValueChanged" Grid.Column="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+								 IsVisible="{Binding ElementName=window, Path=ShowWeights}" />
+			<ListBox x:Name="lstWeight" Margin="5,60,15,10" Grid.Column="1" Width="120" SelectionChanged="lstWeight_SelectionChanged"
+					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+					 IsVisible="{Binding ElementName=window, Path=ShowWeights}" >
 				<ListBox.Styles>
 					<Style Selector="ListBoxItem">
 						<Setter Property="Margin" Value="0" />
@@ -95,11 +98,14 @@
 				<sys:Int32>950</sys:Int32>
 			</ListBox>
 
-			<TextBlock HorizontalAlignment="Left" Margin="7,15,0,0" Text="Size:" VerticalAlignment="Top" x:Name="lblSize" Grid.Column="2" />
-			<flat:DoubleSpinner x:Name="txtSize" Height="23" Margin="10,35,10,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10"
-								ValueChanged="txtSize_ValueChanged" Grid.Column="2" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
-			<ListBox x:Name="lstSize" Margin="10,60,10,10" Width="90" SelectionChanged="lstSize_SelectionChanged" Grid.Column="2"
-					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
+			<TextBlock HorizontalAlignment="Left" Margin="7,15,0,0" Text="Size:" VerticalAlignment="Top" x:Name="lblSize" Grid.Column="2"
+					 IsVisible="{Binding ElementName=window, Path=ShowSizes}" />
+			<flat:DoubleSpinner x:Name="txtSize" Height="24" Margin="5,35,15,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10"
+								ValueChanged="txtSize_ValueChanged" Grid.Column="2" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+								IsVisible="{Binding ElementName=window, Path=ShowSizes}" />
+			<ListBox x:Name="lstSize" Margin="5,60,15,10" Width="90" SelectionChanged="lstSize_SelectionChanged" Grid.Column="2"
+					 BorderBrush="Black" BorderThickness="1" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+					 IsVisible="{Binding ElementName=window, Path=ShowSizes}" >
 				<ListBox.Styles>
 					<Style Selector="ListBoxItem">
 						<Setter Property="Margin" Value="0" />
@@ -143,27 +149,34 @@
 
 		<WrapPanel Orientation="Vertical" ItemHeight="24" ItemWidth="110" ItemSpacing="5" Grid.Row="1" Margin="25,27,25,5" >
 			<flat:CheckBox x:Name="chkOverline" Content="Overline" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked"
-						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
 			<flat:CheckBox x:Name="chkStrike" Content="Strikethrough" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked"
-						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
 			<flat:CheckBox x:Name="chkUnderline" Content="Underline" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked"
-						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
 			<flat:CheckBox x:Name="chkBaseline" Content="Baseline" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked"
-						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
 			<flat:CheckBox x:Name="chkItalic" Content="Italic" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked"
-						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+						   IsVisible="{Binding ElementName=window, Path=ShowStyles}" />
 			<flat:CheckBox x:Name="chkOblique" Content="Oblique" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked"
-						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}" />
+						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
+						   IsVisible="{Binding ElementName=window, Path=ShowStyles}" />
 		</WrapPanel>
 
 		<!--<TextBlock HorizontalAlignment="Left" Margin="240,250,0,0" Text="Font color:" VerticalAlignment="Top"/>-->
 
-		<TextBlock HorizontalAlignment="Left" Margin="25,1,0,0" Text="Preview:" VerticalAlignment="Top" x:Name="lblPreview" Grid.Row="2" />
+		<TextBlock HorizontalAlignment="Left" Margin="25,1,0,0" Text="Preview:" VerticalAlignment="Top" x:Name="lblPreview" Grid.Row="2"
+				   IsVisible="{Binding ElementName=window, Path=ShowPreviewText}" />
 
 		<Border Height="90" Margin="25,5,25,5" VerticalAlignment="Top" BorderThickness="1"  Grid.Row="3"
 				BorderBrush="{Binding ElementName=window, Path=BorderBrush, TargetNullValue=Black, FallbackValue=Black}"
 				Background="{Binding ElementName=window, Path=SsuiTheme.PanelBackground, TargetNullValue=White, FallbackValue=White}"
-				CornerRadius="{Binding ElementName=window, Path=CornerRadius}" >
+				CornerRadius="{Binding ElementName=window, Path=CornerRadius}" IsVisible="{Binding ElementName=window, Path=ShowPreviewText}" >
 			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" >
 				<TextBlock x:Name="txtPreview" Text="{Binding ElementName=window, Path=PreviewText}"
 						   VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -172,9 +185,13 @@
 			</ScrollViewer>
 		</Border>
 
+		<Grid x:Name="grdDialogButtons" Grid.Row="4" IsVisible="{Binding ElementName=window, Path=ShowDialogButtons}" Margin="0,15,0,0" >
+            <flat:FlatButton x:Name="btnOK" Click="btnOK_Click" Content="OK" HorizontalAlignment="Right" Margin="0,0,110,20" VerticalAlignment="Bottom" Width="80" Height="24" />
+            <flat:FlatButton x:Name="btnCancel" Click="btnCancel_Click" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,25,20" VerticalAlignment="Bottom" Width="80" Height="24" />
+        </Grid>
 		<!--<flat:FlatButton x:Name="btnText" Content="Set Preview Text..." HorizontalAlignment="Left" Margin="25,0,0,25" VerticalAlignment="Bottom" Width="120" Click="btnText_Click" Grid.Row="4"/>-->
 		<!--<flat:FlatButton x:Name="btnApply" Content="Apply" HorizontalAlignment="Right" Margin="0,0,205,25" VerticalAlignment="Bottom" Width="80"/>-->
-		<flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,110,25" VerticalAlignment="Bottom" Width="80" Click="btnOK_Click" Grid.Row="4"/>
-		<flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="80" Click="btnCancel_Click" Grid.Row="4"/>
+<!--		<flat:FlatButton x:Name="btnOK" Content="OK" HorizontalAlignment="Right" Margin="0,0,110,25" VerticalAlignment="Bottom" Width="80" Click="btnOK_Click" Grid.Row="4"/>
+		<flat:FlatButton x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,25,25" VerticalAlignment="Bottom" Width="80" Click="btnCancel_Click" Grid.Row="4"/>-->
 	</Grid>
 </flat:ThemedUserControl>
