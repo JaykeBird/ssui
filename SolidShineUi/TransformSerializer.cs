@@ -201,7 +201,7 @@ namespace SolidShineUi
                         if (vals.Length < 2) throw new FormatException("Not valid transform serialization string");
                         try
                         {
-                            return new MatrixTransform(Matrix.Parse(vals[1]));
+                            return new MatrixTransform(Matrix.Parse(string.Join(separator, vals.Skip(1))));
                         }
                         catch (InvalidOperationException ex)
                         {
