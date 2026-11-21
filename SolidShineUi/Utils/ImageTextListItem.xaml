@@ -65,6 +65,16 @@
                          Background="{Binding ElementName=control, Path=ButtonBackground}"
                          BorderBrush="{Binding ElementName=control, Path=BorderBrush}"
             -->
+            <flat:FlatButton.Style>
+                <Style TargetType="flat:FlatButton">
+                    <Setter Property="Focusable" Value="True" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=control, Path=CanRemove}" Value="False">
+                            <Setter Property="Focusable" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </flat:FlatButton.Style>
             <Path x:Name="pathClose" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding ElementName=control, Path=BorderBrush}" Data="M1,0 L0,1 L4,5 L0,9 L1,10 L5,6 L9,10 L10,9 L6,5 L10,1 L9,0 L5,4 z"/>
         </flat:FlatButton>
 
