@@ -13,9 +13,9 @@
     <Title>Solid Shine UI</Title>
     <Description>A collection of UI controls, dialogs, and helper classes with consistent and customizable theming.</Description>
     <Copyright>Copyright 2018-2026 Jayke R. Huempfner, other contributors</Copyright>
-    <Version>2.0.3</Version>
-    <AssemblyVersion>2.0.3</AssemblyVersion>
-    <FileVersion>2.0.3</FileVersion>
+    <Version>2.0.4</Version>
+    <AssemblyVersion>2.0.4</AssemblyVersion>
+    <FileVersion>2.0.4</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <Authors>Jayke R. Huempfner, other contributors</Authors>
     <PackageIconUrl></PackageIconUrl>
@@ -29,22 +29,17 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Version 2.0.3
+    <PackageReleaseNotes>Version 2.0.4
+      - Add .NET 11 support
+      - Add StringTokenizer class
+      - Add OkButtonText, CancelButtonText properties to StringInputDialog
+      - Add index-based methods to SelectableCollection
+      
+      Version 2.0.3
       - Improve thread handling for ParticleEmitter
       - Various fixes for PropertyList controls
       - Add MaximizedWindowFrame property to FlatWindow
       - Fix bugs in TabControl, spinner controls, PropertyList
-      
-      Version 2.0.2
-      - Add ContentContextMenu control
-      - Add CsvLineHelper helper class
-      - Add premade AeroTheme
-      - Fix ColorsHelper functions and add new functions
-
-      Version 2.0.1
-      - Fix broken ParticleEmitter control
-      - Improvements/fixes to PropertyList control and editors
-      - Fix small issues with SplitButton, KeyRegistry, ThemedWindow
 
       See website for more details!
     </PackageReleaseNotes>
@@ -105,7 +100,7 @@
     <DocumentationFile>bin\Release\SolidShineUi.xml</DocumentationFile>
   </PropertyGroup>-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.112" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.115" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
