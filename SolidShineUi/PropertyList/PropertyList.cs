@@ -552,6 +552,13 @@ namespace SolidShineUi.PropertyList
         /// Get or set the string used to name the object being observed. The PropertyList will try to set this automatically via looking at the Name property,
         /// or otherwise you can set a custom name to display.
         /// </summary>
+        /// <remarks>
+        /// If you set a custom name for the object and the object has a Name property, the PropertyList will reset this property back to the object's 
+        /// Name when <see cref="ReloadObject(bool)"/> is called. To re-apply your custom name, listen to the <see cref="LoadedObjectChanged"/> event 
+        /// and re-apply the custom name in the listener.
+        /// <para/>
+        /// If the object does not have a Name property, the PropertyList will preserve your custom name when <see cref="ReloadObject(bool)"/> is called.
+        /// </remarks>
         [Category("Appearance")]
         [Description("Get or set the string used to name the object being observed.")]
         public string ObjectDisplayName { get => (string)GetValue(ObjectDisplayNameProperty); set => SetValue(ObjectDisplayNameProperty, value); }
