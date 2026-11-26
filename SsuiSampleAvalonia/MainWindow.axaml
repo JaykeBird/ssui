@@ -106,6 +106,9 @@
 					<TextBlock Text="Tab Content 2" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Grid>
             </flat:TabItem>
+            <flat:TabItem Title="Title 3" CanSelect="False" >
+				
+            </flat:TabItem>
 		</flat:TabControl>
     </Grid>
 </Window>

@@ -115,6 +115,7 @@ namespace SolidShineUi.Utils
 
         void OnTabItemChange(AvaloniaPropertyChangedEventArgs e)
         {
+            if (e.NewValue == null) return;
             Bind(CanSelectProperty, new Binding(nameof(TabItem.CanSelect)) { Source = e.NewValue, TargetNullValue = false });
         }
 

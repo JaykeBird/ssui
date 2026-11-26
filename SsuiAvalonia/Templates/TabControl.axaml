@@ -193,7 +193,7 @@
 			<ControlTemplate TargetType="{x:Type ssut:TabDisplayItem}">
 				<Grid>
 					<Border BorderThickness="1,1,1,1" x:Name="border" 
-                            Focusable="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.CanSelect}"
+                            Focusable="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.CanSelect, TargetNullValue=True}"
                             Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding TabBorderBrush}" >
                         <Border BorderThickness="0" x:Name="brdrInnerColor"
                                 Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TabItem.TabBackground}" />
