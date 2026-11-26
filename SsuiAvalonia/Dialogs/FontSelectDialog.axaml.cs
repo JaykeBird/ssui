@@ -6,7 +6,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using SolidShineUi.Utils;
 
@@ -82,56 +81,33 @@ public partial class FontSelectDialog : ThemedUserControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-
-        switch (change.Property.Name)
-        {
-            case nameof(SelectedFontFamily):
-                UpdateFontFamily(change);
-                break;
-            case nameof(SelectedFontSize):
-                UpdateFontSize(change);
-                break;
-            case nameof(SelectedFontStyle):
-                UpdateFontStyle(change);
-                break;
-            case nameof(SelectedFontWeight):
-                UpdateFontWeight(change);
-                break;
-            case nameof(SelectedTextDecorations):
-                UpdateTextDecorations(change);
-                break;
-        }
     }
 
     #region Selection Properties
 
-    /// <summary>
-    /// Get or set if the UI should update a <c>Selected...</c> property when it is changed.
-    /// <para/>
-    /// Note that in the current implementation, what this does is prevent the UI from updating the 
-    /// property again if the property is changing the appearance of the UI.
-    /// </summary>
-    bool _updateFromUi = true;
+    bool _updateUi = true;
 
-    private FontFamily? _selectedFontFamily = null;
+    private FontFamily _selectedFontFamily = FontFamily.Default;
 
     /// <summary>
     /// Get or set the font family selected in the dialog.
     /// </summary>
-    public FontFamily? SelectedFontFamily { get => _selectedFontFamily; set => SetAndRaise(SelectedFontFamilyProperty, ref _selectedFontFamily, value); }
+    public FontFamily SelectedFontFamily { get => _selectedFontFamily; set => SetFontFamily(ref _selectedFontFamily, value); }
 
     /// <summary>The backing direct property for <see cref="SelectedFontFamily"/>. See the related property for details.</summary>
-    public static readonly DirectProperty<FontSelectDialog, FontFamily?> SelectedFontFamilyProperty
-        = AvaloniaProperty.RegisterDirect<FontSelectDialog, FontFamily?>(nameof(SelectedFontFamily), (s) => s.SelectedFontFamily, (s, v) => s.SelectedFontFamily = v, unsetValue: null);
+    public static readonly DirectProperty<FontSelectDialog, FontFamily> SelectedFontFamilyProperty
+        = AvaloniaProperty.RegisterDirect<FontSelectDialog, FontFamily>(nameof(SelectedFontFamily), (s) => s.SelectedFontFamily, (s, v) => s.SelectedFontFamily = v, unsetValue: FontFamily.Default);
 
-    void UpdateFontFamily(AvaloniaPropertyChangedEventArgs e)
+    void SetFontFamily(ref FontFamily fontFamilyValue, FontFamily newValue)
     {
-        if (!_updateFromUi) return;
-        if (e.NewValue is not FontFamily ff) return;
+        txtPreview.FontFamily = newValue;
 
-        _updateFromUi = false;
-        txtFont.Text = ff.Name;
-        _updateFromUi = true;
+        if (_updateUi)
+        {
+            txtFont.Text = newValue.Name;
+        }
+
+        SetAndRaise(SelectedFontFamilyProperty, ref fontFamilyValue, newValue);
     }
 
     private double _selectedFontSize = 12.0;
@@ -139,20 +115,26 @@ public partial class FontSelectDialog : ThemedUserControl
     /// <summary>
     /// Get or set the selected font size in the dialog.
     /// </summary>
-    public double SelectedFontSize { get => _selectedFontSize; set => SetAndRaise(SelectedFontSizeProperty, ref _selectedFontSize, value); }
+    public double SelectedFontSize { get => _selectedFontSize; set => SetFontSize(ref _selectedFontSize, value); }
 
     /// <summary>The backing direct property for <see cref="SelectedFontSize"/>. See the related property for details.</summary>
     public static readonly DirectProperty<FontSelectDialog, double> SelectedFontSizeProperty
         = AvaloniaProperty.RegisterDirect<FontSelectDialog, double>(nameof(SelectedFontSize), (s) => s.SelectedFontSize, (s, v) => s.SelectedFontSize = v, unsetValue: 12.0);
 
-    void UpdateFontSize(AvaloniaPropertyChangedEventArgs e)
+    void SetFontSize(ref double fontSizeValue, double newValue)
     {
-        if (!_updateFromUi) return;
-        if (e.NewValue is not double size) return;
+        txtPreview.FontSize = newValue;
 
-        _updateFromUi = false;
-        txtSize.Value = size;
-        _updateFromUi = true;
+        if (_updateUi)
+        {
+            txtSize.Value = newValue;
+            if (txtSize.Value == 12.0 && lstSize.SelectedIndex == -1) // special handling if it's the default value
+            {
+                lstSize.SelectedItem = 12;
+            }
+        }
+
+        SetAndRaise(SelectedFontSizeProperty, ref fontSizeValue, newValue);
     }
 
     private FontWeight _selectedFontWeight = (FontWeight)400;
@@ -160,20 +142,26 @@ public partial class FontSelectDialog : ThemedUserControl
     /// <summary>
     /// Get or set the selected font weight in the dialog.
     /// </summary>
-    public FontWeight SelectedFontWeight { get => _selectedFontWeight; set => SetAndRaise(SelectedFontWeightProperty, ref _selectedFontWeight, value); }
+    public FontWeight SelectedFontWeight { get => _selectedFontWeight; set => SetFontWeight(ref _selectedFontWeight, value); }
 
     /// <summary>The backing direct property for <see cref="SelectedFontWeight"/>. See the related property for details.</summary>
     public static readonly DirectProperty<FontSelectDialog, FontWeight> SelectedFontWeightProperty
         = AvaloniaProperty.RegisterDirect<FontSelectDialog, FontWeight>(nameof(SelectedFontWeight), (s) => s.SelectedFontWeight, (s, v) => s.SelectedFontWeight = v, unsetValue: (FontWeight)400);
 
-    void UpdateFontWeight(AvaloniaPropertyChangedEventArgs e)
+    void SetFontWeight(ref FontWeight fontWeightValue, FontWeight newValue)
     {
-        if (!_updateFromUi) return;
-        if (e.NewValue is not FontWeight weight) return;
+        txtPreview.FontWeight = newValue;
 
-        _updateFromUi = false;
-        txtWeight.Value = (int)weight;
-        _updateFromUi = true;
+        if (_updateUi)
+        {
+            txtWeight.Value = (int)newValue;
+            if (txtWeight.Value == 400 && lstWeight.SelectedIndex == -1) // special handling if it's the default value
+            {
+                lstWeight.SelectedItem = 400;
+            }
+        }
+
+        SetAndRaise(SelectedFontWeightProperty, ref fontWeightValue, newValue);
     }
 
     private FontStyle _selectedFontStyle = FontStyle.Normal;
@@ -181,34 +169,37 @@ public partial class FontSelectDialog : ThemedUserControl
     /// <summary>
     /// Get or set the selected font style in the dialog.
     /// </summary>
-    public FontStyle SelectedFontStyle { get => _selectedFontStyle; set => SetAndRaise(SelectedFontStyleProperty, ref _selectedFontStyle, value); }
+    public FontStyle SelectedFontStyle { get => _selectedFontStyle; set => SetFontStyle(ref _selectedFontStyle, value); }
 
     /// <summary>The backing direct property for <see cref="SelectedFontStyle"/>. See the related property for details.</summary>
     public static readonly DirectProperty<FontSelectDialog, FontStyle> SelectedFontStyleProperty
         = AvaloniaProperty.RegisterDirect<FontSelectDialog, FontStyle>(nameof(SelectedFontStyle), (s) => s.SelectedFontStyle, (s, v) => s.SelectedFontStyle = v, unsetValue: FontStyle.Normal);
 
-    void UpdateFontStyle(AvaloniaPropertyChangedEventArgs e)
+    void SetFontStyle(ref FontStyle fontStyleValue, FontStyle newValue)
     {
-        if (!_updateFromUi) return;
-        if (e.NewValue is not FontStyle style) return;
+        txtPreview.FontStyle = newValue;
 
-        _updateFromUi = false;
-        chkItalic.IsChecked = false;
-        chkOblique.IsChecked = false;
-        switch (style)
+        if (_updateUi)
         {
-            case FontStyle.Normal:
-                break;
-            case FontStyle.Italic:
-                chkItalic.IsChecked = true;
-                break;
-            case FontStyle.Oblique:
-                chkOblique.IsChecked = true;
-                break;
-            default:
-                break;
+            chkItalic.IsChecked = false;
+            chkOblique.IsChecked = false;
+
+            switch (newValue)
+            {
+                case FontStyle.Normal:
+                    break;
+                case FontStyle.Italic:
+                    chkItalic.IsChecked = true;
+                    break;
+                case FontStyle.Oblique:
+                    chkOblique.IsChecked = true;
+                    break;
+                default:
+                    break;
+            }
         }
-        _updateFromUi = true;
+
+        SetAndRaise(SelectedFontStyleProperty, ref fontStyleValue, newValue);
     }
 
     private TextDecorationCollection _selectedTextDecorations = [];
@@ -216,30 +207,30 @@ public partial class FontSelectDialog : ThemedUserControl
     /// <summary>
     /// Get or set the selected text decorations in the dialog.
     /// </summary>
-    public TextDecorationCollection SelectedTextDecorations { get => _selectedTextDecorations; set => SetAndRaise(SelectedTextDecorationsProperty, ref _selectedTextDecorations, value); }
+    public TextDecorationCollection SelectedTextDecorations { get => _selectedTextDecorations; set => SetTextDecorations(ref _selectedTextDecorations, value); }
 
     /// <summary>The backing direct property for <see cref="SelectedTextDecorations"/>. See the related property for details.</summary>
     public static readonly DirectProperty<FontSelectDialog, TextDecorationCollection> SelectedTextDecorationsProperty
         = AvaloniaProperty.RegisterDirect<FontSelectDialog, TextDecorationCollection>(nameof(SelectedTextDecorations), (s) => s.SelectedTextDecorations, (s, v) => s.SelectedTextDecorations = v, unsetValue: []);
 
-    void UpdateTextDecorations(AvaloniaPropertyChangedEventArgs e)
+    void SetTextDecorations(ref TextDecorationCollection textDecorationsValue, TextDecorationCollection newValue)
     {
-        if (!_updateFromUi) return;
-        if (e.NewValue is not TextDecorationCollection tdc) return;
+        txtPreview.TextDecorations = newValue;
 
-        _updateFromUi = false;
+        if (_updateUi)
+        {
+            chkBaseline.IsChecked = false;
+            chkOverline.IsChecked = false;
+            chkStrike.IsChecked = false;
+            chkUnderline.IsChecked = false;
 
-        chkBaseline.IsChecked = false;
-        chkOverline.IsChecked = false;
-        chkStrike.IsChecked = false;
-        chkUnderline.IsChecked = false;
+            if (newValue.Any(d => d.Location == TextDecorationLocation.Baseline)) chkBaseline.IsChecked = true;
+            if (newValue.Any(d => d.Location == TextDecorationLocation.Overline)) chkOverline.IsChecked = true;
+            if (newValue.Any(d => d.Location == TextDecorationLocation.Strikethrough)) chkStrike.IsChecked = true;
+            if (newValue.Any(d => d.Location == TextDecorationLocation.Underline)) chkUnderline.IsChecked = true;
+        }
 
-        if (tdc.Any(d => d.Location == TextDecorationLocation.Baseline)) chkBaseline.IsChecked = true;
-        if (tdc.Any(d => d.Location == TextDecorationLocation.Overline)) chkOverline.IsChecked = true;
-        if (tdc.Any(d => d.Location == TextDecorationLocation.Strikethrough)) chkStrike.IsChecked = true;
-        if (tdc.Any(d => d.Location == TextDecorationLocation.Underline)) chkUnderline.IsChecked = true;
-
-        _updateFromUi = true;
+        SetAndRaise(SelectedTextDecorationsProperty, ref textDecorationsValue, newValue);
     }
 
     #endregion
@@ -411,10 +402,9 @@ public partial class FontSelectDialog : ThemedUserControl
             }
         }
 
-        if (_updateFromUi)
-        {
-            SelectedFontFamily = new FontFamily(txtFont.Text);
-        }
+        _updateUi = false;
+        SelectedFontFamily = new FontFamily(txtFont.Text);
+        _updateUi = true;
     }
 
     private void lstFont_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -427,21 +417,6 @@ public partial class FontSelectDialog : ThemedUserControl
         {
             listBoxAvoidUpdate = true;
             txtFont.Text = s;
-            listBoxAvoidUpdate = false;
-        }
-    }
-
-
-    private void lstSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (lstSize.SelectedIndex == -1)
-        {
-            return;
-        }
-        else if (lstSize.SelectedItem is int i)
-        {
-            listBoxAvoidUpdate = true;
-            txtSize.Value = i;
             listBoxAvoidUpdate = false;
         }
     }
@@ -472,9 +447,22 @@ public partial class FontSelectDialog : ThemedUserControl
             }
         }
 
-        if (_updateFromUi)
+        _updateUi = false;
+        SelectedFontSize = txtSize.Value;
+        _updateUi = true;
+    }
+
+    private void lstSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (lstSize.SelectedIndex == -1)
         {
-            SelectedFontSize = txtSize.Value;
+            return;
+        }
+        else if (lstSize.SelectedItem is int i)
+        {
+            listBoxAvoidUpdate = true;
+            txtSize.Value = i;
+            listBoxAvoidUpdate = false;
         }
     }
 
@@ -497,10 +485,9 @@ public partial class FontSelectDialog : ThemedUserControl
             }
         }
 
-        if (_updateFromUi)
-        {
-            SelectedFontWeight = (FontWeight)txtWeight.Value;
-        }
+        _updateUi = false;
+        SelectedFontWeight = (FontWeight)txtWeight.Value;
+        _updateUi = true;
     }
 
     private void lstWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -521,123 +508,63 @@ public partial class FontSelectDialog : ThemedUserControl
 
     #region Text Decorations
 
-    private void chkOverline_Checked(object sender, RoutedEventArgs e)
+    private void TextDecorationCheckChanged(object? sender, RoutedEventArgs e)
     {
-        txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Overline });
-        UpdateSelectedTextDecorationsFromUi();
+        _updateUi = false;
+        UpdateSelectedTextDecorations();
+        _updateUi = true;
     }
 
-    private void chkStrike_Checked(object sender, RoutedEventArgs e)
+    void UpdateSelectedTextDecorations()
     {
-        txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Strikethrough });
-        UpdateSelectedTextDecorationsFromUi();
-    }
+        TextDecorationCollection tdc = new TextDecorationCollection();
 
-    private void chkUnderline_Checked(object sender, RoutedEventArgs e)
-    {
-        txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Underline });
-        UpdateSelectedTextDecorationsFromUi();
-    }
+        if (chkBaseline.IsChecked == true) tdc.Add(new TextDecoration() { Location = TextDecorationLocation.Baseline });
+        if (chkOverline.IsChecked == true) tdc.Add(new TextDecoration() { Location = TextDecorationLocation.Overline });
+        if (chkStrike.IsChecked == true) tdc.Add(new TextDecoration() { Location = TextDecorationLocation.Strikethrough });
+        if (chkUnderline.IsChecked == true) tdc.Add(new TextDecoration() { Location = TextDecorationLocation.Underline });
 
-    private void chkBaseline_Checked(object sender, RoutedEventArgs e)
-    {
-        txtPreview.TextDecorations ??= [];
-        txtPreview.TextDecorations.Add(new TextDecoration() { Location = TextDecorationLocation.Baseline });
-        UpdateSelectedTextDecorationsFromUi();
-    }
-
-    private void chkOverline_Unchecked(object sender, RoutedEventArgs e)
-    {
-        txtPreview.TextDecorations?.RemoveWhere(td => td.Location == TextDecorationLocation.Overline);
-        UpdateSelectedTextDecorationsFromUi();
-    }
-
-    private void chkStrike_Unchecked(object sender, RoutedEventArgs e)
-    {
-        txtPreview.TextDecorations?.RemoveWhere(td => td.Location == TextDecorationLocation.Strikethrough);
-        UpdateSelectedTextDecorationsFromUi();
-    }
-
-    private void chkUnderline_Unchecked(object sender, RoutedEventArgs e)
-    {
-        txtPreview.TextDecorations?.RemoveWhere(td => td.Location == TextDecorationLocation.Underline);
-        UpdateSelectedTextDecorationsFromUi();
-    }
-
-    private void chkBaseline_Unchecked(object sender, RoutedEventArgs e)
-    {
-        txtPreview.TextDecorations?.RemoveWhere(td => td.Location == TextDecorationLocation.Baseline);
-        UpdateSelectedTextDecorationsFromUi();
-    }
-
-    void UpdateSelectedTextDecorationsFromUi()
-    {
-        if (!_updateFromUi) return;
-
-        if (txtPreview.TextDecorations == null)
-        {
-            SelectedTextDecorations = [];
-        }
-        else
-        {
-            SelectedTextDecorations = [.. txtPreview.TextDecorations];
-        }
+        SelectedTextDecorations = tdc;
     }
 
     #endregion
 
     #region Italic / Oblique
 
-    private void chkItalic_Checked(object sender, RoutedEventArgs e)
+    private void chkItalic_CheckChanged(object? sender, RoutedEventArgs e)
     {
-        chkOblique.IsChecked = false;
-        txtPreview.FontStyle = FontStyle.Italic;
-        UpdateSelectedFontStyleFromUi();
+        if (!_updateUi) return;
+
+        _updateUi = false;
+        if (chkItalic.IsChecked) chkOblique.IsChecked = false; // mutually exclusive
+        UpdateSelectedFontStyle();
+        _updateUi = true;
     }
 
-    private void chkOblique_Checked(object sender, RoutedEventArgs e)
+    private void chkOblique_CheckChanged(object? sender, RoutedEventArgs e)
     {
-        chkItalic.IsChecked = false;
-        txtPreview.FontStyle = FontStyle.Oblique;
-        UpdateSelectedFontStyleFromUi();
+        if (!_updateUi) return;
+
+        _updateUi = false;
+        if (chkOblique.IsChecked) chkItalic.IsChecked = false; // mutually exclusive
+        UpdateSelectedFontStyle();
+        _updateUi = true;
     }
 
-    private void chkItalic_Unchecked(object sender, RoutedEventArgs e)
+    void UpdateSelectedFontStyle()
     {
-        txtPreview.FontStyle = chkOblique.IsChecked ? FontStyle.Oblique : FontStyle.Normal;
-        UpdateSelectedFontStyleFromUi();
-    }
-
-    private void chkOblique_Unchecked(object sender, RoutedEventArgs e)
-    {
-        txtPreview.FontStyle = chkItalic.IsChecked ? FontStyle.Italic : FontStyle.Normal;
-        UpdateSelectedFontStyleFromUi();
-    }
-
-    void UpdateSelectedFontStyleFromUi()
-    {
-        if (!_updateFromUi) return;
-
-        SelectedFontStyle = txtPreview.FontStyle;
-
-        //switch (txtPreview.FontStyle)
-        //{
-        //    case FontStyle.Normal:
-        //        SelectedFontStyle = FontStyle.Normal;
-        //        break;
-        //    case FontStyle.Italic:
-        //        SelectedFontStyle = FontStyle.Italic;
-        //        break;
-        //    case FontStyle.Oblique:
-        //        SelectedFontStyle = FontStyle.Oblique;
-        //        break;
-        //    default:
-        //        SelectedFontStyle = FontStyle.Normal;
-        //        break;
-        //}
+        if (chkItalic.IsChecked == true)
+        {
+            SelectedFontStyle = FontStyle.Italic;
+        }
+        else if (chkOblique.IsChecked == true)
+        {
+            SelectedFontStyle = FontStyle.Oblique;
+        }
+        else
+        {
+            SelectedFontStyle = FontStyle.Normal;
+        }
     }
 
     #endregion

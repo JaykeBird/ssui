@@ -100,7 +100,7 @@
 
 			<TextBlock HorizontalAlignment="Left" Margin="7,15,0,0" Text="Size:" VerticalAlignment="Top" x:Name="lblSize" Grid.Column="2"
 					 IsVisible="{Binding ElementName=window, Path=ShowSizes}" />
-			<flat:DoubleSpinner x:Name="txtSize" Height="24" Margin="5,35,15,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="10"
+			<flat:DoubleSpinner x:Name="txtSize" Height="24" Margin="5,35,15,0" VerticalAlignment="Top" Width="90" MinValue="1" Step="1" MaxValue="800" Value="12"
 								ValueChanged="txtSize_ValueChanged" Grid.Column="2" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
 								IsVisible="{Binding ElementName=window, Path=ShowSizes}" />
 			<ListBox x:Name="lstSize" Margin="5,60,15,10" Width="90" SelectionChanged="lstSize_SelectionChanged" Grid.Column="2"
@@ -148,22 +148,22 @@
 		<TextBlock HorizontalAlignment="Left" Margin="25,2,0,0" Text="Styles/Decorations:" VerticalAlignment="Top" x:Name="lblStyles" Grid.Row="1" />
 
 		<WrapPanel Orientation="Vertical" ItemHeight="24" ItemWidth="110" ItemSpacing="5" Grid.Row="1" Margin="25,27,25,5" >
-			<flat:CheckBox x:Name="chkOverline" Content="Overline" Checked="chkOverline_Checked" Unchecked="chkOverline_Unchecked"
+			<flat:CheckBox x:Name="chkOverline" Content="Overline" CheckChanged="TextDecorationCheckChanged"
 						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
 						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
-			<flat:CheckBox x:Name="chkStrike" Content="Strikethrough" Checked="chkStrike_Checked" Unchecked="chkStrike_Unchecked"
+			<flat:CheckBox x:Name="chkStrike" Content="Strikethrough" CheckChanged="TextDecorationCheckChanged"
 						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
 						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
-			<flat:CheckBox x:Name="chkUnderline" Content="Underline" Checked="chkUnderline_Checked" Unchecked="chkUnderline_Unchecked"
+			<flat:CheckBox x:Name="chkUnderline" Content="Underline" CheckChanged="TextDecorationCheckChanged"
 						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
 						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
-			<flat:CheckBox x:Name="chkBaseline" Content="Baseline" Checked="chkBaseline_Checked" Unchecked="chkBaseline_Unchecked"
+			<flat:CheckBox x:Name="chkBaseline" Content="Baseline" CheckChanged="TextDecorationCheckChanged"
 						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
 						   IsVisible="{Binding ElementName=window, Path=ShowDecorations}" />
-			<flat:CheckBox x:Name="chkItalic" Content="Italic" Checked="chkItalic_Checked" Unchecked="chkItalic_Unchecked"
+			<flat:CheckBox x:Name="chkItalic" Content="Italic" CheckChanged="chkItalic_CheckChanged"
 						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
 						   IsVisible="{Binding ElementName=window, Path=ShowStyles}" />
-			<flat:CheckBox x:Name="chkOblique" Content="Oblique" Checked="chkOblique_Checked" Unchecked="chkOblique_Unchecked"
+			<flat:CheckBox x:Name="chkOblique" Content="Oblique" CheckChanged="chkOblique_CheckChanged"
 						   Grid.Row="1" Padding="5,0" CornerRadius="{Binding ElementName=window, Path=CornerRadius}"
 						   IsVisible="{Binding ElementName=window, Path=ShowStyles}" />
 		</WrapPanel>
