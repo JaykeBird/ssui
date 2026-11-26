@@ -1,6 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+#if AVALONIA
+using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+#else
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+#endif
 
 namespace SolidShineUi
 {
@@ -31,6 +42,8 @@ namespace SolidShineUi
             return new SolidColorBrush(ColorsHelper.CreateFromHex(hex));
         }
 
+        #region Create Linear Gradient
+
         /// <summary>
         /// Create a brush based upon two colors, made into a linear gradient.
         /// </summary>
@@ -40,19 +53,105 @@ namespace SolidShineUi
         /// <returns>A LinearGradientBrush that includes the two colors.</returns>
         public static LinearGradientBrush Create(Color col1, Color col2, double angle)
         {
+#if AVALONIA
+            return new LinearGradientBrush
+            {
+                GradientStops = new GradientStops { new GradientStop(col1, 0.0), new GradientStop(col2, 1.0) },
+                StartPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(EndPointFromAngle(angle), RelativeUnit.Relative)
+            };
+#else
             return new LinearGradientBrush(col1, col2, angle);
+#endif
         }
+
+        /// <summary>
+        /// Create a linear gradient brush from a collection of gradient stops.
+        /// </summary>
+        /// <param name="stops">The collection of gradient stops to use for creating the brush</param>
+        public static LinearGradientBrush Create(IEnumerable<GradientStop> stops)
+        {
+#if AVALONIA
+            return new LinearGradientBrush { GradientStops = [.. stops] };
+#else
+            return new LinearGradientBrush(new GradientStopCollection(stops));
+#endif
+        }
+
+        /// <summary>
+        /// Create a linear gradient brush from a collection of gradient stops.
+        /// </summary>
+        /// <param name="stops">The collection of gradient stops to use for creating the brush</param>
+        /// <param name="angle">the angle of the gradient</param>
+        public static LinearGradientBrush Create(IEnumerable<GradientStop> stops, double angle)
+        {
+#if AVALONIA
+            return new LinearGradientBrush 
+            {
+                GradientStops = [.. stops],
+                StartPoint = new RelativePoint(0d, 0d, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(EndPointFromAngle(angle), RelativeUnit.Relative)
+            };
+#else
+            return new LinearGradientBrush(new GradientStopCollection(stops), angle);
+#endif
+        }
+
+        /// <summary>
+        /// Create a linear gradient brush from a collection of gradient stops.
+        /// </summary>
+        /// <param name="stops">The collection of gradient stops to use for creating the brush</param>
+        /// <param name="startPoint">the relative start point of the gradient</param>
+        /// <param name="endPoint">the relative end point of the gradient</param>
+        public static LinearGradientBrush Create(IEnumerable<GradientStop> stops, Point startPoint, Point endPoint)
+        {
+#if AVALONIA
+            return new LinearGradientBrush
+            {
+                GradientStops = [.. stops],
+                StartPoint = new RelativePoint(startPoint, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(endPoint, RelativeUnit.Relative)
+            };
+#else
+            return new LinearGradientBrush(new GradientStopCollection(stops), startPoint, endPoint);
+#endif
+        }
+
+        private static Point EndPointFromAngle(double angle)
+        {
+            angle = angle * (1.0 / 180.0) * Math.PI;
+            return new Point(Math.Cos(angle), Math.Sin(angle));
+        }
+
+        #endregion
+
+        #region CreateFromImage
 
         /// <summary>
         /// Create a brush based upon an image.
         /// </summary>
         /// <param name="image">The image to use.</param>
         /// <returns>An ImageBrush containing this image.</returns>
+#if AVALONIA
+        public static ImageBrush CreateFromImage(IImageBrushSource image)
+#else
         public static ImageBrush CreateFromImage(ImageSource image)
+#endif
         {
             return new ImageBrush(image);
         }
 
+#if AVALONIA
+        /// <summary>
+        /// Create a brush based upon an image.
+        /// </summary>
+        /// <param name="fileName">The file location of the image to use.</param>
+        /// <returns>An ImageBrush containing this image.</returns>
+        public static ImageBrush CreateFromImage(string fileName)
+        {
+            return new ImageBrush(new Bitmap(fileName));
+        }
+#else
         /// <summary>
         /// Create a brush based upon an image.
         /// </summary>
@@ -62,6 +161,7 @@ namespace SolidShineUi
         {
             return new ImageBrush(new BitmapImage(location));
         }
+#endif
 
         /// <summary>
         /// Create a brush based upon an image, with tiling.
@@ -69,6 +169,15 @@ namespace SolidShineUi
         /// <param name="image">The image to use.</param>
         /// <param name="tile">The tiling mode to use for tiling this image.</param>
         /// <returns>An ImageBrush containing this image.</returns>
+#if AVALONIA
+        public static ImageBrush CreateFromImage(Bitmap image, TileMode tile)
+        {
+            ImageBrush br = new ImageBrush(image);
+            br.DestinationRect = new RelativeRect(new Point(0, 0), new Size(image.Size.Width, image.Size.Height), RelativeUnit.Absolute);
+            br.TileMode = tile;
+            return br;
+        }
+#else
         public static ImageBrush CreateFromImage(ImageSource image, TileMode tile)
         {
             ImageBrush br = new ImageBrush(image);
@@ -77,6 +186,7 @@ namespace SolidShineUi
             br.TileMode = tile;
             return br;
         }
+#endif
 
         /// <summary>
         /// Create a brush based upon an image, with tiling.
@@ -84,11 +194,26 @@ namespace SolidShineUi
         /// <param name="location">The location, such as a web address or file location, of the image to use.</param>
         /// <param name="tile">The tiling mode to use for tiling this image.</param>
         /// <returns>An ImageBrush containing this image.</returns>
+#if AVALONIA
+        public static ImageBrush CreateFromImage(string location, TileMode tile)
+        {
+            Bitmap image = new Bitmap(location);
+            ImageBrush br = new ImageBrush(image);
+            br.DestinationRect = new RelativeRect(new Point(0, 0), new Size(image.Size.Width, image.Size.Height), RelativeUnit.Absolute);
+            br.TileMode = tile;
+            return br;
+        }
+#else
         public static ImageBrush CreateFromImage(Uri location, TileMode tile)
         {
             BitmapImage image = new BitmapImage(location);
             return CreateFromImage(image, tile);
         }
+#endif
+
+        #endregion
+
+        #region Checkboard Brush
 
         /// <summary>
         /// Create a brush with a checkerboard pattern, where the size and colors of the squares are customizable.
@@ -123,8 +248,12 @@ namespace SolidShineUi
             DrawingBrush cbb = new DrawingBrush();
             cbb.Stretch = Stretch.None;
             cbb.TileMode = TileMode.Tile;
+#if AVALONIA
+            cbb.DestinationRect = new RelativeRect(0, 0, fullsize, fullsize, RelativeUnit.Absolute);
+#else
             cbb.Viewport = new System.Windows.Rect(0, 0, fullsize, fullsize);
             cbb.ViewportUnits = BrushMappingMode.Absolute;
+#endif
 
             DrawingGroup cbd = new DrawingGroup();
             cbd.Children.Add(new GeometryDrawing() { Brush = brush1, Geometry = Geometry.Parse($"M0,0 L{fullsize},0 {fullsize},{fullsize} 0,{fullsize}Z") });
@@ -134,6 +263,222 @@ namespace SolidShineUi
 
             return cbb;
         }
+
+        #endregion
+
+        #region Avalonia Clone
+
+#if AVALONIA
+
+        /// <summary>
+        /// Create a deep clone of a SolidColorBrush.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new SolidColorBrush, with the same properties</returns>
+        public static SolidColorBrush Clone(this ISolidColorBrush brush)
+        {
+            var newBrush = new SolidColorBrush(Color.FromUInt32(brush.Color.ToUInt32()))
+            {
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+            if (brush is SolidColorBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a LinearGradientBrush.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new LinearGradientBrush, with the same properties</returns>
+        public static LinearGradientBrush Clone(this ILinearGradientBrush brush)
+        {
+            var newBrush = new LinearGradientBrush
+            {
+                GradientStops = CloneStops(brush.GradientStops),
+                StartPoint = brush.StartPoint,
+                EndPoint = brush.EndPoint,
+                SpreadMethod = brush.SpreadMethod,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+            if (brush is LinearGradientBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a RadialGradientBrush.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new RadialGradientBrush, with the same properties</returns>
+        public static RadialGradientBrush Clone(this IRadialGradientBrush brush)
+        {
+            var newBrush = new RadialGradientBrush
+            {
+                GradientStops = CloneStops(brush.GradientStops),
+                Center = brush.Center,
+                GradientOrigin = brush.GradientOrigin,
+                RadiusX = brush.RadiusX,
+                RadiusY = brush.RadiusY,
+                SpreadMethod = brush.SpreadMethod,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+            if (brush is RadialGradientBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a ConicGradientBrush.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new ConicGradientBrush, with the same properties</returns>
+        public static ConicGradientBrush Clone(this IConicGradientBrush brush)
+        {
+            var newBrush = new ConicGradientBrush
+            {
+                GradientStops = CloneStops(brush.GradientStops),
+                Center = brush.Center,
+                Angle = brush.Angle,
+                SpreadMethod = brush.SpreadMethod,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+            };
+            if (brush is ConicGradientBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of an ImageBrush,
+        /// except the <c>Source</c> property, which is only a shallow copy.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new ImageBrush, with the same properties</returns>
+        public static ImageBrush Clone(this IImageBrush brush)
+        {
+            var newBrush = new ImageBrush(brush.Source)
+            {
+                DestinationRect = brush.DestinationRect,
+                TileMode = brush.TileMode,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+                AlignmentX = brush.AlignmentX,
+                AlignmentY = brush.AlignmentY,
+                SourceRect = brush.SourceRect,
+                Stretch = brush.Stretch,
+            };
+            if (brush is ImageBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a VisualBrush.
+        /// except the <c>Visual</c> property, which is only a shallow copy.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new VisualBrush, with the same properties</returns>
+        public static VisualBrush Clone(this VisualBrush brush)
+        {
+            var newBrush = new VisualBrush()
+            {
+                Visual = brush.Visual,
+                DestinationRect = brush.DestinationRect,
+                TileMode = brush.TileMode,
+                Opacity = brush.Opacity,
+                Transform = brush.Transform,
+                TransformOrigin = brush.TransformOrigin,
+                AlignmentX = brush.AlignmentX,
+                AlignmentY = brush.AlignmentY,
+                SourceRect = brush.SourceRect,
+                Stretch = brush.Stretch,
+            };
+            if (brush is VisualBrush scb)
+            {
+                newBrush.Transitions = TransitionsHelper.CloneTransitions(scb);
+            }
+            return newBrush;
+        }
+
+        /// <summary>
+        /// Create a deep clone of a brush.
+        /// </summary>
+        /// <param name="brush">the brush to clone</param>
+        /// <returns>a new brush, with the same properties</returns>
+        /// <remarks>
+        /// For <see cref="IImageBrush"/> and <see cref="VisualBrush"/>, the Source or Visual property
+        /// will only be shallow copied, rather than a deep copy.
+        /// </remarks>
+        /// <exception cref="NotSupportedException">thrown when the brush type is not supported for cloning</exception>
+        public static IBrush Clone(this IBrush brush)
+        {
+            if (brush is ISolidColorBrush scb)
+            {
+                return scb.Clone();
+            }
+            else if (brush is ILinearGradientBrush lgb)
+            {
+                return lgb.Clone();
+            }
+            else if (brush is IRadialGradientBrush rgb)
+            {
+                return rgb.Clone();
+            }
+            else if (brush is IConicGradientBrush cgb)
+            {
+                return cgb.Clone();
+            }
+            else if (brush is IImageBrush ib)
+            {
+                return ib.Clone();
+            }
+            else if (brush is VisualBrush vb)
+            {
+                return vb.Clone();
+            }
+            else
+            {
+                throw new NotSupportedException("The brush type " + brush.GetType().FullName + " is not supported for cloning.");
+            }
+        }
+
+        /// <summary>
+        /// Create a deep clone of a list of gradient stops.
+        /// </summary>
+        /// <param name="stops">the list of stops to clone</param>
+        /// <returns>a new list of gradient stops, with the same properties</returns>
+        static GradientStops CloneStops(IReadOnlyList<IGradientStop> stops)
+        {
+            var newStops = new GradientStops();
+            foreach (var stop in stops)
+            {
+                newStops.Add(new GradientStop(stop.Color, stop.Offset));
+            }
+            return newStops;
+        }
+
+#endif
+        #endregion
+
     }
 
     ///// <summary>

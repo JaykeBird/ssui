@@ -405,6 +405,20 @@
                                 </MultiTrigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
+                                        <Condition Property="IsPressed" Value="true"/>
+                                        <Condition Property="Role" Value="SubmenuHeader"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding ClickBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsPressed" Value="true"/>
+                                        <Condition Property="Role" Value="SubmenuItem"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{Binding ClickBrush, RelativeSource={RelativeSource AncestorType={x:Type flat:Menu}}}"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
                                         <Condition Property="IsSubmenuOpen" Value="true"/>
                                         <Condition Property="Role" Value="TopLevelHeader"/>
                                     </MultiTrigger.Conditions>

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using static SolidShineUi.ColorsHelper;
+#if AVALONIA
+using Avalonia.Media;
+#else
 using System.Windows.Media;
+#endif
 
 namespace SolidShineUi
 {

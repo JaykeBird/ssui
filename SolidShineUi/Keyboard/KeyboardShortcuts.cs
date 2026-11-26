@@ -4,9 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if AVALONIA
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+#else
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+#endif
 using System.Xml;
 
 namespace SolidShineUi.KeyboardShortcuts
@@ -91,7 +97,7 @@ namespace SolidShineUi.KeyboardShortcuts
                 {
                     //xr.ReadStartElement("ks");
 
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
                     string? c = xr.GetAttribute("comb");
                     string? k = xr.GetAttribute("keyid");
                     string? m = xr.GetAttribute("action");
@@ -399,7 +405,9 @@ namespace SolidShineUi.KeyboardShortcuts
         /// <summary>
         /// Get or set the element associated with this keyboard shortcut and action (such as a menu item if the action is associated with the command of a menu item). Having an element is not required.
         /// </summary>
-#if NETCOREAPP
+#if AVALONIA
+        public InputElement? SourceElement { get; set; } = null;
+#elif NETCOREAPP
         public UIElement? SourceElement { get; set; } = null;
 #else
         public UIElement SourceElement { get; set; } = null;

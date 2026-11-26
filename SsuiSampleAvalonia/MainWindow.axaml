@@ -1,0 +1,111 @@
+<Window xmlns="https://github.com/avaloniaui" x:Name="window"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="400" Height="350"
+        xmlns:flat="clr-namespace:SolidShineUi;assembly=SolidShineUi.Avalonia"
+        xmlns:ssut="clr-namespace:SolidShineUi.Utils;assembly=SolidShineUi.Avalonia"
+        x:Class="SsuiSampleAvalonia.MainWindow"
+        Title="SsuiSampleAvalonia" FontSize="12" >
+    <Grid ColumnDefinitions="120,50,1*,80" RowDefinitions="Auto,20,20,40,20,150,1*" >
+
+        <flat:Menu x:Name="mnuMain" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" >
+            <MenuItem Header="File">
+                <MenuItem Header="New" x:Name="mnuNew" Click="MenuItem_Click_1" />
+                <MenuItem Header="Open" />
+                <Separator />
+                <MenuItem Header="Save" />
+                <MenuItem Header="Save as" >
+                    <MenuItem Header="Save a copy..." />
+                    <MenuItem Header="Change file format..." />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Print..." />
+                <MenuItem Header="Print Preview" />
+                <Separator />
+                <MenuItem Header="Close" />
+                <Separator />
+                <MenuItem Header="Exit" x:Name="mnuExit" Click="mnuExit_Click" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy" />
+                <MenuItem Header="Cut" />
+                <MenuItem Header="Paste" />
+                <Separator />
+                <MenuItem Header="Select All" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Toolbar" IsSelected="True" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Resources..." />
+                <Separator />
+                <MenuItem Header="Options..." />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Help Topics" />
+                <MenuItem Header="Online Help" />
+                <Separator />
+                <MenuItem Header="Contact Us" />
+                <Separator />
+                <MenuItem Header="About..." />
+            </MenuItem>
+        </flat:Menu>
+
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="5,0" Text="Welcome to Avalonia!" />
+        
+        <flat:FlatButton x:Name="btnMain" Grid.Column="0" Grid.Row="2" Height="24" VerticalAlignment="Center"
+                         Margin="10,0" Click="FlatButton_Click" RightClick="btnMain_RightClick"
+                         >
+            <TextBlock Text="HWHAT" />
+        </flat:FlatButton>
+        <flat:MenuButton x:Name="btnMain2" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
+                         IsEnabled="False" Height="24" VerticalAlignment="Center" Margin="10,0" Content="Disabibled" />
+        <flat:SplitButton x:Name="btnSplit" Grid.Column="0" Grid.Row="3" Height="24" VerticalAlignment="Center"
+                 Margin="10,0" Click="FlatButton_Click" >
+            <TextBlock Text="Who" />
+            <flat:SplitButton.Menu>
+                <flat:ContextMenu>
+                    <MenuItem Header="Item 1" />
+                    <MenuItem Header="Item 2" />
+                    <Separator />
+                    <MenuItem Header="Select a color..." x:Name="mnuSelectColor" Click="mnuSelectColor_Click" />
+                    <MenuItem Header="Select a font..." x:Name="mnuSelectFont" Click="mnuSelectFont_Click" />
+                </flat:ContextMenu>
+            </flat:SplitButton.Menu>
+        </flat:SplitButton>
+
+        <flat:ClickSelectTextBox x:Name="txtMessage" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" 
+                                 Text="my meesage" Padding="6,2" MinHeight="24" VerticalAlignment="Center" Height="24" />
+        <flat:FlatButton x:Name="btnDialog" Grid.Column="3" Grid.Row="4" VerticalAlignment="Center"
+                         Margin="10,0" Click="btnDialog_Click" >
+            <TextBlock Text="Show..." />
+        </flat:FlatButton>
+        
+        <flat:DoubleSpinner Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Height="24" VerticalAlignment="Stretch" Margin="10,0" x:Name="dbl" 
+                            Step="0.2" Decimals="3" Value="12" />
+
+        <flat:TabControl Grid.Row="5" Margin="10" BorderThickness="1" MinHeight="100" TabMinWidth="90" 
+                         Grid.ColumnSpan="4" >
+            <flat:TabItem Title="Title">
+				<Grid>
+					<TextBlock Text="Tab Content" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+                <flat:TabItem.TabContextMenu>
+					<flat:ContentContextMenu HorizontalContentAlignment="Center" SeparatorBrush="Brown" >
+						<MenuItem Header="Item 1" />
+                        <MenuItem Header="Item 2" />
+                        <flat:ContentContextMenu.Content>
+							<TextBlock Text="wow" Margin="20" />
+                        </flat:ContentContextMenu.Content>
+                    </flat:ContentContextMenu>
+                </flat:TabItem.TabContextMenu>
+            </flat:TabItem>
+            <flat:TabItem Title="Title 2" CanClose="False" FontWeight="Bold" >
+				<Grid>
+					<TextBlock Text="Tab Content 2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </flat:TabItem>
+		</flat:TabControl>
+    </Grid>
+</Window>

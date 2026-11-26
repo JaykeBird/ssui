@@ -1065,6 +1065,7 @@ namespace SolidShineUi
 
             base.OnClick();
         }
+        #endregion
 
         #endregion
 
@@ -1139,8 +1140,6 @@ namespace SolidShineUi
             initiatingClick = false;
         }
 
-
-        #endregion
 
         #endregion
 

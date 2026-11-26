@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
-using static SolidShineUi.ColorsHelper;
 
 namespace SolidShineUi
 {
@@ -87,6 +86,7 @@ namespace SolidShineUi
             MenuBorderBrush = cs.BorderColor.ToBrush();
             HighlightBrush = cs.ThirdHighlightColor.ToBrush();
             HighlightSubitemBrush = cs.ThirdHighlightColor.ToBrush();
+            ClickBrush = cs.SecondHighlightColor.ToBrush();
             CheckedBrush = cs.SecondaryColor.ToBrush();
             Foreground = cs.ForegroundColor.ToBrush();
 
@@ -98,6 +98,7 @@ namespace SolidShineUi
             else if (cs.MenusUseAccent)
             {
                 HighlightSubitemBrush = cs.AccentThirdHighlightColor.ToBrush();
+                ClickBrush = cs.AccentSecondHighlightColor.ToBrush();
                 CheckedBrush = cs.AccentSecondaryColor.ToBrush();
             }
         }
@@ -111,14 +112,8 @@ namespace SolidShineUi
         [Category("Brushes")]
         public Brush MenuBackground
         {
-            get
-            {
-                return (Brush)GetValue(MenuBackgroundProperty);
-            }
-            set
-            {
-                SetValue(MenuBackgroundProperty, value);
-            }
+            get => (Brush)GetValue(MenuBackgroundProperty);
+            set => SetValue(MenuBackgroundProperty, value);
         }
 
         /// <summary>
@@ -127,14 +122,8 @@ namespace SolidShineUi
         [Category("Brushes")]
         public Brush DisabledBrush
         {
-            get
-            {
-                return (Brush)GetValue(DisabledBrushProperty);
-            }
-            set
-            {
-                SetValue(DisabledBrushProperty, value);
-            }
+            get => (Brush)GetValue(DisabledBrushProperty);
+            set => SetValue(DisabledBrushProperty, value);
         }
 
         /// <summary>
@@ -159,14 +148,8 @@ namespace SolidShineUi
         [Category("Brushes")]
         public Brush HighlightBrush
         {
-            get
-            {
-                return (Brush)GetValue(HighlightBrushProperty);
-            }
-            set
-            {
-                SetValue(HighlightBrushProperty, value);
-            }
+            get => (Brush)GetValue(HighlightBrushProperty);
+            set => SetValue(HighlightBrushProperty, value);
         }
 
         /// <summary>
@@ -175,14 +158,8 @@ namespace SolidShineUi
         [Category("Brushes")]
         public Brush HighlightSubitemBrush
         {
-            get
-            {
-                return (Brush)GetValue(HighlightSubitemBrushProperty);
-            }
-            set
-            {
-                SetValue(HighlightSubitemBrushProperty, value);
-            }
+            get => (Brush)GetValue(HighlightSubitemBrushProperty);
+            set => SetValue(HighlightSubitemBrushProperty, value);
         }
 
         /// <summary>
@@ -191,14 +168,19 @@ namespace SolidShineUi
         [Category("Brushes")]
         public Brush CheckedBrush
         {
-            get
-            {
-                return (Brush)GetValue(CheckedBrushProperty);
-            }
-            set
-            {
-                SetValue(CheckedBrushProperty, value);
-            }
+            get => (Brush)GetValue(CheckedBrushProperty);
+            set => SetValue(CheckedBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Get or set the brush to use menu items that aren't top-level on the menu bar, when the menu item is being pressed
+        /// (such as holding down a mouse button, or pressing the Space or Enter key on the keyboard).
+        /// </summary>
+        [Category("Brushes")]
+        public Brush ClickBrush
+        { 
+            get => (Brush)GetValue(ClickBrushProperty); 
+            set => SetValue(ClickBrushProperty, value); 
         }
 
         /// <summary>
@@ -303,6 +285,10 @@ namespace SolidShineUi
         /// <summary>The backing dependency property for <see cref="HighlightBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty HighlightBrushProperty = DependencyProperty.Register(
             nameof(HighlightBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.LightGray)));
+
+        /// <summary>The backing dependency property for <see cref="ClickBrush"/>. See the related property for details.</summary>
+        public static readonly DependencyProperty ClickBrushProperty = DependencyProperty.Register(
+            nameof(ClickBrush), typeof(Brush), typeof(Menu), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
         /// <summary>The backing dependency property for <see cref="CheckedBrush"/>. See the related property for details.</summary>
         public static readonly DependencyProperty CheckedBrushProperty = DependencyProperty.Register(

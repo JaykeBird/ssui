@@ -1,10 +1,17 @@
 ﻿using System;
-using System.Windows.Media;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Drawing;
+
+
+#if AVALONIA
+using Avalonia.Media;
+using Color = Avalonia.Media.Color;
+#else
+using System.Windows.Media;
 using Color = System.Windows.Media.Color;
+#endif
 
 namespace SolidShineUi
 {
@@ -52,6 +59,8 @@ namespace SolidShineUi
         /// </remarks>
         public static Color CreateFromHex(string hex)
         {
+            // TODO: rely upon Avalonia's implementation in the Avalonia version
+
             // first, remove the starting # symbol (change #890ABC to 890ABC)
             if (hex.StartsWith("#", StringComparison.Ordinal))
             {
@@ -141,18 +150,6 @@ namespace SolidShineUi
             }
         }
 
-        /// <summary>
-        /// Create a color based upon an OLE color value.
-        /// </summary>
-        /// <param name="oleColor">The OLE color value to translate.</param>
-        /// <returns>A color that is the translation of the OLE color value.</returns>
-        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
-        public static Color CreateFromOle(int oleColor)
-        {
-            System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
-            return Color.FromArgb(c.A, c.R, c.G, c.B);
-        }
-
         // I expect that ToHexStringLegacy is probably a bit faster / less resource intensive,
         // but for consistency in code/approach between ToHexString and ToHexStringWithAlpha, I went with the same approach for both functions
         // if performance does become a concern, then either reimplement this legacy one instead (and/or rename it to ToHexStringFast or something lol)
@@ -186,7 +183,8 @@ namespace SolidShineUi
         //}
 
         /// <summary>
-        /// Returns an RGB hex triplet string that corresponds to this color. Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)"/> to keep the A value as well..
+        /// Returns an RGB hex triplet string that corresponds to this color. 
+        /// Note that A (alpha) is dropped, please use <see cref="ToHexStringWithAlpha(Color)"/> to keep the A value as well..
         /// </summary>
         /// <param name="color">The color to convert to a hex string.</param>
         public static string ToHexString(Color color)
@@ -210,14 +208,47 @@ namespace SolidShineUi
         }
 
         /// <summary>
+        /// Create a color based upon an OLE color value.
+        /// </summary>
+        /// <param name="oleColor">The OLE color value to translate.</param>
+        /// <returns>A color that is the translation of the OLE color value.</returns>
+        /// <remarks>
+        /// Most modern programs will not have much use or need for the OLE color value, but this does have use in older programs and certain parts of Microsoft Office.
+        /// <para/>
+        /// The Avalonia version of this function will not support the OLE color values that correspond to system colors, but other standard color values are supported.
+        /// </remarks>
+        public static Color CreateFromOle(int oleColor)
+        {
+#if AVALONIA
+            // https://stackoverflow.com/questions/2732375/how-to-translate-legacy-ole-colors-to-argb-with-net
+            int red = oleColor % 256;
+            int green = (oleColor / 256) % 256;
+            int blue = (oleColor / 65536) % 256;
+            return CreateFromRgb((byte)red, (byte)green, (byte)blue);
+#else
+            System.Drawing.Color c = ColorTranslator.FromOle(oleColor);
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
+#endif
+        }
+
+        /// <summary>
         /// Get the OLE color value that translates to this color.
         /// </summary>
         /// <param name="color">The color to translate to an OLE color value.</param>
         /// <returns>A color that is the translation of the OLE color value.</returns>
-        /// <remarks>Most modern programs will not have much use or need for the OLE color value, but Microsoft Office does still use this in some areas/APIs.</remarks>
+        /// <remarks>
+        /// Most modern programs will not have much use or need for the OLE color value, but this does have use in older programs and certain parts of Microsoft Office.
+        /// <para/>
+        /// The Avalonia version of this function will not support the OLE color values that correspond to system colors, but other standard color values are supported.
+        /// </remarks>
         public static int ToOleColor(Color color)
         {
+#if AVALONIA
+            // https://stackoverflow.com/questions/2732375/how-to-translate-legacy-ole-colors-to-argb-with-net
+            return color.R + (color.G * 256) + (color.B * 256 * 256);
+#else
             return ColorTranslator.ToOle(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
+#endif
         }
 
 #endregion
@@ -473,6 +504,11 @@ namespace SolidShineUi
         /// <param name="hue">The hue value of the color.</param>
         /// <param name="saturation">The saturation value of the color.</param>
         /// <param name="value">The value (also known as brightness) value of the color.</param>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static void ToHSV(Color color, out double hue, out double saturation, out double value)
         {
             // taken from http://www.rapidtables.com/convert/color/rgb-to-hsv.htm
@@ -526,6 +562,11 @@ namespace SolidShineUi
         /// <param name="saturation">The saturation of the color.</param>
         /// <param name="value">The value of the color.</param>
         /// <returns>Return a color that corresponds to these HSV values.</returns>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static Color CreateFromHSV(double hue, double saturation, double value)
         {
             // taken from https://en.wikipedia.org/wiki/HSL_and_HSV#Converting_to_RGB
@@ -592,7 +633,7 @@ namespace SolidShineUi
         #region HSL conversion
 
         // Avalonia does have its own version of these same HSL calculations, via the Color.ToHsl() function,
-        // but doing so creates a unique object (HsvColor) rather than outputting the 3 double values making up that color
+        // but doing so creates a unique object (HslColor) rather than outputting the 3 double values making up that color
         // it's a minor difference if you want the 3 double values separately, or them all wrapped up in a neat struct
         // ultimately, there should be no difference - the math is the same (and ironically all uses the same
         // Wikpedia article as a reference), the only difference being extremely minor and semantic
@@ -603,10 +644,15 @@ namespace SolidShineUi
         /// <summary>
         /// Get the HSL values for a particular color.
         /// </summary>
-        /// <param name="color">The color to convert to HSV.</param>
+        /// <param name="color">The color to convert to HSL.</param>
         /// <param name="hue">The hue value of the color.</param>
         /// <param name="saturation">The saturation value of the color.</param>
         /// <param name="luminance">The luminance (also known as lightness) value of the color.</param>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static void ToHSL(Color color, out double hue, out double saturation, out double luminance)
         {
             double r = Convert.ToDouble(color.R) / 255;
@@ -648,7 +694,6 @@ namespace SolidShineUi
 
             luminance = 0.5d * (max + min); // / 255d; // these needs to be doubles
 
-
             if (CheckEqualViaEpsilon(luminance, 0) || CheckEqualViaEpsilon(luminance, 1))
             {
                 saturation = 0;
@@ -671,6 +716,11 @@ namespace SolidShineUi
         /// <param name="saturation">The saturation of the color.</param>
         /// <param name="luminance">The luminance of the color.</param>
         /// <returns>Return a color that corresponds to these HSL values.</returns>
+        /// <remarks>
+        /// HSL and HSV are two color spaces, or ways to represent colors via numbers, meant to be more easily understood/visualized by humans than RGB.
+        /// Both are fairly similar in a number of ways, and aim to accomplish the same goal, but they are also fairly different, and should not
+        /// be confused with one another. See <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">this Wikpedia article</a> for more details.
+        /// </remarks>
         public static Color CreateFromHSL(double hue, double saturation, double luminance)
         {
             return CreateFromRgb(
@@ -919,6 +969,23 @@ namespace SolidShineUi
 
             return Color.FromArgb(c.A, (byte)r, (byte)g, (byte)b);
         }
+
+#if AVALONIA
+
+        /// <summary>
+        /// Create a new Color based upon the source color, but with the specified values changed. If a value is kept as <c>null</c>, then it will not be changed.
+        /// </summary>
+        /// <param name="c">the source color</param>
+        /// <param name="a">the new alpha value; use <c>null</c> to not change the value</param>
+        /// <param name="r">the new red value; use <c>null</c> to not change the value</param>
+        /// <param name="g">the new green value; use <c>null</c> to not change the value</param>
+        /// <param name="b">the new blue value; use <c>null</c> to not change the value</param>
+        public static Color With(this Color c, byte? a = null, byte? r = null, byte? g = null, byte? b = null)
+        {
+            return Color.FromArgb(a ?? c.A, r ?? c.R, g ?? c.G, b ?? c.B);
+        }
+
+#endif
 
         #endregion
 

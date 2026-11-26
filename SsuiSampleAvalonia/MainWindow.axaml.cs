@@ -1,0 +1,127 @@
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Dialogs;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+using Avalonia.Platform;
+using SolidShineUi;
+using System.Diagnostics;
+
+namespace SsuiSampleAvalonia
+{
+    public partial class MainWindow : ThemedWindow
+    {
+        //ColorScheme cs = new ColorScheme(Avalonia.Media.Colors.CornflowerBlue);
+
+        //public ColorScheme ColorScheme { get => GetValue(ColorSchemeProperty); set => SetValue(ColorSchemeProperty, value); }
+
+        ///// <summary>The backing styled property for <see cref="ColorScheme"/>. See the related property for details.</summary>
+        //public static readonly StyledProperty<ColorScheme> ColorSchemeProperty
+        //    = AvaloniaProperty.Register<MainWindow, ColorScheme>(nameof(ColorScheme), new ColorScheme());
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            SsuiTheme = new SsuiAppTheme(Avalonia.Media.Colors.CornflowerBlue);
+
+            //ColorScheme = cs;
+            //Background = cs.BackgroundColor.ToBrush();
+
+            MenuItem mi = mnuNew;
+            string clickName = MenuItem.ClickEvent.Name;
+
+            //foreach (var item in AssetLoader.GetAssets(new System.Uri("avares://SolidShineUi.Avalonia/"), null))
+            //{
+            //    Debugger.Log(0, "UI", item.ToString() + "\n");
+            //}
+        }
+
+        private async void FlatButton_Click(object? sender, RoutedEventArgs e)
+        {
+            if (Debugger.IsAttached)
+            {
+                Debugger.Log(0, "UI", "HELLO\n");
+            }
+
+            StringInputDialog dialog = new StringInputDialog()
+            {
+                Title = "String Input Dialog Test",
+                Description = "Write a message",
+            };
+            dialog.SsuiTheme = this.SsuiTheme;
+            await dialog.DisplayAsWindow().ShowDialog(this);
+            if (dialog.DialogResult)
+            {
+                Debugger.Log(0, "UI", dialog.Value);
+            }
+        }
+        private void btnMain_RightClick(object? sender, RoutedEventArgs e)
+        {
+            if (Debugger.IsAttached)
+            {
+                Debugger.Log(0, "UI", "RIGHT HELLO\n");
+            }
+        }
+
+        private void MenuItem_Click_1(object? sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void mnuExit_Click(object? sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private async void mnuSelectColor_Click(object? sender, RoutedEventArgs e)
+        {
+            ColorPickerDialog cpd = new ColorPickerDialog(ColorsHelper.Black)
+            {
+                Title = "Select a color",
+                SsuiTheme = this.SsuiTheme,
+            };
+            await cpd.DisplayAsWindow().ShowDialog(this);
+
+            if (cpd.DialogResult)
+            {
+                mnuSelectColor.Foreground = cpd.SelectedColor.ToBrush();
+            }
+        }
+
+        private async void btnDialog_Click(object? sender, RoutedEventArgs e)
+        {
+            MessageDialog md = new MessageDialog();
+            md.SsuiTheme = this.SsuiTheme;
+
+            var result = await md.ShowDialogWindowAsync(txtMessage.Text ?? "", this, "Custom Dialog", MessageDialogImage.Stop, MessageDialogButtonDisplay.Two);
+
+            if (result == MessageDialogResult.OK)
+            {
+                txtMessage.Text = (txtMessage.Text ?? "") + " (yes)";
+            }
+        }
+
+        private async void mnuSelectFont_Click(object? sender, RoutedEventArgs e)
+        {
+            FontSelectDialog fsd = new FontSelectDialog()
+            {
+                Title = "Select a color",
+                SsuiTheme = this.SsuiTheme,
+                SelectedFontFamily = mnuSelectFont.FontFamily,
+                SelectedFontSize = mnuSelectFont.FontSize,
+                SelectedFontStyle = mnuSelectFont.FontStyle,
+                SelectedFontWeight = mnuSelectFont.FontWeight,
+            };
+            await fsd.DisplayAsWindow().ShowDialog(this);
+
+            if (fsd.DialogResult)
+            {
+                mnuSelectFont.FontFamily = fsd.SelectedFontFamily;
+                mnuSelectFont.FontSize = fsd.SelectedFontSize;
+                mnuSelectFont.FontStyle = fsd.SelectedFontStyle;
+                mnuSelectFont.FontWeight = fsd.SelectedFontWeight;
+            }
+        }
+    }
+}

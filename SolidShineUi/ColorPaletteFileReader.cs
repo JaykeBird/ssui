@@ -4,8 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if AVALONIA
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+#else
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+#endif
 
 namespace SolidShineUi
 {
@@ -961,6 +966,7 @@ namespace SolidShineUi
 
         #region Bitmap Palette (TIF, GIF)
 
+#if !AVALONIA
         // https://docs.microsoft.com/en-us/dotnet/api/system.windows.media.imaging.bitmappalette
 
         // not sure why Microsoft limits this to 256 colors, maybe I'll investigate some day but it's not a priority
@@ -982,6 +988,7 @@ namespace SolidShineUi
 
             return bpal.Colors.ToList();
         }
+#endif
 
         #endregion
 

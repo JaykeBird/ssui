@@ -292,7 +292,7 @@ namespace SolidShineUi
             return double.Parse(OperationList[0], culture);
         }
 
-#if NETCOREAPP
+#if NETCOREAPP || AVALONIA
         static List<string>? ParseOperations(string input)
 #else
         static List<string> ParseOperations(string input)
