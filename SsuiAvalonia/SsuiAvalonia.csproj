@@ -56,8 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.1.0" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
    </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="DialogImages\*.png" />

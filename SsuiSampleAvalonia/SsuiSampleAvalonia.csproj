@@ -19,5 +19,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\SsuiAvalonia\SsuiAvalonia.csproj" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <!--<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />-->
 	</ItemGroup>
 </Project>
